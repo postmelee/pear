@@ -41,6 +41,8 @@ The verification record must identify the game version, Mac hardware, macOS vers
 
 Early technical checks will use small x64 programs and Direct3D 11 samples before testing the full game. Installer development, save-backup automation, runtime rollback, and support for additional games are subsequent goals.
 
+The [runtime architecture](docs/architecture.md) defines subsystem boundaries, source and build requirements, qualification gates, and the scope of a Pear-managed engine. The [delivery plan](docs/delivery-plan.md) tracks the milestone and its implementation issues. Detailed [engineering research](docs/README.md) evaluates reuse, macOS porting, Rust, and Cranelift.
+
 ## Technical direction
 
 The initial candidate stack is **ARM64 Wine, FEX, and an ARM64-compatible DXMT build**. This is a research direction, not a validated Pear release.
@@ -55,6 +57,8 @@ The initial candidate stack is **ARM64 Wine, FEX, and an ARM64-compatible DXMT b
 Existing x64 games still need CPU instruction translation when running without Rosetta. The first technical work is to verify source and patch availability, reproducible builds, macOS execution requirements, and compatibility across the required runtime components.
 
 Pear intends to reuse existing open-source projects and contribute generally useful improvements in accordance with each upstream project's contribution policies.
+
+The runtime may require substantial macOS porting and maintained compatibility patches. Rust is optional and will be evaluated per subsystem; existing engines will retain their upstream languages unless evidence justifies a change. An independent CPU translator is a separate research track, not a prerequisite for the first Megabonk milestone.
 
 ## Current status
 

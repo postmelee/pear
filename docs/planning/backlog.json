@@ -1,0 +1,515 @@
+{
+  "schema_version": 1,
+  "evidence_date": "2026-09-27",
+  "milestones": [
+    {
+      "id": "M1",
+      "title": "M1 — Megabonk on Apple Silicon without Rosetta",
+      "description": "Qualify a coherent, source-buildable Pear runtime on a declared Apple Silicon/macOS configuration. Required evidence: normal macOS execution permissions; complete required process/module path without Rosetta; Steam, input, audio and save/relaunch behavior; at least 20 minutes of active gameplay; reproducible build/setup and known limitations. This is not a general end-user release or a claim of performance superiority. Architecture: docs/architecture.md. No due date is assumed."
+    },
+    {
+      "id": "R1",
+      "title": "R1 — Evaluate an independent Pear CPU translator",
+      "description": "Optional research alongside M1. Explain a concrete reason to change the CPU backend, compare a declared semantic subset using Cranelift and an appropriate reference, then decide whether further runtime/Wine integration is justified. Research may conclude with a documented decision to retain FEX; later conditional experiments may be closed as not planned. R1 does not block M1 and does not commit Pear to a Rust rewrite."
+    }
+  ],
+  "issues": [
+    {
+      "id": "P01",
+      "milestone": "M1",
+      "title": "Qualify source availability and pin the runtime toolchain",
+      "depends_on": [],
+      "purpose": "A commercial demonstration and public source snapshots do not yet establish a reproducible Pear runtime.",
+      "scope": [
+        "Inventory Wine, FEX, DXMT, dependencies, exact public revisions, required downstream patches and build tools.",
+        "Audit the chosen source archives/trees and relevant public changes, including CrossOver source availability where relevant; identify missing macOS behavior.",
+        "Record per-component license/notice requirements and contribution policies before copying or distributing code."
+      ],
+      "acceptance": [
+        "A source manifest identifies immutable revisions, archive/patch hashes and build-tool versions, with evidence for every required component.",
+        "A gap table separates reusable code, patches to implement, unavailable inputs and external prerequisites.",
+        "No opaque preview binary or placeholder hash is classified as a reproducible input; a no-go finding is explicit and downstream work remains blocked."
+      ],
+      "references": [
+        "docs/research/macos-runtime-audit.md",
+        "docs/research/graphics-and-game-integration.md"
+      ]
+    },
+    {
+      "id": "P02",
+      "milestone": "M1",
+      "title": "Probe macOS ABI, memory, JIT and signing capabilities",
+      "depends_on": [],
+      "purpose": "The Darwin host contract is a fundamental engineering gate that Rust or a different code generator cannot remove.",
+      "scope": [
+        "Build a small ARM64 probe for x18 mode transitions, page size and protection, low address mapping, thread memory-order mode, and JIT publication.",
+        "Test normal supported signing/provisioning with system protections enabled; distinguish API presence from successful operation.",
+        "Document developer execution and general user distribution separately, including account/profile prerequisites and unresolved restrictions."
+      ],
+      "acceptance": [
+        "Versioned source, commands and redacted results report each capability as passed, failed or unavailable on the declared Mac/OS.",
+        "Nested callbacks, signals and failure exits preserve guest/host ABI state; 4 KiB semantics and per-thread policy are verified rather than assumed.",
+        "Every prerequisite for the declared M1 configuration passes through a normal signed path; any distribution limitation is explicit and cannot be described as a general release."
+      ],
+      "references": [
+        "docs/research/macos-runtime-audit.md",
+        "docs/architecture.md"
+      ]
+    },
+    {
+      "id": "P03",
+      "milestone": "M1",
+      "title": "Define runtime contracts and choose the manager language",
+      "depends_on": [],
+      "purpose": "Pear needs stable ownership and component boundaries before selecting a launcher implementation language.",
+      "scope": [
+        "Define versioned runtime-lock, game-profile, launch, failure and qualification-record schemas.",
+        "Compare Rust and Swift for the same small manifest/child-process/logging task; include packaging, FFI, dependencies and contributor cost.",
+        "Keep CPU, Wine and graphics code in their existing languages; specify prefix/cache/data ownership and bounded profile operations."
+      ],
+      "acceptance": [
+        "Schemas and examples clearly distinguish proposed, built, tested and supported states without invented hashes or results.",
+        "An architecture decision records the manager language and evidence; Rust is not chosen merely for presumed game speed.",
+        "Unknown versions, incompatible component families, unsafe paths and invalid profile operations have defined rejection behavior."
+      ],
+      "references": [
+        "docs/architecture.md",
+        "docs/research/engine-and-language-options.md",
+        "docs/research/platform-reuse.md"
+      ]
+    },
+    {
+      "id": "P04",
+      "milestone": "M1",
+      "title": "Bring up the ARM64 Wine host and macOS ABI boundary",
+      "depends_on": [
+        "P01",
+        "P02"
+      ],
+      "purpose": "The current x64 Wine host cannot satisfy Rosetta independence, and ARM64 macOS support must be qualified from source.",
+      "scope": [
+        "Build the selected Wine revision as an ARM64 macOS host with required PE architectures and matching tools.",
+        "Implement or integrate missing loader, address-layout, x18 transition, thread/signal and Mac-driver changes as attributable patches.",
+        "Exercise host/guest/native callback boundaries before attempting a complete game."
+      ],
+      "acceptance": [
+        "A clean ARM64 host build and minimal PE/API fixtures run with documented normal permissions.",
+        "Patch rationale, sources and build commands are recorded; no Intel host loader is silently selected.",
+        "Thread entry, nested callbacks, error exits and exception-context capture have targeted regression evidence."
+      ],
+      "references": [
+        "docs/research/macos-runtime-audit.md"
+      ]
+    },
+    {
+      "id": "P05",
+      "milestone": "M1",
+      "title": "Port FEX Wine host services to Darwin and integrate its CPU modules",
+      "depends_on": [
+        "P01",
+        "P02",
+        "P04"
+      ],
+      "purpose": "FEX has reusable Windows CPU modules, but its inspected Wine Unix library contains Linux-specific services and build assumptions.",
+      "scope": [
+        "Port the required Source/Windows/UnixLib host services and build rules, including memory-order controls, using an explicit Darwin boundary.",
+        "Integrate ARM64EC and, where required, WoW64 emulator modules into the matching Wine build.",
+        "Preserve guest-state, exception, suspend, guard-page and code-invalidation semantics; avoid a wholesale Linux-userspace port."
+      ],
+      "acceptance": [
+        "Small x64 PE programs execute through the recorded FEX module in the ARM64 Wine host with no Rosetta fallback.",
+        "Required host services have regression tests and documented thread/JIT/exception ownership.",
+        "The patch series builds from the P01 lock, and upstream contribution policy is respected independently of downstream reuse rights."
+      ],
+      "references": [
+        "docs/research/macos-runtime-audit.md",
+        "docs/research/engine-and-language-options.md"
+      ]
+    },
+    {
+      "id": "P06",
+      "milestone": "M1",
+      "title": "Qualify CPU semantics and the Wine translation boundary",
+      "depends_on": [
+        "P05"
+      ],
+      "purpose": "A menu or arithmetic demo cannot expose subtle CPU, threading, ABI and exception errors.",
+      "scope": [
+        "Adapt suitable redistributable CPU fixtures and compare defined register/flag/memory/fault outcomes with a native x86-64 or validated independent reference.",
+        "Cover partial registers, relevant SIMD/float operations, atomics, memory ordering, TLS, callbacks, faults/SEH, guard pages and changed executable code.",
+        "Test x86/WoW64 helpers or explicitly establish which parts remain unsupported; do not infer memory ordering from single-thread tests."
+      ],
+      "acceptance": [
+        "The declared fixture suite passes or records explicit unsupported coverage; required-path failures are not waived.",
+        "Memory-ordering and multithread stress tests run with the actual per-thread policy; FEX tests that disable TSO are not used as proof of TSO correctness.",
+        "Failures reduce to reproducible fixtures with the Wine/FEX/host boundary identified."
+      ],
+      "references": [
+        "docs/research/engine-and-language-options.md",
+        "docs/research/macos-runtime-audit.md"
+      ]
+    },
+    {
+      "id": "P07",
+      "milestone": "M1",
+      "title": "Reproduce the ARM64EC DXMT and ARM64 Metal bridge build",
+      "depends_on": [
+        "P01",
+        "P04"
+      ],
+      "purpose": "Existing ARM64EC CI is a starting point, but Pear needs a coherent Wine/DXMT ABI and reproducible native dependencies.",
+      "scope": [
+        "Pin DXMT, submodules, LLVM, llvm-mingw, Wine build interfaces and SDK settings using actual upstream CI/source.",
+        "Build the ARM64EC Windows DLLs and paired native winemetal/Metal/shader-conversion dependencies.",
+        "Inventory native slices, PE variants, DLL modes, driver exports, notices and output hashes."
+      ],
+      "acceptance": [
+        "A clean build produces a complete versioned artifact set with architecture and dependency reports.",
+        "Wine driver exports and winemetal pairing are documented and verified against the chosen Wine port.",
+        "No claim of runtime compatibility is based solely on successful compilation or an upstream artifact."
+      ],
+      "references": [
+        "docs/research/graphics-and-game-integration.md"
+      ]
+    },
+    {
+      "id": "P08",
+      "milestone": "M1",
+      "title": "Qualify Direct3D 11 through the native Metal path",
+      "depends_on": [
+        "P06",
+        "P07"
+      ],
+      "purpose": "Graphics correctness needs independent fixtures before debugging Unity or interpreting game frame rates.",
+      "scope": [
+        "Run redistributable x64 D3D11 fixtures for device creation, buffers/textures, shaders/compute, depth/blend, readback, swapchain, resize and presentation.",
+        "Exercise native callbacks, lifetime synchronization and repeated device creation across Wine/FEX/DXMT.",
+        "Record actual DLL/backend selection and classify unsupported required features."
+      ],
+      "acceptance": [
+        "Expected images/readback results and lifecycle behavior pass the published fixture suite.",
+        "The module inventory proves the intended DXMT/Metal path without silent renderer substitution.",
+        "Targeted validation logs are retained; correctness validation layers are excluded from later performance runs."
+      ],
+      "references": [
+        "docs/research/graphics-and-game-integration.md"
+      ]
+    },
+    {
+      "id": "P09",
+      "milestone": "M1",
+      "title": "Implement the native runtime supervisor and Megabonk profile",
+      "depends_on": [
+        "P03"
+      ],
+      "purpose": "The runtime must be launched predictably without inheriting the fixed paths and assumptions of the original experiment.",
+      "scope": [
+        "Implement the chosen native manager/CLI, manifest verification, explicit launch arguments, scoped environment, prefix ownership and structured failures.",
+        "Define App ID 3405340 and the known executable in a versioned Megabonk profile; preserve game and user-data boundaries.",
+        "Use a fixture child to develop supervision before the full runtime is available; prepare isolated prefix/manual recovery instructions."
+      ],
+      "acceptance": [
+        "Tests cover version/path rejection, child exit/crash, logging redaction and prefix isolation.",
+        "Runtime files remain immutable and unrelated Wine processes/prefixes are not terminated.",
+        "The profile records unknown or untested features accurately; a polished GUI and automatic save rollback are not prerequisites."
+      ],
+      "references": [
+        "docs/architecture.md",
+        "docs/research/local-evidence.md"
+      ]
+    },
+    {
+      "id": "P10",
+      "milestone": "M1",
+      "title": "Collect complete process and module evidence of Rosetta independence",
+      "depends_on": [
+        "P02",
+        "P03"
+      ],
+      "purpose": "An ARM64 launcher or file header alone cannot establish that Steam and every required helper avoid Rosetta.",
+      "scope": [
+        "Implement native collection of runtime identities, process lifetimes and required loaded host/guest modules.",
+        "Distinguish Mach-O running slices and translation state from guest PE x64/i386 execution through FEX.",
+        "Capture startup, detached/short-lived helpers where required, game play, exit and relaunch; report observation gaps."
+      ],
+      "acceptance": [
+        "Positive and negative fixtures demonstrate that required Intel host execution is detected rather than silently ignored.",
+        "Per-process evidence is attributed correctly; sysctl.proc_translated from a parent shell is not used for children.",
+        "The redacted report contains no credentials or whole process environments and fails qualification when a required path is translated or unobserved."
+      ],
+      "references": [
+        "docs/architecture.md",
+        "docs/research/graphics-and-game-integration.md"
+      ]
+    },
+    {
+      "id": "P11",
+      "milestone": "M1",
+      "title": "Validate Windows Steam and its helper architecture requirements",
+      "depends_on": [
+        "P06",
+        "P08",
+        "P09",
+        "P10"
+      ],
+      "purpose": "Steam is part of the required runtime, and its installed package includes both x64 and i386 components.",
+      "scope": [
+        "Validate official Steam login, startup/update and normal App 3405340 launch in the candidate runtime.",
+        "Observe required helpers and DLLs dynamically; provide required WoW64/x86 support or demonstrate its absence from the supported path.",
+        "Keep native macOS Steam bridging as a separately justified alternative; preserve the original Steam API and ownership behavior."
+      ],
+      "acceptance": [
+        "Normal Steam launch initializes the game's Steam integration without substituting a success stub or shipping steam_appid.txt as the supported route.",
+        "Steam build, required child/module architectures and FEX mode are recorded with no required Rosetta process.",
+        "Optional overlay/cloud/achievement/Discord behavior is tested or explicitly marked untested; login state is never committed."
+      ],
+      "references": [
+        "docs/research/graphics-and-game-integration.md",
+        "docs/research/platform-reuse.md"
+      ]
+    },
+    {
+      "id": "P12",
+      "milestone": "M1",
+      "title": "Qualify Megabonk gameplay, input, audio and save/relaunch behavior",
+      "depends_on": [
+        "P11"
+      ],
+      "purpose": "The milestone requires real gameplay and persistence, not a menu screenshot.",
+      "scope": [
+        "Run the declared game version on the source-built candidate with at least 20 minutes of active play and recorded escalating workload.",
+        "Test keyboard/mouse, menus, pause/resume, focus, audio, settings, local save, clean exit and reload using backed-up test data.",
+        "Test controllers and other optional integrations only when claimed by the supported profile; preserve explicit untested status otherwise."
+      ],
+      "acceptance": [
+        "The documented run meets the active-play duration and records the actual scenes/workload, defects, resolution and settings.",
+        "Progress/settings survive normal exit and relaunch; three clean launch/exit cycles are recorded.",
+        "Required features pass; no game binary patch or uncontrolled fallback is used to hide a runtime failure."
+      ],
+      "references": [
+        "docs/research/graphics-and-game-integration.md",
+        "docs/research/local-evidence.md"
+      ]
+    },
+    {
+      "id": "P13",
+      "milestone": "M1",
+      "title": "Assemble and reproduce the signed Pear runtime candidate",
+      "depends_on": [
+        "P01",
+        "P02",
+        "P03",
+        "P06",
+        "P08",
+        "P09"
+      ],
+      "purpose": "A coherent, source-buildable engine must be reproducible without hidden commercial files or machine-specific state.",
+      "scope": [
+        "Build the complete candidate from a clean environment using the runtime lock and ordered patch series.",
+        "Package matching CPU/API/graphics components, notices, source references and signing requirements as one immutable runtime artifact.",
+        "Repeat the build/setup and compare unsigned payloads or document nondeterministic inputs separately from signing."
+      ],
+      "acceptance": [
+        "A second clean setup reproduces the declared configuration using documented source and prerequisites.",
+        "The architecture/signature/dependency inventory has no required Intel-only host component or undocumented copied binary.",
+        "Developer execution and wider distribution status are separately stated; end-user installer completion is not implied."
+      ],
+      "references": [
+        "docs/architecture.md",
+        "docs/research/macos-runtime-audit.md"
+      ]
+    },
+    {
+      "id": "P14",
+      "milestone": "M1",
+      "title": "Add regression CI and a maintained upstream patch workflow",
+      "depends_on": [
+        "P03",
+        "P06",
+        "P08",
+        "P09",
+        "P10",
+        "P13"
+      ],
+      "purpose": "Pear needs a repeatable way to detect regressions and maintain ports after the first successful run.",
+      "scope": [
+        "Run schema/build checks and redistributable fixtures in appropriate CI; distinguish portable tests from real macOS hardware qualification.",
+        "Document patch provenance, rebase rules, last passing versions and per-project contribution restrictions.",
+        "Keep proprietary games and authenticated Steam environments in opt-in local qualification rather than public CI inputs."
+      ],
+      "acceptance": [
+        "A deliberately failing fixture is detected and an incompatible runtime/profile cannot be promoted.",
+        "The candidate build/qualification report links test and source revisions with known coverage gaps.",
+        "No secret, proprietary game, credentialed prefix or generated upstream submission is introduced by the workflow."
+      ],
+      "references": [
+        "docs/architecture.md",
+        "docs/research/engine-and-language-options.md"
+      ]
+    },
+    {
+      "id": "P15",
+      "milestone": "M1",
+      "title": "Characterize frame times, stability and power under controlled conditions",
+      "depends_on": [
+        "P12",
+        "P13"
+      ],
+      "purpose": "The first supported configuration needs observable quality and limitations; no performance advantage is presumed.",
+      "scope": [
+        "Record actual resolution, graphics/FPS/VSync settings, scene, cache state, power source, Game Mode, Low Power Mode and thermal conditions.",
+        "Collect frame-time distribution/stalls, startup, memory and available power/thermal measurements with repeated runs where practical.",
+        "Keep paused/menu, early and later gameplay distinct; compare the old Rosetta baseline only when the conditions can actually be matched."
+      ],
+      "acceptance": [
+        "A reproducible protocol and non-sensitive raw/summary results identify workload differences and measurement limits.",
+        "HUD snapshots are not reported as frame-time distributions and system power is not labeled game-only power.",
+        "No fixed superiority target or comparative claim is needed to close the issue; serious playability defects feed back to the runtime/game issues."
+      ],
+      "references": [
+        "docs/research/graphics-and-game-integration.md",
+        "docs/research/local-evidence.md"
+      ]
+    },
+    {
+      "id": "P16",
+      "milestone": "M1",
+      "title": "Publish the first Rosetta-free Megabonk qualification record",
+      "depends_on": [
+        "P10",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "purpose": "Close the product milestone only when its complete evidence and reproducibility requirements are met.",
+      "scope": [
+        "Consolidate source/build, signing, process/module, graphics, Steam, gameplay, persistence and quality evidence.",
+        "Reproduce the supported setup independently or in a second documented clean environment and record remaining distribution limitations.",
+        "Update README and the game profile to the exact tested scope and link all prerequisite issues."
+      ],
+      "acceptance": [
+        "All required M1 gates pass, including at least 20 minutes of active gameplay and no required Rosetta process.",
+        "P10, P12 and P15 execution evidence identifies the same final runtime-lock/artifact, profile, game and Steam versions as P13; any relevant change requires requalification.",
+        "Any observation gap or required-feature failure keeps the issue and milestone open.",
+        "The support claim names tested versions/hardware and limitations; it does not generalize one configuration to all Macs or imply an end-user release."
+      ],
+      "references": [
+        "docs/architecture.md",
+        "README.md"
+      ]
+    },
+    {
+      "id": "E01",
+      "milestone": "R1",
+      "title": "Define the CPU-engine hypothesis and differential semantics corpus",
+      "depends_on": [],
+      "purpose": "An independent translator needs a specific reason to exist and an oracle for guest behavior before backend experiments are meaningful.",
+      "scope": [
+        "Choose a falsifiable platform/interface/correctness/performance hypothesis and separate CPU translation from graphics/API/game bottlenecks.",
+        "Declare an initial x64 subset, guest-state contract and fault/undefined-output policy.",
+        "Build redistributable reference fixtures using native x86-64 and/or independently validated implementations; audit reuse of FEX tests."
+      ],
+      "acceptance": [
+        "The hypothesis, reference results, declared subset and unsupported cases are reviewable.",
+        "Defined registers/flags/memory/faults are compared and discrepancies minimized; finite tests are not presented as global equivalence.",
+        "If no defensible hypothesis remains, document retaining FEX and stop dependent research rather than inventing a speed claim."
+      ],
+      "references": [
+        "docs/research/engine-and-language-options.md"
+      ]
+    },
+    {
+      "id": "E02",
+      "milestone": "R1",
+      "title": "Compare Cranelift with a reference CPU-code backend",
+      "depends_on": [
+        "E01"
+      ],
+      "purpose": "Cranelift should be evaluated as a code-generation component, not assumed to be a complete x64 emulator.",
+      "scope": [
+        "Implement a bounded semantic frontend and feed equivalent behavior to Cranelift and a justified reference backend.",
+        "Measure translation latency, generated size, dispatch cost, steady execution, memory and cache behavior under the same correctness conditions.",
+        "Include branch/SIMD/atomic/callback cases only as the declared subset supports them; set comparison criteria before selecting results."
+      ],
+      "acceptance": [
+        "All declared correctness cases pass on both compared implementations or their differences are explicitly disqualifying.",
+        "Versioned results explain tradeoffs and do not extrapolate a scalar benchmark to Megabonk.",
+        "A continue/stop decision identifies an advantage relevant to E01 or retains the existing engine."
+      ],
+      "references": [
+        "docs/research/engine-and-language-options.md"
+      ]
+    },
+    {
+      "id": "E03",
+      "milestone": "R1",
+      "title": "Test the experimental CPU runtime on signed macOS",
+      "depends_on": [
+        "E02"
+      ],
+      "purpose": "A command-line JIT demo does not establish the guest runtime obligations required by a game.",
+      "scope": [
+        "Proceed only if E02 justifies continuation; reuse the P02 host-capability evidence where applicable.",
+        "Add guest-state reconstruction, precise faults, code invalidation across threads, native callbacks and executable-memory publication.",
+        "Exercise independent memory-order litmus/stress tests and signed-app behavior."
+      ],
+      "acceptance": [
+        "Required subset behavior is repeatable under documented normal macOS permissions.",
+        "Missing semantics and unsupported host states fail explicitly and remain visible.",
+        "A no-go result may close this research item as not planned with rationale; it never counts as implementation success."
+      ],
+      "references": [
+        "docs/research/engine-and-language-options.md",
+        "docs/research/macos-runtime-audit.md"
+      ]
+    },
+    {
+      "id": "E04",
+      "milestone": "R1",
+      "title": "Integrate the experimental CPU module with Wine",
+      "depends_on": [
+        "E03",
+        "P06"
+      ],
+      "purpose": "An independent CPU engine must meet the existing Wine/ARM64EC boundary without recreating Windows APIs.",
+      "scope": [
+        "Proceed only after E03 passes and the same Wine boundary is qualified with the reference FEX path.",
+        "Implement thread lifecycle, TLS, exception contexts and native-call/callback transitions with explicit ABI stubs where needed.",
+        "Run the shared small PE suite before graphics or Megabonk, keeping backend identity explicit."
+      ],
+      "acceptance": [
+        "The declared Wine integration fixture suite passes with complete module provenance and no Rosetta host fallback.",
+        "Cranelift AppleAarch64/WindowsFastcall support is not substituted for actual ARM64EC boundary tests.",
+        "Any unsupported required ABI operation blocks promotion; results remain labeled experimental."
+      ],
+      "references": [
+        "docs/research/engine-and-language-options.md"
+      ]
+    },
+    {
+      "id": "E05",
+      "milestone": "R1",
+      "title": "Decide whether to adopt a Pear CPU translator",
+      "depends_on": [
+        "E04",
+        "P16"
+      ],
+      "purpose": "Replacing the CPU engine must improve an evidenced constraint while preserving the product's compatibility and maintenance contract.",
+      "scope": [
+        "Run the same full-game, process, save/relaunch and controlled-quality validation as the qualified FEX baseline.",
+        "Compare cold/warm behavior, failures, frame times, memory and power where repeatable; include maintainability and source/distribution costs.",
+        "Record adoption, further research, or retention of FEX, with evidence and a rollback plan."
+      ],
+      "acceptance": [
+        "The decision cites the original hypothesis, like-for-like results and remaining compatibility gaps.",
+        "No replacement is promoted before equivalent required-feature qualification; a negative decision is a valid completed research outcome.",
+        "If earlier experiments stopped, close conditional implementation items as not planned and document why R1 concluded without a new engine."
+      ],
+      "references": [
+        "docs/research/engine-and-language-options.md",
+        "docs/architecture.md"
+      ]
+    }
+  ]
+}
