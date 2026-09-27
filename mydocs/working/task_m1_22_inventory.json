@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "frameworkRelease": "v0.3.0",
+  "frameworkCommit": "83836828a4da24385d0410515d35ee43946b981f",
+  "locale": "en",
+  "manifestEntries": 25,
+  "regularFiles": 52,
+  "symlinks": 2,
+  "files": [
+    {
+      "target": "AGENTS.md",
+      "kind": "file",
+      "source": "templates/locales/en/AGENTS.md",
+      "sourceSha256": "0bfd964ad9fffe740cc4bccfaf558b2589318b8be89ee6b42fb44aa2a0fa9566",
+      "installedSha256": "7d83d9321cc0038bbe21b6f964c431a7fa59f0e0b001f1926f7d2392994eb685"
+    },
+    {
+      "target": "CLAUDE.md",
+      "kind": "file",
+      "source": "templates/locales/en/CLAUDE.md",
+      "sourceSha256": "1cb8f8ff7285272631b1004e60fa2daddc58c21f1c4dab0cdd16addf1d51d1f4",
+      "installedSha256": "1cb8f8ff7285272631b1004e60fa2daddc58c21f1c4dab0cdd16addf1d51d1f4"
+    },
+    {
+      "target": ".github/ISSUE_TEMPLATE/task.yml",
+      "kind": "file",
+      "source": "templates/locales/en/.github/ISSUE_TEMPLATE/task.yml",
+      "sourceSha256": "2da35119f7828f196d99f8c8f88fe7ea6dd6fbdc83801977a7ee71dad868e8d1",
+      "installedSha256": "2da35119f7828f196d99f8c8f88fe7ea6dd6fbdc83801977a7ee71dad868e8d1"
+    },
+    {
+      "target": ".github/pull_request_template.md",
+      "kind": "file",
+      "source": "templates/locales/en/.github/pull_request_template.md",
+      "sourceSha256": "2a9b96bf8eb8f739beb2302b2054d322d827feda70f1f67f68194825e7cdb783",
+      "installedSha256": "d30b626641fb47cfb331687e5d44dc3f61e2000376c4b637a13ceb4d641e1691"
+    },
+    {
+      "target": "mydocs/_templates/task_impl_plan.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/task_impl_plan.md",
+      "sourceSha256": "cedb438be9b1f0c272f6884ff9bc861cde72f8fefd000643d04ba80a4bf80593",
+      "installedSha256": "663c9b1bd7837bdbcce02b889665c97f347ef73dbb062ff2daac3bb8e3ded344"
+    },
+    {
+      "target": "mydocs/_templates/external_pr_review.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/external_pr_review.md",
+      "sourceSha256": "f1f6d5df92e2895ba74db6ed6d9f64308728f06b68279a35053f29ba512e0249",
+      "installedSha256": "f1f6d5df92e2895ba74db6ed6d9f64308728f06b68279a35053f29ba512e0249"
+    },
+    {
+      "target": "mydocs/_templates/final_report.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/final_report.md",
+      "sourceSha256": "62238848eee2633dc3363c3486714528d79bc573cdfa803c3a18e49492da5aef",
+      "installedSha256": "a44fc89be77fe1ed75dd0fb7d2db94923687a1508b0b7b02dcce444e43a54b2b"
+    },
+    {
+      "target": "mydocs/_templates/troubleshooting.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/troubleshooting.md",
+      "sourceSha256": "2beab2c036111d64f83465773c9db903f50eea075f231674f273f8e026cb8b0d",
+      "installedSha256": "2beab2c036111d64f83465773c9db903f50eea075f231674f273f8e026cb8b0d"
+    },
+    {
+      "target": "mydocs/_templates/task_plan.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/task_plan.md",
+      "sourceSha256": "67ebf6a525c2003f4ae626053cd96a57cdc199e2c68597b24b693e0831746889",
+      "installedSha256": "9f903bf7ce43ca8a149c43aa13f027ab0ccd8b14a6b48e231216c4d2afdcf1f6"
+    },
+    {
+      "target": "mydocs/_templates/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/README.md",
+      "sourceSha256": "6a74b329f8a7dbc5d2f73f35abd9b7dffa512c9b374c2d99149389686bfe0e8c",
+      "installedSha256": "6a74b329f8a7dbc5d2f73f35abd9b7dffa512c9b374c2d99149389686bfe0e8c"
+    },
+    {
+      "target": "mydocs/_templates/external_pr_report.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/external_pr_report.md",
+      "sourceSha256": "565a519f71d557dd196c202a1e4cc417f883b44d91b61de88bf21e5dbaa072c5",
+      "installedSha256": "565a519f71d557dd196c202a1e4cc417f883b44d91b61de88bf21e5dbaa072c5"
+    },
+    {
+      "target": "mydocs/_templates/tech_note.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/tech_note.md",
+      "sourceSha256": "7a76426c0cf2affc0b3d4b2745cf51fd36cc4ada2ee5a97d7ff24bfc6c6c8a1f",
+      "installedSha256": "7a76426c0cf2affc0b3d4b2745cf51fd36cc4ada2ee5a97d7ff24bfc6c6c8a1f"
+    },
+    {
+      "target": "mydocs/_templates/external_pr_review_impl.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/external_pr_review_impl.md",
+      "sourceSha256": "4aae471cfdc6a77d1c0caa099ed9448262acb234e770fd6b30af1f47398d18df",
+      "installedSha256": "4aae471cfdc6a77d1c0caa099ed9448262acb234e770fd6b30af1f47398d18df"
+    },
+    {
+      "target": "mydocs/_templates/orders.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/orders.md",
+      "sourceSha256": "4d9eb566e7492b3a412680ec2df76a852fc7a2f0fc534219148674b4227b1ddf",
+      "installedSha256": "4d9eb566e7492b3a412680ec2df76a852fc7a2f0fc534219148674b4227b1ddf"
+    },
+    {
+      "target": "mydocs/_templates/stage_report.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/stage_report.md",
+      "sourceSha256": "60c15d2d312bdb143c5d55f54d39ca373386c33827610ea207e9c5c72295217b",
+      "installedSha256": "215492421b6ccf20d11c5bd2183728728b0057b12737653020002e0f8a3ec320"
+    },
+    {
+      "target": "mydocs/_templates/feedback.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/_templates/feedback.md",
+      "sourceSha256": "2efd1b4c4bd252e8f8af305a00aa0de8840036299d6fb8e1c86271c71fd9d165",
+      "installedSha256": "2efd1b4c4bd252e8f8af305a00aa0de8840036299d6fb8e1c86271c71fd9d165"
+    },
+    {
+      "target": "mydocs/manual/internal_pr_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/internal_pr_guide.md",
+      "sourceSha256": "6e0a5a8b7e6401811e258a8fd4ec21aa2abcf98522495bf315732ee2c2b6f7b3",
+      "installedSha256": "c13d16429b3502f56370977debd3c92ee92f134d48335731bbbd8ba2ca11fa86"
+    },
+    {
+      "target": "mydocs/manual/pr_process_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/pr_process_guide.md",
+      "sourceSha256": "9dd234836a9058dae3de6deb3b52b4ab0a8d0388bc41365698bec3d2344a367c",
+      "installedSha256": "5275894e348c1be2fdbac8e98655a922236415ebcbf4dab4c6951d5c2530b3bf"
+    },
+    {
+      "target": "mydocs/manual/task_workflow_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/task_workflow_guide.md",
+      "sourceSha256": "d0c709d8953956ed8f848141972e7f976ebc450cb385f26c2f20b78833400142",
+      "installedSha256": "2eb503abc03a7e9cce328b4476cebae8c8a5a9e8fb8f45342fc91a5c621534fa"
+    },
+    {
+      "target": "mydocs/manual/external_pr_review_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/external_pr_review_guide.md",
+      "sourceSha256": "2c54e9f8801ffcfd959de1a0a7f564f79ef1bb5a38ef9e154160074771549c58",
+      "installedSha256": "2c54e9f8801ffcfd959de1a0a7f564f79ef1bb5a38ef9e154160074771549c58"
+    },
+    {
+      "target": "mydocs/manual/document_structure_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/document_structure_guide.md",
+      "sourceSha256": "5529d5aa1f0d54f16cbcb63fce2e349e6c8edcd7930b07d619299b5a3e2ecaf0",
+      "installedSha256": "5529d5aa1f0d54f16cbcb63fce2e349e6c8edcd7930b07d619299b5a3e2ecaf0"
+    },
+    {
+      "target": "mydocs/manual/framework_lifecycle_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/framework_lifecycle_guide.md",
+      "sourceSha256": "8ba695a1ab4b493d07def5873df163ac07269db8f0f10acce2dc3cda7df7e8cd",
+      "installedSha256": "349e1da51b4286b0f96e73d8b3a981ceee9f20c33fdacab12b39ea54f2a59349"
+    },
+    {
+      "target": "mydocs/manual/git_workflow_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/git_workflow_guide.md",
+      "sourceSha256": "c46334b4b49e8e5d25dd971fb5014a4d6143891a66d8159cf896c1a93deb0c50",
+      "installedSha256": "f6965c3e8bd61bdfb1b263009f1f6c22a86cf217b0ffa2939b273d32a498aa8e"
+    },
+    {
+      "target": "mydocs/manual/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/README.md",
+      "sourceSha256": "ab43e6c319a192b66036835fe19670bd45a08e84b5ad4c26efdafb2fab081f3d",
+      "installedSha256": "ab43e6c319a192b66036835fe19670bd45a08e84b5ad4c26efdafb2fab081f3d"
+    },
+    {
+      "target": "mydocs/manual/agent_code_hyperfall_rule_conflict.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/agent_code_hyperfall_rule_conflict.md",
+      "sourceSha256": "684a7cb592abdb0f3ed97e9d6747663aeb36bdb64549cf67d4d4242731a0e517",
+      "installedSha256": "684a7cb592abdb0f3ed97e9d6747663aeb36bdb64549cf67d4d4242731a0e517"
+    },
+    {
+      "target": "mydocs/manual/pr_command_guide.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/pr_command_guide.md",
+      "sourceSha256": "646e92cc82de258c42034dbbdcdf2441baa9266610a6f805ea130694c6f2c28b",
+      "installedSha256": "f92eaab4f3917f9dd5d2775dc541711a8d15d2432b6a67b8da49fe7b16854172"
+    },
+    {
+      "target": "mydocs/manual/release_update_protocol.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/manual/release_update_protocol.md",
+      "sourceSha256": "931455ef88fc9321ff2a0d7e625b15a6ee7ce5ded147664b2d5fee3e5cd7533a",
+      "installedSha256": "d5d54872ce34fff58b7d7bb9fbaab563e441a1d788f81db6f9aef95765687482"
+    },
+    {
+      "target": "mydocs/skills/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/README.md",
+      "sourceSha256": "da0efb0801beee14d0111196d4133d25efb558a05e3e7f776bf82f14b91e815c",
+      "installedSha256": "da0efb0801beee14d0111196d4133d25efb558a05e3e7f776bf82f14b91e815c"
+    },
+    {
+      "target": "mydocs/skills/task-register/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/task-register/SKILL.md",
+      "sourceSha256": "295ada15ff42ba977529967e5026dfa568e178e0daebd431e90483cbc96068eb",
+      "installedSha256": "bffe7141b33f645f72fe58f58cc75aabb6dace75da0860b8086d8bc0b2c67d92"
+    },
+    {
+      "target": "mydocs/skills/task-final-report/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/task-final-report/SKILL.md",
+      "sourceSha256": "bad692f961b6e5c423f8ed60164f08c2ec7e856ad8f28dcb87e42c58d1260bb1",
+      "installedSha256": "48556a206fd3173c0ae8623b52b062760ab4e5eef88d7d8909cbca9cae20f0d3"
+    },
+    {
+      "target": "mydocs/skills/todo/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/todo/SKILL.md",
+      "sourceSha256": "b5d1b8e7da3287cbd6750402627430dff6b61dd77d3d4139cfd51fb0491fcb31",
+      "installedSha256": "b5d1b8e7da3287cbd6750402627430dff6b61dd77d3d4139cfd51fb0491fcb31"
+    },
+    {
+      "target": "mydocs/skills/pr-merge-cleanup/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/pr-merge-cleanup/SKILL.md",
+      "sourceSha256": "6f3323e7b0829fd7c3bc86afcce9e4eb078beda07256a7cfc17d708f44229c9e",
+      "installedSha256": "6dea730c66a2e0ded33d481a07174eadb45a3d4eb125a1d6c73e7d1e2fa865c3"
+    },
+    {
+      "target": "mydocs/skills/task-stage-report/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/task-stage-report/SKILL.md",
+      "sourceSha256": "c897fad121c5ca047a1506518ce4cca4f175f76db4546d87a66095c805cd65ca",
+      "installedSha256": "c897fad121c5ca047a1506518ce4cca4f175f76db4546d87a66095c805cd65ca"
+    },
+    {
+      "target": "mydocs/skills/task-start/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/task-start/SKILL.md",
+      "sourceSha256": "e0ef4f76b1466ebf4494174291628bf1783c543e8d65f980d7b2d21a31061b26",
+      "installedSha256": "a0ee68a981156732a41b6964010f00146752f45dd98edb3f95cf311a7a78a2ed"
+    },
+    {
+      "target": "mydocs/skills/external-pr-review/SKILL.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/skills/external-pr-review/SKILL.md",
+      "sourceSha256": "1cba25ded3c2ced3e7e008971be5e48b03b6a081f75b5695678576e715cc2324",
+      "installedSha256": "7a544a52143ddee53a62f6bfbc464187ad5595c660f4c1f4f760ec72e55b137a"
+    },
+    {
+      "target": "mydocs/orders/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/orders/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/plans/archives/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/plans/archives/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/working/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/working/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/report/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/report/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/feedback/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/feedback/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/tech/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/tech/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/troubleshootings/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/troubleshootings/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/pr/archives/.gitkeep",
+      "kind": "file",
+      "source": "templates/mydocs/pr/archives/.gitkeep",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "installedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "mydocs/orders/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/orders/README.md",
+      "sourceSha256": "78fa9ae2d456fe2ce477b0c2c52c138b2af940d63f70652a0bfb4d5eb2353149",
+      "installedSha256": "78fa9ae2d456fe2ce477b0c2c52c138b2af940d63f70652a0bfb4d5eb2353149"
+    },
+    {
+      "target": "mydocs/plans/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/plans/README.md",
+      "sourceSha256": "61c5c6b60ecb12569b8d42312b891f6acd42a64ee4911e110a231799c3a6b070",
+      "installedSha256": "61c5c6b60ecb12569b8d42312b891f6acd42a64ee4911e110a231799c3a6b070"
+    },
+    {
+      "target": "mydocs/working/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/working/README.md",
+      "sourceSha256": "328ba5a3988fb2a2be78cdae4f113cc8d1e00a92f7f060286c033e6163058033",
+      "installedSha256": "328ba5a3988fb2a2be78cdae4f113cc8d1e00a92f7f060286c033e6163058033"
+    },
+    {
+      "target": "mydocs/report/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/report/README.md",
+      "sourceSha256": "ed27a60c1ed25c0b741ce299dc0fe764f51c2292d11e3fcd04f5b1fe7fc2a1f0",
+      "installedSha256": "ed27a60c1ed25c0b741ce299dc0fe764f51c2292d11e3fcd04f5b1fe7fc2a1f0"
+    },
+    {
+      "target": "mydocs/feedback/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/feedback/README.md",
+      "sourceSha256": "7f1a6fbe381c8cf36e5a3e88781a99711a7e5bd982a302d91d2557aa73337706",
+      "installedSha256": "7f1a6fbe381c8cf36e5a3e88781a99711a7e5bd982a302d91d2557aa73337706"
+    },
+    {
+      "target": "mydocs/tech/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/tech/README.md",
+      "sourceSha256": "0291d19cfab8b68106216ed3e2f8748cfe30d23ba24aa5b59669913a491008d9",
+      "installedSha256": "0291d19cfab8b68106216ed3e2f8748cfe30d23ba24aa5b59669913a491008d9"
+    },
+    {
+      "target": "mydocs/troubleshootings/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/troubleshootings/README.md",
+      "sourceSha256": "dda9e543b72e607ee9d387a51bd8c86ce84e240e1ebb505ea86285bcd8a9748b",
+      "installedSha256": "dda9e543b72e607ee9d387a51bd8c86ce84e240e1ebb505ea86285bcd8a9748b"
+    },
+    {
+      "target": "mydocs/pr/README.md",
+      "kind": "file",
+      "source": "templates/locales/en/mydocs/pr/README.md",
+      "sourceSha256": "166733768d9b95be1226f586e1ad8593601abaa552392a62262823f89b98d6fa",
+      "installedSha256": "166733768d9b95be1226f586e1ad8593601abaa552392a62262823f89b98d6fa"
+    },
+    {
+      "target": ".agents/skills",
+      "kind": "symlink",
+      "link": "../mydocs/skills"
+    },
+    {
+      "target": ".claude/skills",
+      "kind": "symlink",
+      "link": "../mydocs/skills"
+    },
+    {
+      "target": ".hyper-waterfall/version.json",
+      "kind": "generated-state-preview",
+      "installedSha256": "5147931f652ff48dcc351784cf8c26d84af64dcf293703a6ab6289a895fb7391"
+    }
+  ]
+}
