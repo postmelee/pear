@@ -1,0 +1,7 @@
+/analysis/tools/
+/analysis/vendor-reference/
+/analysis/work/
+/analysis/native-research/
+__pycache__/
+*.pyc
+.DS_Store
