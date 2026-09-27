@@ -1,0 +1,2856 @@
+{
+  "schema_version": 1,
+  "record_kind": "stage_verification_evidence",
+  "issue": 2,
+  "stage": 3,
+  "observed_date": "2026-09-28",
+  "timezone": "Asia/Seoul",
+  "base_commit": "45a377719a4fb69b08eade62ce4d65d1e2e1085d",
+  "scope": "Local authorized ARM64 test processes; no Wine, Steam or game execution.",
+  "qualification": {
+    "runtime": "not_assessed",
+    "rosetta_free_game": "not_assessed",
+    "distribution": "not_assessed"
+  },
+  "environment": {
+    "chip": "Apple M4 Pro",
+    "macos": "26.5.2",
+    "os_build": "25F84",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5"
+  },
+  "source_sha256": {
+    "host/probe/Makefile": "14d4e39fcf35e09a065139db0ec928bd072cd1f3cb20ac1fa8b58c8a0a194995",
+    "host/probe/baseline.h": "6db67f70cd98f0298996e62a769b3be4a8eebe218979e6a620fb16387e60c931",
+    "host/probe/baseline_child.c": "d1c266b381878b7fff071003da5c8914f2dd322d6b833567a853bfe4c02dc22c",
+    "host/probe/baseline_child_entry.c": "37900c4fc963ccb3691543c13ec888829b8e8c04e18b8ccbda36f4671be27dc5",
+    "host/probe/baseline_evaluate.c": "71fb28ed5667e155ab8f2eb3fddf3ee53a6ca41684e7c00e7665def537104e95",
+    "host/probe/baseline_main.c": "389601a248af541c85e9e12722e79feeb5e473fa5aa57048cb239207dfeb6aa1",
+    "host/probe/child_runner.c": "5936a1c4d47ef878cd325dcd435607210612538ed5f505a0d835d62d78e8ac01",
+    "host/probe/hardened_baseline.py": "e10c985de82a93b852e8a6204c94f9877628f3cc49760b5c39d771635130947a",
+    "host/probe/main.c": "a2e5a47ac899d853478062b848f1ff71e601572a1a68e6e9b2588470a8798044",
+    "host/probe/observations.c": "a4c347d488d64fee6c5c177a9664dc924812113af366e036bfc5410cb494a68f",
+    "host/probe/observations.h": "2f3be4de250fd52fe188c927926ffcc6552a1c355fe16ecfa5563b9240b3ea42",
+    "host/probe/process_child.c": "d2e00eb6d19bd5f9d75f4bce8725d5c72a6250150e5695bf55e964c0c1243571",
+    "host/probe/process_evaluate.c": "be5859164dc2f23d20bc9cfe44f77a528026267236b9cf143497612f37c9d085",
+    "host/probe/process_main.c": "a55f930b5bd7a375bade2776646aad234bbbe82daecc18bfbaa52f6238b9e761",
+    "host/probe/provisioned_probe.py": "6ed28c03ff814096c17d5aa745c6a65b378733db1cb5d99dcb8399cdd966bccb",
+    "tests/host/diagnostic_fixture.c": "4af096712c5965c4bd70a9134deb267ca5b76b481bfdcdb1c487c244776f8e03",
+    "tests/host/process_runner_driver.c": "f5d7b91a440bfb94bacefae10b1ade6c45aab093b9c265259a612ef5a7641649",
+    "tests/host/process_runner_fixture.c": "e3b0f5a8accbe133ceca12c22b111dd8b83357238f8f49f5e9f1ea7ad16c51d7",
+    "tests/host/runner_driver.c": "60b60bcf9ff3e4323d35c02de6a4228ee8b36ad87a6d2caf514b41f372a3cf6c",
+    "tests/host/runner_fixture.c": "8ff19432cad086b6b4e17c13f6457b48402e373b9cae6ae34a0cfd0b0cdae5e3",
+    "tests/host/test_baseline.py": "b43c32682fb279b981258caad8aabafc1fd616a11656c7d9e676aedcd53cb924",
+    "tests/host/test_diagnostics.py": "e4de22c5ddf1d5c1a6756abce4e14a7f9fc5aacbf3ebe5d3794379d1dafa1661",
+    "tests/host/test_hardened_baseline.py": "769a27011d5572c104d73f519117a1f52e3c9b804bc3f68b461feaca28a567da",
+    "tests/host/test_process_capabilities.py": "0d48fc31e65e6a9faaf5b7518c53eee8cf0c3250d5264b6ef5511a5e7c9b97ba",
+    "tests/host/test_provisioned_probe.py": "5efacbdb8d684220e1fae04618ff909cb25fe8011036698fa5fceb7b285f943c"
+  },
+  "binary_sha256": {
+    "pear-baseline-probe": "615748a08fefefe337463b62809d9bf428df4158dcb4d9b851bd6533285533ee",
+    "pear-host-probe": "779edc3742d0c174a34a17a0527969a317ca5381916fb52c9ea21180f537097a",
+    "pear-probe-child": "2054b335e0751f89e514e0a99981869d7a4788d9ac3ddd88c0ea0a88db9c584a",
+    "pear-process-probe": "5fb1630387dc5d790dbcdeb558965aee8882f35f2cacefba1ddef2c2ee4c51d5",
+    "pear-process-probe-layout": "424dfbb1b2b007f6aeca4b9993c330399483dc0c36e6f0a5c5832b6c00e83d75"
+  },
+  "binary_inspection": {
+    "pear-host-probe": {
+      "architecture": "arm64",
+      "strict_verification_exit_code": 0,
+      "segments": [
+        {
+          "segname": "__PAGEZERO",
+          "vmaddr": "0x0000000000000000",
+          "vmsize": "0x0000000100000000",
+          "maxprot": "0x00000000",
+          "initprot": "0x00000000"
+        },
+        {
+          "segname": "__TEXT",
+          "vmaddr": "0x0000000100000000",
+          "vmsize": "0x0000000000004000",
+          "maxprot": "0x00000005",
+          "initprot": "0x00000005"
+        }
+      ]
+    },
+    "pear-baseline-probe": {
+      "architecture": "arm64",
+      "strict_verification_exit_code": 0,
+      "segments": [
+        {
+          "segname": "__PAGEZERO",
+          "vmaddr": "0x0000000000000000",
+          "vmsize": "0x0000000100000000",
+          "maxprot": "0x00000000",
+          "initprot": "0x00000000"
+        },
+        {
+          "segname": "__TEXT",
+          "vmaddr": "0x0000000100000000",
+          "vmsize": "0x0000000000008000",
+          "maxprot": "0x00000005",
+          "initprot": "0x00000005"
+        }
+      ]
+    },
+    "pear-probe-child": {
+      "architecture": "arm64",
+      "strict_verification_exit_code": 0,
+      "segments": [
+        {
+          "segname": "__PAGEZERO",
+          "vmaddr": "0x0000000000000000",
+          "vmsize": "0x0000000100000000",
+          "maxprot": "0x00000000",
+          "initprot": "0x00000000"
+        },
+        {
+          "segname": "__TEXT",
+          "vmaddr": "0x0000000100000000",
+          "vmsize": "0x0000000000004000",
+          "maxprot": "0x00000005",
+          "initprot": "0x00000005"
+        }
+      ]
+    },
+    "pear-process-probe": {
+      "architecture": "arm64",
+      "strict_verification_exit_code": 0,
+      "segments": [
+        {
+          "segname": "__PAGEZERO",
+          "vmaddr": "0x0000000000000000",
+          "vmsize": "0x0000000100000000",
+          "maxprot": "0x00000000",
+          "initprot": "0x00000000"
+        },
+        {
+          "segname": "__TEXT",
+          "vmaddr": "0x0000000100000000",
+          "vmsize": "0x0000000000008000",
+          "maxprot": "0x00000005",
+          "initprot": "0x00000005"
+        }
+      ]
+    },
+    "pear-process-probe-layout": {
+      "architecture": "arm64",
+      "strict_verification_exit_code": 0,
+      "segments": [
+        {
+          "segname": "__PAGEZERO",
+          "vmaddr": "0x0000000000000000",
+          "vmsize": "0x0000000000010000",
+          "maxprot": "0x00000000",
+          "initprot": "0x00000000"
+        },
+        {
+          "segname": "__TEXT",
+          "vmaddr": "0x0000000000010000",
+          "vmsize": "0x0000000000008000",
+          "maxprot": "0x00000005",
+          "initprot": "0x00000005"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "build": {
+      "command": "make -C host/probe",
+      "exit_code": 0,
+      "flags": "-std=c11 -O2 -Wall -Wextra -Werror -arch arm64 -mmacosx-version-min=13.0"
+    },
+    "tests": {
+      "command": "python3 -m unittest discover -s tests/host -p 'test_*.py' -v",
+      "exit_code": 0,
+      "count": 94,
+      "output": "test_native_cli_reports_actual_baseline_and_never_game_qualification (test_baseline.NativeBaselineTests.test_native_cli_reports_actual_baseline_and_never_game_qualification) ... ok\ntest_shipped_baseline_cli_has_no_fixture_or_child_path_injection (test_baseline.NativeBaselineTests.test_shipped_baseline_cli_has_no_fixture_or_child_path_injection) ... ok\ntest_armed_packet_requires_all_fault_setup_steps (test_baseline.RunnerTests.test_armed_packet_requires_all_fault_setup_steps) ... ok\ntest_armed_packet_without_expected_fault_cannot_pass (test_baseline.RunnerTests.test_armed_packet_without_expected_fault_cannot_pass) ... ok\ntest_child_does_not_inherit_unrelated_parent_descriptor (test_baseline.RunnerTests.test_child_does_not_inherit_unrelated_parent_descriptor) ... ok\ntest_cleanup_failure_is_not_hidden_by_successful_operations (test_baseline.RunnerTests.test_cleanup_failure_is_not_hidden_by_successful_operations) ... ok\ntest_closed_parent_stdin_keeps_child_stdio_and_cleanup_correct (test_baseline.RunnerTests.test_closed_parent_stdin_keeps_child_stdio_and_cleanup_correct) ... ok\ntest_deadline_covers_silent_and_partial_output_children (test_baseline.RunnerTests.test_deadline_covers_silent_and_partial_output_children) ... ok\ntest_denied_kill_returns_bounded_failure_without_claiming_reap (test_baseline.RunnerTests.test_denied_kill_returns_bounded_failure_without_claiming_reap) ... ok\ntest_descendant_cleanup_after_timeout_and_leader_exit_is_scoped (test_baseline.RunnerTests.test_descendant_cleanup_after_timeout_and_leader_exit_is_scoped) ... ok\ntest_fault_before_armed_packet_cannot_prove_protection (test_baseline.RunnerTests.test_fault_before_armed_packet_cannot_prove_protection) ... ok\ntest_jit_packet_must_contain_the_expected_return_value (test_baseline.RunnerTests.test_jit_packet_must_contain_the_expected_return_value) ... ok\ntest_missing_truncated_and_invalid_packets_are_rejected (test_baseline.RunnerTests.test_missing_truncated_and_invalid_packets_are_rejected) ... ok\ntest_nonzero_exit_cannot_pass_with_valid_packet (test_baseline.RunnerTests.test_nonzero_exit_cannot_pass_with_valid_packet) ... ok\ntest_one_extra_byte_and_stdout_flood_exceed_packet_limit (test_baseline.RunnerTests.test_one_extra_byte_and_stdout_flood_exceed_packet_limit) ... ok\ntest_parent_auto_reap_policies_are_rejected_before_spawn (test_baseline.RunnerTests.test_parent_auto_reap_policies_are_rejected_before_spawn) ... ok\ntest_rejected_jit_allocation_is_unavailable_and_cannot_pass (test_baseline.RunnerTests.test_rejected_jit_allocation_is_unavailable_and_cannot_pass) ... ok\ntest_repeated_success_and_failure_do_not_leak_descriptors_or_children (test_baseline.RunnerTests.test_repeated_success_and_failure_do_not_leak_descriptors_or_children) ... ok\ntest_signal_is_retained_and_child_reaped (test_baseline.RunnerTests.test_signal_is_retained_and_child_reaped) ... ok\ntest_spawn_failure_preserves_errno_without_claiming_reap (test_baseline.RunnerTests.test_spawn_failure_preserves_errno_without_claiming_reap) ... ok\ntest_stderr_is_drained_while_stdout_writer_remains_open (test_baseline.RunnerTests.test_stderr_is_drained_while_stdout_writer_remains_open) ... ok\ntest_success_requires_exact_packet_and_zero_exit (test_baseline.RunnerTests.test_success_requires_exact_packet_and_zero_exit) ... ok\ntest_unexpected_stderr_is_not_hidden_by_success_packet (test_baseline.RunnerTests.test_unexpected_stderr_is_not_hidden_by_success_packet) ... ok\ntest_absent_symbols_are_observations_not_capability_results (test_diagnostics.DiagnosticTests.test_absent_symbols_are_observations_not_capability_results) ... ok\ntest_adversarial_text_round_trips_without_json_injection (test_diagnostics.DiagnosticTests.test_adversarial_text_round_trips_without_json_injection) ... ok\ntest_denied_translation_query_remains_unavailable (test_diagnostics.DiagnosticTests.test_denied_translation_query_remains_unavailable) ... ok\ntest_intel_architecture_is_not_reported_as_arm64_support (test_diagnostics.DiagnosticTests.test_intel_architecture_is_not_reported_as_arm64_support) ... ok\ntest_invalid_utf8_is_rejected_before_json_output (test_diagnostics.DiagnosticTests.test_invalid_utf8_is_rejected_before_json_output) ... ok\ntest_missing_translation_query_is_not_native_execution_evidence (test_diagnostics.DiagnosticTests.test_missing_translation_query_is_not_native_execution_evidence) ... ok\ntest_native_binary_reports_only_its_current_process (test_diagnostics.DiagnosticTests.test_native_binary_reports_only_its_current_process) ... ok\ntest_oversized_text_fails_without_truncating_evidence (test_diagnostics.DiagnosticTests.test_oversized_text_fails_without_truncating_evidence) ... ok\ntest_present_symbols_do_not_prove_authorization (test_diagnostics.DiagnosticTests.test_present_symbols_do_not_prove_authorization) ... ok\ntest_shipped_cli_rejects_invalid_options_and_fixture_injection (test_diagnostics.DiagnosticTests.test_shipped_cli_rejects_invalid_options_and_fixture_injection) ... ok\ntest_translation_values_have_boolean_type_without_qualification (test_diagnostics.DiagnosticTests.test_translation_values_have_boolean_type_without_qualification) ... ok\ntest_unavailable_signature_preserves_error_without_authorization (test_diagnostics.DiagnosticTests.test_unavailable_signature_preserves_error_without_authorization) ... ok\ntest_unexpected_translation_value_is_not_coerced_to_boolean (test_diagnostics.DiagnosticTests.test_unexpected_translation_value_is_not_coerced_to_boolean) ... ok\ntest_unsupported_architecture_is_rejected_without_qualification (test_diagnostics.DiagnosticTests.test_unsupported_architecture_is_rejected_without_qualification) ... ok\ntest_missing_ambiguous_and_wrong_category_identity_are_rejected (test_hardened_baseline.IdentitySelectionTests.test_missing_ambiguous_and_wrong_category_identity_are_rejected) ... ok\ntest_one_valid_developer_id_is_selected (test_hardened_baseline.IdentitySelectionTests.test_one_valid_developer_id_is_selected) ... ok\ntest_override_must_match_an_actual_eligible_identity (test_hardened_baseline.IdentitySelectionTests.test_override_must_match_an_actual_eligible_identity) ... ok\ntest_claimed_success_cannot_hide_wrong_constant_or_failed_step (test_hardened_baseline.ResultAssessmentTests.test_claimed_success_cannot_hide_wrong_constant_or_failed_step) ... ok\ntest_complete_synthetic_positive_and_expected_negative_are_accepted (test_hardened_baseline.ResultAssessmentTests.test_complete_synthetic_positive_and_expected_negative_are_accepted) ... ok\ntest_einval_rejection_requires_a_successful_matched_positive (test_hardened_baseline.ResultAssessmentTests.test_einval_rejection_requires_a_successful_matched_positive) ... ok\ntest_execution_failure_cannot_pass_with_valid_jit_steps (test_hardened_baseline.ResultAssessmentTests.test_execution_failure_cannot_pass_with_valid_jit_steps) ... ok\ntest_expected_negative_requires_mmap_permission_denial (test_hardened_baseline.ResultAssessmentTests.test_expected_negative_requires_mmap_permission_denial) ... ok\ntest_low_address_failure_and_other_baseline_failures_are_not_hidden (test_hardened_baseline.ResultAssessmentTests.test_low_address_failure_and_other_baseline_failures_are_not_hidden) ... ok\ntest_malformed_duplicate_and_unqualified_schema_is_fail_closed (test_hardened_baseline.ResultAssessmentTests.test_malformed_duplicate_and_unqualified_schema_is_fail_closed) ... ok\ntest_native_parent_evidence_is_required (test_hardened_baseline.ResultAssessmentTests.test_native_parent_evidence_is_required) ... ok\ntest_negative_control_cannot_pass_after_executing_or_crashing (test_hardened_baseline.ResultAssessmentTests.test_negative_control_cannot_pass_after_executing_or_crashing) ... ok\ntest_pair_provenance_requires_completed_positive_and_identical_inputs (test_hardened_baseline.ResultAssessmentTests.test_pair_provenance_requires_completed_positive_and_identical_inputs) ... ok\ntest_paired_einval_cannot_hide_other_failures_or_later_steps (test_hardened_baseline.ResultAssessmentTests.test_paired_einval_cannot_hide_other_failures_or_later_steps) ... ok\ntest_protection_requires_the_expected_fault_and_owned_cleanup (test_hardened_baseline.ResultAssessmentTests.test_protection_requires_the_expected_fault_and_owned_cleanup) ... ok\ntest_report_sanitizer_drops_arbitrary_private_strings (test_hardened_baseline.ResultAssessmentTests.test_report_sanitizer_drops_arbitrary_private_strings) ... ok\ntest_executable_segment_flags_do_not_replace_code_directory_flags (test_hardened_baseline.SignaturePolicyTests.test_executable_segment_flags_do_not_replace_code_directory_flags) ... ok\ntest_extra_entitlements_and_entitled_negative_control_are_rejected (test_hardened_baseline.SignaturePolicyTests.test_extra_entitlements_and_entitled_negative_control_are_rejected) ... ok\ntest_malformed_or_non_dictionary_entitlements_are_rejected (test_hardened_baseline.SignaturePolicyTests.test_malformed_or_non_dictionary_entitlements_are_rejected) ... ok\ntest_missing_false_and_non_boolean_jit_entitlements_are_rejected (test_hardened_baseline.SignaturePolicyTests.test_missing_false_and_non_boolean_jit_entitlements_are_rejected) ... ok\ntest_only_the_intended_entitlement_diff_is_accepted (test_hardened_baseline.SignaturePolicyTests.test_only_the_intended_entitlement_diff_is_accepted) ... ok\ntest_runtime_flag_and_certificate_category_are_required (test_hardened_baseline.SignaturePolicyTests.test_runtime_flag_and_certificate_category_are_required) ... ok\ntest_armed_packet_with_exit_or_wrong_signal_cannot_pass (test_process_capabilities.ProcessCapabilitiesTests.test_armed_packet_with_exit_or_wrong_signal_cannot_pass) ... ok\ntest_attribute_evidence_must_match_requested_mode (test_process_capabilities.ProcessCapabilitiesTests.test_attribute_evidence_must_match_requested_mode) ... ok\ntest_attribute_rejection_retains_error_without_spawning (test_process_capabilities.ProcessCapabilitiesTests.test_attribute_rejection_retains_error_without_spawning) ... ok\ntest_default_mode_cannot_qualify_subpage_or_recommit_operations (test_process_capabilities.ProcessCapabilitiesTests.test_default_mode_cannot_qualify_subpage_or_recommit_operations) ... ok\ntest_default_mode_does_not_request_a_page_attribute (test_process_capabilities.ProcessCapabilitiesTests.test_default_mode_does_not_request_a_page_attribute) ... ok\ntest_early_fault_setup_failures_preserve_diagnostic_packets (test_process_capabilities.ProcessCapabilitiesTests.test_early_fault_setup_failures_preserve_diagnostic_packets) ... ok\ntest_every_probe_requires_valid_owned_termination_evidence (test_process_capabilities.ProcessCapabilitiesTests.test_every_probe_requires_valid_owned_termination_evidence) ... ok\ntest_failed_or_missing_cleanup_cannot_pass (test_process_capabilities.ProcessCapabilitiesTests.test_failed_or_missing_cleanup_cannot_pass) ... ok\ntest_fault_setup_values_are_checked_before_interpreting_signal (test_process_capabilities.ProcessCapabilitiesTests.test_fault_setup_values_are_checked_before_interpreting_signal) ... ok\ntest_geometry_packet_rejects_extra_or_skipped_operations (test_process_capabilities.ProcessCapabilitiesTests.test_geometry_packet_rejects_extra_or_skipped_operations) ... ok\ntest_geometry_preserves_default_and_4k_semantic_distinction (test_process_capabilities.ProcessCapabilitiesTests.test_geometry_preserves_default_and_4k_semantic_distinction) ... ok\ntest_invalid_mode_is_rejected_before_lookup_or_spawn (test_process_capabilities.ProcessCapabilitiesTests.test_invalid_mode_is_rejected_before_lookup_or_spawn) ... ok\ntest_missing_attribute_never_spawns_or_falls_back (test_process_capabilities.ProcessCapabilitiesTests.test_missing_attribute_never_spawns_or_falls_back) ... ok\ntest_new_fault_packets_require_actual_expected_signal (test_process_capabilities.ProcessCapabilitiesTests.test_new_fault_packets_require_actual_expected_signal) ... ok\ntest_new_fault_packets_require_exact_armed_setup (test_process_capabilities.ProcessCapabilitiesTests.test_new_fault_packets_require_exact_armed_setup) ... ok\ntest_operation_values_include_neighbor_integrity_and_cleanup (test_process_capabilities.ProcessCapabilitiesTests.test_operation_values_include_neighbor_integrity_and_cleanup) ... ok\ntest_simulated_setter_success_records_attempt_before_spawn (test_process_capabilities.ProcessCapabilitiesTests.test_simulated_setter_success_records_attempt_before_spawn) ... ok\ntest_subpage_and_recommit_packets_accept_all_six_operations (test_process_capabilities.ProcessCapabilitiesTests.test_subpage_and_recommit_packets_accept_all_six_operations) ... ok\ntest_complete_standard_and_layout_records_are_accepted (test_provisioned_probe.ProcessAssessmentTests.test_complete_standard_and_layout_records_are_accepted) ... ok\ntest_faults_need_armed_setup_and_actual_protection_signal (test_provisioned_probe.ProcessAssessmentTests.test_faults_need_armed_setup_and_actual_protection_signal) ... ok\ntest_layout_requires_low_address_success_and_cannot_hide_jit_failure (test_provisioned_probe.ProcessAssessmentTests.test_layout_requires_low_address_success_and_cannot_hide_jit_failure) ... ok\ntest_page_attribute_is_required_for_every_spawn (test_provisioned_probe.ProcessAssessmentTests.test_page_attribute_is_required_for_every_spawn) ... ok\ntest_page_geometry_needs_both_user_observations_and_valid_kernel_result (test_provisioned_probe.ProcessAssessmentTests.test_page_geometry_needs_both_user_observations_and_valid_kernel_result) ... ok\ntest_record_mode_probe_set_and_native_parent_must_be_consistent (test_provisioned_probe.ProcessAssessmentTests.test_record_mode_probe_set_and_native_parent_must_be_consistent) ... ok\ntest_sanitizer_drops_identifiers_paths_and_free_form_child_details (test_provisioned_probe.ProcessAssessmentTests.test_sanitizer_drops_identifiers_paths_and_free_form_child_details) ... ok\ntest_subpage_and_recommit_claims_require_observed_semantics (test_provisioned_probe.ProcessAssessmentTests.test_subpage_and_recommit_claims_require_observed_semantics) ... ok\ntest_valid_steps_cannot_hide_incomplete_or_failed_child_execution (test_provisioned_probe.ProcessAssessmentTests.test_valid_steps_cannot_hide_incomplete_or_failed_child_execution) ... ok\ntest_cross_architecture_requires_one_boolean_grant (test_provisioned_probe.ProfileValidationTests.test_cross_architecture_requires_one_boolean_grant) ... ok\ntest_device_and_available_certificate_must_match (test_provisioned_probe.ProfileValidationTests.test_device_and_available_certificate_must_match) ... ok\ntest_expired_missing_expiration_and_wrong_platform_are_rejected (test_provisioned_probe.ProfileValidationTests.test_expired_missing_expiration_and_wrong_platform_are_rejected) ... ok\ntest_explicit_application_and_team_binding_are_required (test_provisioned_probe.ProfileValidationTests.test_explicit_application_and_team_binding_are_required) ... ok\ntest_matching_profile_returns_only_needed_claims_and_public_checks (test_provisioned_probe.ProfileValidationTests.test_matching_profile_returns_only_needed_claims_and_public_checks) ... ok\ntest_claim_differences_and_integer_boolean_substitution_are_rejected (test_provisioned_probe.SignatureValidationTests.test_claim_differences_and_integer_boolean_substitution_are_rejected) ... ok\ntest_exact_authorized_claims_and_code_directory_flags_are_accepted (test_provisioned_probe.SignatureValidationTests.test_exact_authorized_claims_and_code_directory_flags_are_accepted) ... ok\ntest_metadata_cannot_substitute_segment_flags_or_wrong_identity_category (test_provisioned_probe.SignatureValidationTests.test_metadata_cannot_substitute_segment_flags_or_wrong_identity_category) ... ok\n\n----------------------------------------------------------------------\nRan 94 tests in 10.098s\n\nOK\n"
+    },
+    "hardened_control_command": "python3 host/probe/hardened_baseline.py",
+    "provisioned_control_command": "python3 host/probe/provisioned_probe.py --profile \"$PEAR_PROVISIONING_PROFILE\"",
+    "hardened_control_exit_code": 0,
+    "provisioned_control_exit_code": 0,
+    "protections_after": {
+      "system_integrity_protection": {
+        "exit_code": 0,
+        "status": "System Integrity Protection status: enabled."
+      },
+      "gatekeeper": {
+        "exit_code": 0,
+        "status": "assessments enabled"
+      }
+    }
+  },
+  "initial_preflight": {
+    "identity_query": {
+      "exit_code": 0,
+      "valid_codesigning_identities": 2
+    },
+    "profiles": [
+      {
+        "location_kind": "xcode",
+        "directory_present": true,
+        "file_count": 4,
+        "summaries": [
+          {
+            "decode_exit_code": 0,
+            "platforms": [
+              "iOS",
+              "xrOS",
+              "visionOS"
+            ],
+            "expired": false,
+            "has_cross_architecture_support": false,
+            "has_cross_architecture_support_unmanaged": false,
+            "has_provisioned_devices": true,
+            "provisions_all_devices": false
+          },
+          {
+            "decode_exit_code": 0,
+            "platforms": [
+              "OSX"
+            ],
+            "expired": false,
+            "has_cross_architecture_support": false,
+            "has_cross_architecture_support_unmanaged": false,
+            "has_provisioned_devices": true,
+            "provisions_all_devices": false
+          },
+          {
+            "decode_exit_code": 0,
+            "platforms": [
+              "iOS",
+              "xrOS",
+              "visionOS"
+            ],
+            "expired": false,
+            "has_cross_architecture_support": false,
+            "has_cross_architecture_support_unmanaged": false,
+            "has_provisioned_devices": true,
+            "provisions_all_devices": false
+          },
+          {
+            "decode_exit_code": 0,
+            "platforms": [
+              "iOS",
+              "xrOS",
+              "visionOS"
+            ],
+            "expired": false,
+            "has_cross_architecture_support": false,
+            "has_cross_architecture_support_unmanaged": false,
+            "has_provisioned_devices": true,
+            "provisions_all_devices": false
+          }
+        ]
+      },
+      {
+        "location_kind": "legacy",
+        "directory_present": true,
+        "file_count": 1,
+        "summaries": [
+          {
+            "decode_exit_code": 0,
+            "platforms": [
+              "iOS",
+              "xrOS",
+              "visionOS"
+            ],
+            "expired": false,
+            "has_cross_architecture_support": false,
+            "has_cross_architecture_support_unmanaged": false,
+            "has_provisioned_devices": true,
+            "provisions_all_devices": false
+          }
+        ]
+      }
+    ],
+    "protections": {
+      "system_integrity_protection": {
+        "exit_code": 0,
+        "status": "System Integrity Protection status: enabled."
+      },
+      "gatekeeper": {
+        "exit_code": 0,
+        "status": "assessments enabled"
+      }
+    }
+  },
+  "supplied_profile_preflight": {
+    "decode_exit_code": 0,
+    "platforms": [
+      "OSX"
+    ],
+    "expired": false,
+    "bundle_id_matches": true,
+    "explicit_app_id": true,
+    "cross_architecture_grants": {
+      "com.apple.developer.cross-architecture-support": true
+    },
+    "entitlement_keys": [
+      "com.apple.application-identifier",
+      "com.apple.developer.cross-architecture-support",
+      "com.apple.developer.team-identifier",
+      "keychain-access-groups"
+    ],
+    "matching_valid_apple_development_identity_count": 1,
+    "provisioning_udid_available": true,
+    "current_mac_registered": true,
+    "device_list_present": true,
+    "provisions_all_devices": false
+  },
+  "hardened_controls": {
+    "schema_version": 1,
+    "record_kind": "hardened_baseline_control",
+    "scope": "local_signed_test_bundles",
+    "status": "passed",
+    "identity_category": "developer_id_application",
+    "identity_selection": "matched_available_identity",
+    "timestamp": "none",
+    "notarization": "not_assessed",
+    "restricted_capabilities": "not_run",
+    "qualification": {
+      "runtime": "not_assessed",
+      "rosetta_free_game": "not_assessed",
+      "distribution": "not_assessed"
+    },
+    "input_binary_sha256": {
+      "pear-baseline-probe": "615748a08fefefe337463b62809d9bf428df4158dcb4d9b851bd6533285533ee",
+      "pear-probe-child": "2054b335e0751f89e514e0a99981869d7a4788d9ac3ddd88c0ea0a88db9c584a"
+    },
+    "controls": [
+      {
+        "name": "positive",
+        "status": "passed",
+        "bundle": ".build/host-probe/hardened-control-7wclhild/positive.app",
+        "embedded_profile": false,
+        "signatures": {
+          "child": {
+            "strict_verification": "passed",
+            "category": "developer_id_application",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "entitlements": {
+              "com.apple.security.cs.allow-jit": true
+            }
+          },
+          "parent": {
+            "strict_verification": "passed",
+            "category": "developer_id_application",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "entitlements": {}
+          },
+          "bundle": {
+            "strict_verification": "passed",
+            "category": "developer_id_application",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "entitlements": {}
+          }
+        },
+        "signed_binary_sha256": {
+          "pear-baseline-probe": "6e77732b257270b082be27e480d155362a66371a262e0475d9ce5b8da5b416ef",
+          "pear-probe-child": "80252ce2d98b137b4214f0c0520863e0caf59300cafdf1f5d9f60ce4adf52e0a"
+        },
+        "input_copy_sha256": {
+          "pear-baseline-probe": "615748a08fefefe337463b62809d9bf428df4158dcb4d9b851bd6533285533ee",
+          "pear-probe-child": "2054b335e0751f89e514e0a99981869d7a4788d9ac3ddd88c0ea0a88db9c584a"
+        },
+        "execution": {
+          "exit_code": 0,
+          "stderr_bytes": 0
+        },
+        "baseline": {
+          "probes": [
+            {
+              "name": "memory",
+              "status": "passed",
+              "execution": {
+                "exit_code": 0,
+                "signal": null,
+                "error_code": 0,
+                "elapsed_ms": 15,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "exited"
+              },
+              "expected_fault_observed": false,
+              "steps": {
+                "allocate": {
+                  "status": "passed",
+                  "value": 16384,
+                  "error": null
+                },
+                "write_read": {
+                  "status": "passed",
+                  "value": 42,
+                  "error": null
+                },
+                "protect_read": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "restore_write": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "rewrite_read": {
+                  "status": "passed",
+                  "value": 84,
+                  "error": null
+                },
+                "release": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                }
+              }
+            },
+            {
+              "name": "protection",
+              "status": "passed",
+              "execution": {
+                "exit_code": null,
+                "signal": 10,
+                "error_code": 0,
+                "elapsed_ms": 19,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "signaled"
+              },
+              "expected_fault_observed": true,
+              "steps": {
+                "allocate": {
+                  "status": "passed",
+                  "value": 16384,
+                  "error": null
+                },
+                "write_read": {
+                  "status": "passed",
+                  "value": 42,
+                  "error": null
+                },
+                "protect_read": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "unexpected_write": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "unused": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "release": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                }
+              }
+            },
+            {
+              "name": "low-address",
+              "status": "unavailable",
+              "execution": {
+                "exit_code": 0,
+                "signal": null,
+                "error_code": 0,
+                "elapsed_ms": 34,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "exited"
+              },
+              "expected_fault_observed": false,
+              "steps": {
+                "allocate": {
+                  "status": "unavailable",
+                  "value": 0,
+                  "error": {
+                    "domain": "mach",
+                    "code": 1
+                  }
+                },
+                "write_read": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "release": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                }
+              }
+            },
+            {
+              "name": "jit",
+              "status": "passed",
+              "execution": {
+                "exit_code": 0,
+                "signal": null,
+                "error_code": 0,
+                "elapsed_ms": 25,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "exited"
+              },
+              "expected_fault_observed": false,
+              "steps": {
+                "allocate": {
+                  "status": "passed",
+                  "value": 16384,
+                  "error": null
+                },
+                "write": {
+                  "status": "passed",
+                  "value": 8,
+                  "error": null
+                },
+                "publish": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "icache_sync": {
+                  "status": "passed",
+                  "value": 8,
+                  "error": null
+                },
+                "execute": {
+                  "status": "passed",
+                  "value": 42,
+                  "error": null
+                },
+                "release": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                }
+              }
+            }
+          ],
+          "parent_observations": {
+            "process": {
+              "architecture": {
+                "status": "observed",
+                "value": "arm64",
+                "error": null
+              },
+              "translated": {
+                "status": "observed",
+                "value": false,
+                "error": null
+              }
+            },
+            "signature": {
+              "category": {
+                "status": "observed",
+                "value": "signed",
+                "error": null
+              }
+            },
+            "host": {
+              "os_version": {
+                "status": "observed",
+                "value": "26.5.2",
+                "error": null
+              },
+              "os_build": {
+                "status": "observed",
+                "value": "25F84",
+                "error": null
+              },
+              "page_size_bytes": {
+                "status": "observed",
+                "value": 16384,
+                "error": null
+              }
+            }
+          }
+        },
+        "paired_positive_verified": false,
+        "assessment": {
+          "status": "passed",
+          "reason": "expected_control_observed"
+        }
+      },
+      {
+        "name": "negative",
+        "status": "passed",
+        "bundle": ".build/host-probe/hardened-control-7wclhild/negative.app",
+        "embedded_profile": false,
+        "signatures": {
+          "child": {
+            "strict_verification": "passed",
+            "category": "developer_id_application",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "entitlements": {}
+          },
+          "parent": {
+            "strict_verification": "passed",
+            "category": "developer_id_application",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "entitlements": {}
+          },
+          "bundle": {
+            "strict_verification": "passed",
+            "category": "developer_id_application",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "entitlements": {}
+          }
+        },
+        "signed_binary_sha256": {
+          "pear-baseline-probe": "7868a4fcb4f4468c748f2e448e0666d7e66ca01c0e85e00d56309afe4447b47c",
+          "pear-probe-child": "2d15817e9bf65ebf61a7c98df9bca9533a9c7dadf5e39670376faeead202e9cb"
+        },
+        "input_copy_sha256": {
+          "pear-baseline-probe": "615748a08fefefe337463b62809d9bf428df4158dcb4d9b851bd6533285533ee",
+          "pear-probe-child": "2054b335e0751f89e514e0a99981869d7a4788d9ac3ddd88c0ea0a88db9c584a"
+        },
+        "execution": {
+          "exit_code": 1,
+          "stderr_bytes": 0
+        },
+        "baseline": {
+          "probes": [
+            {
+              "name": "memory",
+              "status": "passed",
+              "execution": {
+                "exit_code": 0,
+                "signal": null,
+                "error_code": 0,
+                "elapsed_ms": 22,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "exited"
+              },
+              "expected_fault_observed": false,
+              "steps": {
+                "allocate": {
+                  "status": "passed",
+                  "value": 16384,
+                  "error": null
+                },
+                "write_read": {
+                  "status": "passed",
+                  "value": 42,
+                  "error": null
+                },
+                "protect_read": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "restore_write": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "rewrite_read": {
+                  "status": "passed",
+                  "value": 84,
+                  "error": null
+                },
+                "release": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                }
+              }
+            },
+            {
+              "name": "protection",
+              "status": "passed",
+              "execution": {
+                "exit_code": null,
+                "signal": 10,
+                "error_code": 0,
+                "elapsed_ms": 18,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "signaled"
+              },
+              "expected_fault_observed": true,
+              "steps": {
+                "allocate": {
+                  "status": "passed",
+                  "value": 16384,
+                  "error": null
+                },
+                "write_read": {
+                  "status": "passed",
+                  "value": 42,
+                  "error": null
+                },
+                "protect_read": {
+                  "status": "passed",
+                  "value": 0,
+                  "error": null
+                },
+                "unexpected_write": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "unused": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "release": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                }
+              }
+            },
+            {
+              "name": "low-address",
+              "status": "unavailable",
+              "execution": {
+                "exit_code": 0,
+                "signal": null,
+                "error_code": 0,
+                "elapsed_ms": 26,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "exited"
+              },
+              "expected_fault_observed": false,
+              "steps": {
+                "allocate": {
+                  "status": "unavailable",
+                  "value": 0,
+                  "error": {
+                    "domain": "mach",
+                    "code": 1
+                  }
+                },
+                "write_read": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "release": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                }
+              }
+            },
+            {
+              "name": "jit",
+              "status": "failed",
+              "execution": {
+                "exit_code": 0,
+                "signal": null,
+                "error_code": 0,
+                "elapsed_ms": 26,
+                "stdout_bytes": 160,
+                "stderr_bytes": 0,
+                "packet_valid": true,
+                "child_reaped": true,
+                "outcome": "exited"
+              },
+              "expected_fault_observed": false,
+              "steps": {
+                "allocate": {
+                  "status": "failed",
+                  "value": 0,
+                  "error": {
+                    "domain": "errno",
+                    "code": 22
+                  }
+                },
+                "write": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "publish": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "icache_sync": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "execute": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                },
+                "release": {
+                  "status": "not_run",
+                  "value": null,
+                  "error": null
+                }
+              }
+            }
+          ],
+          "parent_observations": {
+            "process": {
+              "architecture": {
+                "status": "observed",
+                "value": "arm64",
+                "error": null
+              },
+              "translated": {
+                "status": "observed",
+                "value": false,
+                "error": null
+              }
+            },
+            "signature": {
+              "category": {
+                "status": "observed",
+                "value": "signed",
+                "error": null
+              }
+            },
+            "host": {
+              "os_version": {
+                "status": "observed",
+                "value": "26.5.2",
+                "error": null
+              },
+              "os_build": {
+                "status": "observed",
+                "value": "25F84",
+                "error": null
+              },
+              "page_size_bytes": {
+                "status": "observed",
+                "value": 16384,
+                "error": null
+              }
+            }
+          }
+        },
+        "paired_positive_verified": true,
+        "assessment": {
+          "status": "passed",
+          "reason": "expected_paired_jit_rejection_observed"
+        },
+        "interpretation": "expected_jit_rejection"
+      }
+    ],
+    "commands": [
+      {
+        "stage": "input_architecture.pear-baseline-probe",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 6,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "input_architecture.pear-probe-child",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 6,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "identity_selection",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 230,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "positive.sign_child",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 187
+      },
+      {
+        "stage": "positive.sign_bundle",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 155
+      },
+      {
+        "stage": "positive.child.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "positive.child.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1165
+      },
+      {
+        "stage": "positive.child.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 233,
+        "stderr_bytes": 256
+      },
+      {
+        "stage": "positive.parent.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "positive.parent.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1200
+      },
+      {
+        "stage": "positive.parent.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 259
+      },
+      {
+        "stage": "positive.bundle.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "positive.bundle.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1200
+      },
+      {
+        "stage": "positive.bundle.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 259
+      },
+      {
+        "stage": "positive.execute",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 3552,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "negative.sign_child",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 187
+      },
+      {
+        "stage": "negative.sign_bundle",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 155
+      },
+      {
+        "stage": "negative.child.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "negative.child.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1165
+      },
+      {
+        "stage": "negative.child.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 256
+      },
+      {
+        "stage": "negative.parent.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "negative.parent.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1200
+      },
+      {
+        "stage": "negative.parent.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 259
+      },
+      {
+        "stage": "negative.bundle.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "negative.bundle.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1200
+      },
+      {
+        "stage": "negative.bundle.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 259
+      },
+      {
+        "stage": "negative.execute",
+        "status": "completed",
+        "exit_code": 1,
+        "stdout_bytes": 3591,
+        "stderr_bytes": 0
+      }
+    ],
+    "output_directory": ".build/host-probe/hardened-control-7wclhild"
+  },
+  "provisioned_controls": {
+    "schema_version": 1,
+    "record_kind": "provisioned_process_control",
+    "scope": "local_signed_test_bundles",
+    "status": "passed",
+    "identity_category": "apple_development",
+    "timestamp": "none",
+    "notarization": "not_assessed",
+    "qualification": {
+      "runtime": "not_assessed",
+      "rosetta_free_game": "not_assessed",
+      "distribution": "not_assessed"
+    },
+    "profile_checks": {
+      "cms_decode_succeeded": true,
+      "unexpired": true,
+      "macos_platform": true,
+      "explicit_application_match": true,
+      "team_and_prefix_consistent": true,
+      "single_cross_architecture_grant": true,
+      "current_provisioning_device_match": true,
+      "available_development_certificate_match": true
+    },
+    "input_binary_sha256": {
+      "standard": "5fb1630387dc5d790dbcdeb558965aee8882f35f2cacefba1ddef2c2ee4c51d5",
+      "layout": "424dfbb1b2b007f6aeca4b9993c330399483dc0c36e6f0a5c5832b6c00e83d75"
+    },
+    "controls": [
+      {
+        "variant": "standard",
+        "status": "passed",
+        "bundle": ".build/host-probe/provisioned-control-eckt398d/standard.app",
+        "signatures": {
+          "executable": {
+            "strict_verification": "passed",
+            "category": "apple_development",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "profile_claims_match": true,
+            "claim_keys": [
+              "com.apple.application-identifier",
+              "com.apple.developer.cross-architecture-support",
+              "com.apple.developer.team-identifier",
+              "com.apple.security.cs.allow-jit"
+            ]
+          },
+          "bundle": {
+            "strict_verification": "passed",
+            "category": "apple_development",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "profile_claims_match": true,
+            "claim_keys": [
+              "com.apple.application-identifier",
+              "com.apple.developer.cross-architecture-support",
+              "com.apple.developer.team-identifier",
+              "com.apple.security.cs.allow-jit"
+            ]
+          }
+        },
+        "runs": [
+          {
+            "mode": "default",
+            "status": "passed",
+            "exit_code": 0,
+            "stderr_bytes": 0,
+            "observations": {
+              "probes": [
+                {
+                  "name": "memory",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 5,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_write": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "rewrite_read": {
+                      "status": "passed",
+                      "value": 84,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "protection",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 95,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "unexpected_write": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "unused": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "low-address",
+                  "status": "unavailable",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 4,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "unavailable",
+                      "value": 0,
+                      "error": {
+                        "domain": "mach",
+                        "code": 3
+                      }
+                    },
+                    "write_read": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "jit",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 3,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "write": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "publish": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "icache_sync": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "execute": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "geometry",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 3,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "user_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "vm_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "kernel_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    }
+                  }
+                }
+              ],
+              "parent_observations": {
+                "process": {
+                  "architecture": {
+                    "status": "observed",
+                    "value": "arm64",
+                    "error": null
+                  },
+                  "translated": {
+                    "status": "observed",
+                    "value": false,
+                    "error": null
+                  }
+                },
+                "signature": {
+                  "category": {
+                    "status": "observed",
+                    "value": "signed",
+                    "error": null
+                  }
+                },
+                "host": {
+                  "os_version": {
+                    "status": "observed",
+                    "value": "26.5.2",
+                    "error": null
+                  },
+                  "os_build": {
+                    "status": "observed",
+                    "value": "25F84",
+                    "error": null
+                  },
+                  "page_size_bytes": {
+                    "status": "observed",
+                    "value": 16384,
+                    "error": null
+                  }
+                }
+              },
+              "requested_mode": "default"
+            },
+            "assessment": {
+              "status": "passed",
+              "reason": "expected_process_capabilities_observed"
+            }
+          },
+          {
+            "mode": "4k",
+            "status": "passed",
+            "exit_code": 0,
+            "stderr_bytes": 0,
+            "observations": {
+              "probes": [
+                {
+                  "name": "memory",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 64,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_write": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "rewrite_read": {
+                      "status": "passed",
+                      "value": 84,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "protection",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 101,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "unexpected_write": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "unused": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "low-address",
+                  "status": "unavailable",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 24,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "unavailable",
+                      "value": 0,
+                      "error": {
+                        "domain": "mach",
+                        "code": 3
+                      }
+                    },
+                    "write_read": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "jit",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 25,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "write": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "publish": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "icache_sync": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "execute": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "geometry",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 25,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "user_page_size": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "vm_page_size": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "kernel_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "subpage",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 4,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "protect_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_middle": {
+                      "status": "passed",
+                      "value": 84,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "passed",
+                      "value": 3,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "subpage-fault",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 93,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "protect_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_middle": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "recommit",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 5,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "replace_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "passed",
+                      "value": 3,
+                      "error": null
+                    },
+                    "recommit_zero_and_write": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "recommit-fault",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 75,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "replace_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "recommit_zero_and_write": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                }
+              ],
+              "parent_observations": {
+                "process": {
+                  "architecture": {
+                    "status": "observed",
+                    "value": "arm64",
+                    "error": null
+                  },
+                  "translated": {
+                    "status": "observed",
+                    "value": false,
+                    "error": null
+                  }
+                },
+                "signature": {
+                  "category": {
+                    "status": "observed",
+                    "value": "signed",
+                    "error": null
+                  }
+                },
+                "host": {
+                  "os_version": {
+                    "status": "observed",
+                    "value": "26.5.2",
+                    "error": null
+                  },
+                  "os_build": {
+                    "status": "observed",
+                    "value": "25F84",
+                    "error": null
+                  },
+                  "page_size_bytes": {
+                    "status": "observed",
+                    "value": 16384,
+                    "error": null
+                  }
+                }
+              },
+              "requested_mode": "4k"
+            },
+            "assessment": {
+              "status": "passed",
+              "reason": "expected_process_capabilities_observed"
+            }
+          }
+        ],
+        "embedded_profile_matches_validated_copy": true,
+        "signed_binary_sha256": "4b863bfb1aba7179727a13cc7fabe40144337b21cfa79c9aa2edae26bda7f80e"
+      },
+      {
+        "variant": "layout",
+        "status": "passed",
+        "bundle": ".build/host-probe/provisioned-control-eckt398d/layout.app",
+        "signatures": {
+          "executable": {
+            "strict_verification": "passed",
+            "category": "apple_development",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "profile_claims_match": true,
+            "claim_keys": [
+              "com.apple.application-identifier",
+              "com.apple.developer.cross-architecture-support",
+              "com.apple.developer.team-identifier",
+              "com.apple.security.cs.allow-jit"
+            ]
+          },
+          "bundle": {
+            "strict_verification": "passed",
+            "category": "apple_development",
+            "flags": 65536,
+            "hardened_runtime": true,
+            "ad_hoc": false,
+            "profile_claims_match": true,
+            "claim_keys": [
+              "com.apple.application-identifier",
+              "com.apple.developer.cross-architecture-support",
+              "com.apple.developer.team-identifier",
+              "com.apple.security.cs.allow-jit"
+            ]
+          }
+        },
+        "runs": [
+          {
+            "mode": "default",
+            "status": "passed",
+            "exit_code": 0,
+            "stderr_bytes": 0,
+            "observations": {
+              "probes": [
+                {
+                  "name": "memory",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 3,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_write": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "rewrite_read": {
+                      "status": "passed",
+                      "value": 84,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "protection",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 84,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "unexpected_write": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "unused": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "low-address",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 4,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 536870912,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "jit",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 24,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "write": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "publish": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "icache_sync": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "execute": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "geometry",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 25,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": false,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "user_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "vm_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    },
+                    "kernel_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    }
+                  }
+                }
+              ],
+              "parent_observations": {
+                "process": {
+                  "architecture": {
+                    "status": "observed",
+                    "value": "arm64",
+                    "error": null
+                  },
+                  "translated": {
+                    "status": "observed",
+                    "value": false,
+                    "error": null
+                  }
+                },
+                "signature": {
+                  "category": {
+                    "status": "observed",
+                    "value": "signed",
+                    "error": null
+                  }
+                },
+                "host": {
+                  "os_version": {
+                    "status": "observed",
+                    "value": "26.5.2",
+                    "error": null
+                  },
+                  "os_build": {
+                    "status": "observed",
+                    "value": "25F84",
+                    "error": null
+                  },
+                  "page_size_bytes": {
+                    "status": "observed",
+                    "value": 16384,
+                    "error": null
+                  }
+                }
+              },
+              "requested_mode": "default"
+            },
+            "assessment": {
+              "status": "passed",
+              "reason": "expected_process_capabilities_observed"
+            }
+          },
+          {
+            "mode": "4k",
+            "status": "passed",
+            "exit_code": 0,
+            "stderr_bytes": 0,
+            "observations": {
+              "probes": [
+                {
+                  "name": "memory",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 25,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_write": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "rewrite_read": {
+                      "status": "passed",
+                      "value": 84,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "protection",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 76,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "protect_read": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "unexpected_write": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "unused": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "low-address",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 26,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 536870912,
+                      "error": null
+                    },
+                    "write_read": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "jit",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 5,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "write": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "publish": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "icache_sync": {
+                      "status": "passed",
+                      "value": 8,
+                      "error": null
+                    },
+                    "execute": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "geometry",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 24,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "user_page_size": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "vm_page_size": {
+                      "status": "passed",
+                      "value": 4096,
+                      "error": null
+                    },
+                    "kernel_page_size": {
+                      "status": "passed",
+                      "value": 16384,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "subpage",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 25,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "protect_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_middle": {
+                      "status": "passed",
+                      "value": 84,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "passed",
+                      "value": 3,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "subpage-fault",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 74,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "protect_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "restore_middle": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "recommit",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": 0,
+                    "signal": null,
+                    "error_code": 0,
+                    "elapsed_ms": 4,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "exited",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": false,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "replace_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "passed",
+                      "value": 3,
+                      "error": null
+                    },
+                    "recommit_zero_and_write": {
+                      "status": "passed",
+                      "value": 42,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    }
+                  }
+                },
+                {
+                  "name": "recommit-fault",
+                  "status": "passed",
+                  "execution": {
+                    "exit_code": null,
+                    "signal": 10,
+                    "error_code": 0,
+                    "elapsed_ms": 72,
+                    "stdout_bytes": 160,
+                    "stderr_bytes": 0,
+                    "packet_valid": true,
+                    "child_reaped": true,
+                    "outcome": "signaled",
+                    "page_attribute_called": true,
+                    "page_attribute_error": 0
+                  },
+                  "expected_fault_observed": true,
+                  "steps": {
+                    "allocate": {
+                      "status": "passed",
+                      "value": 12288,
+                      "error": null
+                    },
+                    "initial_sentinels": {
+                      "status": "passed",
+                      "value": 7,
+                      "error": null
+                    },
+                    "replace_middle": {
+                      "status": "passed",
+                      "value": 0,
+                      "error": null
+                    },
+                    "verify_neighbors": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "recommit_zero_and_write": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    },
+                    "release": {
+                      "status": "not_run",
+                      "value": null,
+                      "error": null
+                    }
+                  }
+                }
+              ],
+              "parent_observations": {
+                "process": {
+                  "architecture": {
+                    "status": "observed",
+                    "value": "arm64",
+                    "error": null
+                  },
+                  "translated": {
+                    "status": "observed",
+                    "value": false,
+                    "error": null
+                  }
+                },
+                "signature": {
+                  "category": {
+                    "status": "observed",
+                    "value": "signed",
+                    "error": null
+                  }
+                },
+                "host": {
+                  "os_version": {
+                    "status": "observed",
+                    "value": "26.5.2",
+                    "error": null
+                  },
+                  "os_build": {
+                    "status": "observed",
+                    "value": "25F84",
+                    "error": null
+                  },
+                  "page_size_bytes": {
+                    "status": "observed",
+                    "value": 16384,
+                    "error": null
+                  }
+                }
+              },
+              "requested_mode": "4k"
+            },
+            "assessment": {
+              "status": "passed",
+              "reason": "expected_process_capabilities_observed"
+            }
+          }
+        ],
+        "embedded_profile_matches_validated_copy": true,
+        "signed_binary_sha256": "a601b61bba265377d920aba4737ad5a826f56ef8ae7d4fabfea8f2e32b34e6e2"
+      }
+    ],
+    "commands": [
+      {
+        "stage": "input_architecture.standard",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 6,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "input_architecture.layout",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 6,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "profile_decode",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 8107,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "identity_match",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 230,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "device_match",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 612,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "standard.sign",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 158
+      },
+      {
+        "stage": "standard.executable.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "standard.executable.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1211
+      },
+      {
+        "stage": "standard.executable.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 476,
+        "stderr_bytes": 261
+      },
+      {
+        "stage": "standard.bundle.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "standard.bundle.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1211
+      },
+      {
+        "stage": "standard.bundle.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 476,
+        "stderr_bytes": 261
+      },
+      {
+        "stage": "standard.execute.default",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 4292,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "standard.execute.4k",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 6970,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "layout.sign",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 156
+      },
+      {
+        "stage": "layout.executable.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "layout.executable.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1209
+      },
+      {
+        "stage": "layout.executable.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 476,
+        "stderr_bytes": 259
+      },
+      {
+        "stage": "layout.bundle.verify",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "layout.bundle.metadata",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1209
+      },
+      {
+        "stage": "layout.bundle.entitlements",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 476,
+        "stderr_bytes": 259
+      },
+      {
+        "stage": "layout.execute.default",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 4263,
+        "stderr_bytes": 0
+      },
+      {
+        "stage": "layout.execute.4k",
+        "status": "completed",
+        "exit_code": 0,
+        "stdout_bytes": 6938,
+        "stderr_bytes": 0
+      }
+    ],
+    "output_directory": ".build/host-probe/provisioned-control-eckt398d",
+    "profile_sha256": "13afb20cb84f66e8efd497f92255b6d9f87e6e73bf0413dcd41c2195f1f16d11",
+    "granted_cross_architecture_key": "com.apple.developer.cross-architecture-support",
+    "effective_claim_keys": [
+      "com.apple.application-identifier",
+      "com.apple.developer.cross-architecture-support",
+      "com.apple.developer.team-identifier",
+      "com.apple.security.cs.allow-jit"
+    ]
+  },
+  "interpretation": {
+    "standard_low_address": "Unavailable retained for comparison; selected emulation layout passed independently.",
+    "negative_jit": "Expected paired rejection; underlying failed EINVAL allocation and exit one are preserved, not a positive JIT capability.",
+    "page_geometry": "User and Mach user pages are 4096 in configured children; observed kernel pages remain 16384.",
+    "recommit": "Owned middle-page replacement, zero-fill, protection and neighbor preservation; no physical reclamation guarantee.",
+    "scope_limits": [
+      "Finite tests on one Mac/OS/toolchain",
+      "No captured fault PC or address",
+      "No x18 transitions or thread ordering",
+      "No ordinary-user distribution or notarization",
+      "No Rosetta-free game execution"
+    ]
+  }
+}

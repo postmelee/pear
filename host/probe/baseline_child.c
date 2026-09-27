@@ -192,7 +192,7 @@ cleanup:
     release_mapping(packet, 5, mapping, size);
 }
 
-int main(int argc, char **argv) {
+int pear_baseline_child_main(int argc, char **argv) {
     pear_probe_id probe;
     if (argc != 2) return 2;
     if (strcmp(argv[1], "memory") == 0) probe = PEAR_PROBE_MEMORY;
@@ -226,6 +226,8 @@ int main(int argc, char **argv) {
         case PEAR_PROBE_JIT:
             jit_probe(&packet, size);
             break;
+        default:
+            return 2;
     }
     return emit_packet(&packet) == 0 ? 0 : 3;
 }

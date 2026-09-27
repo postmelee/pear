@@ -4,7 +4,7 @@ Task plan: [task_m1_2.md](task_m1_2.md)
 GitHub Issue: [#2](https://github.com/postmelee/pear/issues/2)
 Milestone: M1
 
-Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Later stages retain their own report checkpoints.
+Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Stage 3 was then explicitly approved after the Stage 2 report. Later stages retain their own report checkpoints.
 
 ## Stage Overview
 
@@ -107,9 +107,50 @@ Document and inspect the real available signing/provisioning path. Add narrowly 
 
 The current zero-identity observation is inconclusive about the maintainer's account. If identity/profile/capability authorization is missing, ask for the precise platform setup needed without collecting passwords or private keys. Record the gate as unavailable and continue only independent work; do not fabricate entitlements or bypass protections.
 
+### Stage 3 preparation and independent signed control
+
+Ordinary-host inspection on September 28 found one valid Apple Development identity and one valid Developer ID Application identity. Installed profiles include one macOS development profile but no cross-architecture grant. The earlier sandbox zero-identity result remains historical and does not describe this ordinary-host inspection. SIP and Gatekeeper report enabled.
+
+Before restricted probes, add `host/probe/hardened_baseline.py` and `tests/host/test_hardened_baseline.py` within the approved implementation/test locations. This developer tool copies existing ARM64 baseline binaries into temporary app bundles under ignored `.build/`, selects the single available Developer ID Application identity (or an explicit local environment override), and signs two ordinary Hardened Runtime controls. The positive child's only exception is `com.apple.security.cs.allow-jit`; the negative child has no entitlement. Neither control claims cross-architecture support or embeds a profile. The supervisor also has no entitlement exception. No shipping identity, profile or generated bundle is committed.
+
+Use the existing memory/protection/low-address/JIT trials unchanged. Verify actual signature flags and effective entitlement claims before launch. The positive JIT must return 42. The negative JIT must report explicit allocation rejection. EPERM/EACCES remain unavailable observations. The observed macOS EINVAL result is accepted only in the paired control after the same input binaries pass with allow-jit; its underlying failed status and CLI exit one remain recorded. EINVAL without that paired evidence, later-step errors and unrelated crashes remain failures. Preserve all other statuses and distinguish expected low-address unavailability from qualification. Use local signatures without a timestamp only for this non-distributed control; this does not establish notarization or end-user distribution.
+
+If authorization remains unavailable, preserve local preparation evidence without declaring Stage 3 complete and keep the Issue open. Authorization was supplied during this stage, so the completed artifacts use `mydocs/working/task_m1_2_stage3.md` and `task_m1_2_stage3_observations.json`, within the approved report/evidence locations. Update the existing `docs/host-capabilities.md` contributor guide; no documentation relocation is required.
+
+Commands for this independent control:
+
+```sh
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+python3 host/probe/hardened_baseline.py
+# The tool performs inside-out codesign --options runtime --timestamp=none,
+# codesign --verify --strict on each executable and bundle, and native trials.
+git diff --check
+```
+
+The maintainer subsequently supplied a downloaded Pear profile during the same approved stage. Its CMS-decoded content is unexpired, targets macOS, grants `com.apple.developer.cross-architecture-support`, matches the explicit probe App ID and one valid Apple Development identity, and includes this Mac's Provisioning UDID. Profile preflight checks alone are not a claim of platform execution authorization; the signed launch and actual capability trials supply the next evidence.
+
+Concrete restricted artifacts: add `process_child.c`, `process_evaluate.c`, `process_main.c`, `baseline_child_entry.c`, and `provisioned_probe.py` under `host/probe/`. Extend the shared packet IDs and runner with a typed default/4 KiB mode while preserving the original default API and packet size. Record spawn-attribute invocation/error separately from launch and child behavior; never fall back silently. Refactor the existing baseline child entry for reuse in the self-spawning executable. Build ordinary and `-Wl,-x86_64_layout_emulation,-pagezero_size,0x10000` variants. The layout control retains a protected 64 KiB null region; the emulation flag alone leaves the original 4 GiB PAGEZERO unchanged. This is a bounded low-address probe configuration, not the eventual Wine reservation policy. Add setter-failure and new packet/behavior tests under `tests/host/`; synthetic setters must not call the restricted API.
+
+The native geometry probe records user, Mach user and kernel page sizes independently. New four-KiB children allocate three owned pages and verify independent middle-page protection with preserved neighbor sentinels. A separate ARMED child verifies the actual protected write fault. Reserved decommit/recommit uses an anonymous `MAP_FIXED` replacement restricted to the already-owned middle 4 KiB, verifies neighbors, restores RW and checks every middle byte is zero before write/read 42. A separate ARMED child verifies access to the replaced PROT_NONE page faults. An unavailable required case remains a qualification gap.
+
+`provisioned_probe.py` revalidates the profile and device/certificate match locally, makes fresh ignored app copies, embeds the real profile, claims its actual application/team/cross-architecture grant plus public allow-jit, and signs with the matching Apple Development identity. Verify strict signatures and exact effective claims before launching. Run ordinary and 4 KiB modes for both layout variants. Require actual 4 KiB semantics and low mapping in the selected layout. Keep all profile/certificate/team/device data out of committed evidence.
+
+Commands after setting the local-only `PEAR_PROVISIONING_PROFILE` environment variable to the supplied file:
+
+```sh
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+python3 host/probe/hardened_baseline.py
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE"
+git diff --check
+```
+
+The restricted fixture uses the verified development profile and one provisioned app main executable with parent and self-spawned child modes, so authorization is not assumed to inherit into an unprovisioned helper. Verify child `sysconf(_SC_PAGESIZE)` and `vm_page_size` plus actual independent 4 KiB protection and reserved decommit/recommit behavior; kernel page size may remain 16 KiB. Test a distinct layout artifact for low-address needs. Foreign x18 transitions and per-thread ordering remain Stage 4.
+
 ### Verification
 
-Record `codesign --verify --strict`, non-sensitive effective entitlement/provisioning evidence, launch outcome and the exact memory/JIT test results for the signed artifact. Keep general-user distribution separate from development-profile execution. The exact commands and profile-dependent fixture invocation must be added to this plan when the authorization path is known, before the signed tests run.
+Record `codesign --verify --strict`, non-sensitive effective entitlement/provisioning evidence, launch outcome and the exact memory/JIT test results for the signed artifact. Keep general-user distribution separate from development-profile execution. The concrete commands and profile-dependent invocation above were added before the signed trials. The Stage 3 report records their outcomes; later stages retain their approval checkpoints.
 
 ### Commit
 

@@ -1,8 +1,10 @@
 # Host capability diagnostics
 
-The host tools collect native macOS observations and execute isolated baseline memory/JIT trials for [Issue #2](https://github.com/postmelee/pear/issues/2). They are development tools; runtime and game qualification remain unassessed.
+The host tools collect native macOS observations and execute isolated baseline and authorized process/memory/JIT trials for [Issue #2](https://github.com/postmelee/pear/issues/2). They are development tools; runtime and game qualification remain unassessed.
 
 `pear-host-probe` only observes its own process. `pear-baseline-probe` supervises four disposable `pear-probe-child` processes, including a fixed ARM64 JIT leaf. Neither tool enters the foreign x18 ABI, changes process page geometry, enables a thread memory-order policy, or launches Steam. Finding an API symbol does not establish permission to call it or prove its behavior.
+
+The separate `pear-process-probe` and `pear-process-probe-layout` executables can self-spawn native trial children with an authorized 4 KiB page mode. Run their restricted tests through `provisioned_probe.py`, which validates the actual local profile, signs fresh copies and checks effective claims before launch. These probes do not enter the foreign x18 ABI or execute game code.
 
 ## Build and run
 
@@ -94,10 +96,58 @@ The September 28, 2026 ordinary-host run on the same M4 Pro/macOS 26.5.2 produce
 
 The inspected child retained a zero-permission `__PAGEZERO` segment covering 0–4 GiB. The low-address result describes the attempted address in this executable's configuration; it is not evidence that a different authorized layout cannot work. The protection child intentionally terminates at the fault, so its later release step stays `not_run`; process teardown, rather than a fabricated successful release, ends that trial. JIT success here does not establish hardened-runtime or restricted-capability authorization.
 
+## Set up signed capability trials
+
+Stage 3 was approved after the Stage 2 report. An ordinary-host signing preflight found one valid Apple Development identity and one valid Developer ID Application identity, with SIP and Gatekeeper enabled. The initially installed macOS profile did not grant either cross-architecture entitlement. The maintainer then supplied a matching development profile that grants `com.apple.developer.cross-architecture-support`. The signed trials below passed with that profile. The earlier sandbox zero-identity result remains an observation of that restricted context.
+
+The restricted development route requires a real profile from the intended Apple developer team:
+
+1. In [Identifiers](https://developer.apple.com/account/resources/identifiers/list), create an explicit App ID for the probe. The initial maintainer identifier is `io.github.postmelee.pear.host-probe`; contributors should use an identifier owned by their own team and pass it with `--bundle-id` to the local signing tool.
+2. Inspect **Capabilities** and **Capability Requests** for **Cross-architecture Compatibility Framework**. This name comes from the [Wine maintainer's September follow-up](https://list.winehq.org/hyperkitty/list/wine-devel@list.winehq.org/message/EYMEAE4QQE2CR4OBITUENL3LB67ECDLU/). If access must be requested, follow the [Apple capability request procedure](https://developer.apple.com/help/account/capabilities/capability-requests/). If the capability is absent, its availability to that team remains unresolved; ask Apple Developer Support rather than inventing a grant.
+3. Register the Mac using its **Provisioning UDID** from System Information, rather than assuming the Hardware UUID is interchangeable.
+4. Generate a **Mac App Development** profile for the explicit App ID, the matching development certificate and the registered Mac. The downloaded profile's actual entitlements determine which capability may be claimed. The named entitlement alternatives are not a reason to add both speculatively.
+5. Keep the profile, identity information and device identifiers outside Git. Embed the verified profile in the test app at `Contents/embedded.provisionprofile`; sign with the matching certificate and only the granted restricted entitlement. No restricted test runs until that authorization is verified.
+
+Apple's [provisioning profile explanation](https://developer.apple.com/documentation/technotes/tn3125-inside-code-signing-provisioning-profiles) distinguishes entitlement claims in a signature from the profile's authorization. A successful `codesign --verify --strict` does not by itself demonstrate that a restricted capability is authorized. Each required executable needs an appropriate authorization path; a helper does not automatically inherit its parent's grant. The restricted probe uses a single provisioned executable with parent and self-spawned child modes.
+
+The child tests distinguish user page size from kernel page size and verify independent 4 KiB protection plus reserved decommit/recommit behavior. Page alignment, a successful spawn-attribute call, or memory advice alone is insufficient. A distinct layout artifact independently tests low-address behavior.
+
+An independent ordinary Hardened Runtime control can use the existing Developer ID certificate with the public `com.apple.security.cs.allow-jit` exception. The corresponding negative control omits the exception. These local, non-distributed bundles do not claim a cross-architecture entitlement or validate a provisioning route. The existing JIT code uses `pthread_jit_write_protect_np`; it must not also claim `com.apple.security.cs.jit-write-allowlist`, which changes that API contract. See [Apple's JIT guidance](https://developer.apple.com/documentation/apple-silicon/porting-just-in-time-compilers-to-apple-silicon).
+
+After setting `PEAR_PROVISIONING_PROFILE` to a local profile path, run:
+
+```sh
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+python3 host/probe/hardened_baseline.py > .build/host-probe/local-hardened.json
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" > .build/host-probe/local-provisioned.json
+```
+
+The independent control selects a unique valid Developer ID Application identity; `PEAR_SIGNING_IDENTITY` can select an existing local identity explicitly. The provisioned tool requires one matching valid Apple Development identity, an unexpired macOS profile, its actual explicit App ID/cross-architecture grant and this Mac's Provisioning UDID. It signs both layout variants with Hardened Runtime and public allow-jit, embeds the validated profile, verifies signatures and effective claims, then runs default and 4 KiB modes. Missing or ambiguous authorization stops the tool; no fallback invents a grant. Generated copies stay under ignored `.build/` and use local signatures without a timestamp. They are not release artifacts.
+
+The process runner retains the baseline ownership, timeout, packet and cleanup checks. Every 4 KiB child records the spawn-attribute call and its result. A missing setter or nonzero error is a failed launch, with no silent default-mode retry. Unit tests inject setter outcomes into test-only objects; they do not exercise the restricted API. The signed trials provide the actual platform evidence.
+
+## Stage 3 observations
+
+The September 28, 2026 run on M4 Pro/macOS 26.5.2 (25F84), using Apple clang 21 and SDK 26.5, passed the [Stage 3 verification](../mydocs/working/task_m1_2_stage3.md). The [sanitized evidence](../mydocs/working/task_m1_2_stage3_observations.json) binds source, tests, inputs and signed binaries to the results. All five built tools contain only ARM64 slices; signed supervisors observed their own translation status as false. SIP and Gatekeeper remained enabled. All 94 regression tests passed.
+
+| Signed configuration | User / Mach user pages | Kernel pages | Low mapping at `0x20000000` | JIT |
+|---|---|---|---|---|
+| Standard layout, default mode | 16 KiB / 16 KiB | 16 KiB | Unavailable | Returned 42 |
+| Standard layout, 4 KiB mode | 4 KiB / 4 KiB | 16 KiB | Unavailable | Returned 42 |
+| Emulation layout, default mode | 16 KiB / 16 KiB | 16 KiB | Passed | Returned 42 |
+| Emulation layout, 4 KiB mode | 4 KiB / 4 KiB | 16 KiB | Passed | Returned 42 |
+
+The layout variant uses `-Wl,-x86_64_layout_emulation,-pagezero_size,0x10000`. Inspection confirms a protected 64 KiB `__PAGEZERO` instead of the standard 4 GiB segment. The emulation flag alone did not shrink that segment. This is a probe configuration and a single tested low address, not the final Wine address-space reservation policy.
+
+In each 4 KiB mode, a 12 KiB owned allocation supported changing only its middle 4 KiB page to read-only while retaining and updating both neighbors. Write restoration and readback passed. Replacing only the owned middle page with anonymous `PROT_NONE` memory preserved the neighbors; restoring RW produced 4,096 zero bytes, then returned the written value 42. Separate armed trials observed actual protection/access faults (SIGBUS 10). These tests establish those finite memory semantics, not the complete Windows virtual-memory contract or a physical-memory reclamation guarantee. All 28 direct children across the four runs were reaped.
+
+The ordinary Hardened Runtime positive control returned 42. Its negative counterpart, built from identical pre-signing inputs without allow-jit, failed MAP_JIT allocation with `EINVAL` (22), and its baseline CLI exited one. The control assessment accepts this specific paired rejection; the original `failed` allocation and errno remain in the evidence. EINVAL is not globally reclassified as a permission error. Unpaired EINVAL, failures at later steps and unrelated faults still fail validation. The eight ordinary control children were reaped.
+
 ## Remaining qualification
 
-The complete host gate still requires an authorized signing/provisioning path, actual 4 KiB mapping/protection/decommit behavior, a suitable low-address layout, x18 transition correctness, callback/signal handling and per-thread memory-order policy. Required failures or unavailable prerequisites keep Issue #2 open. A fixed native JIT leaf does not execute an x86 game or validate the translator's code generation.
+The authorized development signing path and the tested 4 KiB, low-address and JIT behaviors now have passing evidence on this configuration. The complete host gate still requires x18 transition correctness, callback/signal handling, per-thread memory-order policy and reproducible capability decisions. Required failures or unavailable prerequisites keep Issue #2 open. A fixed native JIT leaf does not execute an x86 game or validate the translator's code generation.
 
-Development-profile execution and ordinary-user distribution require separate evidence. The eventual downloadable app must work for its supported users without their installing developer tools or obtaining their own development profiles. Neither outcome follows from these baseline builds.
+Development-profile execution and ordinary-user distribution require separate evidence. The eventual downloadable app must work for its supported users without their installing developer tools or obtaining their own development profiles. The current registered-Mac trials do not establish that distribution path, notarization, other hardware/OS support or Rosetta-free Megabonk execution.
 
 See the [host audit](research/macos-runtime-audit.md), [runtime architecture](architecture.md), and [approved task plan](../mydocs/plans/task_m1_2.md) for the requirements and execution boundaries.

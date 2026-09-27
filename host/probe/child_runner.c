@@ -1,5 +1,6 @@
 #include "baseline.h"
 
+#include <dlfcn.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <libproc.h>
@@ -111,17 +112,18 @@ static bool valid_packet(const pear_baseline_packet *packet,
                     step->error_code < 0)) {
             return false;
         }
-        if (expected == PEAR_PROBE_LOW_ADDRESS && i >= 3 &&
-            step->status != PEAR_STEP_NOT_RUN)
+        if ((expected == PEAR_PROBE_LOW_ADDRESS || expected == PEAR_PROBE_GEOMETRY) &&
+            i >= 3 && step->status != PEAR_STEP_NOT_RUN)
             return false;
     }
     /* Cleanup may run after an intermediate failure, including an internal
      * allocation postcondition failure. Other operations require every earlier
      * operation to have passed; a missing step cannot be skipped silently.
      */
-    size_t cleanup = expected == PEAR_PROBE_LOW_ADDRESS ? 2 : 5;
+    size_t ordered_steps = expected == PEAR_PROBE_LOW_ADDRESS ? 2 :
+                           expected == PEAR_PROBE_GEOMETRY ? 3 : 5;
     bool prerequisites_passed = true;
-    for (size_t i = 0; i < cleanup; ++i) {
+    for (size_t i = 0; i < ordered_steps; ++i) {
         uint32_t status = packet->steps[i].status;
         if (!prerequisites_passed && status != PEAR_STEP_NOT_RUN)
             return false;
@@ -129,7 +131,9 @@ static bool valid_packet(const pear_baseline_packet *packet,
             prerequisites_passed = false;
     }
     if (packet->phase == PEAR_PACKET_ARMED) {
-        if (expected != PEAR_PROBE_PROTECTION)
+        if (expected != PEAR_PROBE_PROTECTION &&
+            expected != PEAR_PROBE_SUBPAGE_FAULT &&
+            expected != PEAR_PROBE_RECOMMIT_FAULT)
             return false;
         for (size_t i = 0; i < PEAR_BASELINE_STEPS; ++i) {
             uint32_t wanted = i < 3 ? PEAR_STEP_PASSED : PEAR_STEP_NOT_RUN;
@@ -221,14 +225,23 @@ static int await_owned_exit(pid_t child)
 int pear_run_child(const char *path, char *const argv[], pear_probe_id expected,
                    unsigned timeout_ms, pear_child_result *result)
 {
+    return pear_run_child_mode(path, argv, expected, timeout_ms,
+                               PEAR_SPAWN_DEFAULT, result);
+}
+
+int pear_run_child_mode(const char *path, char *const argv[], pear_probe_id expected,
+                       unsigned timeout_ms, pear_spawn_mode mode,
+                       pear_child_result *result)
+{
     if (result == NULL)
         return -1;
     memset(result, 0, sizeof(*result));
     result->outcome = PEAR_RUN_SPAWN_ERROR;
     result->exit_code = -1;
     if (path == NULL || path[0] == '\0' || argv == NULL || argv[0] == NULL ||
-        expected < PEAR_PROBE_MEMORY || expected > PEAR_PROBE_JIT ||
-        timeout_ms == 0 || timeout_ms > 60000) {
+        expected < PEAR_PROBE_MEMORY || expected > PEAR_PROBE_RECOMMIT_FAULT ||
+        timeout_ms == 0 || timeout_ms > 60000 ||
+        (mode != PEAR_SPAWN_DEFAULT && mode != PEAR_SPAWN_PAGES_4K)) {
         result->error_code = EINVAL;
         return -1;
     }
@@ -301,6 +314,23 @@ int pear_run_child(const char *path, char *const argv[], pear_probe_id expected,
     SPAWN_SETUP(posix_spawnattr_setflags(&attributes, POSIX_SPAWN_SETPGROUP |
         POSIX_SPAWN_SETSIGMASK | POSIX_SPAWN_SETSIGDEF | POSIX_SPAWN_CLOEXEC_DEFAULT));
 #undef SPAWN_SETUP
+    if (mode == PEAR_SPAWN_PAGES_4K) {
+        typedef int (*set_4k_page_size_fn)(const posix_spawnattr_t *);
+        set_4k_page_size_fn set_4k_page_size =
+            (set_4k_page_size_fn)dlsym(RTLD_DEFAULT, "posix_spawnattr_set_4k_page_size_np");
+        if (set_4k_page_size == NULL) {
+            result->page_attribute_error = ENOSYS;
+            result->error_code = ENOSYS;
+            goto finish;
+        }
+        result->page_attribute_called = true;
+        code = set_4k_page_size(&attributes);
+        result->page_attribute_error = code;
+        if (code != 0) {
+            result->error_code = code;
+            goto finish;
+        }
+    }
     code = posix_spawn(&child, path, &actions, &attributes, argv, environ);
     if (code != 0) {
         child = -1;
