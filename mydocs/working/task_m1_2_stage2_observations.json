@@ -1,0 +1,419 @@
+{
+  "evidence_schema_version": 1,
+  "issue": 2,
+  "stage": 2,
+  "recorded_at": "2026-09-27T21:58:02.308615+00:00",
+  "purpose": "Owned native baseline tests only; no Wine, Steam, game, x86 translation or restricted ABI execution.",
+  "source_sha256": {
+    "host/probe/Makefile": "5431f50c194f74a730b992ded1348485afa51c798216eea5171bea6a1a2ca729",
+    "host/probe/baseline.h": "8eaa10af54244edb69c86584a8e8105b23e385e807626cec77d2b314aff00199",
+    "host/probe/baseline_child.c": "f1a52bf33bd55774334089318a5ad3bcd9116b776942f6228928fa5c0b69cfee",
+    "host/probe/baseline_evaluate.c": "71fb28ed5667e155ab8f2eb3fddf3ee53a6ca41684e7c00e7665def537104e95",
+    "host/probe/baseline_main.c": "389601a248af541c85e9e12722e79feeb5e473fa5aa57048cb239207dfeb6aa1",
+    "host/probe/child_runner.c": "cf4f61c82fedeb3b738b3eb0bef1d01f7a4c2891c4f7416b36b99d190af29537",
+    "host/probe/main.c": "a2e5a47ac899d853478062b848f1ff71e601572a1a68e6e9b2588470a8798044",
+    "host/probe/observations.c": "a4c347d488d64fee6c5c177a9664dc924812113af366e036bfc5410cb494a68f",
+    "host/probe/observations.h": "2f3be4de250fd52fe188c927926ffcc6552a1c355fe16ecfa5563b9240b3ea42",
+    "tests/host/diagnostic_fixture.c": "4af096712c5965c4bd70a9134deb267ca5b76b481bfdcdb1c487c244776f8e03",
+    "tests/host/runner_driver.c": "60b60bcf9ff3e4323d35c02de6a4228ee8b36ad87a6d2caf514b41f372a3cf6c",
+    "tests/host/runner_fixture.c": "8ff19432cad086b6b4e17c13f6457b48402e373b9cae6ae34a0cfd0b0cdae5e3",
+    "tests/host/test_baseline.py": "b43c32682fb279b981258caad8aabafc1fd616a11656c7d9e676aedcd53cb924",
+    "tests/host/test_diagnostics.py": "e4de22c5ddf1d5c1a6756abce4e14a7f9fc5aacbf3ebe5d3794379d1dafa1661"
+  },
+  "build": {
+    "command": "make -C host/probe",
+    "exit_code": 0,
+    "target": "arm64",
+    "diagnostic_deployment_target": "13.0",
+    "c_flags": [
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "sdk_version": "26.5",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "binaries": [
+      {
+        "binary": "pear-host-probe",
+        "architecture": "arm64",
+        "signature_details": [
+          "CodeDirectory v=20400 size=392 flags=0x20002(adhoc,linker-signed) hashes=9+0 location=embedded",
+          "Signature=adhoc"
+        ],
+        "strict_verification_exit_code": 0,
+        "sha256": "779edc3742d0c174a34a17a0527969a317ca5381916fb52c9ea21180f537097a"
+      },
+      {
+        "binary": "pear-baseline-probe",
+        "architecture": "arm64",
+        "signature_details": [
+          "CodeDirectory v=20400 size=556 flags=0x20002(adhoc,linker-signed) hashes=14+0 location=embedded",
+          "Signature=adhoc"
+        ],
+        "strict_verification_exit_code": 0,
+        "sha256": "c67c9d20cd2a9adbed1bca2a3835cf726598c1ec0481f0102cb73ba5d2606f8b"
+      },
+      {
+        "binary": "pear-probe-child",
+        "architecture": "arm64",
+        "signature_details": [
+          "CodeDirectory v=20400 size=393 flags=0x20002(adhoc,linker-signed) hashes=9+0 location=embedded",
+          "Signature=adhoc"
+        ],
+        "strict_verification_exit_code": 0,
+        "sha256": "a04ad9e9e539a58b8a00283fc83c7ab27bca12c8f9f7a1ddded7ffff7d7c6075"
+      }
+    ],
+    "child_pagezero": {
+      "vmaddr": "0x0",
+      "vmsize": "0x100000000",
+      "max_protection": 0,
+      "initial_protection": 0
+    }
+  },
+  "observations": [
+    {
+      "context": "ordinary_host_outside_tool_sandbox",
+      "command": ".build/host-probe/pear-baseline-probe > .build/host-probe/local-baseline.json",
+      "exit_code": 0,
+      "report": {
+        "schema_version": 1,
+        "record_kind": "baseline_execution",
+        "scope": "owned_test_children",
+        "timeout_ms": 3000,
+        "parent_observations": {
+          "schema_version": 1,
+          "probe_version": "0.1.0",
+          "scope": "current_process",
+          "process": {
+            "architecture": {
+              "status": "observed",
+              "value": "arm64",
+              "error": null
+            },
+            "translated": {
+              "status": "observed",
+              "value": false,
+              "error": null
+            }
+          },
+          "host": {
+            "os_version": {
+              "status": "observed",
+              "value": "26.5.2",
+              "error": null
+            },
+            "os_build": {
+              "status": "observed",
+              "value": "25F84",
+              "error": null
+            },
+            "page_size_bytes": {
+              "status": "observed",
+              "value": 16384,
+              "error": null
+            }
+          },
+          "runtime_symbols": {
+            "os_set_custom_x18_abi_enabled": {
+              "status": "observed",
+              "value": true,
+              "error": null
+            },
+            "os_custom_x18_abi_enabled": {
+              "status": "observed",
+              "value": true,
+              "error": null
+            },
+            "posix_spawnattr_set_4k_page_size_np": {
+              "status": "observed",
+              "value": true,
+              "error": null
+            },
+            "thread_set_x86_64_compat": {
+              "status": "observed",
+              "value": true,
+              "error": null
+            }
+          },
+          "signature": {
+            "category": {
+              "status": "observed",
+              "value": "ad_hoc",
+              "error": null
+            },
+            "validation": "not_assessed",
+            "authorization": "not_assessed"
+          },
+          "capabilities": {
+            "x18": "not_run",
+            "page_4k": "not_run",
+            "memory_order": "not_run",
+            "jit": "not_run"
+          },
+          "qualification": {
+            "runtime": "not_assessed",
+            "rosetta_free_game": "not_assessed",
+            "distribution": "not_assessed"
+          }
+        },
+        "probes": [
+          {
+            "name": "memory",
+            "status": "passed",
+            "execution": {
+              "outcome": "exited",
+              "exit_code": 0,
+              "signal": null,
+              "error_code": 0,
+              "elapsed_ms": 349,
+              "stdout_bytes": 160,
+              "stderr_bytes": 0,
+              "packet_valid": true,
+              "child_reaped": true
+            },
+            "expected_fault_observed": false,
+            "steps": {
+              "allocate": {
+                "status": "passed",
+                "value": 16384,
+                "error": null
+              },
+              "write_read": {
+                "status": "passed",
+                "value": 42,
+                "error": null
+              },
+              "protect_read": {
+                "status": "passed",
+                "value": 0,
+                "error": null
+              },
+              "restore_write": {
+                "status": "passed",
+                "value": 0,
+                "error": null
+              },
+              "rewrite_read": {
+                "status": "passed",
+                "value": 84,
+                "error": null
+              },
+              "release": {
+                "status": "passed",
+                "value": 0,
+                "error": null
+              }
+            }
+          },
+          {
+            "name": "protection",
+            "status": "passed",
+            "execution": {
+              "outcome": "signaled",
+              "exit_code": null,
+              "signal": 10,
+              "error_code": 0,
+              "elapsed_ms": 18,
+              "stdout_bytes": 160,
+              "stderr_bytes": 0,
+              "packet_valid": true,
+              "child_reaped": true
+            },
+            "expected_fault_observed": true,
+            "steps": {
+              "allocate": {
+                "status": "passed",
+                "value": 16384,
+                "error": null
+              },
+              "write_read": {
+                "status": "passed",
+                "value": 42,
+                "error": null
+              },
+              "protect_read": {
+                "status": "passed",
+                "value": 0,
+                "error": null
+              },
+              "unexpected_write": {
+                "status": "not_run",
+                "value": null,
+                "error": null
+              },
+              "unused": {
+                "status": "not_run",
+                "value": null,
+                "error": null
+              },
+              "release": {
+                "status": "not_run",
+                "value": null,
+                "error": null
+              }
+            }
+          },
+          {
+            "name": "low-address",
+            "status": "unavailable",
+            "execution": {
+              "outcome": "exited",
+              "exit_code": 0,
+              "signal": null,
+              "error_code": 0,
+              "elapsed_ms": 3,
+              "stdout_bytes": 160,
+              "stderr_bytes": 0,
+              "packet_valid": true,
+              "child_reaped": true
+            },
+            "expected_fault_observed": false,
+            "steps": {
+              "allocate": {
+                "status": "unavailable",
+                "value": 0,
+                "error": {
+                  "domain": "mach",
+                  "code": 1
+                }
+              },
+              "write_read": {
+                "status": "not_run",
+                "value": null,
+                "error": null
+              },
+              "release": {
+                "status": "not_run",
+                "value": null,
+                "error": null
+              }
+            }
+          },
+          {
+            "name": "jit",
+            "status": "passed",
+            "execution": {
+              "outcome": "exited",
+              "exit_code": 0,
+              "signal": null,
+              "error_code": 0,
+              "elapsed_ms": 22,
+              "stdout_bytes": 160,
+              "stderr_bytes": 0,
+              "packet_valid": true,
+              "child_reaped": true
+            },
+            "expected_fault_observed": false,
+            "steps": {
+              "allocate": {
+                "status": "passed",
+                "value": 16384,
+                "error": null
+              },
+              "write": {
+                "status": "passed",
+                "value": 8,
+                "error": null
+              },
+              "publish": {
+                "status": "passed",
+                "value": 0,
+                "error": null
+              },
+              "icache_sync": {
+                "status": "passed",
+                "value": 8,
+                "error": null
+              },
+              "execute": {
+                "status": "passed",
+                "value": 42,
+                "error": null
+              },
+              "release": {
+                "status": "passed",
+                "value": 0,
+                "error": null
+              }
+            }
+          }
+        ],
+        "qualification": {
+          "runtime": "not_assessed",
+          "rosetta_free_game": "not_assessed",
+          "distribution": "not_assessed"
+        }
+      }
+    }
+  ],
+  "verification": {
+    "context": "ordinary_host_outside_tool_sandbox",
+    "command": "python3 -m unittest discover -s tests/host -p 'test_*.py' -v",
+    "exit_code": 0,
+    "test_count": 37,
+    "diagnostic_test_count": 14,
+    "runner_and_assessment_test_count": 21,
+    "native_baseline_test_count": 2,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "7ded21da134c43688b97756f0075c625873084d2a3bc9aab134992da48a34b8e",
+    "test_output": [
+      "test_native_cli_reports_actual_baseline_and_never_game_qualification (test_baseline.NativeBaselineTests.test_native_cli_reports_actual_baseline_and_never_game_qualification) ... ok",
+      "test_shipped_baseline_cli_has_no_fixture_or_child_path_injection (test_baseline.NativeBaselineTests.test_shipped_baseline_cli_has_no_fixture_or_child_path_injection) ... ok",
+      "test_armed_packet_requires_all_fault_setup_steps (test_baseline.RunnerTests.test_armed_packet_requires_all_fault_setup_steps) ... ok",
+      "test_armed_packet_without_expected_fault_cannot_pass (test_baseline.RunnerTests.test_armed_packet_without_expected_fault_cannot_pass) ... ok",
+      "test_child_does_not_inherit_unrelated_parent_descriptor (test_baseline.RunnerTests.test_child_does_not_inherit_unrelated_parent_descriptor) ... ok",
+      "test_cleanup_failure_is_not_hidden_by_successful_operations (test_baseline.RunnerTests.test_cleanup_failure_is_not_hidden_by_successful_operations) ... ok",
+      "test_closed_parent_stdin_keeps_child_stdio_and_cleanup_correct (test_baseline.RunnerTests.test_closed_parent_stdin_keeps_child_stdio_and_cleanup_correct) ... ok",
+      "test_deadline_covers_silent_and_partial_output_children (test_baseline.RunnerTests.test_deadline_covers_silent_and_partial_output_children) ... ok",
+      "test_denied_kill_returns_bounded_failure_without_claiming_reap (test_baseline.RunnerTests.test_denied_kill_returns_bounded_failure_without_claiming_reap) ... ok",
+      "test_descendant_cleanup_after_timeout_and_leader_exit_is_scoped (test_baseline.RunnerTests.test_descendant_cleanup_after_timeout_and_leader_exit_is_scoped) ... ok",
+      "test_fault_before_armed_packet_cannot_prove_protection (test_baseline.RunnerTests.test_fault_before_armed_packet_cannot_prove_protection) ... ok",
+      "test_jit_packet_must_contain_the_expected_return_value (test_baseline.RunnerTests.test_jit_packet_must_contain_the_expected_return_value) ... ok",
+      "test_missing_truncated_and_invalid_packets_are_rejected (test_baseline.RunnerTests.test_missing_truncated_and_invalid_packets_are_rejected) ... ok",
+      "test_nonzero_exit_cannot_pass_with_valid_packet (test_baseline.RunnerTests.test_nonzero_exit_cannot_pass_with_valid_packet) ... ok",
+      "test_one_extra_byte_and_stdout_flood_exceed_packet_limit (test_baseline.RunnerTests.test_one_extra_byte_and_stdout_flood_exceed_packet_limit) ... ok",
+      "test_parent_auto_reap_policies_are_rejected_before_spawn (test_baseline.RunnerTests.test_parent_auto_reap_policies_are_rejected_before_spawn) ... ok",
+      "test_rejected_jit_allocation_is_unavailable_and_cannot_pass (test_baseline.RunnerTests.test_rejected_jit_allocation_is_unavailable_and_cannot_pass) ... ok",
+      "test_repeated_success_and_failure_do_not_leak_descriptors_or_children (test_baseline.RunnerTests.test_repeated_success_and_failure_do_not_leak_descriptors_or_children) ... ok",
+      "test_signal_is_retained_and_child_reaped (test_baseline.RunnerTests.test_signal_is_retained_and_child_reaped) ... ok",
+      "test_spawn_failure_preserves_errno_without_claiming_reap (test_baseline.RunnerTests.test_spawn_failure_preserves_errno_without_claiming_reap) ... ok",
+      "test_stderr_is_drained_while_stdout_writer_remains_open (test_baseline.RunnerTests.test_stderr_is_drained_while_stdout_writer_remains_open) ... ok",
+      "test_success_requires_exact_packet_and_zero_exit (test_baseline.RunnerTests.test_success_requires_exact_packet_and_zero_exit) ... ok",
+      "test_unexpected_stderr_is_not_hidden_by_success_packet (test_baseline.RunnerTests.test_unexpected_stderr_is_not_hidden_by_success_packet) ... ok",
+      "test_absent_symbols_are_observations_not_capability_results (test_diagnostics.DiagnosticTests.test_absent_symbols_are_observations_not_capability_results) ... ok",
+      "test_adversarial_text_round_trips_without_json_injection (test_diagnostics.DiagnosticTests.test_adversarial_text_round_trips_without_json_injection) ... ok",
+      "test_denied_translation_query_remains_unavailable (test_diagnostics.DiagnosticTests.test_denied_translation_query_remains_unavailable) ... ok",
+      "test_intel_architecture_is_not_reported_as_arm64_support (test_diagnostics.DiagnosticTests.test_intel_architecture_is_not_reported_as_arm64_support) ... ok",
+      "test_invalid_utf8_is_rejected_before_json_output (test_diagnostics.DiagnosticTests.test_invalid_utf8_is_rejected_before_json_output) ... ok",
+      "test_missing_translation_query_is_not_native_execution_evidence (test_diagnostics.DiagnosticTests.test_missing_translation_query_is_not_native_execution_evidence) ... ok",
+      "test_native_binary_reports_only_its_current_process (test_diagnostics.DiagnosticTests.test_native_binary_reports_only_its_current_process) ... ok",
+      "test_oversized_text_fails_without_truncating_evidence (test_diagnostics.DiagnosticTests.test_oversized_text_fails_without_truncating_evidence) ... ok",
+      "test_present_symbols_do_not_prove_authorization (test_diagnostics.DiagnosticTests.test_present_symbols_do_not_prove_authorization) ... ok",
+      "test_shipped_cli_rejects_invalid_options_and_fixture_injection (test_diagnostics.DiagnosticTests.test_shipped_cli_rejects_invalid_options_and_fixture_injection) ... ok",
+      "test_translation_values_have_boolean_type_without_qualification (test_diagnostics.DiagnosticTests.test_translation_values_have_boolean_type_without_qualification) ... ok",
+      "test_unavailable_signature_preserves_error_without_authorization (test_diagnostics.DiagnosticTests.test_unavailable_signature_preserves_error_without_authorization) ... ok",
+      "test_unexpected_translation_value_is_not_coerced_to_boolean (test_diagnostics.DiagnosticTests.test_unexpected_translation_value_is_not_coerced_to_boolean) ... ok",
+      "test_unsupported_architecture_is_rejected_without_qualification (test_diagnostics.DiagnosticTests.test_unsupported_architecture_is_rejected_without_qualification) ... ok",
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 37 tests in 5.902s",
+      "",
+      "OK"
+    ],
+    "json_parse_exit_code": 0,
+    "diff_check_exit_code": 0
+  },
+  "interpretation": [
+    "The fixed native ARM64 JIT leaf returned 42; this does not demonstrate x86 translation or restricted signing authorization.",
+    "Low-address allocation at 0x20000000 is unavailable in the unchanged baseline executable layout, with Mach KERN_INVALID_ADDRESS (1); other layouts are not qualified by this result.",
+    "The protection probe passed through a validated pre-fault packet followed by SIGBUS (10); its unexecuted release remains not_run.",
+    "Three baseline binaries have only ARM64 slices and linker-generated ad-hoc signatures; strict signature verification does not establish provisioning or distribution authorization.",
+    "All four real trial children were reaped. A separate injected kill-denial test preserved io_error and child_reaped=false; its test driver waited for natural exit and performed explicit cleanup without modifying that result.",
+    "The runner controls cooperative owned process groups, not hostile descendants that escape the group. Execution deadline and cleanup grace are separate.",
+    "No macOS security protections were changed by this work. Required host capability and game qualification remain not_assessed."
+  ]
+}

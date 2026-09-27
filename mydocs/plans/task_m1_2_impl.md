@@ -4,7 +4,7 @@ Task plan: [task_m1_2.md](task_m1_2.md)
 GitHub Issue: [#2](https://github.com/postmelee/pear/issues/2)
 Milestone: M1
 
-Status: implementation plan and Stage 1 explicitly approved by the maintainer on September 27, 2026. Later stages retain their own report checkpoints.
+Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Later stages retain their own report checkpoints.
 
 ## Stage Overview
 
@@ -71,9 +71,29 @@ Add a dedicated child runner under `host/probe/` with explicit child ownership, 
 
 Record allocation, executable publication, instruction-cache synchronization and the returned value separately. A JIT request rejection is an observed baseline limitation, not a positive capability result. Keep restricted x18/process-page/TSO transitions out of the baseline stage.
 
+### Concrete Stage 2 boundaries
+
+- Add `baseline.h`, `child_runner.c`, `baseline_evaluate.c`, `baseline_child.c` and `baseline_main.c` under `host/probe/`; extend the existing Makefile with separate ARM64 baseline supervisor and child executables. Preserve the observation-only CLI.
+- Use a fixed-size, versioned internal packet between same-build processes; validate identity, length, field values and probe phase before interpreting it. Public output remains bounded JSON, with no raw child stderr or private paths.
+- Launch children into a dedicated process group, enforce a monotonic execution deadline and stdout/stderr limits, retain ownership until cleanup, and reap the direct child. Bound cleanup to a further one second and report any termination/reaping failure explicitly. This controls cooperative test fixtures; it is not a security sandbox for hostile programs.
+- Run ordinary read/write/protection restoration, an expected protected-write fault, a non-overwriting low-address allocation attempt, and a fixed ARM64 JIT leaf returning 42. Record allocation, publication, cache synchronization, execution and cleanup separately. Do not execute downloaded or guest code.
+- Keep unavailable baseline behavior distinct from failed instrumentation. Retain the normal linker layout and do not count an unavailable low mapping as a passing runtime prerequisite.
+- Add `tests/host/test_baseline.py`, `runner_fixture.c` and `runner_driver.c` for real child lifecycle/failure cases. Stage 1 fixture results remain separate from real baseline results.
+- Save reviewed evidence in `mydocs/working/task_m1_2_stage2_observations.json` and update the existing contributor guide. These paths remain within the approved task-plan locations.
+
 ### Verification
 
-Extend the same unittest discovery command with real disposable child fixtures. Re-run native architecture inspection and validate per-child records against the Stage 1 status contract. Inspect for leftover child processes after timeout/error tests and review all cleanup paths. `git diff --check` must pass.
+```sh
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+lipo -archs .build/host-probe/pear-baseline-probe
+lipo -archs .build/host-probe/pear-probe-child
+.build/host-probe/pear-baseline-probe > .build/host-probe/local-baseline.json
+python3 -m json.tool .build/host-probe/local-baseline.json > /dev/null
+git diff --check
+```
+
+Extend the same unittest discovery command with real disposable child fixtures. Re-run native architecture inspection and validate the separate execution-record contract while retaining the Stage 1 observation contract inside parent observations. Inspect for leftover child processes after timeout/error tests and review all cleanup paths. `git diff --check` must pass.
 
 ### Commit
 
@@ -136,4 +156,4 @@ Each stage commits its source, verification evidence and report together. Stage 
 
 ## Approval Record
 
-The maintainer explicitly approved this concrete implementation sequence and authorized Stage 1 implementation. Its C diagnostic and tests operate within the approved #2 task scope. Later stage reports distinguish completed code from unresolved platform and distribution gates; this approval does not authorize skipping those checkpoints.
+The maintainer explicitly approved this concrete implementation sequence and authorized Stage 1 implementation on September 27, 2026. On September 28, the explicit request to proceed authorized Stage 2 under the existing plan. Its C diagnostic and tests operate within the approved #2 task scope. Later stage reports distinguish completed code from unresolved platform and distribution gates; this approval does not authorize skipping those checkpoints.
