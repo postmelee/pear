@@ -1,0 +1,198 @@
+{
+  "evidence_schema_version": 1,
+  "issue": 2,
+  "stage": 1,
+  "recorded_at": "2026-09-27T13:23:01.641161Z",
+  "purpose": "Current-process observations only; no Wine, Steam, game or restricted capability execution.",
+  "source_sha256": {
+    "host/probe/Makefile": "c1b18b4b0f66cb335336f0a2d156fb92a5623b98f23d86cbbf37845768b70a39",
+    "host/probe/main.c": "a2e5a47ac899d853478062b848f1ff71e601572a1a68e6e9b2588470a8798044",
+    "host/probe/observations.c": "a4c347d488d64fee6c5c177a9664dc924812113af366e036bfc5410cb494a68f",
+    "host/probe/observations.h": "2f3be4de250fd52fe188c927926ffcc6552a1c355fe16ecfa5563b9240b3ea42",
+    "tests/host/test_diagnostics.py": "e4de22c5ddf1d5c1a6756abce4e14a7f9fc5aacbf3ebe5d3794379d1dafa1661",
+    "tests/host/diagnostic_fixture.c": "4af096712c5965c4bd70a9134deb267ca5b76b481bfdcdb1c487c244776f8e03"
+  },
+  "build": {
+    "command": "make -C host/probe",
+    "target": "arm64",
+    "diagnostic_deployment_target": "13.0",
+    "sdk_version": "26.5",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "binary_sha256": "779edc3742d0c174a34a17a0527969a317ca5381916fb52c9ea21180f537097a"
+  },
+  "observations": [
+    {
+      "context": "tool_sandbox",
+      "report": {
+        "schema_version": 1,
+        "probe_version": "0.1.0",
+        "scope": "current_process",
+        "process": {
+          "architecture": {
+            "status": "observed",
+            "value": "arm64",
+            "error": null
+          },
+          "translated": {
+            "status": "unavailable",
+            "value": null,
+            "error": {
+              "domain": "errno",
+              "code": 1
+            }
+          }
+        },
+        "host": {
+          "os_version": {
+            "status": "observed",
+            "value": "26.5.2",
+            "error": null
+          },
+          "os_build": {
+            "status": "observed",
+            "value": "25F84",
+            "error": null
+          },
+          "page_size_bytes": {
+            "status": "observed",
+            "value": 16384,
+            "error": null
+          }
+        },
+        "runtime_symbols": {
+          "os_set_custom_x18_abi_enabled": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          },
+          "os_custom_x18_abi_enabled": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          },
+          "posix_spawnattr_set_4k_page_size_np": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          },
+          "thread_set_x86_64_compat": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          }
+        },
+        "signature": {
+          "category": {
+            "status": "observed",
+            "value": "ad_hoc",
+            "error": null
+          },
+          "validation": "not_assessed",
+          "authorization": "not_assessed"
+        },
+        "capabilities": {
+          "x18": "not_run",
+          "page_4k": "not_run",
+          "memory_order": "not_run",
+          "jit": "not_run"
+        },
+        "qualification": {
+          "runtime": "not_assessed",
+          "rosetta_free_game": "not_assessed",
+          "distribution": "not_assessed"
+        }
+      }
+    },
+    {
+      "context": "host_execution_outside_tool_sandbox",
+      "report": {
+        "schema_version": 1,
+        "probe_version": "0.1.0",
+        "scope": "current_process",
+        "process": {
+          "architecture": {
+            "status": "observed",
+            "value": "arm64",
+            "error": null
+          },
+          "translated": {
+            "status": "observed",
+            "value": false,
+            "error": null
+          }
+        },
+        "host": {
+          "os_version": {
+            "status": "observed",
+            "value": "26.5.2",
+            "error": null
+          },
+          "os_build": {
+            "status": "observed",
+            "value": "25F84",
+            "error": null
+          },
+          "page_size_bytes": {
+            "status": "observed",
+            "value": 16384,
+            "error": null
+          }
+        },
+        "runtime_symbols": {
+          "os_set_custom_x18_abi_enabled": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          },
+          "os_custom_x18_abi_enabled": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          },
+          "posix_spawnattr_set_4k_page_size_np": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          },
+          "thread_set_x86_64_compat": {
+            "status": "observed",
+            "value": true,
+            "error": null
+          }
+        },
+        "signature": {
+          "category": {
+            "status": "observed",
+            "value": "ad_hoc",
+            "error": null
+          },
+          "validation": "not_assessed",
+          "authorization": "not_assessed"
+        },
+        "capabilities": {
+          "x18": "not_run",
+          "page_4k": "not_run",
+          "memory_order": "not_run",
+          "jit": "not_run"
+        },
+        "qualification": {
+          "runtime": "not_assessed",
+          "rosetta_free_game": "not_assessed",
+          "distribution": "not_assessed"
+        }
+      }
+    }
+  ],
+  "automated_verification": {
+    "command": "python3 -m unittest discover -s tests/host -p 'test_*.py' -v",
+    "tests_passed": 14,
+    "failures": 0,
+    "errors": 0,
+    "source": "Stage 1 test worker verification, reviewed by the primary worker"
+  },
+  "limitations": [
+    "Signature metadata was observed, not validated for entitlement authorization or distribution.",
+    "All ABI, process-page, memory-order and JIT execution capabilities remain not_run.",
+    "No required game/runtime process tree was observed; Rosetta-free Megabonk remains unqualified."
+  ]
+}
