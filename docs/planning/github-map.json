@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "repository": "postmelee/pear",
+  "published_at_utc": "2026-09-27T12:33:08.025380+00:00",
+  "milestones": {
+    "M1": {
+      "number": 1,
+      "title": "M1 \u2014 Megabonk on Apple Silicon without Rosetta",
+      "url": "https://github.com/postmelee/pear/milestone/1"
+    },
+    "R1": {
+      "number": 2,
+      "title": "R1 \u2014 Evaluate an independent Pear CPU translator",
+      "url": "https://github.com/postmelee/pear/milestone/2"
+    }
+  },
+  "issues": {
+    "P01": {
+      "number": 1,
+      "url": "https://github.com/postmelee/pear/issues/1",
+      "title": "[P01] Qualify source availability and pin the runtime toolchain",
+      "milestone": "M1"
+    },
+    "P02": {
+      "number": 2,
+      "url": "https://github.com/postmelee/pear/issues/2",
+      "title": "[P02] Probe macOS ABI, memory, JIT and signing capabilities",
+      "milestone": "M1"
+    },
+    "P03": {
+      "number": 3,
+      "url": "https://github.com/postmelee/pear/issues/3",
+      "title": "[P03] Define runtime contracts and choose the manager language",
+      "milestone": "M1"
+    },
+    "P04": {
+      "number": 4,
+      "url": "https://github.com/postmelee/pear/issues/4",
+      "title": "[P04] Bring up the ARM64 Wine host and macOS ABI boundary",
+      "milestone": "M1"
+    },
+    "P05": {
+      "number": 5,
+      "url": "https://github.com/postmelee/pear/issues/5",
+      "title": "[P05] Port FEX Wine host services to Darwin and integrate its CPU modules",
+      "milestone": "M1"
+    },
+    "P06": {
+      "number": 6,
+      "url": "https://github.com/postmelee/pear/issues/6",
+      "title": "[P06] Qualify CPU semantics and the Wine translation boundary",
+      "milestone": "M1"
+    },
+    "P07": {
+      "number": 7,
+      "url": "https://github.com/postmelee/pear/issues/7",
+      "title": "[P07] Reproduce the ARM64EC DXMT and ARM64 Metal bridge build",
+      "milestone": "M1"
+    },
+    "P08": {
+      "number": 8,
+      "url": "https://github.com/postmelee/pear/issues/8",
+      "title": "[P08] Qualify Direct3D 11 through the native Metal path",
+      "milestone": "M1"
+    },
+    "P09": {
+      "number": 9,
+      "url": "https://github.com/postmelee/pear/issues/9",
+      "title": "[P09] Implement the native runtime supervisor and Megabonk profile",
+      "milestone": "M1"
+    },
+    "P10": {
+      "number": 10,
+      "url": "https://github.com/postmelee/pear/issues/10",
+      "title": "[P10] Collect complete process and module evidence of Rosetta independence",
+      "milestone": "M1"
+    },
+    "P11": {
+      "number": 11,
+      "url": "https://github.com/postmelee/pear/issues/11",
+      "title": "[P11] Validate Windows Steam and its helper architecture requirements",
+      "milestone": "M1"
+    },
+    "P12": {
+      "number": 12,
+      "url": "https://github.com/postmelee/pear/issues/12",
+      "title": "[P12] Qualify Megabonk gameplay, input, audio and save/relaunch behavior",
+      "milestone": "M1"
+    },
+    "P13": {
+      "number": 13,
+      "url": "https://github.com/postmelee/pear/issues/13",
+      "title": "[P13] Assemble and reproduce the signed Pear runtime candidate",
+      "milestone": "M1"
+    },
+    "P14": {
+      "number": 14,
+      "url": "https://github.com/postmelee/pear/issues/14",
+      "title": "[P14] Add regression CI and a maintained upstream patch workflow",
+      "milestone": "M1"
+    },
+    "P15": {
+      "number": 15,
+      "url": "https://github.com/postmelee/pear/issues/15",
+      "title": "[P15] Characterize frame times, stability and power under controlled conditions",
+      "milestone": "M1"
+    },
+    "P16": {
+      "number": 16,
+      "url": "https://github.com/postmelee/pear/issues/16",
+      "title": "[P16] Publish the first Rosetta-free Megabonk qualification record",
+      "milestone": "M1"
+    },
+    "E01": {
+      "number": 17,
+      "url": "https://github.com/postmelee/pear/issues/17",
+      "title": "[E01] Define the CPU-engine hypothesis and differential semantics corpus",
+      "milestone": "R1"
+    },
+    "E02": {
+      "number": 18,
+      "url": "https://github.com/postmelee/pear/issues/18",
+      "title": "[E02] Compare Cranelift with a reference CPU-code backend",
+      "milestone": "R1"
+    },
+    "E03": {
+      "number": 19,
+      "url": "https://github.com/postmelee/pear/issues/19",
+      "title": "[E03] Test the experimental CPU runtime on signed macOS",
+      "milestone": "R1"
+    },
+    "E04": {
+      "number": 20,
+      "url": "https://github.com/postmelee/pear/issues/20",
+      "title": "[E04] Integrate the experimental CPU module with Wine",
+      "milestone": "R1"
+    },
+    "E05": {
+      "number": 21,
+      "url": "https://github.com/postmelee/pear/issues/21",
+      "title": "[E05] Decide whether to adopt a Pear CPU translator",
+      "milestone": "R1"
+    }
+  }
+}

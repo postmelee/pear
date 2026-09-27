@@ -34,32 +34,32 @@ Dependencies below are acceptance dependencies: preparatory source reading and f
 
 | ID | Issue | Acceptance dependencies |
 |---|---|---|
-| P01 | Qualify source availability and pin the runtime toolchain | None |
-| P02 | Probe macOS ABI, memory, JIT and signing capabilities | None |
-| P03 | Define runtime contracts and choose the manager language | None |
-| P04 | Bring up the ARM64 Wine host and macOS ABI boundary | P01, P02 |
-| P05 | Port FEX Wine host services to Darwin and integrate its CPU modules | P01, P02, P04 |
-| P06 | Qualify CPU semantics and the Wine translation boundary | P05 |
-| P07 | Reproduce the ARM64EC DXMT and ARM64 Metal bridge build | P01, P04 |
-| P08 | Qualify Direct3D 11 through the native Metal path | P06, P07 |
-| P09 | Implement the native runtime supervisor and Megabonk profile | P03 |
-| P10 | Collect complete process and module evidence of Rosetta independence | P02, P03 |
-| P11 | Validate Windows Steam and its helper architecture requirements | P06, P08, P09, P10 |
-| P12 | Qualify Megabonk gameplay, input, audio and save/relaunch behavior | P11 |
-| P13 | Assemble and reproduce the signed Pear runtime candidate | P01, P02, P03, P06, P08, P09 |
-| P14 | Add regression CI and a maintained upstream patch workflow | P03, P06, P08, P09, P10, P13 |
-| P15 | Characterize frame times, stability and power under controlled conditions | P12, P13 |
-| P16 | Publish the first Rosetta-free Megabonk qualification record | P10, P12, P13, P14, P15 |
+| P01 | [#1 Qualify source availability and pin the runtime toolchain](https://github.com/postmelee/pear/issues/1) | None |
+| P02 | [#2 Probe macOS ABI, memory, JIT and signing capabilities](https://github.com/postmelee/pear/issues/2) | None |
+| P03 | [#3 Define runtime contracts and choose the manager language](https://github.com/postmelee/pear/issues/3) | None |
+| P04 | [#4 Bring up the ARM64 Wine host and macOS ABI boundary](https://github.com/postmelee/pear/issues/4) | P01, P02 |
+| P05 | [#5 Port FEX Wine host services to Darwin and integrate its CPU modules](https://github.com/postmelee/pear/issues/5) | P01, P02, P04 |
+| P06 | [#6 Qualify CPU semantics and the Wine translation boundary](https://github.com/postmelee/pear/issues/6) | P05 |
+| P07 | [#7 Reproduce the ARM64EC DXMT and ARM64 Metal bridge build](https://github.com/postmelee/pear/issues/7) | P01, P04 |
+| P08 | [#8 Qualify Direct3D 11 through the native Metal path](https://github.com/postmelee/pear/issues/8) | P06, P07 |
+| P09 | [#9 Implement the native runtime supervisor and Megabonk profile](https://github.com/postmelee/pear/issues/9) | P03 |
+| P10 | [#10 Collect complete process and module evidence of Rosetta independence](https://github.com/postmelee/pear/issues/10) | P02, P03 |
+| P11 | [#11 Validate Windows Steam and its helper architecture requirements](https://github.com/postmelee/pear/issues/11) | P06, P08, P09, P10 |
+| P12 | [#12 Qualify Megabonk gameplay, input, audio and save/relaunch behavior](https://github.com/postmelee/pear/issues/12) | P11 |
+| P13 | [#13 Assemble and reproduce the signed Pear runtime candidate](https://github.com/postmelee/pear/issues/13) | P01, P02, P03, P06, P08, P09 |
+| P14 | [#14 Add regression CI and a maintained upstream patch workflow](https://github.com/postmelee/pear/issues/14) | P03, P06, P08, P09, P10, P13 |
+| P15 | [#15 Characterize frame times, stability and power under controlled conditions](https://github.com/postmelee/pear/issues/15) | P12, P13 |
+| P16 | [#16 Publish the first Rosetta-free Megabonk qualification record](https://github.com/postmelee/pear/issues/16) | P10, P12, P13, P14, P15 |
 
 ## Independent CPU-engine research
 
 | ID | Issue | Acceptance dependencies |
 |---|---|---|
-| E01 | Define the CPU-engine hypothesis and differential semantics corpus | None |
-| E02 | Compare Cranelift with a reference CPU-code backend | E01 |
-| E03 | Test the experimental CPU runtime on signed macOS | E02 |
-| E04 | Integrate the experimental CPU module with Wine | E03, P06 |
-| E05 | Decide whether to adopt a Pear CPU translator | E04, P16 |
+| E01 | [#17 Define the CPU-engine hypothesis and differential semantics corpus](https://github.com/postmelee/pear/issues/17) | None |
+| E02 | [#18 Compare Cranelift with a reference CPU-code backend](https://github.com/postmelee/pear/issues/18) | E01 |
+| E03 | [#19 Test the experimental CPU runtime on signed macOS](https://github.com/postmelee/pear/issues/19) | E02 |
+| E04 | [#20 Integrate the experimental CPU module with Wine](https://github.com/postmelee/pear/issues/20) | E03, P06 |
+| E05 | [#21 Decide whether to adopt a Pear CPU translator](https://github.com/postmelee/pear/issues/21) | E04, P16 |
 
 E01 and E02 must record an explicit continuation decision. If the hypothesis or backend comparison does not justify more work, close later conditional experiments as **not planned**, state the evidence, and retain FEX. Those closures are not successful implementation results. Adopting a replacement requires the shared Wine/game qualification, including the P16 reference baseline.
 
@@ -72,4 +72,4 @@ E01 and E02 must record an explicit continuation decision. If the hypothesis or 
 - Attribute reused code and preserve license and upstream contribution-policy boundaries.
 - Code patches stay reviewable and rebased. Build success, runtime success, game qualification, and general distribution are distinct outcomes.
 
-Detailed issue content is stored in [backlog.json](planning/backlog.json). Stable P/E identifiers preserve the plan's meaning independently of GitHub issue numbering. The GitHub mapping is recorded separately after publication.
+Detailed issue content is stored in [backlog.json](planning/backlog.json). Stable P/E identifiers preserve the plan's meaning independently of GitHub issue numbering. Published issue and milestone identifiers are recorded in [github-map.json](planning/github-map.json).

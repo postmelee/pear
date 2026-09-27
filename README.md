@@ -30,6 +30,8 @@ These values guide development and describe the intended platform:
 
 **Status: not yet achieved.** The target platform is macOS on Apple Silicon.
 
+Progress is tracked in [M1: Megabonk on Apple Silicon without Rosetta](https://github.com/postmelee/pear/milestone/1).
+
 The milestone will be considered complete when a documented setup can:
 
 - Launch Megabonk and complete at least 20 minutes of gameplay without Rosetta.
@@ -58,7 +60,7 @@ Existing x64 games still need CPU instruction translation when running without R
 
 Pear intends to reuse existing open-source projects and contribute generally useful improvements in accordance with each upstream project's contribution policies.
 
-The runtime may require substantial macOS porting and maintained compatibility patches. Rust is optional and will be evaluated per subsystem; existing engines will retain their upstream languages unless evidence justifies a change. An independent CPU translator is a separate research track, not a prerequisite for the first Megabonk milestone.
+The runtime may require substantial macOS porting and maintained compatibility patches. Rust is optional and will be evaluated per subsystem; existing engines will retain their upstream languages unless evidence justifies a change. An independent CPU translator is a [separate research track](https://github.com/postmelee/pear/milestone/2), not a prerequisite for the first Megabonk milestone.
 
 ## Current status
 
