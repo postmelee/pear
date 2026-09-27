@@ -1,72 +1,94 @@
-# Silicon Game Lab (가칭)
+# Pear
 
-**Apple Silicon에서 Windows 게임을 Rosetta에 의존하지 않고 실행하며, 커뮤니티가 호환성을 검증하고 유지하는 오픈소스 플랫폼.**
+**Pear aims to provide an open-source platform for running Windows games on Apple Silicon without Rosetta, with compatibility tested and maintained by its community.**
 
-첫 번째 지원 목표는 **Megabonk**입니다. 검증한 게임부터 지원 범위를 넓히고, 누구나 게임을 요청하거나 테스트·설정·호환성 개선에 기여할 수 있는 프로젝트를 지향합니다.
+The first milestone is to **run Megabonk on an Apple Silicon Mac without Rosetta**. Support for additional games will grow through documented testing, game profiles, and compatibility improvements.
 
-> 현재는 연구·실험 단계입니다. Rosetta 독립 실행과 일반 사용자용 배포판은 아직 완성되지 않았습니다.
+> Pear is in the research and prototyping stage. Rosetta-free Megabonk execution has not yet been verified, and an end-user release is not yet available.
 
-## 핵심 가치
+## Core values
 
-1. **공개된 실행 환경**  
-   소스·빌드 방법·사용 버전을 공개해 유지보수를 이어갈 수 있게 합니다.
+These values guide development and describe the intended platform:
 
-2. **신뢰할 수 있는 게임 지원**  
-   게임별 마지막 검증일, 지원 Mac·macOS, 알려진 문제를 표시합니다.
+1. **An open, reproducible runtime**
 
-3. **쉬운 설치와 복구**  
-   검증된 설정 적용, 저장 백업, 문제 발생 시 이전 런타임으로 복귀할 수 있게 합니다.
+   Publish source code, build instructions, and component versions so that others can inspect, reproduce, and maintain the runtime.
 
-4. **기여로 이어지는 커뮤니티**  
-   upvote로 수요를 모으고 설정·테스트·호환성 패치 기여로 지원을 확대합니다.
+2. **Verifiable game support**
 
-## 우리가 만드는 것
+   Document each game's last verification date, tested Mac models and macOS versions, and known issues.
 
-기존 오픈소스 호환 기술을 연결하고 개선하여, 게임 설치부터 실행·검증·문제 복구까지 일관된 경험을 제공합니다. 게임별 실행 프로필과 검증 기록을 함께 관리하고, 공통으로 도움이 되는 수정은 해당 원 프로젝트의 기여 정책에 맞춰 환원합니다.
+3. **Straightforward setup and recovery**
 
-장기 호환성을 중심 목표로 두며, 프레임 안정성·소비전력·설치 편의성을 함께 평가합니다. 성능이나 발열 개선은 동일한 조건의 측정으로 확인한 범위에서만 설명합니다.
+   Provide tested settings, save backups, and a way to return to a previous runtime version when problems occur.
 
-## 기술 방향
+4. **Community participation that expands compatibility**
 
-우선 검증하는 후보 구성은 **ARM64 Wine + FEX + ARM64 대응 DXMT**입니다.
+   Use game requests and upvotes to understand demand, and make it possible to contribute settings, test results, documentation, and compatibility patches.
 
-| 구성 요소 | 역할 |
+## First milestone: run Megabonk without Rosetta
+
+**Status: not yet achieved.** The target platform is macOS on Apple Silicon.
+
+The milestone will be considered complete when a documented setup can:
+
+- Launch Megabonk and complete at least 20 minutes of gameplay without Rosetta.
+- Verify Steam integration, input, audio, and saving and loading game progress.
+- Run all required runtime components, including launchers, helpers, and libraries, without Rosetta.
+- Be reproduced from available source code, documented patches, pinned component versions, and build instructions, including any required macOS signing and execution permissions.
+
+The verification record must identify the game version, Mac hardware, macOS version, runtime versions, test date, settings, and known limitations. Success on one configuration will establish that tested configuration; broader compatibility requires additional testing.
+
+Early technical checks will use small x64 programs and Direct3D 11 samples before testing the full game. Installer development, save-backup automation, runtime rollback, and support for additional games are subsequent goals.
+
+## Technical direction
+
+The initial candidate stack is **ARM64 Wine, FEX, and an ARM64-compatible DXMT build**. This is a research direction, not a validated Pear release.
+
+| Component | Intended role |
 |---|---|
-| FEX | Windows 게임의 x86/x64 CPU 명령을 ARM64에서 실행하도록 변환 |
-| ARM64 Wine / ARM64EC | Windows API와 실행 환경을 제공하고 가능한 시스템 처리를 ARM으로 실행 |
-| DXMT | Direct3D 11 그래픽을 Metal로 처리 |
-| 프로젝트의 런처와 게임 프로필 | 설치, 버전 선택, 설정, 검증 기록, 백업과 복구 제공 |
+| FEX | Translate the game's x86/x64 CPU instructions for execution on ARM64 |
+| ARM64 Wine / ARM64EC integration | Provide Windows APIs and an execution environment, using native ARM components where supported |
+| DXMT | Translate Direct3D 11 graphics operations to Metal |
+| Pear launcher and game profiles | Manage installation, runtime selection, settings, verification records, backups, and recovery |
 
-Rosetta를 사용하지 않아도 기존 x64 게임에는 CPU 명령 변환이 필요합니다. 공개 소스로 재현 가능한 빌드, macOS의 서명·실행 권한, 필요한 전체 실행 경로의 호환성을 먼저 확인합니다.
+Existing x64 games still need CPU instruction translation when running without Rosetta. The first technical work is to verify source and patch availability, reproducible builds, macOS execution requirements, and compatibility across the required runtime components.
 
-## 현재 상태
+Pear intends to reuse existing open-source projects and contribute generally useful improvements in accordance with each upstream project's contribution policies.
 
-2026-09-27 기준입니다.
+## Current status
 
-| 항목 | 상태 |
+As of September 27, 2026:
+
+| Area | Status |
 |---|---|
-| Megabonk Windows/Linux 배포 파일 분석 | 완료 |
-| M4 Pro에서 Wine + DXMT로 게임 실행 | 초기 확인 완료 — **Rosetta 사용** |
-| 게임의 30/60 FPS 제한 적용 | 확인 완료 |
-| Rosetta 독립 Megabonk 실행 | 미검증 |
-| 장시간 플레이·동일 조건 전력 비교 | 진행 전 |
-| 일반 사용자용 설치·백업·복구 기능 | 계획 |
-| 웹사이트의 게임 요청·upvote 기능 | 계획 |
+| Initial inspection of Megabonk Windows and Linux distribution files | Completed |
+| Megabonk launch and initial gameplay with Wine + DXMT on an M4 Pro | Verified with **Rosetta in use** |
+| In-game 30 and 60 FPS limits | Verified in the existing test setup |
+| Megabonk execution without Rosetta | Not yet verified |
+| Extended gameplay validation and power comparisons under matched conditions | Pending |
+| End-user installation, save backups, and runtime rollback | Planned |
+| Website for game requests and upvotes | Planned |
 
-현재 확인한 실행 성공은 Rosetta 독립 실행이나 CrossOver 대비 성능 우위를 뜻하지 않습니다.
+Comparative performance, power use, and thermal behavior have not yet been established. Claims about improvements will be based on measurements under comparable conditions.
 
-## 첫 번째 이정표
+## Participation
 
-1. ARM64 Wine·FEX·DXMT의 필요한 소스와 패치, 빌드 방법, 정상적인 서명·배포 경로를 확인합니다.
-2. 작은 x64 프로그램과 Direct3D 11 샘플을 Rosetta 없이 실행합니다.
-3. Megabonk의 실행, Steam 연동, 입력·오디오, 저장·불러오기, 20분 이상의 플레이를 검증합니다.
-4. 필요한 헬퍼와 라이브러리까지 Rosetta 의존 여부를 확인하고, 기존 환경과 같은 조건에서 프레임타임·전력·안정성을 비교합니다.
-5. 검증된 결과를 게임 프로필과 설치·복구 기능으로 제공합니다.
+Players, testers, developers, and documentation contributors can help shape Pear. Programming experience is not required to contribute game requests, clear problem reports, test results, or documentation improvements.
 
-## 함께 지원을 넓히는 방법
+Useful contributions include:
 
-게임 요청, 재현 가능한 문제 보고, Mac·macOS별 테스트, 실행 설정, 문서, 호환성 수정으로 참여할 수 있습니다. 요청 수와 함께 재현 가능성·예상 작업량·다른 게임에도 도움이 되는 개선 효과를 고려합니다.
+- Game requests and descriptions of compatibility problems.
+- Reproduction steps and test results for specific Mac and macOS configurations.
+- Game settings and runtime profiles that others can verify.
+- Documentation, usability feedback, and compatibility fixes.
 
-테스트 결과에는 게임·런타임 버전, Mac 칩, macOS, 해상도, 그래픽 설정, 마지막 검증일을 남깁니다. 계정 정보·인증 토큰·개인 저장 데이터는 공개 보고에서 제외합니다.
+Reports should include the game and runtime versions, Mac chip, macOS version, resolution, graphics settings, test date, and observed behavior. Exclude account credentials, authentication tokens, and personal save data from reports.
 
-게임은 사용자가 소유한 원본을 이용합니다. 게임 파일, Steam 계정 데이터, 추출한 게임 코드·자산은 저장소에 포함하지 않습니다. 구성 요소별 라이선스를 존중하며, 프로젝트 자체의 라이선스와 상세 기여 절차는 공개 배포 전에 확정합니다.
+Planned voting features will help identify demand. Prioritization will also consider reproducibility, available contributors, expected effort, and whether an improvement helps multiple games. A request or vote does not guarantee support or a delivery date.
+
+## Game files and licensing
+
+Pear is intended to work with game copies provided by users who own them. Game files, Steam account data, and extracted game code or assets are not included in this repository.
+
+Each reused component retains its own license requirements. Pear's own license and detailed contribution process will be established before a public release.
