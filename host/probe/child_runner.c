@@ -239,7 +239,7 @@ int pear_run_child_mode(const char *path, char *const argv[], pear_probe_id expe
     result->outcome = PEAR_RUN_SPAWN_ERROR;
     result->exit_code = -1;
     if (path == NULL || path[0] == '\0' || argv == NULL || argv[0] == NULL ||
-        expected < PEAR_PROBE_MEMORY || expected > PEAR_PROBE_RECOMMIT_FAULT ||
+        expected < PEAR_PROBE_MEMORY || expected > PEAR_PROBE_THREAD_LITMUS ||
         timeout_ms == 0 || timeout_ms > 60000 ||
         (mode != PEAR_SPAWN_DEFAULT && mode != PEAR_SPAWN_PAGES_4K)) {
         result->error_code = EINVAL;

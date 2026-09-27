@@ -4,7 +4,7 @@ The host tools collect native macOS observations and execute isolated baseline a
 
 `pear-host-probe` only observes its own process. `pear-baseline-probe` supervises four disposable `pear-probe-child` processes, including a fixed ARM64 JIT leaf. Neither tool enters the foreign x18 ABI, changes process page geometry, enables a thread memory-order policy, or launches Steam. Finding an API symbol does not establish permission to call it or prove its behavior.
 
-The separate `pear-process-probe` and `pear-process-probe-layout` executables can self-spawn native trial children with an authorized 4 KiB page mode. Run their restricted tests through `provisioned_probe.py`, which validates the actual local profile, signs fresh copies and checks effective claims before launch. These probes do not enter the foreign x18 ABI or execute game code.
+The separate `pear-process-probe` and `pear-process-probe-layout` executables can self-spawn native trial children with an authorized 4 KiB page mode. Run their restricted tests through `provisioned_probe.py`, which validates the actual local profile, signs fresh copies and checks effective claims before launch. The optional `--suite abi` adds isolated x18 and thread-policy trials. Both suites use fixed native test code and do not execute game code.
 
 ## Build and run
 
@@ -144,9 +144,50 @@ In each 4 KiB mode, a 12 KiB owned allocation supported changing only its middle
 
 The ordinary Hardened Runtime positive control returned 42. Its negative counterpart, built from identical pre-signing inputs without allow-jit, failed MAP_JIT allocation with `EINVAL` (22), and its baseline CLI exited one. The control assessment accepts this specific paired rejection; the original `failed` allocation and errno remain in the evidence. EINVAL is not globally reclassified as a permission error. Unpaired EINVAL, failures at later steps and unrelated faults still fail validation. The eight ordinary control children were reaped.
 
+## Run the ABI and thread suite
+
+Stage 4 adds an explicit suite to the same provisioned executable. The default invocation continues to run the Stage 3 process/memory tests. After the normal build and local profile setup:
+
+```sh
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" --suite abi > .build/host-probe/local-abi.json
+```
+
+The tool signs fresh copies and checks the same actual profile, device, certificate and effective claims. Each default/4 KiB run contains a geometry trial plus five isolated ABI/thread trials. ABI children have a ten-second execution deadline, followed by the runner's bounded cleanup. A native ABI record uses `record_kind: abi_capabilities`; the signed tool's enclosing record uses `provisioned_abi_control`. A zero exit alone is insufficient: every required trial must pass independently.
+
+| Probe | Behavior under test |
+|---|---|
+| `x18-roundtrip` | 64 explicit host/foreign/host transitions; preserve a known guest x18 value across the permitted getter; return to host mode |
+| `x18-callbacks` | 32 host callbacks, each with a nested guest transition; restore distinct inner/outer guest values; propagate 16 injected error returns correctly |
+| `x18-signals` | Deliver SIGUSR1 in host mode and asynchronously during a foreign spin window; verify entry mode, guest signal context, safe host handler calls and guest resumption |
+| `thread-policy` | Two workers individually initialize, enable and restore the x86 compatibility policy; retain raw Mach errors and verify joins |
+| `thread-litmus` | Two workers run 10,000 baseline and 10,000 enabled-policy message-passing trials; record both outcomes and verify restoration/cleanup |
+
+Apple's SDK `os/arch/arm64.h` requires strict mode toggling: a redundant setter call aborts, and disabling custom mode destroys the guest x18 value. The audited assembly saves guest state before a host callback and restores it only after re-entering foreign mode. Foreign windows call only the two allowed, pre-resolved x18 APIs. Normal C/POSIX work happens in verified host mode. The asynchronous signal gateway follows the same rule and preserves the interrupted context.
+
+The ordering test uses plain assembly stores `data=1; flag=1` and loads `flag; data`. Observing flag=1 with data=0 is forbidden under x86-TSO; a nonzero enabled-policy count fails. Baseline ARM reordering is recorded when observed but is not required for success. Synchronization belongs outside the measured pair. The SDK exposes a setter without a corresponding getter, so successful calls are recorded as requests accepted, not independently observed policy state or inheritance. A finite zero count does not prove universal ordering or replace translator-level tests.
+
+Ordinary tests simulate packets and policy return codes and inspect assembled instructions. They never execute x18-writing code with a fake mode setter, which would still leave macOS's reserved x18 register in force. Only the provisioned native runs establish actual platform behavior.
+
+## Stage 4 observations
+
+The September 28, 2026 [Stage 4 run](../mydocs/working/task_m1_2_stage4.md) on the same M4 Pro/macOS 26.5.2 passed in standard/emulation layouts and default/4 KiB page modes. [Sanitized evidence](../mydocs/working/task_m1_2_stage4_observations.json) records the actual signed runs, input bindings and 126 passing tests. The 24 ABI-suite children were reaped. The rebuilt executable also passed the Stage 3 process suite, retaining the standard-layout low-mapping limitation and reaping its 28 children. SIP and Gatekeeper remained enabled.
+
+Every configuration completed 64 round trips, 32 nested callbacks and 16 injected error returns with the expected guest values and host-mode restoration. Signal handlers observed mode 0 during the host control and mode 1 when interrupting the foreign spin window. The gateway entered host mode for the handler body, checked the interrupted x18 context, returned to foreign mode and resumed with the guest value intact. Both markers from actual handler writes were received. These are finite SIGUSR1 and explicit error-return cases, not a complete exception/unwind implementation.
+
+Two policy workers per configuration each successfully requested disable, enable and disable, then joined. The message-passing trial used two further explicitly initialized workers:
+
+| Configuration | Baseline trials / forbidden observations | Enabled trials / forbidden observations |
+|---|---|---|
+| Standard / default pages | 10,000 / 3 | 10,000 / 0 |
+| Standard / 4 KiB pages | 10,000 / 2 | 10,000 / 0 |
+| Emulation / default pages | 10,000 / 0 | 10,000 / 0 |
+| Emulation / 4 KiB pages | 10,000 / 0 | 10,000 / 0 |
+
+The five baseline observations show that this test can expose the ordering difference on this machine. No forbidden outcome occurred across 40,000 enabled-policy trials. This supports the tested behavior without proving universal ordering, independently reading a hardware mode bit, or qualifying a translator's entire memory model. Baseline zero counts in two configurations are not treated as failures or as proof that ARM ordering is always sufficient.
+
 ## Remaining qualification
 
-The authorized development signing path and the tested 4 KiB, low-address and JIT behaviors now have passing evidence on this configuration. The complete host gate still requires x18 transition correctness, callback/signal handling, per-thread memory-order policy and reproducible capability decisions. Required failures or unavailable prerequisites keep Issue #2 open. A fixed native JIT leaf does not execute an x86 game or validate the translator's code generation.
+The authorized development signing path and the tested memory, JIT, x18, callback/signal and per-thread ordering cases now have passing evidence on this configuration. Stage 5 must still rebuild from documented inputs and map every Issue #2 criterion to a reproducible capability decision. Later Wine/FEX integration needs its own ABI, exception and memory-model coverage. Required failures or unavailable prerequisites keep Issue #2 open. A fixed native JIT leaf does not execute an x86 game or validate the translator's code generation.
 
 Development-profile execution and ordinary-user distribution require separate evidence. The eventual downloadable app must work for its supported users without their installing developer tools or obtaining their own development profiles. The current registered-Mac trials do not establish that distribution path, notarization, other hardware/OS support or Rosetta-free Megabonk execution.
 

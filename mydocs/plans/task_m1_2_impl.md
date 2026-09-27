@@ -4,7 +4,7 @@ Task plan: [task_m1_2.md](task_m1_2.md)
 GitHub Issue: [#2](https://github.com/postmelee/pear/issues/2)
 Milestone: M1
 
-Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Stage 3 was then explicitly approved after the Stage 2 report. Later stages retain their own report checkpoints.
+Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Stages 3 and 4 were each explicitly approved after the preceding stage report. Stage 5 retains its own report checkpoint.
 
 ## Stage Overview
 
@@ -162,9 +162,44 @@ Record `codesign --verify --strict`, non-sensitive effective entitlement/provisi
 
 Implement narrow, auditable ARM64 thunks for custom x18 transitions. No normal C/POSIX/framework operation may occur while foreign mode is active. Preserve guest x18 before returning to host mode; explicitly test nesting, callbacks, asynchronous signal/error entry and all exits in disposable processes. Initialize and verify the memory-order policy for each relevant test thread.
 
+### Concrete Stage 4 boundaries
+
+The maintainer's explicit request to proceed approves Stage 4 following commit `539e3ff`. Reuse the verified development profile and existing self-spawning signed executable. Add an explicit ABI suite, preserving the default Stage 3 process suite. Keep each ABI or thread-policy trial inside an owned disposable child with the existing bounded runner; signed orchestration must independently validate its numeric evidence and actual termination.
+
+Add ARM64 assembly thunks and C host-side setup under `host/probe/`, with corresponding injected-failure and disassembly tests under `tests/host/`. Resolve the x18 getter/setter while in host mode and pass resolved addresses into assembly. Foreign windows may call only these permitted APIs or local audited assembly; a host callback first saves guest x18 and disables custom mode. macOS owns its host x18 value. Never restore guest x18 after returning to host mode. Test a normal round trip, a nested host-to-guest callback, explicit error returns and asynchronous signal entry/return with guest-state preservation.
+
+Thread tests must explicitly initialize the selected x86 ordering policy on every participating thread and record enable/disable results separately from finite behavior. Use assembly memory accesses and synchronized trial boundaries for a bounded message-passing litmus; do not introduce undefined C data races or require the default ARM mode to exhibit reordering. No getter or inheritance result is inferred from a successful setter. A zero forbidden-outcome count is finite evidence, not a proof of universal TSO.
+
+Keep contributor updates in the existing approved `docs/host-capabilities.md`, and store reviewed Stage 4 evidence/report at `mydocs/working/task_m1_2_stage4_observations.json` and `task_m1_2_stage4.md`. These locations match the task's approved document-location judgment. Native execution must use the actual development authorization with unchanged platform protections; ordinary fixtures may simulate the APIs but cannot qualify them.
+
+The ABI suite adds five six-step probe records alongside an actual child geometry record:
+
+| Probe | Required finite evidence |
+|---|---|
+| `x18-roundtrip` | Host entry 0, foreign entry 1, guest sentinel `0x11223344` before/after getter, host exit 0, 64 completed round trips |
+| `x18-callbacks` | Host entry 0, 32 host callbacks, 32 nested guest returns, 32 outer guest restorations, 16 injected error returns, host exit 0 |
+| `x18-signals` | Two resolved APIs, observed host/foreign handler entry modes 0/1, two host handler bodies, resumed guest preservation, host exit 0 |
+| `thread-policy` | API resolved; two created, initialized, enabled, restored and joined workers; raw setter errors retained |
+| `thread-litmus` | Two initialized workers; 10,000 default-policy and 10,000 enabled-policy message-passing trials; baseline forbidden count recorded, enabled forbidden count must be zero; two restored/joined workers |
+
+The message-passing forbidden outcome is flag=1 with data=0 after writer data=1 then flag=1. Store-buffering both-zero is allowed by x86-TSO and is not used as a forbidden outcome. Each policy worker explicitly calls disable/enable/disable; no initial-state getter or inheritance claim is made. The ordinary tests never run x18-writing thunks with mocked mode setters. Inspect their compiled instructions instead, and execute them only through the provisioned route.
+
+The explicit `--suite abi` option is required in the signed tool and native supervisor. The normal process suite retains its three-second child budget. ABI children have ten seconds each, with bounded runner cleanup; thread work also has a six-second work budget and two-second cooperative cleanup. Unexpected process faults are failures in this suite, not expected protection-test outcomes.
+
 ### Verification
 
 Use deterministic register/state fixtures and disassembly review of mode-transition windows. Distinguish a successful policy API return from observed memory-order behavior; a finite stress test does not prove universal ordering. Require the signed prerequisites from Stage 3 and retain coverage limits for later Wine/FEX integration. Re-run containment/failure tests and `git diff --check`.
+
+```sh
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+xcrun llvm-objdump --disassemble --no-show-raw-insn .build/host-probe/pear-process-probe
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" --suite abi
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE"
+git diff --check
+```
+
+The final process-suite run is a regression of the rebuilt shared signed executable. Inspect strict signatures, source and binary hashes, actual ARM64 slices, private-data redaction and unchanged platform protections. Preserve failures while investigating; only passing required verification permits the completed Stage 4 report.
 
 ### Commit
 

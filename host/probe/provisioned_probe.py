@@ -33,8 +33,28 @@ CROSS_KEYS = ("com.apple.developer.cross-architecture-support",
               "com.apple.developer.cross-architecture-support-unmanaged")
 APP_ID = "com.apple.application-identifier"
 TEAM_ID = "com.apple.developer.team-identifier"
+ABI_STEP_NAMES = {
+    "x18-roundtrip": ("host_entry", "foreign_entry", "guest_before", "guest_after_getter",
+                      "host_exit", "completed_roundtrips"),
+    "x18-callbacks": ("host_entry", "host_callbacks", "nested_guest_returns",
+                      "outer_guest_restores", "injected_error_returns", "host_exit"),
+    "x18-signals": ("symbols_resolved", "host_handler_entry", "foreign_handler_entry",
+                    "host_handler_body_calls", "resumed_guest_preserved", "host_exit"),
+    "thread-policy": ("api_resolved", "created_threads", "initialized_threads",
+                      "enabled_threads", "restored_threads", "joined_threads"),
+    "thread-litmus": ("initialized_workers", "baseline_trials", "baseline_forbidden",
+                      "enabled_trials", "enabled_forbidden", "restored_and_joined_workers"),
+}
+ABI_VALUES = {
+    "x18-roundtrip": (0, 1, 0x11223344, 0x11223344, 0, 64),
+    "x18-callbacks": (0, 32, 32, 32, 16, 0),
+    "x18-signals": (2, 0, 1, 2, 1, 0),
+    "thread-policy": (1, 2, 2, 2, 2, 2),
+    "thread-litmus": (2, 10000, None, 10000, 0, 2),
+}
 STEP_NAMES = {
     **BASELINE.STEP_NAMES,
+    **ABI_STEP_NAMES,
     "geometry": ("user_page_size", "vm_page_size", "kernel_page_size"),
     "subpage": ("allocate", "initial_sentinels", "protect_middle", "restore_middle",
                 "verify_neighbors", "release"),
@@ -225,6 +245,68 @@ def assess_result(record, mode, layout):
     return {"status": "passed", "reason": "expected_process_capabilities_observed"}
 
 
+def assess_abi_result(record, mode):
+    """Require finite ABI/thread evidence without implying runtime qualification."""
+    def failed(reason):
+        return {"status": "failed", "reason": reason}
+
+    if (not isinstance(record, dict) or type(record.get("schema_version")) is not int
+            or record["schema_version"] != 1 or record.get("record_kind") != "abi_capabilities"
+            or record.get("scope") != "owned_test_children" or record.get("requested_mode") != mode
+            or mode not in ("default", "4k") or record.get("qualification") != BASELINE.QUALIFICATION):
+        return failed("invalid_abi_record")
+    parent = record.get("parent_observations")
+    if not isinstance(parent, dict) or parent.get("qualification") != BASELINE.QUALIFICATION:
+        return failed("invalid_parent_observations")
+    process, signature = parent.get("process", {}), parent.get("signature", {})
+    if (not isinstance(process, dict) or not isinstance(signature, dict)
+            or not BASELINE._observed(process.get("architecture"), "arm64")
+            or not BASELINE._observed(process.get("translated"), False)
+            or not BASELINE._observed(signature.get("category"), "signed")):
+        return failed("native_signed_parent_unconfirmed")
+    expected = set(ABI_STEP_NAMES) | {"geometry"}
+    probes = record.get("probes")
+    if not isinstance(probes, list) or len(probes) != len(expected):
+        return failed("invalid_abi_probe_set")
+    seen = set()
+    for probe in probes:
+        if (not isinstance(probe, dict) or not isinstance(probe.get("name"), str)
+                or probe["name"] not in expected or probe["name"] in seen):
+            return failed("invalid_abi_probe_set")
+        name = probe["name"]
+        seen.add(name)
+        execution, steps = probe.get("execution"), probe.get("steps")
+        if (probe.get("status") != "passed" or probe.get("expected_fault_observed") is not False
+                or not isinstance(execution, dict) or not isinstance(steps, dict)
+                or set(steps) != set(STEP_NAMES[name])
+                or execution.get("outcome") != "exited" or execution.get("signal") is not None
+                or execution.get("packet_valid") is not True or execution.get("child_reaped") is not True
+                or execution.get("page_attribute_called") is not (mode == "4k")):
+            return failed("invalid_abi_execution")
+        for key, wanted in (("exit_code", 0), ("error_code", 0), ("stdout_bytes", 160),
+                            ("stderr_bytes", 0), ("page_attribute_error", 0)):
+            if type(execution.get(key)) is not int or execution[key] != wanted:
+                return failed("invalid_abi_execution")
+        if type(execution.get("elapsed_ms")) is not int or execution["elapsed_ms"] < 0:
+            return failed("invalid_abi_execution")
+        if name == "geometry":
+            page = 4096 if mode == "4k" else 16384
+            if (not BASELINE._step(steps["user_page_size"], "passed", page)
+                    or not BASELINE._step(steps["vm_page_size"], "passed", page)
+                    or not BASELINE._allocation(steps["kernel_page_size"])):
+                return failed("abi_page_geometry_mismatch")
+            continue
+        for key, value in zip(ABI_STEP_NAMES[name], ABI_VALUES[name]):
+            if value is None:
+                observed = steps[key].get("value") if isinstance(steps[key], dict) else None
+                if type(observed) is not int or not 0 <= observed <= 10000:
+                    return failed("abi_semantics_mismatch")
+                value = observed
+            if not BASELINE._step(steps[key], "passed", value):
+                return failed("abi_semantics_mismatch")
+    return {"status": "passed", "reason": "finite_abi_thread_cases_observed"}
+
+
 def sanitized_result(record):
     """Extend the existing numeric/enum sanitizer to the process-specific names."""
     clean = BASELINE.sanitized_result(record)
@@ -259,17 +341,20 @@ def sanitized_result(record):
 
 
 def _parse_arguments(arguments):
-    values = {"--bundle-id": DEFAULT_BUNDLE_ID}
-    if len(arguments) not in (2, 4):
+    values = {"--bundle-id": DEFAULT_BUNDLE_ID, "--suite": "process"}
+    seen = set()
+    if len(arguments) not in (2, 4, 6):
         raise ControlError("expected_profile_argument", "arguments")
     for index in range(0, len(arguments), 2):
         key, value = arguments[index:index + 2]
-        if key not in ("--profile", "--bundle-id") or (key == "--profile" and key in values):
+        if key not in ("--profile", "--bundle-id", "--suite") or key in seen:
             raise ControlError("invalid_arguments", "arguments")
+        seen.add(key)
         values[key] = value
-    if "--profile" not in values or re.fullmatch(r"[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+", values["--bundle-id"]) is None:
+    if ("--profile" not in values or values["--suite"] not in ("process", "abi")
+            or re.fullmatch(r"[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+", values["--bundle-id"]) is None):
         raise ControlError("invalid_arguments", "arguments")
-    return Path(values["--profile"]).expanduser(), values["--bundle-id"]
+    return Path(values["--profile"]).expanduser(), values["--bundle-id"], values["--suite"]
 
 
 def _provisioning_udid(report):
@@ -301,7 +386,7 @@ def _verify(target, claims, label, report):
     return {"strict_verification": "passed", **result}
 
 
-def _variant(directory, source, label, bundle_id, private, profile_copy, report):
+def _variant(directory, source, label, bundle_id, private, profile_copy, report, suite="process"):
     bundle = directory / (label + ".app")
     executable = bundle / "Contents/MacOS/pear-process-probe"
     executable.parent.mkdir(parents=True)
@@ -332,8 +417,11 @@ def _variant(directory, source, label, bundle_id, private, profile_copy, report)
     control["embedded_profile_matches_validated_copy"] = True
     control["signed_binary_sha256"] = BASELINE._hash(executable)
     for mode in ("default", "4k"):
-        result = BASELINE._command([str(executable), "--mode", mode], label + ".execute." + mode,
-                                   report["commands"], timeout=45 if mode == "4k" else 25,
+        arguments = [str(executable), "--mode", mode]
+        if suite == "abi":
+            arguments += ["--suite", "abi"]
+        result = BASELINE._command(arguments, label + ".execute." + mode,
+                                   report["commands"], timeout=70 if suite == "abi" else 45 if mode == "4k" else 25,
                                    require_success=False)
         run = {"mode": mode, "status": "failed", "exit_code": result.returncode,
                "stderr_bytes": len(result.stderr)}
@@ -345,7 +433,7 @@ def _variant(directory, source, label, bundle_id, private, profile_copy, report)
         except (ValueError, UnicodeError):
             raise ControlError("process_json_invalid", label + ".execute." + mode) from None
         run["observations"] = sanitized_result(record)
-        run["assessment"] = assess_result(record, mode, label == "layout")
+        run["assessment"] = assess_abi_result(record, mode) if suite == "abi" else assess_result(record, mode, label == "layout")
         if result.returncode != 0 or result.stderr:
             raise ControlError("process_execution_failed", label + ".execute." + mode)
         if run["assessment"]["status"] != "passed":
@@ -363,7 +451,9 @@ def main():
     directory = None
     stage = "arguments"
     try:
-        profile_path, bundle_id = _parse_arguments(sys.argv[1:])
+        profile_path, bundle_id, suite = _parse_arguments(sys.argv[1:])
+        if suite == "abi":
+            report["record_kind"] = "provisioned_abi_control"
         stage = "prepare"
         if platform.system() != "Darwin" or platform.machine() != "arm64":
             raise ControlError("native_apple_silicon_required", stage)
@@ -402,7 +492,7 @@ def main():
         report["effective_claim_keys"] = sorted(private["claims"])
         for label, source in sources.items():
             stage = label
-            _variant(directory, source, label, bundle_id, private, profile_copy, report)
+            _variant(directory, source, label, bundle_id, private, profile_copy, report, suite)
         for label, source in sources.items():
             if BASELINE._hash(source) != report["input_binary_sha256"][label]:
                 raise ControlError("source_binary_changed", "final_input_check")

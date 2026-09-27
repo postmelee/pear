@@ -10,6 +10,7 @@
 #include <string.h>
 
 #define CHILD_TIMEOUT_MS 3000
+#define ABI_TIMEOUT_MS 10000
 
 typedef struct {
     pear_probe_id id;
@@ -33,7 +34,17 @@ static const probe_spec probes[] = {
     {PEAR_PROBE_RECOMMIT, "recommit", {"allocate", "initial_sentinels", "replace_middle",
         "verify_neighbors", "recommit_zero_and_write", "release"}, 6},
     {PEAR_PROBE_RECOMMIT_FAULT, "recommit-fault", {"allocate", "initial_sentinels", "replace_middle",
-        "verify_neighbors", "recommit_zero_and_write", "release"}, 6}
+        "verify_neighbors", "recommit_zero_and_write", "release"}, 6},
+    {PEAR_PROBE_X18_ROUNDTRIP, "x18-roundtrip", {"host_entry", "foreign_entry", "guest_before",
+        "guest_after_getter", "host_exit", "completed_roundtrips"}, 6},
+    {PEAR_PROBE_X18_CALLBACKS, "x18-callbacks", {"host_entry", "host_callbacks", "nested_guest_returns",
+        "outer_guest_restores", "injected_error_returns", "host_exit"}, 6},
+    {PEAR_PROBE_X18_SIGNALS, "x18-signals", {"symbols_resolved", "host_handler_entry", "foreign_handler_entry",
+        "host_handler_body_calls", "resumed_guest_preserved", "host_exit"}, 6},
+    {PEAR_PROBE_THREAD_POLICY, "thread-policy", {"api_resolved", "created_threads", "initialized_threads",
+        "enabled_threads", "restored_threads", "joined_threads"}, 6},
+    {PEAR_PROBE_THREAD_LITMUS, "thread-litmus", {"initialized_workers", "baseline_trials", "baseline_forbidden",
+        "enabled_trials", "enabled_forbidden", "restored_and_joined_workers"}, 6}
 };
 
 static int self_path(char path[PATH_MAX])
@@ -119,51 +130,61 @@ int main(int argc, char **argv)
                 char *arguments[] = {argv[0], argv[2], NULL};
                 return pear_baseline_child_main(2, arguments);
             }
+            if (probes[i].id >= PEAR_PROBE_THREAD_POLICY)
+                return pear_thread_child_main(probes[i].id);
+            if (probes[i].id >= PEAR_PROBE_X18_ROUNDTRIP)
+                return pear_abi_child_main(probes[i].id);
             return pear_process_child_main(probes[i].id);
         }
         return 2;
     }
     if (argc == 2 && strcmp(argv[1], "--help") == 0) {
-        puts("Usage: pear-process-probe --mode default|4k\n"
+        puts("Usage: pear-process-probe --mode default|4k [--suite abi]\n"
              "Run only from the verified provisioned development bundle.\n"
-             "This does not qualify foreign ABI or game execution.");
+             "Finite probe success does not qualify a runtime or game.");
         return 0;
     }
-    if (argc != 3 || strcmp(argv[1], "--mode") != 0 ||
+    if ((argc != 3 && argc != 5) || strcmp(argv[1], "--mode") != 0 ||
+        (argc == 5 && (strcmp(argv[3], "--suite") != 0 || strcmp(argv[4], "abi") != 0)) ||
         (strcmp(argv[2], "default") != 0 && strcmp(argv[2], "4k") != 0)) {
-        fputs("Usage: pear-process-probe --mode default|4k\n", stderr);
+        fputs("Usage: pear-process-probe --mode default|4k [--suite abi]\n", stderr);
         return 2;
     }
+    bool abi = argc == 5;
+    unsigned timeout = abi ? ABI_TIMEOUT_MS : CHILD_TIMEOUT_MS;
     pear_spawn_mode mode = strcmp(argv[2], "4k") == 0 ? PEAR_SPAWN_PAGES_4K : PEAR_SPAWN_DEFAULT;
     char path[PATH_MAX];
     int path_error = self_path(path);
     pear_report observations;
     pear_collect(pear_system_source(), &observations);
-    printf("{\"schema_version\":1,\"record_kind\":\"process_capabilities\","
+    printf("{\"schema_version\":1,\"record_kind\":\"%s\","
            "\"scope\":\"owned_test_children\",\"requested_mode\":\"%s\","
-           "\"timeout_ms\":3000,\"parent_observations\":", argv[2]);
+           "\"timeout_ms\":%u,\"parent_observations\":",
+           abi ? "abi_capabilities" : "process_capabilities", argv[2], timeout);
     if (pear_write_json(stdout, &observations) != 0) return 1;
     fputs(",\"probes\":[", stdout);
     bool failed = false;
-    unsigned count = mode == PEAR_SPAWN_PAGES_4K ? 9 : 5;
+    unsigned count = abi ? 6 : mode == PEAR_SPAWN_PAGES_4K ? 9 : 5;
     for (unsigned i = 0; i < count; ++i) {
+        const probe_spec *spec = &probes[abi ? (i == 0 ? 4 : i + 8) : i];
         pear_child_result result = {0};
         result.exit_code = -1;
         if (path_error != 0) {
             result.outcome = PEAR_RUN_SPAWN_ERROR;
             result.error_code = path_error;
         } else {
-            char *arguments[] = {path, "--child", (char *)probes[i].name, NULL};
-            if (pear_run_child_mode(path, arguments, probes[i].id, CHILD_TIMEOUT_MS,
+            char *arguments[] = {path, "--child", (char *)spec->name, NULL};
+            if (pear_run_child_mode(path, arguments, spec->id, timeout,
                                     mode, &result) != 0) {
                 result.outcome = PEAR_RUN_IO_ERROR;
                 result.error_code = EINVAL;
             }
         }
-        pear_baseline_outcome assessment = pear_assess_process(probes[i].id, &result, mode);
+        pear_baseline_outcome assessment = abi ? pear_assess_abi(spec->id, &result, mode) :
+                                                pear_assess_process(spec->id, &result, mode);
         if (assessment == PEAR_BASELINE_FAILED) failed = true;
         if (i > 0) fputc(',', stdout);
-        write_result(&probes[i], &result, assessment);
+        write_result(spec, &result, assessment);
     }
     fputs("],\"qualification\":{\"runtime\":\"not_assessed\","
           "\"rosetta_free_game\":\"not_assessed\",\"distribution\":\"not_assessed\"}}\n", stdout);

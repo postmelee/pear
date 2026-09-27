@@ -14,7 +14,9 @@
 typedef enum {
     PEAR_PROBE_MEMORY = 1, PEAR_PROBE_PROTECTION, PEAR_PROBE_LOW_ADDRESS,
     PEAR_PROBE_JIT, PEAR_PROBE_GEOMETRY, PEAR_PROBE_SUBPAGE,
-    PEAR_PROBE_SUBPAGE_FAULT, PEAR_PROBE_RECOMMIT, PEAR_PROBE_RECOMMIT_FAULT
+    PEAR_PROBE_SUBPAGE_FAULT, PEAR_PROBE_RECOMMIT, PEAR_PROBE_RECOMMIT_FAULT,
+    PEAR_PROBE_X18_ROUNDTRIP, PEAR_PROBE_X18_CALLBACKS, PEAR_PROBE_X18_SIGNALS,
+    PEAR_PROBE_THREAD_POLICY, PEAR_PROBE_THREAD_LITMUS
 } pear_probe_id;
 typedef enum { PEAR_PACKET_COMPLETE = 1, PEAR_PACKET_ARMED = 2 } pear_packet_phase;
 typedef enum {
@@ -78,6 +80,8 @@ int pear_run_child_mode(const char *path, char *const argv[], pear_probe_id expe
 /* Internal child entry points used by the provisioned self-spawning probe. */
 int pear_baseline_child_main(int argc, char **argv);
 int pear_process_child_main(pear_probe_id probe);
+int pear_abi_child_main(pear_probe_id probe);
+int pear_thread_child_main(pear_probe_id probe);
 
 typedef enum {
     PEAR_BASELINE_PASSED = 0, PEAR_BASELINE_UNAVAILABLE, PEAR_BASELINE_FAILED
@@ -88,5 +92,8 @@ pear_baseline_outcome pear_assess_baseline(pear_probe_id probe,
 pear_baseline_outcome pear_assess_process(pear_probe_id probe,
                                          const pear_child_result *result,
                                          pear_spawn_mode mode);
+pear_baseline_outcome pear_assess_abi(pear_probe_id probe,
+                                     const pear_child_result *result,
+                                     pear_spawn_mode mode);
 
 #endif
