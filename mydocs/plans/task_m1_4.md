@@ -6,7 +6,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
 Planning date: September 29, 2026
 
-Status: task plan proposed; implementation has not started.
+Status: the requester approved this task plan and its document locations on September 29, 2026. Detailed implementation planning is authorized; source implementation has not started.
 
 ## Purpose
 
@@ -206,3 +206,7 @@ Only Wine-relevant existing regression suites are rerun when shared behavior is 
 - Approve a separate Wine-scoped build record that resolves named inputs/ports through new evidence while preserving #1's original blocked inventory and all historical results.
 
 After task-plan approval, `task_m1_4_impl.md` will specify the exact stage artifacts, build/verification commands, signing prerequisites and commit messages for a separate implementation-plan review. This draft does not approve implementation or restricted Wine execution.
+
+## Approval Record
+
+On September 29, 2026, the requester explicitly approved this plan, its six stages and document locations, and proceeding with detailed implementation planning. This authorizes preparation of `task_m1_4_impl.md`. That implementation plan and Stage 1 execution retain their separate review checkpoint; no source implementation or restricted Wine execution is authorized by this approval alone.
