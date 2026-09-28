@@ -1,0 +1,3232 @@
+{
+  "schema_version": 1,
+  "record_kind": "source_audit",
+  "issue": 1,
+  "stage": 4,
+  "audit_date": "2026-09-28",
+  "scope": "Completed bounded public source audit and fresh acquisition reproduction for the proposed native ARM64 Wine/FEX/DXMT path. Required build inputs and Darwin integration remain blocked; no builds, runtime, game or distribution qualification.",
+  "audit_complete": true,
+  "decision": "blocked",
+  "source_ready": false,
+  "qualification": {
+    "runtime": "unassessed",
+    "game": "unassessed",
+    "distribution": "unassessed"
+  },
+  "input_root": ".build/task1-sources/inputs",
+  "evidence_document": "mydocs/working/task_m1_1_stage1_evidence.json",
+  "identity_rules": {
+    "git": "Commit/tree IDs are typed Git SHA-1 identities. Listing SHA-256 hashes raw git ls-tree -r -z --full-tree bytes, not concatenated source contents. Each submodule has separate content identity.",
+    "archive": "Archive SHA-256 identifies exact downloaded bytes. Member-listing SHA-256 identifies the separately generated metadata JSON, not extracted source.",
+    "authenticity": "Public HTTPS/GitHub origins and official vendor link were observed. No independent Git tag/commit signature or publisher archive signature/checksum was verified.",
+    "readiness": "Content verification does not establish source completeness, compatible binaries, accepted terms, native build capability or qualified runtime behavior."
+  },
+  "proposed_target_roles": {
+    "host": "macOS Apple Silicon ARM64",
+    "guest": "owned Windows x86-64 Megabonk",
+    "translator": "FEX Windows ARM64EC/WOW64 modules and a host integration to be audited",
+    "graphics": "DXMT ARM64EC Windows components plus native ARM64 Metal/shader components",
+    "status": "candidate_only"
+  },
+  "components": [
+    {
+      "component_id": "crossover-source",
+      "role": "published-vendor-source-comparison",
+      "selection_reason": "Current 26.3.0 FOSS source archive linked by the official CrossOver source page; ARM64 Preview source coverage is not inferred from the product version.",
+      "source": {
+        "kind": "archive",
+        "url": "https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz",
+        "published_label": "CrossOver 26.3.0 FOSS source",
+        "archive_format": "tar+gzip"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "crossover-source/crossover-sources-26.3.0.tar.gz",
+        "acquired_at_utc": "2026-09-28T08:36:54.971323+00:00",
+        "scope": "Exact downloaded archive bytes and streamed outer-member metadata only; not extracted or executed."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+          "scope": "downloaded_archive_bytes",
+          "cache_path": "crossover-source/crossover-sources-26.3.0.tar.gz",
+          "size_bytes": 149054023
+        },
+        {
+          "algorithm": "sha256",
+          "value": "a99044d40a096d53fee9ff465642c48c35b4164c9ba1584ec6d752022f0f52bb",
+          "scope": "archive_member_metadata_json_bytes",
+          "cache_path": "crossover-source/crossover-sources-26.3.0.members.json"
+        }
+      ],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "scope": "Only reviewed Wine subtree license declarations; not clearance of the full 16-project aggregate.",
+        "declared_license": "LGPL-2.1-or-later",
+        "evidence": [
+          {
+            "archive_member": "sources/wine/LICENSE",
+            "member_sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+            "digest_scope": "archive_member_bytes",
+            "line_range": [
+              1,
+              16
+            ]
+          },
+          {
+            "archive_member": "sources/wine/COPYING.LIB",
+            "member_sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+            "digest_scope": "archive_member_bytes",
+            "line_range": [
+              1,
+              8
+            ]
+          }
+        ],
+        "historical_license": "LICENSE.OLD is present; reconcile historical/per-file/vendored notices before redistribution.",
+        "obligations_to_track": [
+          "Preserve copyright and license notices and the applicable license text.",
+          "Determine corresponding-source and modification/linking obligations for the actual reused/distributed components.",
+          "Review per-file exceptions and bundled dependency terms; top-level Wine licensing does not cover every project in the archive."
+        ],
+        "contribution_policy": "No independent vendor submission permission is inferred; this audit authorizes no upstream submission.",
+        "distribution_clearance": "not_assessed",
+        "evidence_refs": [
+          "s2-vendor-crossover"
+        ]
+      },
+      "patches": {
+        "status": "ordered_preview_series_not_established",
+        "ordered_series": null,
+        "reason": "The reviewed Wine subtree identifies Wine 11.0 and contains vendor changes, but no exact upstream base plus ordered native ARM64 Preview series was established by this bounded inspection.",
+        "evidence_refs": [
+          "s2-vendor-crossover"
+        ]
+      },
+      "evidence_refs": [
+        "acquire-crossover-source",
+        "s2-vendor-crossover"
+      ]
+    },
+    {
+      "component_id": "dxmt-directx",
+      "role": "dependency-source",
+      "selection_reason": "DXMT root Meson definition checks include/native/directx/d3d11.h before configuring.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/misyltoad/mingw-directx-headers",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+        "tree_object_id": "66fcb250507a2c45bd9a22f44795d0e4c7b613f5"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "dxmt-directx/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:33.381301+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "80623e8570743b5848d707f1ddd207f419b4c2fd93f7bbf2de975c630b8b23f4",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "dxmt-directx/tree-listing.z",
+          "size_bytes": 4242
+        }
+      ],
+      "tracked_entries": 66,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "Mixed: observed LGPL-2.1-or-later header notices and public-domain headers; COPYING describes MinGW components and a narrow small-header-use exception.",
+        "packaging_actions": "Preserve exact header notices; shipping/modifying LGPL-covered headers differs from merely consuming small definitions. COPYING refers to COPYING.LGPLv2.1, runtime notice and DISCLAIMER.PD files not present in this small tree; notice packaging still needs reconciliation. Generated d3d11.h identifies WIDL input provenance without an individual notice. No blanket MIT classification.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-024",
+          "s2-file-025",
+          "s2-file-026",
+          "s2-file-027",
+          "s2-file-028"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-dxmt-directx"
+      ]
+    },
+    {
+      "component_id": "dxmt-nvapi",
+      "role": "dependency-source",
+      "selection_reason": "Optional enable_nvapi path; false in meson.options, true in the ARM64EC release CI command.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/NVIDIA/nvapi.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "d08488fcc82eef313b0464db37d2955709691e94",
+        "tree_object_id": "5f63f798f0e45a722e25ffdd8696f7f2397c9d75"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "dxmt-nvapi/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:34.362672+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "783eff0609e8224f9278d9c412e5ee6bf65970072664e39eec9273b5a96ffeef",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "dxmt-nvapi/tree-listing.z",
+          "size_bytes": 2674
+        }
+      ],
+      "tracked_entries": 32,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT in inspected headers; License.txt explicitly applies MIT to nvapi.lib/nvapi64.lib.",
+        "packaging_actions": "Preserve copyright and permission notices for included files. No non-open clause was observed in License.txt, nvapi.h or nvapi_lite_common.h at this pin. This does not prove a source-buildable NVIDIA driver/library; selected header use and any prebuilt library use must remain distinct.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-029",
+          "s2-file-030",
+          "s2-file-031"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-dxmt-nvapi"
+      ]
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "role": "d3d11-metal-and-shader-source",
+      "selection_reason": "Fresh upstream D3D11/Metal source with declared ARM64EC build definitions; compatibility with the selected Wine/FEX sources is untested.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/3Shain/dxmt.git",
+        "requested_ref": "HEAD",
+        "object_format": "sha1",
+        "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+        "tree_object_id": "c273b79a2bfa47e62e8526786559f4d18911625a"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "dxmt-upstream/repo.git",
+        "acquired_at_utc": "2026-09-28T08:36:06.146154+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "958103ca0c78ba9817f672c15612dba2d4feff45e125ddd333a8fbcea42a8a01",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "dxmt-upstream/tree-listing.z",
+          "size_bytes": 30804
+        }
+      ],
+      "tracked_entries": 381,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "Current source LGPL-2.1-or-later. LICENSE.OLD explicitly limits the former MIT terms to older releases through v0.80; selected DXBCParser headers retain Microsoft MIT attribution.",
+        "packaging_actions": "Preserve applicable notices/license and provide corresponding library source, modifications and build material through a compliant distribution/replacement arrangement. Check the actual linked payload and each bundled component; this is an engineering obligation inventory, not legal clearance. Preserve separate DXBCParser MIT notices.",
+        "contribution_policy": {
+          "status": "explicit_restriction",
+          "summary": "CONTRIBUTING.md rejects AI/LLM-authored or coauthored contributions, permits research findings, and requests legal-name sign-off. AGENTS.md forbids AI-generated contribution code. No upstream submission is made by this audit."
+        },
+        "evidence_refs": [
+          "s2-file-175",
+          "s2-file-176",
+          "s2-file-177",
+          "s2-file-178",
+          "s2-file-179",
+          "s2-file-180",
+          "s2-file-181"
+        ],
+        "limits": "The prior Rosetta experiment used an older DXMT license/version; its label must not be carried into this selected revision."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-dxmt-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-catch2",
+      "role": "dependency-source",
+      "selection_reason": "BUILD_TESTING and no selected system Catch2 package.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/catchorg/Catch2.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f",
+        "tree_object_id": "46a08efa7b84ca625bb83d1845def3e79586115e"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-catch2/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:30.877130+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "d3b46529ef9bb9d44d8fa91c2d1a31f0ccbf144f16fa70d6da4cb3fd24fc71a7",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-catch2/tree-listing.z",
+          "size_bytes": 53740
+        }
+      ],
+      "tracked_entries": 568,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "Boost Software License 1.0",
+        "packaging_actions": "Retain notices/license for source and derivatives, subject to stated machine-executable exception. docs/contributing.md defines branch/test/PR practices, not a promise of acceptance.",
+        "contribution_policy": {
+          "status": "observed_local_paths",
+          "paths": [
+            "docs/contributing.md"
+          ],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-032",
+          "s2-file-033",
+          "s2-file-034"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-catch2"
+      ]
+    },
+    {
+      "component_id": "fex-cpp-optparse",
+      "role": "dependency-source",
+      "selection_reason": "Source/Common and the Windows offline compiler use this source dependency.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/Sonicadvance1/cpp-optparse",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+        "tree_object_id": "83f3445fe4f223102506c20b2ec583f712b28910"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-cpp-optparse/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:28.240860+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "7213c3a365d0f913484839a0bbc2a739ec7d429892203b2a63ef751d4662e2de",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-cpp-optparse/tree-listing.z",
+          "size_bytes": 712
+        }
+      ],
+      "tracked_entries": 11,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT",
+        "packaging_actions": "Retain copyright and permission notice in copies/substantial portions.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-035"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-cpp-optparse"
+      ]
+    },
+    {
+      "component_id": "fex-drm-headers",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/drm-headers.git",
+        "object_format": "sha1",
+        "commit_object_id": "3e49836995c1dcb3df709440ad2f270b569c6a5f",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "Linux DRM header input outside the initial Windows-module source subset. Reassess the final port configuration before excluding it from a build closure."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-fmt",
+      "role": "dependency-source",
+      "selection_reason": "Bundled source used under MINGW; fallback elsewhere.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/fmtlib/fmt.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+        "tree_object_id": "f7d6122a22a4b5a2241e9d14570817633b55ddc4"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-fmt/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:28.426582+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "344344b91f8658d5b34a6a6b059707451ae336baa9c0921868a38d8a73f91f31",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-fmt/tree-listing.z",
+          "size_bytes": 11010
+        }
+      ],
+      "tracked_entries": 145,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT; doc/LICENSE-exception supplies an optional embedded-machine-object exception.",
+        "packaging_actions": "Retain MIT notices unless the applicable exception is established for the actual artifact. CONTRIBUTING.md requests rights to license contributions, incoming fmt license and agreement to future licensing changes; separate from downstream reuse.",
+        "contribution_policy": {
+          "status": "observed_local_paths",
+          "paths": [
+            "CONTRIBUTING.md"
+          ],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-036",
+          "s2-file-037",
+          "s2-file-038"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-fmt"
+      ]
+    },
+    {
+      "component_id": "fex-gcc-target-tests-bins",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/fex-gcc-target-tests-bins.git",
+        "object_format": "sha1",
+        "commit_object_id": "442678a134e2d25e759c430cca32e06e9e142f1f",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-gvisor-tests-bins",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/fex-gvisor-tests-bins.git",
+        "object_format": "sha1",
+        "commit_object_id": "71349ae6d14ac2e3e792730e240aecd8076cee6c",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-jemalloc-glibc",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/jemalloc.git",
+        "object_format": "sha1",
+        "commit_object_id": "8436195ad5e1bc347d9b39743af3d29abee59f06",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "The inspected MINGW branch disables ENABLE_JEMALLOC_GLIBC_ALLOC; no Darwin allocator configuration is established."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-posixtest-bins",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/fex-posixtest-bins.git",
+        "object_format": "sha1",
+        "commit_object_id": "9ae29638f8000c1603f16385ed1cf6c4c23ee414",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-range-v3",
+      "role": "dependency-source",
+      "selection_reason": "Bundled source fallback when a system range-v3 package is not selected.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/ericniebler/range-v3.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+        "tree_object_id": "bddf4cfede92ace82abac9847af08962a82f36cf"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-range-v3/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:30.033818+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "98194cdca7259bedb9df26d63dc1b2280e59d81f6cb06be2f5d692dd6a131b87",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-range-v3/tree-listing.z",
+          "size_bytes": 57127
+        }
+      ],
+      "tracked_entries": 673,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "Boost Software License 1.0 plus reproduced libc++ NCSA/MIT dual-license text.",
+        "packaging_actions": "Do not collapse all included code to BSL alone; track the relevant file origin and applicable notices. Nested doc/gh-pages was not acquired and remains excluded documentation input.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-039"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-range-v3"
+      ]
+    },
+    {
+      "component_id": "fex-rpmalloc",
+      "role": "dependency-source",
+      "selection_reason": "ENABLE_FEX_ALLOCATOR; the inspected MINGW branch sets this true.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/rpmalloc.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "09142d726429416bfa7b459151515fe3ab7622dd",
+        "tree_object_id": "8df22bc1162ac2da5d776bb20631f964598c8353"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-rpmalloc/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:33.284911+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "7dd720544d7555f0af09b99b69679f471f2ff5a307c651cff6825f7e3cf3c19e",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-rpmalloc/tree-listing.z",
+          "size_bytes": 2797
+        }
+      ],
+      "tracked_entries": 39,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "ISC-like permission/disclaimer text without the standard notice-retention condition (0BSD form).",
+        "packaging_actions": "Record exact text rather than labeling it conventional ISC. No further condition is stated in inspected LICENSE; individual-file exceptions not exhaustively audited.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-040"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-rpmalloc"
+      ]
+    },
+    {
+      "component_id": "fex-tracy",
+      "role": "dependency-source",
+      "selection_reason": "ENABLE_FEXCORE_PROFILER and FEXCORE_PROFILER_BACKEND exactly TRACY in the inspected condition; no profiler configuration selected.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/wolfpld/tracy",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "650c98ece70da9e155e7ba1c2b3ee16004aae118",
+        "tree_object_id": "20b9ed39c68806dc5afd8220d346a7db9a21b6fe"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-tracy/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:32.383967+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "794effdbf231bcf6c8ed65bbcb0893205c6f393d72bc6b5680a1d15c5ecd48cb",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-tracy/tree-listing.z",
+          "size_bytes": 32333
+        }
+      ],
+      "tracked_entries": 385,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "BSD-3-Clause; public/libbacktrace has its own BSD-style three-condition notice.",
+        "packaging_actions": "Retain source/binary notices and non-endorsement terms where included. Profiling/third-party/example sources are not all the same payload; distribution closure remains unassessed.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-041",
+          "s2-file-042",
+          "s2-file-043"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-tracy"
+      ]
+    },
+    {
+      "component_id": "fex-unordered_dense",
+      "role": "dependency-source",
+      "selection_reason": "Bundled source fallback when a system unordered_dense package is not selected.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/martinus/unordered_dense.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+        "tree_object_id": "40f25261cffbae5c901319dd76013224ff3658dd"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-unordered_dense/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:32.499497+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "f8d9a39dff2a834b8f9560398760616a162480fb79f3bde0c97036f6396dbb0c",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-unordered_dense/tree-listing.z",
+          "size_bytes": 304945
+        }
+      ],
+      "tracked_entries": 2393,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT",
+        "packaging_actions": "Retain copyright and permission notices. CONTRIBUTING.md requests consistent style, clang-format and one feature per PR.",
+        "contribution_policy": {
+          "status": "observed_local_paths",
+          "paths": [
+            "CONTRIBUTING.md"
+          ],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-044",
+          "s2-file-045",
+          "s2-file-046"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-unordered_dense"
+      ]
+    },
+    {
+      "component_id": "fex-upstream",
+      "role": "cpu-translator-and-windows-module-source",
+      "selection_reason": "Fresh upstream candidate for the Windows ARM64EC/WOW64 module and UnixLib audit; Darwin applicability remains to be assessed.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/FEX.git",
+        "requested_ref": "HEAD",
+        "object_format": "sha1",
+        "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+        "tree_object_id": "7509ab443d32692ac72ee51c0697ccf86d0a66af"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-upstream/repo.git",
+        "acquired_at_utc": "2026-09-28T08:36:06.917054+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "00b9e613e0c7942ec35776578a87aa6529224cba1ff6de2c1a73331a2d5d5f1c",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-upstream/tree-listing.z",
+          "size_bytes": 335159
+        }
+      ],
+      "tracked_entries": 3617,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT for the inspected top level and FEXCore; vendored components have separate notices.",
+        "packaging_actions": "Preserve copyright and permission notices. Track bundled BSD/MIT and other dependency notices independently.",
+        "contribution_policy": {
+          "status": "explicit_restriction",
+          "summary": "CONTRIBUTING.md rejects AI/ML/LLM code contributions; AGENTS.md also forbids AI-generated code for contributions. This upstream submission policy is separate from MIT downstream reuse."
+        },
+        "evidence_refs": [
+          "s2-file-168",
+          "s2-file-169",
+          "s2-file-170",
+          "s2-file-171",
+          "s2-file-172",
+          "s2-file-173",
+          "s2-file-174"
+        ],
+        "limits": "Cephes contains a BSD relicensing narrative/email excerpt rather than one simple SPDX notice; preserve it and reconcile exact packaging before release. SoftFloat inspected header contains BSD three-condition text."
+      },
+      "patches": {
+        "status": "no_darwin_port_series_established",
+        "ordered_series": null,
+        "reason": "Inspected tracked code plus primary announcements do not establish a source-complete Darwin patch series. Searches are bounded; unavailable MR retrieval remains explicit.",
+        "evidence_refs": [
+          "s2-api-search-fex-upstream",
+          "s2-public-wine-mr-search"
+        ]
+      },
+      "evidence_refs": [
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-vixl",
+      "role": "dependency-source",
+      "selection_reason": "BUILD_TESTING or ENABLE_VIXL_DISASSEMBLER or ENABLE_VIXL_SIMULATOR; acquired for the declared test/diagnostic source path.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/FEX-Emu/vixl.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "585d860b12cdfc3a72f5fdad5e02e4d50a64c014",
+        "tree_object_id": "ae9489b803b0d575e4ee887c804a2cb5b49210b2"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-vixl/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:33.897265+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "ce3ea21efdfb7acd0049d16dd9ae77a20302d0a526df524e847149780fad4984",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-vixl/tree-listing.z",
+          "size_bytes": 343232
+        }
+      ],
+      "tracked_entries": 3157,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "BSD-3-Clause",
+        "packaging_actions": "Retain source/binary notices and ARM/contributor non-endorsement condition.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-047"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-vixl"
+      ]
+    },
+    {
+      "component_id": "fex-vulkan-headers",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/KhronosGroup/Vulkan-Headers.git",
+        "object_format": "sha1",
+        "commit_object_id": "ee2ec5fd83dafce291024683b50dc89219333076",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "Header input not selected for the initial MINGW Windows-module subset with BUILD_THUNKS=OFF. Reassess if a port enables thunks or other configurations."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-upstream"
+      ]
+    },
+    {
+      "component_id": "fex-xxhash",
+      "role": "dependency-source",
+      "selection_reason": "Bundled source fallback; cross-compilation bypasses the initial system-package lookup.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/Cyan4973/xxHash.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+        "tree_object_id": "9d4f447c856962a98e22f144bd9b0315ab4d18f8"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-xxhash/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:28.580321+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "c13fad6c7eb8b797a3252cb1ef980cbac3af89083cbb9bbd9957c0a547f237ee",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-xxhash/tree-listing.z",
+          "size_bytes": 6431
+        }
+      ],
+      "tracked_entries": 87,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "BSD-2-Clause library; cli/COPYING contains GPLv2 text.",
+        "packaging_actions": "Keep library and command-line program terms distinct. FEX disables XXHASH_BUILD_XXHSUM in inspected root build declarations; this is source configuration evidence, not proof of shipped contents.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-048",
+          "s2-file-049",
+          "s2-file-050",
+          "s2-file-051"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-xxhash"
+      ]
+    },
+    {
+      "component_id": "fex-zycore",
+      "role": "dependency-source",
+      "selection_reason": "Nested source dependency of the acquired optional Zydis tree.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/zyantific/zycore-c",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "75a36c45ae1ad382b0f4e0ede0af84c11ee69928",
+        "tree_object_id": "dce4afb5c60931c6c8f698b0d3899853987550ec"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-zycore/repo.git",
+        "acquired_at_utc": "2026-09-28T08:43:36.086997+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "ff61a6e529e08ee929f38408871d76937365cdc53c3fd98758210df8a1169974",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-zycore/tree-listing.z",
+          "size_bytes": 4145
+        }
+      ],
+      "tracked_entries": 56,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT",
+        "packaging_actions": "Retain copyright and permission notices; source subtree use remains distinct from uninspected optional examples/dependencies.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-052"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-zycore"
+      ]
+    },
+    {
+      "component_id": "fex-zydis",
+      "role": "dependency-source",
+      "selection_reason": "ENABLE_ZYDIS and no selected system Zydis/Zycore pair; acquired as an optional diagnostic source.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/zyantific/zydis.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+        "tree_object_id": "74bbe660f1aaeca6afb9132b13e1fdb1405f9da1"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "fex-zydis/repo.git",
+        "acquired_at_utc": "2026-09-28T08:38:32.512239+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "d3092c05189fa3c999c9a54ff6897ac68fde7657e771f62b375682c8b4bcd3b7",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "fex-zydis/tree-listing.z",
+          "size_bytes": 46457
+        }
+      ],
+      "tracked_entries": 587,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "MIT",
+        "packaging_actions": "Retain copyright and permission notices; the acquired Zycore dependency has its separate pinned evidence.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-053"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-fex-zydis"
+      ]
+    },
+    {
+      "component_id": "llvm-dxmt",
+      "role": "shader-compiler-library-source",
+      "selection_reason": "DXMT CI explicitly selects llvmorg-15.0.7 for its shader conversion LLVM libraries.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/llvm/llvm-project.git",
+        "requested_ref": "refs/tags/llvmorg-15.0.7",
+        "object_format": "sha1",
+        "commit_object_id": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+        "tree_object_id": "420b581b39531e9ed0e26916e4ba81fc6a9d9f74"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "llvm-dxmt/repo.git",
+        "acquired_at_utc": "2026-09-28T08:41:05.961421+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "fe0ed32d04a3f4d57f36a583fa758043df254cfd65c4eb8fd4a50cdf2fb45bb2",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "llvm-dxmt/tree-listing.bin",
+          "size_bytes": 12385468
+        }
+      ],
+      "tracked_entries": 118554,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "Apache-2.0 WITH LLVM-exception; legacy NCSA and third-party terms are described.",
+        "packaging_actions": "Retain applicable license, modification and attribution/NOTICE requirements; LLVM exceptions apply only in stated circumstances. Separate subproject and third-party notices remain relevant. CONTRIBUTING links LLVM contribution guide; no specific AI-related restriction found in inspected local DeveloperPolicy/Contributing paths, not an absence claim for current external policy.",
+        "contribution_policy": {
+          "status": "observed_local_paths",
+          "paths": [
+            "CONTRIBUTING.md",
+            "libcxx/docs/Contributing.rst",
+            "llvm/docs/Contributing.rst",
+            "polly/www/contributors.html",
+            "third-party/benchmark/CONTRIBUTING.md",
+            "third-party/benchmark/CONTRIBUTORS"
+          ],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-054",
+          "s2-file-055",
+          "s2-file-056",
+          "s2-file-057",
+          "s2-file-058",
+          "s2-file-059",
+          "s2-file-060",
+          "s2-file-061",
+          "s2-file-062",
+          "s2-file-063",
+          "s2-file-064",
+          "s2-file-065",
+          "s2-file-066",
+          "s2-file-067",
+          "s2-file-068",
+          "s2-file-069",
+          "s2-file-070",
+          "s2-file-071",
+          "s2-file-072",
+          "s2-file-073",
+          "s2-file-074",
+          "s2-file-075",
+          "s2-file-076",
+          "s2-file-077",
+          "s2-file-078"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-llvm-dxmt"
+      ]
+    },
+    {
+      "component_id": "llvm-mingw-llvm",
+      "role": "cross-toolchain-compiler-source",
+      "selection_reason": "The llvmorg-23.1.1 default declared by the selected LLVM-MinGW build-llvm.sh; this is a source-build candidate, not a verified release-binary input.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/llvm/llvm-project.git",
+        "requested_ref": "refs/tags/llvmorg-23.1.1",
+        "object_format": "sha1",
+        "commit_object_id": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689",
+        "tree_object_id": "831b6c2c2df160f87ef6a5e5623ddf477ef67402"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "llvm-mingw-llvm/repo.git",
+        "acquired_at_utc": "2026-09-28T08:46:18.748935+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "843136f08548429a2614ee11a3a73089b16466599d121d0f6664cdc0c5432199",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "llvm-mingw-llvm/tree-listing.bin",
+          "size_bytes": 19053990
+        }
+      ],
+      "tracked_entries": 180593,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "Apache-2.0 WITH LLVM-exception; legacy NCSA and third-party terms are described.",
+        "packaging_actions": "Retain applicable license, modification and attribution/NOTICE requirements; exceptions are scoped. Subproject licenses and embedded third-party terms require actual payload reconciliation. CONTRIBUTING links LLVM contribution guide; no specific AI-related restriction found in inspected local DeveloperPolicy/Contributing paths, not a current external-policy conclusion.",
+        "contribution_policy": {
+          "status": "observed_local_paths",
+          "paths": [
+            "CONTRIBUTING.md",
+            "libc/docs/contributing.md",
+            "libcxx/docs/Contributing.rst",
+            "llvm/docs/Contributing.md",
+            "polly/www/contributors.html",
+            "third-party/benchmark/CONTRIBUTING.md",
+            "third-party/benchmark/CONTRIBUTORS"
+          ],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-079",
+          "s2-file-080",
+          "s2-file-081",
+          "s2-file-082",
+          "s2-file-083",
+          "s2-file-084",
+          "s2-file-085",
+          "s2-file-086",
+          "s2-file-087",
+          "s2-file-088",
+          "s2-file-089",
+          "s2-file-090",
+          "s2-file-091",
+          "s2-file-092",
+          "s2-file-093",
+          "s2-file-094",
+          "s2-file-095",
+          "s2-file-096",
+          "s2-file-097",
+          "s2-file-098",
+          "s2-file-099",
+          "s2-file-100",
+          "s2-file-101",
+          "s2-file-102",
+          "s2-file-103",
+          "s2-file-104",
+          "s2-file-105",
+          "s2-file-106",
+          "s2-file-107",
+          "s2-file-108"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-llvm-mingw-llvm"
+      ]
+    },
+    {
+      "component_id": "llvm-mingw-source",
+      "role": "cross-toolchain-build-source",
+      "selection_reason": "The 20260908 source tag matching the label of the LLVM-MinGW binary input in DXMT CI; source-build defaults are recorded separately from binary-release provenance.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/mstorsjo/llvm-mingw.git",
+        "requested_ref": "20260908",
+        "object_format": "sha1",
+        "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+        "tree_object_id": "2db31fcce334eac492da9b4bc587bc80987f3642"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "llvm-mingw-source/repo.git",
+        "acquired_at_utc": "2026-09-28T08:43:10.474800+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "2df340b42320ffcf43f3cd98350a95b4b6b1524442b4419e595867122a04b021",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "llvm-mingw-source/tree-listing.z",
+          "size_bytes": 7141
+        }
+      ],
+      "tracked_entries": 95,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "ISC for llvm-mingw-owned scripts/wrappers/testcases.",
+        "packaging_actions": "LICENSE.txt explicitly excludes bundled external toolchain components from this blanket label; final toolchain requires each component license, primarily LLVM Apache-2.0 WITH LLVM-exception.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-109"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-llvm-mingw-source"
+      ]
+    },
+    {
+      "component_id": "mingw-w64-source",
+      "role": "windows-cross-toolchain-runtime-source",
+      "selection_reason": "The exact default commit declared by the selected LLVM-MinGW build-mingw-w64.sh.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/mingw-w64/mingw-w64.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a",
+        "tree_object_id": "73e43c0d8f2f0624037b9b0f76e3fd4f21724417"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "mingw-w64-source/repo.git",
+        "acquired_at_utc": "2026-09-28T08:45:13.272133+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "a41f025ab14c6177a399510273254648d4aaf981217463b718e3983eed2f6486",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "mingw-w64-source/tree-listing.z",
+          "size_bytes": 649561
+        }
+      ],
+      "tracked_entries": 6950,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "ZPL-2.1 default with explicitly marked public-domain/BSD/LGPL parts; separate runtime notices.",
+        "packaging_actions": "Retain source/binary notices, mark changed files/date under ZPL conditions, respect non-endorsement/trademark limits, reconcile actual runtime linked notices. Tool licensing and static-linked runtime licensing are distinct; do not label entire compiler product ZPL.",
+        "contribution_policy": {
+          "status": "not_found_in_bounded_paths",
+          "paths": [],
+          "scope": "Tracked filename scan up to depth 2 for contribution/license/notice files, plus listed LLVM policy paths. Absence is not a repository-wide or current external-policy finding."
+        },
+        "evidence_refs": [
+          "s2-file-110",
+          "s2-file-111",
+          "s2-file-112",
+          "s2-file-113",
+          "s2-file-114",
+          "s2-file-115",
+          "s2-file-116",
+          "s2-file-117",
+          "s2-file-118",
+          "s2-file-119",
+          "s2-file-120"
+        ],
+        "limits": "Read-only source-text inventory; not legal clearance, complete vendored/payload audit, or distribution qualification."
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null,
+        "reason": "Existing upstream/fork/vendor patch provenance and applicability are Stage 2 work."
+      },
+      "evidence_refs": [
+        "acquire-mingw-w64-source"
+      ]
+    },
+    {
+      "component_id": "range-v3-documentation",
+      "role": "unselected-gitlink-input",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/ericniebler/range-v3.git",
+        "object_format": "sha1",
+        "commit_object_id": "2dae74bb693e42d850fb0adcc9045c5b71fbdeae",
+        "tree_object_id": null
+      },
+      "acquisition": {
+        "status": "not_acquired",
+        "cache_path": null,
+        "reason": "Documentation publishing tree outside the source-build candidate with RANGE_V3_DOCS disabled; not acquired."
+      },
+      "content_digests": [],
+      "readiness": "unassessed",
+      "terms": {
+        "status": "unassessed"
+      },
+      "patches": {
+        "status": "unassessed",
+        "ordered_series": null
+      },
+      "evidence_refs": [
+        "gitlinks",
+        "acquire-fex-range-v3"
+      ]
+    },
+    {
+      "component_id": "wine-dxmt-interface",
+      "role": "graphics-build-interface-source",
+      "selection_reason": "The wine-11.2 source tag matching the label of the Wine binary input in DXMT ARM64EC CI; this does not establish source-to-release-binary correspondence.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/3Shain/wine.git",
+        "requested_ref": "wine-11.2",
+        "object_format": "sha1",
+        "commit_object_id": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+        "tree_object_id": "56a0344be62c9ca8464ed22f8861798ce4ac717e"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "wine-dxmt-interface/repo.git",
+        "acquired_at_utc": "2026-09-28T08:43:19.985715+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "1d1189310f74c821d5056cb6961943c42a2c065b65c0456fbb97775727d852ca",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "wine-dxmt-interface/tree-listing.z",
+          "size_bytes": 907465
+        }
+      ],
+      "tracked_entries": 10900,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "LGPL-2.1-or-later at the top level; bundled/individual file terms remain distinct.",
+        "packaging_actions": "Preserve applicable notices/license and provide corresponding library source, modifications and build material through a compliant distribution/replacement arrangement. Check the actual linked payload and each bundled component; this is an engineering obligation inventory, not legal clearance.",
+        "contribution_policy": {
+          "status": "unresolved_current_external_policy",
+          "scope": "No contribution/agent policy file found in the inspected root names; official submission wiki retrieval was blocked by the site challenge. Do not infer unrestricted upstream acceptance."
+        },
+        "evidence_refs": [
+          "s2-file-146",
+          "s2-file-147",
+          "s2-file-148",
+          "s2-file-149",
+          "s2-file-150",
+          "s2-file-151",
+          "s2-file-152",
+          "s2-file-153",
+          "s2-file-154",
+          "s2-file-155",
+          "s2-file-156",
+          "s2-file-157",
+          "s2-file-158",
+          "s2-file-159",
+          "s2-file-160",
+          "s2-file-161",
+          "s2-file-162",
+          "s2-file-163",
+          "s2-file-164"
+        ],
+        "limits": "Top-level library license is not a uniform label for all vendored material or a release authorization."
+      },
+      "patches": {
+        "status": "audited_candidate_not_applied",
+        "ordered_series": [],
+        "candidate_series": [
+          {
+            "patch_id": "wine-macdrv-export-6197fc78",
+            "order": 1,
+            "original_base_commit": "a365b39f9769ccffeaaf20a45151b671fe763dc3",
+            "target_base_commit": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+            "applicability": "does_not_apply",
+            "check_exit_code": 1
+          }
+        ],
+        "evidence_refs": [
+          "stage2-patch-macdrv"
+        ],
+        "reason": "Existing export patch needs review/adaptation for selected sources; no new patch authored or integrated."
+      },
+      "evidence_refs": [
+        "acquire-wine-dxmt-interface"
+      ]
+    },
+    {
+      "component_id": "wine-macdrv-export-patch",
+      "role": "existing-patch-provenance-only",
+      "selection_reason": "Existing public Wine graphics export patch and exact parent acquired to test original provenance and applicability; not a replacement runtime base.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/3Shain/wine.git",
+        "requested_ref": null,
+        "object_format": "sha1",
+        "commit_object_id": "6197fc78f72184b5f8eed5df306f5e4a48c1153f",
+        "tree_object_id": "ffb8dd5bf8171ec59c40ee3f5d66f17408206890"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "wine-macdrv-export-patch/repo.git",
+        "acquired_at_utc": "2026-09-28T09:06:21.673066+00:00",
+        "scope": "Depth-two bare patch commit plus original parent; no checkout or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "7e21d3f0dee56e26f831fb4934313bdff813f4ca134f48d03ad8ea57fae35e59",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "wine-macdrv-export-patch/tree-listing.z",
+          "size_bytes": 837857
+        }
+      ],
+      "tracked_entries": 10164,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "LGPL-2.1-or-later at the top level; bundled/individual file terms remain distinct.",
+        "packaging_actions": "Preserve applicable notices/license and provide corresponding library source, modifications and build material through a compliant distribution/replacement arrangement. Check the actual linked payload and each bundled component; this is an engineering obligation inventory, not legal clearance.",
+        "contribution_policy": {
+          "status": "unresolved_current_external_policy",
+          "scope": "No contribution/agent policy file found in the inspected root names; official submission wiki retrieval was blocked by the site challenge. Do not infer unrestricted upstream acceptance."
+        },
+        "evidence_refs": [
+          "s2-file-165",
+          "s2-file-166",
+          "s2-file-167"
+        ],
+        "limits": "Top-level library license is not a uniform label for all vendored material or a release authorization."
+      },
+      "patches": {
+        "status": "provenance_input_only",
+        "ordered_series": []
+      },
+      "evidence_refs": [
+        "stage2-patch-macdrv"
+      ]
+    },
+    {
+      "component_id": "wine-upstream",
+      "role": "windows-api-and-loader-source",
+      "selection_reason": "Fresh upstream reference candidate for the Wine ARM64/ARM64EC and Darwin source audit; not an established Pear build base.",
+      "source": {
+        "kind": "git",
+        "url": "https://github.com/wine-mirror/wine.git",
+        "requested_ref": "HEAD",
+        "object_format": "sha1",
+        "commit_object_id": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+        "tree_object_id": "10b47b2965a7b3e1e9694ec506a3d13525211892"
+      },
+      "acquisition": {
+        "status": "acquired",
+        "cache_path": "wine-upstream/repo.git",
+        "acquired_at_utc": "2026-09-28T08:36:23.286989+00:00",
+        "scope": "Depth-one bare commit tree and blobs; no checkout, submodule recursion, build or source execution."
+      },
+      "content_digests": [
+        {
+          "algorithm": "sha256",
+          "value": "c42a658d0e279f651d86627c683f9c902c4f573e2d73a771cb470d6ea5e0f9d7",
+          "scope": "git_tree_listing_bytes",
+          "cache_path": "wine-upstream/tree-listing.z",
+          "size_bytes": 1033137
+        }
+      ],
+      "tracked_entries": 12457,
+      "readiness": "unassessed",
+      "terms": {
+        "status": "observed_with_limits",
+        "observed_terms": "LGPL-2.1-or-later at the top level; bundled/individual file terms remain distinct.",
+        "packaging_actions": "Preserve applicable notices/license and provide corresponding library source, modifications and build material through a compliant distribution/replacement arrangement. Check the actual linked payload and each bundled component; this is an engineering obligation inventory, not legal clearance.",
+        "contribution_policy": {
+          "status": "unresolved_current_external_policy",
+          "scope": "No contribution/agent policy file found in the inspected root names; official submission wiki retrieval was blocked by the site challenge. Do not infer unrestricted upstream acceptance."
+        },
+        "evidence_refs": [
+          "s2-file-121",
+          "s2-file-122",
+          "s2-file-123",
+          "s2-file-124",
+          "s2-file-125",
+          "s2-file-126",
+          "s2-file-127",
+          "s2-file-128",
+          "s2-file-129",
+          "s2-file-130",
+          "s2-file-131",
+          "s2-file-132",
+          "s2-file-133",
+          "s2-file-134",
+          "s2-file-135",
+          "s2-file-136",
+          "s2-file-137",
+          "s2-file-138",
+          "s2-file-139",
+          "s2-file-140",
+          "s2-file-141",
+          "s2-file-142",
+          "s2-file-143",
+          "s2-file-144",
+          "s2-file-145"
+        ],
+        "limits": "Top-level library license is not a uniform label for all vendored material or a release authorization."
+      },
+      "patches": {
+        "status": "audited_candidate_not_applied",
+        "ordered_series": [],
+        "candidate_series": [
+          {
+            "patch_id": "wine-macdrv-export-6197fc78",
+            "order": 1,
+            "original_base_commit": "a365b39f9769ccffeaaf20a45151b671fe763dc3",
+            "target_base_commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+            "applicability": "does_not_apply",
+            "check_exit_code": 1
+          }
+        ],
+        "evidence_refs": [
+          "stage2-patch-macdrv"
+        ],
+        "reason": "Existing export patch needs review/adaptation for selected sources; no new patch authored or integrated."
+      },
+      "evidence_refs": [
+        "acquire-wine-upstream"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "dxmt-nvapi",
+      "relationship": "git_submodule",
+      "path": "external/nvapi",
+      "declared_url": "https://github.com/NVIDIA/nvapi.git",
+      "declared_commit_object_id": "d08488fcc82eef313b0464db37d2955709691e94",
+      "condition": "Optional enable_nvapi path; false in meson.options, true in the ARM64EC release CI command.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "dxmt-directx",
+      "relationship": "git_submodule",
+      "path": "include/native/directx",
+      "declared_url": "https://github.com/misyltoad/mingw-directx-headers",
+      "declared_commit_object_id": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "condition": "DXMT root Meson definition checks include/native/directx/d3d11.h before configuring.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-range-v3",
+      "dependency": "range-v3-documentation",
+      "relationship": "git_submodule",
+      "path": "doc/gh-pages",
+      "declared_url": "https://github.com/ericniebler/range-v3.git",
+      "declared_commit_object_id": "2dae74bb693e42d850fb0adcc9045c5b71fbdeae",
+      "condition": "Documentation publishing tree outside the source-build candidate with RANGE_V3_DOCS disabled; not acquired.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-catch2",
+      "relationship": "git_submodule",
+      "path": "External/Catch2",
+      "declared_url": "https://github.com/catchorg/Catch2.git",
+      "declared_commit_object_id": "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f",
+      "condition": "BUILD_TESTING and no selected system Catch2 package.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-vulkan-headers",
+      "relationship": "git_submodule",
+      "path": "External/Vulkan-Headers",
+      "declared_url": "https://github.com/KhronosGroup/Vulkan-Headers.git",
+      "declared_commit_object_id": "ee2ec5fd83dafce291024683b50dc89219333076",
+      "condition": "Header input not selected for the initial MINGW Windows-module subset with BUILD_THUNKS=OFF. Reassess if a port enables thunks or other configurations.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-drm-headers",
+      "relationship": "git_submodule",
+      "path": "External/drm-headers",
+      "declared_url": "https://github.com/FEX-Emu/drm-headers.git",
+      "declared_commit_object_id": "3e49836995c1dcb3df709440ad2f270b569c6a5f",
+      "condition": "Linux DRM header input outside the initial Windows-module source subset. Reassess the final port configuration before excluding it from a build closure.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-gcc-target-tests-bins",
+      "relationship": "git_submodule",
+      "path": "External/fex-gcc-target-tests-bins",
+      "declared_url": "https://github.com/FEX-Emu/fex-gcc-target-tests-bins.git",
+      "declared_commit_object_id": "442678a134e2d25e759c430cca32e06e9e142f1f",
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-gvisor-tests-bins",
+      "relationship": "git_submodule",
+      "path": "External/fex-gvisor-tests-bins",
+      "declared_url": "https://github.com/FEX-Emu/fex-gvisor-tests-bins.git",
+      "declared_commit_object_id": "71349ae6d14ac2e3e792730e240aecd8076cee6c",
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-posixtest-bins",
+      "relationship": "git_submodule",
+      "path": "External/fex-posixtest-bins",
+      "declared_url": "https://github.com/FEX-Emu/fex-posixtest-bins.git",
+      "declared_commit_object_id": "9ae29638f8000c1603f16385ed1cf6c4c23ee414",
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-fmt",
+      "relationship": "git_submodule",
+      "path": "External/fmt",
+      "declared_url": "https://github.com/fmtlib/fmt.git",
+      "declared_commit_object_id": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+      "condition": "Bundled source used under MINGW; fallback elsewhere.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-jemalloc-glibc",
+      "relationship": "git_submodule",
+      "path": "External/jemalloc_glibc",
+      "declared_url": "https://github.com/FEX-Emu/jemalloc.git",
+      "declared_commit_object_id": "8436195ad5e1bc347d9b39743af3d29abee59f06",
+      "condition": "The inspected MINGW branch disables ENABLE_JEMALLOC_GLIBC_ALLOC; no Darwin allocator configuration is established.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-range-v3",
+      "relationship": "git_submodule",
+      "path": "External/range-v3",
+      "declared_url": "https://github.com/ericniebler/range-v3.git",
+      "declared_commit_object_id": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "condition": "Bundled source fallback when a system range-v3 package is not selected.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-rpmalloc",
+      "relationship": "git_submodule",
+      "path": "External/rpmalloc",
+      "declared_url": "https://github.com/FEX-Emu/rpmalloc.git",
+      "declared_commit_object_id": "09142d726429416bfa7b459151515fe3ab7622dd",
+      "condition": "ENABLE_FEX_ALLOCATOR; the inspected MINGW branch sets this true.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-tracy",
+      "relationship": "git_submodule",
+      "path": "External/tracy",
+      "declared_url": "https://github.com/wolfpld/tracy",
+      "declared_commit_object_id": "650c98ece70da9e155e7ba1c2b3ee16004aae118",
+      "condition": "ENABLE_FEXCORE_PROFILER and FEXCORE_PROFILER_BACKEND exactly TRACY in the inspected condition; no profiler configuration selected.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-unordered_dense",
+      "relationship": "git_submodule",
+      "path": "External/unordered_dense",
+      "declared_url": "https://github.com/martinus/unordered_dense.git",
+      "declared_commit_object_id": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+      "condition": "Bundled source fallback when a system unordered_dense package is not selected.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-vixl",
+      "relationship": "git_submodule",
+      "path": "External/vixl",
+      "declared_url": "https://github.com/FEX-Emu/vixl.git",
+      "declared_commit_object_id": "585d860b12cdfc3a72f5fdad5e02e4d50a64c014",
+      "condition": "BUILD_TESTING or ENABLE_VIXL_DISASSEMBLER or ENABLE_VIXL_SIMULATOR; acquired for the declared test/diagnostic source path.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-xxhash",
+      "relationship": "git_submodule",
+      "path": "External/xxhash",
+      "declared_url": "https://github.com/Cyan4973/xxHash.git",
+      "declared_commit_object_id": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+      "condition": "Bundled source fallback; cross-compilation bypasses the initial system-package lookup.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-zydis",
+      "relationship": "git_submodule",
+      "path": "External/zydis",
+      "declared_url": "https://github.com/zyantific/zydis.git",
+      "declared_commit_object_id": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+      "condition": "ENABLE_ZYDIS and no selected system Zydis/Zycore pair; acquired as an optional diagnostic source.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-cpp-optparse",
+      "relationship": "git_submodule",
+      "path": "Source/Common/cpp-optparse",
+      "declared_url": "https://github.com/Sonicadvance1/cpp-optparse",
+      "declared_commit_object_id": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+      "condition": "Source/Common and the Windows offline compiler use this source dependency.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-zydis",
+      "dependency": "fex-zycore",
+      "relationship": "git_submodule",
+      "path": "dependencies/zycore",
+      "declared_url": "https://github.com/zyantific/zycore-c",
+      "declared_commit_object_id": "75a36c45ae1ad382b0f4e0ede0af84c11ee69928",
+      "condition": "Nested source dependency of the acquired optional Zydis tree.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "wine-dxmt-interface",
+      "relationship": "build_definition_reference",
+      "path": ".github/workflows/ci.yml",
+      "condition": "Source-tag candidate matching the Wine ARM64EC CI binary label; binary provenance unverified.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "llvm-mingw-source",
+      "relationship": "build_definition_reference",
+      "path": ".github/workflows/ci.yml",
+      "condition": "Source-tag candidate matching the compiler bundle label; binary provenance unverified.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "llvm-dxmt",
+      "relationship": "build_definition_reference",
+      "path": ".github/workflows/ci.yml",
+      "condition": "Shader-conversion LLVM source selected by CI.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "llvm-mingw-source",
+      "dependency": "llvm-mingw-llvm",
+      "relationship": "build_definition_reference",
+      "path": "build-llvm.sh",
+      "condition": "Default source compiler revision; CI can override it.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "llvm-mingw-source",
+      "dependency": "mingw-w64-source",
+      "relationship": "build_definition_reference",
+      "path": "build-mingw-w64.sh",
+      "condition": "Default source runtime revision; CI can override it.",
+      "acquisition_status": "acquired"
+    }
+  ],
+  "vendored_path_inventory": [
+    {
+      "parent": "fex-upstream",
+      "path": "External/tiny-json",
+      "object_format": "sha1",
+      "object_id": "c736c48b0958e46d24a20e68263923408fb08a60",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-172"
+      ]
+    },
+    {
+      "parent": "fex-upstream",
+      "path": "External/SoftFloat-3e",
+      "object_format": "sha1",
+      "object_id": "9b2659373bcc8bbfa28eda054b22214a0482ebd2",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-174"
+      ]
+    },
+    {
+      "parent": "fex-upstream",
+      "path": "External/cephes",
+      "object_format": "sha1",
+      "object_id": "f60034c28a4d816fb972ccb78d14ae560a973fa2",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-173"
+      ]
+    },
+    {
+      "parent": "dxmt-upstream",
+      "path": "libs/DXBCParser",
+      "object_format": "sha1",
+      "object_id": "785d471c4499f2fc1f712b062d90aa99bf514fe9",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-180",
+        "s2-file-181"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/adsiid",
+      "object_format": "sha1",
+      "object_id": "184c2e5e62b10eb1f2bea57d8b7437bd5fd5ed94",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/c++",
+      "object_format": "sha1",
+      "object_id": "6484da5b439b0beed51e966ec5a2f36677f10b3a",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-124"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/c++abi",
+      "object_format": "sha1",
+      "object_id": "ad5365edcad94f2bc9c527ca37ec6e6b96888183",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-125"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/capstone",
+      "object_format": "sha1",
+      "object_id": "5e5a05baceb6dcb09fca9e5bc91b69e70af42b97",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-126",
+        "s2-file-127"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/compiler-rt",
+      "object_format": "sha1",
+      "object_id": "867383c5c33a723432e5e221d62f6b016b599641",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-128"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/dmoguids",
+      "object_format": "sha1",
+      "object_id": "0b063b3f13aa95b5464a68f048935d7519ba3032",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/dxerr8",
+      "object_format": "sha1",
+      "object_id": "9c4dcf3f059c2a484e71ed83df92d00ad0ea5037",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/dxerr9",
+      "object_format": "sha1",
+      "object_id": "4466abcc081d505ff35f8b77825ff3a82a92c83c",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/dxguid",
+      "object_format": "sha1",
+      "object_id": "829e736287106b550554fda7cfa78df184996f4b",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/faudio",
+      "object_format": "sha1",
+      "object_id": "bdda826c2c2e5f047b9e984df87a19a3d4747e85",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-129"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/ffmpeg",
+      "object_format": "sha1",
+      "object_id": "a8adb8c7ee10306ebf2ffdd6dcc8bcea2b4f6659",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-130"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/fluidsynth",
+      "object_format": "sha1",
+      "object_id": "f12bb995e73e41e5dc73030083d2f7beb511396d",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-131"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/gsm",
+      "object_format": "sha1",
+      "object_id": "ecb71e631e5e0f986f76904b2636956bcc3fa865",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/icucommon",
+      "object_format": "sha1",
+      "object_id": "a79346c9559f2288288b5974e1908f6f589fb2c7",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-132"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/icui18n",
+      "object_format": "sha1",
+      "object_id": "a3531db44d59505bd9c5e18a8bdba80d80193deb",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-133"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/jpeg",
+      "object_format": "sha1",
+      "object_id": "910b9002ed5cea7c6fd6a59a22a78ed62f004260",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-134"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/jxr",
+      "object_format": "sha1",
+      "object_id": "775e796676820459b6e9cf2f33c074df5454be96",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-135"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/lcms2",
+      "object_format": "sha1",
+      "object_id": "4715ec45fc1d76190a33f9f5624c94d3b64db081",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-136"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/ldap",
+      "object_format": "sha1",
+      "object_id": "ec67517aaae8fe4aa84be25b44313811f88287a9",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-137"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/mfuuid",
+      "object_format": "sha1",
+      "object_id": "7cb56349c4aebb71b1a0a09484d8c7cdf00a7da4",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/mpg123",
+      "object_format": "sha1",
+      "object_id": "781242dc928d88bce018d117fd6f9a9a72e9ef42",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-138"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/musl",
+      "object_format": "sha1",
+      "object_id": "0fd19bd6be3346282701c8472259fbbeaefc2617",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/png",
+      "object_format": "sha1",
+      "object_id": "9463018a4dbade80fc47f0f02f79fa70c1cdb2bd",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-139"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/sqlite3",
+      "object_format": "sha1",
+      "object_id": "3f735af165dc124035560e5c050140ed6a7e2e09",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/strmbase",
+      "object_format": "sha1",
+      "object_id": "8099c487c8ff8ebc3d096ffac715baa14e9a2d83",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/strmiids",
+      "object_format": "sha1",
+      "object_id": "bda3e08ffced0e7193a2fe7c48f17234a28cb1df",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/strsafe",
+      "object_format": "sha1",
+      "object_id": "bf86a67eb3100a3e199d5edc4dce0f5a097f73c3",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/symcrypt",
+      "object_format": "sha1",
+      "object_id": "b9a9005e8cb88b1c16f031c50c8a10ca0bf06762",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-140"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/tiff",
+      "object_format": "sha1",
+      "object_id": "7e32545738b0bd696993a9082d794920eab14136",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/unwind",
+      "object_format": "sha1",
+      "object_id": "05ebacda30634099a3a47f9014c2731ecc0b83a7",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-141"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/uuid",
+      "object_format": "sha1",
+      "object_id": "00e54da260b5c50309c53b25bb680a2fa2b8ff9c",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/vkd3d",
+      "object_format": "sha1",
+      "object_id": "458d0a8bc4a62cda8f75fe8d6bf0bd20a4a69ba3",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-142"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/wbemuuid",
+      "object_format": "sha1",
+      "object_id": "53288ed8983a60a2946f5e435b67bdf4c221ae84",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/winecrt0",
+      "object_format": "sha1",
+      "object_id": "3e4d120ad494fff32e315101b7b98e3575a22384",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/wmcodecdspuuid",
+      "object_format": "sha1",
+      "object_id": "26fe94c817e1ded26601d0c764183b8473488643",
+      "object_type": "tree",
+      "coverage": "Tracked in the parent acquisition; separate origin/version/terms audit pending."
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/xml2",
+      "object_format": "sha1",
+      "object_id": "30f0e0cb7365bf0a20c9e2d05de648756d058094",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-143"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/xslt",
+      "object_format": "sha1",
+      "object_id": "79e25c244799e25f05242c4f91db29e5dc4db6de",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-144"
+      ]
+    },
+    {
+      "parent": "wine-upstream",
+      "path": "libs/zlib",
+      "object_format": "sha1",
+      "object_id": "4d8c9e70a1d7d76734886e29f7120ad6f252bd4c",
+      "object_type": "tree",
+      "coverage": "Selected notice/header texts inspected in Stage 2; upstream origin/version and complete per-file/payload terms remain separate unresolved work.",
+      "evidence_refs": [
+        "s2-file-145"
+      ]
+    }
+  ],
+  "observed_build_requirements": [
+    {
+      "component_id": "fex-upstream",
+      "constraints": [
+        "CMake >= 3.14",
+        "Python >= 3.9",
+        "Clang; MINGW branch for Windows module"
+      ],
+      "evidence_refs": [
+        "inspect-04"
+      ],
+      "candidate_tool_pin_status": "candidate_metadata_recorded_with_explicit_gaps"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "constraints": [
+        "C++20",
+        "Meson >= 1.3.0; CI installs 1.10.0",
+        "ARM64EC cross tools with -marm64x",
+        "CI Xcode 16.1",
+        "shader LLVM llvmorg-15.0.7",
+        "Metal 3.1 / air64-apple-macos14.0 shader target"
+      ],
+      "evidence_refs": [
+        "inspect-16",
+        "inspect-19",
+        "inspect-18",
+        "inspect-21"
+      ],
+      "candidate_tool_pin_status": "candidate_metadata_recorded_with_explicit_gaps"
+    },
+    {
+      "component_id": "llvm-mingw-source",
+      "constraints": [
+        "source defaults LLVM llvmorg-23.1.1 and MinGW-w64 9f55f4a2d3b9783dab76d9808be3d6279b99ec2a",
+        "release build environment may override defaults"
+      ],
+      "evidence_refs": [
+        "inspect-24",
+        "inspect-25",
+        "inspect-27"
+      ],
+      "candidate_tool_pin_status": "candidate_metadata_recorded_with_explicit_gaps"
+    }
+  ],
+  "unresolved_inputs": [
+    {
+      "input_id": "wine-dxmt-ci-binary",
+      "role": "upstream-binary-reference",
+      "source_url": "https://github.com/3Shain/wine/releases/download/wine-11.2/wine-11.2.tar.gz",
+      "identity": null,
+      "status": "not_acquired",
+      "reason": "Publisher explicitly describes the Wine 11.2 release as nonworking and intended only for DXMT linking. Its binary was not acquired; selected source has a driver structure mismatch and the existing export patch is rejected. Any future source-to-binary/interface pairing needs a separate verified build.",
+      "evidence_refs": [
+        "s2-public-wine-link-only",
+        "s2-group-requirements",
+        "stage2-patch-macdrv"
+      ],
+      "downstream_issue_numbers": [
+        4,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Build and qualify an exact matching Wine/DXMT interface from reviewed source; do not substitute the publisher-described nonworking link binary."
+    },
+    {
+      "input_id": "llvm-mingw-ci-binary",
+      "role": "upstream-binary-reference",
+      "source_url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260908/llvm-mingw-20260908-ucrt-macos-universal.tar.xz",
+      "identity": null,
+      "status": "not_acquired",
+      "reason": "No compiler binary is acquired or executed. Acquired build-script defaults are not claimed to reproduce this bundle; Installed candidate-tool metadata was recorded in Stage 3, but this compiler remains unavailable.",
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Select an attributed, verified ARM64EC build toolchain; source defaults alone do not prove a release binary."
+    },
+    {
+      "input_id": "macos-sdk-metal-toolchain",
+      "role": "platform-and-build-prerequisite",
+      "source_url": null,
+      "identity": null,
+      "status": "unresolved",
+      "reason": "Candidate Xcode26.6(17F113),SDK26.5,Appleclang21.0.0/ld1267 observed; no source build compatibility established. Metal dispatcher cannot execute because optional Metal Toolchain component is missing.",
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Provide a usable Metal Toolchain and verify the chosen compiler/SDK against the selected build definitions."
+    },
+    {
+      "input_id": "build-generators-and-native-libraries",
+      "role": "build-prerequisite",
+      "source_url": null,
+      "identity": null,
+      "status": "unresolved",
+      "reason": "CMake/Meson/Ninja/ARM64EC cross compiler/native LLVM shader library not found on inspected PATH. Bison2.3 conflicts with Wine minimum3.0. Native enabled libraries remain configuration-dependent; installedPython3.14.4/Autoconf2.73/flex2.6.4/pkgconf2.5.1 are metadata candidates only.",
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Pin usable build generators, cross compiler, native shader LLVM and compatible Bison, and prove configured build compatibility."
+    },
+    {
+      "input_id": "wine-configured-external-packages",
+      "role": "configuration-dependent-source-and-library-inputs",
+      "source_url": null,
+      "identity": null,
+      "status": "unresolved",
+      "reason": "Selected bundled notices were inventoried with per-file/configuration exceptions, but no final host/guest payload or enabled external package set is selected. Stage 3 retained these missing configuration-dependent inputs; no build is authorized by this source audit.",
+      "evidence_refs": [
+        "s2-group-vendored-terms"
+      ],
+      "downstream_issue_numbers": [
+        4,
+        13
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Record the actual enabled package closure and reconcile source/terms for each required input and shipped file."
+    },
+    {
+      "input_id": "darwin-fex-wine-integration-patches",
+      "role": "potential-required-port-or-patch-input",
+      "source_url": null,
+      "identity": null,
+      "status": "needs-port",
+      "reason": "Selected code needs Wine host ABI/process/memory integration, FEX Darwin host services and graphics driver reconciliation. One existing graphics export patch was tested but is not applicable to selected Wine bases. No complete Darwin port series was established; unavailable public MR retrieval leaves search coverage incomplete.",
+      "evidence_refs": [
+        "s2-group-requirements",
+        "stage2-patch-macdrv",
+        "s2-public-wine-mr-search"
+      ],
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Implement and verify the named host/translator/graphics requirements with exact bases, ordered patches and source-built provenance."
+    },
+    {
+      "input_id": "vendor-preview-source-coverage",
+      "role": "vendor-source-coverage-question",
+      "source_url": "https://www.codeweavers.com/crossover/source",
+      "identity": null,
+      "status": "unresolved_after_bounded_inspection",
+      "reason": "The exact archive Wine subtree contains Apple ARM64 context handling and Wine 11.0 identification. Scoped scans and selected files do not establish complete native Preview implementation, an exact upstream base or ordered patch series; no aggregate license clearance is inferred.",
+      "evidence_refs": [
+        "s2-vendor-crossover"
+      ],
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Establish exact public Preview implementation/patch provenance if that route is selected, or explicitly retain the independent upstream port path and satisfy every gap there."
+    }
+  ],
+  "requirements": [
+    {
+      "requirement_id": "immutable-source-inputs",
+      "status": "verified",
+      "evidence_refs": [
+        "acquisitions",
+        "gitlinks",
+        "s4-reproduction"
+      ],
+      "remaining": "The declared acquired subset reproduced exactly in a fresh remote acquisition. Conditional exclusions and final configured build closure remain separately accounted blockers; no unavailable input has a fabricated digest."
+    },
+    {
+      "requirement_id": "host-and-runtime-source-coverage",
+      "status": "needs-port",
+      "evidence_refs": [
+        "s2-group-requirements",
+        "s2-vendor-crossover",
+        "s4-decision"
+      ],
+      "remaining": "Named Wine host/ABI/memory, FEX Darwin/TSO/JIT and graphics ABI requirements need downstream implementation and tests. No runtime build is qualified."
+    },
+    {
+      "requirement_id": "patch-and-terms-provenance",
+      "status": "present-unverified",
+      "evidence_refs": [
+        "s2-group-terms",
+        "s2-group-vendored-terms",
+        "s2-group-patches",
+        "s2-vendor-crossover",
+        "s4-patch-reproduction"
+      ],
+      "remaining": "Inspected licenses/notices and the existing historical patch provenance are accounted for; complete Preview provenance, current external Wine submission policy and final shipped-payload terms remain unestablished. The only patch is inapplicable to both selected Wine candidates, so no working port series is claimed."
+    },
+    {
+      "requirement_id": "toolchain-source-readiness",
+      "status": "blocked",
+      "evidence_refs": [
+        "build_observations",
+        "s3-handoff",
+        "s4-decision"
+      ],
+      "remaining": "Required tools are absent, unavailable or conflicting; the actual enabled dependency closure and tool/SDK compatibility are not established. #4/#5/#7 must select and verify these build prerequisites under their own plans; #13 must reconcile actual payload provenance and notices."
+    }
+  ],
+  "handoff": {
+    "source_of_truth": "Issue #1 factual source inventory; Issue #3 owns product contract schemas.",
+    "record_validity": "The bounded validator distinguishes a consistent completed negative audit from source readiness and runtime eligibility.",
+    "next_stage": null,
+    "next_stage_status": "source_audit_complete_blocked_pending_maintainer_review",
+    "downstream_issue_numbers": [
+      4,
+      5,
+      7,
+      13
+    ],
+    "decision_effect": "Investigation completion is not a runtime dependency pass. Port preparation/implementation may proceed under owning-task approval, but required source/build and runtime acceptance remains blocked."
+  },
+  "evidence_documents": [
+    "mydocs/working/task_m1_1_stage1_evidence.json",
+    "mydocs/working/task_m1_1_stage2_evidence.json",
+    "mydocs/working/task_m1_1_stage3_evidence.json",
+    "mydocs/working/task_m1_1_stage4_evidence.json"
+  ],
+  "evidence_reference_resolution": "Resolve evidence_refs against unique evidence definition records in evidence_documents; objects containing only evidence_id and lines are citations. Legacy section-key references resolve only in evidence_document (Stage 1). Stage 2 group records name their exact top-level section. Stage 1 records remain historical acquisition evidence.",
+  "source_requirements": [
+    {
+      "requirement_id": "loader-layout",
+      "title": "ARM64 loader and low-address reservation",
+      "status": "needs-port",
+      "reusable_source": "Wine accepts aarch64/ARM64EC PE build targets and has host loader/reservation code. The selected aarch64 configuration does not select the old Mac preloader.",
+      "remaining_work": "Define the native loader layout, signed app launch and process creation strategy using the measured host facilities. The inspected Wine configuration requests a 4 KiB PAGEZERO (-pagezero_size,0x1000), whereas the qualified Issue #2 probe used the emulation layout with a protected 64 KiB PAGEZERO; reconcile and verify the actual loader rather than copying either blindly. The unsupported-CPU branch in the optional preloader is not itself proof that every ARM64 build must use or port that preloader.",
+      "downstream_issue_numbers": [
+        4
+      ],
+      "future_verification": "Inspect actual ARM64 Mach-O layout; reserve/map the required low address ranges before PE loading; verify each required child uses the intended layout under normal protections.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-001",
+          "lines": [
+            974,
+            1015
+          ]
+        },
+        {
+          "evidence_id": "s2-file-002",
+          "lines": [
+            325,
+            327
+          ]
+        },
+        {
+          "evidence_id": "s2-file-003",
+          "lines": [
+            1830,
+            1985
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "foreign-x18-abi",
+      "title": "Guest/host x18 transitions and callbacks",
+      "status": "needs-port",
+      "reusable_source": "Wine ARM64 assembly saves/restores x18 and provides syscall/callback entry points; Apple ARM64 signal context definitions already exist.",
+      "remaining_work": "Integrate explicit custom-x18 mode transitions before ordinary macOS calls, restore guest state only after foreign-mode entry, and cover nested callbacks, error exits and asynchronous entry. Exact new Apple API spellings were not found in the selected tracked trees; this is not a claim about all branches or alternate implementations.",
+      "downstream_issue_numbers": [
+        4,
+        5
+      ],
+      "future_verification": "Exercise native/translated calls in both directions, nested callbacks, host logging/allocation, signal entry and error exits while checking x18/mode restoration; finite Issue #2 thunks do not qualify these runtime paths.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-004",
+          "lines": [
+            125,
+            141
+          ]
+        },
+        {
+          "evidence_id": "s2-file-004",
+          "lines": [
+            883,
+            938
+          ]
+        },
+        {
+          "evidence_id": "s2-file-004",
+          "lines": [
+            1772,
+            1821
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "page-geometry",
+      "title": "4 KiB guest memory and process page geometry",
+      "status": "needs-port",
+      "reusable_source": "Wine distinguishes its 4 KiB page bookkeeping from the aarch64 host page size and contains protection/commit paths.",
+      "remaining_work": "Wire process creation to the selected 4 KiB user-page mode and reconcile reserve/protect/decommit/recommit/guard behavior with Wine and FEX. Host probe success does not change the selected source automatically.",
+      "downstream_issue_numbers": [
+        4,
+        5
+      ],
+      "future_verification": "Verify 4 KiB geometry for actual runtime children, independent adjacent-page protection/faults/recommit, low mappings and Windows allocation edge cases.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-005",
+          "lines": [
+            168,
+            181
+          ]
+        },
+        {
+          "evidence_id": "s2-file-005",
+          "lines": [
+            1983,
+            2009
+          ]
+        },
+        {
+          "evidence_id": "s2-file-005",
+          "lines": [
+            3688,
+            3694
+          ]
+        },
+        {
+          "evidence_id": "s2-file-006",
+          "lines": [
+            16,
+            28
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "translator-loading",
+      "title": "Wine ARM64EC/WoW64 translator interfaces",
+      "status": "present-unverified",
+      "reusable_source": "Wine loads an ARM64EC emulator module, obtains lifecycle/memory/exception callbacks, and has the separate WoW64 BTCpu interface. FEX supplies Windows module lifecycle, context reconstruction and Wine UnixLib loading code.",
+      "remaining_work": "Select matching module/UnixLib names, exports and versions; integrate the host ports and prove actual FEX selection. The Wine source tag used for DXMT linking is not a functioning runtime according to its publisher.",
+      "downstream_issue_numbers": [
+        4,
+        5
+      ],
+      "future_verification": "Load an identifiable FEX module into native ARM64 Wine and run x64 plus required x86 smoke tests with explicit module/process attribution and no Rosetta fallback.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-007",
+          "lines": [
+            4282,
+            4318
+          ]
+        },
+        {
+          "evidence_id": "s2-file-008",
+          "lines": [
+            188,
+            237
+          ]
+        },
+        {
+          "evidence_id": "s2-file-009",
+          "lines": [
+            1010,
+            1039
+          ]
+        },
+        {
+          "evidence_id": "s2-file-010",
+          "lines": [
+            31,
+            92
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "darwin-unixlib",
+      "title": "FEX native host service boundary",
+      "status": "needs-port",
+      "reusable_source": "FEX Windows UnixLib has a small function-table boundary for memory-model policy, mapping, advisory controls and statistics; the Windows module avoids requiring the full Linux application loader.",
+      "remaining_work": "Implement a Darwin host side or explicitly disable optional facilities with correct errors. The selected UnixLib includes sys/prctl.h, calls Linux prctl operations, emits .so targets and links rt; it is not a ready Darwin implementation.",
+      "downstream_issue_numbers": [
+        5
+      ],
+      "future_verification": "Build and inspect native ARM64 host libraries; validate every used UnixLib call, mapping/file lifetime, optional capability refusal and cleanup from the real Windows module.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-011",
+          "lines": [
+            1,
+            76
+          ]
+        },
+        {
+          "evidence_id": "s2-file-012",
+          "lines": [
+            1,
+            14
+          ]
+        },
+        {
+          "evidence_id": "s2-file-013",
+          "lines": [
+            55,
+            79
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "thread-memory-order",
+      "title": "Per-thread x86 ordering and software fallback",
+      "status": "needs-port",
+      "reusable_source": "FEX has a configurable software TSO path and a hardware-support switch; its Windows boundary attempts hardware TSO through UnixLib.",
+      "remaining_work": "The inspected UnixLib implements Linux prctl policy, while macOS requires a separate per-thread policy operation. FEX disables several software-emulation paths when hardware support is selected; do not set a context-wide hardware flag unless all participating threads satisfy the policy or retain a correct fallback.",
+      "downstream_issue_numbers": [
+        5,
+        4
+      ],
+      "future_verification": "Check each actual thread initialization/error/cleanup path, distinguish API return from finite behavior, and test software fallback and unaligned/atomic behavior without treating zero finite litmus outcomes as a universal proof.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-014",
+          "lines": [
+            13,
+            29
+          ]
+        },
+        {
+          "evidence_id": "s2-file-011",
+          "lines": [
+            48,
+            64
+          ]
+        },
+        {
+          "evidence_id": "s2-file-015",
+          "lines": [
+            454,
+            484
+          ]
+        },
+        {
+          "evidence_id": "s2-file-016",
+          "lines": [
+            947,
+            1013
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "jit-memory",
+      "title": "Executable code allocation, cache visibility and invalidation",
+      "status": "needs-port",
+      "reusable_source": "FEX uses Windows allocation/protection APIs, EC-code attributes and memory invalidation callbacks; Wine contains instruction-cache and guest memory machinery.",
+      "remaining_work": "Specify the macOS JIT code-cache allocation/write/execute/cache-flush/lifetime contract with signing. The selected source does not contain the exact MAP_JIT or pthread_jit_write_protect_np tokens searched. Do not replace every PE or guest RWX mapping with MAP_JIT indiscriminately.",
+      "downstream_issue_numbers": [
+        4,
+        5
+      ],
+      "future_verification": "Run translated code generation, code patching/self-modification, fault-triggered invalidation, concurrent execution/reclamation and required cache flushes through actual Wine/FEX under verified entitlements.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-017",
+          "lines": [
+            48,
+            101
+          ]
+        },
+        {
+          "evidence_id": "s2-file-016",
+          "lines": [
+            634,
+            637
+          ]
+        },
+        {
+          "evidence_id": "s2-file-016",
+          "lines": [
+            677,
+            742
+          ]
+        },
+        {
+          "evidence_id": "s2-file-005",
+          "lines": [
+            7038,
+            7058
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "signals-seh",
+      "title": "Signals, exceptions, suspension and guest reconstruction",
+      "status": "needs-port",
+      "reusable_source": "Wine has Apple ARM64 integer/FPU signal-context handling, signal registration and syscall fault handling. FEX reconstructs guest state and handles access/guard/invalidation cases.",
+      "remaining_work": "Audit the new host ABI gateway through actual POSIX/Mach faults, Windows SEH/unwind and asynchronous suspend/resume. Existing code and Issue #2 controlled SIGUSR1/error-return probes are not a complete Windows exception proof.",
+      "downstream_issue_numbers": [
+        4,
+        5
+      ],
+      "future_verification": "Exercise fault address/PC, nested SEH, stack unwind, guard pages, interrupt/suspend and precise translated-state resumption across host/guest callbacks.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-004",
+          "lines": [
+            266,
+            305
+          ]
+        },
+        {
+          "evidence_id": "s2-file-004",
+          "lines": [
+            1063,
+            1126
+          ]
+        },
+        {
+          "evidence_id": "s2-file-004",
+          "lines": [
+            1565,
+            1602
+          ]
+        },
+        {
+          "evidence_id": "s2-file-016",
+          "lines": [
+            396,
+            452
+          ]
+        },
+        {
+          "evidence_id": "s2-file-016",
+          "lines": [
+            677,
+            742
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "graphics-driver-abi",
+      "title": "DXMT/Wine graphics export and structure compatibility",
+      "status": "needs-port",
+      "reusable_source": "DXMT supports both a macdrv_functions table and individual-symbol fallback. An existing public Wine export patch is available and its original application was reproduced.",
+      "remaining_work": "The patch does not apply to either selected Wine tree. More importantly, DXMT expects a window-data structure prefix with cocoa_view and client_cocoa_view, while both selected Wine headers have client_view followed by rects. Exporting names alone does not repair that layout contract.",
+      "downstream_issue_numbers": [
+        7,
+        4
+      ],
+      "future_verification": "Define and implement a matching driver ABI, then test window creation, device/presentation, resize, teardown, repeated view lifetime and callback transitions using open x64 D3D11 programs.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-018",
+          "lines": [
+            1660,
+            1737
+          ]
+        },
+        {
+          "evidence_id": "s2-file-019",
+          "lines": [
+            225,
+            255
+          ]
+        },
+        {
+          "evidence_id": "s2-file-020",
+          "lines": [
+            176,
+            212
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    },
+    {
+      "requirement_id": "graphics-shader-callbacks",
+      "title": "ARM64EC PE plus native Metal/shader components",
+      "status": "present-unverified",
+      "reusable_source": "DXMT has ARM64EC cross settings, native ARM64 LLVM shader build rules, matching Wine-linked winemetal pieces and native Metal callback code.",
+      "remaining_work": "Reconcile LLVM 15 shader-library and LLVM-MinGW compiler roles, exact tool/SDK inputs and native/PE output pairing; audit callbacks such as Metal shared-event delivery into NtSetEvent for the chosen Wine ABI mode.",
+      "downstream_issue_numbers": [
+        7
+      ],
+      "future_verification": "Reproduce builds and inspect headers/dependencies, then validate shaders/readback/synchronization/presentation and callback mode correctness before game qualification.",
+      "sources": [
+        {
+          "evidence_id": "s2-file-021",
+          "lines": [
+            1,
+            21
+          ]
+        },
+        {
+          "evidence_id": "s2-file-022",
+          "lines": [
+            21,
+            27
+          ]
+        },
+        {
+          "evidence_id": "s2-file-023",
+          "lines": [
+            11,
+            55
+          ]
+        },
+        {
+          "evidence_id": "s2-file-018",
+          "lines": [
+            2534,
+            2558
+          ]
+        }
+      ],
+      "qualification": "source_observation_only; no integrated behavior tested"
+    }
+  ],
+  "patch_inventory": [
+    {
+      "patch_id": "wine-macdrv-export-6197fc78",
+      "component_id": "wine-macdrv-export-patch",
+      "source_url": "https://github.com/3Shain/wine/commit/6197fc78f72184b5f8eed5df306f5e4a48c1153f.patch",
+      "cache_path": "wine-macdrv-export-patch/6197fc78-macdrv-exports.patch",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "8a8799de8abee169fe9c22f982871a904d38e163c641633599f051c3023fb0fb",
+        "scope": "patch_file_bytes"
+      },
+      "size_bytes": 3358,
+      "original_base_commit": "a365b39f9769ccffeaaf20a45151b671fe763dc3",
+      "order": 1,
+      "applied_to_runtime_candidate": false,
+      "applicability": [
+        {
+          "target": "original-parent",
+          "base_commit": "a365b39f9769ccffeaaf20a45151b671fe763dc3",
+          "check_exit_code": 0,
+          "status": "applies",
+          "applied": true,
+          "result_tree": "ffb8dd5bf8171ec59c40ee3f5d66f17408206890"
+        },
+        {
+          "target": "wine-upstream",
+          "base_commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+          "check_exit_code": 1,
+          "status": "does_not_apply",
+          "applied": false
+        },
+        {
+          "target": "wine-dxmt-interface",
+          "base_commit": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+          "check_exit_code": 1,
+          "status": "does_not_apply",
+          "applied": false
+        }
+      ],
+      "evidence_refs": [
+        "stage2-patch-macdrv"
+      ]
+    }
+  ],
+  "candidate_toolchain": [
+    {
+      "tool_id": "clang",
+      "role": "native ARM64 C/C++/Objective-C compiler candidate; not the Windows ARM64EC compiler or LLVM shader library",
+      "status": "metadata_observed",
+      "version": "Apple clang 21.0.0 (clang-2100.1.1.101)",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "FEX checks Clang >=13; DXMT native code uses C++20. Version syntax alone does not establish feature/ABI compatibility.",
+      "evidence_refs": [
+        "s3-tool-clang",
+        "inspect-04",
+        "inspect-16"
+      ]
+    },
+    {
+      "tool_id": "sdk",
+      "role": "native macOS headers/libraries and host ABI SDK candidate",
+      "status": "metadata_observed",
+      "version": "macOS SDK 26.5",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Candidate differs from historical CI Xcode16.1 SDK; preserve required host API availability and retest source/runtime integration.",
+      "evidence_refs": [
+        "s3-tool-sdk",
+        "inspect-19"
+      ]
+    },
+    {
+      "tool_id": "xcode",
+      "role": "host compiler and SDK distribution candidate",
+      "status": "metadata_observed",
+      "version": "Xcode 26.6 (17F113)",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT selected CI explicitly selects Xcode16.1; installed26.6 is a new candidate, not reproduced upstream CI.",
+      "evidence_refs": [
+        "s3-tool-xcode",
+        "inspect-19"
+      ]
+    },
+    {
+      "tool_id": "ld",
+      "role": "native ARM64 Mach-O linker candidate",
+      "status": "metadata_observed",
+      "version": "ld 1267; LTO LLVM 21.0.0; TAPI 21.0.0",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Loader PAGEZERO/layout and signing must be reconciled in #4; no linker invocation performed.",
+      "evidence_refs": [
+        "s3-tool-ld",
+        "s2-file-001"
+      ]
+    },
+    {
+      "tool_id": "git",
+      "role": "source identity and object verification tool",
+      "status": "metadata_observed",
+      "version": "2.53.0",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Read-only source verification; no build dependency inferred.",
+      "evidence_refs": [
+        "s3-tool-git",
+        "acquisitions"
+      ]
+    },
+    {
+      "tool_id": "python",
+      "role": "standard-library inventory validator and build-script interpreter candidate",
+      "status": "metadata_observed",
+      "version": "3.14.4",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "FEX requires Python>=3.9. Audit validator uses standard library only.",
+      "evidence_refs": [
+        "s3-tool-python",
+        "inspect-04"
+      ]
+    },
+    {
+      "tool_id": "metal",
+      "role": "offline Metal shader compiler required by selected DXMT shader path",
+      "status": "unavailable",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT air64-apple-macos14.0 Metal3.1 shader build. Located executable is a dispatcher; actual Metal Toolchain missing.",
+      "evidence_refs": [
+        "s3-tool-metal",
+        "inspect-21"
+      ],
+      "reason": "Located Xcode dispatcher returned an error because the optional Metal Toolchain component is absent."
+    },
+    {
+      "tool_id": "autoconf",
+      "role": "Wine configure generation candidate",
+      "status": "metadata_observed",
+      "version": "2.73",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Wine regenerates configure with autoconf; installed version not tested against selected source.",
+      "evidence_refs": [
+        "s3-tool-autoconf",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "bison",
+      "role": "Wine parser generation prerequisite",
+      "status": "metadata_observed",
+      "version": "2.3",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "conflict",
+      "source_constraints": "Wine configure.ac rejects versions older than3.0. Installed2.3 conflicts; no configure test executed.",
+      "evidence_refs": [
+        "s3-tool-bison",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "flex",
+      "role": "Wine scanner generation candidate",
+      "status": "metadata_observed",
+      "version": "2.6.4",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Wine configure.ac requires flex>=2.5.33; installedversion is only metadata, not configure success.",
+      "evidence_refs": [
+        "s3-tool-flex",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "pkg-config",
+      "role": "configuration-dependent native library discovery candidate",
+      "status": "metadata_observed",
+      "version": "2.5.1",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Actual enabled native libraries and dependency closure remain configuration-dependent.",
+      "evidence_refs": [
+        "s3-tool-pkg-config",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "cmake",
+      "role": "FEX/LLVM build generator prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "FEX minimum3.14; exact build candidate unavailable and not selected from a guessed version.",
+      "evidence_refs": [
+        "s3-tool-cmake",
+        "inspect-04"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "meson",
+      "role": "DXMT build generator prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": "1.10.0",
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT minimum1.3.0; inspected CI pins1.10.0 as candidate version; not installed here.",
+      "evidence_refs": [
+        "s3-tool-meson",
+        "inspect-16",
+        "inspect-19"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "ninja",
+      "role": "selected LLVM Ninja build backend prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Selected native LLVM build explicitly chooses Ninja; exact executable version unselected because absent.",
+      "evidence_refs": [
+        "s3-tool-ninja",
+        "inspect-19"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "arm64ec-clang",
+      "role": "Windows ARM64EC PE cross compiler prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "LLVM-MinGW source release20260908 pinned separately; default LLVM23.1.1 is not proven binary bundle provenance.",
+      "evidence_refs": [
+        "s3-tool-arm64ec-clang",
+        "inspect-19",
+        "inspect-24"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "arm64ec-gcc",
+      "role": "LLVM-MinGW GCC-compatible wrapper expected by DXMT cross file",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT build-arm64ec.txt requests arm64ec-w64-mingw32-gcc/g++ wrappers and -marm64x.",
+      "evidence_refs": [
+        "s3-tool-arm64ec-gcc",
+        "inspect-18"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "llvm-config",
+      "role": "built native LLVM shader-library metadata prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT native shader library uses separately pinned LLVM15.0.7; installedAppleLLVM21 and crossLLVM23 are different roles.",
+      "evidence_refs": [
+        "s3-tool-llvm-config",
+        "inspect-19",
+        "inspect-21"
+      ],
+      "reason": "Not available through inspected current PATH."
+    }
+  ]
+}
