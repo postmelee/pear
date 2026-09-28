@@ -1,6 +1,6 @@
 # Implementation Plan: Runtime contracts and manager-language evaluation
 
-Status: draft for approval. The task requester approved the task plan and document locations on September 28, 2026 and authorized this implementation planning. Implementation and Stage 1 await approval; commands below are planned interfaces, not commands already run or passing results.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026 by explicitly instructing work to proceed. Stage 1 is complete; its actual verification and limits are recorded in ../working/task_m1_3_stage1.md. Stage 2 awaits approval. Later stages retain separate report approval checkpoints; planned commands for unstarted stages are not passing results.
 
 Task plan: [`task_m1_3.md`](task_m1_3.md)
 GitHub Issue: [#3](https://github.com/postmelee/pear/issues/3)
@@ -219,3 +219,7 @@ Require matching semantic outcomes, passing rejection cases and explained payloa
 - Approve these five stages, concrete artifact paths, dependency-pinning procedure, verification commands, comparison rubric and stage commit messages.
 - Authorize Stage 1's bounded design/specification, registry and research-example work only; later stages retain their approval checkpoints.
 - Retain the approved exclusions and ownership split: no production manager/GUI, actual game/Steam work, translator replacement, new restricted execution, or runtime/distribution qualification.
+
+## Approval Record
+
+The task requester approved both #1 and #3 implementation plans and authorized parallel Stage 1 execution on September 28, 2026. This approval preserves the task-plan scope and document locations. Stage 2 has not been authorized.
