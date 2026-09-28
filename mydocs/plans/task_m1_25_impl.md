@@ -4,7 +4,7 @@ Task plan: [task_m1_25.md](task_m1_25.md)
 GitHub Issue: [#25](https://github.com/postmelee/pear/issues/25)
 Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task25`; publication branch: `codex/publish-task25`; PR base: `master`
-Status: Stage 3 complete on September 28, 2026; approval for final-report preparation is pending.
+Status: All three stages approved; integrated verification and final report complete; PR publication approval pending.
 
 ## Approval and Working Context
 
@@ -239,3 +239,5 @@ Approval recorded: on September 28, 2026, the maintainer explicitly instructed t
 Stage 1 approval recorded: on September 28, 2026, the maintainer explicitly instructed this thread to proceed after reviewing the Stage 1 report and Stage 2 start request. Stage 2 is authorized; later stage and publication approvals remain separate.
 
 Stage 2 approval recorded: on September 28, 2026, the maintainer explicitly instructed this thread to proceed in response to the Stage 2 report and Stage 3 start request. Stage 3 is authorized; final-report and publication gates remain separate.
+
+Stage 3 approval recorded: on September 28, 2026, the maintainer explicitly instructed this thread to proceed in response to the Stage 3 report and final-report preparation request. Integrated verification and the [final report](../report/task_m1_25_report.md) are complete. Final-report approval for publication remains pending; no push, PR creation, merge or Issue closure is implied.

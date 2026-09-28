@@ -5,7 +5,7 @@ Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Date: September 28, 2026
 Work branch: `codex/task25`
 Base: `origin/master` at `a75237a6f67a3ade71fcef6068a228686958efe2`
-Status: All three stages complete; Stage 3 approval and final-report preparation pending.
+Status: All three stages approved; final report prepared; approval for PR publication pending.
 
 ## Purpose
 
@@ -124,7 +124,7 @@ Task artifacts:
 - `mydocs/working/task_m1_25_stage1.md`, `task_m1_25_stage2.md`, `task_m1_25_stage3.md`
 - `mydocs/report/task_m1_25_report.md`
 
-Future artifacts listed here do not yet exist. Preserve both existing skill discovery symlinks rather than replacing them or creating per-tool copies.
+The artifacts listed here were prospective at planning time and are now recorded in the stage and [final reports](../report/task_m1_25_report.md). Preserve both existing skill discovery symlinks rather than replacing them or creating per-tool copies.
 
 ## Tentative Stages
 
