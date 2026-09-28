@@ -1,10 +1,10 @@
 # Pear runtime architecture
 
-Status: proposed implementation baseline, not an implemented runtime. Evidence reviewed on September 27, 2026.
+Status: proposed implementation baseline, not an implemented runtime. Original evidence review: September 27, 2026; roadmap and repository-status alignment: September 28, 2026.
 
 ## 1. Objective and engineering standard
 
-The first product milestone is **Megabonk running on an Apple Silicon Mac without Rosetta**. Pear will own a reproducible compatibility runtime: its source and patch set, build definitions, macOS integration, component contracts, validation, and release process. A successful launch using an opaque collection of prebuilt libraries is insufficient.
+The first technical runtime milestone, M1, is **Megabonk running on an Apple Silicon Mac without Rosetta**. Pear will own a reproducible compatibility runtime: its source and patch set, build definitions, macOS integration, component contracts, validation, and release process. A successful launch using an opaque collection of prebuilt libraries is insufficient.
 
 Substantial Wine, FEX, or graphics integration work is in scope when required. Reuse is an engineering decision, not a restriction to launcher development. Rewriting a working subsystem requires evidence that its interface, correctness, performance, availability, or maintainability prevents the project from meeting its goals.
 
@@ -93,7 +93,7 @@ Megabonk profiles identify the official App ID and executable explicitly. Do not
 
 ### 3.5 Launcher, state, and diagnostics
 
-Start with a CLI and a narrowly defined supervisor. A graphical frontend can use the same execution contract later. Prefixes belong to a runtime compatibility family and a game/library context. An incompatible prefix upgrade must not mutate the only usable copy.
+For M1 runtime development, start with a CLI and a narrowly defined supervisor. The [Phase 1 user experience](delivery-plan.md) additionally requires a downloadable Mac app and ordinary-user setup, play and recovery; the proposed M2 work uses the same execution contract for that frontend. Prefixes belong to a runtime compatibility family and a game/library context. An incompatible prefix upgrade must not mutate the only usable copy.
 
 Launches use argument arrays, scoped environments, and explicit paths. A profile may select approved configuration operations; it is not an arbitrary downloaded shell script. Runtime files are immutable. Writes go to separately located prefixes, saves, logs, and caches. Installation completes in a staging directory before activation.
 
@@ -170,7 +170,7 @@ Code caches must be scoped to the guest binary identity, translator revision/con
 | G1: native host and CPU runtime | ARM64 Wine host; FEX integration; ABI/thread/exception/memory tests; no required Rosetta host process | General x64 Windows smoke tests |
 | G2: graphics and packaging | Qualified D3D11 sample suite; coherent component lock; reproducible candidate artifact | Game/Steam integration |
 | G3: application integration | Steam and helper coverage; game launch, input/audio/save/relaunch; process/module evidence | Milestone gameplay validation |
-| G4: first milestone | At least 20 minutes of actual play; clean-setup reproduction on the declared configuration; complete Rosetta-independence evidence | A narrowly stated Megabonk support claim |
+| G4: M1 runtime qualification | At least 20 minutes of actual play; clean-setup reproduction on the declared configuration; complete Rosetta-independence evidence | A bounded technical Megabonk qualification, including the declared development-provisioning limits; ordinary-user distribution needs separate evidence |
 
 Source inspection and graphics builds may proceed while a signing probe is pending. Keep preparatory work distinct from evidence of successful runtime execution. Do not mark a blocked downstream issue completed because its code compiles.
 
@@ -218,4 +218,4 @@ manager/               runtime selection and launch supervision
 experiments/translator optional independently evaluated CPU translator
 ```
 
-Only the documentation currently exists as the published design. Directories and contracts above describe planned implementation boundaries, not completed features. The local exploratory scripts need review, generalization, architecture coverage, and failure-handling tests before migration into this structure.
+As of September 28, 2026, `docs/`, native probes in `host/`, and their `tests/host/` tests exist on master. The [host capability guide](host-capabilities.md) records their bounded development-provisioned results. Other areas above describe planned implementation boundaries; their presence or a fixture result must not be mistaken for a completed runtime. The local exploratory scripts need review, generalization, architecture coverage, and failure-handling tests before migration into this structure.

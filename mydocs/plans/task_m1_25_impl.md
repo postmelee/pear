@@ -4,13 +4,13 @@ Task plan: [task_m1_25.md](task_m1_25.md)
 GitHub Issue: [#25](https://github.com/postmelee/pear/issues/25)
 Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task25`; publication branch: `codex/publish-task25`; PR base: `master`
-Status: Implementation plan prepared; approval to begin Stage 1 is pending.
+Status: Stage 1 complete on September 28, 2026; approval to begin Stage 2 is pending.
 
 ## Approval and Working Context
 
 The maintainer explicitly approved the task plan and continuation to implementation-plan preparation in this session on September 28, 2026. This records approval of the scope and document-location judgment in the task plan. Implementation-plan approval and each completed-stage transition remain separate gates.
 
-Use the attached `pear-governance` worktree. Before each stage, read #25, the approved task/implementation plans, the latest existing stage report and applicable `AGENTS.md` files. No stage report exists yet. Preserve #1 source ownership, #3 contract/language ownership, their separate worktrees and existing untracked `analysis/` and `research/`.
+Use the attached `pear-governance` worktree. Before each stage, read #25, the approved task/implementation plans, the latest existing stage report and applicable `AGENTS.md` files. At implementation-plan preparation, no stage report existed. The latest completed stage is now recorded in the [Stage 1 report](../working/task_m1_25_stage1.md). Preserve #1 source ownership, #3 contract/language ownership, their separate worktrees and existing untracked `analysis/` and `research/`.
 
 The planning base is `a75237a6f67a3ade71fcef6068a228686958efe2`. At preparation, #25 is open, remote master still matches that base and no PR is open. These are dated observations; recheck before integration. #3 may later touch `docs/README.md` and `docs/architecture.md`.
 
@@ -233,3 +233,5 @@ Use `task-final-report` only after all stages and their approvals are complete. 
 ## Approval Request
 
 Approve these three stages, artifacts, verification commands, bounded checker coverage and commit messages so Stage 1 can begin. This approval does not waive subsequent stage/report gates or authorize any excluded runtime, plugin, platform-security or repository-publication setting change.
+
+Approval recorded: on September 28, 2026, the maintainer explicitly instructed this session to proceed in response to the implementation-plan review and Stage 1 start request. The three-stage implementation plan is approved, and Stage 1 is authorized. Later stage transitions remain subject to their report approvals.

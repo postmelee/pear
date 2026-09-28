@@ -5,7 +5,7 @@ Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Date: September 28, 2026
 Work branch: `codex/task25`
 Base: `origin/master` at `a75237a6f67a3ade71fcef6068a228686958efe2`
-Status: Task plan approved on September 28, 2026; implementation-plan preparation authorized.
+Status: Task and implementation plans approved; Stage 1 complete; Stage 2 approval pending.
 
 ## Purpose
 
@@ -178,4 +178,4 @@ Issue registration and task-start were explicitly approved in this session on Se
 
 Approve this task plan's scope, the document-location judgment, three-stage order, exact expected paths, verification approach and exclusions. After approval, `task_m1_25_impl.md` will define concrete stage artifacts, verification commands and commit messages for the separate implementation-plan review. No runtime/product implementation or new milestone registration is requested by this plan.
 
-Approval recorded: on September 28, 2026, the maintainer explicitly instructed this session to proceed in response to the task-plan approval request. The scope and document-location judgment above are approved. The [implementation plan](task_m1_25_impl.md) is the next review artifact; Stage 1 has not started.
+Approval recorded: on September 28, 2026, the maintainer explicitly instructed this session to proceed in response to the task-plan approval request. The scope and document-location judgment above are approved. The [implementation plan](task_m1_25_impl.md) was the next review artifact; this task-plan approval did not itself start Stage 1. See the [Stage 1 report](../working/task_m1_25_stage1.md) for the subsequent approved implementation and results.
