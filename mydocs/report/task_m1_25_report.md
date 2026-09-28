@@ -17,7 +17,7 @@ The requester approved the Stage 3 report and final-report preparation, then exp
 
 ## Changed Files and Impact Area
 
-The complete task comprises 27 changed paths including this report, all within the approved plan. The implementation stages account for 26 paths; final reporting adds this file and updates existing task state.
+The task diff against integrated master `3ad083075ba46522d4d01764e2ba453a89a1436d` comprises 27 changed paths including this report, all within the approved plan. The implementation stages account for 26 paths; final reporting adds this file and updates existing task state.
 
 | Path | Change Summary | Impact Area |
 |---|---|---|
@@ -48,7 +48,7 @@ The [task-plan location judgment](../plans/task_m1_25.md) was explicitly approve
 
 ## Quantitative Before/After Comparison
 
-The baseline is `a75237a6f67a3ade71fcef6068a228686958efe2`; counts describe this task's checkout, not unmerged concurrent branches.
+The planning baseline is `a75237a6f67a3ade71fcef6068a228686958efe2`. Counts below describe #25 before the separate #1 integration unless explicitly marked; incoming #1 implementation and reports are not #25 changes.
 
 | Metric | Before | After |
 |---|---|---|
@@ -58,7 +58,7 @@ The baseline is `a75237a6f67a3ade71fcef6068a228686958efe2`; counts describe this
 | Shared skill-discovery symlinks | 2 | Same 2, mode `120000` and original Git entries |
 | Existing P/E dependency rows | 21 | Same 21, byte-for-byte |
 | Governance CLI test methods | 0 | 35; no skips in final local run |
-| Governed Markdown / checked local destinations | No maintained checker | 18 documents / 101 destinations |
+| Governed Markdown / checked local destinations | No maintained checker | 18 documents / 101 destinations before #1 integration; 19 / 111 after integration |
 | Documentation PR workflows | 0 | 1; initial hosted check passed on Python 3.12.14 |
 
 These counts measure documentation and verification coverage, not runtime readiness or game compatibility. The entire original M1 completion section and seven protected architecture sections also remain unchanged.
@@ -105,9 +105,13 @@ Full integrated output is retained locally at `/private/tmp/pear-task25-final/in
 
 ### Live integration state
 
-Read-only GitHub and remote-ref checks on September 28, 2026 found #1, #3 and #25 open; #2 closed; and `master` still at planning base `a75237a6f67a3ade71fcef6068a228686958efe2`. Local `master` and `origin/master` match that SHA, so no integration-base update or merge was necessary. No `codex/publish-task25` remote branch existed at the check.
+At final-report preparation and initial publication on September 28, 2026, remote master still matched planning base `a75237a6f67a3ade71fcef6068a228686958efe2`; #1/#3/#25 were open and #2 was closed. The initial preflight found no duplicate #25 PR or publication branch.
 
-[PR #26](https://github.com/postmelee/pear/pull/26), the separate #1 source-qualification task, is open from `codex/publish-task1` at `595fd15ac06a9e1d2cd7d1721c3608d2a18d8573`. Its file list overlaps this task at `docs/README.md` and `mydocs/orders/20260928.md`. Preserve its source-guide link and task-board record if it merges first; #3 can also affect the index/architecture. Its reported blocked source/build decision does not conflict with this task's explicitly unqualified runtime direction. This report does not adopt or qualify unmerged work. Recheck master and these overlaps immediately before publication.
+During publication verification, [PR #26](https://github.com/postmelee/pear/pull/26) merged at 14:25:32 UTC and advanced master to `3ad083075ba46522d4d01764e2ba453a89a1436d`. The approved implementation plan calls for reconciling merged overlap in this worktree and recording the new base. Master was therefore integrated without rewriting stage history. The two conflicts were `docs/README.md` and `mydocs/orders/20260928.md`: the index retains #25's structure plus #1's source-qualification link, and the board retains all incoming M1 rows plus #25's operations row. No other task worktree was edited.
+
+Incoming #1 source inventory, validator, tests, guide, research additions and task records are preserved unchanged from that master commit. They are distinct from the 27-path #25 diff. In particular, `runtime/sources/` now exists as source inventory; historical stage observations about the earlier checkout do not claim otherwise or establish runtime implementation/support. #3 can still affect later index/architecture integration.
+
+After resolving the two document conflicts, reran the exact Stage 3 verification block and actionlint. The checker passed with **19 documents and 111 local targets**; all **35 tests passed in 3.986 seconds** on local Python `3.14.4`; Ruby/Psych structure checks, actionlint and whitespace checks passed. The original baseline diff also includes incoming #1 work, so the scope/preservation review separately compares against integrated master. The integration log is `/private/tmp/pear-task25-final/integration-verification.log`.
 
 ### Publication and hosted verification
 
@@ -115,11 +119,11 @@ The publication preflight reconfirmed unchanged remote master, open #25 and #26,
 
 [Documentation run 36435689769](https://github.com/postmelee/pear/actions/runs/36435689769), associated with that PR head, completed successfully on September 28, 2026. Its [Documentation checks job](https://github.com/postmelee/pear/actions/runs/36435689769/job/108972902019) used Ubuntu image `20260920.314.1` and CPython `3.12.14`; the actual log reports 18 documents/101 local targets passed and all 35 tests passed in 5.066 seconds. This is the first actual hosted result; it supersedes the earlier publication-time limitation, while the stage reports retain their historical not-yet-run state.
 
-This follow-up commit records approval/publication/evidence and updates task status only. It changes none of the checker, tests, workflow or product guidance validated by that run. Its subsequent CI result is recorded in the PR's current verification section rather than recursively rewriting this report after every documentation-only push.
+Publication-evidence commit `eee13b47fe9be9aedf974b25e3cb36bfc765fe53` changed task records only. The subsequent master integration preserves the checker, tests and workflow while adding the source-guide link described above. The current integrated-head CI result is recorded in the PR's verification section rather than recursively rewriting this report after every documentation-only push.
 
 ### Verification limitations
 
-- The initial hosted run below passed on Python 3.12.14; local tests used 3.14.4. This validates the documentation job on those inputs, not independent Mac/runtime execution or future runner versions.
+- The initial hosted run above passed on Python 3.12.14; local tests used 3.14.4. This validates the documentation job on those inputs, not independent Mac/runtime execution or future runner versions.
 - The checker supports simple inline/image/reference-definition destinations. Reference-use resolution, heading validity, raw HTML and nested/escaped Markdown edge cases require manual review. It does not verify remote source availability, technical correctness, agent understanding or runtime qualification.
 - No GPU capture/validation/replay, game/Steam execution, runtime build, host regression, signing change, performance measurement or distribution qualification was performed in #25. Existing source, host, game and user-distribution evidence remain separate.
 - Stage 2 observed no exposed/installed Apple expert in the inspected environment and no `gpucapture`/`gpudebug` on PATH on macOS 26.5.2/Xcode 26.6. Xcode alternatives remain candidates; no plugin, OS/toolchain or security configuration changed.
@@ -128,7 +132,7 @@ This follow-up commit records approval/publication/evidence and updates task sta
 
 ### Residual Risks
 
-- Concurrent #1/#3 work can change the integration base and overlapping documents/board. Preserve their changes and rerun affected checks after any integration edit.
+- PR #26/#1 has been integrated and its content preserved; later #3 or master changes can still affect the index, architecture or board. Preserve concurrent changes and rerun affected checks after any further integration edit.
 - Future workflow or hosted-runner changes may require new validation; the completed run qualifies only its recorded documentation/test inputs.
 - Pinned Apple guidance can still conflict with actual SDK/API contracts. The reviewed autorelease-pool example conflict is documented; future implementation must resolve its actual lifetime semantics.
 - Roadmap and experiment descriptions do not establish supported games, ordinary-user distribution, power/performance benefits or universal Mac compatibility.
@@ -136,7 +140,7 @@ This follow-up commit records approval/publication/evidence and updates task sta
 ### Follow-up Candidates
 
 - Register proposed M2/U01-U07 separately after scope/milestone approval; no entries were created here.
-- Continue existing #1/#3 and runtime-integration Issues within their ownership and acceptance boundaries. No duplicate runtime/schema/language task is proposed.
+- Continue #3 and runtime-integration Issues within their ownership and acceptance boundaries, using #1's recorded blocked source/build findings. No duplicate runtime/schema/language task is proposed.
 - Consider optional MSC/D3DMetal experiments only for a concrete graphics blocker or a separately approved native-shader path; do not make them a new Phase 1 prerequisite.
 - Discussions/Wiki roles are documented guidance. Activation or content publication would be a separate request; no platform settings changed.
 
