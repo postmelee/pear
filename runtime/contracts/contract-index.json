@@ -1,10 +1,10 @@
 {
   "registry_format_version": 1,
   "contract_set": "pear-runtime",
-  "status": "draft",
+  "status": "experimental",
   "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
-  "schema_implementation": "not_implemented",
-  "validator_implementation": "not_implemented",
+  "schema_implementation": "implemented",
+  "validator_implementation": "bounded_python_oracle",
   "schema_path_base": "runtime/contracts",
   "schema_resolution": "registered_local_paths_only",
   "reference_digest": {
@@ -17,62 +17,105 @@
       "record_kind": "runtime_lock",
       "schema_version": 1,
       "schema_path": "v1/runtime-lock.schema.json",
-      "status": "planned",
-      "producers": ["runtime_build_maintainers"],
-      "consumers": ["build", "packaging", "supervisor"]
+      "status": "implemented",
+      "producers": [
+        "runtime_build_maintainers"
+      ],
+      "consumers": [
+        "build",
+        "packaging",
+        "supervisor"
+      ]
     },
     {
       "record_kind": "runtime_artifact",
       "schema_version": 1,
       "schema_path": "v1/runtime-artifact.schema.json",
-      "status": "planned",
-      "producers": ["build", "packaging"],
-      "consumers": ["supervisor", "qualification"]
+      "status": "implemented",
+      "producers": [
+        "build",
+        "packaging"
+      ],
+      "consumers": [
+        "supervisor",
+        "qualification"
+      ]
     },
     {
       "record_kind": "game_profile",
       "schema_version": 1,
       "schema_path": "v1/game-profile.schema.json",
-      "status": "planned",
-      "producers": ["profile_contributors"],
-      "consumers": ["supervisor", "test_tooling"]
+      "status": "implemented",
+      "producers": [
+        "profile_contributors"
+      ],
+      "consumers": [
+        "supervisor",
+        "test_tooling"
+      ]
     },
     {
       "record_kind": "launch",
       "schema_version": 1,
       "schema_path": "v1/launch.schema.json",
-      "status": "planned",
-      "variants": ["request", "event"],
-      "producers": ["supervisor", "observer"],
-      "consumers": ["observer", "run_aggregator"]
+      "status": "implemented",
+      "variants": [
+        "request",
+        "event"
+      ],
+      "producers": [
+        "supervisor",
+        "observer"
+      ],
+      "consumers": [
+        "observer",
+        "run_aggregator"
+      ]
     },
     {
       "record_kind": "failure",
       "schema_version": 1,
       "schema_path": "v1/failure.schema.json",
-      "status": "planned",
-      "producers": ["validator", "supervisor", "observer"],
-      "consumers": ["diagnostics", "run_aggregator"]
+      "status": "implemented",
+      "producers": [
+        "validator",
+        "supervisor",
+        "observer"
+      ],
+      "consumers": [
+        "diagnostics",
+        "run_aggregator"
+      ]
     },
     {
       "record_kind": "run",
       "schema_version": 1,
       "schema_path": "v1/run.schema.json",
-      "status": "planned",
-      "producers": ["supervisor", "run_aggregator"],
-      "consumers": ["qualification"]
+      "status": "implemented",
+      "producers": [
+        "supervisor",
+        "run_aggregator"
+      ],
+      "consumers": [
+        "qualification"
+      ]
     },
     {
       "record_kind": "qualification",
       "schema_version": 1,
       "schema_path": "v1/qualification.schema.json",
-      "status": "planned",
-      "producers": ["test_review_workflow"],
-      "consumers": ["supervisor", "compatibility_presentation"]
+      "status": "implemented",
+      "producers": [
+        "test_review_workflow"
+      ],
+      "consumers": [
+        "supervisor",
+        "compatibility_presentation"
+      ]
     }
   ],
   "shared_definitions": {
     "schema_path": "v1/common.schema.json",
-    "status": "planned"
+    "status": "implemented"
   }
 }

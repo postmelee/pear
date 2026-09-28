@@ -1,12 +1,12 @@
 # Runtime contracts
 
-Status: **proposed design**, September 28, 2026, Issue [#3](https://github.com/postmelee/pear/issues/3), Stage 1. The [registry](../runtime/contracts/contract-index.json) lists planned version 1 schemas; those schemas and their validators do not exist yet. The [research example](../runtime/contracts/examples/research-lock.json) is an incomplete design example, not a runtime lock that can be executed. No runtime, manager language, game support, or distribution capability is qualified here.
+Status: **experimental version 1 contracts with a tested reference validator**, September 28, 2026, Issue [#3](https://github.com/postmelee/pear/issues/3), Stage 2. The [registry](../runtime/contracts/contract-index.json) identifies seven implemented schemas and shared definitions. The [research example](../runtime/contracts/examples/research-lock.json) is valid for inspection and ineligible for runtime execution. No runtime, manager language, game support, or distribution capability is qualified here.
 
-This specification develops the boundaries in the [architecture](architecture.md) and [delivery plan](delivery-plan.md). Its audience is contributors implementing source/build tools, the manager, profiles, and observation/qualification tooling. The current stage fixes responsibilities and identity semantics; Stage 2 supplies executable structure and semantic checks. JSON parsing alone does not establish compliance with this proposed contract.
+This specification develops the boundaries in the [architecture](architecture.md) and [delivery plan](delivery-plan.md). Its audience is contributors implementing source/build tools, the manager, profiles, and observation/qualification tooling. The Python reference tool checks bounded structure, bytes, relationships and requested-use eligibility. Its result is an evaluation of supplied records under a caller policy, not a production launch authorization or proof of their external observations. JSON parsing alone does not establish compliance.
 
 ## Record kinds and consumers
 
-Every product record has a `record_kind`, integer `schema_version`, `record_context`, and a human-readable `record_id`. Version 1 is planned, not currently supported by an implementation. A record ID is a label; it does not replace a content digest. IDs must be unambiguous within an input bundle. The registry is design metadata, not an eighth product-record kind.
+Every product record has a `record_kind`, integer `schema_version`, `record_context`, and a human-readable `record_id`. The Stage 2 reference validator implements version 1; native manager implementations remain future work. A record ID is a label; it does not replace a content digest. IDs must be unambiguous within an input bundle. The registry is design metadata, not an eighth product-record kind.
 
 | Kind | Producer and primary consumers | Meaning and identity links |
 |---|---|---|
@@ -18,7 +18,7 @@ Every product record has a `record_kind`, integer `schema_version`, `record_cont
 | `run` | Supervisor and evidence aggregator; qualification tooling | Final lock/artifact/profile/game/Steam identities, scoped Mac/OS/configuration, process/module timeline, selected translator/renderer, exit and feature outcomes, failures, timing and observation gaps. References the launch request and completed event/failure evidence. |
 | `qualification` | Test/review workflow; manager support selection and compatibility presentation | Test revision, required checks, applicable configuration, exact input and run/evidence references, reproduction scope, date, reviewer attribution and known limitations. Derives a bounded support decision; does not rewrite its inputs. |
 
-The seven schemas will live under `runtime/contracts/v1/`, with shared types in `common.schema.json`. A launch event is not another top-level kind: its variant determines its fields and allowed references. Raw streams and private operational storage are outside the public contract.
+The seven schemas live under `runtime/contracts/v1/`, with shared types in `common.schema.json`. A launch event is not another top-level kind: its variant determines its fields and allowed references. Raw streams and private operational storage are outside the public contract.
 
 ## Validity, state and eligibility
 
@@ -41,13 +41,13 @@ These questions are independent:
 
 Proposed/built/tested/supported are evidence-derived views of a record set, not a mutable progression field inside the lock. A failed run remains a tested failure. `unknown`, `unsupported`, `failed` and `passed` observations retain their distinct meanings; absence is never a passing result. Unknown collections carry a reason and an explicit unknown state: an empty patch list with unknown status does not mean that no patches are required.
 
-Runtime launch and supported launch need different gates to avoid a qualification deadlock. A future explicitly scoped **qualification run** may use a complete built candidate whose required host, signing, compatibility and ownership checks pass, before game qualification exists. A **supported launch** additionally needs current qualification for the requested configuration. Neither purpose permits an incomplete research record, an unresolved required identity, a required unsafe operation, or an unavailable execution permission. These gates are to be implemented and tested in later stages/tasks.
+Runtime launch and supported launch need different gates to avoid a qualification deadlock. A future explicitly scoped **qualification run** may use a complete built candidate whose required host, signing, compatibility and ownership checks pass, before game qualification exists. A **supported launch** additionally needs current qualification for the requested configuration. Neither purpose permits an incomplete research record, an unresolved required identity, a required unsafe operation, or an unavailable execution permission. The reference validator now evaluates these gates against supplied records. Actual build, host, signing, supervision and observation implementations remain later tasks.
 
 Developer execution and ordinary-user distribution are separate scopes. [#2's host evidence](host-capabilities.md) describes its own tested binaries, Mac, OS and authorization; it is not automatic authorization or proof for a future Wine build. Reuse it by a scoped evidence reference, preserving the original record unchanged.
 
 ## Exact-byte identity and acyclic references
 
-A product-record content reference identifies its expected kind/version, a permitted bundle-relative location and a typed digest. The proposed digest type is SHA-256 over the **exact stored UTF-8 bytes**, including whitespace and the final newline. References are written by a different record after the referenced bytes are final. No record contains its own content digest. Editing even formatting changes its identity and requires updating/rechecking dependents.
+A product-record content reference identifies its expected kind/version, a permitted bundle-relative location and a typed digest. The digest type is SHA-256 over the **exact stored UTF-8 bytes**, including whitespace and the final newline. References are written by a different record after the referenced bytes are final. No record contains its own content digest. Editing even formatting changes its identity and requires updating/rechecking dependents.
 
 Raw bytes, source trees, archives, patch files, produced payloads and signing observations have explicitly different digest scopes. A Git commit or tree object ID includes its Git object format and is not a SHA-256 file digest. A hash of a Git tree listing is identified as a listing hash; it is not described as a hash of concatenated source contents. Repositories, source authenticity evidence and acquisition methods come from the source audit; changing a digest label cannot establish trust.
 
@@ -61,9 +61,9 @@ qualification -> completed run -> launch request -> artifact -> runtime lock
                                       +-> launch request
 ```
 
-An event may reference its earlier request and preceding event; it cannot reference a later event or completed run. A failure may carry a logical `run_id` for correlation, but not the digest of the run that will include it. Correlation labels do not certify bytes. A bundle must reject reused labels with inconsistent meanings, conflicting input digests, unresolved required references and cycles.
+An event may reference its earlier request and preceding event. A `spawned` event also references the exact observer-ready acknowledgement through `ready_ack`; `observer_complete` references the covered supervisor exits through `completed_exits`. These causal links must match the same request and actually included events. Events cannot reference a later event or completed run. A failure may carry a logical `run_id` for correlation, but not the digest of the run that will include it. Correlation labels do not certify bytes. A bundle must reject reused labels with inconsistent meanings, conflicting input digests, unresolved required references and cycles.
 
-Architecture section 7 describes artifact qualification status and evidence references. This design refines their representation to avoid a cycle: the immutable artifact/profile supplies identity, while a later **qualification overlay** references those exact inputs and runs. It is an ordinary `qualification` record, not a new kind. An interface can display derived status by locating matching qualification records; it must not insert that qualification's digest into the very artifact/profile it qualifies. Historical links cannot qualify changed bytes, and a status cache is not authoritative evidence. The architecture file is unchanged in Stage 1.
+Architecture section 7 describes artifact qualification status and evidence references. This design refines their representation to avoid a cycle: the immutable artifact/profile supplies identity, while a later **qualification overlay** references those exact inputs and runs. It is an ordinary `qualification` record, not a new kind. An interface can display derived status by locating matching qualification records; it must not insert that qualification's digest into the very artifact/profile it qualifies. Historical links cannot qualify changed bytes, and a status cache is not authoritative evidence. The architecture file remains unchanged in this task so far.
 
 Signature/provisioning observations identify the exact payload/context tested, with private keys, profiles and personal identity data excluded. A detached signature or external observation has its own identity; it does not substitute for the payload digest. A byte-identical signature is not the definition of a reproducible source build. Any relevant payload, lock, profile, game, Steam, signing or configuration change requires re-evaluating affected evidence.
 
@@ -124,9 +124,9 @@ Failure categories distinguish contract validation, source/build, host capabilit
 
 Public run/qualification records use allowlisted fields and bounded evidence references. Credentials, tokens, personal paths, Apple signing/profile material, authenticated prefixes, proprietary files and saves stay local. Redaction never converts omitted required observations into passing evidence. Host/chip/OS and configuration observations describe their actual scope; they are not unique-device identifiers. Public reviewer attribution must be intentionally supplied, not scraped from local accounts.
 
-Exporting a redacted record creates a **new immutable derivative with its own byte identity**; never overwrite an original record or retain its digest for different exported bytes. A private launch request can contain arguments or local details that must not be exported. Its public derivative uses only privacy-safe correlation to the local original and explicitly declares withheld references and reduced disclosure. A publicly inspectable partial bundle is not a self-contained, fully validated run: missing private references cannot be treated as publicly verified. Full local validation and the exported view retain distinct scope, and Stage 2 must represent and test that distinction.
+Exporting a redacted record creates a **new immutable derivative with its own byte identity**; never overwrite an original record or retain its digest for different exported bytes. A private launch request can contain arguments or local details that must not be exported. Its public derivative uses only privacy-safe correlation to the local original and explicitly declares withheld references and reduced disclosure. A publicly inspectable partial bundle is not a self-contained, fully validated run: missing private references cannot be treated as publicly verified. Full local validation and the exported view retain distinct scope. Version 1 represents a partial disclosure explicitly, permits bounded inspection, and denies execution/qualification for any reachable partial record.
 
-The consuming application or review workflow supplies its trusted reviewer, evidence-origin and qualification policy **outside the submitted JSON**. Matching digests, a named reviewer, a `passed` result or a self-declared qualification do not grant their producer trust. The consumer must apply its independently configured policy before accepting a support claim, including any reliance on a local review that public redaction prevents others from reproducing. Stage 1 defines this boundary; it implements no signature authority, trust service or PKI.
+The consuming application or review workflow supplies its trusted reviewer, evidence-origin and qualification policy **outside the submitted JSON**. Matching digests, a named reviewer, a `passed` result or a self-declared qualification do not grant their producer trust. The consumer must apply its independently configured policy before accepting a support claim, including any reliance on a local review that public redaction prevents others from reproducing. The Stage 2 evaluator enforces an external policy boundary; it implements no signature authority, trust service or PKI. An external file location alone does not authenticate a policy: the caller must choose it independently of the supplied bundle.
 
 Qualification names the exact test revision, configuration, required feature set, dates and remaining gaps. Required unknown/unsupported/failed results prevent the relevant support claim. Known limitations and optional untested features remain visible. Votes, a proposed recipe, successful schema validation or a game menu are not qualification. The first M1 game record still needs the [delivery plan's complete gates](delivery-plan.md#first-milestone-completion), including required-process coverage and sustained gameplay.
 
@@ -134,10 +134,72 @@ Qualification names the exact test revision, configuration, required feature set
 
 `examples/research-lock.json` has `record_context: research`, an unknown compatibility family, no source audit identity and incomplete component coverage. For each intended component, its source, patch, build and terms facts are unknown, with null values and explanatory reasons. The root's host/signing requirements and dependency coverage are also unestablished. Empty evidence means none is supplied; it is not a passing result.
 
-The design review therefore yields: JSON syntax may be readable; schema validity is **not yet tested**; semantic completeness is absent; runtime launch and qualification must be refused. Changing the context string would not supply the missing identities or evidence. Stage 2 must test that refusal and separately accept this as an honest incomplete research record. No computed eligibility field is embedded in the example for a consumer to trust blindly.
+The executed Stage 2 checks accept this example for research inspection and refuse execution. Changing the context string does not supply the missing identities or evidence. No computed eligibility field is embedded in the example for a consumer to trust blindly. The separate committed fixture bundle uses owned, non-executable text bytes and synthetic observations; its successful inspection or fixture evaluation is not a real runtime result.
+
+## Reference validator and reproducible setup
+
+[`tests/contracts/validate.py`](../tests/contracts/validate.py) is read-only evaluation tooling. It does not download sources, execute profile operations, spawn processes, inspect Mach-O slices, verify signatures, acquire credentials, or decide whether license terms fit a release. It verifies declared local bytes and relationships; source, build, signing and observation facts must come from independently reviewed producers. Every result includes `evaluation_only: true`.
+
+The dependency lock targets **CPython 3.14 on macOS ARM64**. Its five binary wheels have exact versions/hashes and recorded package/notice metadata in [`dependencies.json`](../tests/contracts/dependencies.json); `rpds-py` includes native code. This is a test-tool lock, not a universal Python environment or a reproducible source-build claim for those wheels. From the repository root:
+
+```sh
+python3 -m venv .build/task3/venv
+.build/task3/venv/bin/python -m pip download --only-binary=:all: --require-hashes --no-deps -r tests/contracts/requirements.lock --dest .build/task3/wheels
+.build/task3/venv/bin/python -m pip install --no-index --find-links .build/task3/wheels --require-hashes --no-deps -r tests/contracts/requirements.lock
+.build/task3/venv/bin/python tests/contracts/validate.py --check-schemas --check-examples
+.build/task3/venv/bin/python -m unittest discover -s tests/contracts -p 'test_*.py'
+```
+
+No network schema resolution occurs. Registered schema IDs use the reserved `pear.invalid` namespace and resolve only to checked-in resources. The registry paths/kinds/versions and all schema references must agree. Unknown fields, versions and operations are rejected; version 1 has no open executable-extension field. Source/build-configuration evidence references are opaque typed byte identities here: this tool does not reinterpret the source-audit format or execute its claims. Each build target also declares a target triple; unknown configuration/triples block execution, and fixture or contradictory target declarations cannot satisfy runtime eligibility.
+
+To inspect the honest incomplete research example:
+
+```sh
+.build/task3/venv/bin/python tests/contracts/validate.py --bundle-root runtime/contracts/examples --entry research-lock.json --context research --purpose inspect
+```
+
+The CLI accepts `--bundle-root`, a relative `--entry`, `--context`, `--purpose`, and an optional caller-selected `--policy` outside the bundle. Paths must traverse real directories without symlinks; on macOS, use physical paths such as `/private/tmp` when `/tmp` is a symlink. The library entry is `validate_bundle(bundle_root, entry, *, context, purpose, policy)` and returns the same bounded result shape.
+
+| Requested purpose | Evaluation |
+|---|---|
+| `inspect` | Parse, schema, byte and relationship checks. `eligible: true` means eligible for inspection only. Incomplete research and explicit partial disclosure can be inspectable. |
+| `fixture_launch` | Complete owned fixture inputs and fixture context; no execution takes place. |
+| `qualification_run` | Complete built-candidate declarations, matching host/signing/family/cache identities and independently approved inputs. Prior game qualification is not required. |
+| `supported_launch` | The candidate checks plus a current accepted qualification for the same input bytes, selected host entry and configuration. |
+| `qualify` | Matching completed runs, required checks/processes/modules, complete lifecycle/observation and caller trust/age policy. |
+
+The process exits **0** for a valid eligible requested use, **1** for invalid input, **2** for CLI misuse, and **3** for valid but ineligible input. `record_valid` covers parsing, schema and cross-record/byte consistency; `eligible` is always relative to the requested purpose. `outcome_codes` is a sorted, deduplicated, bounded list of stable reasons. Errors do not echo raw input, personal paths, environments, schema exception text or command arguments.
+
+### Bounds and filesystem handling
+
+| Input | Version 1 bound |
+|---|---|
+| JSON file / all reachable records | 256 KiB per file / 4 MiB aggregate |
+| JSON depth / parsed nodes | 32 / 8,192 per file |
+| Reachable records / references | 128 records / 64 references per record |
+| Blob bytes | 64 MiB per file / 256 MiB aggregate, streamed for hashing |
+| Strings / keys | 2,048 / 96 characters maximum, with narrower field constraints |
+| Numeric values | Integers within ±9,007,199,254,740,991, then field-specific bounds; no floating-point, nonfinite or exponent numbers |
+| Existing mutable-tree metadata | At most 4,096 entries per root and depth 32; file contents are not read by this scan |
+
+Strict UTF-8 parsing rejects BOMs, duplicate keys, invalid Unicode scalar values, control characters, excessive nesting/numbers and malformed JSON. All schemas are closed objects. Gregorian UTC timestamps receive semantic checks beyond their shape.
+
+Descriptor-relative traversal rejects symlinks and nonregular reference files, including FIFOs without waiting for a writer. Record aliases, cycles, mismatched kinds/versions/digests, duplicate IDs and incompatible identities fail. References are read with before/after metadata checks; this is not a cryptographic filesystem snapshot.
+
+Mutable root declarations must not overlap one another or immutable record/blob locations. The reference tool conservatively compares normalized/case-folded namespaces and rejects known existing hard-link aliases to immutable input in bounded mutable-tree metadata. Setting paths and save declarations remain relative and typed; Windows guest paths are not interpreted as host absolute paths. These checks do not eliminate later filesystem races, APFS changes or unobserved external writers. #9 must resolve ownership, enforce write boundaries and verify identities again at use time. No write is authorized by this evaluator.
+
+### External policy, modules and causal evidence
+
+The caller policy is separate from all seven public records. Its closed version 1 representation supplies approved exact record digests, trusted reviewers, required checks and processes, required host/guest module IDs, module expectations (ID, kind, source and observed hash), host configuration, allowed signing scopes and maximum evidence age. Policy can add requirements; submitted records cannot remove them. A trusted reviewer name, matching file hash or correct JSON does not replace this policy. Synthetic unit tests deliberately supply a synthetic trusted policy to exercise the evaluator; they are not real qualification evidence.
+
+A module observation names `source: artifact`, `system` or `game`, an observed SHA-256 and attributable evidence. Artifact modules additionally bind to the selected artifact's file ID, bytes, role and architecture. System/game modules can carry their observed digest and evidence without copying those proprietary/system payloads into a public bundle. Caller expectations pin required module origin and bytes, preventing a label or source reclassification from substituting a different module. This checks supplied evidence relationships; it does not independently inspect running modules or authenticate their observers.
+
+Qualification evaluates the union of profile, external-policy and run-declared required processes, plus required checks/modules. Host architecture and translation state are distinct from guest PE architecture. Missing/unknown/unsupported required observations, sequence gaps, dropped events, cleanup failures and stale or mismatched evidence prevent support. Successful source acquisition, a native launcher or a guest x64 module cannot by themselves establish Rosetta independence.
+
+The reference event model requires a shared declared monotonic clock for its bounded timing checks, contiguous per-producer sequences and exact request/process-generation identities. Explicit `ready_ack` and `completed_exits` references provide causal links across producer streams; timestamps alone do not. Missing/wrong acknowledgements, omitted lifecycle events or incomplete observed coverage prevent qualification. The actual #9/#10 handshake and collection mechanism remain unimplemented here.
 
 ## Remaining implementation work
 
-Stage 2 must define exact field schemas, parse/collection bounds, stable rejection codes, local reference resolution, eligibility checks and adversarial fixtures. Supported version transitions require explicit consumer support; published schemas are not silently reinterpreted. Any semantic change that would make an old consumer accept a different operation requires a new supported contract version. Unknown extensions remain non-executable unless a later version explicitly defines them.
+Stages 3–5 implement equivalent bounded Rust/Swift experiments, make a measured manager-language decision and reproduce the final results. Neither language is selected by these schemas or Python tests. Production installation, ownership enforcement, execution, authentication, observation, trust distribution and game support remain their owning issues' work.
 
-Stages 3–5 then implement equal bounded Rust/Swift experiments, make a measured manager-language decision and reproduce the final results. Until those checks exist, this document and registry remain proposed design; no schema validation, safe execution, source readiness, runtime support or end-user release is asserted.
+Supported version transitions require explicit consumer support; published schemas must not be silently reinterpreted. Any semantic change that would make an old consumer accept a different operation requires a new supported contract version. These experimental contracts and their fixture tests do not establish source readiness, a safe production launcher, runtime support or an end-user release.

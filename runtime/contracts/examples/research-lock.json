@@ -22,8 +22,8 @@
         "status": "unknown",
         "url": null,
         "immutable_ref": null,
-        "content_digest": null,
-        "reason": "No actual source input from Issue #1 is selected by this example."
+        "reason": "No actual source input from Issue #1 is selected by this example.",
+        "content": null
       },
       "dependencies": {
         "status": "unknown",
@@ -39,7 +39,8 @@
         "status": "unknown",
         "toolchain_ids": [],
         "targets": [],
-        "reason": "No toolchain, host or guest target has been pinned or build-tested here."
+        "reason": "No toolchain, host or guest target has been pinned or build-tested here.",
+        "configuration": null
       },
       "terms": {
         "status": "unknown",
@@ -55,8 +56,8 @@
         "status": "unknown",
         "url": null,
         "immutable_ref": null,
-        "content_digest": null,
-        "reason": "No actual source input from Issue #1 is selected by this example."
+        "reason": "No actual source input from Issue #1 is selected by this example.",
+        "content": null
       },
       "dependencies": {
         "status": "unknown",
@@ -72,7 +73,8 @@
         "status": "unknown",
         "toolchain_ids": [],
         "targets": [],
-        "reason": "No toolchain, host or guest target has been pinned or build-tested here."
+        "reason": "No toolchain, host or guest target has been pinned or build-tested here.",
+        "configuration": null
       },
       "terms": {
         "status": "unknown",
@@ -88,8 +90,8 @@
         "status": "unknown",
         "url": null,
         "immutable_ref": null,
-        "content_digest": null,
-        "reason": "No actual source input from Issue #1 is selected by this example."
+        "reason": "No actual source input from Issue #1 is selected by this example.",
+        "content": null
       },
       "dependencies": {
         "status": "unknown",
@@ -105,7 +107,8 @@
         "status": "unknown",
         "toolchain_ids": [],
         "targets": [],
-        "reason": "No toolchain, host or guest target has been pinned or build-tested here."
+        "reason": "No toolchain, host or guest target has been pinned or build-tested here.",
+        "configuration": null
       },
       "terms": {
         "status": "unknown",
@@ -125,5 +128,11 @@
     "value": null,
     "reason": "No artifact-specific signing or distribution route is established by this example."
   },
-  "evidence": []
+  "evidence": [],
+  "disclosure": {
+    "mode": "full",
+    "withheld": [],
+    "origin_token": null
+  },
+  "toolchains": []
 }
