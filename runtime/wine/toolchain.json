@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "record_kind": "wine_toolchain",
+  "scope": "wine_component",
+  "artifacts": [
+    {
+      "id": "llvm-mingw",
+      "url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260908/llvm-mingw-20260908-ucrt-macos-universal.tar.xz",
+      "sha256": "d1dc5d1ecf3a3ced5ed5544c72f1acd0c8e84eb3024d520ecc6b143eec62a149",
+      "size_bytes": 124244100,
+      "archive_root": "llvm-mingw-20260908-ucrt-macos-universal",
+      "format": "tar.xz",
+      "role": "cross-tools",
+      "download_path": ".build/task4/downloads/llvm-mingw-20260908-ucrt-macos-universal.tar.xz",
+      "install_subdir": "llvm-mingw",
+      "max_unpacked_bytes": 850000000,
+      "source_commit": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "publisher_metadata": "https://api.github.com/repos/mstorsjo/llvm-mingw/releases/tags/20260908",
+      "publisher_build_run": "https://github.com/mstorsjo/llvm-mingw/actions/runs/34222735188",
+      "provenance_limit": "Publisher workflow attribution; not an independently reproduced binary.",
+      "notice_files": [
+        {
+          "path": "LICENSE.TXT",
+          "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+          "size_bytes": 15141
+        },
+        {
+          "path": "aarch64-w64-mingw32/share/mingw32/COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+          "size_bytes": 2326
+        },
+        {
+          "path": "aarch64-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+          "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+          "size_bytes": 12155
+        },
+        {
+          "path": "aarch64-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+          "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+          "size_bytes": 5905
+        },
+        {
+          "path": "aarch64-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+          "size_bytes": 2883
+        },
+        {
+          "path": "aarch64-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+          "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+          "size_bytes": 1099
+        },
+        {
+          "path": "armv7-w64-mingw32/share/mingw32/COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+          "size_bytes": 2326
+        },
+        {
+          "path": "armv7-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+          "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+          "size_bytes": 12155
+        },
+        {
+          "path": "armv7-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+          "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+          "size_bytes": 5905
+        },
+        {
+          "path": "armv7-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+          "size_bytes": 2883
+        },
+        {
+          "path": "armv7-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+          "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+          "size_bytes": 1099
+        },
+        {
+          "path": "i686-w64-mingw32/share/mingw32/COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+          "size_bytes": 2326
+        },
+        {
+          "path": "i686-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+          "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+          "size_bytes": 12155
+        },
+        {
+          "path": "i686-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+          "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+          "size_bytes": 5905
+        },
+        {
+          "path": "i686-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+          "size_bytes": 2883
+        },
+        {
+          "path": "i686-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+          "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+          "size_bytes": 1099
+        },
+        {
+          "path": "share/gendef/COPYING.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size_bytes": 35147
+        },
+        {
+          "path": "share/widl/COPYING.txt",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+          "size_bytes": 2326
+        },
+        {
+          "path": "x86_64-w64-mingw32/share/mingw32/COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+          "size_bytes": 2326
+        },
+        {
+          "path": "x86_64-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+          "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+          "size_bytes": 12155
+        },
+        {
+          "path": "x86_64-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+          "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+          "size_bytes": 5905
+        },
+        {
+          "path": "x86_64-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+          "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+          "size_bytes": 2883
+        },
+        {
+          "path": "x86_64-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+          "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+          "size_bytes": 1099
+        }
+      ]
+    },
+    {
+      "id": "bison-source",
+      "url": "https://ftp.gnu.org/gnu/bison/bison-3.8.2.tar.xz",
+      "sha256": "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2",
+      "size_bytes": 2817324,
+      "archive_root": "bison-3.8.2",
+      "format": "tar.xz",
+      "role": "parser-generator-source",
+      "download_path": ".build/task4/downloads/bison-3.8.2.tar.xz",
+      "install_subdir": "bison-source",
+      "max_unpacked_bytes": 45000000,
+      "recipe": "gnu-bison-3.8.2-v1",
+      "publisher_metadata": "https://lists.gnu.org/archive/html/bug-bison/2021-09/msg00056.html",
+      "checksum_reference": "https://formulae.brew.sh/api/formula/bison.json",
+      "notice_files": [
+        {
+          "path": "COPYING",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size_bytes": 35149
+        },
+        {
+          "path": "data/skeletons/bison.m4",
+          "sha256": "a3056074b9d6da3866e4dff3d8fba2b9d81d1ca2ca74920718586822d60df767",
+          "size_bytes": 43379
+        }
+      ]
+    }
+  ],
+  "native_tools": [
+    {
+      "id": "clang",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+      "sha256": "7def90dd8829726686213a747fc5bff1583df933dae5edc55d755479e0bfe00a",
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+    },
+    {
+      "id": "clang++",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++",
+      "sha256": "7def90dd8829726686213a747fc5bff1583df933dae5edc55d755479e0bfe00a",
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+    },
+    {
+      "id": "make",
+      "path": "/Applications/Xcode.app/Contents/Developer/usr/bin/make",
+      "sha256": "83284837495b77df7cb0febf564717918abe79f5dc5da1df9a603b2ac55998bb",
+      "version": "GNU Make 3.81"
+    },
+    {
+      "id": "flex",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/flex",
+      "sha256": "9492f9732584c57eae5cf432bd61895386157c3341a43e8f27ce0048f1efaf2f",
+      "version": "flex 2.6.4 Apple(flex-35)"
+    },
+    {
+      "id": "m4",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/m4",
+      "sha256": "ffa09494bacd7c9d6705bbd0b4aaa02c83f63836175e5c0a1d136d98eaa68f19",
+      "version": "GNU M4 1.4.6"
+    },
+    {
+      "id": "otool",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool",
+      "sha256": "be184bb7054565eae25193e45e4235ea2d372c1eb6288ce900b2fad6d9dcc3f3",
+      "version": "Bundled with macOS 26.5.2 / Xcode 26.6; no separate version asserted"
+    },
+    {
+      "id": "lipo",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo",
+      "sha256": "661f3514be6992bb66346e3e48d974fc0ce5b9be5eab55321eabf4818fb3bf28",
+      "version": "Bundled with macOS 26.5.2 / Xcode 26.6; no separate version asserted"
+    },
+    {
+      "id": "codesign",
+      "path": "/usr/bin/codesign",
+      "sha256": "214d455584d19abc0d74d02b9cbc7d3da6bdcb0596c235e6156dd9ed2f4e1ba7",
+      "version": "Bundled with macOS 26.5.2 / Xcode 26.6; no separate version asserted"
+    },
+    {
+      "id": "xcrun",
+      "path": "/usr/bin/xcrun",
+      "sha256": "a439970aea2b4e435eac6518ff62c97fd1c57d8c731974027ad211b515c7a7b8",
+      "version": "Bundled with macOS 26.5.2 / Xcode 26.6; no separate version asserted"
+    }
+  ],
+  "sdk": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+    "version": "26.5"
+  },
+  "fixture_targets": [
+    "aarch64",
+    "arm64ec",
+    "x86_64",
+    "i686"
+  ]
+}

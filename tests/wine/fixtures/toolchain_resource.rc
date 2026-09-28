@@ -1,0 +1,6 @@
+/* Original Pear resource fixture. No external files or Windows headers. */
+LANGUAGE 0, 0
+101 RCDATA
+BEGIN
+    0x4550, 0x5241, 0x002a
+END

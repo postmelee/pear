@@ -8,7 +8,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
 Work branch: `codex/task4`
 
-Status: proposed on September 29, 2026. The requester approved the task plan and document locations and authorized this detailed planning. Implementation and Stage 1 await approval. All commands below are planned interfaces/work, not completed results; new scripts do not exist yet.
+Status: the requester approved this implementation plan and authorized Stage 1 on September 29, 2026. Stage 1 is complete; its actual verification and remaining limits are recorded in the [Stage 1 report](../working/task_m1_4_stage1.md). Commands below retain the approved verification plan. Later stages retain their individual approval checkpoints.
 
 ## Stage Overview
 
@@ -313,3 +313,7 @@ Within an approved stage, read-only investigation, independent fixture authoring
 - Approve the six detailed stages, artifact paths, target matrix, dependency acquisition rules, verification commands and commit messages within the approved task-plan scope.
 - Authorize **Stage 1 only**: scoped records/tools/fixtures and contributor instructions, public source/tool acquisition into isolated directories, needed task-local tool builds and compiler feature checks. No Wine PE execution or restricted-capability trial occurs in Stage 1.
 - Retain later stage/report checkpoints, the actual Wine signing-input gate, and the exclusions for FEX/DXMT integration, Steam/game work, general distribution and unrelated repository changes.
+
+## Approval Record
+
+On September 29, 2026, the requester explicitly instructed this thread to proceed after receiving the completed implementation plan and the request to approve Stage 1. This authorizes the Stage 1 records, tools, fixtures, public dependency acquisition and bounded compiler checks described above. It does not advance the later stage gates.
