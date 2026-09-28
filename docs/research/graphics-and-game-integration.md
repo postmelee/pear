@@ -4,6 +4,8 @@ Checked: 2026-09-27. Scope: the Rosetta-independent Megabonk milestone for Pear.
 
 This document separates local observations, upstream source evidence, and proposed acceptance criteria. It does not report a new runtime build or a Rosetta-independent game launch. Source links to `main`/`master` describe the state inspected on the date above; the implementation gate must replace them with commit-pinned inputs.
 
+Source-audit follow-up, September 28, 2026: the [completed source qualification](../source-qualification.md) and [Issue #1 final report](../../mydocs/report/task_m1_1_report.md) record matching repeat acquisition, inspected patch/terms evidence and an explicit `blocked` source/build decision. Required Darwin integration remains `needs-port`; tools and configured dependency/notice closure remain unresolved. The original research below retains its historical date and scope.
+
 ## Decision
 
 Use **DXMT's ARM64EC Windows components and ARM64 macOS components** as the primary D3D11 implementation to investigate. Integrate them with a compatible ARM64 Wine and FEX runtime as a versioned, tested unit. Retain the working Rosetta-based Wine/DXMT installation as a separate comparison environment.

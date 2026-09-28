@@ -8,6 +8,8 @@ Implementation follow-up, September 27, 2026: the [native host diagnostic](../ho
 
 Implementation follow-up, September 28, 2026: the separate [Issue #2 final report](../../mydocs/report/task_m1_2_report.md) records passing, reproduced native host trials under normal protections on M4 Pro/macOS 26.5.2 with authorized development signing. See the [host capability guide](../host-capabilities.md#reproduced-host-capability-decision) for the selected layout, page mode, finite ABI/thread coverage and distribution limits. This completes the bounded host-probe contribution; it does not qualify the integrated runtime, ordinary-user distribution or Megabonk. The original research findings below retain their original date and scope.
 
+Source-audit follow-up, September 28, 2026: the [completed source qualification](../source-qualification.md) and [Issue #1 final report](../../mydocs/report/task_m1_1_report.md) record matching repeat acquisition, inspected patch/terms evidence and an explicit `blocked` source/build decision. Required Darwin integration remains `needs-port`; tools and configured dependency/notice closure remain unresolved. The original research below retains its historical date and scope.
+
 ## Recommendation
 
 Develop a direct macOS runtime around ARM64 Wine, its ARM64EC/WoW64 emulator interfaces, FEX, and an ARM64-capable graphics layer. Start with public-source and host-capability gates, then fund the missing macOS integration as actual runtime engineering. Avoid building the product around an opaque commercial preview binary.
