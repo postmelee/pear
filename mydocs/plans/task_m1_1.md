@@ -3,7 +3,7 @@
 GitHub Issue: [#1](https://github.com/postmelee/pear/issues/1)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-Status: task preparation started with the maintainer's approval on September 28, 2026, in parallel with Issue #3. This task plan and its document locations await approval. No implementation plan, renewed upstream audit, source acquisition, or runtime build is claimed by this document.
+Status: the maintainer approved this task plan, scope and document locations on September 28, 2026, together with Issue #3. Detailed implementation planning is authorized. Stage implementation remains subject to the implementation-plan approval checkpoint; no renewed upstream audit, source acquisition or runtime build is claimed by this record.
 
 ## Purpose
 
@@ -181,3 +181,7 @@ Exact commands and fixtures will be fixed in `task_m1_1_impl.md` after approval.
 - Approve the #1/#3 ownership boundary and minimal factual handoff, with shared documentation/board changes coordinated centrally.
 
 After approval, `task_m1_1_impl.md` will define concrete stage artifacts, acquisition and verification commands, fixtures and commit messages. No runtime source is changed and no fresh source, build or compatibility result is claimed by this task-plan preparation.
+
+## Approval Record
+
+The task requester explicitly approved both task plans and their document locations on September 28, 2026. The approved scope and exclusions above remain unchanged. The next review is the concrete implementation plan and authorization to start Stage 1; subsequent stages retain their individual report checkpoints.
