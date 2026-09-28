@@ -4,7 +4,7 @@ Task plan: [task_m1_1.md](task_m1_1.md)
 GitHub Issue: [#1](https://github.com/postmelee/pear/issues/1)
 Milestone: M1
 
-Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_1_stage1.md and ../working/task_m1_1_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_1_stage3.md. The task requester approved Stage 4 on September 28, 2026; Stage 4 and the final audit report are complete; publication awaits final-report approval. Planned commands for unstarted stages are not passing results.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_1_stage1.md and ../working/task_m1_1_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_1_stage3.md. The task requester approved Stage 4 on September 28, 2026; Stage 4 and the final audit report are complete; the task requester approved the final report and PR publication on September 28, 2026. Planned commands for unstarted stages are not passing results.
 
 ## Stage Overview
 
@@ -214,7 +214,7 @@ After the combined Stage 2 reports and Stage 3 approval request, the task reques
 
 ### Stage 3 Completion
 
-Stage 3 implementation, independent review and all planned verification are complete. The source inventory remains valid but incomplete and not source-ready. The bundled Stage 3 report records results and residual limits. Stage 4 has not started and requires the next explicit approval.
+Stage 3 implementation, independent review and all planned verification are complete. The source inventory remains valid but incomplete and not source-ready. The bundled Stage 3 report records results and residual limits. At that checkpoint, Stage 4 had not started; its subsequent authorization is recorded below.
 
 ### Stage 4 Authorization
 
@@ -223,3 +223,8 @@ After the combined Stage 3 reports and explicit Stage 4 approval request, the ta
 ### Stage 4 Completion
 
 Fresh remote acquisition, historical patch replay and all planned verification are complete. The investigation concludes `audit_complete: true`, `decision: blocked`, `source_ready: false`. The final stage and Issue reports map acceptance criteria while preserving downstream no-go gates. Final-report approval is required before PR publication under the task workflow; no merge or Issue closure occurred.
+
+
+### Final Report and Publication Approval
+
+On September 28, 2026, the task requester explicitly approved the #1 final report and PR publication after reviewing the final report and prepared PR body. Publish the completed source investigation through `codex/publish-task1` to `master`. This approval does not authorize merging, closing #1 before merge, or treating the blocked source/build candidate as ready.
