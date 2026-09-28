@@ -4,7 +4,9 @@ Task plan: [task_m1_2.md](task_m1_2.md)
 GitHub Issue: [#2](https://github.com/postmelee/pear/issues/2)
 Milestone: M1
 
-Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Stages 3 and 4 were each explicitly approved after the preceding stage report. Stage 5 retains its own report checkpoint.
+Status: implementation plan and Stage 1 approved on September 27, 2026. The maintainer explicitly resumed the task and approved Stage 2 on September 28, 2026. Stages 3, 4 and 5 were each explicitly approved after the preceding stage report. Final review and merge approval remain separate from implementation completion.
+
+All five stages are complete. The [final report](../report/task_m1_2_report.md) records the bounded host capability decision, reproduction evidence and remaining runtime/distribution gates.
 
 ## Stage Overview
 
@@ -211,13 +213,34 @@ The final process-suite run is a regression of the rebuilt shared signed executa
 
 Rebuild from documented inputs, rerun the applicable suite, redact evidence and update the contributor guide with dated outcomes. Link the historical host research to the new evidence without rewriting its original findings. Map all #2 acceptance criteria to actual results.
 
+### Concrete Stage 5 reproduction
+
+The maintainer's explicit request to proceed approves this stage after commit `7fb66dd`. Preserve the existing ignored `.build/host-probe` directory under a dated sibling before rebuilding into a fresh directory at the original path. Confirm no owned probe is still running before moving its artifacts. Preserve the source and test files unchanged for a comparison against the Stage 4 hashes; a fresh output-directory build on the same host is not a clean-machine or second-tester reproduction.
+
+Run the full 126-test suite once, collect fresh ordinary-host observations and baseline behavior, inspect all five Mach-O architectures, and repeat the ordinary Hardened Runtime paired JIT control plus both provisioned process and ABI suites. Bind each result to the rebuilt binary and current source hashes. Compare semantic outcomes; message-passing baseline counts may vary and are not required to be nonzero. Compare binary hashes as a separate observation, without requiring nondeterministic signed app copies to match earlier copies.
+
+Use the approved `docs/host-capabilities.md` for the dated host decision and reproduction instructions. Add only a dated evidence link to `docs/research/macos-runtime-audit.md`. Store Stage 5 report/evidence in `mydocs/working/` and the final acceptance report in `mydocs/report/task_m1_2_report.md`, consistent with the task plan's document-location judgment. No source changes are planned unless reproduction exposes a defect; any such change must be identified and reverified before completion.
+
+```sh
+# Preserve the existing ignored output directory before make; do not remove it.
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+.build/host-probe/pear-host-probe > .build/host-probe/stage5-observations.json
+.build/host-probe/pear-baseline-probe > .build/host-probe/stage5-baseline.json
+xcrun llvm-objdump --disassemble --no-show-raw-insn .build/host-probe/pear-process-probe
+python3 host/probe/hardened_baseline.py > .build/host-probe/stage5-hardened.json
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" > .build/host-probe/stage5-process.json
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" --suite abi > .build/host-probe/stage5-abi.json
+git diff --check
+```
+
 ### Verification
 
 Compare clean-build outcomes, schema/status correctness, architecture, relevant signatures, redaction and known gaps. Required M1 host tests must pass through the authorized path before #2 can be closed. A partial native diagnostic is useful implementation but does not satisfy the entire Issue. General-user distribution and game execution remain separately qualified.
 
 ### Commit
 
-`Task #2 Stage 5: record reproducible host capability decision`
+`Task #2 Stage 5 + final report: record reproducible host capability decision`
 
 ## Stage Dependencies and Reports
 

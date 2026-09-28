@@ -1,6 +1,6 @@
 # Host capability diagnostics
 
-The host tools collect native macOS observations and execute isolated baseline and authorized process/memory/JIT trials for [Issue #2](https://github.com/postmelee/pear/issues/2). They are development tools; runtime and game qualification remain unassessed.
+The host tools collect native macOS observations and execute isolated baseline, process/memory/JIT and ABI/thread trials for [Issue #2](https://github.com/postmelee/pear/issues/2). They are development tools; runtime and game qualification remain unassessed.
 
 `pear-host-probe` only observes its own process. `pear-baseline-probe` supervises four disposable `pear-probe-child` processes, including a fixed ARM64 JIT leaf. Neither tool enters the foreign x18 ABI, changes process page geometry, enables a thread memory-order policy, or launches Steam. Finding an API symbol does not establish permission to call it or prove its behavior.
 
@@ -185,9 +185,38 @@ Two policy workers per configuration each successfully requested disable, enable
 
 The five baseline observations show that this test can expose the ordering difference on this machine. No forbidden outcome occurred across 40,000 enabled-policy trials. This supports the tested behavior without proving universal ordering, independently reading a hardware mode bit, or qualifying a translator's entire memory model. Baseline zero counts in two configurations are not treated as failures or as proof that ARM ordering is always sufficient.
 
+## Reproduced host capability decision
+
+On September 28, 2026, [Stage 5](../mydocs/working/task_m1_2_stage5.md) reproduced the complete host suite from a fresh output directory on the same Mac. All 38 source/test file hashes matched Stage 4, and all five rebuilt ARM64 binaries matched their earlier SHA-256 hashes before identity signing. The 126 tests passed. Fresh signed controls and process/ABI trials retained their expected outcomes, and all 64 dedicated trial children were reaped. [Sanitized evidence](../mydocs/working/task_m1_2_stage5_observations.json) includes the inputs, signatures, commands and full result records.
+
+The selected passing host configuration is M4 Pro/macOS 26.5.2 (25F84), SDK 26.5, the emulation layout with a protected 64 KiB PAGEZERO, requested 4 KiB user pages, and the validated Apple Development profile granting cross-architecture support. Kernel pages remain 16 KiB. SIP and Gatekeeper stayed enabled. The standard layout's low-address allocation remains unavailable and is retained as a comparison, not counted as a passing prerequisite.
+
+The new ABI run again completed all roundtrip, callback, controlled signal and explicit error-return cases. Message passing produced baseline forbidden counts of 3, 6, 0 and 0 for standard/default, standard/4 KiB, emulation/default and emulation/4 KiB respectively. Enabled-policy counts were zero in all four configurations: 0 out of 40,000 trials. Baseline counts may vary; the interpretation remains finite behavioral evidence with no independent policy getter. The paired negative JIT control retained its failed MAP_JIT allocation, errno 22 and baseline CLI exit 1; only its assessment against the matched successful positive control passed.
+
+This passes Issue #2's bounded native host gate on the declared configuration. The [final report](../mydocs/report/task_m1_2_report.md) maps all three acceptance criteria. It completes the host-probe contribution to G0; source qualification and the integrated M1 runtime still need their own evidence.
+
+### Repeat from fresh build outputs
+
+After all previous probe runs finish, preserve their ignored output directory and rerun the documented commands. The signing prerequisites in this guide still apply; set `PEAR_PROVISIONING_PROFILE` locally to your actual authorized profile. Do not commit the profile or generated bundles.
+
+```sh
+if [ -d .build/host-probe ]; then
+    mv .build/host-probe ".build/host-probe-preserved-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+fi
+make -C host/probe
+python3 -m unittest discover -s tests/host -p 'test_*.py' -v
+.build/host-probe/pear-host-probe > .build/host-probe/local-observations.json
+.build/host-probe/pear-baseline-probe > .build/host-probe/local-baseline.json
+python3 host/probe/hardened_baseline.py > .build/host-probe/local-hardened.json
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" > .build/host-probe/local-process.json
+python3 host/probe/provisioned_probe.py --profile "$PEAR_PROVISIONING_PROFILE" --suite abi > .build/host-probe/local-abi.json
+```
+
+Inspect per-probe statuses, exact signing checks and input bindings rather than relying on CLI exit zero. Compare behavior separately from timings, baseline reordering counts and signed artifact hashes. The recorded reproduction used the same host, source checkout and installed toolchain; it is not a clean-machine or independent-tester result. The matched pre-signing binary hashes are a result for these inputs, not a universal deterministic-build guarantee.
+
 ## Remaining qualification
 
-The authorized development signing path and the tested memory, JIT, x18, callback/signal and per-thread ordering cases now have passing evidence on this configuration. Stage 5 must still rebuild from documented inputs and map every Issue #2 criterion to a reproducible capability decision. Later Wine/FEX integration needs its own ABI, exception and memory-model coverage. Required failures or unavailable prerequisites keep Issue #2 open. A fixed native JIT leaf does not execute an x86 game or validate the translator's code generation.
+Later Wine/FEX integration needs its own ABI, exception, executable-memory and memory-model coverage. Controlled SIGUSR1 and explicit error returns do not establish Windows SEH, arbitrary framework callbacks or general unwinding. A fixed native JIT leaf does not execute an x86 game or validate the translator's code generation. These probe observations cover their own processes and artifacts; the full required game process/module tree remains unassessed.
 
 Development-profile execution and ordinary-user distribution require separate evidence. The eventual downloadable app must work for its supported users without their installing developer tools or obtaining their own development profiles. The current registered-Mac trials do not establish that distribution path, notarization, other hardware/OS support or Rosetta-free Megabonk execution.
 
