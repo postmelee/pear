@@ -8,6 +8,7 @@
 - [Contributor guide](contributing.md): requests, reports, testing, documentation, profiles and code contributions; no AI subscription required.
 - [Runtime architecture](architecture.md): requirements, subsystem boundaries, interfaces, language decisions and qualification gates.
 - [Host capability diagnostics](host-capabilities.md): reproduce native host probes and understand their declared development-configuration evidence and limits.
+- [Apple technical guidance](development/apple-tooling.md): select relevant pinned Metal expertise, check tool availability and preserve evidence boundaries.
 
 ## Research and observations
 
