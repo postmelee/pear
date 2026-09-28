@@ -3,7 +3,7 @@
 GitHub Issue: [#25](https://github.com/postmelee/pear/issues/25)
 Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Date: September 28, 2026
-Status: Implementation and local verification complete; final-report approval and PR publication pending.
+Status: Final report approved; published as Open PR #27 with passing hosted documentation checks; review/merge pending.
 Work/publication/base: `codex/task25` -> `codex/publish-task25` -> `master`
 
 ## Work Summary
@@ -13,7 +13,7 @@ Work/publication/base: `codex/task25` -> `codex/publish-task25` -> `master`
 - Stage count: three, each implemented, verified, reported, committed and explicitly approved in this thread.
 - Result: Pear now has one official documentation root and roadmap, accessible contribution guidance, scoped agent rules, pinned Apple technical routing, evidence-aware templates and an offline documentation check with PR CI configuration. This work adds no runtime or game support claim.
 
-The requester approved the Stage 3 report and final-report preparation on September 28, 2026. The task and implementation plans contain the earlier scope, location and stage approvals. This report completes the local plan/implementation/verification record. Its approval precedes remote publication; #25 remains open.
+The requester approved the Stage 3 report and final-report preparation, then explicitly approved this final report and Open PR publication in the same thread on September 28, 2026. The task and implementation plans preserve the earlier approvals. [PR #27](https://github.com/postmelee/pear/pull/27) is published; #25 remains open pending approved closure or confirmed merge.
 
 ## Changed Files and Impact Area
 
@@ -59,7 +59,7 @@ The baseline is `a75237a6f67a3ade71fcef6068a228686958efe2`; counts describe this
 | Existing P/E dependency rows | 21 | Same 21, byte-for-byte |
 | Governance CLI test methods | 0 | 35; no skips in final local run |
 | Governed Markdown / checked local destinations | No maintained checker | 18 documents / 101 destinations |
-| Documentation PR workflows | 0 | 1 configured; remote execution pending |
+| Documentation PR workflows | 0 | 1; initial hosted check passed on Python 3.12.14 |
 
 These counts measure documentation and verification coverage, not runtime readiness or game compatibility. The entire original M1 completion section and seven protected architecture sections also remain unchanged.
 
@@ -78,9 +78,9 @@ These counts measure documentation and verification coverage, not runtime readin
 | 7. macOS 27 CLI requirements, candidate Xcode alternatives and truthful evidence boundaries | OK - [Apple guide](../../docs/development/apple-tooling.md) separates developer prerequisites from user support; unavailable tools and unperformed capture stay explicit |
 | 8. Minimal template extensions with reasoned Not applicable and actual evidence/limitations | OK - five existing templates extended; existing headings and nine Issue IDs retained |
 | 9. Passing and rejecting mechanical checks without runtime/agent-comprehension claims | OK - checker and 35 synthetic CLI tests pass; supported subset and remote-content limitations documented |
-| 10. English plans, stage/final reports and an open PR recording results | Local records complete - this report and all three committed stage reports are ready. Open PR publication remains pending final-report approval; no remote result is claimed |
+| 10. English plans, stage/final reports and an open PR recording results | OK - English records are committed; [Open PR #27](https://github.com/postmelee/pear/pull/27) links the three stages and actual local/hosted verification |
 
-An independent read-only audit found no missing implementation requirement in criteria 1-9. Publication is the remaining portion of criterion 10, not a completed action or a waived gate.
+An independent read-only audit found no missing implementation requirement in criteria 1-9. Approved publication now completes criterion 10. Merge and Issue closure remain separate from this completion record.
 
 ### Stage Verification Results
 
@@ -109,9 +109,17 @@ Read-only GitHub and remote-ref checks on September 28, 2026 found #1, #3 and #2
 
 [PR #26](https://github.com/postmelee/pear/pull/26), the separate #1 source-qualification task, is open from `codex/publish-task1` at `595fd15ac06a9e1d2cd7d1721c3608d2a18d8573`. Its file list overlaps this task at `docs/README.md` and `mydocs/orders/20260928.md`. Preserve its source-guide link and task-board record if it merges first; #3 can also affect the index/architecture. Its reported blocked source/build decision does not conflict with this task's explicitly unqualified runtime direction. This report does not adopt or qualify unmerged work. Recheck master and these overlaps immediately before publication.
 
+### Publication and hosted verification
+
+The publication preflight reconfirmed unchanged remote master, open #25 and #26, no duplicate #25 PR and a clean worktree. The approved commit `63f001bd2e300443ecd7b4057a3fd0bbf05e3096` was pushed to `codex/publish-task25`; [PR #27](https://github.com/postmelee/pear/pull/27) was created as non-draft with base `master` and attached to this chat.
+
+[Documentation run 36435689769](https://github.com/postmelee/pear/actions/runs/36435689769), associated with that PR head, completed successfully on September 28, 2026. Its [Documentation checks job](https://github.com/postmelee/pear/actions/runs/36435689769/job/108972902019) used Ubuntu image `20260920.314.1` and CPython `3.12.14`; the actual log reports 18 documents/101 local targets passed and all 35 tests passed in 5.066 seconds. This is the first actual hosted result; it supersedes the earlier publication-time limitation, while the stage reports retain their historical not-yet-run state.
+
+This follow-up commit records approval/publication/evidence and updates task status only. It changes none of the checker, tests, workflow or product guidance validated by that run. Its subsequent CI result is recorded in the PR's current verification section rather than recursively rewriting this report after every documentation-only push.
+
 ### Verification limitations
 
-- No remote CI run has occurred. The configured hosted job uses Python 3.12; local `python3.12` is unavailable, and actual local tests used 3.14.4. Source/actionlint/YAML review is not a hosted-run result.
+- The initial hosted run below passed on Python 3.12.14; local tests used 3.14.4. This validates the documentation job on those inputs, not independent Mac/runtime execution or future runner versions.
 - The checker supports simple inline/image/reference-definition destinations. Reference-use resolution, heading validity, raw HTML and nested/escaped Markdown edge cases require manual review. It does not verify remote source availability, technical correctness, agent understanding or runtime qualification.
 - No GPU capture/validation/replay, game/Steam execution, runtime build, host regression, signing change, performance measurement or distribution qualification was performed in #25. Existing source, host, game and user-distribution evidence remain separate.
 - Stage 2 observed no exposed/installed Apple expert in the inspected environment and no `gpucapture`/`gpudebug` on PATH on macOS 26.5.2/Xcode 26.6. Xcode alternatives remain candidates; no plugin, OS/toolchain or security configuration changed.
@@ -121,7 +129,7 @@ Read-only GitHub and remote-ref checks on September 28, 2026 found #1, #3 and #2
 ### Residual Risks
 
 - Concurrent #1/#3 work can change the integration base and overlapping documents/board. Preserve their changes and rerun affected checks after any integration edit.
-- The first hosted documentation run may expose environment or repository-setting issues; record and resolve actual failures after publication.
+- Future workflow or hosted-runner changes may require new validation; the completed run qualifies only its recorded documentation/test inputs.
 - Pinned Apple guidance can still conflict with actual SDK/API contracts. The reviewed autorelease-pool example conflict is documented; future implementation must resolve its actual lifetime semantics.
 - Roadmap and experiment descriptions do not establish supported games, ordinary-user distribution, power/performance benefits or universal Mac compatibility.
 
@@ -134,4 +142,4 @@ Read-only GitHub and remote-ref checks on September 28, 2026 found #1, #3 and #2
 
 ## Approval Request to Task Requester
 
-Approve this final report and its local acceptance results to publish `codex/task25` as `codex/publish-task25` and create an open PR to `master`, titled `Task #25: establish the official roadmap and engineering guidance`. Record actual remote checks on that PR. This approval request does not include automatic merge or Issue closure. Keep the worktree for review; cleanup follows confirmed merge and Issue closure under the existing workflow.
+The requester approved the final report and publication on September 28, 2026. [PR #27](https://github.com/postmelee/pear/pull/27), `Task #25: establish the official roadmap and engineering guidance`, is open from `codex/publish-task25` to `master`. Review it and explicitly approve merge when ready; publication approval did not authorize self-merge or Issue closure. Keep the worktree for review; cleanup follows confirmed merge and Issue closure under the existing workflow.
