@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/apple/game-porting-toolkit",
+  "revision": "4f42344c90be22112f46becc3fb9687f423f2f88",
+  "reviewed_on": "2026-09-28",
+  "plugin": {
+    "name": "game-porting-skills",
+    "version": "1.0.0-beta.1",
+    "manifest_path": "game-porting-skills/.codex-plugin/plugin.json",
+    "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/.codex-plugin/plugin.json"
+  },
+  "skills": [
+    {
+      "name": "using-metal-validation",
+      "path": "game-porting-skills/skills/using-metal-validation/SKILL.md",
+      "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/using-metal-validation/SKILL.md",
+      "references": []
+    },
+    {
+      "name": "using-gpucapture",
+      "path": "game-porting-skills/skills/using-gpucapture/SKILL.md",
+      "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/using-gpucapture/SKILL.md",
+      "references": []
+    },
+    {
+      "name": "using-gpudebug",
+      "path": "game-porting-skills/skills/using-gpudebug/SKILL.md",
+      "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/using-gpudebug/SKILL.md",
+      "references": []
+    },
+    {
+      "name": "debugging-rendering-issues",
+      "path": "game-porting-skills/skills/debugging-rendering-issues/SKILL.md",
+      "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/debugging-rendering-issues/SKILL.md",
+      "references": [
+        {
+          "path": "references/tier-1-instant-checks.md",
+          "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/debugging-rendering-issues/references/tier-1-instant-checks.md"
+        },
+        {
+          "path": "references/tier-2-state-inspection.md",
+          "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/debugging-rendering-issues/references/tier-2-state-inspection.md"
+        },
+        {
+          "path": "references/tier-3-data-inspection.md",
+          "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/debugging-rendering-issues/references/tier-3-data-inspection.md"
+        }
+      ]
+    },
+    {
+      "name": "presenting-metal-drawables",
+      "path": "game-porting-skills/skills/presenting-metal-drawables/SKILL.md",
+      "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/presenting-metal-drawables/SKILL.md",
+      "references": [
+        {
+          "path": "references/frame-pacing.md",
+          "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/presenting-metal-drawables/references/frame-pacing.md"
+        },
+        {
+          "path": "references/hdr-colorspace.md",
+          "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/presenting-metal-drawables/references/hdr-colorspace.md"
+        }
+      ]
+    },
+    {
+      "name": "managing-metal-cpp-lifetimes",
+      "path": "game-porting-skills/skills/managing-metal-cpp-lifetimes/SKILL.md",
+      "url": "https://github.com/apple/game-porting-toolkit/blob/4f42344c90be22112f46becc3fb9687f423f2f88/game-porting-skills/skills/managing-metal-cpp-lifetimes/SKILL.md",
+      "references": []
+    }
+  ],
+  "tools": [
+    {
+      "name": "gpucapture",
+      "minimum_macos": "27.0",
+      "requirement_skill": "using-gpucapture"
+    },
+    {
+      "name": "gpudebug",
+      "minimum_macos": "27.0",
+      "requirement_skill": "using-gpudebug"
+    }
+  ]
+}

@@ -1,56 +1,55 @@
 # AGENTS.md
 
-Operational rules for every coding agent working in this repository, including Codex and Claude Code. This file is loaded into the system prompt on every turn, so keep only the policies, constraints, and indexes that must always be present. Put detailed procedures in manuals and SKILL files.
+Persistent rules for agents working on Pear. Read the applicable context explicitly; do not assume that every tool automatically loads this file, subordinate rules or skills.
 
-## Project Overview
+## Context before changes
 
-Pear is an open-source platform under development for running Windows games on Apple Silicon without Rosetta, with community-maintained compatibility evidence. The first runtime target is Megabonk. The intended user experience is a downloadable Mac app, official Steam sign-in, owned-game installation and launch, and recovery through verified runtime versions. These are development goals, not existing support claims.
+Pear is an open-source platform under development for running owned Windows games on Apple Silicon without Rosetta. Megabonk is the first runtime target; the downloadable Mac app, official Steam flow, installation, play and recovery are goals, not existing support claims.
 
-## Core Hyper-Waterfall Rules
+- Read the relevant GitHub Issue, approved task and implementation plans, latest available stage report, applicable ancestor/scoped `AGENTS.md` files and selected skills. During registration and planning, use the artifacts that already exist.
+- Start with [README](README.md), the [official documentation index](docs/README.md), [architecture](docs/architecture.md) and the single [delivery plan](docs/delivery-plan.md). Read the requirements relevant to the affected area before choosing an implementation.
+- Review reusable upstream implementations before new subsystem code and record the reuse decision. Retain upstream languages unless a measured, reviewed reason justifies replacement; Rust is not mandatory. Respect upstream licenses and contribution policies.
 
-This project uses the **Hyper-Waterfall** methodology. Read these rules carefully because they can conflict with an agent's default behavior, especially fast execution and autonomous edits. Details: [`agent_code_hyperfall_rule_conflict.md`](mydocs/manual/agent_code_hyperfall_rule_conflict.md).
+## Approval and workflow
 
-- Request task requester approval before modifying source files.
-- Track work by GitHub Issue.
-- Never skip the order for new features, bug fixes, or structural changes: `Issue -> branch -> daily task board -> plan -> implementation -> verification -> final report -> PR`.
-- Do not move to the next stage without approval after completing the current stage.
-- If the scope is unclear or could conflict with existing work, ask first.
-- Do not revert changes made by the user or another worker.
-- Close an Issue only after task requester approval or after confirming the PR was merged.
-- Before editing documentation, read the existing content first, change only the necessary parts, and add content only when needed.
-- When creating, moving, or editing product, user, contributor, external integration, API, architecture, or roadmap documentation, record a document location judgment in the task plan and get approval.
-- `mydocs/manual` is not the target project's product documentation location. The target project must explicitly choose its official documentation root, such as `docs/`, `specs/`, `site/`, `website/`, or `adr/`, in a separate task.
-- After work is complete, clean up local and remote artifacts that are not needed for the next task.
-- After PR merge and Issue close, return to `master` and remove unneeded `local/task{number}` branches and temporary worktrees.
+- Track work by GitHub Issue. Obtain requester approval before source changes and follow `Issue -> branch -> daily task board -> plan -> implementation -> verification -> final report -> PR`.
+- Complete, verify, report and commit each stage before requesting approval for the next. A stage transition is approved only by explicit continuation in the same thread, such as “continue” or “proceed to the next stage.” Existing authorization applies only to its approved scope.
+- Ask first if scope is unclear or conflicts with other work. Preserve changes made by the requester and other workers.
+- Before editing documentation, read the existing content and change only what is necessary. For product, user, contributor, integration, API, architecture or roadmap document additions, moves or edits, record the location judgment in the task plan and obtain approval.
+- `docs/` is the approved official documentation root. Keep task plans, reports and workflow procedures in `mydocs/`; `mydocs/manual/` is not a product-documentation destination.
+- Close an Issue only after requester approval or confirmed PR merge. After merge and Issue closure, return to `master` and remove unneeded task/publication branches and temporary worktrees; preserve artifacts still needed by another task or review.
+- The requester decides when work starts and ends. Do not propose ending work or impose time limits.
 
-**Approval assumption rule**: Treat the stage as approved only when the task requester explicitly says to continue in the same thread, such as "continue" or "proceed to the next stage."
+## Naming and repository constraints
 
-## Naming Rules
+- Write repository documents, Issues, PR descriptions, reports, code comments and default user-facing text in English. Use the requester's preferred language in conversation.
+- In Codex use `codex/task{issue_number}` for work and `codex/publish-task{issue_number}` for publication to `master`. Other environments follow their required prefix; framework `local/` and `publish/` names are examples.
+- `master` is the integration and release branch. Do not execute same-branch release-promotion examples; a separate release branch needs a separate decision.
+- Preserve existing M1/R1 milestone names and Issue identities. Use the milestone-inclusive filename `task_{milestone}_{issue_number}{_impl|_stage{N}|_report}?.md` with lowercase milestone text. New milestone conventions follow the manuals.
+- Use `Task #{number}: summary`, `Task #{number} Stage {N}: summary`, `Task #{number} [Stage {N.M}]: summary`, or `Task #{number} Stage {N} + final report: summary` for the corresponding commit type.
 
-- Milestone: `M{version}` (for example, M100=v1.0.0, M05x=v0.5.x). Document filenames use lowercase `m{number}` (for example, `m100`).
-- Branches: `local/task{issue_number}` for work, `publish/task{issue_number}` for PR publication to `master`.
-- Commit messages:
-  - Basic: `Task #{number}: summary`
-  - Stage: `Task #{number} Stage {N}: summary`
-  - Substage: `Task #{number} [Stage {N.M}]: summary`
-  - Report bundle: `Task #{number} Stage {N} + final report: summary`
-- Document filename: `task_{milestone}_{issue_number}{_impl|_stage{N}|_report}?.md`. New documents must include the milestone. Details: [`document_structure_guide.md`](mydocs/manual/document_structure_guide.md).
-- Write all documents in the selected Hyper-Waterfall locale for this repository.
+## Evidence and security
 
-## Mandatory Rules Before Changes
+- The first runtime milestone requires owned Windows Megabonk without Rosetta in every required host process and library. A native launcher alone is insufficient.
+- Keep source inspection, builds, synthetic tests, host execution, game qualification and ordinary-user distribution distinct. Record unknown, unavailable, unsupported, failed and unperformed observations explicitly; experiments do not establish qualified support.
+- Keep proprietary game files, Steam credentials, authenticated prefixes, saves, private signing material and private diagnostics out of Git and release artifacts.
+- Preserve macOS security protections. Use documented signing and provisioning authorization; successful signing alone does not establish permission or distribution qualification.
 
-- Write repository documentation, Issues, PR descriptions, reports, code comments, and user-facing default text in English. Use the task requester's preferred language in conversation; do not impose one conversational language on contributors.
-- The first runtime milestone is owned Windows Megabonk running without Rosetta in every required host process. A native launcher alone does not meet that requirement.
-- Keep proprietary game files, Steam credentials, authenticated prefixes, saves, and private diagnostics out of Git and release artifacts.
-- Keep experimental results distinct from qualified support; record unknown, unsupported, and failed observations explicitly.
-- Do not disable macOS security protections to qualify a supported runtime. Use a documented signing and provisioning path.
-- Retain existing upstream implementation languages unless a measured, reviewed reason justifies replacement. Rust is not mandatory.
-- Follow the active coding environment's required branch prefix. In Codex use `codex/task{issue_number}` for work and `codex/publish-task{issue_number}` for PR publication; framework examples using `local/` and `publish/` remain examples.
-- Pear currently uses `master` for integration and releases. Do not execute same-branch release-promotion examples; a separate release branch requires a separate decision.
-- Existing M1 and R1 milestone names and issue identities remain valid. Framework adoption does not rename them.
-- Existing product documentation remains in place during adoption; any later document addition or relocation needs the workflow's document-location judgment.
+## Scoped rules and procedures
 
-### Framework attribution
+| Work | Read when applicable |
+|---|---|
+| Native host code and probes | [host/AGENTS.md](host/AGENTS.md) |
+| Tests and fixtures | [tests/AGENTS.md](tests/AGENTS.md) |
+| Product and contributor documentation | [docs/AGENTS.md](docs/AGENTS.md) |
+| Metal diagnostics, capture, rendering, presentation or metal-cpp lifetime work | [Pear Apple-tooling skill](mydocs/skills/pear-apple-tooling/SKILL.md); select only relevant technical experts |
+| Task and report procedures | [Task workflow](mydocs/manual/task_workflow_guide.md), [Git workflow](mydocs/manual/git_workflow_guide.md), [rule conflicts](mydocs/manual/agent_code_hyperfall_rule_conflict.md) and relevant [shared skills](mydocs/skills/) |
+| Document locations and skill discovery | [Document structure](mydocs/manual/document_structure_guide.md) |
+| External contributor PRs | [PR process](mydocs/manual/pr_process_guide.md) and [contributor guide](docs/contributing.md) |
+
+Shared skill source is `mydocs/skills/`; preserve the `.agents/skills` and `.claude/skills` discovery symlinks. Apple expertise does not replace Pear's Issue, approval or reporting workflow. Introduce scoped rules for future `runtime/`, `profiles/` or `manager/` areas when those implementations are added; do not create empty directories just for rules.
+
+## Framework attribution
 
 The installed Hyper-Waterfall operating documents and templates are from [v0.3.0](https://github.com/postmelee/hyper-waterfall/releases/tag/v0.3.0), commit `83836828a4da24385d0410515d35ee43946b981f`. The following notice applies to those framework materials, not to a new license choice for Pear:
 
@@ -77,21 +76,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
-## Required References
-
-- [`README.md`](README.md) - project overview, setup, and build
-- [`mydocs/manual/document_structure_guide.md`](mydocs/manual/document_structure_guide.md) - `mydocs/` folder roles, document filenames, external PR folder policy, Skills location policy
-- [`mydocs/manual/task_workflow_guide.md`](mydocs/manual/task_workflow_guide.md) - 15 task workflow steps, commit message rules, work time rules
-- [`mydocs/manual/git_workflow_guide.md`](mydocs/manual/git_workflow_guide.md) - branch policy, Git diagrams, maintainer/contributor workflow
-- [`mydocs/manual/pr_process_guide.md`](mydocs/manual/pr_process_guide.md) - external contributor PR review
-- [`mydocs/manual/agent_code_hyperfall_rule_conflict.md`](mydocs/manual/agent_code_hyperfall_rule_conflict.md) - conflicts between Hyper-Waterfall and default agent behavior
-- [`docs/architecture.md`](docs/architecture.md) and [`docs/delivery-plan.md`](docs/delivery-plan.md) - existing technical baseline and tracked implementation dependencies
-
-## Agent Skills
-
-Fixed Hyper-Waterfall procedure points are separated into SKILL files. The source of truth is `mydocs/skills/`. Codex (`.agents/skills`) and Claude Code (`.claude/skills`) read the same content through symbolic links. Details: the "Agent Skills location policy" section in [`document_structure_guide.md`](mydocs/manual/document_structure_guide.md).
-
-## Work Rules
-
-- The task requester decides when work starts and ends. Agents do not propose ending work or impose time limits on their own.

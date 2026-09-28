@@ -6,6 +6,8 @@ Task plan: [`task_{milestone}_{issue}.md`](task_{milestone}_{issue}.md)
 GitHub Issue: [#{issue}](https://github.com/postmelee/pear/issues/{issue})
 Milestone: M{milestone}
 
+Reference the task plan's applicable specifications/scoped rules, reuse rationale and selected technical guidance. In each Stage's Changes section, identify any approved changes to that context, including exact skill/guide source revisions and versions. Use `Not applicable` with a reason for irrelevant items.
+
 ## Stage Overview
 
 | Stage | Title | Main Output | Verification |
@@ -13,6 +15,8 @@ Milestone: M{milestone}
 | 1 | {title} | `{path}` | `{verification summary}` |
 | 2 | {title} | `{path}` | `{verification summary}` |
 | 3 | {title} | `{path}` | `{verification summary}` |
+
+Each Stage's Verification section must define inputs, required tools/platform versions, settings, expected outcomes and evidence to retain. Record availability checked during planning or `Not checked`, plus planned checks that may remain unavailable. Commands below are planned work; performed results belong in stage reports.
 
 ## Document Location Check
 
@@ -111,7 +115,7 @@ Task #{issue} Stage 3: {summary}
 
 ## Stage Dependencies
 
-- Stage 2 starts after Stage 1 artifacts are confirmed.
+- Stage 2 starts after Stage 1 verification, report and task requester approval.
 - Stage 3 starts after Stage 2 verification and report approval.
 
 ## Risks and Responses

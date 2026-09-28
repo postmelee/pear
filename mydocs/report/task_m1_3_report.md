@@ -73,9 +73,13 @@ Exact test/source identity: Stage 2 reference implementation at `91f2ef2`; final
 | 2 — schemas and eligibility | `91f2ef2` | [Stage 2](../working/task_m1_3_stage2.md): five hash-locked wheels, schema/example CLI and 119 passing tests |
 | 3 — equivalent native fixtures | `f7ed773` | [Stage 3](../working/task_m1_3_stage3.md): 110 passing invocations and ten initial harness tests, exact original inputs |
 | 4 — comparison and decision | `bd3949a` | [Stage 4](../working/task_m1_3_stage4.md): 40 Python/two Rust tests; four full passing corpora on revision 2; all 82 comparison rows; retained startup failures |
-| 5 — reproduction and handoff | This bundled report commit; exact files in reproduction input map | [Stage 5](../working/task_m1_3_stage5.md): first empty-output run passes 119 contract, 60 experiment, two Rust tests and 110 native invocations; three ARM64 builds/package checks; semantic agreement |
+| 5 — reproduction and handoff | `c37f018`; exact files in reproduction input map | [Stage 5](../working/task_m1_3_stage5.md): first empty-output run passes 119 contract, 60 experiment, two Rust tests and 110 native invocations; three ARM64 builds/package checks; semantic agreement |
 
 The final reproduction SHA-256 is `a214a305dde1d3c05aed9eb4409cd7d12495c3c58d2acf83126e37830f7e291a`. It completed on the same M4 Pro/macOS 26.5.2 host with CPython 3.14.4, Xcode 26.6/SDK 26.5, Swift 6.3.3 and Rust/Cargo 1.94.1. A fresh venv was installed offline from five hash-verified cached wheels; Cargo rebuilt offline from reverified cached inputs. Installed toolchains/SDK/caches were not reconstructed. Rebuilt manager hashes differ from measured Stage 4 payloads; semantic agreement is verified, byte reproducibility is not.
+
+### Final integration verification
+
+The #25 governance changes merged independently while Stage 5 completed. Integration of `master` at `4e0af2b` preserves both tasks' index, architecture and board changes, without changing reproduction inputs. The new offline documentation check passed for 21 documents/143 local targets; all 35 governance-checker tests passed, and the reproduction report remained valid. These checks are local; hosted #3 CI will only become available after PR publication. The branch is prepared with the final report and a reviewable PR body before requesting that publication approval.
 
 ### Source and downstream handoff
 

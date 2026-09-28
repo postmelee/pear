@@ -7,6 +7,7 @@ body:
       value: |
         Use this template to create a Hyper-Waterfall task Issue.
         The Issue body becomes the first prompt for the next AI work session, so write the intent and constraints clearly.
+        Use "Not applicable" with a reason for irrelevant technical items. Keep planned checks separate from existing evidence.
 
   - type: textarea
     id: background
@@ -36,7 +37,7 @@ body:
     id: included_scope
     attributes:
       label: Scope - Included
-      description: List the files, features, documents, and verification areas that this task must cover.
+      description: List the files, features, documents, and verification areas this task must cover, including documentation impact and proposed locations.
       placeholder: |
         - ...
         - ...
@@ -69,10 +70,12 @@ body:
     id: validation
     attributes:
       label: Verification Criteria
-      description: List tests, grep checks, manual checks, or review criteria that must be performed.
+      description: Plan checks and expected outcomes; identify prerequisites, observed tool availability and evidence to retain. Link any existing results separately and state unverified scope.
       placeholder: |
+        - Method, expected result and evidence to retain:
+        - Required tools/platform versions/settings; availability checked or not checked:
+        - Unavailable or unverified scope and reason:
         - `git diff --check`
-        - ...
     validations:
       required: true
 
@@ -80,10 +83,11 @@ body:
     id: references
     attributes:
       label: References
-      description: List related Issues, PRs, documents, official guides, or external resources.
+      description: Link related Issues/PRs, applicable specifications and scoped rules, upstream reuse candidates, and selected technical skills/guides with source revisions.
       placeholder: |
-        - #...
-        - https://...
+        - Related work, requirements and root/scoped rules:
+        - Upstream implementation/language reviewed; proposed reuse or new-code rationale and license/contribution constraints:
+        - Relevant skill/guide, purpose and revision/version, or Not applicable with a reason:
     validations:
       required: false
 

@@ -76,6 +76,10 @@ PR #26 merged at `3ad083075ba46522d4d01764e2ba453a89a1436d`, and #1 is closed. I
 
 #9 alone owns spawning/reaping/termination, immutable artifact activation and mutable-state recovery. #10 owns attributable observation and gaps. Its exact-request `ready_ack` is separate from backend synchronous replies and child startup progress. Real coverage, bounded callback work, cancellation/crash handling, detached helpers and at-use ownership remain their implementation obligations.
 
+### Concurrent governance integration verification
+
+After the Stage 5 bundle was committed as `c37f018`, the independently completed #25 changes from `master` (`4e0af2b`) were integrated. Conflicts were limited to the documentation index, architecture status line and daily board; both tasks' content was preserved. No reproduction input or historical result changed. The added documentation check passed for **21 documents and 143 local targets**, all **35 governance-checker tests** passed, the reproduction checker remained valid, and whitespace checks passed. These are local integration checks; no hosted #3 CI result is claimed before publication.
+
 ## Residual Risks
 
 - This reused installed toolchains, SDK, machine caches and hash-verified Cargo sources on the same Mac. It is not a clean-machine, external-host, older-OS or source rebuild of third-party wheels.
