@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "scope": "Issue #3 Stage 3 owned fixtures; not Pear release pins",
+  "review_date": "2026-09-28",
+  "observed_host": {
+    "architecture": "arm64",
+    "chip": "Apple M4 Pro",
+    "macos": "26.5.2",
+    "build": "25F84"
+  },
+  "observed_toolchains": {
+    "xcode": "26.6 (17F113)",
+    "sdk": "26.5",
+    "clang": "21.0.0 (clang-2100.1.1.101)",
+    "rustc": "1.94.1 (e408947bf)",
+    "cargo": "1.94.1 (29ea6fb6a)",
+    "swift": "6.3.3 (swiftlang-6.3.3.1.3)"
+  },
+  "rust": {
+    "manifest": "rust/Cargo.toml",
+    "lock": "rust/Cargo.lock",
+    "packages": [
+      {
+        "name": "libc",
+        "version": "0.2.186",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "archive_url": "https://static.crates.io/crates/libc/libc-0.2.186.crate",
+        "sha256": "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66",
+        "license_expression": "MIT OR Apache-2.0",
+        "active_transitive_dependencies": [],
+        "license_sha256": {
+          "LICENSE-MIT": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e",
+          "LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        "build_script_sha256": "4b348c53d0a0cd0067ef9887b50f60a1fffdc5d00dda5c0e27fae6aa0ce3dee8",
+        "review": "Archive hash matches locked registry metadata. All 360 regular extracted source files matched archive members before compilation. Full manifest, license texts and build.rs reviewed. Optional rustc-std-workspace-core is inactive. No network or source writes observed in build.rs; invokes configured rustc --version, attempts emcc -dumpversion, and conditionally freebsd-version under LIBC_CI. Build uses controlled PATH, unsets compiler wrappers and unstable overrides, and runs offline/locked.",
+        "extraction_check": "build.py compares every regular archive member with its extracted cache bytes before each build."
+      }
+    ],
+    "system_ffi": [
+      "CommonCrypto CC_SHA256",
+      "Darwin libc",
+      "libproc proc_listpids",
+      "owned pear_process_identity bridge"
+    ]
+  },
+  "swift": {
+    "manifest": "swift/Package.swift",
+    "external_packages": [],
+    "resolved_lock": "Not applicable: no package dependencies.",
+    "system_modules": [
+      "Foundation",
+      "Darwin"
+    ],
+    "explicit_abi_symbols": [
+      "CC_SHA256",
+      "proc_listpids",
+      "pear_process_identity"
+    ],
+    "terms": "Apple SDK and operating-system libraries are host-provided inputs; not redistributed by this experiment."
+  },
+  "shared_c": {
+    "files": [
+      "fixtures/child.c",
+      "fixtures/native_bridge.c",
+      "fixtures/native_bridge.h"
+    ],
+    "provenance": "Self-owned Pear experimental source; no game or upstream runtime source is bundled.",
+    "abi": "Fixed-width integers; caller-owned output pointers, no allocation, retained pointers, supervision or unwinding."
+  },
+  "python_oracle": {
+    "inventory": "../../tests/contracts/dependencies.json",
+    "lock": "../../tests/contracts/requirements.lock",
+    "role": "Independent harness only; not called by either native candidate."
+  },
+  "release_status": "No runtime redistribution, signing, full license compatibility or production security approval follows from this dependency review."
+}

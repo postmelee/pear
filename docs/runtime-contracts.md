@@ -1,0 +1,213 @@
+# Runtime contracts
+
+Status: **experimental version 1 contracts with a tested reference validator**, September 28, 2026, Issue [#3](https://github.com/postmelee/pear/issues/3). The [registry](../runtime/contracts/contract-index.json) identifies seven implemented schemas and shared definitions. The [research example](../runtime/contracts/examples/research-lock.json) is valid for inspection and ineligible for runtime execution. The [manager decision](decisions/manager-language.md) selects Rust for the future supervisor using separate native fixture evidence. No production runtime, game support or distribution capability is qualified here.
+
+This specification develops the boundaries in the [architecture](architecture.md) and [delivery plan](delivery-plan.md). Its audience is contributors implementing source/build tools, the manager, profiles, and observation/qualification tooling. The Python reference tool checks bounded structure, bytes, relationships and requested-use eligibility. Its result is an evaluation of supplied records under a caller policy, not a production launch authorization or proof of their external observations. JSON parsing alone does not establish compliance.
+
+## Record kinds and consumers
+
+Every product record has a `record_kind`, integer `schema_version`, `record_context`, and a human-readable `record_id`. The Python reference validator implements version 1. The [native comparison prototypes](../experiments/manager/README.md) implement only a declared four-record fixture subset; the production manager remains future work. A record ID is a label; it does not replace a content digest. IDs must be unambiguous within an input bundle. The registry is design metadata, not an eighth product-record kind.
+
+| Kind | Producer and primary consumers | Meaning and identity links |
+|---|---|---|
+| `runtime_lock` | Runtime/build maintainers; build, packaging and manager tools | Selected source/component/patch identities; dependency relationships; toolchain, SDK, flags and host/guest targets; compatibility family; host/signing prerequisites and terms references. Links to source evidence, not to an artifact built from itself. |
+| `runtime_artifact` | Build/packaging tooling; manager and qualification tooling | Exact lock reference, produced payload paths/hashes, native/PE inventory, build provenance, packaging/signing observations and requirements. Describes produced bytes; later qualification is an external record. |
+| `game_profile` | Profile contributors; manager and test tooling | Store/App ID, explicitly selected guest executable and bounded arguments/settings, runtime compatibility requirements, known game/build identity, expected save roots and declared feature requirements. Compatibility claims are derived from qualification, not asserted by a recipe. |
+| `launch` | Supervisor produces requests; supervisor/observer produce events; observer and run aggregator consume them | Discriminated `request` and `event` variants. The request freezes selected lock/artifact/profile identities, run purpose and local root handles; events describe readiness, execution and termination against that request. |
+| `failure` | Validator, supervisor or observer; diagnostics and run aggregator | Stable phase/category/reason, affected component/process token where known, bounded numeric details and evidence references. May reference the launch request, but never the later run report that includes this failure. |
+| `run` | Supervisor and evidence aggregator; qualification tooling | Final lock/artifact/profile/game/Steam identities, scoped Mac/OS/configuration, process/module timeline, selected translator/renderer, exit and feature outcomes, failures, timing and observation gaps. References the launch request and completed event/failure evidence. |
+| `qualification` | Test/review workflow; manager support selection and compatibility presentation | Test revision, required checks, applicable configuration, exact input and run/evidence references, reproduction scope, date, reviewer attribution and known limitations. Derives a bounded support decision; does not rewrite its inputs. |
+
+The seven schemas live under `runtime/contracts/v1/`, with shared types in `common.schema.json`. A launch event is not another top-level kind: its variant determines its fields and allowed references. Raw streams and private operational storage are outside the public contract.
+
+## Validity, state and eligibility
+
+These questions are independent:
+
+1. **Can the record be read?** Strict, bounded UTF-8 JSON parsing must reject duplicate keys before a decoder loses them, malformed encoding, unexpected types and unsupported numeric forms.
+2. **Does its structure have defined meaning?** A locally registered kind/version and schema determine required fields and allowed extensions. Unknown versions, mandatory semantics, operations or unrecognized fields fail explicitly. Remote references are not fetched during validation.
+3. **Are its relationships and bytes consistent?** Resolve permitted local references, check actual content digests, expected kinds and versions, compatible component/ABI families, path rules and the absence of identity cycles. Matching bytes alone do not establish publisher authenticity or correct runtime behavior.
+4. **Is the requested use eligible?** Evaluate missing prerequisites, record context, host/signing state, operation ownership and the matching evidence required for that purpose. A producer-supplied `supported` or `launch_allowed` assertion is not authorization.
+
+| Context or derived state | Meaning | What it does not authorize |
+|---|---|---|
+| `research` context | Partial investigation, candidate selection or an explicit unknown/failed observation | Runtime execution or game qualification, even when structurally valid |
+| `fixture` context | Redistributable, self-owned inputs and tests scoped to the declared experiment | Promotion to real upstream source pins, runtime/game support, or ordinary-user distribution |
+| `runtime` context | Actual source/build/profile/run records intended for the production integration path | Execution or support based solely on the context label |
+| Proposed | A candidate lock/profile or design exists | A claim that matching artifacts were built |
+| Built | A verified artifact identifies its exact lock and payload | Passing required execution or game tests |
+| Tested | Matching run evidence records actual outcomes and its bounded scope | Passing every required qualification gate or support for untested configurations |
+| Supported | A matching qualification record passes all required checks for its named configuration and purpose | All-Mac support, later changed inputs, or a broader distribution route |
+
+Proposed/built/tested/supported are evidence-derived views of a record set, not a mutable progression field inside the lock. A failed run remains a tested failure. `unknown`, `unsupported`, `failed` and `passed` observations retain their distinct meanings; absence is never a passing result. Unknown collections carry a reason and an explicit unknown state: an empty patch list with unknown status does not mean that no patches are required.
+
+Runtime launch and supported launch need different gates to avoid a qualification deadlock. A future explicitly scoped **qualification run** may use a complete built candidate whose required host, signing, compatibility and ownership checks pass, before game qualification exists. A **supported launch** additionally needs current qualification for the requested configuration. Neither purpose permits an incomplete research record, an unresolved required identity, a required unsafe operation, or an unavailable execution permission. The reference validator now evaluates these gates against supplied records. Actual build, host, signing, supervision and observation implementations remain later tasks.
+
+Developer execution and ordinary-user distribution are separate scopes. [#2's host evidence](host-capabilities.md) describes its own tested binaries, Mac, OS and authorization; it is not automatic authorization or proof for a future Wine build. Reuse it by a scoped evidence reference, preserving the original record unchanged.
+
+## Exact-byte identity and acyclic references
+
+A product-record content reference identifies its expected kind/version, a permitted bundle-relative location and a typed digest. The digest type is SHA-256 over the **exact stored UTF-8 bytes**, including whitespace and the final newline. References are written by a different record after the referenced bytes are final. No record contains its own content digest. Editing even formatting changes its identity and requires updating/rechecking dependents.
+
+Raw bytes, source trees, archives, patch files, produced payloads and signing observations have explicitly different digest scopes. A Git commit or tree object ID includes its Git object format and is not a SHA-256 file digest. A hash of a Git tree listing is identified as a listing hash; it is not described as a hash of concatenated source contents. Repositories, source authenticity evidence and acquisition methods come from the source audit; changing a digest label cannot establish trust.
+
+References point from later records toward already finalized inputs:
+
+```text
+qualification -> completed run -> launch request -> artifact -> runtime lock
+       |              |                |
+       +--------------+----------------+-> game profile
+                      +-> completed launch events / failures
+                                      +-> launch request
+```
+
+An event may reference its earlier request and preceding event. A `spawned` event also references the exact observer-ready acknowledgement through `ready_ack`; `observer_complete` references the covered supervisor exits through `completed_exits`. These causal links must match the same request and actually included events. Events cannot reference a later event or completed run. A failure may carry a logical `run_id` for correlation, but not the digest of the run that will include it. Correlation labels do not certify bytes. A bundle must reject reused labels with inconsistent meanings, conflicting input digests, unresolved required references and cycles.
+
+Architecture section 7 describes artifact qualification status and evidence references. This design refines their representation to avoid a cycle: the immutable artifact/profile supplies identity, while a later **qualification overlay** references those exact inputs and runs. It is an ordinary `qualification` record, not a new kind. An interface can display derived status by locating matching qualification records; it must not insert that qualification's digest into the very artifact/profile it qualifies. Historical links cannot qualify changed bytes, and a status cache is not authoritative evidence. The architecture links to this specification as the precise representation of its conceptual record summary.
+
+Signature/provisioning observations identify the exact payload/context tested, with private keys, profiles and personal identity data excluded. A detached signature or external observation has its own identity; it does not substitute for the payload digest. A byte-identical signature is not the definition of a reproducible source build. Any relevant payload, lock, profile, game, Steam, signing or configuration change requires re-evaluating affected evidence.
+
+## Source handoff with Issue #1
+
+[#1](https://github.com/postmelee/pear/issues/1) owns facts in `runtime/sources/manifest.json` and its local `source_audit` format. #3 owns the product-record representation and references under `runtime/contracts/`. The source audit is an input, not a product lock or an eighth product-record kind. Neither task depends on the other finishing its implementation.
+
+| Source-audit fact | Product-contract meaning and rejection boundary |
+|---|---|
+| Stable component ID, role and dependency IDs | Logical component relationships; reject duplicate/conflicting identities and missing required dependency references. Role does not establish native or guest architecture. |
+| Canonical source URL and immutable ref | Identifiable acquisition input. A moving branch, display version or guessed commit is insufficient for executable runtime selection. |
+| Typed acquired-content digest and scope | Verification of the declared bytes/representation; unknown digest remains unknown. Preserve Git object format, archive bytes and tree-listing scopes rather than coercing them into one file hash. |
+| Ordered patches, bases, origin and applicability | The build input sequence and its evidence. Unknown/missing port work is a gap, not an invented empty series or patch hash. |
+| Toolchain/SDK identities, build constraints and host/guest targets | Candidate build context; source-declared, locally observed and actually build-tested versions remain distinct. Native Mach-O ARM64 and guest PE x64/i386 are separate roles. |
+| License/notice locations, exceptions and contribution-policy references | Version-specific terms/provenance evidence; public availability is not a license conclusion, and reuse rights do not imply upstream submission permission. |
+| Inspection date/scope, evidence, availability and decision | The inspected source-readiness claim and gaps, not behavioral validation. `record_valid` and `audit_complete` are audit results rather than runtime launch permission. |
+
+An audit's `go` permits its named build/implementation work, not game execution. `needs-port` requires the named gaps to be implemented and verified by their owning tasks. `blocked` remains a no-go for that input path even if the completed investigation's Issue closes. A future build record may demonstrate that earlier named port gaps were resolved with attributable new inputs; it may not silently reinterpret the old audit decision.
+
+### Reviewed source-audit handoff
+
+The actual [#1 inventory](../runtime/sources/manifest.json), merged in [PR #26](https://github.com/postmelee/pear/pull/26) on September 28, 2026, records `audit_complete: true`, `decision: blocked`, `source_ready: false`, and `runtime`, `game` and `distribution` qualification all `unassessed`. Its 30 component records include acquired candidates and explicitly conditional/excluded inputs; those candidates are not a selected executable dependency closure. The [source qualification guide](source-qualification.md) preserves the required Darwin ports, incompatible historical patch experiment, missing/conflicting build inputs and unresolved notice closure. Closing #1 does not clear those gates.
+
+Version 1 can reference the exact audit bytes through `source_inventory_ref` with digest scope `source_inventory_json_bytes`. The reference validator checks that reference and its bytes; it does **not** interpret the source-audit format or enforce its `decision` field. The independent approving policy and future source/build producer must review that decision and the evidence before approving runtime inputs. A valid digest, completed audit or caller-provided approval label cannot resolve the blocked inputs. No automatic #1-to-runtime-lock importer or ready runtime lock is delivered here; the handoff review checks meanings and boundaries only. Audit completeness does not set `component_coverage.complete`, establish a compatibility family or produce an artifact. Separately approved port preparation may proceed while positive source/build acceptance remains gated.
+
+The research example uses the intended Wine/FEX/DXMT component labels but selects no upstream URL, commit, hash, toolchain, license or build target as verified. Its component coverage is explicitly incomplete. The fixtures use computed identities from owned content, labeled `fixture`; none becomes a substitute for #1's real findings. Final integration must verify the mapping against actual source and build records.
+
+## Launch and mutable-state ownership
+
+[#9](https://github.com/postmelee/pear/issues/9) owns the production manager/supervisor. A launch request selects explicit identities and local root handles; it does not carry a shell program. Executables are selected by declared profile/artifact entries, never by largest-file or filename heuristics. The host supervisor uses argument arrays and an allowlisted scoped environment; no shell interpolation, global environment changes, arbitrary downloaded script, or ambient environment dump is part of the contract.
+
+| Storage / operation | Owner and boundary |
+|---|---|
+| Runtime artifact | Immutable verified content; users' profiles, logs and generated caches cannot write into it. A future installer stages content before activation. |
+| Prefix | Supervisor-owned local data scoped to runtime compatibility family and game/library context. Incompatible upgrades cannot mutate the only usable copy. Migration/recovery implementation remains outside #3. |
+| Saves | User-owned data with explicit local location/consent boundaries; no upload, overwrite, deletion or automatic backup is implied by a profile. |
+| Caches | Disposable local data keyed by guest identity, translator/version/configuration, CPU features, ABI and relevant runtime identity. Unknown/incompatible identities forbid reuse. |
+| Logs and raw observation data | Local bounded operational storage; public records are allowlisted/redacted derivatives with explicit omissions. |
+| Process creation/reaping/termination | Supervisor only; target verified owned processes/groups, preserve identity across PID reuse and report cleanup failures. Never terminate unrelated Wine sessions by a global name. |
+
+The initial profile-operation vocabulary is limited to declarative argument lists, explicitly approved environment keys, renderer selection from the selected runtime's supported set, and typed setting values within declared prefix-relative locations. Operation names do not authorize their implementation: unsupported operations or unknown values must be rejected. Arbitrary commands, registry scripts, downloads, deletion/migration actions and writes outside owned roots are not profile escape hatches. Actual per-setting allowlists and executor support are later implementation gates.
+
+Host artifact paths are normalized relative entries, not ambient absolute paths. Local root handles are resolved by the manager outside the public record; Windows guest paths have a separate type and are not normalized with host filesystem rules. Reject traversal, NULs, ambiguous path interpretation, unapproved absolute locations, symlink escapes and writes to immutable content. #9 must enforce ownership again at use time; validating a path string once cannot remove filesystem races. Private absolute roots and argument values that may contain secrets are not emitted into public evidence.
+
+## Supervisor and observer handshake
+
+[#10](https://github.com/postmelee/pear/issues/10) observes required process/module execution. It consumes the #9 lifecycle interface; it does not reap, signal, restart or modify the supervisor's children/prefixes. The interface sequence is:
+
+1. The supervisor finalizes the launch request and assigns a run/capture-session identity before execution.
+2. The observer acknowledges readiness for that exact request and declares what it can observe, including short-lived or detached required helpers. Readiness is a prerequisite for covered execution, not proof that later coverage will be complete.
+3. The supervisor starts the owned process and publishes a process-instance identity; the observer associates observations with it and any required descendants/helpers.
+4. Both parties publish monotonic sequence numbers within their producer stream, producer IDs and elapsed-time bases. Sequence gaps, dropped observations, late attachment, ambiguous ancestry and inaccessible modules are explicit gaps; timestamps alone do not establish a total cross-producer order.
+5. The supervisor reports termination and owned cleanup. The observer reports its final covered interval, unresolved required processes and gaps. A run can be finalized as incomplete, but cannot qualify as completely observed.
+
+Required-readiness refusal or timeout prevents starting the covered launch; a failure record explains why. If readiness is lost after start, retain the gap and keep qualification failed/unknown for that requirement. #9's later cleanup/cancellation policy owns any termination decision. An experimental run deliberately lacking coverage must be labeled as such and cannot be a supported launch or Rosetta-independence proof.
+
+The Pear `ready_ack` is distinct from any backend-specific synchronous reply (for example, a dyld/Mach notification acknowledgement). Neither acknowledgement proves that a child reached its entry point or made startup progress. #9 owns launch deadlines and cancellation; #10 owns timely backend replies and explicit coverage gaps. If an observation backend requires synchronous replies, keep that path bounded, perform expensive analysis separately, and measure its startup/runtime overhead without dropping required evidence. The [manager decision](decisions/manager-language.md) records a sampled pre-main wait and an unresolved earlier timeout; it does not identify a responsible monitor or establish their causal connection.
+
+A PID alone is insufficient. Local attribution combines the run/capture session, OS process-generation or creation observation and PID; the observer records the observation method and time base. If that identity cannot be established, the association is unknown. Public records can use per-run process tokens with the needed non-personal generation evidence; they must not publish hardware provisioning identifiers or credentials. Required detached helpers need an evidence-backed association, not an assumption from a matching executable name.
+
+Record host images' actual running Mach-O slices/translation state separately from guest PE architecture and selected FEX modules. A parent's `sysctl.proc_translated` observation applies only to that parent. Guest x64 execution through the selected translator is expected; an unobserved or Rosetta-translated required host process blocks Rosetta-independent qualification. A static ARM64 file, a ready observer, or the absence of a visible Rosetta service is insufficient.
+
+## Failures, privacy and support decisions
+
+Failure categories distinguish contract validation, source/build, host capability, signing, supervision, observation, CPU translation, Windows API, graphics, Steam integration and game behavior. Each failure carries the failing phase, a stable reason code, bounded typed details and known component/process references. Unknown cause stays unknown; do not invent a CPU or graphics diagnosis from a generic crash. Raw parser input, stdout/stderr, command lines and whole environments are not public error messages.
+
+Public run/qualification records use allowlisted fields and bounded evidence references. Credentials, tokens, personal paths, Apple signing/profile material, authenticated prefixes, proprietary files and saves stay local. Redaction never converts omitted required observations into passing evidence. Host/chip/OS and configuration observations describe their actual scope; they are not unique-device identifiers. Public reviewer attribution must be intentionally supplied, not scraped from local accounts.
+
+Exporting a redacted record creates a **new immutable derivative with its own byte identity**; never overwrite an original record or retain its digest for different exported bytes. A private launch request can contain arguments or local details that must not be exported. Its public derivative uses only privacy-safe correlation to the local original and explicitly declares withheld references and reduced disclosure. A publicly inspectable partial bundle is not a self-contained, fully validated run: missing private references cannot be treated as publicly verified. Full local validation and the exported view retain distinct scope. Version 1 represents a partial disclosure explicitly, permits bounded inspection, and denies execution/qualification for any reachable partial record.
+
+The consuming application or review workflow supplies its trusted reviewer, evidence-origin and qualification policy **outside the submitted JSON**. Matching digests, a named reviewer, a `passed` result or a self-declared qualification do not grant their producer trust. The consumer must apply its independently configured policy before accepting a support claim, including any reliance on a local review that public redaction prevents others from reproducing. The Stage 2 evaluator enforces an external policy boundary; it implements no signature authority, trust service or PKI. An external file location alone does not authenticate a policy: the caller must choose it independently of the supplied bundle.
+
+Qualification names the exact test revision, configuration, required feature set, dates and remaining gaps. Required unknown/unsupported/failed results prevent the relevant support claim. Known limitations and optional untested features remain visible. Votes, a proposed recipe, successful schema validation or a game menu are not qualification. The first M1 game record still needs the [delivery plan's complete gates](delivery-plan.md#first-milestone-completion), including required-process coverage and sustained gameplay.
+
+## Research example: explicit refusal to launch
+
+`examples/research-lock.json` has `record_context: research`, an unknown compatibility family, no source audit identity and incomplete component coverage. For each intended component, its source, patch, build and terms facts are unknown, with null values and explanatory reasons. The root's host/signing requirements and dependency coverage are also unestablished. Empty evidence means none is supplied; it is not a passing result.
+
+The executed Stage 2 checks accept this example for research inspection and refuse execution. Changing the context string does not supply the missing identities or evidence. No computed eligibility field is embedded in the example for a consumer to trust blindly. The separate committed fixture bundle uses owned, non-executable text bytes and synthetic observations; its successful inspection or fixture evaluation is not a real runtime result.
+
+## Reference validator and reproducible setup
+
+[`tests/contracts/validate.py`](../tests/contracts/validate.py) is read-only evaluation tooling. It does not download sources, execute profile operations, spawn processes, inspect Mach-O slices, verify signatures, acquire credentials, or decide whether license terms fit a release. It verifies declared local bytes and relationships; source, build, signing and observation facts must come from independently reviewed producers. Every result includes `evaluation_only: true`.
+
+The dependency lock targets **CPython 3.14 on macOS ARM64**. Its five binary wheels have exact versions/hashes and recorded package/notice metadata in [`dependencies.json`](../tests/contracts/dependencies.json); `rpds-py` includes native code. This is a test-tool lock, not a universal Python environment or a reproducible source-build claim for those wheels. From the repository root:
+
+```sh
+python3 -m venv .build/task3/venv
+.build/task3/venv/bin/python -m pip download --only-binary=:all: --require-hashes --no-deps -r tests/contracts/requirements.lock --dest .build/task3/wheels
+.build/task3/venv/bin/python -m pip install --no-index --find-links .build/task3/wheels --require-hashes --no-deps -r tests/contracts/requirements.lock
+.build/task3/venv/bin/python tests/contracts/validate.py --check-schemas --check-examples
+.build/task3/venv/bin/python -m unittest discover -s tests/contracts -p 'test_*.py'
+```
+
+No network schema resolution occurs. Registered schema IDs use the reserved `pear.invalid` namespace and resolve only to checked-in resources. The registry paths/kinds/versions and all schema references must agree. Unknown fields, versions and operations are rejected; version 1 has no open executable-extension field. Source/build-configuration evidence references are opaque typed byte identities here: this tool does not reinterpret the source-audit format or execute its claims. Each build target also declares a target triple; unknown configuration/triples block execution, and fixture or contradictory target declarations cannot satisfy runtime eligibility.
+
+To inspect the honest incomplete research example:
+
+```sh
+.build/task3/venv/bin/python tests/contracts/validate.py --bundle-root runtime/contracts/examples --entry research-lock.json --context research --purpose inspect
+```
+
+The CLI accepts `--bundle-root`, a relative `--entry`, `--context`, `--purpose`, and an optional caller-selected `--policy` outside the bundle. Paths must traverse real directories without symlinks; on macOS, use physical paths such as `/private/tmp` when `/tmp` is a symlink. The library entry is `validate_bundle(bundle_root, entry, *, context, purpose, policy)` and returns the same bounded result shape.
+
+| Requested purpose | Evaluation |
+|---|---|
+| `inspect` | Parse, schema, byte and relationship checks. `eligible: true` means eligible for inspection only. Incomplete research and explicit partial disclosure can be inspectable. |
+| `fixture_launch` | Complete owned fixture inputs and fixture context; no execution takes place. |
+| `qualification_run` | Complete built-candidate declarations, matching host/signing/family/cache identities and independently approved inputs. Prior game qualification is not required. |
+| `supported_launch` | The candidate checks plus a current accepted qualification for the same input bytes, selected host entry and configuration. |
+| `qualify` | Matching completed runs, required checks/processes/modules, complete lifecycle/observation and caller trust/age policy. |
+
+The process exits **0** for a valid eligible requested use, **1** for invalid input, **2** for CLI misuse, and **3** for valid but ineligible input. `record_valid` covers parsing, schema and cross-record/byte consistency; `eligible` is always relative to the requested purpose. `outcome_codes` is a sorted, deduplicated, bounded list of stable reasons. Errors do not echo raw input, personal paths, environments, schema exception text or command arguments.
+
+### Bounds and filesystem handling
+
+| Input | Version 1 bound |
+|---|---|
+| JSON file / all reachable records | 256 KiB per file / 4 MiB aggregate |
+| JSON depth / parsed nodes | 32 / 8,192 per file |
+| Reachable records / references | 128 records / 64 references per record |
+| Blob bytes | 64 MiB per file / 256 MiB aggregate, streamed for hashing |
+| Strings / keys | 2,048 / 96 characters maximum, with narrower field constraints |
+| Numeric values | Integers within ±9,007,199,254,740,991, then field-specific bounds; no floating-point, nonfinite or exponent numbers |
+| Existing mutable-tree metadata | At most 4,096 entries per root and depth 32; file contents are not read by this scan |
+
+Strict UTF-8 parsing rejects BOMs, duplicate keys, invalid Unicode scalar values, control characters, excessive nesting/numbers and malformed JSON. All schemas are closed objects. Gregorian UTC timestamps receive semantic checks beyond their shape.
+
+Descriptor-relative traversal rejects symlinks and nonregular reference files, including FIFOs without waiting for a writer. Record aliases, cycles, mismatched kinds/versions/digests, duplicate IDs and incompatible identities fail. References are read with before/after metadata checks; this is not a cryptographic filesystem snapshot.
+
+Mutable root declarations must not overlap one another or immutable record/blob locations. The reference tool conservatively compares normalized/case-folded namespaces and rejects known existing hard-link aliases to immutable input in bounded mutable-tree metadata. Setting paths and save declarations remain relative and typed; Windows guest paths are not interpreted as host absolute paths. These checks do not eliminate later filesystem races, APFS changes or unobserved external writers. #9 must resolve ownership, enforce write boundaries and verify identities again at use time. No write is authorized by this evaluator.
+
+### External policy, modules and causal evidence
+
+The caller policy is separate from all seven public records. Its closed version 1 representation supplies approved exact record digests, trusted reviewers, required checks and processes, required host/guest module IDs, module expectations (ID, kind, source and observed hash), host configuration, allowed signing scopes and maximum evidence age. Policy can add requirements; submitted records cannot remove them. A trusted reviewer name, matching file hash or correct JSON does not replace this policy. Synthetic unit tests deliberately supply a synthetic trusted policy to exercise the evaluator; they are not real qualification evidence.
+
+A module observation names `source: artifact`, `system` or `game`, an observed SHA-256 and attributable evidence. Artifact modules additionally bind to the selected artifact's file ID, bytes, role and architecture. System/game modules can carry their observed digest and evidence without copying those proprietary/system payloads into a public bundle. Caller expectations pin required module origin and bytes, preventing a label or source reclassification from substituting a different module. This checks supplied evidence relationships; it does not independently inspect running modules or authenticate their observers.
+
+Qualification evaluates the union of profile, external-policy and run-declared required processes, plus required checks/modules. Host architecture and translation state are distinct from guest PE architecture. Missing/unknown/unsupported required observations, sequence gaps, dropped events, cleanup failures and stale or mismatched evidence prevent support. Successful source acquisition, a native launcher or a guest x64 module cannot by themselves establish Rosetta independence.
+
+The reference event model requires a shared declared monotonic clock for its bounded timing checks, contiguous per-producer sequences and exact request/process-generation identities. Explicit `ready_ack` and `completed_exits` references provide causal links across producer streams; timestamps alone do not. Missing/wrong acknowledgements, omitted lifecycle events or incomplete observed coverage prevent qualification. The actual #9/#10 handshake and collection mechanism remain unimplemented here.
+
+## Remaining implementation work
+
+The [manager decision](decisions/manager-language.md) records equivalent bounded Rust/Swift experiments and selects Rust for #9. The [experiment instructions](../experiments/manager/README.md) separate controlled timing from clean-output functional reproduction. The [same-Mac reproduction record](../experiments/manager/results/reproduction.json) repeats the reference and bounded native checks from fresh outputs; it does not implement the production contracts or prove real runtime observations. The schemas and Python tests themselves do not select a language. Production installation, ownership enforcement, execution, authentication, observation, trust distribution and game support remain their owning issues' work.
+
+Supported version transitions require explicit consumer support; published schemas must not be silently reinterpreted. Any semantic change that would make an old consumer accept a different operation requires a new supported contract version. These experimental contracts and their fixture tests do not establish source readiness, a safe production launcher, runtime support or an end-user release.
