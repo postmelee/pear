@@ -4,7 +4,7 @@ Task plan: [task_m1_1.md](task_m1_1.md)
 GitHub Issue: [#1](https://github.com/postmelee/pear/issues/1)
 Milestone: M1
 
-Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026 by explicitly instructing work to proceed. Stage 1 is complete; its actual verification and limits are recorded in ../working/task_m1_1_stage1.md. Stage 2 awaits approval. Later stages retain separate report approval checkpoints; planned commands for unstarted stages are not passing results.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_1_stage1.md and ../working/task_m1_1_stage2.md. Stage 3 awaits task requester approval. Planned commands for unstarted stages are not passing results.
 
 ## Stage Overview
 
@@ -198,4 +198,12 @@ Approve this four-stage implementation sequence, exact artifact locations, valid
 
 ## Approval Record
 
-The task requester approved both #1 and #3 implementation plans and authorized parallel Stage 1 execution on September 28, 2026. This approval preserves the task-plan scope and document locations. Stage 2 has not been authorized.
+The task requester approved both #1 and #3 implementation plans and authorized parallel Stage 1 execution on September 28, 2026. That initial approval preserved the task-plan scope and document locations and authorized Stage 1 only. The subsequent Stage 2 approval is recorded below.
+
+### Stage 2 Authorization
+
+The task requester explicitly instructed both tasks to proceed after reviewing the Stage 1 completion request on September 28, 2026. This authorizes Stage 2 within the approved scope and document locations. Stage 3 remains subject to its report approval checkpoint.
+
+### Stage 2 Completion
+
+Stage 2 implementation, independent review and planned verification are complete. The bundled stage report records actual results and remaining limitations. Stage 3 has not started and requires the next explicit approval.
