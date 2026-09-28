@@ -1,6 +1,6 @@
 # Implementation Plan: Runtime contracts and manager-language evaluation
 
-Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_3_stage1.md and ../working/task_m1_3_stage2.md. Stage 3 awaits task requester approval. Planned commands for unstarted stages are not passing results.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_3_stage1.md and ../working/task_m1_3_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_3_stage3.md. Stage 4 requires separate approval. Planned commands for unstarted stages are not passing results.
 
 Task plan: [`task_m1_3.md`](task_m1_3.md)
 GitHub Issue: [#3](https://github.com/postmelee/pear/issues/3)
@@ -230,4 +230,12 @@ The task requester explicitly instructed both tasks to proceed after reviewing t
 
 ### Stage 2 Completion
 
-Stage 2 implementation, independent review and planned verification are complete. The bundled stage report records actual results and remaining limitations. Stage 3 has not started and requires the next explicit approval.
+Stage 2 implementation, independent review and planned verification are complete. The bundled stage report records actual results and remaining limitations. At that checkpoint, Stage 3 had not started; its subsequent authorization is recorded below.
+
+### Stage 3 Authorization
+
+After the combined Stage 2 reports and Stage 3 approval request, the task requester replied with an explicit instruction to proceed in the same main thread on September 28, 2026. This authorizes Stage 3 implementation, dependency setup where planned, fixture execution, verification and bundled stage reports within both approved plans. Stage 4 remains subject to a separate report approval checkpoint.
+
+### Stage 3 Completion
+
+Stage 3 implementation, independent review and all planned verification are complete: 55 common cases passed for both candidates, alongside ten harness regression tests. Native fixture results remain ineligible for runtime qualification. The bundled report records actual evidence and limitations. Stage 4 has not started and requires the next explicit approval.

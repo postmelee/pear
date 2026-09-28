@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "status": "frozen_before_stage4",
+  "authorization_scope": "Stage 3 defines future comparison only; Stage 4 execution requires approval.",
+  "purpose": "Choose the manager implementation language for #9 using bounded native prototype evidence; no translator rewrite or game performance inference.",
+  "mandatory_gates": [
+    "All common cases pass for both candidates against the declared subset and independent oracle.",
+    "No leaked synthetic secret or private path; output and execution bounded.",
+    "Native running slice and translation checks pass; owned child reaped, identities gone, unrelated sentinel survives.",
+    "Fresh source/binary identities and locked dependency integrity verified.",
+    "Any unresolved material functional, packaging or privacy requirement blocks adoption claims."
+  ],
+  "corpus": "fixtures/cases.json",
+  "optimization": {
+    "c": [
+      "-O2",
+      "-arch arm64",
+      "-mmacosx-version-min=26.0"
+    ],
+    "rust": {
+      "profile": "release",
+      "opt_level": 3,
+      "lto": false,
+      "codegen_units": 1,
+      "panic": "abort",
+      "target": "aarch64-apple-darwin",
+      "offline": true,
+      "locked": true
+    },
+    "swift": {
+      "configuration": "release",
+      "triple": "arm64-apple-macosx26.0",
+      "external_packages": []
+    }
+  },
+  "measurement_conditions": [
+    "Same recorded host and power state; no concurrent heavy work.",
+    "Prefetch exact dependencies before timing.",
+    "Use isolated copies/output/state for each measurement; record actual command, source and config hashes.",
+    "Clean build output is not a cold OS cache; report filesystem and module-cache limitations.",
+    "Retain all valid unfavorable samples and all interrupted/failed attempts.",
+    "Apply functional gates before and after measurement; rerun affected checks after behavior changes."
+  ],
+  "build_samples": {
+    "clean_per_candidate": 3,
+    "order": [
+      "rust",
+      "swift",
+      "swift",
+      "rust",
+      "rust",
+      "swift"
+    ],
+    "incremental_per_candidate": 3,
+    "incremental_order": [
+      "swift",
+      "rust",
+      "rust",
+      "swift",
+      "swift",
+      "rust"
+    ],
+    "scope": "Time each candidate native build command; prepare shared C object beforehand and account for it separately.",
+    "incremental_edits": [
+      {
+        "candidate": "rust",
+        "path": "rust/src/main.rs",
+        "old": "// Stage 4 incremental marker: baseline",
+        "replacements": [
+          "// Stage 4 incremental marker: sample-1",
+          "// Stage 4 incremental marker: sample-2",
+          "// Stage 4 incremental marker: sample-3"
+        ]
+      },
+      {
+        "candidate": "swift",
+        "path": "swift/Sources/PearManager/main.swift",
+        "old": "// Stage 4 incremental marker: baseline",
+        "replacements": [
+          "// Stage 4 incremental marker: sample-1",
+          "// Stage 4 incremental marker: sample-2",
+          "// Stage 4 incremental marker: sample-3"
+        ]
+      }
+    ],
+    "edit_interpretation": "Start from a built isolated candidate, replace the single comment sequentially, rebuild its native module, and retain compiler evidence of rebuild. Comment changes preserve behavior; they measure invalidation/recompilation overhead, not optimization quality or a typical code-edit workload."
+  },
+  "launch_samples": {
+    "warmups_per_candidate": 5,
+    "recorded_per_candidate": 30,
+    "order": "Alternate rust,swift per pair; warmups separate and retained but unscored.",
+    "mode": "success",
+    "timeout_ms": 1500,
+    "output_limit": 4096,
+    "fresh_bundle_each_time": true,
+    "timed_scope": "Native manager process start through its exit, including its validation, fixture launch and cleanup. Prepare bundle and run independent oracle outside timing."
+  },
+  "reporting": {
+    "metrics": [
+      "All raw duration samples plus median/min/max",
+      "Available peak memory with units and collection limitations",
+      "Candidate binary, dependency cache and distribution payload sizes separately",
+      "Native slices, dynamic dependencies and inspected bundle/signing requirements"
+    ],
+    "unknown": "Use null plus explanation; do not invent unavailable metrics or tail distributions.",
+    "excluded": [
+      "game FPS",
+      "game power use",
+      "actual Steam/Wine integration",
+      "production distribution qualification"
+    ]
+  },
+  "qualitative_rubric": [
+    {
+      "criterion": "Packaging and macOS integration",
+      "evidence": "Inspect native slices, dependencies, clean invocation and signing/bundle requirements. Inspection is not executed signing/distribution evidence."
+    },
+    {
+      "criterion": "FFI, ownership and testing",
+      "evidence": "Review unsafe/ABI surface, errors, process ownership, debugging and reproducibility. Shared C identity helper does not count as native supervision."
+    },
+    {
+      "criterion": "Maintenance and contributors",
+      "evidence": "Review prerequisites, active dependency/license costs, custom parsers, organization and diagnostics. Source line counts are context, not an automatic score."
+    },
+    {
+      "criterion": "Measured prototype costs",
+      "evidence": "Interpret manager build/startup/memory results within scope; no automatic speed target or predetermined winner."
+    }
+  ],
+  "decision_rule": "Apply mandatory gates first; explicitly weigh measured costs and qualitative evidence. Record unresolved requirements, reasons, alternative and reconsideration triggers. Do not turn prototype success into game support.",
+  "decision_document": "../../docs/decisions/manager-language.md",
+  "later_handoff": [
+    "#9 production supervisor and immutable/mutable ownership",
+    "#10 real observer readiness and coverage"
+  ]
+}
