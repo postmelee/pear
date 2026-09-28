@@ -2,7 +2,7 @@
 
 **Pear aims to provide an open-source platform for running Windows games on Apple Silicon without Rosetta, with compatibility tested and maintained by its community.**
 
-The first milestone is to **run Megabonk on an Apple Silicon Mac without Rosetta**. Support for additional games will grow through documented testing, game profiles, and compatibility improvements.
+The first user goal is to **download Pear, sign into official Steam, install an owned Windows copy of Megabonk, and play, save and resume without Rosetta**. Every required host process and native library must meet that requirement. Support for additional games will grow through documented testing, game profiles, and compatibility improvements.
 
 > Pear is in the research and prototyping stage. Rosetta-free Megabonk execution has not yet been verified, and an end-user release is not yet available.
 
@@ -26,9 +26,9 @@ These values guide development and describe the intended platform:
 
    Use game requests and upvotes to understand demand, and make it possible to contribute settings, test results, documentation, and compatibility patches.
 
-## First milestone: run Megabonk without Rosetta
+## M1: qualify the Rosetta-free Megabonk runtime
 
-**Status: not yet achieved.** The target platform is macOS on Apple Silicon.
+**Status: not yet achieved.** M1 is technical runtime qualification on macOS/Apple Silicon. A documented development-profile setup may qualify M1; an installable app for ordinary users requires separate distribution and user-flow evidence.
 
 Progress is tracked in [M1: Megabonk on Apple Silicon without Rosetta](https://github.com/postmelee/pear/milestone/1).
 
@@ -41,9 +41,23 @@ The milestone will be considered complete when a documented setup can:
 
 The verification record must identify the game version, Mac hardware, macOS version, runtime versions, test date, settings, and known limitations. Success on one configuration will establish that tested configuration; broader compatibility requires additional testing.
 
-Early technical checks will use small x64 programs and Direct3D 11 samples before testing the full game. Installer development, save-backup automation, runtime rollback, and support for additional games are subsequent goals.
+Early technical checks use native host probes, small x64 programs and Direct3D 11 samples before testing the full game. The ordinary-user app, verified runtime installation, save recovery and rollback are part of the first user goal, beyond M1 alone.
 
-The [runtime architecture](docs/architecture.md) defines subsystem boundaries, source and build requirements, qualification gates, and the scope of a Pear-managed engine. The [delivery plan](docs/delivery-plan.md) tracks the milestone and its implementation issues. Detailed [engineering research](docs/README.md) evaluates reuse, macOS porting, Rust, and Cranelift.
+The [runtime architecture](docs/architecture.md) defines subsystem boundaries and qualification gates. The [official documentation](docs/README.md) includes contributor guidance and dated engineering research.
+
+## Roadmap
+
+The [delivery plan](docs/delivery-plan.md) is the detailed roadmap and completion-criteria reference. These phases describe expanding user capabilities; useful groundwork, including profiles, can begin in Phase 1.
+
+| Phase | Intended user capability |
+|---|---|
+| 1 | Install Pear, sign into official Steam, install owned Megabonk, then play, save and resume without Rosetta |
+| 2 | Use a versioned Game Profile Spec that can support more games |
+| 3 | Match a Steam library and the user's environment to verification records, with Install/Play actions |
+| 4 | Contribute profiles and evidence through reviewed PRs, automated fixture checks and owner testing; use a community registry, requests, votes and compatibility database |
+| 5 | Rely on a maintainable experience approaching Proton for macOS |
+
+Phase 1 combines technical M1 with the proposed M2 ordinary-user application work. M2 and its U01-U07 candidates await separate GitHub registration. Existing M1 and independent R1 research identities remain unchanged; no phase completion or delivery date is implied.
 
 ## Technical direction
 
@@ -64,13 +78,14 @@ The runtime may require substantial macOS porting and maintained compatibility p
 
 ## Current status
 
-As of September 27, 2026:
+As of September 28, 2026; earlier game observations remain limited to their recorded test setup:
 
 | Area | Status |
 |---|---|
 | Initial inspection of Megabonk Windows and Linux distribution files | Completed |
 | Megabonk launch and initial gameplay with Wine + DXMT on an M4 Pro | Verified with **Rosetta in use** |
 | In-game 30 and 60 FPS limits | Verified in the existing test setup |
+| Native host capability probes | Passed a bounded development-provisioned gate on M4 Pro/macOS 26.5.2; see [host evidence](docs/host-capabilities.md) |
 | Megabonk execution without Rosetta | Not yet verified |
 | Extended gameplay validation and power comparisons under matched conditions | Pending |
 | End-user installation, save backups, and runtime rollback | Planned |
@@ -80,7 +95,7 @@ Comparative performance, power use, and thermal behavior have not yet been estab
 
 ## Participation
 
-Players, testers, developers, and documentation contributors can help shape Pear. Programming experience is not required to contribute game requests, clear problem reports, test results, or documentation improvements.
+Players, testers, developers, and documentation contributors can help shape Pear. Programming experience is not required to contribute game requests, clear problem reports, test results, or documentation improvements. The [contributor guide](docs/contributing.md) explains how to participate; Codex and paid AI tools are not required.
 
 Useful contributions include:
 
@@ -97,4 +112,4 @@ Planned voting features will help identify demand. Prioritization will also cons
 
 Pear is intended to work with game copies provided by users who own them. Game files, Steam account data, and extracted game code or assets are not included in this repository.
 
-Each reused component retains its own license requirements. Pear's own license and detailed contribution process will be established before a public release.
+Each reused component retains its own license and contribution-policy requirements. Follow the [contributor guide](docs/contributing.md) when reusing or submitting work. Pear's own license remains a decision to resolve before public release.

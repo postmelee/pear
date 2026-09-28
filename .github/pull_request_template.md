@@ -36,9 +36,12 @@ If only 1-2 areas changed, delete this subsection. Maximum 5 rows. -->
 <!--
 Just before creating the PR, run `git rev-parse HEAD` and use GitHub blob URLs pinned to the PR head commit SHA.
 Use `[filename](https://github.com/postmelee/pear/blob/{head_sha}/mydocs/...)` instead of raw URLs.
-Delete entries that do not apply.
+Delete work-document entries that do not apply. For irrelevant technical context, use `Not applicable` with a reason.
+Link requirement/rule, reuse and skill decisions through the existing plans or reports instead of copying their detail.
 -->
 
+- Requirements and guidance: {applicable specifications/scoped rules; reuse and selected skill/source revision decisions or report links}
+- Documentation impact: {updated guides/specifications, or why no update is needed}
 - Task plan: [task_m{milestone}_{issue}.md](https://github.com/postmelee/pear/blob/{head_sha}/mydocs/plans/task_m{milestone}_{issue}.md)
 - Implementation plan: [task_m{milestone}_{issue}_impl.md](https://github.com/postmelee/pear/blob/{head_sha}/mydocs/plans/task_m{milestone}_{issue}_impl.md)
 - Final report: [task_m{milestone}_{issue}_report.md](https://github.com/postmelee/pear/blob/{head_sha}/mydocs/report/task_m{milestone}_{issue}_report.md)
@@ -54,6 +57,8 @@ Delete entries that do not apply.
 <!--
 Keep only verification that was actually performed.
 Do not list commands alone. Include topic, method, result, and evidence.
+Identify tested input, tool/platform versions, actual availability and relevant settings, or link those details in a report.
+Keep correctness diagnostics separate from performance measurements; source, fixture, host and game results have different scopes.
 Do not include long logs. Summarize key output, pass counts, and checked conditions.
 Move unperformed verification to `Verification Limitations` or `Remaining Risks` instead of leaving it in the table.
 Delete subsections that do not apply.
@@ -78,6 +83,8 @@ Delete subsections that do not apply.
 |  | OK/MISS/SKIP | GitHub Check name, run link, or check time |
 
 ### Verification Limitations
+
+<!-- Identify unperformed/unavailable checks and reasons, affected coverage and remaining qualification gaps. Write `None` only when there are none. -->
 
 - None
 
