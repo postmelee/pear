@@ -5,7 +5,7 @@ Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Date: September 28, 2026
 Work branch: `codex/task25`
 Base: `origin/master` at `a75237a6f67a3ade71fcef6068a228686958efe2`
-Status: Stages 1 and 2 complete; Stage 3 approval pending.
+Status: All three stages complete; Stage 3 approval and final-report preparation pending.
 
 ## Purpose
 

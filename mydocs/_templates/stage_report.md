@@ -10,6 +10,8 @@ Stage: {stage}
 
 {Explain what this Stage was meant to resolve and where it fits in the implementation plan.}
 
+Context used: {applicable specifications/scoped rules, approved reuse decision and selected skill/guide revision/version actually read; link unchanged plan context or give reasoned Not applicable.}
+
 ## Artifacts
 
 | File | Change Summary |
@@ -18,9 +20,11 @@ Stage: {stage}
 
 ## Body Change Scope / Lossless Preservation
 
-{For documentation work, describe source preservation and rewrite scope. For code work, write not applicable or explain API/behavior preservation.}
+{Describe documentation impact, approved versus actual locations, source preservation and rewrite scope; explain API/behavior preservation for code changes. Use Not applicable with a reason where appropriate.}
 
 ## Verification Results
+
+Execution context: {actual tool/platform versions and availability, relevant settings, input/test identity and whether this was source review, a fixture, host or game execution. Separate diagnostics from performance runs.}
 
 Command run:
 
@@ -30,7 +34,8 @@ Command run:
 
 Result:
 
-- {OK/MISS and key output summary}
+- {Actual outcome and key output summary, sanitized evidence link and coverage boundary}
+- {Unavailable, skipped or unperformed checks and reasons; these are not passing results}
 
 ## Residual Risks
 

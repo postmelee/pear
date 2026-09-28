@@ -5,13 +5,15 @@ This central template is for `mydocs/plans/task_{milestone}_{issue}.md`. The tas
 GitHub Issue: [#{issue}](https://github.com/postmelee/pear/issues/{issue})
 Milestone: M{milestone}
 
+Use `Not applicable` with a reason for irrelevant technical items. Separate intended work from evidence already collected.
+
 ## Purpose
 
 {Describe the result this task must achieve in 1-3 paragraphs.}
 
 ## Background
 
-{Explain why this work is needed, what is wrong with the current state, and which official documents, existing Issues, or previous artifacts were referenced.}
+{Explain why this work is needed and what is wrong with the current state. Link applicable specifications, root/scoped rules, existing Issues and relevant approved artifacts; identify known evidence gaps.}
 
 ## Scope
 
@@ -27,12 +29,14 @@ Milestone: M{milestone}
 
 - {Structure, policy, file placement, compatibility judgment, or other points that must be agreed before implementation}
 - {Which existing patterns are followed and which parts are newly defined}
+- {Upstream implementation and language reviewed; reuse/new-code rationale and license/contribution-policy constraints}
+- {Selected technical skill/guide, purpose and pinned source revision/version, or reasoned Not applicable}
 
 ## Document Location Judgment
 
 If this task creates, moves, or edits product, user, contributor, external integration, API, architecture, or roadmap documentation, first decide whether the official documentation root or `mydocs/` should be used. If no document changes are involved, write `Not applicable` and explain why.
 
-Hyper-Waterfall does not fix the official documentation root name. The target project may explicitly choose `docs/`, `specs/`, `site/`, `website/`, `adr/`, `book/`, GitHub Wiki, or another location, but this plan must approve the reason.
+Pear has selected `docs/` as its official documentation root. Keep Issue-specific plans and reports in `mydocs/`; record documentation impact and obtain approval for this task's location judgment.
 
 | File | Classification | Audience | Selected Location | Alternative Location | Reason |
 |---|---|---|---|---|---|
@@ -71,6 +75,8 @@ Task artifacts:
   - {verification perspective}
 
 ## Verification Plan
+
+For each criterion, plan the method, expected result and evidence to retain. Identify required tool/platform versions and settings, observed availability during planning (or `Not checked`), and unverified scope. Actual execution results belong in the stage reports.
 
 ### Stage Verification
 

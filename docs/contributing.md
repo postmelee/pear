@@ -59,3 +59,18 @@ Pear's own product-license choice remains unresolved before public release. The 
 Read the existing document first and update only the necessary parts. Official product, architecture, roadmap and contributor guidance belongs in `docs/`; retain `docs/delivery-plan.md` as the single roadmap. Dated research is evidence, not automatically an accepted specification.
 
 For an internal task, record and approve audience, officialness, selected location, alternatives and rationale in its plan before editing these documents. External proposals should identify the intended audience and location so the maintainer can review the decision. Task plans, approvals and reports stay in `mydocs/`; detailed product specifications do not belong in `mydocs/manual/`. See the [document structure guide](../mydocs/manual/document_structure_guide.md).
+
+### Local documentation checks
+
+Run from the repository root with Python 3. The checker and its fixture tests use only the standard library and run offline:
+
+```sh
+python3 tools/check_governance.py
+python3 -m unittest discover -s tests/docs -p 'test_*.py' -v
+```
+
+The checker covers the root README/agent rules, required host/tests/docs rules, Markdown under `docs/`, and the Pear Apple-tooling router. It checks local file/directory destinations in supported inline links/images and reference definitions, the two skill discovery symlinks, guide/router links and the pinned Apple source inventory's internal consistency. Historical `mydocs/` work artifacts/templates and unrelated root `analysis/` and `research/` are outside the scanned document set.
+
+It ignores external URLs, fenced/inline code and HTML comments. It does not resolve reference uses, validate heading fragments, parse raw HTML links or cover nested/escaped Markdown edge cases. Check new anchors and unsupported link forms manually. The source inventory checks do not contact upstream or establish remote availability or technical accuracy; source revisions and tool requirements still need primary-source review.
+
+A passing check does not prove that an agent understood guidance, that a GPU tool works, or that a runtime/game is qualified. Report these checks with their actual outcomes and coverage; perform the separate tests required by the changed behavior.

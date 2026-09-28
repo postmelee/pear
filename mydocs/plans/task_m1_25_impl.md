@@ -4,13 +4,13 @@ Task plan: [task_m1_25.md](task_m1_25.md)
 GitHub Issue: [#25](https://github.com/postmelee/pear/issues/25)
 Milestone: M1 - Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task25`; publication branch: `codex/publish-task25`; PR base: `master`
-Status: Stage 2 complete on September 28, 2026; approval to begin Stage 3 is pending.
+Status: Stage 3 complete on September 28, 2026; approval for final-report preparation is pending.
 
 ## Approval and Working Context
 
 The maintainer explicitly approved the task plan and continuation to implementation-plan preparation in this session on September 28, 2026. This records approval of the scope and document-location judgment in the task plan. Implementation-plan approval and each completed-stage transition remain separate gates.
 
-Use the attached `pear-governance` worktree. Before each stage, read #25, the approved task/implementation plans, the latest existing stage report and applicable `AGENTS.md` files. At implementation-plan preparation, no stage report existed. The latest completed stage is now recorded in the [Stage 2 report](../working/task_m1_25_stage2.md); the [Stage 1 report](../working/task_m1_25_stage1.md) preserves the earlier document work. Preserve #1 source ownership, #3 contract/language ownership, their separate worktrees and existing untracked `analysis/` and `research/`.
+Use the attached `pear-governance` worktree. Before each stage, read #25, the approved task/implementation plans, the latest existing stage report and applicable `AGENTS.md` files. At implementation-plan preparation, no stage report existed. The latest completed stage is now recorded in the [Stage 3 report](../working/task_m1_25_stage3.md); the [Stage 1](../working/task_m1_25_stage1.md) and [Stage 2](../working/task_m1_25_stage2.md) reports preserve the earlier document and routing work. Preserve #1 source ownership, #3 contract/language ownership, their separate worktrees and existing untracked `analysis/` and `research/`.
 
 The planning base is `a75237a6f67a3ade71fcef6068a228686958efe2`. At preparation, #25 is open, remote master still matches that base and no PR is open. These are dated observations; recheck before integration. #3 may later touch `docs/README.md` and `docs/architecture.md`.
 
@@ -237,3 +237,5 @@ Approve these three stages, artifacts, verification commands, bounded checker co
 Approval recorded: on September 28, 2026, the maintainer explicitly instructed this session to proceed in response to the implementation-plan review and Stage 1 start request. The three-stage implementation plan is approved, and Stage 1 is authorized. Later stage transitions remain subject to their report approvals.
 
 Stage 1 approval recorded: on September 28, 2026, the maintainer explicitly instructed this thread to proceed after reviewing the Stage 1 report and Stage 2 start request. Stage 2 is authorized; later stage and publication approvals remain separate.
+
+Stage 2 approval recorded: on September 28, 2026, the maintainer explicitly instructed this thread to proceed in response to the Stage 2 report and Stage 3 start request. Stage 3 is authorized; final-report and publication gates remain separate.
