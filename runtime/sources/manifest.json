@@ -2,11 +2,11 @@
   "schema_version": 1,
   "record_kind": "source_audit",
   "issue": 1,
-  "stage": 3,
+  "stage": 4,
   "audit_date": "2026-09-28",
-  "scope": "Public source audit, candidate installed tool/SDK metadata and bounded local inventory/content validation for the proposed native ARM64 Wine/FEX/DXMT path; no builds, runtime or distribution qualification.",
-  "audit_complete": false,
-  "decision": "unassessed",
+  "scope": "Completed bounded public source audit and fresh acquisition reproduction for the proposed native ARM64 Wine/FEX/DXMT path. Required build inputs and Darwin integration remain blocked; no builds, runtime, game or distribution qualification.",
+  "audit_complete": true,
+  "decision": "blocked",
   "source_ready": false,
   "qualification": {
     "runtime": "unassessed",
@@ -2349,12 +2349,17 @@
       "identity": null,
       "status": "not_acquired",
       "reason": "Publisher explicitly describes the Wine 11.2 release as nonworking and intended only for DXMT linking. Its binary was not acquired; selected source has a driver structure mismatch and the existing export patch is rejected. Any future source-to-binary/interface pairing needs a separate verified build.",
-      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-public-wine-link-only",
         "s2-group-requirements",
         "stage2-patch-macdrv"
-      ]
+      ],
+      "downstream_issue_numbers": [
+        4,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Build and qualify an exact matching Wine/DXMT interface from reviewed source; do not substitute the publisher-described nonworking link binary."
     },
     {
       "input_id": "llvm-mingw-ci-binary",
@@ -2363,7 +2368,13 @@
       "identity": null,
       "status": "not_acquired",
       "reason": "No compiler binary is acquired or executed. Acquired build-script defaults are not claimed to reproduce this bundle; Installed candidate-tool metadata was recorded in Stage 3, but this compiler remains unavailable.",
-      "follow_up_stage": 4
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Select an attributed, verified ARM64EC build toolchain; source defaults alone do not prove a release binary."
     },
     {
       "input_id": "macos-sdk-metal-toolchain",
@@ -2372,7 +2383,13 @@
       "identity": null,
       "status": "unresolved",
       "reason": "Candidate Xcode26.6(17F113),SDK26.5,Appleclang21.0.0/ld1267 observed; no source build compatibility established. Metal dispatcher cannot execute because optional Metal Toolchain component is missing.",
-      "follow_up_stage": 4
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Provide a usable Metal Toolchain and verify the chosen compiler/SDK against the selected build definitions."
     },
     {
       "input_id": "build-generators-and-native-libraries",
@@ -2381,7 +2398,13 @@
       "identity": null,
       "status": "unresolved",
       "reason": "CMake/Meson/Ninja/ARM64EC cross compiler/native LLVM shader library not found on inspected PATH. Bison2.3 conflicts with Wine minimum3.0. Native enabled libraries remain configuration-dependent; installedPython3.14.4/Autoconf2.73/flex2.6.4/pkgconf2.5.1 are metadata candidates only.",
-      "follow_up_stage": 4
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Pin usable build generators, cross compiler, native shader LLVM and compatible Bison, and prove configured build compatibility."
     },
     {
       "input_id": "wine-configured-external-packages",
@@ -2390,10 +2413,15 @@
       "identity": null,
       "status": "unresolved",
       "reason": "Selected bundled notices were inventoried with per-file/configuration exceptions, but no final host/guest payload or enabled external package set is selected. Stage 3 retained these missing configuration-dependent inputs; no build is authorized by this source audit.",
-      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-group-vendored-terms"
-      ]
+      ],
+      "downstream_issue_numbers": [
+        4,
+        13
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Record the actual enabled package closure and reconcile source/terms for each required input and shipped file."
     },
     {
       "input_id": "darwin-fex-wine-integration-patches",
@@ -2402,12 +2430,18 @@
       "identity": null,
       "status": "needs-port",
       "reason": "Selected code needs Wine host ABI/process/memory integration, FEX Darwin host services and graphics driver reconciliation. One existing graphics export patch was tested but is not applicable to selected Wine bases. No complete Darwin port series was established; unavailable public MR retrieval leaves search coverage incomplete.",
-      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-group-requirements",
         "stage2-patch-macdrv",
         "s2-public-wine-mr-search"
-      ]
+      ],
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Implement and verify the named host/translator/graphics requirements with exact bases, ordered patches and source-built provenance."
     },
     {
       "input_id": "vendor-preview-source-coverage",
@@ -2416,62 +2450,80 @@
       "identity": null,
       "status": "unresolved_after_bounded_inspection",
       "reason": "The exact archive Wine subtree contains Apple ARM64 context handling and Wine 11.0 identification. Scoped scans and selected files do not establish complete native Preview implementation, an exact upstream base or ordered patch series; no aggregate license clearance is inferred.",
-      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-vendor-crossover"
-      ]
+      ],
+      "downstream_issue_numbers": [
+        4,
+        5,
+        7
+      ],
+      "decision_effect": "Blocks positive readiness for the affected candidate until the owning task resolves or explicitly removes the prerequisite with reviewed evidence.",
+      "reconsideration": "Establish exact public Preview implementation/patch provenance if that route is selected, or explicitly retain the independent upstream port path and satisfy every gap there."
     }
   ],
   "requirements": [
     {
       "requirement_id": "immutable-source-inputs",
-      "status": "partial",
+      "status": "verified",
       "evidence_refs": [
         "acquisitions",
-        "gitlinks"
+        "gitlinks",
+        "s4-reproduction"
       ],
-      "remaining": "Selected sources are acquired; configuration-dependent inputs, full toolchain closure and fresh acquisition reproduction remain open."
+      "remaining": "The declared acquired subset reproduced exactly in a fresh remote acquisition. Conditional exclusions and final configured build closure remain separately accounted blockers; no unavailable input has a fabricated digest."
     },
     {
       "requirement_id": "host-and-runtime-source-coverage",
       "status": "needs-port",
       "evidence_refs": [
         "s2-group-requirements",
-        "s2-vendor-crossover"
+        "s2-vendor-crossover",
+        "s4-decision"
       ],
       "remaining": "Named Wine host/ABI/memory, FEX Darwin/TSO/JIT and graphics ABI requirements need downstream implementation and tests. No runtime build is qualified."
     },
     {
       "requirement_id": "patch-and-terms-provenance",
-      "status": "partial",
+      "status": "present-unverified",
       "evidence_refs": [
         "s2-group-terms",
         "s2-group-vendored-terms",
         "s2-group-patches",
-        "s2-vendor-crossover"
+        "s2-vendor-crossover",
+        "s4-patch-reproduction"
       ],
-      "remaining": "Selected terms, bounded vendor Wine content and one existing patch were audited with explicit limits; complete Preview provenance, actual payload/notice reconciliation and current Wine submission policy remain incomplete."
+      "remaining": "Inspected licenses/notices and the existing historical patch provenance are accounted for; complete Preview provenance, current external Wine submission policy and final shipped-payload terms remain unestablished. The only patch is inapplicable to both selected Wine candidates, so no working port series is claimed."
     },
     {
       "requirement_id": "toolchain-source-readiness",
-      "status": "partial",
+      "status": "blocked",
       "evidence_refs": [
         "build_observations",
-        "s3-handoff"
+        "s3-handoff",
+        "s4-decision"
       ],
-      "remaining": "Installed candidates and unavailable/conflicting prerequisites are recorded; Stage4 requirement accounting and downstream build/port validation remain open."
+      "remaining": "Required tools are absent, unavailable or conflicting; the actual enabled dependency closure and tool/SDK compatibility are not established. #4/#5/#7 must select and verify these build prerequisites under their own plans; #13 must reconcile actual payload provenance and notices."
     }
   ],
   "handoff": {
     "source_of_truth": "Issue #1 factual source inventory; Issue #3 owns product contract schemas.",
-    "record_validity": "Stage3 validator checks bounded shape, references, immutable local content and decision consistency. Valid incomplete/negative records are distinct from source readiness and runtime eligibility.",
-    "next_stage": 4,
-    "next_stage_status": "requires_stage_report_approval"
+    "record_validity": "The bounded validator distinguishes a consistent completed negative audit from source readiness and runtime eligibility.",
+    "next_stage": null,
+    "next_stage_status": "source_audit_complete_blocked_pending_maintainer_review",
+    "downstream_issue_numbers": [
+      4,
+      5,
+      7,
+      13
+    ],
+    "decision_effect": "Investigation completion is not a runtime dependency pass. Port preparation/implementation may proceed under owning-task approval, but required source/build and runtime acceptance remains blocked."
   },
   "evidence_documents": [
     "mydocs/working/task_m1_1_stage1_evidence.json",
     "mydocs/working/task_m1_1_stage2_evidence.json",
-    "mydocs/working/task_m1_1_stage3_evidence.json"
+    "mydocs/working/task_m1_1_stage3_evidence.json",
+    "mydocs/working/task_m1_1_stage4_evidence.json"
   ],
   "evidence_reference_resolution": "Resolve evidence_refs against unique evidence definition records in evidence_documents; objects containing only evidence_id and lines are citations. Legacy section-key references resolve only in evidence_document (Stage 1). Stage 2 group records name their exact top-level section. Stage 1 records remain historical acquisition evidence.",
   "source_requirements": [
