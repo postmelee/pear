@@ -4,6 +4,10 @@ Checked: 2026-09-27. Status: architecture research, not an implemented or certif
 
 This audit distinguishes inspected public source, locally inspected SDK declarations, vendor demonstrations, and work that Pear must still validate. It does not claim that Megabonk has run without Rosetta. The existing local Wine/DXMT game experiment remains a Rosetta-dependent reference.
 
+Implementation follow-up, September 27, 2026: the [native host diagnostic](../host-capabilities.md) now records process-local observations and their limits. It does not execute the ABI, memory/JIT or signing-authorization tests proposed in this audit.
+
+Implementation follow-up, September 28, 2026: the separate [Issue #2 final report](../../mydocs/report/task_m1_2_report.md) records passing, reproduced native host trials under normal protections on M4 Pro/macOS 26.5.2 with authorized development signing. See the [host capability guide](../host-capabilities.md#reproduced-host-capability-decision) for the selected layout, page mode, finite ABI/thread coverage and distribution limits. This completes the bounded host-probe contribution; it does not qualify the integrated runtime, ordinary-user distribution or Megabonk. The original research findings below retain their original date and scope.
+
 ## Recommendation
 
 Develop a direct macOS runtime around ARM64 Wine, its ARM64EC/WoW64 emulator interfaces, FEX, and an ARM64-capable graphics layer. Start with public-source and host-capability gates, then fund the missing macOS integration as actual runtime engineering. Avoid building the product around an opaque commercial preview binary.
