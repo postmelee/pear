@@ -1,6 +1,6 @@
 # Implementation Plan: Runtime contracts and manager-language evaluation
 
-Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_3_stage1.md and ../working/task_m1_3_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_3_stage3.md. The task requester approved Stage 4 on September 28, 2026; Stage 4 is complete; see ../working/task_m1_3_stage4.md. The task requester approved Stage 4 and authorized Stage 5 on September 28, 2026; Stage 5 reproduction and final handoff are complete; see ../working/task_m1_3_stage5.md and ../report/task_m1_3_report.md. Final-report approval for PR publication is pending. Planned commands for unstarted stages are not passing results.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_3_stage1.md and ../working/task_m1_3_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_3_stage3.md. The task requester approved Stage 4 on September 28, 2026; Stage 4 is complete; see ../working/task_m1_3_stage4.md. The task requester approved Stage 4 and authorized Stage 5 on September 28, 2026; Stage 5 reproduction and final handoff are complete; see ../working/task_m1_3_stage5.md and ../report/task_m1_3_report.md. The task requester approved the final report and authorized PR publication on September 28, 2026. Planned commands for unstarted stages are not passing results.
 
 Task plan: [`task_m1_3.md`](task_m1_3.md)
 GitHub Issue: [#3](https://github.com/postmelee/pear/issues/3)
@@ -276,3 +276,8 @@ After the Stage 4 report and combined request to merge PR #26 and proceed with S
 ### Stage 5 Completion
 
 The first empty-output reproduction completed successfully: schema/example checks, 119 contract tests, 60 experiment tests, two Rust fault tests, three ARM64 builds with read-only package/signature inspection, and 110 common native invocations with matching semantic outcomes. The five cached wheels were reverified and installed into a new venv; locked/offline Cargo reused the reverified source cache and installed toolchains. No dependency download or timing rerun was requested. All prior native inputs, comparison results and failed observations remain unchanged. The final reports record byte differences, one-Mac scope, the reviewed blocked #1 handoff and #9/#10 production obligations. PR publication remains subject to final-report approval.
+
+
+### Final Report and Publication Authorization
+
+After reviewing the completed Stage 5/final report and concrete PR body draft, the task requester explicitly instructed this thread to proceed on September 28, 2026. This approves the final report and publication of an Open PR for #3 to `master`. It does not authorize merging the PR or starting a new production implementation task. The checked reproduction inputs and observations remain unchanged.
