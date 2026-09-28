@@ -1,6 +1,6 @@
 # Task Plan: Define runtime contracts and choose the manager language
 
-Status: proposed task plan, awaiting task requester approval. Starting Issue #3 authorizes this planning work; no implementation plan, production manager, or passing runtime claim is included in this document.
+Status: the maintainer approved this task plan, scope and document locations on September 28, 2026, together with Issue #1. Detailed implementation planning is authorized. Stage implementation remains subject to the implementation-plan approval checkpoint; no production manager or passing runtime claim is included in this record.
 
 GitHub Issue: [#3](https://github.com/postmelee/pear/issues/3)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
@@ -176,3 +176,7 @@ Each stage requires its own verified report and task requester approval before p
 - Retain the listed exclusions: this plan does not approve a production manager, GUI, Steam/game execution, translator replacement, runtime qualification, or general-user distribution work.
 
 After approval, `task_m1_3_impl.md` will define concrete artifacts, verification commands, and stage commit messages. No implementation plan or source changes are authorized by this draft alone.
+
+## Approval Record
+
+The task requester explicitly approved both task plans and their document locations on September 28, 2026. The approved scope and exclusions above remain unchanged. The next review is the concrete implementation plan and authorization to start Stage 1; subsequent stages retain their individual report checkpoints.
