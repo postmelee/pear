@@ -184,4 +184,4 @@ After approval, `task_m1_1_impl.md` will define concrete stage artifacts, acquis
 
 ## Approval Record
 
-The task requester explicitly approved both task plans and their document locations on September 28, 2026. The approved scope and exclusions above remain unchanged. The next review is the concrete implementation plan and authorization to start Stage 1; subsequent stages retain their individual report checkpoints.
+The task requester explicitly approved both task plans and their document locations on September 28, 2026, and subsequently approved both detailed implementation plans and parallel Stage 1 execution. The approved scope and exclusions above remain unchanged. Subsequent stages retain their individual report checkpoints.

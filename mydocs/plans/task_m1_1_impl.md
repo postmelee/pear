@@ -4,7 +4,7 @@ Task plan: [task_m1_1.md](task_m1_1.md)
 GitHub Issue: [#1](https://github.com/postmelee/pear/issues/1)
 Milestone: M1
 
-Status: the maintainer approved the task plan, scope and document locations on September 28, 2026. This detailed plan requests approval before Stage 1. It records future work; no renewed source inspection, acquired inputs, selected pins or verification results are claimed here.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026 by explicitly instructing work to proceed. Stage 1 is complete; its actual verification and limits are recorded in ../working/task_m1_1_stage1.md. Stage 2 awaits approval. Later stages retain separate report approval checkpoints; planned commands for unstarted stages are not passing results.
 
 ## Stage Overview
 
@@ -195,3 +195,7 @@ Expected: tests and complete-audit verification exit 0. Readiness exits 0 only f
 ## Approval Request
 
 Approve this four-stage implementation sequence, exact artifact locations, validation/exit semantics and stage commits, and authorize Stage 1 source identification/acquisition. Actual immutable revisions and hashes will be selected and measured during Stage 1. Later stages retain their report checkpoints; this request does not authorize port implementation, runtime builds or game execution.
+
+## Approval Record
+
+The task requester approved both #1 and #3 implementation plans and authorized parallel Stage 1 execution on September 28, 2026. This approval preserves the task-plan scope and document locations. Stage 2 has not been authorized.

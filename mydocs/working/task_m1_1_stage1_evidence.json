@@ -1,0 +1,4585 @@
+{
+  "schema_version": 1,
+  "record_kind": "source_acquisition_evidence",
+  "issue": 1,
+  "stage": 1,
+  "recorded_at_utc": "2026-09-28T08:51:32.846904+00:00",
+  "manifest_path": "runtime/sources/manifest.json",
+  "execution_scope": {
+    "public_source_acquisition": true,
+    "upstream_source_executed": false,
+    "source_checkout": false,
+    "upstream_build_or_install": false,
+    "archive_extracted": false,
+    "runtime_or_game_executed": false,
+    "system_configuration_changed": false
+  },
+  "git_environment": {
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_TERMINAL_PROMPT": "0"
+  },
+  "acquisition_method": "Read-only upstream HTTPS fetches into fresh ignored bare repositories. Fetch hooks/external protocol/submodule recursion disabled; upstream configure/build/install scripts were not invoked. The user-approved worktree write/network permission was used.",
+  "authenticity_limits": "Public HTTPS/GitHub origins and official vendor link were observed. No independent Git tag/commit signature or publisher archive signature/checksum was verified.",
+  "public_resolutions": [
+    {
+      "component_id": "wine-upstream",
+      "request_url": "https://api.github.com/repos/wine-mirror/wine/commits/HEAD",
+      "requested_ref": "HEAD",
+      "url": "https://github.com/wine-mirror/wine.git",
+      "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892",
+      "commit_date": "2026-09-25T19:29:21Z",
+      "resolved_at_utc": "2026-09-28T08:39:09.304310+00:00",
+      "status": "resolved"
+    },
+    {
+      "component_id": "fex-upstream",
+      "request_url": "https://api.github.com/repos/FEX-Emu/FEX/commits/HEAD",
+      "requested_ref": "HEAD",
+      "url": "https://github.com/FEX-Emu/FEX.git",
+      "commit": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "tree": "7509ab443d32692ac72ee51c0697ccf86d0a66af",
+      "commit_date": "2026-09-26T01:54:39Z",
+      "resolved_at_utc": "2026-09-28T08:39:09.684831+00:00",
+      "status": "resolved"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "request_url": "https://api.github.com/repos/3Shain/dxmt/commits/HEAD",
+      "requested_ref": "HEAD",
+      "url": "https://github.com/3Shain/dxmt.git",
+      "commit": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "tree": "c273b79a2bfa47e62e8526786559f4d18911625a",
+      "commit_date": "2026-09-17T05:26:00Z",
+      "resolved_at_utc": "2026-09-28T08:39:09.992939+00:00",
+      "status": "resolved"
+    },
+    {
+      "component_id": "wine-dxmt-interface",
+      "request_url": "https://api.github.com/repos/3Shain/wine/commits/wine-11.2",
+      "requested_ref": "wine-11.2",
+      "url": "https://github.com/3Shain/wine.git",
+      "commit": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+      "tree": "56a0344be62c9ca8464ed22f8861798ce4ac717e",
+      "commit_date": "2026-02-06T21:06:33Z",
+      "resolved_at_utc": "2026-09-28T08:39:10.465048+00:00",
+      "status": "resolved"
+    },
+    {
+      "component_id": "llvm-mingw-source",
+      "request_url": "https://api.github.com/repos/mstorsjo/llvm-mingw/commits/20260908",
+      "requested_ref": "20260908",
+      "url": "https://github.com/mstorsjo/llvm-mingw.git",
+      "commit": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "tree": "2db31fcce334eac492da9b4bc587bc80987f3642",
+      "commit_date": "2026-09-08T11:49:19Z",
+      "resolved_at_utc": "2026-09-28T08:39:10.833220+00:00",
+      "status": "resolved"
+    }
+  ],
+  "additional_tag_resolutions": [
+    {
+      "component_id": "llvm-dxmt",
+      "requested_ref": "refs/tags/llvmorg-15.0.7",
+      "observed_refs": {
+        "refs/tags/llvmorg-15.0.7": "d2b30c38ff585ddec8fe05fac734c0bb2a6bacc3",
+        "refs/tags/llvmorg-15.0.7^{}": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a"
+      }
+    },
+    {
+      "component_id": "llvm-mingw-llvm",
+      "requested_ref": "refs/tags/llvmorg-23.1.1",
+      "observed_refs": {
+        "refs/tags/llvmorg-23.1.1": "e7ce3600b55034ddf819638f395e3c475fad5be2",
+        "refs/tags/llvmorg-23.1.1^{}": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689"
+      }
+    }
+  ],
+  "acquisitions": [
+    {
+      "evidence_id": "acquire-dxmt-directx",
+      "component_id": "dxmt-directx",
+      "status": "passed",
+      "commit_object_id": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "tree_object_id": "66fcb250507a2c45bd9a22f44795d0e4c7b613f5",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "dxmt-directx/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "80623e8570743b5848d707f1ddd207f419b4c2fd93f7bbf2de975c630b8b23f4",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 4242,
+        "tracked_entries": 66
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/misyltoad/mingw-directx-headers",
+            "9df86f2341616ef1888ae59919feaa6d4fad693d"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "9df86f2341616ef1888ae59919feaa6d4fad693d"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "rev-parse",
+            "--verify",
+            "9df86f2341616ef1888ae59919feaa6d4fad693d^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "rev-parse",
+            "--verify",
+            "9df86f2341616ef1888ae59919feaa6d4fad693d^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-directx/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "9df86f2341616ef1888ae59919feaa6d4fad693d"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/dxmt-directx/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:33.381301+00:00"
+    },
+    {
+      "evidence_id": "acquire-dxmt-nvapi",
+      "component_id": "dxmt-nvapi",
+      "status": "passed",
+      "commit_object_id": "d08488fcc82eef313b0464db37d2955709691e94",
+      "tree_object_id": "5f63f798f0e45a722e25ffdd8696f7f2397c9d75",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "dxmt-nvapi/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "783eff0609e8224f9278d9c412e5ee6bf65970072664e39eec9273b5a96ffeef",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 2674,
+        "tracked_entries": 32
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/NVIDIA/nvapi.git",
+            "d08488fcc82eef313b0464db37d2955709691e94"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "d08488fcc82eef313b0464db37d2955709691e94"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "rev-parse",
+            "--verify",
+            "d08488fcc82eef313b0464db37d2955709691e94^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "rev-parse",
+            "--verify",
+            "d08488fcc82eef313b0464db37d2955709691e94^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-nvapi/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "d08488fcc82eef313b0464db37d2955709691e94"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/dxmt-nvapi/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:34.362672+00:00"
+    },
+    {
+      "evidence_id": "acquire-dxmt-upstream",
+      "component_id": "dxmt-upstream",
+      "status": "passed",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "tree_object_id": "c273b79a2bfa47e62e8526786559f4d18911625a",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "dxmt-upstream/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "958103ca0c78ba9817f672c15612dba2d4feff45e125ddd333a8fbcea42a8a01",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 30804,
+        "tracked_entries": 381
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/3Shain/dxmt.git",
+            "7c8dee1c2d73415301ceb7d1fa810861cef4cd67"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "7c8dee1c2d73415301ceb7d1fa810861cef4cd67"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "rev-parse",
+            "--verify",
+            "7c8dee1c2d73415301ceb7d1fa810861cef4cd67^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "rev-parse",
+            "--verify",
+            "7c8dee1c2d73415301ceb7d1fa810861cef4cd67^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "7c8dee1c2d73415301ceb7d1fa810861cef4cd67"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/dxmt-upstream/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:36:06.146154+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-catch2",
+      "component_id": "fex-catch2",
+      "status": "passed",
+      "commit_object_id": "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f",
+      "tree_object_id": "46a08efa7b84ca625bb83d1845def3e79586115e",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-catch2/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "d3b46529ef9bb9d44d8fa91c2d1a31f0ccbf144f16fa70d6da4cb3fd24fc71a7",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 53740,
+        "tracked_entries": 568
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-catch2/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/catchorg/Catch2.git",
+            "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "rev-parse",
+            "--verify",
+            "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "rev-parse",
+            "--verify",
+            "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-catch2/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-catch2/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:30.877130+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-cpp-optparse",
+      "component_id": "fex-cpp-optparse",
+      "status": "passed",
+      "commit_object_id": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+      "tree_object_id": "83f3445fe4f223102506c20b2ec583f712b28910",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-cpp-optparse/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "7213c3a365d0f913484839a0bbc2a739ec7d429892203b2a63ef751d4662e2de",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 712,
+        "tracked_entries": 11
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/Sonicadvance1/cpp-optparse",
+            "9f94388a339fcbb0bc95c17768eb786c85988f6e"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "9f94388a339fcbb0bc95c17768eb786c85988f6e"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "rev-parse",
+            "--verify",
+            "9f94388a339fcbb0bc95c17768eb786c85988f6e^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "rev-parse",
+            "--verify",
+            "9f94388a339fcbb0bc95c17768eb786c85988f6e^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-cpp-optparse/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "9f94388a339fcbb0bc95c17768eb786c85988f6e"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-cpp-optparse/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:28.240860+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-fmt",
+      "component_id": "fex-fmt",
+      "status": "passed",
+      "commit_object_id": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+      "tree_object_id": "f7d6122a22a4b5a2241e9d14570817633b55ddc4",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-fmt/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "344344b91f8658d5b34a6a6b059707451ae336baa9c0921868a38d8a73f91f31",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 11010,
+        "tracked_entries": 145
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-fmt/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/fmtlib/fmt.git",
+            "c07e2aa4b130b4fd359a1c6455a5201b17af01fa"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "c07e2aa4b130b4fd359a1c6455a5201b17af01fa"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "rev-parse",
+            "--verify",
+            "c07e2aa4b130b4fd359a1c6455a5201b17af01fa^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "rev-parse",
+            "--verify",
+            "c07e2aa4b130b4fd359a1c6455a5201b17af01fa^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-fmt/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "c07e2aa4b130b4fd359a1c6455a5201b17af01fa"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-fmt/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:28.426582+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-range-v3",
+      "component_id": "fex-range-v3",
+      "status": "passed",
+      "commit_object_id": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "tree_object_id": "bddf4cfede92ace82abac9847af08962a82f36cf",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-range-v3/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "98194cdca7259bedb9df26d63dc1b2280e59d81f6cb06be2f5d692dd6a131b87",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 57127,
+        "tracked_entries": 673
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/ericniebler/range-v3.git",
+            "ca1388fb9da8e69314dda222dc7b139ca84e092f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "ca1388fb9da8e69314dda222dc7b139ca84e092f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "rev-parse",
+            "--verify",
+            "ca1388fb9da8e69314dda222dc7b139ca84e092f^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "rev-parse",
+            "--verify",
+            "ca1388fb9da8e69314dda222dc7b139ca84e092f^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-range-v3/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "ca1388fb9da8e69314dda222dc7b139ca84e092f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-range-v3/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:30.033818+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-rpmalloc",
+      "component_id": "fex-rpmalloc",
+      "status": "passed",
+      "commit_object_id": "09142d726429416bfa7b459151515fe3ab7622dd",
+      "tree_object_id": "8df22bc1162ac2da5d776bb20631f964598c8353",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-rpmalloc/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "7dd720544d7555f0af09b99b69679f471f2ff5a307c651cff6825f7e3cf3c19e",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 2797,
+        "tracked_entries": 39
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/FEX-Emu/rpmalloc.git",
+            "09142d726429416bfa7b459151515fe3ab7622dd"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "09142d726429416bfa7b459151515fe3ab7622dd"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "rev-parse",
+            "--verify",
+            "09142d726429416bfa7b459151515fe3ab7622dd^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "rev-parse",
+            "--verify",
+            "09142d726429416bfa7b459151515fe3ab7622dd^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-rpmalloc/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "09142d726429416bfa7b459151515fe3ab7622dd"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-rpmalloc/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:33.284911+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-tracy",
+      "component_id": "fex-tracy",
+      "status": "passed",
+      "commit_object_id": "650c98ece70da9e155e7ba1c2b3ee16004aae118",
+      "tree_object_id": "20b9ed39c68806dc5afd8220d346a7db9a21b6fe",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-tracy/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "794effdbf231bcf6c8ed65bbcb0893205c6f393d72bc6b5680a1d15c5ecd48cb",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 32333,
+        "tracked_entries": 385
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-tracy/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/wolfpld/tracy",
+            "650c98ece70da9e155e7ba1c2b3ee16004aae118"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "650c98ece70da9e155e7ba1c2b3ee16004aae118"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "rev-parse",
+            "--verify",
+            "650c98ece70da9e155e7ba1c2b3ee16004aae118^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "rev-parse",
+            "--verify",
+            "650c98ece70da9e155e7ba1c2b3ee16004aae118^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-tracy/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "650c98ece70da9e155e7ba1c2b3ee16004aae118"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-tracy/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:32.383967+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-unordered_dense",
+      "component_id": "fex-unordered_dense",
+      "status": "passed",
+      "commit_object_id": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+      "tree_object_id": "40f25261cffbae5c901319dd76013224ff3658dd",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-unordered_dense/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "f8d9a39dff2a834b8f9560398760616a162480fb79f3bde0c97036f6396dbb0c",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 304945,
+        "tracked_entries": 2393
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/martinus/unordered_dense.git",
+            "3234af2c03549bc85656bfd3a86993bf1cd8aef1"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "3234af2c03549bc85656bfd3a86993bf1cd8aef1"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "rev-parse",
+            "--verify",
+            "3234af2c03549bc85656bfd3a86993bf1cd8aef1^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "rev-parse",
+            "--verify",
+            "3234af2c03549bc85656bfd3a86993bf1cd8aef1^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-unordered_dense/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "3234af2c03549bc85656bfd3a86993bf1cd8aef1"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-unordered_dense/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:32.499497+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-upstream",
+      "component_id": "fex-upstream",
+      "status": "passed",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "tree_object_id": "7509ab443d32692ac72ee51c0697ccf86d0a66af",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-upstream/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "00b9e613e0c7942ec35776578a87aa6529224cba1ff6de2c1a73331a2d5d5f1c",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 335159,
+        "tracked_entries": 3617
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-upstream/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/FEX-Emu/FEX.git",
+            "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "rev-parse",
+            "--verify",
+            "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "rev-parse",
+            "--verify",
+            "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-upstream/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-upstream/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:36:06.917054+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-vixl",
+      "component_id": "fex-vixl",
+      "status": "passed",
+      "commit_object_id": "585d860b12cdfc3a72f5fdad5e02e4d50a64c014",
+      "tree_object_id": "ae9489b803b0d575e4ee887c804a2cb5b49210b2",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-vixl/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "ce3ea21efdfb7acd0049d16dd9ae77a20302d0a526df524e847149780fad4984",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 343232,
+        "tracked_entries": 3157
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-vixl/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/FEX-Emu/vixl.git",
+            "585d860b12cdfc3a72f5fdad5e02e4d50a64c014"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "585d860b12cdfc3a72f5fdad5e02e4d50a64c014"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "rev-parse",
+            "--verify",
+            "585d860b12cdfc3a72f5fdad5e02e4d50a64c014^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "rev-parse",
+            "--verify",
+            "585d860b12cdfc3a72f5fdad5e02e4d50a64c014^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-vixl/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "585d860b12cdfc3a72f5fdad5e02e4d50a64c014"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-vixl/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:33.897265+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-xxhash",
+      "component_id": "fex-xxhash",
+      "status": "passed",
+      "commit_object_id": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+      "tree_object_id": "9d4f447c856962a98e22f144bd9b0315ab4d18f8",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-xxhash/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "c13fad6c7eb8b797a3252cb1ef980cbac3af89083cbb9bbd9957c0a547f237ee",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 6431,
+        "tracked_entries": 87
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/Cyan4973/xxHash.git",
+            "e626a72bc2321cd320e953a0ccf1584cad60f363"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "e626a72bc2321cd320e953a0ccf1584cad60f363"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "rev-parse",
+            "--verify",
+            "e626a72bc2321cd320e953a0ccf1584cad60f363^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "rev-parse",
+            "--verify",
+            "e626a72bc2321cd320e953a0ccf1584cad60f363^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-xxhash/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "e626a72bc2321cd320e953a0ccf1584cad60f363"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-xxhash/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:28.580321+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-zycore",
+      "component_id": "fex-zycore",
+      "status": "passed",
+      "commit_object_id": "75a36c45ae1ad382b0f4e0ede0af84c11ee69928",
+      "tree_object_id": "dce4afb5c60931c6c8f698b0d3899853987550ec",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-zycore/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "ff61a6e529e08ee929f38408871d76937365cdc53c3fd98758210df8a1169974",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 4145,
+        "tracked_entries": 56
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-zycore/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/zyantific/zycore-c",
+            "75a36c45ae1ad382b0f4e0ede0af84c11ee69928"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "75a36c45ae1ad382b0f4e0ede0af84c11ee69928"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "rev-parse",
+            "--verify",
+            "75a36c45ae1ad382b0f4e0ede0af84c11ee69928^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "rev-parse",
+            "--verify",
+            "75a36c45ae1ad382b0f4e0ede0af84c11ee69928^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zycore/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "75a36c45ae1ad382b0f4e0ede0af84c11ee69928"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-zycore/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:43:36.086997+00:00"
+    },
+    {
+      "evidence_id": "acquire-fex-zydis",
+      "component_id": "fex-zydis",
+      "status": "passed",
+      "commit_object_id": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+      "tree_object_id": "74bbe660f1aaeca6afb9132b13e1fdb1405f9da1",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "fex-zydis/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "d3092c05189fa3c999c9a54ff6897ac68fde7657e771f62b375682c8b4bcd3b7",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 46457,
+        "tracked_entries": 587
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/fex-zydis/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/zyantific/zydis.git",
+            "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "rev-parse",
+            "--verify",
+            "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "rev-parse",
+            "--verify",
+            "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/fex-zydis/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/fex-zydis/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:38:32.512239+00:00"
+    },
+    {
+      "evidence_id": "acquire-llvm-dxmt",
+      "component_id": "llvm-dxmt",
+      "status": "passed",
+      "commit_object_id": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+      "tree_object_id": "420b581b39531e9ed0e26916e4ba81fc6a9d9f74",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "llvm-dxmt/tree-listing.bin",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "fe0ed32d04a3f4d57f36a583fa758043df254cfd65c4eb8fd4a50cdf2fb45bb2",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 12385468,
+        "tracked_entries": 118554
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "ls-remote",
+            "https://github.com/llvm/llvm-project.git",
+            "refs/tags/llvmorg-15.0.7",
+            "refs/tags/llvmorg-15.0.7^{}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/llvm/llvm-project.git",
+            "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "rev-parse",
+            "--verify",
+            "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "rev-parse",
+            "--verify",
+            "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-dxmt/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/llvm-dxmt/tree-listing.bin"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/llvm-dxmt/tree-listing.bin"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:41:05.961421+00:00"
+    },
+    {
+      "evidence_id": "acquire-llvm-mingw-llvm",
+      "component_id": "llvm-mingw-llvm",
+      "status": "passed",
+      "commit_object_id": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689",
+      "tree_object_id": "831b6c2c2df160f87ef6a5e5623ddf477ef67402",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "llvm-mingw-llvm/tree-listing.bin",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "843136f08548429a2614ee11a3a73089b16466599d121d0f6664cdc0c5432199",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 19053990,
+        "tracked_entries": 180593
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "ls-remote",
+            "https://github.com/llvm/llvm-project.git",
+            "refs/tags/llvmorg-23.1.1",
+            "refs/tags/llvmorg-23.1.1^{}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/llvm/llvm-project.git",
+            "6dfe1677ab8dffbc6ec13d53a1e0215d75147689"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "6dfe1677ab8dffbc6ec13d53a1e0215d75147689"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "rev-parse",
+            "--verify",
+            "6dfe1677ab8dffbc6ec13d53a1e0215d75147689^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "rev-parse",
+            "--verify",
+            "6dfe1677ab8dffbc6ec13d53a1e0215d75147689^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "-c",
+            "protocol.file.allow=never",
+            "-c",
+            "submodule.recurse=false",
+            "-c",
+            "credential.helper=",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "6dfe1677ab8dffbc6ec13d53a1e0215d75147689"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/tree-listing.bin"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/llvm-mingw-llvm/tree-listing.bin"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:46:18.748935+00:00"
+    },
+    {
+      "evidence_id": "acquire-llvm-mingw-source",
+      "component_id": "llvm-mingw-source",
+      "status": "passed",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "tree_object_id": "2db31fcce334eac492da9b4bc587bc80987f3642",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "llvm-mingw-source/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "2df340b42320ffcf43f3cd98350a95b4b6b1524442b4419e595867122a04b021",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 7141,
+        "tracked_entries": 95
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/mstorsjo/llvm-mingw.git",
+            "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "rev-parse",
+            "--verify",
+            "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "rev-parse",
+            "--verify",
+            "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/llvm-mingw-source/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:43:10.474800+00:00"
+    },
+    {
+      "evidence_id": "acquire-mingw-w64-source",
+      "component_id": "mingw-w64-source",
+      "status": "passed",
+      "commit_object_id": "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a",
+      "tree_object_id": "73e43c0d8f2f0624037b9b0f76e3fd4f21724417",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "mingw-w64-source/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "a41f025ab14c6177a399510273254648d4aaf981217463b718e3983eed2f6486",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 649561,
+        "tracked_entries": 6950
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/mingw-w64/mingw-w64.git",
+            "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "rev-parse",
+            "--verify",
+            "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "rev-parse",
+            "--verify",
+            "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/mingw-w64-source/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/mingw-w64-source/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:45:13.272133+00:00"
+    },
+    {
+      "evidence_id": "acquire-wine-dxmt-interface",
+      "component_id": "wine-dxmt-interface",
+      "status": "passed",
+      "commit_object_id": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+      "tree_object_id": "56a0344be62c9ca8464ed22f8861798ce4ac717e",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "wine-dxmt-interface/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "1d1189310f74c821d5056cb6961943c42a2c065b65c0456fbb97775727d852ca",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 907465,
+        "tracked_entries": 10900
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/3Shain/wine.git",
+            "87ba10bb3aa8ea636dff5c2030b376da1627910a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "87ba10bb3aa8ea636dff5c2030b376da1627910a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "rev-parse",
+            "--verify",
+            "87ba10bb3aa8ea636dff5c2030b376da1627910a^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "rev-parse",
+            "--verify",
+            "87ba10bb3aa8ea636dff5c2030b376da1627910a^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "87ba10bb3aa8ea636dff5c2030b376da1627910a"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/wine-dxmt-interface/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:43:19.985715+00:00"
+    },
+    {
+      "evidence_id": "acquire-wine-upstream",
+      "component_id": "wine-upstream",
+      "status": "passed",
+      "commit_object_id": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "tree_object_id": "10b47b2965a7b3e1e9694ec506a3d13525211892",
+      "object_format": "sha1",
+      "listing": {
+        "path_relative_to_inputs": "wine-upstream/tree-listing.z",
+        "digest": {
+          "algorithm": "sha256",
+          "value": "c42a658d0e279f651d86627c683f9c902c4f573e2d73a771cb470d6ea5e0f9d7",
+          "scope": "git_tree_listing_bytes"
+        },
+        "size_bytes": 1033137,
+        "tracked_entries": 12457
+      },
+      "git_fsck": {
+        "exit_code": 0,
+        "scope": "All available objects in this depth-one bare repository; not complete upstream history or independently authenticated authorship."
+      },
+      "local_identity_and_listing_recheck": "passed",
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "init",
+            "--bare",
+            ".build/task1-sources/inputs/wine-upstream/repo.git"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-c",
+            "protocol.ext.allow=never",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "--no-recurse-submodules",
+            "https://github.com/wine-mirror/wine.git",
+            "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "update-ref",
+            "refs/heads/source",
+            "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "symbolic-ref",
+            "HEAD",
+            "refs/heads/source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "rev-parse",
+            "--verify",
+            "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf^{commit}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "rev-parse",
+            "--verify",
+            "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf^{tree}"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "rev-parse",
+            "--show-object-format"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "fsck",
+            "--full",
+            "--no-reflogs"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "git",
+            "-C",
+            ".build/task1-sources/inputs/wine-upstream/repo.git",
+            "ls-tree",
+            "-r",
+            "-z",
+            "--full-tree",
+            "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "shasum",
+            "-a",
+            "256",
+            ".build/task1-sources/inputs/wine-upstream/tree-listing.z"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "acquired_at_utc": "2026-09-28T08:36:23.286989+00:00"
+    }
+  ],
+  "archive_acquisition": {
+    "acquired_at": "2026-09-28T08:36:54.971323+00:00",
+    "official_page": "https://www.codeweavers.com/crossover/source",
+    "official_page_archive_link_verified": true,
+    "published_label": "CrossOver 26.3.0 FOSS source",
+    "archive_url": "https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz",
+    "curl_result": "200 https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz 149054023",
+    "archive_path_relative_to_inputs": "crossover-source/crossover-sources-26.3.0.tar.gz",
+    "archive_format": "tar+gzip",
+    "size_bytes": 149054023,
+    "digest": {
+      "algorithm": "sha256",
+      "value": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+      "scope": "downloaded_archive_bytes"
+    },
+    "member_listing_path_relative_to_inputs": "crossover-source/crossover-sources-26.3.0.members.json",
+    "member_listing_digest": {
+      "algorithm": "sha256",
+      "value": "a99044d40a096d53fee9ff465642c48c35b4164c9ba1584ec6d752022f0f52bb",
+      "scope": "archive_member_metadata_json_bytes"
+    },
+    "member_count": 50394,
+    "extracted": false,
+    "executed": false,
+    "authenticity": "Retrieved through HTTPS from the source archive URL linked by the official page; no independent publisher digest or signature verified.",
+    "coverage": "Outer archive member metadata inspected only; ARM64 Preview implementation coverage and nested source contents remain unassessed for Stage 2.",
+    "commands": [
+      {
+        "argv": [
+          "curl",
+          "--silent",
+          "--show-error",
+          "--fail",
+          "--location",
+          "--proto",
+          "=https",
+          "--proto-redir",
+          "=https",
+          "--connect-timeout",
+          "20",
+          "--max-time",
+          "600",
+          "--output",
+          ".build/task1-sources/stage1/crossover-source-page.html",
+          "https://www.codeweavers.com/crossover/source"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "curl",
+          "--silent",
+          "--show-error",
+          "--fail",
+          "--location",
+          "--proto",
+          "=https",
+          "--proto-redir",
+          "=https",
+          "--connect-timeout",
+          "20",
+          "--max-time",
+          "600",
+          "--dump-header",
+          ".build/task1-sources/stage1/crossover-archive.headers",
+          "--output",
+          ".build/task1-sources/inputs/crossover-source/crossover-sources-26.3.0.tar.gz.partial",
+          "--write-out",
+          "%{http_code} %{url_effective} %{size_download}",
+          "https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "shasum",
+          "-a",
+          "256",
+          ".build/task1-sources/inputs/crossover-source/crossover-sources-26.3.0.tar.gz"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "shasum",
+          "-a",
+          "256",
+          ".build/task1-sources/inputs/crossover-source/crossover-sources-26.3.0.members.json"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "evidence_id": "acquire-crossover-source",
+    "local_hash_recheck": "passed"
+  },
+  "archive_directory_observation": {
+    "member_count": 50394,
+    "immediate_sources_directories": [
+      "android",
+      "busybox",
+      "cabextract",
+      "dxvk",
+      "freetype",
+      "ghostscript",
+      "glib",
+      "gnutls",
+      "gstreamer",
+      "htmltextview",
+      "makedep",
+      "moltenvk",
+      "po4a",
+      "pyxdg",
+      "vkd3d",
+      "wine"
+    ],
+    "wine_subtree_entry_count": 12440,
+    "limits": "Only outer member names/metadata were inspected. No immediately named fex/dxmt directory was found; this does not prove source absence, nested content or ARM64 Preview coverage."
+  },
+  "gitlinks": [
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "dxmt-nvapi",
+      "relationship": "git_submodule",
+      "path": "external/nvapi",
+      "declared_url": "https://github.com/NVIDIA/nvapi.git",
+      "declared_commit_object_id": "d08488fcc82eef313b0464db37d2955709691e94",
+      "condition": "Optional enable_nvapi path; false in meson.options, true in the ARM64EC release CI command.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "dxmt-upstream",
+      "dependency": "dxmt-directx",
+      "relationship": "git_submodule",
+      "path": "include/native/directx",
+      "declared_url": "https://github.com/misyltoad/mingw-directx-headers",
+      "declared_commit_object_id": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "condition": "DXMT root Meson definition checks include/native/directx/d3d11.h before configuring.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-range-v3",
+      "dependency": "range-v3-documentation",
+      "relationship": "git_submodule",
+      "path": "doc/gh-pages",
+      "declared_url": "https://github.com/ericniebler/range-v3.git",
+      "declared_commit_object_id": "2dae74bb693e42d850fb0adcc9045c5b71fbdeae",
+      "condition": "Documentation publishing tree outside the source-build candidate with RANGE_V3_DOCS disabled; not acquired.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-catch2",
+      "relationship": "git_submodule",
+      "path": "External/Catch2",
+      "declared_url": "https://github.com/catchorg/Catch2.git",
+      "declared_commit_object_id": "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f",
+      "condition": "BUILD_TESTING and no selected system Catch2 package.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-vulkan-headers",
+      "relationship": "git_submodule",
+      "path": "External/Vulkan-Headers",
+      "declared_url": "https://github.com/KhronosGroup/Vulkan-Headers.git",
+      "declared_commit_object_id": "ee2ec5fd83dafce291024683b50dc89219333076",
+      "condition": "Header input not selected for the initial MINGW Windows-module subset with BUILD_THUNKS=OFF. Reassess if a port enables thunks or other configurations.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-drm-headers",
+      "relationship": "git_submodule",
+      "path": "External/drm-headers",
+      "declared_url": "https://github.com/FEX-Emu/drm-headers.git",
+      "declared_commit_object_id": "3e49836995c1dcb3df709440ad2f270b569c6a5f",
+      "condition": "Linux DRM header input outside the initial Windows-module source subset. Reassess the final port configuration before excluding it from a build closure.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-gcc-target-tests-bins",
+      "relationship": "git_submodule",
+      "path": "External/fex-gcc-target-tests-bins",
+      "declared_url": "https://github.com/FEX-Emu/fex-gcc-target-tests-bins.git",
+      "declared_commit_object_id": "442678a134e2d25e759c430cca32e06e9e142f1f",
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-gvisor-tests-bins",
+      "relationship": "git_submodule",
+      "path": "External/fex-gvisor-tests-bins",
+      "declared_url": "https://github.com/FEX-Emu/fex-gvisor-tests-bins.git",
+      "declared_commit_object_id": "71349ae6d14ac2e3e792730e240aecd8076cee6c",
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-posixtest-bins",
+      "relationship": "git_submodule",
+      "path": "External/fex-posixtest-bins",
+      "declared_url": "https://github.com/FEX-Emu/fex-posixtest-bins.git",
+      "declared_commit_object_id": "9ae29638f8000c1603f16385ed1cf6c4c23ee414",
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-fmt",
+      "relationship": "git_submodule",
+      "path": "External/fmt",
+      "declared_url": "https://github.com/fmtlib/fmt.git",
+      "declared_commit_object_id": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+      "condition": "Bundled source used under MINGW; fallback elsewhere.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-jemalloc-glibc",
+      "relationship": "git_submodule",
+      "path": "External/jemalloc_glibc",
+      "declared_url": "https://github.com/FEX-Emu/jemalloc.git",
+      "declared_commit_object_id": "8436195ad5e1bc347d9b39743af3d29abee59f06",
+      "condition": "The inspected MINGW branch disables ENABLE_JEMALLOC_GLIBC_ALLOC; no Darwin allocator configuration is established.",
+      "acquisition_status": "not_acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-range-v3",
+      "relationship": "git_submodule",
+      "path": "External/range-v3",
+      "declared_url": "https://github.com/ericniebler/range-v3.git",
+      "declared_commit_object_id": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "condition": "Bundled source fallback when a system range-v3 package is not selected.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-rpmalloc",
+      "relationship": "git_submodule",
+      "path": "External/rpmalloc",
+      "declared_url": "https://github.com/FEX-Emu/rpmalloc.git",
+      "declared_commit_object_id": "09142d726429416bfa7b459151515fe3ab7622dd",
+      "condition": "ENABLE_FEX_ALLOCATOR; the inspected MINGW branch sets this true.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-tracy",
+      "relationship": "git_submodule",
+      "path": "External/tracy",
+      "declared_url": "https://github.com/wolfpld/tracy",
+      "declared_commit_object_id": "650c98ece70da9e155e7ba1c2b3ee16004aae118",
+      "condition": "ENABLE_FEXCORE_PROFILER and FEXCORE_PROFILER_BACKEND exactly TRACY in the inspected condition; no profiler configuration selected.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-unordered_dense",
+      "relationship": "git_submodule",
+      "path": "External/unordered_dense",
+      "declared_url": "https://github.com/martinus/unordered_dense.git",
+      "declared_commit_object_id": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+      "condition": "Bundled source fallback when a system unordered_dense package is not selected.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-vixl",
+      "relationship": "git_submodule",
+      "path": "External/vixl",
+      "declared_url": "https://github.com/FEX-Emu/vixl.git",
+      "declared_commit_object_id": "585d860b12cdfc3a72f5fdad5e02e4d50a64c014",
+      "condition": "BUILD_TESTING or ENABLE_VIXL_DISASSEMBLER or ENABLE_VIXL_SIMULATOR; acquired for the declared test/diagnostic source path.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-xxhash",
+      "relationship": "git_submodule",
+      "path": "External/xxhash",
+      "declared_url": "https://github.com/Cyan4973/xxHash.git",
+      "declared_commit_object_id": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+      "condition": "Bundled source fallback; cross-compilation bypasses the initial system-package lookup.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-zydis",
+      "relationship": "git_submodule",
+      "path": "External/zydis",
+      "declared_url": "https://github.com/zyantific/zydis.git",
+      "declared_commit_object_id": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+      "condition": "ENABLE_ZYDIS and no selected system Zydis/Zycore pair; acquired as an optional diagnostic source.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-upstream",
+      "dependency": "fex-cpp-optparse",
+      "relationship": "git_submodule",
+      "path": "Source/Common/cpp-optparse",
+      "declared_url": "https://github.com/Sonicadvance1/cpp-optparse",
+      "declared_commit_object_id": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+      "condition": "Source/Common and the Windows offline compiler use this source dependency.",
+      "acquisition_status": "acquired"
+    },
+    {
+      "parent": "fex-zydis",
+      "dependency": "fex-zycore",
+      "relationship": "git_submodule",
+      "path": "dependencies/zycore",
+      "declared_url": "https://github.com/zyantific/zycore-c",
+      "declared_commit_object_id": "75a36c45ae1ad382b0f4e0ede0af84c11ee69928",
+      "condition": "Nested source dependency of the acquired optional Zydis tree.",
+      "acquisition_status": "acquired"
+    }
+  ],
+  "source_inspections": [
+    {
+      "evidence_id": "inspect-01",
+      "component_id": "wine-upstream",
+      "path": "configure.ac",
+      "commit_object_id": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "blob_object_id": "80bb8b33c6e912f531f1f34fbc2779a62358d890",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "c5ab2e0580741f0fc6193ba612da01cb38ac4a0395e87a37c875039e8c04554d",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 153097,
+      "line_count": 3873,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/wine-upstream/repo.git",
+          "show",
+          "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf:configure.ac"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-02",
+      "component_id": "wine-dxmt-interface",
+      "path": "configure.ac",
+      "commit_object_id": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+      "blob_object_id": "9b0c7b9b5695ef4b7d41c1a94f67a87d8d3eb4fb",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "7cf87f40ef2d28e25d9cc4c71124b230b1cfeffc65448eb003521e357b4985db",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 151615,
+      "line_count": 3808,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/wine-dxmt-interface/repo.git",
+          "show",
+          "87ba10bb3aa8ea636dff5c2030b376da1627910a:configure.ac"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-03",
+      "component_id": "fex-upstream",
+      "path": ".gitmodules",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "19a99e24120f04bec424c48df3c2f23a46f55363",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "84f3ddc2319acfa51cb20647566c0610d6f7ceff9b310cb6d12513607d5dc8de",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 1930,
+      "line_count": 54,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:.gitmodules"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-04",
+      "component_id": "fex-upstream",
+      "path": "CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "87b7c311d4a28c44f1fef7b989ac7d606f7b176b",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "f4ad1ac1466ee8251c5168c75b7587cec8f0e5e3fda959d73a603828ca8e66dd",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 25815,
+      "line_count": 723,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-05",
+      "component_id": "fex-upstream",
+      "path": "Source/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "ab9a76716851b96ab413ab9ab4790e9f25f71599",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "a4265d1fc22e2a266c92b33b93a287036a75688122f0598905cf45dd8e5294f1",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 327,
+      "line_count": 11,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-06",
+      "component_id": "fex-upstream",
+      "path": "Source/Common/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "d05e07d3a70b19b549799b8790020826881eadb6",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "16391dc3c24290c861ea0fa1dd7e57460feb9a3bd56085012ae001e1b4d2e5d1",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 688,
+      "line_count": 28,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/Common/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-07",
+      "component_id": "fex-upstream",
+      "path": "Source/Tools/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "4e4320f808b4e3333f784e42d14840cf42d2c08d",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "9c972bbee4122f419a63e6490bd7565a4d5787c0b0112c74e75c736567d6bd19",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 777,
+      "line_count": 33,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/Tools/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-08",
+      "component_id": "fex-upstream",
+      "path": "Source/Tools/FEXOfflineCompiler/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "5ce74795d7587f2a04c9534245bbb17d01918a0a",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "5ee30a9edcefe7b34c8b447ce9db7e32289f74e94a88e4e19ec25227bbb6ce97",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 924,
+      "line_count": 32,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/Tools/FEXOfflineCompiler/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-09",
+      "component_id": "fex-upstream",
+      "path": "Source/Windows/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "fa7ed605c1f439f54d55e5c5866d802df8a6ee52",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "9de13e8036b3762b7b2dac898c3302a54e51f9a32fc042089a59dbf355edd54a",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 1298,
+      "line_count": 34,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/Windows/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-10",
+      "component_id": "fex-upstream",
+      "path": "Source/Windows/Common/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "0a65c997f8d262d6049e64b2c7bb8f190f220305",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "00a60898a6451602016f2256aca7ca72c1ff2630149b9454748ab4e5af65e42b",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 712,
+      "line_count": 21,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/Windows/Common/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-11",
+      "component_id": "fex-upstream",
+      "path": "Source/Windows/UnixLib/CMakeLists.txt",
+      "commit_object_id": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "blob_object_id": "37eda6aa03dbcc80670aaa09cb683c9965bf26d7",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "f21019f636c1172b4bd822a04d5fd098d2212f17681c4e42b825ceef527e883f",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 514,
+      "line_count": 14,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-upstream/repo.git",
+          "show",
+          "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa:Source/Windows/UnixLib/CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-12",
+      "component_id": "fex-range-v3",
+      "path": ".gitmodules",
+      "commit_object_id": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "blob_object_id": "0f9433c824990cb4b37854049dd90814a3f350a6",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "3f0035c0ba1f69103364c2f94540c3a831cf305594578376bd96d1c2c30106db",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 118,
+      "line_count": 4,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-range-v3/repo.git",
+          "show",
+          "ca1388fb9da8e69314dda222dc7b139ca84e092f:.gitmodules"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-13",
+      "component_id": "fex-zydis",
+      "path": ".gitmodules",
+      "commit_object_id": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+      "blob_object_id": "e0a443d5e5de7430de7386d3a5c8bbaff0cf0db5",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "62b09a8c51b2d85c7882e57e3e22f036ee9470e36a6c6dc7d541f569af581a5c",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 107,
+      "line_count": 3,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-zydis/repo.git",
+          "show",
+          "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f:.gitmodules"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-14",
+      "component_id": "fex-zydis",
+      "path": "CMakeLists.txt",
+      "commit_object_id": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+      "blob_object_id": "59716b08276a1d4ab4bc2a69b28645b49119dba0",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "c7a2f1bb46df6555909603461697a7a4e53625140a0f997cf2a4259c26921ea4",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 22606,
+      "line_count": 561,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/fex-zydis/repo.git",
+          "show",
+          "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f:CMakeLists.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-15",
+      "component_id": "dxmt-upstream",
+      "path": ".gitmodules",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "988b59af4ffc8b2084f75bfbbcddcbf2e8ae8d8e",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "f32472d7ca6d26fe5a28af8de9e8d30344ca7f614ba0d5f376fefe8102a46619",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 221,
+      "line_count": 6,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:.gitmodules"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-16",
+      "component_id": "dxmt-upstream",
+      "path": "meson.build",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "e10c90191f15e4871c7b703f1f9376241f8255a0",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "285cfd8a34e592d63b2ec7404d8e9108642775a14b7dc39260c7bd64661e888c",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 5620,
+      "line_count": 210,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:meson.build"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-17",
+      "component_id": "dxmt-upstream",
+      "path": "meson.options",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "715b17658d4a6c917bd6ec933042b42a0671fea8",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "2bfe36dfc2e96d065497e44b5ba4a1926ac7387bcf25cdcc24e2bd25a0f207a2",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 644,
+      "line_count": 11,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:meson.options"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-18",
+      "component_id": "dxmt-upstream",
+      "path": "build-arm64ec.txt",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "e9ac3b47d18fd964af6646dec7db7cb08c3c7471",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "2feb71f258e3238d23f83334ffb94af9eb3d180b934af8d101e9734424183261",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 432,
+      "line_count": 21,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:build-arm64ec.txt"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-19",
+      "component_id": "dxmt-upstream",
+      "path": ".github/workflows/ci.yml",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "9042b1f177b23c3fc76ec698b25b4d5d12a2d963",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "28621851a498c040fc11b4d9e28c43c66e0b735895c13251134a911f13b609a5",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 23164,
+      "line_count": 675,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:.github/workflows/ci.yml"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-20",
+      "component_id": "dxmt-upstream",
+      "path": "libs/meson.build",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "cbb812ff73f070051aad092d471759e2493f9a6d",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "f0613c8914b2a8f00d7b2b6d4958a0ee08d02ffe1d74277a6af1c5ce7a957fdd",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 20,
+      "line_count": 1,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:libs/meson.build"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-21",
+      "component_id": "dxmt-upstream",
+      "path": "src/airconv/meson.build",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "8e0c8bedbe5fe672c45ddd83a40868da1b9af11e",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "42890c18f303e400ee91ae44bffe20945af6b45e9440354f8bb95f9d42b7ad5c",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 3404,
+      "line_count": 111,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:src/airconv/meson.build"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-22",
+      "component_id": "dxmt-upstream",
+      "path": "src/airconv/darwin/meson.build",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "2843968607ed76a33e0abf895ba328ace4144b90",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "c453d3d997d1cc38624ffc38c8925667b7f2b50e274eadd89a4e0762e5349331",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 1867,
+      "line_count": 45,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:src/airconv/darwin/meson.build"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-23",
+      "component_id": "dxmt-upstream",
+      "path": "src/winemetal/meson.build",
+      "commit_object_id": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "blob_object_id": "b3fa530d169e3080a20c6f689703813f5912be8f",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "9e684343743008b79b66aaf50c407601e53a1ad9ba74a6c8fb978356ac4cb414",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 2516,
+      "line_count": 62,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/dxmt-upstream/repo.git",
+          "show",
+          "7c8dee1c2d73415301ceb7d1fa810861cef4cd67:src/winemetal/meson.build"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-24",
+      "component_id": "llvm-mingw-source",
+      "path": "build-llvm.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "f11de432cf8858a028a789944fb98acb08e838c8",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "0a734bd349222cd25e0d4e33bfd2930b577b50e2c2d91ee2aa1208cff4e2517e",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 14804,
+      "line_count": 423,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-llvm.sh"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-25",
+      "component_id": "llvm-mingw-source",
+      "path": "build-mingw-w64.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "a661e0c59ef990cb4bb9a4b8515ccc94fa10cb32",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "8d5dcd6dab80ff2fec5ad1d86a34666f63135508872af45b9d18b545777c7fa5",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 4691,
+      "line_count": 173,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-mingw-w64.sh"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-26",
+      "component_id": "llvm-mingw-source",
+      "path": "build-all.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "9294ed078eca14d1cc1b6fbecc2a3d185d30c113",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "6217aa0016aeeedeb06cc49f7135a052c5c04df05f7e6d1480fa40dda4654191",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 7907,
+      "line_count": 241,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-all.sh"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-27",
+      "component_id": "llvm-mingw-source",
+      "path": ".github/workflows/build.yml",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "b0c1b6448542405e35b499b39e41113bc64b343e",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "4f899b7571898f9b2c698c924b4f4914e896030279b8ecd452de5799342af94f",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 33304,
+      "line_count": 810,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:.github/workflows/build.yml"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-28",
+      "component_id": "llvm-mingw-source",
+      "path": "build-compiler-rt.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "b56aa489c8c6f6a2ef21b3290612ac48e9457f53",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "090356aef7ddadaa597f5f8be51b3d3bec9aa0dc6846f55eb5d296653d945055",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 6922,
+      "line_count": 220,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-compiler-rt.sh"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-29",
+      "component_id": "llvm-mingw-source",
+      "path": "build-libcxx.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "f37cc9dea406dd5ffa54b1f3a8c0dfd306d562f4",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "8af09b1afb92659a976f38897e5cee7ee202428153b6dfc510da88b09079bf7c",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 4334,
+      "line_count": 143,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-libcxx.sh"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-30",
+      "component_id": "llvm-mingw-source",
+      "path": "build-openmp.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "9c9d8fb3a2a09b3f5c53d03cada31885243a11be",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "72cdd4f72a22aa9b24a71caaafbb63a859778515fe9ce40787c74b50d6a1ed80",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 3150,
+      "line_count": 117,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-openmp.sh"
+        ],
+        "exit_code": 0
+      }
+    },
+    {
+      "evidence_id": "inspect-31",
+      "component_id": "llvm-mingw-source",
+      "path": "build-mingw-w64-libraries.sh",
+      "commit_object_id": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "blob_object_id": "fd4a00f87dccb96065dd46741a8eef9f33376451",
+      "digest": {
+        "algorithm": "sha256",
+        "value": "bd2ee03f1c8a07b55fed465f7fa48ca59ace14a89423ea5e67f897eaf0400503",
+        "scope": "git_blob_bytes"
+      },
+      "size_bytes": 2547,
+      "line_count": 95,
+      "inspection": "read_as_text_only",
+      "command": {
+        "argv": [
+          "git",
+          "-C",
+          ".build/task1-sources/inputs/llvm-mingw-source/repo.git",
+          "show",
+          "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324:build-mingw-w64-libraries.sh"
+        ],
+        "exit_code": 0
+      }
+    }
+  ],
+  "build_observations": [
+    {
+      "id": "fex-build-selection",
+      "observation": "The root build definition branches for MINGW, selects ARM64EC/WOW64 Windows subdirectories, and uses source dependencies recorded in the graph. It also contains a platform guard for Linux/Windows. These are build-definition observations; the Darwin port gap/implementation audit is pending.",
+      "sources": [
+        {
+          "evidence_id": "inspect-04",
+          "lines": [
+            55,
+            110
+          ]
+        },
+        {
+          "evidence_id": "inspect-04",
+          "lines": [
+            328,
+            449
+          ]
+        },
+        {
+          "evidence_id": "inspect-09",
+          "lines": [
+            23,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fex-unixlib-build",
+      "observation": "The UnixLib build definition emits .so-named targets and links rt. Host implementation, replacement requirements and source coverage are not assessed in Stage 1.",
+      "sources": [
+        {
+          "evidence_id": "inspect-11",
+          "lines": [
+            1,
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dxmt-distinct-toolchains",
+      "observation": "ARM64EC CI uses a Wine 11.2-labelled binary input, an LLVM-MinGW 20260908-labelled compiler bundle, and separately built ARM64 Darwin LLVM 15.0.7 libraries. Acquired source candidates do not establish binary provenance or mutual ABI compatibility.",
+      "sources": [
+        {
+          "evidence_id": "inspect-19",
+          "lines": [
+            21,
+            27
+          ]
+        },
+        {
+          "evidence_id": "inspect-19",
+          "lines": [
+            245,
+            291
+          ]
+        },
+        {
+          "evidence_id": "inspect-19",
+          "lines": [
+            513,
+            550
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dxmt-wine-interface",
+      "observation": "winemetal build rules require Wine build/install libraries and winebuild. Copying isolated DLLs is not established as a compatible integration path.",
+      "sources": [
+        {
+          "evidence_id": "inspect-23",
+          "lines": [
+            11,
+            55
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dxmt-native-shader-prerequisites",
+      "observation": "DXMT declares C++20, a Metal shader compilation target, LLVM libraries and native math/zlib/curses/XML link inputs; a Homebrew-prefix branch adds zstd/libunwind. Exact SDK and tool/runtime library closure remains unresolved.",
+      "sources": [
+        {
+          "evidence_id": "inspect-16",
+          "lines": [
+            1,
+            6
+          ]
+        },
+        {
+          "evidence_id": "inspect-21",
+          "lines": [
+            24,
+            37
+          ]
+        },
+        {
+          "evidence_id": "inspect-21",
+          "lines": [
+            65,
+            74
+          ]
+        },
+        {
+          "evidence_id": "inspect-22",
+          "lines": [
+            12,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llvm-mingw-default-versus-release",
+      "observation": "The source-build defaults select LLVM 23.1.1 and an exact MinGW-w64 commit. The workflow can replace versions for scheduled/manual runs. The uninspected binary bundle and its release build parameters are not authenticated by acquiring these source defaults.",
+      "sources": [
+        {
+          "evidence_id": "inspect-24",
+          "lines": [
+            19,
+            20
+          ]
+        },
+        {
+          "evidence_id": "inspect-25",
+          "lines": [
+            21,
+            21
+          ]
+        },
+        {
+          "evidence_id": "inspect-27",
+          "lines": [
+            15,
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wine-external-inputs",
+      "observation": "Wine configure options select native multimedia, font, TLS and graphics integration inputs. A game-targeted configuration and the required package versions are not selected by this acquisition stage.",
+      "sources": [
+        {
+          "evidence_id": "inspect-01",
+          "lines": [
+            30,
+            63
+          ]
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "selected_git_inputs": 21,
+    "git_acquisitions_passed": 21,
+    "git_fsck_passed": 21,
+    "git_identity_and_listing_rechecks_passed": 21,
+    "archive_acquisitions_passed": 1,
+    "archive_hash_rechecks_passed": 1,
+    "declared_gitlinks": 20,
+    "gitlink_targets_acquired": 13,
+    "gitlink_targets_explicitly_not_acquired": 7,
+    "required_build_closure": "incomplete",
+    "inventory_validator": "not_implemented_until_Stage_3",
+    "source_readiness": "unassessed",
+    "runtime_build": "not_run",
+    "game_qualification": "unassessed"
+  },
+  "limitations": [
+    "The independently selected upstream revisions and DXMT CI source candidates are not asserted to be a compatible runtime kit.",
+    "No source coverage, patch applicability, license/contribution-policy audit, full SDK/toolchain selection or source acquisition reproduction has been completed.",
+    "All available gitlinks in selected acquired repositories are accounted for; selected acquisitions do not imply all optional configurations or dependencies are closed.",
+    "Git fsck validates available depth-one objects. It neither reconstructs missing history nor authenticates publisher identity.",
+    "No private game files, Steam session, profile, identity, credentials or local absolute user path is part of this record."
+  ]
+}
