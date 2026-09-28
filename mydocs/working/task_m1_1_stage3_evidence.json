@@ -1,0 +1,522 @@
+{
+  "schema_version": 1,
+  "record_kind": "source_audit_stage3_evidence",
+  "issue": 1,
+  "stage": 3,
+  "recorded_at_utc": "2026-09-28T10:58:38.107673+00:00",
+  "execution_scope": {
+    "read_only_installed_metadata": true,
+    "upstream_code_executed": false,
+    "acquisition": false,
+    "builds": false,
+    "runtime_launch": false,
+    "signing": false
+  },
+  "host": {
+    "machine": "arm64",
+    "macos_version": "26.5.2",
+    "scope": "Metadata only; previously recorded #2 host tests not rerun."
+  },
+  "tool_observations": [
+    {
+      "evidence_id": "s3-tool-clang",
+      "command": [
+        "xcrun",
+        "clang",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+      "observed_version": "Apple clang 21.0.0 (clang-2100.1.1.101)"
+    },
+    {
+      "evidence_id": "s3-tool-sdk",
+      "command": [
+        "xcrun",
+        "--show-sdk-version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "26.5",
+      "observed_version": "macOS SDK 26.5"
+    },
+    {
+      "evidence_id": "s3-tool-xcode",
+      "command": [
+        "xcodebuild",
+        "-version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "Xcode 26.6\nBuild version 17F113",
+      "observed_version": "Xcode 26.6 (17F113)"
+    },
+    {
+      "evidence_id": "s3-tool-ld",
+      "command": [
+        "xcrun",
+        "ld",
+        "-version_details"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "{\n\t\"version\": \"1267\",\n\t\"architectures\": [\n\t\t\"armv6\",\n\t\t\"armv7\",\n\t\t\"armv7s\",\n\t\t\"arm64\",\n\t\t\"arm64e\",\n\t\t\"arm64_32\",\n\t\t\"i386\",\n\t\t\"x86_64\",\n\t\t\"x86_64h\",\n\t\t\"armv6m\",\n\t\t\"armv7k\",\n\t\t\"armv7m\",\n\t\t\"armv7em\",\n\t\t\"armv8m.main\",\n\t\t\"armv8.1m.main\"\n\t],\n\t\"lto\": {\n\t\t\"runtime_api_version\": 30,\n\t\t\"static_api_version\": 30,\n\t\t\"version_string\": \"LLVM version 21.0.0\"\n\t},\n\t\"tapi\": {\n\t\t\"version\": \"21.0.0\",\n\t\t\"version_string\": \"Apple TAPI version 21.0.0 (tapi-2100.0.2.6)\"\n\t}\n}",
+      "observed_version": "ld 1267; LTO LLVM 21.0.0; TAPI 21.0.0"
+    },
+    {
+      "evidence_id": "s3-tool-git",
+      "command": [
+        "git",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "git version 2.53.0",
+      "observed_version": "2.53.0"
+    },
+    {
+      "evidence_id": "s3-tool-python",
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "Python 3.14.4",
+      "observed_version": "3.14.4"
+    },
+    {
+      "evidence_id": "s3-tool-metal",
+      "command": [
+        "xcrun",
+        "metal",
+        "--version"
+      ],
+      "status": "metadata_command_failed",
+      "exit_code": 1,
+      "output": "error: error: cannot execute tool 'metal' due to missing Metal Toolchain; use: xcodebuild -downloadComponent MetalToolchain",
+      "observed_version": null
+    },
+    {
+      "evidence_id": "s3-tool-autoconf",
+      "command": [
+        "autoconf",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "autoconf (GNU Autoconf) 2.73\nCopyright (C) 2026 Free Software Foundation, Inc.\nLicense GPLv3+/Autoconf: GNU GPL version 3 or later\n<https://gnu.org/licenses/gpl.html>, <https://gnu.org/licenses/exceptions.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nWritten by David J. MacKenzie and Akim Demaille.",
+      "observed_version": "2.73"
+    },
+    {
+      "evidence_id": "s3-tool-bison",
+      "command": [
+        "bison",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "bison (GNU Bison) 2.3\nWritten by Robert Corbett and Richard Stallman.\n\nCopyright (C) 2006 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "observed_version": "2.3"
+    },
+    {
+      "evidence_id": "s3-tool-flex",
+      "command": [
+        "flex",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "flex 2.6.4 Apple(flex-35)",
+      "observed_version": "2.6.4"
+    },
+    {
+      "evidence_id": "s3-tool-pkg-config",
+      "command": [
+        "pkg-config",
+        "--version"
+      ],
+      "status": "metadata_observed",
+      "exit_code": 0,
+      "output": "2.5.1",
+      "observed_version": "2.5.1"
+    },
+    {
+      "evidence_id": "s3-tool-cmake",
+      "command": [
+        "cmake",
+        "--version"
+      ],
+      "status": "not_found_on_current_path",
+      "exit_code": null,
+      "output": null,
+      "observed_version": null
+    },
+    {
+      "evidence_id": "s3-tool-meson",
+      "command": [
+        "meson",
+        "--version"
+      ],
+      "status": "not_found_on_current_path",
+      "exit_code": null,
+      "output": null,
+      "observed_version": null
+    },
+    {
+      "evidence_id": "s3-tool-ninja",
+      "command": [
+        "ninja",
+        "--version"
+      ],
+      "status": "not_found_on_current_path",
+      "exit_code": null,
+      "output": null,
+      "observed_version": null
+    },
+    {
+      "evidence_id": "s3-tool-arm64ec-clang",
+      "command": [
+        "arm64ec-w64-mingw32-clang",
+        "--version"
+      ],
+      "status": "not_found_on_current_path",
+      "exit_code": null,
+      "output": null,
+      "observed_version": null
+    },
+    {
+      "evidence_id": "s3-tool-arm64ec-gcc",
+      "command": [
+        "arm64ec-w64-mingw32-gcc",
+        "--version"
+      ],
+      "status": "not_found_on_current_path",
+      "exit_code": null,
+      "output": null,
+      "observed_version": null
+    },
+    {
+      "evidence_id": "s3-tool-llvm-config",
+      "command": [
+        "llvm-config",
+        "--version"
+      ],
+      "status": "not_found_on_current_path",
+      "exit_code": null,
+      "output": null,
+      "observed_version": null
+    }
+  ],
+  "entry_architecture_observations": [
+    {
+      "evidence_id": "s3-arch-git",
+      "tool": "git",
+      "command": [
+        "file",
+        "-b",
+        "/opt/homebrew/bin/git"
+      ],
+      "description": "Mach-O 64-bit executable arm64",
+      "scope": "Installed entry executable only; no dependency closure or gameplay process architecture inferred."
+    },
+    {
+      "evidence_id": "s3-arch-python3",
+      "tool": "python3",
+      "command": [
+        "file",
+        "-b",
+        "/opt/homebrew/bin/python3"
+      ],
+      "description": "Mach-O 64-bit executable arm64",
+      "scope": "Installed entry executable only; no dependency closure or gameplay process architecture inferred."
+    },
+    {
+      "evidence_id": "s3-arch-clang",
+      "tool": "clang",
+      "command": [
+        "file",
+        "-b",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+      ],
+      "description": "Mach-O 64-bit executable arm64",
+      "scope": "Installed entry executable only; no dependency closure or gameplay process architecture inferred."
+    },
+    {
+      "evidence_id": "s3-arch-metal",
+      "tool": "metal",
+      "command": [
+        "file",
+        "-b",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/metal"
+      ],
+      "description": "Mach-O 64-bit executable arm64",
+      "scope": "Installed entry executable only; no dependency closure or gameplay process architecture inferred."
+    }
+  ],
+  "source_required_settings": [
+    {
+      "id": "native-host",
+      "component_ids": [
+        "wine-upstream",
+        "fex-upstream",
+        "dxmt-upstream"
+      ],
+      "setting": "Native Mach-O host ARM64; Windows x86-64 game guest and Windows ARM64EC translator/graphics modules are distinct targets. No full runtime link configuration is established.",
+      "evidence_refs": [
+        "s2-group-requirements"
+      ]
+    },
+    {
+      "id": "fex-windows-subset",
+      "component_ids": [
+        "fex-upstream"
+      ],
+      "setting": "Inspect MINGW Windows module subset with BUILD_THUNKS=OFF; ENABLE_FEX_ALLOCATOR selects rpmalloc, ENABLE_JEMALLOC_GLIBC_ALLOC disabled; optional test/disassembler gitlinks retained. Darwin UnixLib services still require #5.",
+      "evidence_refs": [
+        "inspect-04",
+        "inspect-09",
+        "inspect-11"
+      ]
+    },
+    {
+      "id": "dxmt-cross",
+      "component_ids": [
+        "dxmt-upstream"
+      ],
+      "setting": "build-arm64ec.txt uses arm64ec-w64-mingw32-{gcc,g++,ar,strip,windres}, -marm64x for compile/link; PE output needs matching native ARM64 winemetal/driver ABI.",
+      "evidence_refs": [
+        "inspect-18",
+        "s2-file-018"
+      ]
+    },
+    {
+      "id": "shader-llvm",
+      "component_ids": [
+        "dxmt-upstream",
+        "llvm-dxmt"
+      ],
+      "setting": "Separate LLVM15.0.7 source; CI native ARM64 CMAKE_OSX_ARCHITECTURES=arm64 and LLVM_HOST_TRIPLE=arm64-apple-darwin, assertionsOn,ZSTDOff,LLVM_TARGETS_TO_BUILD empty,LLVM_BUILD_TOOLSOff; these observed settings are not executed or adopted as a qualified Pear build.",
+      "evidence_refs": [
+        "inspect-19",
+        "inspect-21"
+      ]
+    },
+    {
+      "id": "graphics-options",
+      "component_ids": [
+        "dxmt-upstream",
+        "dxmt-nvapi"
+      ],
+      "setting": "enable_nvapi and enable_nvngx are true in selected ARM64EC release CI, but not yet selected for Pear. Optional feature/payload terms and source closure must be decided in #7.",
+      "evidence_refs": [
+        "inspect-17",
+        "inspect-19"
+      ]
+    }
+  ],
+  "handoff": {
+    "evidence_id": "s3-handoff",
+    "owner": "Issue #1 factual inventory; Issue #3 product schema mapping",
+    "facts": [
+      "Component identity/role/dependencies",
+      "HTTPS origins and immutable Git commit/tree identities",
+      "SHA256 bytes with explicit scope",
+      "Existing patch bytes, originalbase, order, terms and applicability",
+      "Candidate tool/SDK metadata with host/guest/build/runtime roles separated",
+      "Source constraints and downstream implementation/test obligations",
+      "Observed/unknown/negative facts, dated evidence and inspection limits"
+    ],
+    "nonclaims": [
+      "JSON consistency is not trusted publisher provenance",
+      "Installed compiler version is not runtime output architecture",
+      "Source ready is not gameplay qualification",
+      "Apple evaluation packages are external exclusion/reference material, not mandatory Wine/FEX/DXMT sources"
+    ]
+  },
+  "verification": {
+    "status": "passed_with_expected_gate_refusals",
+    "commands": [
+      {
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests/sources",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "duration_seconds": 3.904,
+        "test_count": 77,
+        "status": "passed"
+      },
+      {
+        "command": [
+          "python3",
+          "tools/sources/validate_inventory.py",
+          "--manifest",
+          "runtime/sources/manifest.json",
+          "--cache-root",
+          ".build/task1-sources/inputs"
+        ],
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "duration_seconds": 27.959,
+        "structured_result": {
+          "audit_complete": false,
+          "checks": {
+            "acquired_archives": 1,
+            "acquired_git": 22,
+            "archive_members": 16,
+            "components": 30,
+            "content_digests": 24,
+            "evidence_definitions": 272,
+            "git_commands": 359,
+            "gitlinks": 20,
+            "patches": 1,
+            "source_blobs": 206
+          },
+          "decision": "unassessed",
+          "errors": [],
+          "record_valid": true,
+          "source_ready": false
+        }
+      },
+      {
+        "command": [
+          "python3",
+          "tools/sources/validate_inventory.py",
+          "--manifest",
+          "runtime/sources/manifest.json",
+          "--cache-root",
+          ".build/task1-sources/inputs",
+          "--require-complete"
+        ],
+        "exit_code": 3,
+        "expected_exit_code": 3,
+        "duration_seconds": 26.462,
+        "structured_result": {
+          "audit_complete": false,
+          "checks": {
+            "acquired_archives": 1,
+            "acquired_git": 22,
+            "archive_members": 16,
+            "components": 30,
+            "content_digests": 24,
+            "evidence_definitions": 272,
+            "git_commands": 359,
+            "gitlinks": 20,
+            "patches": 1,
+            "source_blobs": 206
+          },
+          "decision": "unassessed",
+          "errors": [
+            {
+              "code": "requested_gate_not_met"
+            }
+          ],
+          "record_valid": true,
+          "source_ready": false
+        },
+        "interpretation": "Expected refusal: the inventory is valid but neither a complete audit nor source-ready. This is not a passed completeness/readiness gate."
+      },
+      {
+        "command": [
+          "python3",
+          "tools/sources/validate_inventory.py",
+          "--manifest",
+          "runtime/sources/manifest.json",
+          "--cache-root",
+          ".build/task1-sources/inputs",
+          "--require-source-ready"
+        ],
+        "exit_code": 3,
+        "expected_exit_code": 3,
+        "duration_seconds": 26.308,
+        "structured_result": {
+          "audit_complete": false,
+          "checks": {
+            "acquired_archives": 1,
+            "acquired_git": 22,
+            "archive_members": 16,
+            "components": 30,
+            "content_digests": 24,
+            "evidence_definitions": 272,
+            "git_commands": 359,
+            "gitlinks": 20,
+            "patches": 1,
+            "source_blobs": 206
+          },
+          "decision": "unassessed",
+          "errors": [
+            {
+              "code": "requested_gate_not_met"
+            }
+          ],
+          "record_valid": true,
+          "source_ready": false
+        },
+        "interpretation": "Expected refusal: the inventory is valid but neither a complete audit nor source-ready. This is not a passed completeness/readiness gate."
+      },
+      {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0,
+        "expected_exit_code": 0,
+        "duration_seconds": 0.013
+      }
+    ],
+    "historical_evidence_preserved": [
+      {
+        "path": "mydocs/working/task_m1_1_stage1_evidence.json",
+        "sha256": "ed585ad142b628eda0565f4af872a94ef736ee29b334e5364c55b122b1142eed"
+      },
+      {
+        "path": "mydocs/working/task_m1_1_stage2_evidence.json",
+        "sha256": "acba7183a3f37c6e48791911732778fe761f20d6ca8d8d26894fcc7e4cb8f85c"
+      }
+    ],
+    "scope": "Real cached content and internal audit consistency; synthetic fixtures are separate tests. Existing patch applicability result records were cross-checked, not rerun in Stage3. No build/runtime success is inferred."
+  },
+  "limitations": [
+    "No compiler/SDK binary reproduction or component build has been performed. Installed tool entry architecture is not complete tool dependency closure.",
+    "CMake,Meson,Ninja,ARM64EC cross tools and native LLVM shader library are unavailable on inspected PATH. No package installation or tool download was performed.",
+    "Metal dispatcher exists but optional Metal Toolchain is missing; Bison2.3 conflicts with Wine minimum3.0.",
+    "Xcode26.6/SDK26.5 differ from observedDXMTCI16.1; compatibility belongs to #4/#5/#7. No source-ready decision is made before Stage4."
+  ],
+  "validator_contract": {
+    "cli": "python3 tools/sources/validate_inventory.py --manifest runtime/sources/manifest.json --cache-root PATH [--require-complete | --require-source-ready]",
+    "repository_root": "Inferred from a manifest under runtime/sources; referenced evidence paths are repository-relative. The cache root is an explicit caller-selected existing directory.",
+    "exit_codes": {
+      "0": "Requested audit check passed; default accepts honest incomplete/negative records.",
+      "1": "Invalid, inconsistent, unavailable or mismatched referenced content.",
+      "2": "CLI misuse.",
+      "3": "Valid record refuses requested complete/source-ready gate."
+    },
+    "bounds": {
+      "json_file_bytes": 8388608,
+      "evidence_documents": 16,
+      "json_depth": 48,
+      "json_nodes_per_document": 250000,
+      "components": 256,
+      "cache_file_bytes": 536870912,
+      "git_output_bytes_per_command": 134217728,
+      "git_timeout_seconds_per_command": 120,
+      "git_command_count": 4096,
+      "archive_members": 100000,
+      "archive_declared_expanded_bytes": 2147483648
+    },
+    "security_scope": "Descriptor-based O_NOFOLLOW path traversal for file inputs; Git bare cache tree rejects symlinks, external stores, promisor objects and non-allowlisted config. Installed Git executes read-only commands with isolated environment and network/hooks/lazy fetch disabled. Cache must not be concurrently mutated; this validator does not provide an atomic repository snapshot or execute recorded evidence commands.",
+    "privacy": "Structured errors expose fixed codes and bounded component IDs, not exception text, command stderr or absolute private paths. CLI misuse similarly avoids echoing caller arguments.",
+    "readiness_limit": "Go is only an internally consistent complete source decision; source inventory is not a signed trust policy or a runtime/game/distribution qualification authority."
+  }
+}

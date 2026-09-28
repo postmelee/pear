@@ -2,9 +2,9 @@
   "schema_version": 1,
   "record_kind": "source_audit",
   "issue": 1,
-  "stage": 2,
+  "stage": 3,
   "audit_date": "2026-09-28",
-  "scope": "Public source identification, bounded host/interface coverage, existing patch applicability and terms audit for a proposed native ARM64 Wine/FEX/DXMT path; no runtime or distribution qualification.",
+  "scope": "Public source audit, candidate installed tool/SDK metadata and bounded local inventory/content validation for the proposed native ARM64 Wine/FEX/DXMT path; no builds, runtime or distribution qualification.",
   "audit_complete": false,
   "decision": "unassessed",
   "source_ready": false,
@@ -2307,7 +2307,7 @@
       "evidence_refs": [
         "inspect-04"
       ],
-      "candidate_tool_pin_status": "unassessed"
+      "candidate_tool_pin_status": "candidate_metadata_recorded_with_explicit_gaps"
     },
     {
       "component_id": "dxmt-upstream",
@@ -2325,7 +2325,7 @@
         "inspect-18",
         "inspect-21"
       ],
-      "candidate_tool_pin_status": "unassessed"
+      "candidate_tool_pin_status": "candidate_metadata_recorded_with_explicit_gaps"
     },
     {
       "component_id": "llvm-mingw-source",
@@ -2338,7 +2338,7 @@
         "inspect-25",
         "inspect-27"
       ],
-      "candidate_tool_pin_status": "unassessed"
+      "candidate_tool_pin_status": "candidate_metadata_recorded_with_explicit_gaps"
     }
   ],
   "unresolved_inputs": [
@@ -2349,7 +2349,7 @@
       "identity": null,
       "status": "not_acquired",
       "reason": "Publisher explicitly describes the Wine 11.2 release as nonworking and intended only for DXMT linking. Its binary was not acquired; selected source has a driver structure mismatch and the existing export patch is rejected. Any future source-to-binary/interface pairing needs a separate verified build.",
-      "follow_up_stage": 3,
+      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-public-wine-link-only",
         "s2-group-requirements",
@@ -2362,8 +2362,8 @@
       "source_url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260908/llvm-mingw-20260908-ucrt-macos-universal.tar.xz",
       "identity": null,
       "status": "not_acquired",
-      "reason": "No compiler binary is acquired or executed. Acquired build-script defaults are not claimed to reproduce this bundle; select and verify the candidate toolchain in Stage 3.",
-      "follow_up_stage": 3
+      "reason": "No compiler binary is acquired or executed. Acquired build-script defaults are not claimed to reproduce this bundle; Installed candidate-tool metadata was recorded in Stage 3, but this compiler remains unavailable.",
+      "follow_up_stage": 4
     },
     {
       "input_id": "macos-sdk-metal-toolchain",
@@ -2371,8 +2371,8 @@
       "source_url": null,
       "identity": null,
       "status": "unresolved",
-      "reason": "DXMT CI selects Xcode 16.1 and a Metal shader target; candidate Pear compiler/SDK/Metal versions and their distribution boundaries remain Stage 3 work. The observed CI label is not a qualified toolchain pin.",
-      "follow_up_stage": 3
+      "reason": "Candidate Xcode26.6(17F113),SDK26.5,Appleclang21.0.0/ld1267 observed; no source build compatibility established. Metal dispatcher cannot execute because optional Metal Toolchain component is missing.",
+      "follow_up_stage": 4
     },
     {
       "input_id": "build-generators-and-native-libraries",
@@ -2380,8 +2380,8 @@
       "source_url": null,
       "identity": null,
       "status": "unresolved",
-      "reason": "CMake, Meson/Ninja, Python, Clang/linker and native link dependencies require a configuration-specific tool inventory. Observed constraints are not installed-tool validation.",
-      "follow_up_stage": 3
+      "reason": "CMake/Meson/Ninja/ARM64EC cross compiler/native LLVM shader library not found on inspected PATH. Bison2.3 conflicts with Wine minimum3.0. Native enabled libraries remain configuration-dependent; installedPython3.14.4/Autoconf2.73/flex2.6.4/pkgconf2.5.1 are metadata candidates only.",
+      "follow_up_stage": 4
     },
     {
       "input_id": "wine-configured-external-packages",
@@ -2389,8 +2389,8 @@
       "source_url": null,
       "identity": null,
       "status": "unresolved",
-      "reason": "Selected bundled notices were inventoried with per-file/configuration exceptions, but no final host/guest payload or enabled external package set is selected. Stage 3 must retain explicit missing inputs or acquire justified versions; no build is authorized here.",
-      "follow_up_stage": 3,
+      "reason": "Selected bundled notices were inventoried with per-file/configuration exceptions, but no final host/guest payload or enabled external package set is selected. Stage 3 retained these missing configuration-dependent inputs; no build is authorized by this source audit.",
+      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-group-vendored-terms"
       ]
@@ -2402,7 +2402,7 @@
       "identity": null,
       "status": "needs-port",
       "reason": "Selected code needs Wine host ABI/process/memory integration, FEX Darwin host services and graphics driver reconciliation. One existing graphics export patch was tested but is not applicable to selected Wine bases. No complete Darwin port series was established; unavailable public MR retrieval leaves search coverage incomplete.",
-      "follow_up_stage": 3,
+      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-group-requirements",
         "stage2-patch-macdrv",
@@ -2416,7 +2416,7 @@
       "identity": null,
       "status": "unresolved_after_bounded_inspection",
       "reason": "The exact archive Wine subtree contains Apple ARM64 context handling and Wine 11.0 identification. Scoped scans and selected files do not establish complete native Preview implementation, an exact upstream base or ordered patch series; no aggregate license clearance is inferred.",
-      "follow_up_stage": 3,
+      "follow_up_stage": 4,
       "evidence_refs": [
         "s2-vendor-crossover"
       ]
@@ -2454,22 +2454,24 @@
     },
     {
       "requirement_id": "toolchain-source-readiness",
-      "status": "unassessed",
+      "status": "partial",
       "evidence_refs": [
-        "build_observations"
+        "build_observations",
+        "s3-handoff"
       ],
-      "remaining": "Stage 3 pins candidate tools and validates inventory semantics/content; full builds and behavior belong to downstream tasks."
+      "remaining": "Installed candidates and unavailable/conflicting prerequisites are recorded; Stage4 requirement accounting and downstream build/port validation remain open."
     }
   ],
   "handoff": {
     "source_of_truth": "Issue #1 factual source inventory; Issue #3 owns product contract schemas.",
-    "record_validity": "Stage 1/2 JSON, identity, reference and bounded source-content checks are not the Stage 3 inventory validator or audit acceptance. A valid needs-port or blocked record cannot establish runtime eligibility.",
-    "next_stage": 3,
+    "record_validity": "Stage3 validator checks bounded shape, references, immutable local content and decision consistency. Valid incomplete/negative records are distinct from source readiness and runtime eligibility.",
+    "next_stage": 4,
     "next_stage_status": "requires_stage_report_approval"
   },
   "evidence_documents": [
     "mydocs/working/task_m1_1_stage1_evidence.json",
-    "mydocs/working/task_m1_1_stage2_evidence.json"
+    "mydocs/working/task_m1_1_stage2_evidence.json",
+    "mydocs/working/task_m1_1_stage3_evidence.json"
   ],
   "evidence_reference_resolution": "Resolve evidence_refs against unique evidence definition records in evidence_documents; objects containing only evidence_id and lines are citations. Legacy section-key references resolve only in evidence_document (Stage 1). Stage 2 group records name their exact top-level section. Stage 1 records remain historical acquisition evidence.",
   "source_requirements": [
@@ -2922,6 +2924,257 @@
       "evidence_refs": [
         "stage2-patch-macdrv"
       ]
+    }
+  ],
+  "candidate_toolchain": [
+    {
+      "tool_id": "clang",
+      "role": "native ARM64 C/C++/Objective-C compiler candidate; not the Windows ARM64EC compiler or LLVM shader library",
+      "status": "metadata_observed",
+      "version": "Apple clang 21.0.0 (clang-2100.1.1.101)",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "FEX checks Clang >=13; DXMT native code uses C++20. Version syntax alone does not establish feature/ABI compatibility.",
+      "evidence_refs": [
+        "s3-tool-clang",
+        "inspect-04",
+        "inspect-16"
+      ]
+    },
+    {
+      "tool_id": "sdk",
+      "role": "native macOS headers/libraries and host ABI SDK candidate",
+      "status": "metadata_observed",
+      "version": "macOS SDK 26.5",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Candidate differs from historical CI Xcode16.1 SDK; preserve required host API availability and retest source/runtime integration.",
+      "evidence_refs": [
+        "s3-tool-sdk",
+        "inspect-19"
+      ]
+    },
+    {
+      "tool_id": "xcode",
+      "role": "host compiler and SDK distribution candidate",
+      "status": "metadata_observed",
+      "version": "Xcode 26.6 (17F113)",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT selected CI explicitly selects Xcode16.1; installed26.6 is a new candidate, not reproduced upstream CI.",
+      "evidence_refs": [
+        "s3-tool-xcode",
+        "inspect-19"
+      ]
+    },
+    {
+      "tool_id": "ld",
+      "role": "native ARM64 Mach-O linker candidate",
+      "status": "metadata_observed",
+      "version": "ld 1267; LTO LLVM 21.0.0; TAPI 21.0.0",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Loader PAGEZERO/layout and signing must be reconciled in #4; no linker invocation performed.",
+      "evidence_refs": [
+        "s3-tool-ld",
+        "s2-file-001"
+      ]
+    },
+    {
+      "tool_id": "git",
+      "role": "source identity and object verification tool",
+      "status": "metadata_observed",
+      "version": "2.53.0",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Read-only source verification; no build dependency inferred.",
+      "evidence_refs": [
+        "s3-tool-git",
+        "acquisitions"
+      ]
+    },
+    {
+      "tool_id": "python",
+      "role": "standard-library inventory validator and build-script interpreter candidate",
+      "status": "metadata_observed",
+      "version": "3.14.4",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "FEX requires Python>=3.9. Audit validator uses standard library only.",
+      "evidence_refs": [
+        "s3-tool-python",
+        "inspect-04"
+      ]
+    },
+    {
+      "tool_id": "metal",
+      "role": "offline Metal shader compiler required by selected DXMT shader path",
+      "status": "unavailable",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT air64-apple-macos14.0 Metal3.1 shader build. Located executable is a dispatcher; actual Metal Toolchain missing.",
+      "evidence_refs": [
+        "s3-tool-metal",
+        "inspect-21"
+      ],
+      "reason": "Located Xcode dispatcher returned an error because the optional Metal Toolchain component is absent."
+    },
+    {
+      "tool_id": "autoconf",
+      "role": "Wine configure generation candidate",
+      "status": "metadata_observed",
+      "version": "2.73",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Wine regenerates configure with autoconf; installed version not tested against selected source.",
+      "evidence_refs": [
+        "s3-tool-autoconf",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "bison",
+      "role": "Wine parser generation prerequisite",
+      "status": "metadata_observed",
+      "version": "2.3",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "conflict",
+      "source_constraints": "Wine configure.ac rejects versions older than3.0. Installed2.3 conflicts; no configure test executed.",
+      "evidence_refs": [
+        "s3-tool-bison",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "flex",
+      "role": "Wine scanner generation candidate",
+      "status": "metadata_observed",
+      "version": "2.6.4",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Wine configure.ac requires flex>=2.5.33; installedversion is only metadata, not configure success.",
+      "evidence_refs": [
+        "s3-tool-flex",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "pkg-config",
+      "role": "configuration-dependent native library discovery candidate",
+      "status": "metadata_observed",
+      "version": "2.5.1",
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Actual enabled native libraries and dependency closure remain configuration-dependent.",
+      "evidence_refs": [
+        "s3-tool-pkg-config",
+        "inspect-01"
+      ]
+    },
+    {
+      "tool_id": "cmake",
+      "role": "FEX/LLVM build generator prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "FEX minimum3.14; exact build candidate unavailable and not selected from a guessed version.",
+      "evidence_refs": [
+        "s3-tool-cmake",
+        "inspect-04"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "meson",
+      "role": "DXMT build generator prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": "1.10.0",
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT minimum1.3.0; inspected CI pins1.10.0 as candidate version; not installed here.",
+      "evidence_refs": [
+        "s3-tool-meson",
+        "inspect-16",
+        "inspect-19"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "ninja",
+      "role": "selected LLVM Ninja build backend prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "Selected native LLVM build explicitly chooses Ninja; exact executable version unselected because absent.",
+      "evidence_refs": [
+        "s3-tool-ninja",
+        "inspect-19"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "arm64ec-clang",
+      "role": "Windows ARM64EC PE cross compiler prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "LLVM-MinGW source release20260908 pinned separately; default LLVM23.1.1 is not proven binary bundle provenance.",
+      "evidence_refs": [
+        "s3-tool-arm64ec-clang",
+        "inspect-19",
+        "inspect-24"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "arm64ec-gcc",
+      "role": "LLVM-MinGW GCC-compatible wrapper expected by DXMT cross file",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT build-arm64ec.txt requests arm64ec-w64-mingw32-gcc/g++ wrappers and -marm64x.",
+      "evidence_refs": [
+        "s3-tool-arm64ec-gcc",
+        "inspect-18"
+      ],
+      "reason": "Not available through inspected current PATH."
+    },
+    {
+      "tool_id": "llvm-config",
+      "role": "built native LLVM shader-library metadata prerequisite",
+      "status": "not_found",
+      "version": null,
+      "candidate_version": null,
+      "target_role": "build_time_only",
+      "compatibility": "unverified",
+      "source_constraints": "DXMT native shader library uses separately pinned LLVM15.0.7; installedAppleLLVM21 and crossLLVM23 are different roles.",
+      "evidence_refs": [
+        "s3-tool-llvm-config",
+        "inspect-19",
+        "inspect-21"
+      ],
+      "reason": "Not available through inspected current PATH."
     }
   ]
 }
