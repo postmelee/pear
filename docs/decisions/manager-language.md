@@ -4,11 +4,11 @@ Decision date: September 28, 2026. Scope: the production runtime manager and lau
 
 ## Decision
 
-Use **Rust for the new manager/supervisor**, with narrow reviewed C interfaces where the operating system requires them. All planned verification now passes under the explicit revised functional budget described below. Keep Swift as a viable alternative and evaluate the future Mac UI independently. Retain Wine, FEX and DXMT's upstream implementation languages. This decision imposes no project-wide Rust requirement and does not select a CPU translator or Cranelift backend.
+Use **Rust for the new manager/supervisor**, with narrow reviewed C interfaces where the operating system requires them. Stage 4 verification passes under the explicit revised functional budget described below. Keep Swift as a viable alternative and evaluate the future Mac UI independently. Retain Wine, FEX and DXMT's upstream implementation languages. This decision imposes no project-wide Rust requirement and does not select a CPU translator or Cranelift backend.
 
 The evidence supporting this choice is the tested implementation's lower build cost and lower recorded command RSS, combined with explicit ownership and a bounded native API surface. Rust also has a lower whole-manager invocation median in this run, but overlapping ranges and the fixed sampling order limit that evidence; it does not establish an intrinsic language-startup advantage. Swift has the smaller executable, no external package dependency and convenient macOS integration. Those are real benefits, but they do not outweigh the current Rust implementation's iteration cost and resource evidence for a separate supervisor in this comparison. Neither language removes the need to implement and verify process ownership correctly.
 
-This selects the implementation direction for #9 within the declared fixture limits. The remaining [Issue #3 reproduction stage](../../mydocs/plans/task_m1_3_impl.md#stage-5--reproduction-and-contract-handoff), actual runtime integration and ordinary-user distribution are still gates. No language decision makes the currently blocked source/build candidate ready.
+This selects the implementation direction for #9 within the declared fixture limits. The [clean-output reproduction](../../experiments/manager/results/reproduction.json) passed on the same Mac, including 119 contract tests, 60 experiment tests, two Rust fault tests and all 110 native corpus invocations. Actual runtime integration, independent-host verification and ordinary-user distribution remain gates. No language decision makes the currently blocked source/build candidate ready.
 
 ## Evidence and mandatory gates
 
@@ -73,3 +73,10 @@ Full contract execution, Steam sign-in/install, Wine/FEX/DXMT integration, real 
 ## Alternative and reconsideration
 
 Swift remains the alternative if measured production integration, maintainers' capacity, a simpler tested native-API boundary or release packaging evidence outweigh the present supervisor benefits. Revisit the choice if representative long-running supervision, cancellation, real helper coverage or distribution tests reveal a Rust-specific cost; if the selected toolchain/dependency burden becomes unjustified; or if the final reproduction cannot uphold the functional evidence. Reconsideration needs comparable behavior and a reviewed task, not an automatic rewrite based on a microbenchmark.
+
+
+## Clean-output reproduction scope
+
+The [Stage 5 report](../../mydocs/working/task_m1_3_stage5.md) records a fresh virtual environment from five reviewed, hash-verified cached wheels, new locked/offline native builds and semantic agreement with the final Stage 4 corpus. Installed toolchains, SDK, verified Cargo sources and machine caches were reused; no dependency download was requested. The 82 timing rows were retained and checked, not repeated or pooled with this functional run.
+
+Both rebuilt manager hashes differ from the Stage 4 measured payloads. Rust remains 544,816 bytes; Swift is 246,416 bytes versus 246,608 in the measured build. Relocated inputs/build outputs, compiler metadata, linker UUIDs and ad-hoc signatures can affect bytes, but the contribution of each was not measured. This establishes matching declared behavior on these exact recorded payloads, not a byte-reproducible toolchain or signature claim. The earlier startup failure, normal distribution and production-ownership gaps remain open.

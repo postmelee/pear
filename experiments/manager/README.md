@@ -46,7 +46,7 @@ The outer harness also bounds output and time. An outer watchdog intervention al
 
 Rust uses the exact locked `libc` crate, standard library and explicit C ABI declarations. Swift uses Foundation/Darwin and explicit CommonCrypto/libproc declarations. Both use system `CC_SHA256`. Apple SDK/system library availability is a host dependency; this is not a portable standalone hashing library or a finalized license/release decision for Pear. The [dependency inventory](dependencies.json) records the source/license/build-script review and observed compiler versions.
 
-## Limits and next stage
+## Prototype limits
 
 Concurrent mutation of a bundle is unsupported. Descriptor validation and immediate executable identity checks reduce exposure but do not eliminate the pathname-execution race in `Command`/`posix_spawn`; #9 must establish immutable runtime and mutable-state ownership for production use. Successful fixtures cannot validate arbitrary imported executable bytes, a real observer handshake, macOS distribution entitlements or full game-process coverage.
 
@@ -93,4 +93,21 @@ PYTEST
 
 ## Recorded Stage 4 outcome
 
-The [manager decision](../../docs/decisions/manager-language.md) selects Rust for the new supervisor, with Swift's tradeoffs and remaining production gates explicit. The [current comparison](results/comparison.json), [final corpus](results/final-corpus.json) and [second input revision](results/fixture-input-revision2.json) bind the final declared functional limits and the preserved historical records. Four full corpus runs passed (110 invocations each), all 82 comparison rows were retained, and 40 Python regression tests passed. No failed historical run was erased or relabeled; in particular, a prior 1,500 ms startup failure remains unexplained. The [Stage 4 report](../../mydocs/working/task_m1_3_stage4.md) records the full sequence and two Rust fault tests. Stage 5 clean-output reproduction remains required.
+The [manager decision](../../docs/decisions/manager-language.md) selects Rust for the new supervisor, with Swift's tradeoffs and remaining production gates explicit. The [current comparison](results/comparison.json), [final corpus](results/final-corpus.json) and [second input revision](results/fixture-input-revision2.json) bind the final declared functional limits and the preserved historical records. Four full corpus runs passed (110 invocations each), all 82 comparison rows were retained, and 40 Python regression tests passed. No failed historical run was erased or relabeled; in particular, a prior 1,500 ms startup failure remains unexplained. The [Stage 4 report](../../mydocs/working/task_m1_3_stage4.md) records the full sequence and two Rust fault tests. The separate [Stage 5 reproduction](results/reproduction.json) now records functional agreement from empty outputs; it does not rerun these timing measurements.
+
+
+## Reproduce from empty outputs
+
+Stage 5 uses a fresh output directory, a new validator virtual environment and new native build products. Prefetch the five exact wheels into `.build/task3/wheels` using the [reference-validator setup](../../docs/runtime-contracts.md#reference-validator-and-reproducible-setup), and the locked Rust crate as described above. The reproduction command uses the cached reviewed bytes and performs no dependency download. Missing or altered inputs fail; obtain the pinned inputs explicitly rather than substituting versions.
+
+```bash
+python3 experiments/manager/reproduce.py --output .build/task3/reproduction --require-empty
+python3 experiments/manager/reproduce.py --check-report experiments/manager/results/reproduction.json
+```
+
+Keep prior outputs. For another attempt, select a new empty `.build/task3/reproduction-<label>` directory (lowercase letters, digits, underscores or hyphens in the label); do not delete a failed attempt to reuse its path. The first command recreates the environment, runs contract and native fixture verification, and retains local evidence. The second checks the committed sanitized record; it does not execute its claims or establish independent authenticity. Public evidence must exclude local paths, process identities, raw streams and environment values.
+
+This procedure reuses the installed Python, Rust, Apple toolchain, SDK and hash-verified default Cargo source cache. It does not reconstruct those toolchains, flush machine caches, or reproduce third-party wheels from source. Owned temporary fixture directories used by existing tests may be outside the build directory and are cleaned by those tests. The comparison's 82 timing rows are preserved, not remeasured by this functional reproduction. Same-Mac functional agreement does not establish independent-host, minimum-OS, signature-byte, distribution or game qualification.
+
+
+The committed [reproduction record](results/reproduction.json) passed 119 contract tests, 60 experiment tests (40 existing and 20 reproduction checks), two Rust fault tests and 110 native corpus invocations. All three rebuilt executables are ARM64 and passed read-only strict ad-hoc signature inspection. Both manager payload hashes differ from the Stage 4 measured build; their exact hashes/sizes and matching semantic outcomes are retained. No source- or signature-byte reproducibility is claimed. See the [Stage 5 report](../../mydocs/working/task_m1_3_stage5.md) for acceptance and preservation details.

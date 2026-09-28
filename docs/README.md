@@ -4,6 +4,8 @@ Pear's first milestone is Megabonk on macOS/Apple Silicon without Rosetta. These
 
 - [Runtime architecture](architecture.md): requirements, subsystem boundaries, interfaces, language decisions, and qualification gates.
 - [Delivery plan](delivery-plan.md): milestone scope, issue dependencies, and acceptance criteria.
+- [Runtime contracts](runtime-contracts.md): seven experimental record kinds, reference validation, source handoff, and supervisor/observer ownership.
+- [Manager language decision](decisions/manager-language.md): Rust/Swift fixture evidence, the Rust supervisor choice, reproduction scope, and remaining production gates.
 - [Source qualification](source-qualification.md): reproduced public-source pins, the complete blocked audit, contributor verification commands and remaining Wine/FEX/DXMT port/build gates.
 - [Host capability diagnostics](host-capabilities.md): build and reproduce the native host tests, inspect the declared development configuration, and distinguish host evidence from runtime or distribution support.
 - [Local evidence](research/local-evidence.md): completed experiments and their limits.

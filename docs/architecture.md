@@ -1,6 +1,6 @@
 # Pear runtime architecture
 
-Status: proposed implementation baseline, not an implemented runtime. Evidence reviewed on September 27, 2026.
+Status: proposed implementation baseline, not an implemented runtime. Baseline evidence reviewed on September 27, 2026; contract and manager-decision links updated on September 28, 2026.
 
 ## 1. Objective and engineering standard
 
@@ -109,11 +109,11 @@ Failures are classified as source/build, host capability, code signing, CPU tran
 | FEX translation engine | Retain upstream C++ and its existing backend | Preserve tested guest semantics; measure limitations before replacing it. |
 | DXMT and Metal integration | Retain upstream C++/Objective-C/platform code | Follow its native interfaces and build system. |
 | Build and inspection tools | Reuse suitable Python/shell tooling after audit | Existing experiments are useful inputs, but not product-grade runtime modules. |
-| New runtime manager | Choose between Rust and Swift after a bounded implementation comparison | Rust offers typed portable infrastructure; Swift offers direct macOS integration. Neither choice makes the guest CPU code faster by itself. |
+| New runtime manager | Use Rust under the [bounded manager decision](decisions/manager-language.md) | Equivalent native fixtures, measured build/resource costs and ownership review support this choice. Swift remains an alternative; no game-speed claim follows. |
 | Future Mac UI | Evaluate SwiftUI independently of the runtime | UI framework selection must not determine the CPU engine. |
 | Experimental translator | Rust + Cranelift is a candidate | Requires a separate frontend, guest semantics, runtime, and Wine integration. |
 
-The manager comparison must implement the same small task in each serious candidate: read a manifest, validate paths and versions, launch a test child, collect its exit and logs, and classify a failure. Compare macOS signing/packaging, dependencies, testability, FFI needs, and contributor maintenance cost. Do not select a language using a microbenchmark unrelated to those responsibilities.
+The [manager comparison](decisions/manager-language.md) implements the same bounded task in Rust and Swift: read records, validate paths and versions, launch an owned test child, collect its exit and bounded logs, and classify a failure. The decision considers packaging, dependencies, testability, FFI needs and contributor maintenance cost. Its fixture results do not implement the production manager or qualify game performance.
 
 FFI surfaces should use explicit ownership and error conventions. Guest pointers, register layouts, and C++ objects must not leak into the launcher interface. In-process ABI boundaries need purpose-built bindings; a JSON protocol is suitable for management operations, not every guest CPU/API call.
 
@@ -148,7 +148,7 @@ Continue investment only if the prototype offers a measured or otherwise demonst
 
 ## 7. Versioned data contracts
 
-These are proposed schemas; no runtime implementation is implied.
+The [version 1 runtime contracts](runtime-contracts.md) refine these records into seven experimental kinds with a tested reference validator. They include explicit launch request/event and failure records. Artifact/profile qualification is a later overlay referencing immutable inputs, avoiding circular digests; the summary below is conceptual, and the linked specification defines exact fields and eligibility. No production runtime implementation is implied.
 
 | Record | Required contents |
 |---|---|

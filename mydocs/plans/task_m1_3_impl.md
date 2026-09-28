@@ -1,6 +1,6 @@
 # Implementation Plan: Runtime contracts and manager-language evaluation
 
-Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_3_stage1.md and ../working/task_m1_3_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_3_stage3.md. The task requester approved Stage 4 on September 28, 2026; Stage 4 is complete; see ../working/task_m1_3_stage4.md. Stage 5 awaits stage-report approval. Planned commands for unstarted stages are not passing results.
+Status: the task requester approved this implementation plan and Stage 1 on September 28, 2026, then explicitly approved the Stage 1 report and Stage 2. Stages 1 and 2 are complete; actual verification and limits are recorded in ../working/task_m1_3_stage1.md and ../working/task_m1_3_stage2.md. The task requester approved the Stage 2 report and Stage 3 on September 28, 2026; Stage 3 is complete; see ../working/task_m1_3_stage3.md. The task requester approved Stage 4 on September 28, 2026; Stage 4 is complete; see ../working/task_m1_3_stage4.md. The task requester approved Stage 4 and authorized Stage 5 on September 28, 2026; Stage 5 reproduction and final handoff are complete; see ../working/task_m1_3_stage5.md and ../report/task_m1_3_report.md. Final-report approval for PR publication is pending. Planned commands for unstarted stages are not passing results.
 
 Task plan: [`task_m1_3.md`](task_m1_3.md)
 GitHub Issue: [#3](https://github.com/postmelee/pear/issues/3)
@@ -266,3 +266,13 @@ The frozen comparison plan and scored successful-launch timeout remain unchanged
 ### Stage 4 Completion
 
 The second corrective input revision passed all planned checks: four full 110-invocation corpus runs, all 82 samples, 40 Python tests and report validation. Two owned Rust fault tests pass on the unchanged native/C fixture sources. Rust is selected for the new manager within the recorded fixture limits; all earlier failures and measurements remain preserved, with no claim that the earlier startup issue was fixed. The bundled Stage 4 report and decision record measured costs, limitations and #9/#10 obligations. Stage 5 has not started and requires the next report approval.
+
+
+### Stage 5 Authorization
+
+After the Stage 4 report and combined request to merge PR #26 and proceed with Stage 5, the task requester explicitly instructed this thread to proceed on September 28, 2026. This authorizes clean-output reproduction, final contract/source handoff review, the already approved documentation locations and the bundled Stage 5/final report. PR #26 is merged at `3ad083075ba46522d4d01764e2ba453a89a1436d`; Issue #1 is closed while its source-readiness decision remains blocked. Final-report approval is still required before #3 PR publication.
+
+
+### Stage 5 Completion
+
+The first empty-output reproduction completed successfully: schema/example checks, 119 contract tests, 60 experiment tests, two Rust fault tests, three ARM64 builds with read-only package/signature inspection, and 110 common native invocations with matching semantic outcomes. The five cached wheels were reverified and installed into a new venv; locked/offline Cargo reused the reverified source cache and installed toolchains. No dependency download or timing rerun was requested. All prior native inputs, comparison results and failed observations remain unchanged. The final reports record byte differences, one-Mac scope, the reviewed blocked #1 handoff and #9/#10 production obligations. PR publication remains subject to final-report approval.

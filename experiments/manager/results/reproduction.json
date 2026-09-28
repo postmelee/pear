@@ -1,0 +1,4446 @@
+{
+  "version": 1,
+  "status": "completed",
+  "fixture_only": true,
+  "runtime_eligible": false,
+  "source_sha256": {
+    "experiments/manager/build.py": "5c48b704f66b6dce0461e46b1bc1dafbf128fef9d68d3d65a49c4f9d563fc896",
+    "experiments/manager/compare.py": "88d9b366793f00198a279469daaa9deb215968a94419b7f00cb8f57c27c8cba9",
+    "experiments/manager/comparison-plan.json": "79766f8e5ca1799bc8d5690a3413a40d3801ead60d72164d27427cb02898ad9c",
+    "experiments/manager/dependencies.json": "6a09437a9708fa24c6af9968e40f02881d285c76e4c3cfbbb1bc0f8dd7178073",
+    "experiments/manager/fixtures/cases.json": "96c6f785764b498df203a48bbc05389b85ced4e4c097c405fc54035a791ab2f7",
+    "experiments/manager/fixtures/child.c": "c2574cfbe2b850988975d8ca5f978dc3e44d7383065b3610cd5b2eb3a5d6b36c",
+    "experiments/manager/fixtures/native_bridge.c": "ab1dd5b6e071f82b267d5c68ba23f3cb26e9d8a6497256a9faac1fe719c2106f",
+    "experiments/manager/fixtures/native_bridge.h": "6f110785d41f0d0ff9cbc576c93240776d581ae17d5f34a876e086500633498d",
+    "experiments/manager/reproduce.py": "1377557ce0ca53072d2e8824d9ec7892df3412ebe00fbe953aa3e3fe51305191",
+    "experiments/manager/run_cases.py": "51b3a088364d27acd098f71defccd1bfa5d586fa59b647cde82bf53b915c9e30",
+    "experiments/manager/rust/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+    "experiments/manager/rust/Cargo.toml": "33d2ac2a3edd665dbf2c18b7d7f04b5e3ae2d76fb367d99f774495058307e5ff",
+    "experiments/manager/rust/src/contract.rs": "b5a5ba4304b8a8e2ea5e13d42e995a807233bada33f070683d7bb386cc0e7c2f",
+    "experiments/manager/rust/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+    "experiments/manager/rust/src/main.rs": "bb0ff3906aae325a98b7c4395196d0d2c6b9ff415f1ac063e18dc5c29bdcdc90",
+    "experiments/manager/rust/src/supervisor_tests.rs": "9148060f749083ab7ad354d85cdc108306114a1f8bc5e79df73526187fe4469e",
+    "experiments/manager/swift/Package.swift": "231c160490aa8b3558a40bf7a3f515e333282f1bf1d3493fdf17d46d3cbae732",
+    "experiments/manager/swift/Sources/PearManager/Contracts.swift": "5bf622e00c439ecf3e96919f3cd6ccd949b591ab75cdbcc2fdf12902d095a961",
+    "experiments/manager/swift/Sources/PearManager/Files.swift": "c422e79f922d185d93736403e01e3353da53bd4142e32fa77e58d070fe469385",
+    "experiments/manager/swift/Sources/PearManager/JSON.swift": "0237a718793474dfaf393bc72101110271b5b69d90760b29150d05447236c7c5",
+    "experiments/manager/swift/Sources/PearManager/Process.swift": "f789384a974a88e2b1667d706b234a8a127089134782d8a7276905f312ab7c23",
+    "experiments/manager/swift/Sources/PearManager/main.swift": "af9d113b96f1063f7abc48ed7410ebcc0c0a440227a49739a4e2d8153b10a35c",
+    "experiments/manager/test_compare.py": "f5f4e4d83a04a38e0abdd2c4473269af5d2fd68f56593a17988256ea0b56a20a",
+    "experiments/manager/test_prototypes.py": "4c18ba0825aa898d6b14f174b2aa4db0bb1abb210c7f64373597da3415bde308",
+    "experiments/manager/test_reproduce.py": "0d578daeb11a9e93c5ce40889fcf024fb146187841cf7a113e78ccd33f6c0c1d",
+    "runtime/contracts/contract-index.json": "09e4415eb374da6fb72fee42d8c2cf884377cb1ffa60ffb2ee30ad97930f84c4",
+    "runtime/contracts/examples/fixture/blobs/build-config.json": "49ddde4996e00d37e19cb46b0bf46d8c38a2b12e2523e39487a192de13bcf044",
+    "runtime/contracts/examples/fixture/blobs/evidence.json": "f4430917e18762fd5aa741802174762a940d56cb80351b33b58ece79701fb172",
+    "runtime/contracts/examples/fixture/blobs/payload.txt": "b98ef52f9441b9010093ec631e80834f34e85b21f5a29a069217babecf060680",
+    "runtime/contracts/examples/fixture/blobs/source.txt": "422b763f208f8db9d6981759ec236bc603ea4708b0075c213a39d0dba7596ea2",
+    "runtime/contracts/examples/fixture/blobs/terms.txt": "3c222f5dd0a1cf735d0d5bbdcfc872fe74f765ddda1356fa35948a55b55ce4b8",
+    "runtime/contracts/examples/fixture/records/artifact.json": "569b85f9632218a27099568561f77755e10f2f6a8763710f33bb7c3f0dedc65f",
+    "runtime/contracts/examples/fixture/records/complete.json": "2a92dc486cc774ed36f0740e4a65d7fe1628b7508b3a8e99718b3bf99c5474a5",
+    "runtime/contracts/examples/fixture/records/exited.json": "c7c8e29bc32d44900f6f0b84cad4b0b45a5b363891b3ef9644eec9bb3313cbb2",
+    "runtime/contracts/examples/fixture/records/failure.json": "481c32761b4a71235c5578aab14ce59b2fd4402453bd0c03195300c485880dbe",
+    "runtime/contracts/examples/fixture/records/lock.json": "623a9a3617f57b1ee1593acbb6bb062f49d76d2b193e47b7021d9edae0e92844",
+    "runtime/contracts/examples/fixture/records/profile.json": "5ddab7c8c938afe40e033d06322e17bd47daabfed2562bf58a9126990c217c29",
+    "runtime/contracts/examples/fixture/records/qualification.json": "48aac43c0898d8024874ac17b7e5e8e6a248ba117a7b269f0fc261b320e63f98",
+    "runtime/contracts/examples/fixture/records/ready.json": "657b763ee2b5da476342787e4de5fb0227b7bc1aaceeb202260abd119b73cdbe",
+    "runtime/contracts/examples/fixture/records/request.json": "2061ccbd36854a37fd351c729d827ba0f424a03835fcca433aebd3839a57cf47",
+    "runtime/contracts/examples/fixture/records/run.json": "2196fefe859609e30200205e5c75e4814628d4287fe3e4a8f99b8f01cc8cc615",
+    "runtime/contracts/examples/fixture/records/spawned.json": "605f037815461fa825ada3741ebb4f6de76224cecebf28ccda5e002e4b168f3b",
+    "runtime/contracts/examples/research-lock.json": "9a811fc396c212d1ecba1e2f4f31b7d7c436a413b303d9508d1bf00a0ae7ed97",
+    "runtime/contracts/v1/common.schema.json": "caec772e5b2a5cbdca283a067a356517da87833e191ac1cbbc795fd12fba41f1",
+    "runtime/contracts/v1/failure.schema.json": "d82820af8f251b37303cb5b54a81c9ff40c295718dc85012b3d77497a0af0e43",
+    "runtime/contracts/v1/game-profile.schema.json": "4580c389cb35268392c2c547e7ae5b73a25d3a6f83c10fe9db14c38c95b6768d",
+    "runtime/contracts/v1/launch.schema.json": "11eebae032457ccc5095dd826a01b2cae5575bc384be87227be2f5c6c68a5594",
+    "runtime/contracts/v1/qualification.schema.json": "c561f91823d7f31dda82b057eb7a173660d342d06d037b31e858e3600737b171",
+    "runtime/contracts/v1/run.schema.json": "45049c4d5f62108a491db3e8d6fceaf92d1dcca5ecbafa8cf09b693c369d5846",
+    "runtime/contracts/v1/runtime-artifact.schema.json": "7608b9f2cd3be8f12de59da9cb3fba0a70f06865b39bf31b66249183484beccc",
+    "runtime/contracts/v1/runtime-lock.schema.json": "9d201ee41f1514d277570c22de84ef9d3f8e9b3e9a66440d4608fbde3fa2ebc2",
+    "tests/contracts/dependencies.json": "bb37b0d0ea8139acfc3633927e3eee968ac292f7d7e4e0dc53a12bccde43693d",
+    "tests/contracts/fixture_factory.py": "e21bfe501d8ff1e398180956f621243aa54650f5b8849878bb550770883495d2",
+    "tests/contracts/requirements.lock": "bdade2e42764a640d91028635045e9f1c6c1708bc336a2818700b8e06954a215",
+    "tests/contracts/test_eligibility.py": "6baee52f0b454efe82d76e9ea251426f24175d4493cfedfd9fbfd7bd040835b8",
+    "tests/contracts/test_paths_and_privacy.py": "2dfca763d1005d82d2025403982415301c4d855508797a43c8a5c043e1b9856e",
+    "tests/contracts/test_structure.py": "26c981683f640527558beb409c9db1eaef9da1615764658d14bc5397409cd1b9",
+    "tests/contracts/validate.py": "e483bd7ca50246e29a018ecd05c4dfc1192b779c509da5b579752c8d21bad2db"
+  },
+  "retained_evidence_sha256": {
+    "experiments/manager/results/comparison-before-revision2.json": "64054d46c22a79d04b704210b8294eca24968c2031d2ee4f97e1a3243a2f8bbf",
+    "experiments/manager/results/comparison.json": "7f9d00101257b0bbc5bcc3ba37d5e617acd7a847e1752b79911034fd36bd3bc5",
+    "experiments/manager/results/final-corpus-before-revision2.json": "f6115377e6d46307414d322bdd4afb71ea6912821549cc50dcce605629e2b3ad",
+    "experiments/manager/results/final-corpus.json": "89431fdefeeb48900faa39df4ccef1083368f95529497e4710d547ea90e70f7d",
+    "experiments/manager/results/fixture-input-revision.json": "be08272ba6741d13e5f41350b0463d9230eb18cbe6314a25485b6f75746a2401",
+    "experiments/manager/results/fixture-input-revision2.json": "e7f6730234602794f80f327c9d2ecf9c103e96f9f08cb4f5844150cf83408820",
+    "experiments/manager/results/pre-comparison-corpus-revision2.json": "00dcc92806c464b6f025816e0d195a0d1b26b4412fc325dbf9c5b929b387e389",
+    "experiments/manager/results/prior-comparison-attempts.json": "c35e0f6e2b8936d8236cb8c0aa6d2f59bcfa5c6803163e0781323ef7b67e1ef7",
+    "experiments/manager/results/startup-diagnostics-before-revision2.json": "0dd4eb118dfa66a5186252ab74fe63442ce0dcb180598fffad02b14b3f8aacdd",
+    "experiments/manager/results/startup-diagnostics.json": "30cc5549cd34a6fadd425ef459cb1fbe3caec82a6202bde1578dd7572dc765e8"
+  },
+  "started_at_utc": "2026-09-28T14:37:22.217006+00:00",
+  "finished_at_utc": "2026-09-28T14:38:16.147801+00:00",
+  "output": ".build/task3/reproduction",
+  "reconstruction": {
+    "python_wheels": [
+      {
+        "name": "attrs",
+        "version": "26.1.0",
+        "filename": "attrs-26.1.0-py3-none-any.whl",
+        "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+        "size_bytes": 67548
+      },
+      {
+        "name": "jsonschema",
+        "version": "4.26.0",
+        "filename": "jsonschema-4.26.0-py3-none-any.whl",
+        "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+        "size_bytes": 90630
+      },
+      {
+        "name": "jsonschema-specifications",
+        "version": "2025.9.1",
+        "filename": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+        "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+        "size_bytes": 18437
+      },
+      {
+        "name": "referencing",
+        "version": "0.37.0",
+        "filename": "referencing-0.37.0-py3-none-any.whl",
+        "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+        "size_bytes": 26766
+      },
+      {
+        "name": "rpds-py",
+        "version": "2026.6.3",
+        "filename": "rpds_py-2026.6.3-cp314-cp314-macosx_11_0_arm64.whl",
+        "sha256": "d7469697dce35be237db177d42e2a2ee26e6dcc5fc052078a6fefabd288c6edd",
+        "size_bytes": 339495
+      }
+    ],
+    "fresh_venv": true,
+    "python_install": "offline_no_index_require_hashes_no_deps",
+    "rust_build": "locked_offline_reused_hash_verified_registry_and_extracted_sources",
+    "swift_external_packages": [],
+    "network_acquisition": "none_requested",
+    "cache_and_toolchain_reset": false
+  },
+  "commands": [
+    {
+      "phase": "venv",
+      "argv": [
+        "<python>",
+        "-I",
+        "-m",
+        "venv",
+        "<run>/venv"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "install",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "--isolated",
+        "install",
+        "--disable-pip-version-check",
+        "--no-index",
+        "--no-cache-dir",
+        "--find-links",
+        "<run>/wheels",
+        "--require-hashes",
+        "--no-deps",
+        "-r",
+        "<repo>/tests/contracts/requirements.lock"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "f14449469a7704aa7cff6a1087ce6ff93609d34a829bc4cce92dc8545ab5ee84",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "packages",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<experiment>/reproduce.py",
+        "--internal-packages"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "63eb3793b2654ede4520871d53a24d0424d2eb8e2cbce86968c764a9ca6aabdf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "schemas_examples",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<repo>/tests/contracts/validate.py",
+        "--check-schemas",
+        "--check-examples"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "993ba7d25ab6b7f0d0a902fc3e906f494fb6185262b96182d1839ddd8657d379",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "contracts",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<experiment>/reproduce.py",
+        "--internal-suite",
+        "contracts",
+        "--suite-output",
+        "<run>/contracts.json"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "637f716da9a4c3ba73c7a3c8f47f68220ddefc3372387595360f004515046205"
+    },
+    {
+      "phase": "experiments",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<experiment>/reproduce.py",
+        "--internal-suite",
+        "experiments",
+        "--suite-output",
+        "<run>/experiments.json"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "20ed8ccdb4720e193417529d99bba83735450959103f5270d23f793c9d4f23b8"
+    },
+    {
+      "phase": "build",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<experiment>/build.py",
+        "--output",
+        "<run>/prototypes",
+        "--locked"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "d65c009ec0f7b1e0f21664fe470a61849aee6e749b72a11bed41dc18338b21db",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "corpus",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<experiment>/run_cases.py",
+        "--build-root",
+        "<run>/prototypes",
+        "--all",
+        "--oracle",
+        "<run>/venv/bin/python"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "d184a156bbe675650603c45375952ecb2d075154993ff5914b240505ef512dd2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "phase": "rust_faults",
+      "argv": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "<experiment>/rust/Cargo.toml",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-apple-darwin",
+        "--",
+        "--test-threads=1"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "2e2fff8eacbb28bc833e18d0d724c65c830cf137213ba32c8fa96a47b0fa7f90",
+      "stderr_sha256": "bdcc92aabde3d4f2be19fc224f6b2e816fd420cb86a734512258b67e6d7b8d90"
+    },
+    {
+      "phase": "retained_comparison",
+      "argv": [
+        "<run>/venv/bin/python",
+        "-I",
+        "<experiment>/compare.py",
+        "--check-report",
+        "<experiment>/results/comparison.json"
+      ],
+      "returncode": 0,
+      "watchdog": null,
+      "stdout_sha256": "ef7abf09e75b22534209a2b06344d84addcae2897c8cbd054e3a7f122495dc09",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "tests": {
+    "installed_packages": {
+      "python": "3.14.4",
+      "machine": "arm64",
+      "platform": "darwin",
+      "packages": {
+        "attrs": "26.1.0",
+        "jsonschema": "4.26.0",
+        "jsonschema-specifications": "2025.9.1",
+        "referencing": "0.37.0",
+        "rpds-py": "2026.6.3"
+      }
+    },
+    "schemas_examples": {
+      "eligible": true,
+      "evaluation_only": true,
+      "outcome_codes": [],
+      "record_count": 0,
+      "record_valid": true
+    },
+    "contracts": {
+      "tests_run": 119,
+      "passed_ids": [
+        "test_eligibility.EligibilityTests.test_artifact_module_cannot_relabel_itself_as_system",
+        "test_eligibility.EligibilityTests.test_build_configuration_unknown_blocks_execution",
+        "test_eligibility.EligibilityTests.test_cleanup_failure_blocks_support",
+        "test_eligibility.EligibilityTests.test_completion_basis_to_non_exit_is_invalid",
+        "test_eligibility.EligibilityTests.test_declared_unsupported_check_stays_unsupported",
+        "test_eligibility.EligibilityTests.test_event_loss_blocks_support",
+        "test_eligibility.EligibilityTests.test_external_module_requires_exact_policy_observation_digest",
+        "test_eligibility.EligibilityTests.test_failed_build_observation_cannot_use_empty_evidence",
+        "test_eligibility.EligibilityTests.test_failed_qualification_label_cannot_pass",
+        "test_eligibility.EligibilityTests.test_fixture_build_target_cannot_qualify_runtime",
+        "test_eligibility.EligibilityTests.test_fixture_launch_evaluation_allowed_only_in_fixture_context",
+        "test_eligibility.EligibilityTests.test_guest_x64_module_is_not_host_rosetta",
+        "test_eligibility.EligibilityTests.test_matching_hashes_do_not_grant_authenticity",
+        "test_eligibility.EligibilityTests.test_missing_module_outside_submitted_list",
+        "test_eligibility.EligibilityTests.test_missing_process_outside_submitted_required_set",
+        "test_eligibility.EligibilityTests.test_no_self_asserted_support_without_external_policy",
+        "test_eligibility.EligibilityTests.test_nonzero_exit_blocks_support",
+        "test_eligibility.EligibilityTests.test_observer_completion_requires_exact_exit_references",
+        "test_eligibility.EligibilityTests.test_observer_must_be_ready_before_spawn",
+        "test_eligibility.EligibilityTests.test_observer_must_complete_after_exit",
+        "test_eligibility.EligibilityTests.test_omitted_event_still_reachable_via_previous_is_not_coverage",
+        "test_eligibility.EligibilityTests.test_pid_without_matching_creation_generation_is_not_identity",
+        "test_eligibility.EligibilityTests.test_policy_is_closed_caller_data",
+        "test_eligibility.EligibilityTests.test_public_partial_bundle_cannot_qualify",
+        "test_eligibility.EligibilityTests.test_qualification_run_does_not_require_prior_qualification",
+        "test_eligibility.EligibilityTests.test_ready_ack_on_wrong_receiving_event_is_invalid",
+        "test_eligibility.EligibilityTests.test_required_artifact_module_matches_actual_artifact_payload",
+        "test_eligibility.EligibilityTests.test_required_check_cannot_be_removed_from_profile",
+        "test_eligibility.EligibilityTests.test_research_record_cannot_launch",
+        "test_eligibility.EligibilityTests.test_reviewer_name_does_not_grant_trust",
+        "test_eligibility.EligibilityTests.test_source_inventory_required_for_runtime",
+        "test_eligibility.EligibilityTests.test_source_unknown_remains_inspectable_not_launchable",
+        "test_eligibility.EligibilityTests.test_spawn_ack_cannot_target_a_nonready_event",
+        "test_eligibility.EligibilityTests.test_spawn_without_explicit_ready_ack_is_ineligible",
+        "test_eligibility.EligibilityTests.test_stale_evidence_rejected_by_consumer_age_policy",
+        "test_eligibility.EligibilityTests.test_submitted_required_process_must_also_be_present",
+        "test_eligibility.EligibilityTests.test_supported_launch_cannot_switch_entry_file_within_same_artifact",
+        "test_eligibility.EligibilityTests.test_supported_launch_matches_exact_prior_inputs",
+        "test_eligibility.EligibilityTests.test_supported_launch_requires_prior_matching_qualification",
+        "test_eligibility.EligibilityTests.test_supported_launch_wrong_configuration_is_not_inferred",
+        "test_eligibility.EligibilityTests.test_synthetic_trusted_policy_model_passes_without_execution",
+        "test_eligibility.EligibilityTests.test_target_triple_unknown_blocks_execution",
+        "test_eligibility.EligibilityTests.test_translated_host_blocks_qualification",
+        "test_eligibility.EligibilityTests.test_unknown_host_translation_blocks_qualification",
+        "test_eligibility.EligibilityTests.test_x64_host_payload_blocks_qualification",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_arguments_cannot_contain_nul",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_blob_symlink_cannot_substitute_identical_bytes",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_cache_cannot_reuse_a_different_abi",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_cache_cannot_reuse_a_different_cpu_feature_set",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_cache_cannot_reuse_a_different_translator",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_case_alias_cannot_expose_an_immutable_payload_to_prefix_writes",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_direct_api_nul_entry_is_bounded",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_environment_cannot_have_duplicate_allowed_keys",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_environment_cannot_override_dynamic_loader",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_environment_values_cannot_contain_nul",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_existing_mutable_hardlink_cannot_alias_immutable_payload",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_guest_drive_path_is_not_a_host_relative_path",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_guest_drive_relative_path_is_rejected",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_mutable_logs_cannot_cover_immutable_contract_records",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_mutable_prefix_cannot_cover_an_immutable_payload",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_mutable_root_cannot_be_inside_immutable_runtime",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_mutable_root_cannot_contain_immutable_runtime",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_mutable_root_cannot_equal_immutable_runtime_root",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_positive_fixture_control",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_prefix_family_mismatch_cannot_be_repaired_by_matching_bytes",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_profile_cannot_supply_an_arbitrary_command",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_public_partial_record_cannot_enable_fixture_launch",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_record_symlink_cannot_substitute_identical_bytes",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_setting_cannot_escape_prefix",
+        "test_paths_and_privacy.FixturePathAndPrivacyTests.test_setting_cannot_target_immutable_root",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_cli_misuse_does_not_echo_private_arguments",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_control_research_inspection_is_valid",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_directory_entry_is_rejected",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_embedded_policy_cannot_silently_authorize_input",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_entry_path_has_no_ambient_filesystem_interpretation",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_entry_symlink_to_external_file_is_rejected",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_entry_symlink_to_internal_file_is_rejected",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_fifo_entry_is_rejected_without_waiting_for_a_writer",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_inspection_leaves_bundle_and_unrelated_sentinel_unchanged",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_intermediate_directory_symlink_is_rejected",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_oversize_file_does_not_echo_its_content",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_parser_failures_do_not_echo_private_values",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_schema_failures_do_not_echo_private_values",
+        "test_paths_and_privacy.PathAndPrivacyTests.test_symlink_loop_is_bounded_and_rejected",
+        "test_structure.StructureTests.test_aggregate_blob_budget_is_checked_before_hashing_next_file",
+        "test_structure.StructureTests.test_aggregate_json_budget_is_checked_before_next_record",
+        "test_structure.StructureTests.test_all_seven_kinds_and_schema_store",
+        "test_structure.StructureTests.test_boolean_schema_version",
+        "test_structure.StructureTests.test_dependency_cycle",
+        "test_structure.StructureTests.test_digest_is_over_actual_blob_bytes",
+        "test_structure.StructureTests.test_digest_is_over_actual_record_bytes",
+        "test_structure.StructureTests.test_duplicate_module_identity",
+        "test_structure.StructureTests.test_duplicate_process_generation_identity",
+        "test_structure.StructureTests.test_event_owner_cannot_claim_supervisor_event",
+        "test_structure.StructureTests.test_event_previous_generation_is_exact_request",
+        "test_structure.StructureTests.test_git_object_length_and_type",
+        "test_structure.StructureTests.test_json_depth_bound",
+        "test_structure.StructureTests.test_json_node_limit_is_bounded_before_schema_evaluation",
+        "test_structure.StructureTests.test_json_size_bound",
+        "test_structure.StructureTests.test_large_blob_is_rejected_before_read",
+        "test_structure.StructureTests.test_mixed_context_bundle",
+        "test_structure.StructureTests.test_per_record_reference_limit",
+        "test_structure.StructureTests.test_raw_duplicate_key",
+        "test_structure.StructureTests.test_real_calendar_date",
+        "test_structure.StructureTests.test_record_alias_is_rejected",
+        "test_structure.StructureTests.test_record_count_limit_on_acyclic_event_chain",
+        "test_structure.StructureTests.test_record_cycle_is_bounded_before_hash_check",
+        "test_structure.StructureTests.test_reference_kind_disagreement",
+        "test_structure.StructureTests.test_reused_logical_record_id",
+        "test_structure.StructureTests.test_schema_registry_cannot_redirect_to_remote_file",
+        "test_structure.StructureTests.test_signature_digest_cannot_replace_payload_digest",
+        "test_structure.StructureTests.test_typed_signature_blob_cannot_be_build_payload",
+        "test_structure.StructureTests.test_unknown_dependency",
+        "test_structure.StructureTests.test_unknown_field_is_rejected",
+        "test_structure.StructureTests.test_unknown_schema_ref_is_rejected_without_retrieval",
+        "test_structure.StructureTests.test_unknown_toolchain",
+        "test_structure.StructureTests.test_unresolved_local_definition_is_rejected",
+        "test_structure.StructureTests.test_unsupported_version",
+        "test_structure.StructureTests.test_valid_incomplete_research_is_inspectable"
+      ],
+      "failed_ids": [],
+      "error_ids": [],
+      "skipped_ids": [],
+      "unexpected_successes": [],
+      "expected_failures": []
+    },
+    "experiments": {
+      "tests_run": 60,
+      "passed_ids": [
+        "test_compare.CaptureTests.test_deadline_reaps_owned_command",
+        "test_compare.CaptureTests.test_exit_burst_still_has_final_output_bound",
+        "test_compare.CaptureTests.test_group_signal_permission_failure_falls_back_to_owned_leader",
+        "test_compare.CaptureTests.test_nonzero_attempt_keeps_exit_and_logs",
+        "test_compare.CorrectiveFixtureTests.test_functional_budget_is_bounded_and_independent_of_scored_launches",
+        "test_compare.CorrectiveFixtureTests.test_historical_failure_bytes_are_part_of_current_record",
+        "test_compare.CorrectiveFixtureTests.test_intentional_sleep_remains_longer_than_negative_deadline",
+        "test_compare.CorrectiveFixtureTests.test_timeouts_still_require_observed_identities",
+        "test_compare.ReportTests.test_actual_source_and_frozen_comment_edit_are_checked",
+        "test_compare.ReportTests.test_changed_order_is_rejected_with_complete_counts",
+        "test_compare.ReportTests.test_changed_power_configuration_is_not_comparable",
+        "test_compare.ReportTests.test_complete_accounting_is_accepted",
+        "test_compare.ReportTests.test_corpus_must_pass_before_and_after",
+        "test_compare.ReportTests.test_duplicate_sample_number_is_rejected",
+        "test_compare.ReportTests.test_failed_attempt_cannot_be_relabeled_completed",
+        "test_compare.ReportTests.test_fake_release_signature_or_wrong_minimum_os_cannot_pass",
+        "test_compare.ReportTests.test_fixture_results_cannot_claim_game_eligibility",
+        "test_compare.ReportTests.test_gate_result_without_evidence_digest_is_rejected",
+        "test_compare.ReportTests.test_launch_binary_must_match_last_clean_and_payload",
+        "test_compare.ReportTests.test_missing_packaging_inspection_cannot_pass",
+        "test_compare.ReportTests.test_missing_system_dependency_evidence_cannot_pass",
+        "test_compare.ReportTests.test_native_and_owned_identity_observations_required",
+        "test_compare.ReportTests.test_nonfinite_duration_cannot_enter_comparison",
+        "test_compare.ReportTests.test_prior_failure_index_requires_identity_and_safe_path",
+        "test_compare.ReportTests.test_recompilation_evidence_required",
+        "test_compare.ReportTests.test_removing_an_unfavorable_sample_is_rejected",
+        "test_compare.ReportTests.test_scored_warmup_cannot_replace_recorded_launch",
+        "test_compare.ReportTests.test_secret_and_unknown_row_field_rejected",
+        "test_compare.ReportTests.test_summary_must_be_recomputed_from_all_samples",
+        "test_compare.ReportTests.test_tokenization_removes_local_checkout_and_home_paths",
+        "test_prototypes.HarnessTests.test_corpus_has_unique_cases_and_explicit_reference_scope",
+        "test_prototypes.HarnessTests.test_deleted_source_invalidates_old_build",
+        "test_prototypes.HarnessTests.test_fixture_archive_and_dag_bind_actual_bytes",
+        "test_prototypes.HarnessTests.test_negative_case_cannot_execute",
+        "test_prototypes.HarnessTests.test_qualified_claim_cannot_pass",
+        "test_prototypes.HarnessTests.test_result_version_and_success_exit_are_checked",
+        "test_prototypes.HarnessTests.test_static_arm_slice_does_not_replace_translation_observation",
+        "test_prototypes.HarnessTests.test_success_label_does_not_override_exit_status",
+        "test_prototypes.HarnessTests.test_unknown_result_field_is_rejected",
+        "test_prototypes.HarnessTests.test_unreaped_child_cannot_pass",
+        "test_reproduce.EvidenceTests.test_build_binding_and_payload_match_are_checked",
+        "test_reproduce.EvidenceTests.test_installed_dependencies_and_command_flags_checked",
+        "test_reproduce.EvidenceTests.test_missing_or_duplicate_unit_result_rejected",
+        "test_reproduce.EvidenceTests.test_missing_or_reordered_native_case_rejected",
+        "test_reproduce.EvidenceTests.test_missing_rust_fault_case_rejected",
+        "test_reproduce.EvidenceTests.test_native_scope_cleanup_and_oracle_rechecked",
+        "test_reproduce.EvidenceTests.test_ordinary_case_cannot_claim_extra_descendant_trace",
+        "test_reproduce.EvidenceTests.test_outer_interpreter_path_is_not_report_identity",
+        "test_reproduce.EvidenceTests.test_passed_label_cannot_hide_missing_trace_or_overrun",
+        "test_reproduce.EvidenceTests.test_private_and_unknown_data_are_rejected",
+        "test_reproduce.EvidenceTests.test_runtime_and_failed_claims_do_not_pass",
+        "test_reproduce.EvidenceTests.test_schema_example_cli_and_text_blob_inputs_are_required",
+        "test_reproduce.EvidenceTests.test_source_and_history_change_rejected",
+        "test_reproduce.EvidenceTests.test_strict_json_rejects_duplicate_keys_and_nonfinite",
+        "test_reproduce.EvidenceTests.test_synthetic_consistency_control",
+        "test_reproduce.OutputSafetyTests.test_empty_output_is_allowed_without_mutation",
+        "test_reproduce.OutputSafetyTests.test_escape_absolute_and_broad_outputs_rejected",
+        "test_reproduce.OutputSafetyTests.test_internal_suite_cannot_overwrite_or_escape",
+        "test_reproduce.OutputSafetyTests.test_nonempty_output_is_preserved",
+        "test_reproduce.OutputSafetyTests.test_symlink_ancestors_and_leaf_are_rejected"
+      ],
+      "failed_ids": [],
+      "error_ids": [],
+      "skipped_ids": [],
+      "unexpected_successes": [],
+      "expected_failures": []
+    },
+    "rust_faults": {
+      "tests_run": 2,
+      "failed": 0,
+      "ignored": 0,
+      "filtered_out": 0,
+      "passed_ids": [
+        "supervisor_tests::first_nonblocking_setup_failure_closes_pipes_and_reaps_owned_child",
+        "supervisor_tests::second_nonblocking_setup_failure_closes_pipes_and_reaps_owned_child"
+      ]
+    }
+  },
+  "build": {
+    "metadata_sha256": "bd26158cb16ebc457056243480150af063ceab4d06ca1e61e6423281b996d817",
+    "toolchains": {
+      "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+      "sdk": "26.5",
+      "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: aarch64-apple-darwin\nrelease: 1.94.1\nLLVM version: 21.1.8",
+      "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+      "swift": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0",
+      "xcode": "Xcode 26.6\nBuild version 17F113",
+      "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84",
+      "machine": "arm64"
+    },
+    "binaries": {
+      "fixture-child": {
+        "sha256": "0a12bd061ad26750cfc45d9eefaed6d314cfc89999e1224599056ba7b5223e47",
+        "size_bytes": 34720,
+        "slices": "arm64",
+        "system_dynamic_dependencies": [
+          "/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)"
+        ],
+        "packaging": {
+          "platform": "MACOS",
+          "minimum_macos": "26.0",
+          "sdk": "26.5",
+          "rpaths": [],
+          "codesign_strict_verify_exit": 0,
+          "signature": "adhoc",
+          "linker_signed": true,
+          "team_identifier_present": false,
+          "inspection_log_sha256": "85ad1504d306b2b2f1c5edeee6e1eebf840bc1637bbacbcec007f0d2a747cc68",
+          "distribution_qualified": false,
+          "signing_scope": "Read-only verification of the linker-generated signature. No signing mutation, Developer ID, provisioning, notarization or application-bundle qualification."
+        },
+        "matches_stage4_measured_payload": null
+      },
+      "rust-manager": {
+        "sha256": "4e4112403caeb997f8f17c1abf457f39c2b9919f0c8b96105a8bae792a84dbdf",
+        "size_bytes": 544816,
+        "slices": "arm64",
+        "system_dynamic_dependencies": [
+          "/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)",
+          "/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)"
+        ],
+        "packaging": {
+          "platform": "MACOS",
+          "minimum_macos": "26.0",
+          "sdk": "26.5",
+          "rpaths": [],
+          "codesign_strict_verify_exit": 0,
+          "signature": "adhoc",
+          "linker_signed": true,
+          "team_identifier_present": false,
+          "inspection_log_sha256": "d77412c9173a3bb0f346bfe84659fb1a921d012c6b36764caeaa1d8417433c5c",
+          "distribution_qualified": false,
+          "signing_scope": "Read-only verification of the linker-generated signature. No signing mutation, Developer ID, provisioning, notarization or application-bundle qualification."
+        },
+        "matches_stage4_measured_payload": false
+      },
+      "swift-manager": {
+        "sha256": "23f345166669750f044acdf5712ea6adfc2a9ef52f74d876605adcf4f2975f98",
+        "size_bytes": 246416,
+        "slices": "arm64",
+        "system_dynamic_dependencies": [
+          "/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)",
+          "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5026.5.4)",
+          "/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)",
+          "/usr/lib/swift/libswiftCore.dylib (compatibility version 0.0.0, current version 0.0.0)",
+          "/usr/lib/swift/libswiftCoreFoundation.dylib (compatibility version 1.0.0, current version 120.100.0, weak)",
+          "/usr/lib/swift/libswiftDarwin.dylib (compatibility version 1.0.0, current version 377.120.8)",
+          "/usr/lib/swift/libswiftDispatch.dylib (compatibility version 1.0.0, current version 1542.100.32, weak)",
+          "/usr/lib/swift/libswiftIOKit.dylib (compatibility version 1.0.0, current version 1.0.0, weak)",
+          "/usr/lib/swift/libswiftObjectiveC.dylib (compatibility version 1.0.0, current version 951.7.0, weak)",
+          "/usr/lib/swift/libswiftXPC.dylib (compatibility version 1.0.0, current version 128.120.2, weak)",
+          "/usr/lib/swift/libswift_Builtin_float.dylib (compatibility version 0.0.0, current version 0.0.0, weak)",
+          "/usr/lib/swift/libswift_DarwinFoundation1.dylib (compatibility version 1.0.0, current version 377.120.8)"
+        ],
+        "packaging": {
+          "platform": "MACOS",
+          "minimum_macos": "26.0",
+          "sdk": "26.5",
+          "rpaths": [
+            "@loader_path"
+          ],
+          "codesign_strict_verify_exit": 0,
+          "signature": "adhoc",
+          "linker_signed": true,
+          "team_identifier_present": false,
+          "inspection_log_sha256": "268d6d3396e83e10f5e8d20b3593f9dedfec7042f34a4b311bfcaacd37fbfcc0",
+          "distribution_qualified": false,
+          "signing_scope": "Read-only verification of the linker-generated signature. No signing mutation, Developer ID, provisioning, notarization or application-bundle qualification."
+        },
+        "matches_stage4_measured_payload": false
+      }
+    },
+    "native_source_sha256": {
+      "experiments/manager/fixtures/cases.json": "96c6f785764b498df203a48bbc05389b85ced4e4c097c405fc54035a791ab2f7",
+      "experiments/manager/fixtures/child.c": "c2574cfbe2b850988975d8ca5f978dc3e44d7383065b3610cd5b2eb3a5d6b36c",
+      "experiments/manager/fixtures/native_bridge.c": "ab1dd5b6e071f82b267d5c68ba23f3cb26e9d8a6497256a9faac1fe719c2106f",
+      "experiments/manager/fixtures/native_bridge.h": "6f110785d41f0d0ff9cbc576c93240776d581ae17d5f34a876e086500633498d",
+      "experiments/manager/rust/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+      "experiments/manager/rust/Cargo.toml": "33d2ac2a3edd665dbf2c18b7d7f04b5e3ae2d76fb367d99f774495058307e5ff",
+      "experiments/manager/rust/src/contract.rs": "b5a5ba4304b8a8e2ea5e13d42e995a807233bada33f070683d7bb386cc0e7c2f",
+      "experiments/manager/rust/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+      "experiments/manager/rust/src/main.rs": "bb0ff3906aae325a98b7c4395196d0d2c6b9ff415f1ac063e18dc5c29bdcdc90",
+      "experiments/manager/rust/src/supervisor_tests.rs": "9148060f749083ab7ad354d85cdc108306114a1f8bc5e79df73526187fe4469e",
+      "experiments/manager/swift/Package.swift": "231c160490aa8b3558a40bf7a3f515e333282f1bf1d3493fdf17d46d3cbae732",
+      "experiments/manager/swift/Sources/PearManager/Contracts.swift": "5bf622e00c439ecf3e96919f3cd6ccd949b591ab75cdbcc2fdf12902d095a961",
+      "experiments/manager/swift/Sources/PearManager/Files.swift": "c422e79f922d185d93736403e01e3353da53bd4142e32fa77e58d070fe469385",
+      "experiments/manager/swift/Sources/PearManager/JSON.swift": "0237a718793474dfaf393bc72101110271b5b69d90760b29150d05447236c7c5",
+      "experiments/manager/swift/Sources/PearManager/Process.swift": "f789384a974a88e2b1667d706b234a8a127089134782d8a7276905f312ab7c23",
+      "experiments/manager/swift/Sources/PearManager/main.swift": "af9d113b96f1063f7abc48ed7410ebcc0c0a440227a49739a4e2d8153b10a35c"
+    },
+    "locked_offline_rust": true,
+    "swift_external_dependencies": []
+  },
+  "corpus": {
+    "version": 1,
+    "fixture_only": true,
+    "runtime_eligible": false,
+    "case_count": 55,
+    "execution_count": 110,
+    "passed": true,
+    "results": [
+      {
+        "case": "success",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "success",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "success",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "success",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "args",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "success",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "args",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "success",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "environment",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "success",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "environment",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "success",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "stdin",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "success",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "stdin",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "success",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "nonzero",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "nonzero_exit",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 7,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "nonzero",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "nonzero_exit",
+          "cleanup": "passed",
+          "exit_code": 7,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "signal",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "signal_exit",
+          "cleanup": "passed",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": 15,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "signal",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "signal_exit",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": null,
+          "signal": 15,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "timeout",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "timeout",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": null,
+          "signal": 9,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "timeout",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "timeout",
+          "cleanup": "passed",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": 9,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "excess_stdout",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "output_limit",
+          "cleanup": "passed",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": 9,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 131072,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "excess_stdout",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "output_limit",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": null,
+          "signal": 9,
+          "stdout_bytes": 32768,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "excess_stderr",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "output_limit",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": null,
+          "signal": 9,
+          "stdout_bytes": 0,
+          "stderr_bytes": 32768
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "excess_stderr",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "output_limit",
+          "cleanup": "passed",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": 9,
+          "spawned": true,
+          "stderr_bytes": 131072,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "malformed_child",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "child_output_invalid",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 9,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "malformed_child",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "child_output_invalid",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 9,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "secret_redaction",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "success",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 28
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "secret_redaction",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "success",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 28,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "descendant_pipe",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "timeout",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 2,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "descendant_pipe",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "timeout",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 2,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "missing_observer_ready",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "observer_not_ready",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "missing_observer_ready",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "observer_not_ready",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "observer_gap",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "observer_gap",
+          "cleanup": "passed",
+          "exit_code": 0,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": true,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": true,
+          "stderr_bytes": 0,
+          "stdout_bytes": 24,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "observer_gap",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "observer_gap",
+          "spawned": true,
+          "reaped": true,
+          "cleanup": "passed",
+          "exit_code": 0,
+          "signal": null,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 1,
+        "owned_identities_gone": true,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "spawn_permission",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "spawn_failed",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "spawn_permission",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "spawn_failed",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "duplicate_key",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "duplicate_key"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "duplicate_key",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "duplicate_key"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "invalid_utf8",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_utf8"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "invalid_utf8",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_utf8"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "bom",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_json"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "bom",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_json"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "float",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_number"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "float",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_number"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "nonfinite",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_number"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "nonfinite",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_number"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "large_integer",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_number"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "large_integer",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_number"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_version",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_schema_version"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_version",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_schema_version"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_kind",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unknown_record_kind"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_kind",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unknown_record_kind"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_field",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "schema_invalid"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_field",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "schema_invalid"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "bad_digest",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "bad_digest",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "wrong_ref_kind",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "reference_kind_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "wrong_ref_kind",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "reference_kind_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "family_mismatch",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "incompatible_family"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "family_mismatch",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "incompatible_family"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "cache_mismatch",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "cache_identity_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "cache_mismatch",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "cache_identity_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "missing_entry",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_entry_file"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "missing_entry",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_entry_file"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "path_traversal",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 1,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "path_traversal",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 1,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "absolute_path",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 1,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "absolute_path",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 1,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "blob_symlink",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsafe_or_missing_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "blob_symlink",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsafe_or_missing_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "record_symlink",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsafe_or_missing_path"
+          ],
+          "record_count": 1,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "record_symlink",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsafe_or_missing_path"
+          ],
+          "record_count": 1,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "state_symlink",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsafe_or_missing_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "state_symlink",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsafe_or_missing_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "blob_fifo",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "not_regular_file"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "blob_fifo",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "not_regular_file"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "record_too_large",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "json_size_limit"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "record_too_large",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "json_size_limit"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "deep_json",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "json_depth_limit"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "deep_json",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "json_depth_limit"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "source_bytes_changed",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "source_bytes_changed",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "build_bytes_changed",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "build_bytes_changed",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "terms_bytes_changed",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "terms_bytes_changed",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "payload_changed",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "payload_changed",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "digest_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "blob_hardlink",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "blob_hardlink",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "overlapping_roots",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "overlapping_roots"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "overlapping_roots",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "overlapping_roots"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "untrusted_executable_digest",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "untrusted_executable_digest",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unsupported_operations",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unsupported_operations",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": true,
+          "evaluation_only": true,
+          "outcome_codes": [],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_source",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "incomplete_identity"
+          ],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "unknown_source",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "incomplete_identity"
+          ],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "research_context",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "ineligible",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "fixture_context_required"
+          ],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "research_context",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "ineligible",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "fixture_context_required"
+          ],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "wrong_purpose",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "ineligible",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "purpose_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "wrong_purpose",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "ineligible",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "purpose_mismatch"
+          ],
+          "record_count": 4,
+          "record_valid": true
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "oversize_reason",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_string"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "oversize_reason",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_string"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "oversize_key",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_key"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "oversize_key",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_key"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "control_string",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_string"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "control_string",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_string"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "nested_duplicate_key",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "duplicate_key"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "nested_duplicate_key",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "duplicate_key"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "boolean_version",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_schema_version"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "boolean_version",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "unsupported_schema_version"
+          ],
+          "record_count": 0,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "percent_path",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "percent_path",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "tilde_path",
+        "candidate": "rust",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "experiment_version": 1,
+          "candidate": "rust",
+          "fixture_only": true,
+          "runtime_eligible": false,
+          "host_architecture": "arm64",
+          "translated": false,
+          "classification": "invalid_contract",
+          "spawned": false,
+          "reaped": false,
+          "cleanup": "not_started",
+          "exit_code": null,
+          "signal": null,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      },
+      {
+        "case": "tilde_path",
+        "candidate": "swift",
+        "passed": true,
+        "errors": [],
+        "result": {
+          "candidate": "swift",
+          "classification": "invalid_contract",
+          "cleanup": "not_started",
+          "exit_code": null,
+          "experiment_version": 1,
+          "fixture_only": true,
+          "host_architecture": "arm64",
+          "reaped": false,
+          "runtime_eligible": false,
+          "signal": null,
+          "spawned": false,
+          "stderr_bytes": 0,
+          "stdout_bytes": 0,
+          "translated": false
+        },
+        "oracle": {
+          "eligible": false,
+          "evaluation_only": true,
+          "outcome_codes": [
+            "invalid_path"
+          ],
+          "record_count": 4,
+          "record_valid": false
+        },
+        "observed_trace_count": 0,
+        "owned_identities_gone": false,
+        "unrelated_sentinel_alive": true,
+        "bounded_completion": true
+      }
+    ],
+    "trace_scope": "Direct-child reaping reported by each candidate; child and descendant creation identities independently disappear. Grandchild reaping belongs to the OS. No module collector or game observation.",
+    "corpus_sha256": "96c6f785764b498df203a48bbc05389b85ced4e4c097c405fc54035a791ab2f7",
+    "build_metadata_sha256": "bd26158cb16ebc457056243480150af063ceab4d06ca1e61e6423281b996d817",
+    "harness_sha256": "51b3a088364d27acd098f71defccd1bfa5d586fa59b647cde82bf53b915c9e30"
+  },
+  "semantic_match": true,
+  "budgets": {
+    "functional_ms": 5000,
+    "intentional_timeout_ms": 1500,
+    "scored_launch_ms": 1500,
+    "cleanup_ms": 2000,
+    "outer_seconds": 10
+  },
+  "limitations": [
+    "Same-Mac clean-output reproduction, not a clean-machine or independent-host test.",
+    "Installed CPython, Rust, Apple toolchains, SDK, Cargo registry/source cache and OS/compiler caches are reused. The locked crate and all extracted source members are reverified; the Cargo cache is not reconstructed.",
+    "The five reviewed wheels are copied and hash-verified, then installed offline into a fresh virtual environment. The native rpds wheel is not rebuilt from source. No network acquisition is requested by this runner; it does not independently audit all operating-system network traffic.",
+    "Raw logs and fixture bundles stay local. Unit tests may create and clean temporary owned directories; existing reproduction/prototype outputs and historical public reports are not overwritten.",
+    "Only owned fixtures run. Passing schemas, synthetic policy tests and native manager cases cannot qualify Wine, Steam, Megabonk, complete host-process/module coverage or distribution.",
+    "The functional corpus retains 5000 ms ordinary and 1500 ms deliberate-timeout limits, with 2000 ms cleanup and a 10-second outer watchdog. The Stage 4 scored 1500 ms launch experiment is checked as retained evidence, not repeated here. Earlier startup failures remain unresolved.",
+    "Binary hashes and sizes are recorded for these exact build outputs. Relocated build inputs, linker UUID/signature bytes or compiler metadata can affect payload identity; any differing bytes are reported without assigning an unmeasured cause. Semantic equivalence, not byte-identical signatures, is required.",
+    "Report checking establishes consistency with current source and retained evidence; it does not independently attest that reported observations were produced by a trusted host."
+  ],
+  "failures": []
+}
