@@ -6,7 +6,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
 Planning date: September 29, 2026
 
-Status: the requester approved this task plan and its document locations on September 29, 2026. The implementation plan and Stage 1 were subsequently approved. [Stage 1 is complete](../working/task_m1_4_stage1.md); Stage 2 awaits requester approval. The technical statements below preserve the original task-planning context.
+Status: the requester approved this task plan and its document locations on September 29, 2026. The implementation plan and Stage 1 were subsequently approved. [Stage 1 is complete](../working/task_m1_4_stage1.md); the requester approved its report and Stage 2. [Stage 2 is complete](../working/task_m1_4_stage2.md); Stage 3 requires requester approval. The technical statements below preserve the original task-planning context.
 
 ## Purpose
 

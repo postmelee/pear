@@ -2,6 +2,84 @@
   "schema_version": 1,
   "record_kind": "wine_patch_series",
   "base_commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
-  "patches": [],
+  "patches": [
+    {
+      "path": "0001-darwin-loader-layout.patch",
+      "sha256": "3b209274fb06a5de8741704e4a805dcf4af58cbbe97f58ad041f4bf6e4b1b906",
+      "rationale": "darwin: request the ARM64 loader layout and page mode",
+      "provenance": "Original Pear integration against the selected unmodified Wine source; upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration additions only)",
+      "changes": [
+        {
+          "path": "configure",
+          "before_sha256": "a90ab06be75afd7d18102240f00db01f8350f922f8dbdac7ce793213a598207d",
+          "after_sha256": "4da8b4089c966e0e359979eedb7791cb20fb020c808551500778732468729d63"
+        },
+        {
+          "path": "configure.ac",
+          "before_sha256": "c5ab2e0580741f0fc6193ba612da01cb38ac4a0395e87a37c875039e8c04554d",
+          "after_sha256": "802bf17c6379a6ce33f8d4760131ecf2d400a1db78612b117f288986a63d5452"
+        },
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "before_sha256": "b4adcaab240ecca26305f212894597b6250a253f181f0861ba67e7a3376d24fa",
+          "after_sha256": "379d2c9c63c70df6df08f2fb098d5d38b8de472cbf4c283093e26be06a91ade7"
+        }
+      ],
+      "regression_ids": [
+        "stage2.loader-layout",
+        "stage2.loader-reexec-pages"
+      ]
+    },
+    {
+      "path": "0002-native-bootstrap-evidence.patch",
+      "sha256": "a01bb82c05c07be9d9d00a6aa41572e5124f6244e1b3b7a0e62cecc4355daa87",
+      "rationale": "wine: record and stop actual native bootstrap before PE startup",
+      "provenance": "Original Pear integration against the selected unmodified Wine source; upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration additions only)",
+      "changes": [
+        {
+          "path": "include/Makefile.in",
+          "before_sha256": "e7913f6a34f349ddcec74cd484b6c2482aff82b224b07d127c0bf8d82ab72ad5",
+          "after_sha256": "96acfdb329de863f4e7147267eeaeafbb19804981cebfdd7ea1a5ac646b85515"
+        },
+        {
+          "path": "include/wine/pear_bootstrap.h",
+          "before_sha256": null,
+          "after_sha256": "198535e51a025f04cb05ae1085a94c6cc4582d7dc4da333d44b63e1ade81b788"
+        },
+        {
+          "path": "loader/main.c",
+          "before_sha256": "ab7df8fbca3308fba27b7f3e081526ca772ec81b39733d1b16f4374ef720e857",
+          "after_sha256": "02114af0c8d395f87cfc54aa414396d52f921db1a2b65d0b2c4283cc06361302"
+        },
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "before_sha256": "379d2c9c63c70df6df08f2fb098d5d38b8de472cbf4c283093e26be06a91ade7",
+          "after_sha256": "7d83fa8aa26cbc63c9a08de2cb1c62b7b1a66014cb1f2bd4c871681b1854c24b"
+        },
+        {
+          "path": "dlls/ntdll/unix/server.c",
+          "before_sha256": "5b9a9e2973b014c0438a4c9b8f9cc301a4c6ac5b29007a7070d33a23fc902cad",
+          "after_sha256": "23c0d22d373cd1825340d725232e5a4521f65aa3abece16fc312553bf2f9a4a7"
+        },
+        {
+          "path": "server/main.c",
+          "before_sha256": "441ea40e39b63907f970504f3071bbf1ba747c89b5189ffe478b6b3b55755af7",
+          "after_sha256": "bb024e4d41b68427782d2bf85420f258bd2358ea7e06aa261c9803674eab3acb"
+        },
+        {
+          "path": "server/thread.c",
+          "before_sha256": "05f7f35fe124e6fc6e810bdd18282a3463d4efc09fd4d37bb0eb7e3b1e4f2d9f",
+          "after_sha256": "56b3493c9e65fc52af26a910fb207553286888f120452b98148f74b1c1e12fe7"
+        }
+      ],
+      "regression_ids": [
+        "stage2.native-bootstrap",
+        "stage2.server-handshake",
+        "stage2.owned-timeout"
+      ]
+    }
+  ],
   "port_complete": false
 }

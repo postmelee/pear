@@ -1,0 +1,483 @@
+From: Pear contributors
+Subject: [PATCH 2/2] wine: record and stop actual native bootstrap before PE startup
+
+Wine LGPL-2.1-or-later integration; retain upstream notices.
+The new header carries an LGPL-2.1-or-later notice limited to this Wine
+integration. Diagnostics use actual Wine loader/server paths and stop after
+the first-thread server protocol, before guest x18/PE execution.
+
+diff --git a/include/Makefile.in b/include/Makefile.in
+--- a/include/Makefile.in
++++ b/include/Makefile.in
+@@ -1139,6 +1139,7 @@
+ 	wine/nsi.h \
+ 	wine/opengl_driver.h \
+ 	wine/orpc.idl \
++	wine/pear_bootstrap.h \
+ 	wine/plugplay.idl \
+ 	wine/rbtree.h \
+ 	wine/schrpc.idl \
+diff --git a/include/wine/pear_bootstrap.h b/include/wine/pear_bootstrap.h
+new file mode 100644
+--- /dev/null
++++ b/include/wine/pear_bootstrap.h
+@@ -0,0 +1,279 @@
++/*
++ * Pear native Wine bootstrap observations.
++ * Copyright 2026 Pear contributors
++ *
++ * This Wine integration addition is free software under the GNU Lesser
++ * General Public License, version 2.1 or (at your option) any later version.
++ * It is provided without warranty; see Wine's COPYING.LIB for the terms.
++ * This notice applies to this addition, not to a project-wide Pear license.
++ */
++#ifndef __WINE_PEAR_BOOTSTRAP_H
++#define __WINE_PEAR_BOOTSTRAP_H
++
++#if defined(__APPLE__) && defined(__aarch64__)
++#include <errno.h>
++#include <fcntl.h>
++#include <limits.h>
++#include <libproc.h>
++#include <mach/mach.h>
++#include <mach/mach_vm.h>
++#include <mach-o/dyld.h>
++#include <mach-o/loader.h>
++#include <pthread.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/socket.h>
++#include <sys/stat.h>
++#include <sys/sysctl.h>
++#include <sys/un.h>
++#include <unistd.h>
++
++/* The inherited pipe and nonce identify this finite diagnostic run. They
++ * provide neither signing authorization nor a security boundary. */
++static inline __attribute__((unused)) int pear_bootstrap_enabled(void)
++{
++    return getenv( "PEAR_BOOTSTRAP_FD" ) || getenv( "PEAR_BOOTSTRAP_NONCE" );
++}
++
++static inline __attribute__((unused)) long pear_bootstrap_number( const char *name, long minimum, long maximum )
++{
++    const char *value = getenv( name );
++    char *end;
++    long number;
++    if (!value || !*value) _exit(125);
++    for (end = (char *)value; *end; end++) if (*end < '0' || *end > '9') _exit(125);
++    errno = 0;
++    number = strtol( value, &end, 10 );
++    if (errno || *end || number < minimum || number > maximum) _exit(125);
++    return number;
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_event( const char *role, const char *event, const char *details )
++{
++    struct proc_bsdinfo info;
++    struct stat st;
++    const char *nonce;
++    char line[16384];
++    int fd, generation, count, identity_error = 0;
++    size_t length, offset = 0;
++    ssize_t written;
++    if (!pear_bootstrap_enabled()) return;
++    nonce = getenv( "PEAR_BOOTSTRAP_NONCE" );
++    if (!nonce || strlen(nonce) != 32 || strspn(nonce, "0123456789abcdef") != 32) _exit(125);
++    fd = pear_bootstrap_number( "PEAR_BOOTSTRAP_FD", 3, INT_MAX );
++    generation = pear_bootstrap_number( "PEAR_BOOTSTRAP_GENERATION", 0, 1 );
++    if (fstat( fd, &st ) || !S_ISFIFO(st.st_mode)) _exit(125);
++    memset( &info, 0, sizeof(info) );
++    if (proc_pidinfo( getpid(), PROC_PIDTBSDINFO, 0, &info, sizeof(info) ) != sizeof(info))
++        identity_error = errno ? errno : EIO;
++    count = snprintf( line, sizeof(line),
++        "{\"version\":1,\"role\":\"%s\",\"event\":\"%s\",\"nonce\":\"%s\","
++        "\"pid\":%ld,\"ppid\":%ld,\"generation\":%d,\"start_sec\":%llu,\"start_usec\":%llu,"
++        "\"identity_error\":%d%s}\n", role, event, nonce, (long)getpid(), (long)getppid(), generation,
++        (unsigned long long)info.pbi_start_tvsec, (unsigned long long)info.pbi_start_tvusec,
++        identity_error, details );
++    if (count < 0 || (size_t)count >= sizeof(line)) _exit(125);
++    length = count;
++    while (offset < length)
++    {
++        written = write( fd, line + offset, length - offset );
++        if (written < 0 && errno == EINTR) continue;
++        if (written <= 0) _exit(125);
++        offset += written;
++    }
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_failure( const char *role, const char *operation, int error )
++{
++    char detail[256];
++    snprintf( detail, sizeof(detail), ",\"operation\":\"%s\",\"error\":%d", operation, error );
++    pear_bootstrap_event( role, "failure", detail );
++    _exit(125);
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_snapshot( const char *role, const char *event )
++{
++    const struct mach_header *header;
++    const char *prefix;
++    struct stat st;
++    int translated = -1, query_error = 0, prefix_error = 0;
++    size_t length = sizeof(translated);
++    vm_size_t kernel_page = 0;
++    mach_port_t host;
++    kern_return_t kernel_error;
++    char detail[1024];
++    if (!pear_bootstrap_enabled()) return;
++    errno = 0;
++    if (sysctlbyname( "sysctl.proc_translated", &translated, &length, NULL, 0 ) || length != sizeof(translated))
++    {
++        query_error = errno ? errno : EPROTO;
++        translated = -1;
++    }
++    host = mach_host_self();
++    kernel_error = host_page_size( host, &kernel_page );
++    mach_port_deallocate( mach_task_self(), host );
++    prefix = getenv( "WINEPREFIX" );
++    memset( &st, 0, sizeof(st) );
++    if (!prefix || prefix[0] != '/') prefix_error = EINVAL;
++    else if (stat( prefix, &st )) prefix_error = errno;
++    header = _dyld_get_image_header(0);
++    snprintf( detail, sizeof(detail),
++        ",\"cpu_type\":%d,\"translation_value\":%d,\"translation_error\":%d,"
++        "\"user_page\":%ld,\"vm_page\":%lu,\"kernel_page\":%lu,\"kernel_error\":%d,"
++        "\"thread_main\":%d,\"prefix_dev\":%llu,\"prefix_ino\":%llu,\"prefix_error\":%d",
++        header ? header->cputype : 0, translated, query_error, sysconf(_SC_PAGESIZE),
++        (unsigned long)vm_page_size, (unsigned long)kernel_page, kernel_error, pthread_main_np(),
++        (unsigned long long)st.st_dev, (unsigned long long)st.st_ino, prefix_error );
++    pear_bootstrap_event( role, event, detail );
++}
++
++static inline __attribute__((unused)) int pear_bootstrap_escape( char *out, size_t size, const char *input )
++{
++    size_t used = 0;
++    const unsigned char *p = (const unsigned char *)input;
++    if (!input) return 0;
++    for (; *p; p++)
++    {
++        if (used + 7 >= size) return 0;
++        if (*p == '"' || *p == '\\') { out[used++] = '\\'; out[used++] = *p; }
++        else if (*p < 32) used += snprintf( out + used, size - used, "\\u%04x", *p );
++        else out[used++] = *p;
++    }
++    out[used] = 0;
++    return 1;
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_images( const char *role )
++{
++    uint32_t i, j, count;
++    char path[8192], detail[9000], uuid[33];
++    if (!pear_bootstrap_enabled()) return;
++    count = _dyld_image_count();
++    if (count > 1024) pear_bootstrap_failure( role, "image_count", EOVERFLOW );
++    for (i = 0; i < count; i++)
++    {
++        const struct mach_header_64 *header = (const void *)_dyld_get_image_header(i);
++        const struct load_command *command;
++        const char *end;
++        uuid[0] = 0;
++        if (!header || header->magic != MH_MAGIC_64 ||
++            !pear_bootstrap_escape( path, sizeof(path), _dyld_get_image_name(i) ))
++            pear_bootstrap_failure( role, "image_identity", EINVAL );
++        command = (const void *)(header + 1);
++        end = (const char *)command + header->sizeofcmds;
++        for (j = 0; j < header->ncmds; j++)
++        {
++            if ((const char *)command + sizeof(*command) > end || command->cmdsize < sizeof(*command) ||
++                (const char *)command + command->cmdsize > end)
++                pear_bootstrap_failure( role, "image_commands", EINVAL );
++            if (command->cmd == LC_UUID && command->cmdsize >= sizeof(struct uuid_command))
++            {
++                const struct uuid_command *id = (const void *)command;
++                unsigned int k;
++                for (k = 0; k < 16; k++) snprintf( uuid + 2 * k, 3, "%02x", id->uuid[k] );
++            }
++            command = (const void *)((const char *)command + command->cmdsize);
++        }
++        snprintf( detail, sizeof(detail), ",\"index\":%u,\"path\":\"%s\",\"cpu_type\":%d,\"uuid\":\"%s\"",
++                  i, path, header->cputype, uuid );
++        pear_bootstrap_event( role, "image", detail );
++    }
++    snprintf( detail, sizeof(detail), ",\"count\":%u", count );
++    pear_bootstrap_event( role, "images_end", detail );
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_memory( const void *low_mapping )
++{
++    const struct mach_header_64 *header = (const void *)_dyld_get_image_header(0);
++    const struct load_command *command = (const void *)(header + 1);
++    uint64_t guard_address = 0, guard_size = 0;
++    uint32_t i;
++    char detail[1024], byte;
++    mach_vm_size_t copied = 0, region_size = 0;
++    mach_vm_address_t address = (uintptr_t)low_mapping;
++    mach_port_t object = MACH_PORT_NULL;
++    vm_region_basic_info_data_64_t info = {0};
++    mach_msg_type_number_t count = VM_REGION_BASIC_INFO_COUNT_64;
++    kern_return_t null_result, guard_result, region_result;
++    if (!pear_bootstrap_enabled()) return;
++    for (i = 0; i < header->ncmds; i++)
++    {
++        if (command->cmd == LC_SEGMENT_64)
++        {
++            const struct segment_command_64 *segment = (const void *)command;
++            if (!strncmp( segment->segname, "__PAGEZERO", 16 ))
++            { guard_address = segment->vmaddr; guard_size = segment->vmsize; }
++        }
++        command = (const void *)((const char *)command + command->cmdsize);
++    }
++    null_result = mach_vm_read_overwrite( mach_task_self(), 0, 1, (uintptr_t)&byte, &copied );
++    copied = 0;
++    guard_result = mach_vm_read_overwrite( mach_task_self(), 0xf000, 1, (uintptr_t)&byte, &copied );
++    region_result = mach_vm_region( mach_task_self(), &address, &region_size, VM_REGION_BASIC_INFO_64,
++                                   (vm_region_info_t)&info, &count, &object );
++    if (object != MACH_PORT_NULL) mach_port_deallocate( mach_task_self(), object );
++    snprintf( detail, sizeof(detail),
++        ",\"pagezero_address\":%llu,\"pagezero_size\":%llu,\"null_read_error\":%d,"
++        "\"guard_end_read_error\":%d,\"low_address\":%llu,\"region_address\":%llu,"
++        "\"region_size\":%llu,\"region_protection\":%d,\"region_error\":%d",
++        (unsigned long long)guard_address, (unsigned long long)guard_size, null_result, guard_result,
++        (unsigned long long)(uintptr_t)low_mapping, (unsigned long long)address,
++        (unsigned long long)region_size, info.protection, region_result );
++    pear_bootstrap_event( "loader", "memory", detail );
++}
++
++static inline __attribute__((unused)) pid_t pear_bootstrap_peer( int socket )
++{
++    pid_t peer = -1;
++    socklen_t size = sizeof(peer);
++    long expected;
++    char detail[128];
++    int error;
++    if (!pear_bootstrap_enabled()) return -1;
++    expected = pear_bootstrap_number( "PEAR_BOOTSTRAP_SERVER_PID", 1, INT_MAX );
++    error = getsockopt( socket, SOL_LOCAL, LOCAL_PEERPID, &peer, &size ) ? errno : 0;
++    snprintf( detail, sizeof(detail), ",\"peer_pid\":%ld,\"peer_error\":%d", (long)peer, error );
++    pear_bootstrap_event( "loader", "server_peer", detail );
++    if (error || size != sizeof(peer) || peer != expected)
++        pear_bootstrap_failure( "loader", "server_peer", error ? error : EPROTO );
++    return peer;
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_handshake( const char *role, pid_t peer, long long server_start )
++{
++    char detail[256];
++    if (!pear_bootstrap_enabled()) return;
++    snprintf( detail, sizeof(detail), ",\"peer_pid\":%ld,\"server_start\":\"%lld\"", (long)peer, server_start );
++    pear_bootstrap_event( role, "server_handshake", detail );
++}
++
++static inline __attribute__((unused)) void pear_bootstrap_stop( const void *low_mapping )
++{
++    const char *hold;
++    if (!pear_bootstrap_enabled()) return;
++    pear_bootstrap_snapshot( "loader", "bootstrap_native" );
++    pear_bootstrap_memory( low_mapping );
++    pear_bootstrap_images( "loader" );
++    hold = getenv( "PEAR_BOOTSTRAP_HOLD" );
++    if (hold)
++    {
++        if (strcmp( hold, "1" )) pear_bootstrap_failure( "loader", "hold_value", EINVAL );
++        pear_bootstrap_event( "loader", "bootstrap_hold", "" );
++        for (;;) pause();
++    }
++    pear_bootstrap_event( "loader", "bootstrap_stop", ",\"pe_entered\":false,\"foreign_mode_entered\":false" );
++    _exit(0);
++}
++#else
++#define pear_bootstrap_enabled() 0
++#define pear_bootstrap_event(role,event,details) ((void)0)
++#define pear_bootstrap_failure(role,operation,error) ((void)0)
++#define pear_bootstrap_snapshot(role,event) ((void)0)
++#define pear_bootstrap_images(role) ((void)0)
++#define pear_bootstrap_peer(socket) (-1)
++#define pear_bootstrap_handshake(role,peer,start) ((void)0)
++#define pear_bootstrap_stop(mapping) ((void)0)
++#endif
++#endif
+diff --git a/loader/main.c b/loader/main.c
+--- a/loader/main.c
++++ b/loader/main.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "config.h"
++#include "wine/pear_bootstrap.h"
+ 
+ #include <fcntl.h>
+ #include <pthread.h>
+@@ -175,6 +176,7 @@
+ {
+     void *handle;
+ 
++    pear_bootstrap_snapshot( "loader", "loader_entry" );
+     init_reserved_areas();
+ 
+     if ((handle = try_dlopen( get_self_exe() )) ||
+diff --git a/dlls/ntdll/unix/loader.c b/dlls/ntdll/unix/loader.c
+--- a/dlls/ntdll/unix/loader.c
++++ b/dlls/ntdll/unix/loader.c
+@@ -23,6 +23,7 @@
+ #endif
+ 
+ #include "config.h"
++#include "wine/pear_bootstrap.h"
+ 
+ #include <assert.h>
+ #include <errno.h>
+@@ -462,12 +463,31 @@
+         /* Every Wine loader exec, including process.c's forked child route,
+          * requests the guest page mode explicitly. Never retry in host mode. */
+         set_4k_page_size = (set_4k_page_size_fn)dlsym( RTLD_DEFAULT, "posix_spawnattr_set_4k_page_size_np" );
+-        if (!set_4k_page_size) { errno = ENOSYS; return; }
+-        if ((ret = posix_spawnattr_init( &attr ))) { errno = ret; return; }
++        if (!set_4k_page_size)
++        {
++            if (pear_bootstrap_enabled()) pear_bootstrap_failure( "loader", "page_setter", ENOSYS );
++            errno = ENOSYS;
++            return;
++        }
++        if ((ret = posix_spawnattr_init( &attr )))
++        {
++            if (pear_bootstrap_enabled()) pear_bootstrap_failure( "loader", "spawn_attr_init", ret );
++            errno = ret;
++            return;
++        }
++        if (pear_bootstrap_enabled())
++        {
++            if (pear_bootstrap_number( "PEAR_BOOTSTRAP_GENERATION", 0, 1 ))
++                pear_bootstrap_failure( "loader", "reexec_loop", ELOOP );
++            pear_bootstrap_event( "loader", "loader_reexec", ",\"next_generation\":1" );
++            if (setenv( "PEAR_BOOTSTRAP_GENERATION", "1", 1 ))
++                pear_bootstrap_failure( "loader", "reexec_generation", errno );
++        }
+         if (!(ret = posix_spawnattr_setflags( &attr, POSIX_SPAWN_SETEXEC )) &&
+             !(ret = set_4k_page_size( &attr )))
+             ret = posix_spawn( NULL, argv[1], NULL, &attr, argv + 1, environ );
+         posix_spawnattr_destroy( &attr );
++        if (pear_bootstrap_enabled()) pear_bootstrap_failure( "loader", "loader_spawn", ret );
+         errno = ret;
+     }
+ #else
+@@ -557,6 +577,7 @@
+     char *argv[3];
+     static char debug_flag[] = "-d";
+ 
++    if (pear_bootstrap_enabled()) pear_bootstrap_failure( "loader", "unowned_server_fallback", EPERM );
+     if (!started)
+     {
+         int status;
+@@ -1874,6 +1895,9 @@
+     struct thread_data *data = virtual_alloc_first_thread_data();
+ 
+     server_init_process( data );
++    /* Stop after Wine's real first-thread protocol, before PE mapping, x18
++     * guest ownership, syscall-frame entry, or Windows process startup. */
++    pear_bootstrap_stop( user_shared_data );
+     virtual_map_user_shared_data();
+     init_cpu_info();
+     init_files();
+@@ -1998,6 +2022,8 @@
+ 
+ static int pre_exec(void)
+ {
++    /* Exercise the real installed loader's SETEXEC route for this diagnostic. */
++    if (pear_bootstrap_enabled()) return 1;
+     if (build_dir)
+     {
+         char *path = getenv( "DYLD_LIBRARY_PATH" );
+@@ -2122,6 +2148,7 @@
+     main_argc = argc;
+     main_argv = argv;
+ 
++    pear_bootstrap_snapshot( "loader", "ntdll_entry" );
+     init_paths();
+     if (!getenv( "WINELOADERNOEXEC" ) || argc <= 1) check_command_line( argc, argv );
+     unsetenv( "WINELOADERNOEXEC" );
+diff --git a/dlls/ntdll/unix/server.c b/dlls/ntdll/unix/server.c
+--- a/dlls/ntdll/unix/server.c
++++ b/dlls/ntdll/unix/server.c
+@@ -23,6 +23,7 @@
+ #endif
+ 
+ #include "config.h"
++#include "wine/pear_bootstrap.h"
+ 
+ #include <assert.h>
+ #include <ctype.h>
+@@ -1633,6 +1634,8 @@
+         fd_socket = server_connect();
+     }
+ 
++    if (pear_bootstrap_enabled()) server_pid = pear_bootstrap_peer( fd_socket );
++
+     /* setup the signal mask */
+     sigemptyset( &server_block_set );
+     sigaddset( &server_block_set, SIGALRM );
+@@ -1725,7 +1728,11 @@
+     }
+ 
+     for (i = 0; i < supported_machines_count; i++)
+-        if (supported_machines[i] == current_machine) return;
++        if (supported_machines[i] == current_machine)
++        {
++            pear_bootstrap_handshake( "loader", server_pid, server_start_time );
++            return;
++        }
+ 
+     fatal_error( "wineserver doesn't support the %04x architecture\n", current_machine );
+ }
+diff --git a/server/main.c b/server/main.c
+--- a/server/main.c
++++ b/server/main.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "config.h"
++#include "wine/pear_bootstrap.h"
+ 
+ #include <assert.h>
+ #include <ctype.h>
+@@ -246,6 +247,8 @@
+     setvbuf( stderr, NULL, _IOLBF, 0 );
+     server_argv0 = argv[0];
+     parse_options( argc, argv, "d::fhk::p::vw", long_options, option_callback );
++    if (pear_bootstrap_enabled() && !foreground)
++        pear_bootstrap_failure( "server", "foreground_required", EINVAL );
+ 
+     /* setup temporary handlers before the real signal initialization is done */
+     signal( SIGPIPE, SIG_IGN );
+@@ -266,6 +269,8 @@
+     init_directories( load_intl_file() );
+     init_threading();
+     init_registry();
++    pear_bootstrap_snapshot( "server", "server_ready" );
++    pear_bootstrap_images( "server" );
+     main_loop();
+     return 0;
+ }
+diff --git a/server/thread.c b/server/thread.c
+--- a/server/thread.c
++++ b/server/thread.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "config.h"
++#include "wine/pear_bootstrap.h"
+ 
+ #include <assert.h>
+ #include <errno.h>
+@@ -1740,6 +1741,7 @@
+     reply->session_id   = process->session_id;
+     reply->info_size    = get_process_startup_info_size( process );
+     reply->server_start = server_start_time;
++    pear_bootstrap_handshake( "server", req->unix_pid, server_start_time );
+     set_reply_data( supported_machines,
+                     min( supported_machines_count * sizeof(unsigned short), get_reply_max_size() ));
+ 

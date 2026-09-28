@@ -1,0 +1,848 @@
+{
+  "authorization": {
+    "allow_jit": false,
+    "hardened_runtime": true,
+    "library_validation": "enabled",
+    "native_images_signed": 37,
+    "profile_checks": {
+      "available_development_certificate_match": true,
+      "current_provisioning_device_match": true,
+      "explicit_application_match": true,
+      "macos_platform": true,
+      "single_cross_architecture_grant": true,
+      "team_and_prefix_consistent": true,
+      "unexpired": true
+    },
+    "scope": "development_native_bootstrap_pre_pe"
+  },
+  "build_assessment": {
+    "gate_passed": true,
+    "patched_source_manifest_sha256": "8c194f3d968a6943282a055da3e96060ae11c1d4f5b5c1f59ae7119110ae2f22",
+    "qualification": {
+      "distribution": "unassessed",
+      "game": "unassessed",
+      "runtime": "unassessed"
+    },
+    "record_hashes": {
+      "config": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+      "inputs": "d96ac4d6970d9f0c4964d7d17afb2cd7ef5cbb16d3c7fc92d9df96b14825965f",
+      "patch_series": "0550a1539b3f0c7c008e7f49261d543fad6a6639e26553648b068ef51fd68ad3",
+      "toolchain": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc"
+    },
+    "record_kind": "wine_build_assessment",
+    "requested_gate": "stage2_native_and_companion_builds",
+    "schema_version": 1,
+    "scope": "wine_component",
+    "source_ports_complete": false,
+    "variants": [
+      {
+        "build_sha256": "065a2952850624ce281252bb5cb17e4c7c368481a768720c7255bc3351e6a2a6",
+        "completion_revision": {
+          "build_commands_executed": false,
+          "finalizer_sha256": {
+            "build.py": "d303735a6cddb51f1e0c0d8468f8439f63b5e81d8ecbd5f90d3ccc431a760d52",
+            "common.py": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+            "prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+            "toolchain.py": "5108de484493230ebf925de48729d4083c66837084f308d20f9daabb9bd52421"
+          },
+          "mode": "validation_only",
+          "original_record": {
+            "path": "build-before-finalization.json",
+            "sha256": "004aa2c333b9c153541004f0ecc84e21857abdea7325b4d9e64cd21fc1b6e87b"
+          },
+          "reason": "corrected_installed_output_validation",
+          "wine_runtime_execution": false
+        },
+        "installed_manifest_sha256": "31d77a1b1dbcf24d02a59a8f6af2546ff26ba58ea72455bdf8e9ddaaaa27a474",
+        "module_inventory_sha256": "1f5e14994cc0cfcab0ef872a41cf562ef374b74d88115d84e40b6de35fdd611b",
+        "native_architecture": "arm64",
+        "native_artifact_count": 37,
+        "pe_artifact_count": 746,
+        "pe_metadata_count": 10,
+        "producer_sha256": {
+          "build.py": "4fe7f6fa875e604c4d4a0ca836ef474e8f2c9577e1737cc53fc961a9ed192766",
+          "common.py": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+          "prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+          "toolchain.py": "5108de484493230ebf925de48729d4083c66837084f308d20f9daabb9bd52421"
+        },
+        "variant": "arm64",
+        "wine_runtime_execution": false
+      },
+      {
+        "build_sha256": "a337f81981349eaa01f4f87f8d147c68e3ab27c767f808d8fedb03ac461e6409",
+        "completion_revision": {
+          "build_commands_executed": false,
+          "finalizer_sha256": {
+            "build.py": "f4ae57120eb79fb6e30bc04a4ad3da9b05ff6ee76841abe816b99df90db3e261",
+            "common.py": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+            "prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+            "toolchain.py": "5108de484493230ebf925de48729d4083c66837084f308d20f9daabb9bd52421"
+          },
+          "mode": "validation_only",
+          "original_record": {
+            "path": "build-before-finalization.json",
+            "sha256": "35b426d8f8a5a7d29a3ddb41c054f88bdbd340f07dc3354c94212e513d9dec34"
+          },
+          "reason": "corrected_installed_output_validation",
+          "wine_runtime_execution": false
+        },
+        "installed_manifest_sha256": "156ee8de5aaf7dc2f845dd58ebb2c64846376de688e6f626cbe741fdc9ef4c24",
+        "module_inventory_sha256": "a584d5b7bdb767a491838fd0b1f3a2c15c4b8d505a369c6f60632352b71fd87e",
+        "native_architecture": "arm64",
+        "native_artifact_count": 37,
+        "pe_artifact_count": 749,
+        "pe_metadata_count": 10,
+        "producer_sha256": {
+          "build.py": "d303735a6cddb51f1e0c0d8468f8439f63b5e81d8ecbd5f90d3ccc431a760d52",
+          "common.py": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+          "prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+          "toolchain.py": "5108de484493230ebf925de48729d4083c66837084f308d20f9daabb9bd52421"
+        },
+        "variant": "arm64ec-build",
+        "wine_runtime_execution": false
+      }
+    ]
+  },
+  "commands": {
+    "arm64": [
+      {
+        "exit_code": 0,
+        "id": "patch-1",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "patch-2",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "configure",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "make",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "install",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "fixture-bootstrap",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "fixture-sentinel",
+        "output_limit": false,
+        "timed_out": false
+      }
+    ],
+    "arm64ec-build": [
+      {
+        "exit_code": 0,
+        "id": "patch-1",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "patch-2",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "configure",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "make",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "install",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "fixture-bootstrap",
+        "output_limit": false,
+        "timed_out": false
+      },
+      {
+        "exit_code": 0,
+        "id": "fixture-sentinel",
+        "output_limit": false,
+        "timed_out": false
+      }
+    ]
+  },
+  "failed_build_attempts": [
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "patch-1",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-2",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 1,
+          "id": "configure",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "error": "build_command_failed:configure",
+      "passed": false,
+      "record_sha256": "e45532f982c2c22611a5377d777c3c0907e70451f51d0db34c0c8bd6e1f60272",
+      "variant": "arm64",
+      "wine_runtime_execution": false
+    },
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "patch-1",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-2",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "configure",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "make",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "install",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-bootstrap",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-sentinel",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "error": "build_required_outputs_missing",
+      "passed": false,
+      "record_sha256": "004aa2c333b9c153541004f0ecc84e21857abdea7325b4d9e64cd21fc1b6e87b",
+      "variant": "arm64",
+      "wine_runtime_execution": false
+    },
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "patch-1",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-2",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "configure",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "make",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "install",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-bootstrap",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-sentinel",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "error": "unclassified_build_failure",
+      "passed": false,
+      "record_sha256": "35b426d8f8a5a7d29a3ddb41c054f88bdbd340f07dc3354c94212e513d9dec34",
+      "variant": "arm64ec-build",
+      "wine_runtime_execution": false
+    }
+  ],
+  "failed_native_runs": [
+    {
+      "cases": [
+        {
+          "assessment_error": "missing_process_events",
+          "assessment_sha256": "76582df7163e9a691816b26dcaed756cdd86cdfaef684a05b27be6790df6dbf1",
+          "case": "bootstrap",
+          "case_sha256": "b7c28ddc05a3ab459a8b105def95d157f6fde315423c60d3bdf0eb0711e08a69",
+          "cleanup": {
+            "complete": true,
+            "errors": [],
+            "observation_gap": false,
+            "observed_process_count": 2,
+            "reaped_count": 2,
+            "signal_count": 1
+          },
+          "elapsed_ms": 4546,
+          "error": null,
+          "expected_case_sha256": "b7c28ddc05a3ab459a8b105def95d157f6fde315423c60d3bdf0eb0711e08a69",
+          "gate_error": "missing_process_events",
+          "logs": [
+            {
+              "bytes": 320,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 320,
+              "role": "sentinel",
+              "sha256": "68481be2f706fb2850fffa201087259d138a58cfb27a3f5dde7ca45211bae19f",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "sentinel",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "server",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "server",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 14655,
+              "channel": "events",
+              "eof": true,
+              "observed_bytes": 14655,
+              "role": "server",
+              "sha256": "95f6b8850b9eacd84b52f2432e8ce6e860a29a5a0a02a3fa14d42c4105a015de",
+              "write_error": null
+            },
+            {
+              "bytes": 249,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 249,
+              "role": "loader",
+              "sha256": "9ef63dccdd8ad517216292d4c2b488b21aa4d6f26bd486aadfa5b13b2c6a5396",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "loader",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "events",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "loader",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            }
+          ],
+          "missing_records": [],
+          "outcome": "exited",
+          "processes": [
+            {
+              "exit_code": -10,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "loader"
+            },
+            {
+              "exit_code": 0,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "sentinel"
+            },
+            {
+              "exit_code": 0,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "server"
+            }
+          ],
+          "record_status": "complete",
+          "reported_passed": false,
+          "reported_sentinel_survived": true,
+          "retained_event_counts": {
+            "loader": 0,
+            "server": 47
+          },
+          "sentinel_cleanup": {
+            "complete": true,
+            "errors": [],
+            "observation_gap": false,
+            "observed_process_count": 1,
+            "reaped_count": 1,
+            "signal_count": 0
+          },
+          "stream_error": null
+        },
+        {
+          "assessment_error": "bootstrap_early_exit",
+          "assessment_sha256": "59995b0c76cd1bec25ff8656a20bc4db205272cc40be640d64700f5634f0b2d2",
+          "case": "bootstrap-timeout",
+          "case_sha256": "ae835516ff10c3bf428e726a5278eae45ac2d9b647e5b3656f3bb155fb485c9c",
+          "cleanup": {
+            "complete": true,
+            "errors": [],
+            "observation_gap": false,
+            "observed_process_count": 2,
+            "reaped_count": 2,
+            "signal_count": 1
+          },
+          "elapsed_ms": 2503,
+          "error": "bootstrap_early_exit",
+          "expected_case_sha256": "ae835516ff10c3bf428e726a5278eae45ac2d9b647e5b3656f3bb155fb485c9c",
+          "gate_error": "bootstrap_early_exit",
+          "logs": [
+            {
+              "bytes": 320,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 320,
+              "role": "sentinel",
+              "sha256": "ef68fcc13084a4631177143b6a8fa2ac019aa64d03be05a5e5b1cacfadc9a0d9",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "sentinel",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "server",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "server",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 14655,
+              "channel": "events",
+              "eof": true,
+              "observed_bytes": 14655,
+              "role": "server",
+              "sha256": "89a36ca83a8b1531b3f9309d36c4e3a726cafe3f46e0bd85a35892cd4c63dde1",
+              "write_error": null
+            },
+            {
+              "bytes": 249,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 249,
+              "role": "loader",
+              "sha256": "70f05a4e1e2acedf23a73d664d4ed0d36be3c661e29ac81e84aa9710c1cb6cda",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "loader",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "events",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "loader",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            }
+          ],
+          "missing_records": [],
+          "outcome": "error",
+          "processes": [
+            {
+              "exit_code": -10,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "loader"
+            },
+            {
+              "exit_code": 0,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "sentinel"
+            },
+            {
+              "exit_code": 0,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "server"
+            }
+          ],
+          "record_status": "complete",
+          "reported_passed": false,
+          "reported_sentinel_survived": true,
+          "retained_event_counts": {
+            "loader": 0,
+            "server": 47
+          },
+          "sentinel_cleanup": {
+            "complete": true,
+            "errors": [],
+            "observation_gap": false,
+            "observed_process_count": 1,
+            "reaped_count": 1,
+            "signal_count": 0
+          },
+          "stream_error": null
+        },
+        {
+          "assessment_error": "missing_process_events",
+          "assessment_sha256": "0733475ad0a614e0fa78eba4cfc50e7a8f346db10e5e36b0664ae484893dd593",
+          "case": "wrong-prefix-server",
+          "case_sha256": "d90277ff9ccc2261b9623c19a47cf5919f47b4d908e9ae2c581851032f6210e2",
+          "cleanup": {
+            "complete": true,
+            "errors": [],
+            "observation_gap": false,
+            "observed_process_count": 2,
+            "reaped_count": 2,
+            "signal_count": 1
+          },
+          "elapsed_ms": 2580,
+          "error": null,
+          "expected_case_sha256": "d90277ff9ccc2261b9623c19a47cf5919f47b4d908e9ae2c581851032f6210e2",
+          "gate_error": "missing_process_events",
+          "logs": [
+            {
+              "bytes": 320,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 320,
+              "role": "sentinel",
+              "sha256": "50d2d4532e8afb346961b247e73e6610ea963aaaa03c6208be9786ea06158368",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "sentinel",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "server",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "server",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 14655,
+              "channel": "events",
+              "eof": true,
+              "observed_bytes": 14655,
+              "role": "server",
+              "sha256": "715ead3af0edc3aee9b1747c4203b6904fc782f59067d360b563cc4945ce5486",
+              "write_error": null
+            },
+            {
+              "bytes": 249,
+              "channel": "stdout",
+              "eof": true,
+              "observed_bytes": 249,
+              "role": "loader",
+              "sha256": "4db9cbd29988f21ffe82a98aadf5a360e874af48919d3c8f638700abc4ea82b5",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "stderr",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "loader",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            },
+            {
+              "bytes": 0,
+              "channel": "events",
+              "eof": true,
+              "observed_bytes": 0,
+              "role": "loader",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "write_error": null
+            }
+          ],
+          "missing_records": [],
+          "outcome": "exited",
+          "processes": [
+            {
+              "exit_code": -10,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "loader"
+            },
+            {
+              "exit_code": 0,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "sentinel"
+            },
+            {
+              "exit_code": 0,
+              "fork_observed": false,
+              "reaped": true,
+              "role": "server"
+            }
+          ],
+          "record_status": "complete",
+          "reported_passed": false,
+          "reported_sentinel_survived": true,
+          "retained_event_counts": {
+            "loader": 0,
+            "server": 47
+          },
+          "sentinel_cleanup": {
+            "complete": true,
+            "errors": [],
+            "observation_gap": false,
+            "observed_process_count": 1,
+            "reaped_count": 1,
+            "signal_count": 0
+          },
+          "stream_error": null
+        }
+      ],
+      "error": null,
+      "missing_records": [],
+      "passed": false,
+      "pe_execution": false,
+      "record_status": "complete",
+      "retained_case_count": 3,
+      "run_sha256": "7dddbe8c793ad99b39c8f0ae6adf938cff7b662b5d3416f1a88769956dda1385",
+      "runtime_qualified": false,
+      "scope": "historical_failed_native_bootstrap",
+      "signed_record_sha256": "1f348e652066d1fc338528b6a199247d8753cf96e00ce310e09a3a5e9a67c2fa",
+      "signer_source_sha256": {
+        "common": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+        "signer": "e10905f68ec050f991b1ed0616128b529b2b3d36df8ebc8dd5b6dd5c727251eb"
+      },
+      "source_sha256": {
+        "bootstrap_helper": "83069424ceb5f44feefb78df4872157910202760c18b8b72c5b3c74e0a487fff",
+        "case_definitions": "e61a880c5d4b9b250e5f6048a08fbcc8a306c7c62198d43afdd6601a11b6f812",
+        "runner": "10e4a6736ebe990c17dae608d9f03671f1e20190f3ee7ab47c3165e41c6702e6",
+        "sentinel": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6"
+      }
+    }
+  ],
+  "game_execution": false,
+  "guest_x18_execution": false,
+  "limits": [
+    "Native bootstrap stops before Windows PE execution or guest x18 initialization.",
+    "ARM64EC/ARM64X modules are build observations, not translator execution.",
+    "Same-host development evidence; no game or distribution qualification.",
+    "Finite directly owned bootstrap process observation, not arbitrary game process coverage.",
+    "Identifiers, profiles, raw logs and local paths remain in ignored records."
+  ],
+  "pe_execution": false,
+  "record_kind": "wine_stage2_observations",
+  "reviewed_source_hashes": {
+    "tests/wine/cases.json": "e61a880c5d4b9b250e5f6048a08fbcc8a306c7c62198d43afdd6601a11b6f812",
+    "tests/wine/fixtures/bootstrap_native.c": "83069424ceb5f44feefb78df4872157910202760c18b8b72c5b3c74e0a487fff",
+    "tests/wine/fixtures/sentinel.c": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6",
+    "tests/wine/fixtures/toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+    "tests/wine/fixtures/toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+    "tests/wine/fixtures/toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+    "tests/wine/fixtures/toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+    "tests/wine/fixtures/toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+    "tests/wine/fixtures/toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+    "tests/wine/fixtures/toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+    "tests/wine/fixtures/toolchain_seh.S": "65e2380fb3d0b80f8f9b4fbdf7890dd23fd25199785b092a6d0b4c061cdeec95",
+    "tests/wine/test_build.py": "781426160840358742c7e44b0c3dd042ef3b1ccde3eb5f2f34da2863ed78f0e0",
+    "tests/wine/test_evidence_stage2.py": "2db1c4f56fe27c41d4e0d13bbe8050e3e46a83d1bdf0d8870c99a64e421bf88e",
+    "tests/wine/test_inputs.py": "11b2840f6fc5c32f15f4c22349f661ce3790dc5d605496055fe4f94620f10761",
+    "tests/wine/test_modules.py": "0fedb798997f419789e3e96f08e9ed161969959b55522838962bf47d6206736a",
+    "tests/wine/test_preparation.py": "def53f0526ec4d439891c702cecc59d2b49a92fdd235e99d37404e9abac0f0a4",
+    "tests/wine/test_runner.py": "1fdfe000d581fb51103334b48fee6b4c948f9eb3cdc0754df9f5dabfb4487344",
+    "tests/wine/test_signing.py": "c8abefceff968625ba73f4cc0b037de7f59c489849ed171feae1a8020592f201",
+    "tests/wine/test_toolchain.py": "ee14349bf853a8636a16cfc4875d36e3900b20bcb6b670480977e96829955319",
+    "tests/wine/test_verification.py": "3de10c0e3b51a99fd98d7435f704aa84e7de73951c4ac6d1348163f3cfce0edd",
+    "tools/wine/build.py": "f4ae57120eb79fb6e30bc04a4ad3da9b05ff6ee76841abe816b99df90db3e261",
+    "tools/wine/common.py": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+    "tools/wine/evidence.py": "f0b9bb129e3e79db922309f66a66bbb131d06c9eabced0b6c93cefc25050cafd",
+    "tools/wine/modules.py": "ee109f7934562082a4ed74c7c6f90beec75445adff042e2b8b9e82fef086225c",
+    "tools/wine/prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+    "tools/wine/run_fixtures.py": "10e4a6736ebe990c17dae608d9f03671f1e20190f3ee7ab47c3165e41c6702e6",
+    "tools/wine/signing.py": "6865ab880d65b7937e5d7e79990fdee532bd81edabe4c8debd74af606df1b040",
+    "tools/wine/toolchain.py": "5108de484493230ebf925de48729d4083c66837084f308d20f9daabb9bd52421",
+    "tools/wine/verify.py": "df790facc703ad03f8928b19caff45a4d2f893f27a5c0de16274f32670511025"
+  },
+  "run_assessment": {
+    "case_count": 3,
+    "cases": [
+      {
+        "actual_handshake": true,
+        "case_sha256": "2de1ff7f683fb3a68154f311a1dda31db6170339abc4a570fe5a3cbc5b743dfe",
+        "cleanup_complete": true,
+        "expected": "bootstrap_stop",
+        "id": "bootstrap",
+        "native_process_count": 3,
+        "outcome": "exited",
+        "passed": true,
+        "reexecution_count": 1,
+        "sentinel_survived": true
+      },
+      {
+        "actual_handshake": true,
+        "case_sha256": "1e4eea73c62e51ff5a4a827f0d66030660485b573cbc5dbd22af3e1e2287bd4e",
+        "cleanup_complete": true,
+        "expected": "timeout",
+        "id": "bootstrap-timeout",
+        "native_process_count": 3,
+        "outcome": "timeout",
+        "passed": true,
+        "reexecution_count": 1,
+        "sentinel_survived": true
+      },
+      {
+        "actual_handshake": false,
+        "case_sha256": "c09b53aef27368407b3198bd1571974f11a58ed86cabf0a9c6d7ac6d40b2e504",
+        "cleanup_complete": true,
+        "expected": "server_refused",
+        "id": "wrong-prefix-server",
+        "native_process_count": 3,
+        "outcome": "exited",
+        "passed": true,
+        "reexecution_count": 1,
+        "sentinel_survived": true
+      }
+    ],
+    "evidence_scope": "retained-local-native-bootstrap-consistency",
+    "passed": true,
+    "pe_executed": false,
+    "producer_sha256": {
+      "tests/wine/cases.json": "e61a880c5d4b9b250e5f6048a08fbcc8a306c7c62198d43afdd6601a11b6f812",
+      "tests/wine/fixtures/bootstrap_native.c": "83069424ceb5f44feefb78df4872157910202760c18b8b72c5b3c74e0a487fff",
+      "tests/wine/fixtures/sentinel.c": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6",
+      "tools/wine/run_fixtures.py": "10e4a6736ebe990c17dae608d9f03671f1e20190f3ee7ab47c3165e41c6702e6"
+    },
+    "record_kind": "wine_bootstrap_assessment",
+    "run_sha256": "3074ace745b410d8b510b5c6bf08251f6f6b53aab304b7997d053eb14afed93d",
+    "runtime_qualified": false,
+    "schema_version": 1,
+    "signed_sha256": "804b5f89564da3a7c2b3ae3fa4bb6521a3cbf40d52cc11383dbcbf547d28674f",
+    "suite": "bootstrap"
+  },
+  "schema_version": 1,
+  "scope": "development_native_wine_bootstrap_before_pe",
+  "sdk": {
+    "canonical_name": "macosx26.5",
+    "settings_sha256": "f8d005f09381389167f9e0aeaa169bc9e7dff162ef22ca2fd8e98df7ff1acafe",
+    "version": "26.5"
+  }
+}

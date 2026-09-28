@@ -8,7 +8,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
 Work branch: `codex/task4`
 
-Status: the requester approved this implementation plan and authorized Stage 1 on September 29, 2026. Stage 1 is complete; its actual verification and remaining limits are recorded in the [Stage 1 report](../working/task_m1_4_stage1.md). Commands below retain the approved verification plan. Later stages retain their individual approval checkpoints.
+Status: the requester approved this implementation plan and authorized Stage 1 on September 29, 2026. Stage 1 is complete; its actual verification and remaining limits are recorded in the [Stage 1 report](../working/task_m1_4_stage1.md). The requester approved that report and authorized Stage 2 on September 29, 2026; [Stage 2 is complete](../working/task_m1_4_stage2.md); Stage 3 requires requester approval. Commands below retain the approved verification plan, with actual Stage 2 output substitutions and validation-only recovery recorded below. Later stages retain their individual approval checkpoints.
 
 ## Stage Overview
 
@@ -117,9 +117,9 @@ Completion requires real selected source/tool identities, passing compiler/targe
 
 ### Artifacts
 
-- `tools/wine/build.py`, `signing.py`, `run_fixtures.py`; extend verification/evidence helpers.
-- `runtime/wine/patches/0001-darwin-loader-layout.patch` and `0002-native-bootstrap-evidence.patch`, with actual series metadata; filenames describe intended concerns, not existing patches.
-- `tests/wine/fixtures/bootstrap_native.c`, `sentinel.c`, `cases.json`, `test_build.py`, `test_signing.py`, `test_runner.py`.
+- `tools/wine/build.py`, `modules.py`, `signing.py`, `run_fixtures.py`; extend verification/evidence helpers. The module helper isolates the already planned PE/dependency inventory.
+- `runtime/wine/patches/0001-darwin-loader-layout.patch` and `0002-native-bootstrap-evidence.patch`, with actual series metadata and patch-local `.gitattributes` for unified-diff context whitespace; filenames describe the planned concerns.
+- `tests/wine/fixtures/bootstrap_native.c`, `sentinel.c`, `cases.json`, `test_build.py`, `test_modules.py`, `test_signing.py`, `test_runner.py`, `test_evidence_stage2.py`.
 - Stage 2 additions to the contributor guide: actual configuration, build, bundle/permission and controlled bootstrap instructions.
 
 ### Changes
@@ -148,6 +148,10 @@ python3 tools/wine/verify.py runs --root .build/task4/runs-stage2 --suite bootst
 python3 -m unittest discover -s tests/wine -p 'test_*.py'
 git diff --check
 ```
+
+Actual Stage 2 execution preserved occupied and failed destinations: the corrected native build used `.build/task4/build-arm64-attempt2`; the companion retained `.build/task4/build-arm64ec`. Run `modules.py --build <root> --output <root>/modules.json` for each before the build gate. Corrected signed execution used `.build/task4/signed-page4k` and `.build/task4/runs-stage2-page4k`; the original `.build/task4/signed` and `.build/task4/runs-stage2` failures remain retained. These are fresh-output substitutions within the approved stage, not changed execution scope.
+
+Both full builds completed configure/make/install/helper commands with exit 0, then encountered installed-output validation errors. `build.py --finalize-only <root>` was used after correcting the exact module naming and narrow PE metadata classification. This path checks the complete original commands, logs, sources, tools, SDK, fixtures, outputs and archived producer identities before issuing a separate validation revision. It preserves `build-before-finalization.json`, executes no build or Wine commands, and refuses compilation failures or changed inputs. The report distinguishes those historical driver failures from the final passing build gate. Fresh reconstruction with the final producer remains Stage 6.
 
 The signing preparation/execution commands are conditional on a passing actual authorization gate. The local input file contains only local references to matched signing inputs; public examples do not contain real identifiers. Its creation follows the concrete signing-requirements inspection.
 
@@ -317,3 +321,5 @@ Within an approved stage, read-only investigation, independent fixture authoring
 ## Approval Record
 
 On September 29, 2026, the requester explicitly instructed this thread to proceed after receiving the completed implementation plan and the request to approve Stage 1. This authorizes the Stage 1 records, tools, fixtures, public dependency acquisition and bounded compiler checks described above. It does not advance the later stage gates.
+
+On September 29, 2026, after receiving the completed Stage 1 report and the explicit Stage 2 approval request, the requester instructed this thread to proceed. This authorizes the planned native builds, loader/bootstrap patches, concrete signing-requirements inspection, and conditionally authorized bootstrap verification. Restricted execution still requires validated actual per-executable grants. Later stage checkpoints remain unchanged.

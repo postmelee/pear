@@ -1,6 +1,6 @@
 # Wine host development
 
-Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) passed on the recorded host; this guide does not establish an executable Wine runtime, Rosetta-free Megabonk or an end-user release.
+Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) and [Stage 2 native bootstrap](../../mydocs/working/task_m1_4_stage2.md) passed on the recorded host. Stage 2 stops before Windows PE entry; Windows application support, Rosetta-free Megabonk and an end-user release remain development goals.
 
 ## Scope and inputs
 
@@ -11,7 +11,7 @@ The [architecture](../architecture.md) defines the runtime goal. This component 
 | [Inputs](../../runtime/wine/inputs.json) | Selected Wine source, exact audit reference, dependencies and unresolved ports | Component input facts; no full-runtime approval |
 | [Toolchain](../../runtime/wine/toolchain.json) | Exact public tool artifacts and external native tool/SDK identities | Build inputs; no game runtime or independently rebuilt compiler claim |
 | [Build configuration](../../runtime/wine/build-config.json) | Native/PE variants, framework and feature decisions | Explicit fixture configuration, not a Steam/game configuration |
-| [Patch series](../../runtime/wine/patches/series.json) | Ordered attributable Wine changes | Initially empty; required Darwin ports are not complete |
+| [Patch series](../../runtime/wine/patches/series.json) | Ordered attributable Wine changes | Stage 2 loader/bootstrap changes verified in the recorded pre-PE scope; required Darwin ports are not complete |
 
 The native host target is ARM64 macOS. `arm64` selects aarch64 PE components; `arm64ec-build` selects aarch64 plus ARM64EC components with an auxiliary x86_64 PE compiler. The latter is a build candidate, not evidence of FEX or x64 execution. Compiler-only x64/i386 fixtures are never executed in Stage 1.
 
@@ -78,6 +78,53 @@ Tool preparation checks archive hashes, member paths/links and expansion size be
 
 The compiler checks cover native C and SDK framework linkage; PE compilation/linking, actual imports/exports/resources, C++17, and ARM64/ARM64EC/x64 unwind metadata. ARM64EC linkage uses the locked LLVM-MinGW archive's real ARM64EC members in `aarch64-w64-mingw32/lib/libmingwex.a`; the tests require nonzero CHPE metadata pointers in both linked images. No substitute dispatcher or invented runtime metadata is supplied. These link observations do not validate guest startup or dispatch execution. The resource test checks both ID 101 and the complete six-byte payload. The i386 assembler check does not claim x64-style SEH. Wine configure and its native build helpers may run to validate the selected inputs and generated make paths, but no Wine runtime target or PE guest is executed.
 
+## Stage 2 native build and authorization
+
+Stage 2 passed for the recorded development configuration. Both variants built; the native variant completed actual Wine bootstrap, an intentional timeout and a wrong-prefix refusal with owned cleanup. Its scripts and diagnostic hooks remain experimental. Build completion, authorization and execution are separate gates; the ARM64EC companion has not been executed.
+
+`build.py` rechecks the prepared source and tools, copies the source into a fresh owned directory, applies the ordered patches with exact before/after identities, and performs configure, make and local installation. It does not launch Wine. Native Mach-O outputs must contain only ARM64. PE machine types and module paths are assessed separately; a PE file's existence does not establish execution support. Both variants retain the same source, patch and tool inputs. Keep the complete logs and failed attempts.
+
+```sh
+python3 tools/wine/build.py --variant arm64 --inputs .build/task4/inputs --tools .build/task4/tools --output .build/task4/build-arm64 --jobs 4
+python3 tools/wine/build.py --variant arm64ec-build --inputs .build/task4/inputs --tools .build/task4/tools --output .build/task4/build-arm64ec --jobs 4
+python3 tools/wine/modules.py --build .build/task4/build-arm64 --output .build/task4/build-arm64/modules.json
+python3 tools/wine/modules.py --build .build/task4/build-arm64ec --output .build/task4/build-arm64ec/modules.json
+python3 tools/wine/verify.py build --root .build/task4/build-arm64 --companion .build/task4/build-arm64ec --require-complete
+python3 tools/wine/signing.py inspect --build .build/task4/build-arm64 --output .build/task4/signing-requirements.json
+```
+
+The module inventory inspects seven selected PE modules' headers, imports, delay imports, exports and hybrid metadata with the pinned LLVM reader. This is a finite binary-structure inventory, not proof of a resolved Windows API/runtime dependency closure. Upstream WinMD metadata containers are classified separately from executable PE modules. The companion places ARM64X hybrid modules under `aarch64-windows`; there is no required separate `arm64ec-windows/ntdll.dll`. Its three EC-only outputs have AMD64 PE headers but verified CHPE code ranges. These are Windows binary-format observations, not Intel macOS processes or translated-execution evidence.
+
+Use new output names when the example destinations already exist. Do not run both large builds concurrently. The requirements inspection maps the actual built loader, server, libraries and ordinary helpers before requesting a profile. It does not sign or execute them.
+
+The verified development bundle identifier is `io.github.postmelee.pear.wine-loader`. Create a dedicated explicit macOS App ID with **Cross-architecture Compatibility Framework** enabled, then a [Mac App Development provisioning profile](https://developer.apple.com/help/account/provisioning-profiles/create-a-development-provisioning-profile) for the current device and an available Apple Development identity. An existing host-probe profile is not automatically valid for this loader. The checks require an unexpired, matching, device-bound profile, an available certificate, and the actual restricted grant. Keep the profile, private key and identifiers out of Git.
+
+The local signing input is an ignored file such as `.build/task4/private/signing.json`:
+
+```json
+{
+  "schema_version": 1,
+  "record_kind": "wine_local_signing",
+  "scope": "wine_component",
+  "profile_path": "/absolute/local/path/to/wine-loader.provisionprofile",
+  "bundle_identifier": "io.github.postmelee.pear.wine-loader"
+}
+```
+
+After the actual profile checks pass, `signing.py prepare` copies the installation into a development bundle, signs its native images from the inside out, and verifies the effective signatures and original code/data identities. Only the actual Wine loader receives the cross-architecture claim. The ordinary server and bootstrap/sentinel helpers receive no restricted claims. Hardened Runtime and library validation remain enabled; Stage 2 does not request JIT access. The `bin/wine` wrapper is not an authorized Stage 2 entrypoint.
+
+The restricted loader requires **4 KiB code-signature pages**, explicitly selected by the final app signing command with `codesign --pagesize 4096`. On the recorded host, default development signing produced 16 KiB signature pages for the 4 KiB-segmented Wine loader: strict disk verification passed, but the kernel rejected its initial image before Wine entry. Keeping the same code and effective grants and re-signing with 4 KiB pages passed all three bootstrap cases. The signer checks the actual reported page size; it does not infer it from the requested flag. Code-signature page granularity, user-visible VM pages and kernel VM pages are separate observations.
+
+```sh
+python3 tools/wine/signing.py prepare --build .build/task4/build-arm64 --local-input .build/task4/private/signing.json --output .build/task4/signed --require-empty
+python3 tools/wine/run_fixtures.py --suite bootstrap --runtime .build/task4/signed --output .build/task4/runs-stage2 --require-empty
+python3 tools/wine/verify.py runs --root .build/task4/runs-stage2 --suite bootstrap --require-complete
+```
+
+The diagnostic uses the actual Wine loader and server handshake, then stops before PE startup and guest x18 initialization. The measured loader uses 4 KiB user pages over 16 KiB kernel pages, with a 64 KiB unreadable null guard and Wine's read-only 4 KiB shared-data mapping. Ordinary server/helpers retain native page geometry. It measures native process/page/module facts. A native result does not qualify a Windows API, translator, renderer or game. The runner creates fresh synthetic prefixes, bounds output and execution time, checks process identity before signaling, retains failures, and tests an unrelated sentinel's survival. Unknown observations cannot pass.
+
+The development bundle preserves Wine's runtime directory layout under `Contents/Resources/runtime` so its native path discovery remains testable. This is an experimental local packaging choice, **not a qualified distribution layout**. Apple provides separate guidance for [bundle content placement](https://developer.apple.com/documentation/bundleresources/placing-content-in-a-bundle) and [nonstandard code structures](https://developer.apple.com/documentation/xcode/embedding-nonstandard-code-structures-in-a-bundle). Distribution, notarization and the user-facing launcher remain later work.
+
 ## Interpret results
 
 Successful preparation is not a runtime build. A tool version string is not target support. Passing compiler fixtures is not Windows execution. Required missing tools, incorrect artifacts, skipped checks and unknown facts prevent the relevant gate from passing. Preserve original errors and failed attempts.
@@ -86,4 +133,4 @@ The commands use 0 for a passed requested gate, 1 for preparation/operation fail
 
 Raw local records can include paths and diagnostic details and remain under ignored `.build/`; the owned temporary path aliases described above also remain local. Publish only reviewed allowlisted evidence tied to exact sources/tools/configuration/fixtures/output bytes. No profiles, credentials, account state, saves or game files belong in this workflow.
 
-Required Darwin loader/page, x18, thread/exception and Mac-driver integration remain later #4 stages. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.
+The native loader/page bootstrap is verified only for the recorded finite cases. PE startup, guest x18 transitions, Windows child-process routes, thread/exception and Mac-driver integration remain later #4 stages. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.

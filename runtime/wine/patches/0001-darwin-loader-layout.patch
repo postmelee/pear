@@ -1,0 +1,68 @@
+From: Pear contributors
+Subject: [PATCH 1/2] darwin: request the ARM64 loader layout and page mode
+
+Wine LGPL-2.1-or-later integration; retain upstream notices.
+The generated configure hunk mirrors configure.ac without an unrecorded
+Autoconf regeneration. The 4 KiB spawn API use follows Pear issue #2
+platform findings; its probe authorization is not transferred to Wine.
+
+diff --git a/configure b/configure
+--- a/configure
++++ b/configure
+@@ -12349,6 +12349,10 @@
+ 
+     case $HOST_ARCH in
+       i386) wine_use_preloader=yes ;;
++      aarch64)
++        wine_use_preloader=no
++        WINELOADER_LDFLAGS="-Wl,-x86_64_layout_emulation,-segalign,0x1000,-pagezero_size,0x10000,-sectcreate,__TEXT,__info_plist,loader/wine_info.plist"
++        ;;
+       x86_64)
+                 { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether the compiler supports -Wl,-no_huge" >&5
+ printf %s "checking whether the compiler supports -Wl,-no_huge... " >&6; }
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -985,6 +985,11 @@
+ 
+     case $HOST_ARCH in
+       i386) wine_use_preloader=yes ;;
++      aarch64)
++        dnl Match the authorized Apple Silicon guest layout with a 64 KiB null guard.
++        wine_use_preloader=no
++        WINELOADER_LDFLAGS="-Wl,-x86_64_layout_emulation,-segalign,0x1000,-pagezero_size,0x10000,-sectcreate,__TEXT,__info_plist,loader/wine_info.plist"
++        ;;
+       x86_64)
+         dnl If the -no_huge linker option is present (added in Xcode 15.3), use zerofill sections instead of the preloader
+         WINE_TRY_CFLAGS([-Wl,-no_huge],
+diff --git a/dlls/ntdll/unix/loader.c b/dlls/ntdll/unix/loader.c
+--- a/dlls/ntdll/unix/loader.c
++++ b/dlls/ntdll/unix/loader.c
+@@ -452,7 +452,27 @@
+     execv( argv[0], argv );
+     free( argv[0] );
+ #endif
++#if defined(__APPLE__) && defined(__aarch64__)
++    {
++        typedef int (*set_4k_page_size_fn)(const posix_spawnattr_t *);
++        set_4k_page_size_fn set_4k_page_size;
++        posix_spawnattr_t attr;
++        int ret;
++
++        /* Every Wine loader exec, including process.c's forked child route,
++         * requests the guest page mode explicitly. Never retry in host mode. */
++        set_4k_page_size = (set_4k_page_size_fn)dlsym( RTLD_DEFAULT, "posix_spawnattr_set_4k_page_size_np" );
++        if (!set_4k_page_size) { errno = ENOSYS; return; }
++        if ((ret = posix_spawnattr_init( &attr ))) { errno = ret; return; }
++        if (!(ret = posix_spawnattr_setflags( &attr, POSIX_SPAWN_SETEXEC )) &&
++            !(ret = set_4k_page_size( &attr )))
++            ret = posix_spawn( NULL, argv[1], NULL, &attr, argv + 1, environ );
++        posix_spawnattr_destroy( &attr );
++        errno = ret;
++    }
++#else
+     execv( argv[1], argv + 1 );
++#endif
+ }
+ 
+ /* exec the appropriate wine loader for the specified machine */

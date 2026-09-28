@@ -1,4 +1,4 @@
-"""Assess Stage 1 Wine component inputs and exact compiler evidence, not a runtime."""
+"""Assess scoped Wine input, build and native bootstrap evidence; no game qualification."""
 from __future__ import annotations
 
 import argparse
@@ -151,6 +151,16 @@ def verify_command_logs(report, work):
                  'command_log_preview')
 
 
+def verify_fixture_set(hashes, fixtures):
+    """Later-stage additions do not retroactively invalidate compiler fixtures."""
+    required = {'toolchain_native.c', 'toolchain_pe.c', 'toolchain_seh.S', 'toolchain_cpp.cpp'}
+    need(isinstance(hashes, dict) and required.issubset(hashes), 'fixture_identity_mismatch')
+    for name, digest in hashes.items():
+        need(isinstance(name, str) and Path(name).name == name and name not in ('.', '..'),
+             'fixture_identity_mismatch')
+        need(sha256(Path(fixtures) / name) == digest, 'fixture_identity_mismatch')
+
+
 def validate_stage1(inputs_path, config_path, report_path):
     inputs_path, config_path, report_path = map(Path, (inputs_path, config_path, report_path))
     inputs = record(load_json(inputs_path), 'wine_build_inputs')
@@ -185,8 +195,7 @@ def validate_stage1(inputs_path, config_path, report_path):
     need(report.get('producer_sha256') == {name: sha256(REPO / 'tools/wine' / name)
          for name in ('toolchain.py', 'common.py', 'prepare.py')}, 'producer_identity_mismatch')
     fixtures = REPO / 'tests/wine/fixtures'
-    actual_fixtures = {p.name: sha256(p) for p in sorted(fixtures.iterdir()) if p.is_file()}
-    need(report.get('fixture_hashes') == actual_fixtures, 'fixture_identity_mismatch')
+    verify_fixture_set(report.get('fixture_hashes'), fixtures)
     source_record_path = owned(report.get('source_prepared_path', ''))
     need(sha256(source_record_path) == report.get('source_prepared_sha256'), 'source_prepared_mismatch')
     prepared = verify_prepared(source_record_path.parent, sha256(inputs_path))
@@ -278,6 +287,41 @@ def validate_stage1(inputs_path, config_path, report_path):
             'qualification': {'runtime': 'unassessed', 'game': 'unassessed', 'distribution': 'unassessed'}}
 
 
+def validate_builds(root, companion):
+    """Recheck both concrete builds, with matching approved sources and settings."""
+    from build import artifact_inventory, verify_build
+    from modules import validate_inventory
+    roots = [Path(root).resolve(), Path(companion).resolve()]
+    need(roots[0] != roots[1], 'build_variants_not_distinct')
+    builds = [verify_build(path) for path in roots]
+    need([row['variant'] for row in builds] == ['arm64', 'arm64ec-build'], 'build_variant_matrix')
+    for key in ('record_hashes', 'source_prepared_sha256', 'tool_prepared_sha256',
+                'source_manifest', 'patches', 'fixture_hashes', 'sdk'):
+        need(builds[0][key] == builds[1][key], 'build_variant_inputs_differ')
+    variants = []
+    for path, built in zip(roots, builds):
+        validate_inventory(path, verified_build=built)
+        artifacts = artifact_inventory(built, path)['files']
+        native = [item for item in artifacts if item['kind'] == 'macho']
+        guests = [item for item in artifacts if item['kind'] == 'pe']
+        need(built['native_artifact_count'] == len(native) and built['pe_artifact_count'] == len(guests),
+             'build_artifact_count_mismatch')
+        variants.append({'variant': built['variant'], 'build_sha256': sha256(path / 'build.json'),
+                         'installed_manifest_sha256': built['artifacts_manifest']['sha256'],
+                         'producer_sha256': built['producer_sha256'],
+                         'completion_revision': built.get('completion_revision'),
+                         'native_artifact_count': len(native), 'pe_artifact_count': len(guests),
+                         'pe_metadata_count': sum(item['kind'] == 'pe_metadata' for item in artifacts),
+                         'native_architecture': 'arm64', 'wine_runtime_execution': False,
+                         'module_inventory_sha256': sha256(path / 'modules.json')})
+    return {'schema_version': 1, 'record_kind': 'wine_build_assessment', 'scope': 'wine_component',
+            'requested_gate': 'stage2_native_and_companion_builds', 'gate_passed': True,
+            'variants': variants, 'record_hashes': builds[0]['record_hashes'],
+            'patched_source_manifest_sha256': builds[0]['source_manifest']['sha256'],
+            'source_ports_complete': False,
+            'qualification': {'runtime': 'unassessed', 'game': 'unassessed', 'distribution': 'unassessed'}}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
@@ -286,11 +330,26 @@ def main(argv=None):
     inputs.add_argument('--config', required=True)
     inputs.add_argument('--toolchain', required=True)
     inputs.add_argument('--require-complete', action='store_true', required=True)
+    builds = sub.add_parser('build')
+    builds.add_argument('--root', required=True)
+    builds.add_argument('--companion', required=True)
+    builds.add_argument('--require-complete', action='store_true', required=True)
+    runs = sub.add_parser('runs')
+    runs.add_argument('--root', required=True)
+    runs.add_argument('--suite', choices=('bootstrap',), required=True)
+    runs.add_argument('--require-complete', action='store_true', required=True)
     args = parser.parse_args(argv)
     try:
-        result = validate_stage1(args.inputs, args.config, args.toolchain)
+        if args.command == 'inputs':
+            result = validate_stage1(args.inputs, args.config, args.toolchain)
+        elif args.command == 'build':
+            result = validate_builds(args.root, args.companion)
+        else:
+            from run_fixtures import validate_runs
+            result = validate_runs(args.root, args.suite)
     except (Error, OSError, ValueError, KeyError, TypeError) as exc:
-        print(encoded({'schema_version': 1, 'record_kind': 'wine_input_assessment', 'gate_passed': False,
+        print(encoded({'schema_version': 1, 'record_kind': {'inputs': 'wine_input_assessment', 'build': 'wine_build_assessment',
+                                       'runs': 'wine_bootstrap_assessment'}[args.command], 'gate_passed': False,
                        'error': getattr(exc, 'code', 'invalid_or_missing_evidence')}).decode(), end='')
         return 3 if isinstance(exc, Error) else 1
     print(encoded(result).decode(), end='')
