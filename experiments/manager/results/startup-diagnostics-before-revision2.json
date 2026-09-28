@@ -1,0 +1,660 @@
+{
+  "version": 1,
+  "fixture_only": true,
+  "runtime_eligible": false,
+  "scope": "Diagnostic only; timing includes polling and at most one owned-child sample. Passing repeats do not resolve the previously observed failure.",
+  "invocation_count": 16,
+  "records": [
+    {
+      "pair": 1,
+      "candidate": "rust",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.002364250016398728,
+      "total_seconds": 0.6734138329629786,
+      "trace_seconds": 0.6708793640136719,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.015459915972314775,
+      "first_trace_observed_seconds": 0.6724874160136096,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 1
+    },
+    {
+      "pair": 1,
+      "candidate": "rust",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0016469999682158232,
+      "total_seconds": 0.1973844589665532,
+      "trace_seconds": 0.19485712051391602,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "observer_gap",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.013200374960433692,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 1,
+      "candidate": "swift",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0020309999817982316,
+      "total_seconds": 0.3837809579563327,
+      "trace_seconds": 0.38169050216674805,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014966749993618578,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 1,
+      "candidate": "swift",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0016460419865325093,
+      "total_seconds": 0.2675589579739608,
+      "trace_seconds": 0.2657504081726074,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "observer_gap",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.013896292017307132,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 2,
+      "candidate": "rust",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0019554579630494118,
+      "total_seconds": 0.30923316697590053,
+      "trace_seconds": 0.30462098121643066,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.013543499982915819,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 2,
+      "candidate": "rust",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0018370830221101642,
+      "total_seconds": 0.2861037500551902,
+      "trace_seconds": 0.2832956314086914,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "observer_gap",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.012352958030533046,
+      "first_trace_observed_seconds": 0.2830478750402108,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 2,
+      "candidate": "swift",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0029352919664233923,
+      "total_seconds": 0.30113766697468236,
+      "trace_seconds": 0.2987496852874756,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.015290708979591727,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 2,
+      "candidate": "swift",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0017079579993151128,
+      "total_seconds": 0.31322220800211653,
+      "trace_seconds": 0.3112647533416748,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "observer_gap",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014698750048410147,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 3,
+      "candidate": "rust",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0016944580129347742,
+      "total_seconds": 0.334492499998305,
+      "trace_seconds": 0.33121657371520996,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014624917006585747,
+      "first_trace_observed_seconds": 0.3317976670223288,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 3,
+      "candidate": "rust",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.00183479196857661,
+      "total_seconds": 0.2985470419516787,
+      "trace_seconds": 0.2970867156982422,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "observer_gap",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.01482816698262468,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 3,
+      "candidate": "swift",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0015762090333737433,
+      "total_seconds": 0.31538462499156594,
+      "trace_seconds": 0.31178903579711914,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014497291995212436,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 3,
+      "candidate": "swift",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0016992920427583158,
+      "total_seconds": 0.3300837920396589,
+      "trace_seconds": 0.3281114101409912,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "observer_gap",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.012242875003721565,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 4,
+      "candidate": "rust",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.001739916973747313,
+      "total_seconds": 0.22371408296748996,
+      "trace_seconds": 0.22132349014282227,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.013992166961543262,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 4,
+      "candidate": "rust",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.00195816601626575,
+      "total_seconds": 0.20424350001849234,
+      "trace_seconds": 0.20260190963745117,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "observer_gap",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014997791033238173,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 4,
+      "candidate": "swift",
+      "mode": "success",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.001800083031412214,
+      "total_seconds": 0.2522870000102557,
+      "trace_seconds": 0.2503986358642578,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014705458015669137,
+      "first_trace_observed_seconds": 0.25076883303700015,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    },
+    {
+      "pair": 4,
+      "candidate": "swift",
+      "mode": "observer_gap",
+      "timeout_ms": 1500,
+      "spawn_seconds": 0.0017735000001266599,
+      "total_seconds": 0.2080435419920832,
+      "trace_seconds": 0.20613384246826172,
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "observer_gap",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "identity_gone": true,
+      "sentinel_alive": true,
+      "first_child_observed_seconds": 0.014739250007551163,
+      "first_trace_observed_seconds": null,
+      "child_states": [
+        2
+      ],
+      "child_images": [
+        "fixture-child"
+      ],
+      "sample_attempt_count": 0
+    }
+  ],
+  "private_record_sha256": "92efdb5542aae7a427ac4bbc795f7d35a771bc9c10b71196690a7cfb46661cf8",
+  "sample_observation": {
+    "sample_count": 1,
+    "candidate": "rust",
+    "mode": "success",
+    "sample_start_after_manager_seconds": 0.4044510410167277,
+    "child_trace_after_manager_seconds": 0.6708793640136719,
+    "raw_sample_sha256": "af365f4dfa30d3206c310042214a067bd789cbdaf4700d582da8866406c4ea26",
+    "observed_frames": [
+      "dyld4::prepare",
+      "dyld4::RemoteNotificationResponder::blockOnSynchronousEvent",
+      "dyld4::RemoteNotificationResponder::sendMessage",
+      "mach_msg2_trap",
+      "dyld4::ExternallyViewableState::notifyMonitorOfMainCalled"
+    ],
+    "interpretation": "The sampled slow successful invocation was still in dyld preparation/monitor notification work. No fixture main/open/write frame was captured. The sampler itself can perturb loader monitoring; this does not establish the cause of the earlier failed invocation or identify a responsible monitor."
+  },
+  "failed_bundle_inspection": {
+    "raw_record_sha256": "eed1c8c3aea46cde66b9806347441942cf1a8086ede9f2f3604577694e07beeb",
+    "records_and_blobs_equal": true,
+    "child_mode": "0755",
+    "owner_and_group_equal": true,
+    "child_single_link": true,
+    "symlinks": false,
+    "xattrs_equal": true,
+    "quarantine_attribute_present": false,
+    "child_signature_verification_exit_codes": [
+      0,
+      0
+    ],
+    "child_sha256": "0a12bd061ad26750cfc45d9eefaed6d314cfc89999e1224599056ba7b5223e47",
+    "scope": "Read-only comparison of the failed Rust observer-gap bundle with the preceding passing Swift bundle; no file security attributes were modified."
+  },
+  "related_evidence": {
+    "final-corpus.json": {
+      "path": "final-corpus.json",
+      "sha256": "f6115377e6d46307414d322bdd4afb71ea6912821549cc50dcce605629e2b3ad"
+    },
+    "comparison.json": {
+      "path": "comparison.json",
+      "sha256": "64054d46c22a79d04b704210b8294eca24968c2031d2ee4f97e1a3243a2f8bbf"
+    }
+  }
+}

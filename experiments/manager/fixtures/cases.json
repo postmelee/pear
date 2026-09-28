@@ -10,7 +10,7 @@
       "mutation": null,
       "expected": "success",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -21,7 +21,7 @@
       "mutation": null,
       "expected": "success",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -32,7 +32,7 @@
       "mutation": null,
       "expected": "success",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -43,7 +43,7 @@
       "mutation": null,
       "expected": "success",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -54,7 +54,7 @@
       "mutation": null,
       "expected": "nonzero_exit",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -65,7 +65,7 @@
       "mutation": null,
       "expected": "signal_exit",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -76,7 +76,7 @@
       "mutation": null,
       "expected": "timeout",
       "oracle": "eligible",
-      "timeout_ms": 300,
+      "timeout_ms": 1500,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -87,7 +87,7 @@
       "mutation": null,
       "expected": "output_limit",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -98,7 +98,7 @@
       "mutation": null,
       "expected": "output_limit",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -109,7 +109,7 @@
       "mutation": null,
       "expected": "child_output_invalid",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -120,7 +120,7 @@
       "mutation": null,
       "expected": "success",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -131,7 +131,7 @@
       "mutation": null,
       "expected": "timeout",
       "oracle": "eligible",
-      "timeout_ms": 300,
+      "timeout_ms": 1500,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -142,7 +142,7 @@
       "mutation": null,
       "expected": "observer_not_ready",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": false,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -153,7 +153,7 @@
       "mutation": null,
       "expected": "observer_gap",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": true,
       "oracle_context": "fixture"
@@ -164,7 +164,7 @@
       "mutation": "not_executable",
       "expected": "spawn_failed",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -175,7 +175,7 @@
       "mutation": "duplicate_key",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -186,7 +186,7 @@
       "mutation": "invalid_utf8",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -197,7 +197,7 @@
       "mutation": "bom",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -208,7 +208,7 @@
       "mutation": "float",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -219,7 +219,7 @@
       "mutation": "nonfinite",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -230,7 +230,7 @@
       "mutation": "large_integer",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -241,7 +241,7 @@
       "mutation": "unknown_version",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -252,7 +252,7 @@
       "mutation": "unknown_kind",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -263,7 +263,7 @@
       "mutation": "unknown_field",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -274,7 +274,7 @@
       "mutation": "bad_digest",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -285,7 +285,7 @@
       "mutation": "wrong_ref_kind",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -296,7 +296,7 @@
       "mutation": "family_mismatch",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -307,7 +307,7 @@
       "mutation": "cache_mismatch",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -318,7 +318,7 @@
       "mutation": "missing_entry",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -329,7 +329,7 @@
       "mutation": "path_traversal",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -340,7 +340,7 @@
       "mutation": "absolute_path",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -351,7 +351,7 @@
       "mutation": "blob_symlink",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -362,7 +362,7 @@
       "mutation": "record_symlink",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -373,7 +373,7 @@
       "mutation": "state_symlink",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -384,7 +384,7 @@
       "mutation": "blob_fifo",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -395,7 +395,7 @@
       "mutation": "record_too_large",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -406,7 +406,7 @@
       "mutation": "deep_json",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -417,7 +417,7 @@
       "mutation": "source_bytes_changed",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -428,7 +428,7 @@
       "mutation": "build_bytes_changed",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -439,7 +439,7 @@
       "mutation": "terms_bytes_changed",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -450,7 +450,7 @@
       "mutation": "payload_changed",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -461,7 +461,7 @@
       "mutation": "blob_hardlink",
       "expected": "invalid_contract",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -472,7 +472,7 @@
       "mutation": "overlapping_roots",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -483,7 +483,7 @@
       "mutation": "untrusted_executable_digest",
       "expected": "invalid_contract",
       "oracle": "eligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -494,7 +494,7 @@
       "mutation": "unsupported_operations",
       "expected": "invalid_contract",
       "oracle": "valid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -505,7 +505,7 @@
       "mutation": "unknown_source",
       "expected": "invalid_contract",
       "oracle": "valid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -516,7 +516,7 @@
       "mutation": "research_context",
       "expected": "ineligible",
       "oracle": "ineligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "research"
@@ -527,7 +527,7 @@
       "mutation": "wrong_purpose",
       "expected": "ineligible",
       "oracle": "ineligible",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -538,7 +538,7 @@
       "mutation": "oversize_reason",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -549,7 +549,7 @@
       "mutation": "oversize_key",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -560,7 +560,7 @@
       "mutation": "control_string",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -571,7 +571,7 @@
       "mutation": "nested_duplicate_key",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -582,7 +582,7 @@
       "mutation": "boolean_version",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -593,7 +593,7 @@
       "mutation": "percent_path",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"
@@ -604,7 +604,7 @@
       "mutation": "tilde_path",
       "expected": "invalid_contract",
       "oracle": "invalid",
-      "timeout_ms": 1500,
+      "timeout_ms": 5000,
       "observer_ready": true,
       "observer_gap": false,
       "oracle_context": "fixture"

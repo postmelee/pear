@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "Corrective Stage 4 fixture input revision; frozen comparison plan unchanged.",
+  "old_sha256": {
+    "experiments/manager/fixtures/cases.json": "24c3be1103a5a6630f7c71b388298f420edde3ddfa70156874cd7e4027b0d63a",
+    "experiments/manager/fixtures/child.c": "8cf8c8ce2e203e0663ca83437ce9aaf813d8646ffcfb402ffef4d15bf85f2553"
+  },
+  "new_sha256": {
+    "experiments/manager/fixtures/cases.json": "e97421a55fa758dbf3b8d8f252389e2e9ea80b04ce1877ee4224a894d2783f1e",
+    "experiments/manager/fixtures/child.c": "c2574cfbe2b850988975d8ca5f978dc3e44d7383065b3610cd5b2eb3a5d6b36c"
+  },
+  "comparison_plan_sha256": "79766f8e5ca1799bc8d5690a3413a40d3801ead60d72164d27427cb02898ad9c",
+  "case_timeout_ms": {
+    "old": 300,
+    "new": 1500
+  },
+  "intentional_delay_ms": {
+    "old": 1000,
+    "new": 5000
+  },
+  "retained_prior_evidence": {
+    "path": "prior-comparison-attempts.json",
+    "sha256": "c35e0f6e2b8936d8236cb8c0aa6d2f59bcfa5c6803163e0781323ef7b67e1ef7"
+  },
+  "unchanged_requirements": [
+    "Both negative cases must observe the native child identity.",
+    "The descendant case must also observe descendant creation identity.",
+    "All observed identities must disappear, the direct child must be reaped and the sentinel must survive.",
+    "Expected classification remains timeout; output/privacy bounds and the 10-second outer deadline are unchanged."
+  ],
+  "reason": "A 300 ms deadline sometimes expired before any fixture trace was written. The new budget matches ordinary functional cases, while the intentional delay remains longer than the budget. No claim is made about the underlying OS cause."
+}

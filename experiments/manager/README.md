@@ -2,7 +2,7 @@
 
 These are bounded Issue #3 research fixtures for comparing a Rust and a Swift manager implementation. Both implement validation and process supervision natively. Python constructs the common corpus and independently evaluates the version 1 contracts; it is never called by either candidate. Passing these fixtures does not qualify Wine, Steam, Megabonk, signing, distribution, or an entire Rosetta-free runtime.
 
-## Reproduce Stage 3
+## Reproduce the native prototypes
 
 Run from the repository root on native Apple Silicon with the toolchains in [`dependencies.json`](dependencies.json). The existing Stage 2 oracle environment must be installed using its [hashed requirements](../../tests/contracts/requirements.lock). Prefetch the exact reviewed `libc` release with `cargo fetch --manifest-path experiments/manager/rust/Cargo.toml --locked` if absent. `build.py` checks its archive and extracted source bytes before the locked offline build. This currently uses Cargo's default crates.io cache location; custom Cargo homes and ambient Cargo configuration files are not supported by this experiment. Swift has no external package dependency.
 
@@ -32,7 +32,7 @@ pear-manager --bundle-root ABSOLUTE_PATH --entry records/request.json \
   --observer-ready yes --observer-gap no
 ```
 
-The managers launch only the owned C fixture with argument arrays, `/dev/null` standard input, a scoped environment and a new process group. They use bounded nonblocking output and deadlines; no child output, private paths, PIDs or environment values appear in their JSON result. Ordinary functional cases allow 1,500 ms, while deliberate delay and descendant-pipe cases allow 300 ms. This avoids treating a cold copied executable's initial launch latency as the intended delayed-child test. No durations from Stage 3 are used for a language performance claim.
+The managers launch only the owned C fixture with argument arrays, `/dev/null` standard input, a scoped environment and a new process group. They use bounded nonblocking output and deadlines; no child output, private paths, PIDs or environment values appear in their JSON result. Ordinary functional cases allow 5,000 ms within the existing CLI range and ten-second outer watchdog. Deliberate timeout cases retain 1,500 ms; scored successful launches also retain the frozen 1,500 ms limit. The intentional delay lasts 5,000 ms and the pipe-holding descendant has a 10-second bounded lifetime, so both negative cases still require timeout and owned cleanup. Stage 4 corrected the original 300 ms negative-case limits after mandatory traces were sometimes absent when fresh copied children reached the deadline; both languages exhibited the failure. The original attempts remain failed evidence. A later 1,500 ms ordinary-case timeout led to separating the wider functional budget from the unchanged scored-launch budget. Each revision records its input identities and requires the relevant rebuild/checks plus complete comparison reruns; none retroactively passes an earlier failure. No durations from Stage 3 are used for a language performance claim.
 
 Each manager confirms its running ARM64 slice and `sysctl.proc_translated` state. The child does the same, writes its creation identity to the owned prefix, and independently records a pipe-holding descendant. The harness checks that those identities disappear and that an unrelated sentinel remains alive. Missing observer readiness prevents launch; the controlled gap flag yields `observer_gap`. These flags and child traces are fixtures, not a module observer or complete host-process coverage evidence.
 
@@ -50,4 +50,47 @@ Rust uses the exact locked `libc` crate, standard library and explicit C ABI dec
 
 Concurrent mutation of a bundle is unsupported. Descriptor validation and immediate executable identity checks reduce exposure but do not eliminate the pathname-execution race in `Command`/`posix_spawn`; #9 must establish immutable runtime and mutable-state ownership for production use. Successful fixtures cannot validate arbitrary imported executable bytes, a real observer handshake, macOS distribution entitlements or full game-process coverage.
 
-[`comparison-plan.json`](comparison-plan.json) freezes functional gates, builds, sampling and qualitative review before Stage 4. Its inert comment edits are predetermined native-source incremental build inputs. Stage 3 does not select a manager language, measure power/game performance, or implement the production manager. The custom parsers and native FFI surface are maintenance costs to evaluate, not reasons to assume either language will win.
+[`comparison-plan.json`](comparison-plan.json) freezes functional gates, builds, sampling and qualitative review before Stage 4. Its inert comment edits are predetermined native-source incremental build inputs. The custom parsers and native FFI surface are maintenance costs to evaluate, not reasons to assume either language will win. The experiments do not measure game power/performance or implement the production manager.
+
+
+## Reproduce the controlled comparison
+
+After rebuilding the current native sources and confirming no other heavy work is running on the host, run:
+
+```bash
+python3 experiments/manager/compare.py --plan experiments/manager/comparison-plan.json --build-root .build/task3/prototypes --output .build/task3/comparison-raw.json
+python3 experiments/manager/compare.py --check-report experiments/manager/results/comparison.json
+python3 experiments/manager/run_cases.py --build-root .build/task3/prototypes --all --oracle .build/task3/venv/bin/python
+```
+
+The first command runs the complete functional corpus before and after the comparison. It retains three clean builds, three predetermined incremental builds, five unscored warmups and 30 recorded launches per candidate. Each attempt has a separate ignored directory; a failed gate stops the attempt. Preserve failed attempts and review/redact results before copying a completed report into `results/`. The report checker verifies the committed record against current source identities; a locally rerun report can be checked by supplying its own path instead. Passing the checker establishes record consistency, not independent authenticity.
+
+The [manager-language decision](../../docs/decisions/manager-language.md) weighs these measurements and qualitative evidence. Durations include the declared native build command or the whole manager invocation, including validation and child cleanup. Darwin `wait4` RSS is OS accounting for the waited command, not an independently sampled process-tree peak. Dependency caches, OS caches, 1 ms wait polling and fixed Rust-then-Swift launch pairing limit interpretation. No cache flushing, temperature/power measurement or distribution qualification is performed.
+
+## Rust pipe-setup failure regression
+
+Stage 4 found that a failed nonblocking-pipe setup could leave a blocking descriptor in cleanup. The Rust implementation now evaluates both setup calls and closes both read ends if either fails, then performs bounded owned-process cleanup. Two test-only fault cases exercise each failure position with a real child and pipe-holding descendant; they check descriptor closure, reaping, identity disappearance and unrelated sentinel survival. The production command line and environment provide no fault-injection option.
+
+After the prototype build above, reproduce the tests with the same controlled environment and C bridge:
+
+```bash
+python3 - <<'PYTEST'
+from pathlib import Path
+import subprocess
+import sys
+sys.path.insert(0, 'experiments/manager')
+import build
+root = Path.cwd()
+base = root / '.build/task3/prototypes'
+env = build.controlled_environment()
+env.update(CARGO_TARGET_DIR=str(root / '.build/task3/rust-pipe-tests'),
+           CARGO_ENCODED_RUSTFLAGS='\x1f'.join(['-C', 'link-arg=' + str(base / 'native_bridge.o'), '-C', 'link-arg=-lproc']),
+           PEAR_MANAGER_TEST_FIXTURE=str(base / 'bin/fixture-child'))
+raise SystemExit(subprocess.run(['cargo', 'test', '--manifest-path', 'experiments/manager/rust/Cargo.toml', '--locked', '--offline', '--target', 'aarch64-apple-darwin', '--', '--test-threads=1'], env=env).returncode)
+PYTEST
+```
+
+
+## Recorded Stage 4 outcome
+
+The [manager decision](../../docs/decisions/manager-language.md) selects Rust for the new supervisor, with Swift's tradeoffs and remaining production gates explicit. The [current comparison](results/comparison.json), [final corpus](results/final-corpus.json) and [second input revision](results/fixture-input-revision2.json) bind the final declared functional limits and the preserved historical records. Four full corpus runs passed (110 invocations each), all 82 comparison rows were retained, and 40 Python regression tests passed. No failed historical run was erased or relabeled; in particular, a prior 1,500 ms startup failure remains unexplained. The [Stage 4 report](../../mydocs/working/task_m1_3_stage4.md) records the full sequence and two Rust fault tests. Stage 5 clean-output reproduction remains required.

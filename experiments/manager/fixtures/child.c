@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
     if (!strcmp(mode, "stdin")) { char c; return read(STDIN_FILENO, &c, 1) == 0 ? success() : 44; }
     if (!strcmp(mode, "nonzero")) return 7;
     if (!strcmp(mode, "signal")) { raise(SIGTERM); return 45; }
-    if (!strcmp(mode, "delay")) { delay_ms(1000); return success(); }
+    if (!strcmp(mode, "delay")) { delay_ms(5000); return success(); }
     if (!strcmp(mode, "excess_stdout") || !strcmp(mode, "excess_stderr")) {
         char block[4096]; memset(block, 'x', sizeof(block));
         int fd = !strcmp(mode, "excess_stdout") ? STDOUT_FILENO : STDERR_FILENO;

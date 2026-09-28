@@ -1,0 +1,3796 @@
+{
+  "version": 1,
+  "fixture_only": true,
+  "runtime_eligible": false,
+  "case_count": 55,
+  "execution_count": 110,
+  "passed": false,
+  "results": [
+    {
+      "case": "success",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "success",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "args",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "args",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "environment",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "environment",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "stdin",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "stdin",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "nonzero",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "nonzero_exit",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 7,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "nonzero",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "nonzero_exit",
+        "cleanup": "passed",
+        "exit_code": 7,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "signal",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "signal_exit",
+        "cleanup": "passed",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": 15,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "signal",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "signal_exit",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": null,
+        "signal": 15,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "timeout",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "timeout",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": null,
+        "signal": 9,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "timeout",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "timeout",
+        "cleanup": "passed",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": 9,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "excess_stdout",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "output_limit",
+        "cleanup": "passed",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": 9,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 131072,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "excess_stdout",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "output_limit",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": null,
+        "signal": 9,
+        "stdout_bytes": 32768,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "excess_stderr",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "output_limit",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": null,
+        "signal": 9,
+        "stdout_bytes": 0,
+        "stderr_bytes": 32768
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "excess_stderr",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "output_limit",
+        "cleanup": "passed",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": 9,
+        "spawned": true,
+        "stderr_bytes": 126976,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "malformed_child",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "child_output_invalid",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 9,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "malformed_child",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "child_output_invalid",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 9,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "secret_redaction",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "success",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 28
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "secret_redaction",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "success",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 28,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "descendant_pipe",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "timeout",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 2,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "descendant_pipe",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "timeout",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": 0,
+        "signal": null,
+        "stdout_bytes": 24,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 2,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "missing_observer_ready",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "observer_not_ready",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "missing_observer_ready",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "observer_not_ready",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "observer_gap",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "observer_gap",
+        "cleanup": "passed",
+        "exit_code": 0,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": true,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": true,
+        "stderr_bytes": 0,
+        "stdout_bytes": 24,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 1,
+      "owned_identities_gone": true,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "observer_gap",
+      "candidate": "rust",
+      "passed": false,
+      "errors": [
+        "classification",
+        "normal_exit_identity",
+        "missing_child_observation"
+      ],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "timeout",
+        "spawned": true,
+        "reaped": true,
+        "cleanup": "passed",
+        "exit_code": null,
+        "signal": 9,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "spawn_permission",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "spawn_failed",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "spawn_permission",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "spawn_failed",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "duplicate_key",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "duplicate_key"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "duplicate_key",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "duplicate_key"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "invalid_utf8",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_utf8"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "invalid_utf8",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_utf8"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "bom",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_json"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "bom",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_json"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "float",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_number"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "float",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_number"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "nonfinite",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_number"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "nonfinite",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_number"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "large_integer",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_number"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "large_integer",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_number"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_version",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_schema_version"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_version",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_schema_version"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_kind",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unknown_record_kind"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_kind",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unknown_record_kind"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_field",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "schema_invalid"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_field",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "schema_invalid"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "bad_digest",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "bad_digest",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "wrong_ref_kind",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "reference_kind_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "wrong_ref_kind",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "reference_kind_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "family_mismatch",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "incompatible_family"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "family_mismatch",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "incompatible_family"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "cache_mismatch",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "cache_identity_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "cache_mismatch",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "cache_identity_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "missing_entry",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_entry_file"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "missing_entry",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_entry_file"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "path_traversal",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 1,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "path_traversal",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 1,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "absolute_path",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 1,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "absolute_path",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 1,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "blob_symlink",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsafe_or_missing_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "blob_symlink",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsafe_or_missing_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "record_symlink",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsafe_or_missing_path"
+        ],
+        "record_count": 1,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "record_symlink",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsafe_or_missing_path"
+        ],
+        "record_count": 1,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "state_symlink",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsafe_or_missing_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "state_symlink",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsafe_or_missing_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "blob_fifo",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "not_regular_file"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "blob_fifo",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "not_regular_file"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "record_too_large",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "json_size_limit"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "record_too_large",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "json_size_limit"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "deep_json",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "json_depth_limit"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "deep_json",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "json_depth_limit"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "source_bytes_changed",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "source_bytes_changed",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "build_bytes_changed",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "build_bytes_changed",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "terms_bytes_changed",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "terms_bytes_changed",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "payload_changed",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "payload_changed",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "digest_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "blob_hardlink",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "blob_hardlink",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "overlapping_roots",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "overlapping_roots"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "overlapping_roots",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "overlapping_roots"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "untrusted_executable_digest",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "untrusted_executable_digest",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unsupported_operations",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unsupported_operations",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": true,
+        "evaluation_only": true,
+        "outcome_codes": [],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_source",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "incomplete_identity"
+        ],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "unknown_source",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "incomplete_identity"
+        ],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "research_context",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "ineligible",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "fixture_context_required"
+        ],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "research_context",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "ineligible",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "fixture_context_required"
+        ],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "wrong_purpose",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "ineligible",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "purpose_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "wrong_purpose",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "ineligible",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "purpose_mismatch"
+        ],
+        "record_count": 4,
+        "record_valid": true
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "oversize_reason",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_string"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "oversize_reason",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_string"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "oversize_key",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_key"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "oversize_key",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_key"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "control_string",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_string"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "control_string",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_string"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "nested_duplicate_key",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "duplicate_key"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "nested_duplicate_key",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "duplicate_key"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "boolean_version",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_schema_version"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "boolean_version",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "unsupported_schema_version"
+        ],
+        "record_count": 0,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "percent_path",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "percent_path",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "tilde_path",
+      "candidate": "rust",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "experiment_version": 1,
+        "candidate": "rust",
+        "fixture_only": true,
+        "runtime_eligible": false,
+        "host_architecture": "arm64",
+        "translated": false,
+        "classification": "invalid_contract",
+        "spawned": false,
+        "reaped": false,
+        "cleanup": "not_started",
+        "exit_code": null,
+        "signal": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    },
+    {
+      "case": "tilde_path",
+      "candidate": "swift",
+      "passed": true,
+      "errors": [],
+      "result": {
+        "candidate": "swift",
+        "classification": "invalid_contract",
+        "cleanup": "not_started",
+        "exit_code": null,
+        "experiment_version": 1,
+        "fixture_only": true,
+        "host_architecture": "arm64",
+        "reaped": false,
+        "runtime_eligible": false,
+        "signal": null,
+        "spawned": false,
+        "stderr_bytes": 0,
+        "stdout_bytes": 0,
+        "translated": false
+      },
+      "oracle": {
+        "eligible": false,
+        "evaluation_only": true,
+        "outcome_codes": [
+          "invalid_path"
+        ],
+        "record_count": 4,
+        "record_valid": false
+      },
+      "observed_trace_count": 0,
+      "owned_identities_gone": false,
+      "unrelated_sentinel_alive": true,
+      "bounded_completion": true
+    }
+  ],
+  "trace_scope": "Direct-child reaping reported by each candidate; child and descendant creation identities independently disappear. Grandchild reaping belongs to the OS. No module collector or game observation.",
+  "corpus_sha256": "e97421a55fa758dbf3b8d8f252389e2e9ea80b04ce1877ee4224a894d2783f1e",
+  "build_metadata_sha256": "f91651ec90b52de2952a021ab5789684fac07eb605bee7c2fe92291e89ca57da",
+  "harness_sha256": "51b3a088364d27acd098f71defccd1bfa5d586fa59b647cde82bf53b915c9e30"
+}

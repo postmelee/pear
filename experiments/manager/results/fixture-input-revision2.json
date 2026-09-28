@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "revision": 2,
+  "scope": "Separate bounded functional liveness verification from the unchanged scored-launch budget; no claim that startup delay or the underlying OS behavior is fixed.",
+  "old_corpus_sha256": "e97421a55fa758dbf3b8d8f252389e2e9ea80b04ce1877ee4224a894d2783f1e",
+  "new_corpus_sha256": "96c6f785764b498df203a48bbc05389b85ced4e4c097c405fc54035a791ab2f7",
+  "unchanged_child_source_sha256": "c2574cfbe2b850988975d8ca5f978dc3e44d7383065b3610cd5b2eb3a5d6b36c",
+  "unchanged_comparison_plan_sha256": "79766f8e5ca1799bc8d5690a3413a40d3801ead60d72164d27427cb02898ad9c",
+  "ordinary_functional_timeout_ms": {
+    "old": 1500,
+    "new": 5000
+  },
+  "deliberate_timeout_ms": 1500,
+  "intentional_child_delay_ms": 5000,
+  "scored_launch_timeout_ms": 1500,
+  "cleanup_budget_seconds": 2,
+  "outer_deadline_seconds": 10,
+  "retained_evidence": {
+    "comparison.json": {
+      "path": "comparison-before-revision2.json",
+      "sha256": "64054d46c22a79d04b704210b8294eca24968c2031d2ee4f97e1a3243a2f8bbf"
+    },
+    "final-corpus.json": {
+      "path": "final-corpus-before-revision2.json",
+      "sha256": "f6115377e6d46307414d322bdd4afb71ea6912821549cc50dcce605629e2b3ad"
+    },
+    "startup-diagnostics.json": {
+      "path": "startup-diagnostics-before-revision2.json",
+      "sha256": "0dd4eb118dfa66a5186252ab74fe63442ce0dcb180598fffad02b14b3f8aacdd"
+    }
+  },
+  "retained_original_failures": {
+    "path": "prior-comparison-attempts.json",
+    "sha256": "c35e0f6e2b8936d8236cb8c0aa6d2f59bcfa5c6803163e0781323ef7b67e1ef7"
+  },
+  "unchanged_requirements": [
+    "All mandatory identity traces, direct-child reaping, observed-identity disappearance and sentinel survival remain required.",
+    "Expected classifications, privacy limits, output bounds, sample counts, sample order and optimization settings remain unchanged.",
+    "Any failed planned gate prevents publishing a new passing comparison record; no repeated attempts until favorable."
+  ],
+  "reason": "The additional final corpus observed a Rust observer-gap timeout before child trace even at 1500 ms. The successful comparison remains historical evidence and does not erase that failure. A 5000 ms functional budget remains inside the existing CLI range and below the 10-second outer budget with 2-second cleanup allowance. Performance samples retain 1500 ms. Passing new gates would establish only the declared wider functional budget; the original startup-limit failure and diagnostic uncertainty remain recorded."
+}

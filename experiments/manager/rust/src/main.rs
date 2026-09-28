@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 use std::io::Read;
 use std::os::fd::AsRawFd;
 use std::os::unix::process::{CommandExt, ExitStatusExt};
-use std::process::{Command, Stdio};
+use std::process::{Child, Command, Stdio};
 use std::time::{Duration, Instant};
 
 unsafe extern "C" {
@@ -182,7 +182,10 @@ impl Pipe {
             eof: false,
         }
     }
-    fn drain(&mut self, reader: &mut impl Read, limit: usize) -> R<bool> {
+    fn drain(&mut self, reader: &mut Option<impl Read>, limit: usize) -> R<bool> {
+        let Some(reader) = reader.as_mut() else {
+            return Ok(false);
+        };
         if self.eof {
             return Ok(false);
         }
@@ -282,27 +285,44 @@ fn run(cfg: Config) -> Outcome {
     if !same {
         return Outcome::new("invalid_contract", native);
     }
-    let mut child = match command.spawn() {
+    let child = match command.spawn() {
         Ok(c) => c,
         Err(_) => return Outcome::new("spawn_failed", native),
     };
+    supervise(child, &cfg, native, nonblocking)
+}
+
+// The callback is internal dependency injection for owned fault tests. Production
+// always passes nonblocking; no public input can select a fault-injection path.
+fn supervise(
+    mut child: Child,
+    cfg: &Config,
+    native: bool,
+    mut setup_pipe: impl FnMut(i32) -> bool,
+) -> Outcome {
     let pid = child.id() as i32;
     let mut outcome = Outcome::new("internal_error", native);
     outcome.spawned = true;
     outcome.cleanup = "failed";
     let observed = identity(pid);
     let group = unsafe { libc::getpgid(pid) } == pid || exited(pid) == Ok(true);
-    let mut stdout = child.stdout.take().expect("owned pipe");
-    let mut stderr = child.stderr.take().expect("owned pipe");
+    let mut stdout = Some(child.stdout.take().expect("owned pipe"));
+    let mut stderr = Some(child.stderr.take().expect("owned pipe"));
     let mut out = Pipe::new();
     let mut err = Pipe::new();
     let started = Instant::now();
     let mut reason = None;
-    if (observed.is_err() && exited(pid) != Ok(true))
-        || !group
-        || !nonblocking(stdout.as_raw_fd())
-        || !nonblocking(stderr.as_raw_fd())
-    {
+    // Evaluate both independently: short-circuiting could leave one pipe in
+    // blocking mode. If either setup fails, close both ends before cleanup can
+    // attempt a read. Bytes discarded this way are intentionally unobserved.
+    let stdout_ready = setup_pipe(stdout.as_ref().expect("owned pipe").as_raw_fd());
+    let stderr_ready = setup_pipe(stderr.as_ref().expect("owned pipe").as_raw_fd());
+    let pipes_closed = !stdout_ready || !stderr_ready;
+    if pipes_closed {
+        drop(stdout.take());
+        drop(stderr.take());
+    }
+    if (observed.is_err() && exited(pid) != Ok(true)) || !group || pipes_closed {
         reason = Some("internal_error");
     }
     while reason.is_none() {
@@ -388,7 +408,10 @@ fn run(cfg: Config) -> Outcome {
     } else {
         cleanup_ok = false;
     }
-    while cleanup_started.elapsed() < Duration::from_secs(2) && (!out.eof || !err.eof) {
+    while !pipes_closed
+        && cleanup_started.elapsed() < Duration::from_secs(2)
+        && (!out.eof || !err.eof)
+    {
         if out.drain(&mut stdout, cfg.limit).is_err() || err.drain(&mut stderr, cfg.limit).is_err()
         {
             cleanup_ok = false;
@@ -404,7 +427,7 @@ fn run(cfg: Config) -> Outcome {
     }
     outcome.out = out.count;
     outcome.err = err.count;
-    if out.count <= cfg.limit && err.count <= cfg.limit {
+    if !pipes_closed && out.count <= cfg.limit && err.count <= cfg.limit {
         cleanup_ok &= out.eof && err.eof;
     }
     outcome.cleanup = if cleanup_ok && outcome.reaped {
@@ -446,3 +469,6 @@ fn main() {
     };
     std::process::exit(outcome.emit());
 }
+
+#[cfg(test)]
+mod supervisor_tests;
