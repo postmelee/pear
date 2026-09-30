@@ -60,11 +60,15 @@ PAGE_WX_GUESTS = {
 
 
 def guest_fixtures_for(built):
-    return dict(API_GUESTS, **(PAGE_WX_GUESTS if code_publication_policy(built) == 'page-wx' else {}))
+    guests = dict(API_GUESTS, **(PAGE_WX_GUESTS if code_publication_policy(built) == 'page-wx' else {}))
+    if built.get('fixture_suite') == 'threads-memory-exceptions':
+        guests['stage4_pe'] = ('libexec/pear-stage4/stage4-arm64.exe', 0xAA64, True)
+    return guests
 
 
 AUTHORIZATION_SCOPES = {'bootstrap': 'development_native_bootstrap_pre_pe',
-                        'api-abi': 'development_windows_api_abi_fixtures'}
+                        'api-abi': 'development_windows_api_abi_fixtures',
+                        'threads-memory-exceptions': 'development_windows_thread_memory_exception_fixtures'}
 PROVENANCE = ('host/probe/provisioned_probe.py', 'host/probe/hardened_baseline.py')
 LIMIT = 2 * 1024 * 1024
 
@@ -202,7 +206,7 @@ def requirement_map(build_root, built):
                    'bootstrap_helper': PAYLOAD + '/' + BOOTSTRAP_HELPER,
                    'sentinel': PAYLOAD + '/' + SENTINEL}
     guest_fixtures = {}
-    if suite == 'api-abi':
+    if suite in ('api-abi', 'threads-memory-exceptions'):
         need(API_LAUNCH in by_path, 'api_launch_helper_missing')
         entrypoints['api_launch'] = PAYLOAD + '/' + API_LAUNCH
         artifact_map = {row['path']: row for row in artifacts}

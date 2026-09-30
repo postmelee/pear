@@ -344,20 +344,22 @@ class Session:
             if time.monotonic() >= deadline:
                 return False
 
-    def cleanup(self, roles, bounds):
+    def cleanup(self, roles, bounds, *, allow_interrupt=True):
         report = {'signals': [], 'errors': [], 'observation_gap': False, 'reaped': {}, 'complete': False}
         selected = [self.children[role] for role in roles if role in self.children]
         for child in selected:
             if child.setup_error:
                 report['errors'].append({'role': child.role, 'code': child.setup_error})
                 report['observation_gap'] = True
-        # Wine installs a SIGINT shutdown handler; this is the same signal used
-        # by its -k path, sent only to our verified foreground server identity.
-        for number, budget in [(signal.SIGINT, bounds['grace_ms']),
+        # Server cleanup retains Wine's SIGINT/-k behavior by default. PE
+        # clients can instead drain naturally: their SIGINT invokes Windows
+        # CtrlRoutine and does not share the server's shutdown semantics.
+        first_signal = signal.SIGINT if allow_interrupt else None
+        for number, budget in [(first_signal, bounds['grace_ms']),
                                (signal.SIGTERM, bounds['terminate_ms']),
                                (signal.SIGKILL, bounds['kill_ms'])]:
             for child in selected:
-                if child.reaped:
+                if child.reaped or number is None:
                     continue
                 try:
                     if self.observer.signal_owned(child, number):
@@ -817,9 +819,9 @@ def run_case(case, runtime, entrypoints, output, bounds):
 
 
 def run(suite, runtime, output, require_empty):
-    if suite == 'api-abi':
+    if suite in ('api-abi', 'threads-memory-exceptions'):
         from api_runner import run as run_api
-        return run_api(runtime, output, require_empty)
+        return run_api(runtime, output, require_empty, suite)
     need(suite == 'bootstrap' and require_empty, 'explicit_bootstrap_empty_output_required')
     # Lazy import keeps portable data/lifecycle tests independent of signing tools.
     from signing import validate_prepared
@@ -1016,9 +1018,9 @@ def _validate_runs(root, suite='bootstrap'):
 
 def validate_runs(root, suite='bootstrap'):
     try:
-        if suite == 'api-abi':
+        if suite in ('api-abi', 'threads-memory-exceptions'):
             from api_runner import validate_runs as validate_api
-            return validate_api(root)
+            return validate_api(root, suite)
         return _validate_runs(root, suite)
     except Error:
         raise
@@ -1028,7 +1030,7 @@ def validate_runs(root, suite='bootstrap'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--suite', choices=['bootstrap', 'api-abi'], required=True)
+    parser.add_argument('--suite', choices=['bootstrap', 'api-abi', 'threads-memory-exceptions'], required=True)
     parser.add_argument('--runtime', required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--require-empty', action='store_true')

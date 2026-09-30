@@ -230,7 +230,7 @@ def analyze(text, *, machine_symbols=None):
                             'all_wine_control_flow', 'guest_execution', 'performance']}
 
 
-def macho(data):
+def macho(data, *, extra_symbols=()):
     """Bounded ARM64 Mach-O segment/symbol facts used to bind reader output."""
     need(isinstance(data, bytes) and 32 <= len(data) <= MAX_BINARY, 'abi_review_binary_size')
     def take(offset, size):
@@ -258,6 +258,10 @@ def macho(data):
     offset, count, strings_at, strings_size = symtab
     need(count <= 1000000 and count * 16 <= len(data), 'abi_review_macho_symbol_count')
     strings = take(strings_at, strings_size)
+    need(isinstance(extra_symbols, (tuple, list)) and len(extra_symbols) <= 32 and
+         all(isinstance(name, str) and re.fullmatch(r'_[A-Za-z0-9_]{1,128}', name) for name in extra_symbols),
+         'abi_review_extra_symbols')
+    wanted = set(ENTRIES) | set(HELPERS) | set(POINTERS) | HOST_CALLS | set(extra_symbols)
     symbols = {}
     for index in range(count):
         name_at, kind, _, _, value = unpack('IBBHQ', offset + index * 16)
@@ -270,7 +274,7 @@ def macho(data):
             name = strings[name_at:end].decode('utf-8')
         except UnicodeError:
             raise Error('abi_review_macho_symbol_encoding') from None
-        if name in set(ENTRIES) | set(HELPERS) | set(POINTERS) | HOST_CALLS:
+        if name in wanted:
             need(name not in symbols or symbols[name] == value, 'abi_review_macho_ambiguous_symbol')
             symbols[name] = value
     return symbols, segments
@@ -321,7 +325,8 @@ def inspect_build(buildroot):
     from toolchain import MACH_ARM64, base_env, inspect_closure
     root = task_path(buildroot).resolve()
     built = verify_build(root)
-    need(built.get('configuration', {}).get('fixture_suite', built.get('fixture_suite')) == 'api-abi',
+    need(built.get('configuration', {}).get('fixture_suite', built.get('fixture_suite')) in
+         ('api-abi', 'threads-memory-exceptions'),
          'abi_review_wrong_suite')
     commands = [row for row in built['commands'] if row['id'] == 'disassemble-ntdll']
     need(len(commands) == 1, 'abi_review_command_missing')

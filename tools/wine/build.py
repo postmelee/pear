@@ -36,6 +36,12 @@ FIXTURE_SUITES = {
     'api-abi': ('bootstrap_native.c', 'sentinel.c', 'api_launch.c',
                 'api_pe.c', 'abi_pe.c', 'abi_native.c', 'abi_gateway.S'),
 }
+STAGE4_SUITE = 'threads-memory-exceptions'
+STAGE4_FIXTURES = ('threads_pe.c', 'memory_pe.c', 'exceptions_pe.c', 'threads_gateway.S',
+                   'signal_native.c', 'stage4_protocol.h')
+FIXTURE_SUITES[STAGE4_SUITE] = FIXTURE_SUITES['api-abi'] + STAGE4_FIXTURES
+PE_SUITES = ('api-abi', STAGE4_SUITE)
+STAGE4_PE = {'libexec/pear-stage4/stage4-arm64.exe': 0xAA64}
 STAGE3_PE = {
     'libexec/pear-stage3/api-arm64.exe': 0xAA64,
     'libexec/pear-stage3/api-x64.exe': 0x8664,
@@ -62,7 +68,7 @@ def code_publication_policy(value):
     """Read a recorded implementation policy, never a caller-supplied launch override."""
     policy = value.get('code_publication_policy', 'none')
     need(policy in ('none', 'page-wx'), 'build_code_publication_policy')
-    need(policy == 'none' or fixture_suite(value) == 'api-abi', 'build_code_publication_scope')
+    need(policy == 'none' or fixture_suite(value) in PE_SUITES, 'build_code_publication_scope')
     return policy
 
 
@@ -72,7 +78,10 @@ def fixture_sources(value):
 
 
 def fixture_pe_outputs(suite, policy='none'):
-    return dict(STAGE3_PE, **(PAGE_WX_PE if policy == 'page-wx' else {})) if suite == 'api-abi' else {}
+    outputs = dict(STAGE3_PE, **(PAGE_WX_PE if policy == 'page-wx' else {})) if suite in PE_SUITES else {}
+    if suite == STAGE4_SUITE:
+        outputs.update(STAGE4_PE)
+    return outputs
 
 
 def fixture_commands(root, tools, lock, suite, publication_policy='none'):
@@ -82,13 +91,13 @@ def fixture_commands(root, tools, lock, suite, publication_policy='none'):
     commands = {}
     native = [('fixture-bootstrap', 'bootstrap_native.c', 'libexec/pear-stage2/bootstrap-native'),
               ('fixture-sentinel', 'sentinel.c', 'libexec/pear-stage2/sentinel')]
-    if suite == 'api-abi':
+    if suite in PE_SUITES:
         native.append(('fixture-api-launch', 'api_launch.c', 'libexec/pear-stage3/api-launch'))
     for ident, filename, output in native:
         commands[ident] = [str(native_tool(lock, 'clang')), '-arch', 'arm64', '-isysroot', lock['sdk']['path'],
             '-std=c11', '-Wall', '-Wextra', '-Werror', str(sources / filename),
             '-o', str(root / 'install' / output)]
-    if suite == 'api-abi':
+    if suite in PE_SUITES:
         clang = str(tools / 'llvm-mingw/bin/clang')
         for target, suffix in [('aarch64', 'arm64'), ('x86_64', 'x64'), ('i686', 'i386')]:
             commands['fixture-api-' + suffix] = [clang, '--target=' + target + '-w64-windows-gnu',
@@ -117,7 +126,22 @@ def fixture_commands(root, tools, lock, suite, publication_policy='none'):
                             ('disassemble-abi', 'libexec/pear-stage3/abi-arm64.exe')]:
             commands[ident] = [str(tools / 'llvm-mingw/bin/llvm-objdump'), '--disassemble',
                               str(root / 'install' / path)]
+    if suite == STAGE4_SUITE:
+        commands['fixture-stage4-arm64'] = [clang, '--target=aarch64-w64-windows-gnu',
+            '-std=c11', '-Wall', '-Wextra', '-Werror', '-O1', '-fno-builtin', '-nostdlib',
+            '-Wl,-e,mainCRTStartup', *[str(sources / name) for name in
+                ('threads_pe.c', 'memory_pe.c', 'exceptions_pe.c', 'threads_gateway.S')],
+            '-lkernel32', '-o', str(root / 'install/libexec/pear-stage4/stage4-arm64.exe')]
+        commands['disassemble-stage4'] = [str(tools / 'llvm-mingw/bin/llvm-objdump'), '--disassemble',
+            str(root / 'install/libexec/pear-stage4/stage4-arm64.exe')]
     return commands
+
+
+def verify_stage4_native_fixture(source, hashes):
+    for original, copied in [('signal_native.c', 'pear_signal_fixture.c'),
+                             ('stage4_protocol.h', 'stage4_protocol.h')]:
+        need(sha256(source / 'dlls/ntdll/unix' / copied) == hashes.get(original),
+             'build_stage4_native_fixture_source_mismatch')
 
 
 WINMD_PATHS = frozenset('share/wine/winmd/' + name + '.winmd' for name in (
@@ -474,9 +498,11 @@ def verify_build_evidence(root, result, current=True):
     if current:
         for name in fixture_sources(result):
             need(sha256(REPO / 'tests/wine/fixtures' / name) == result['fixture_hashes'].get(name), 'build_fixture_changed')
-    if fixture_suite(result) == 'api-abi':
+    if fixture_suite(result) in PE_SUITES:
         need(sha256(root / 'source/dlls/ntdll/unix/pear_abi_fixture.c') == result['fixture_hashes']['abi_native.c'],
              'build_native_fixture_source_mismatch')
+    if fixture_suite(result) == STAGE4_SUITE:
+        verify_stage4_native_fixture(root / 'source', result['fixture_hashes'])
     config = load_json(REPO / RECORDS['config'])
     variant = next(row for row in config['variants'] if row['id'] == result['variant'])
     verify_build_commands(root, result, variant)
@@ -671,7 +697,7 @@ def required_outputs(artifacts, variant, suite='bootstrap', publication_policy='
         'libexec/pear-stage2/sentinel': 'macho',
     }
     need(suite in FIXTURE_SUITES, 'build_fixture_suite')
-    if suite == 'api-abi':
+    if suite in PE_SUITES:
         required.update({path: 'pe' for path in fixture_pe_outputs(suite, publication_policy)})
         required['libexec/pear-stage3/api-launch'] = 'macho'
     need(variant in ('arm64', 'arm64ec-build'), 'build_variant')
@@ -756,6 +782,21 @@ def arena_capacity_evidence(source, install, artifacts):
               'largest_slot_bytes': largest, 'preparation_margin_bytes': largest,
               'required_interior_bytes': required_bytes, 'required_slots': required_slots,
               'wine_execution': False}
+    dynamic_names = ('BYTES', 'SLOTS', 'SLOT_BYTES')
+    dynamic = {}
+    for name in dynamic_names:
+        rows = re.findall(r'^#define PEAR_ARENA_DYNAMIC_' + name + r' (?:\(\(SIZE_T\)([0-9]+)\)|([0-9]+)u)$',
+                          text, re.MULTILINE)
+        need(len(rows) <= 1, 'arena_dynamic_capacity_definition')
+        if rows:
+            dynamic[name.lower()] = int(rows[0][0] or rows[0][1])
+    if dynamic:
+        need(dynamic == {'bytes': 524288, 'slots': 8, 'slot_bytes': 65536},
+             'arena_dynamic_capacity_geometry')
+        need(re.search(r'^#define PEAR_ARENA_TOTAL_BYTES \(PEAR_ARENA_INTERIOR_BYTES \+ PEAR_ARENA_DYNAMIC_BYTES\)$', text, re.MULTILINE)
+             and re.search(r'^#define PEAR_ARENA_MAPPING_BYTES \(PEAR_ARENA_TOTAL_BYTES \+ PEAR_ARENA_ALIGNMENT\)$', text, re.MULTILINE),
+             'arena_dynamic_mapping_capacity')
+        result['dynamic_limits'] = dynamic
     # Historical headers had no copy allowance; preserve their exact evidence shape.
     if copy_count:
         result['fixture_copies'] = {'path': copy_path, 'count': copy_count,
@@ -868,10 +909,13 @@ def build(variant_name, inputs, tools, output, jobs):
         result['configuration'] = observed_configuration(objects / 'Makefile', variant, policy,
                                     native_architecture_policy=has_native_architecture_policy(series))
         (output / 'install/libexec/pear-stage2').mkdir(parents=True)
-        if suite == 'api-abi':
+        if suite in PE_SUITES:
             (output / 'install/libexec/pear-stage3').mkdir(parents=True)
             need(sha256(source / 'dlls/ntdll/unix/pear_abi_fixture.c') == result['fixture_hashes']['abi_native.c'],
                  'build_native_fixture_source_mismatch')
+        if suite == STAGE4_SUITE:
+            (output / 'install/libexec/pear-stage4').mkdir(parents=True)
+            verify_stage4_native_fixture(source, result['fixture_hashes'])
         for ident, argv in fixture_commands(output, tools, lock, suite, policy).items():
             run_build_command(result['commands'], ident, argv, cwd, env, 60)
         artifacts = inventory(output / 'install', binary=True)

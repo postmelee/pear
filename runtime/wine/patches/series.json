@@ -426,9 +426,92 @@
         "stage3.cookie-destination-bounds",
         "stage3.actual-security-cookie-initialization"
       ]
+    },
+    {
+      "path": "0004-darwin-dynamic-memory.patch",
+      "sha256": "2a80b367d3fe2b4f86dc5269c74a0dcf55323e0ba50c0e0a6f0618a26239ebb1",
+      "rationale": "Reserve a separate bounded dynamic-code slot class in the same MAP_JIT owner, preserve immutable PE images, and enforce explicit Windows reserve/commit/RW-to-RX/decommit/reuse operations without changing anonymous backing.",
+      "provenance": "Original Pear integration against pinned Wine and the preceding ordered Pear patches; existing upstream and original owner notices retained. Capacity includes the measured original Stage 4 ARM64 fixture.",
+      "license": "MIT (original Pear owner); LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "before_sha256": "9f7af4b1f5b829e9e53ed6ab2c443954df1b07093de09bbd0cb99a0f9e36d0eb",
+          "after_sha256": "121787b1485c3c424c32e660a184ab0bee3206a9ed9486f99d247d80bfa9896b"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "before_sha256": "101aa7d8d762759621a9c61cf9d0dc7e29b7d5da81b86ea8179995ca81f4af27",
+          "after_sha256": "e3e70366af63da6d9fa3c0f87485c8ab58d3561fcbcdefd4f56fb41c2858a9d7"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "before_sha256": "d4476ae8fdae5c985666fb83ca49bcedf235d7ca2a85d644c36a626b0cb6011b",
+          "after_sha256": "4fbfb56210bd6f011c4dde7d3389e6efa7f2bbe5116ee45d4ffd5b05c2a4c713"
+        }
+      ],
+      "regression_ids": [
+        "stage4.dynamic-owner-generation",
+        "stage4.dynamic-publication-and-rewrite",
+        "stage4.dynamic-decommit-reuse",
+        "stage4.ordinary-protection-rejection",
+        "stage4.memory-fault-cleanup"
+      ]
+    },
+    {
+      "path": "0004a-darwin-thread-signal-observation.patch",
+      "sha256": "0af8fff4dffac4f380c970311e40c10a975d3c039a77a752224a606d97120e63",
+      "rationale": "Observe bounded real Wine worker startup, registered asynchronous signal windows and host teardown through fixture-gated native records while retaining upstream thread, exception, suspend and x18 dispatch paths.",
+      "provenance": "Original Pear fixture and diagnostic integration against pinned Wine plus preceding ordered Pear patches. Existing Wine implementation and notices retained; no alternative exception handler or translator introduced.",
+      "license": "MIT (original Pear fixtures); LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/Makefile.in",
+          "before_sha256": "d2aa58a7b5c19282e6a2c09a2420aca3c27b7b5f9b6da38285df154e16d167eb",
+          "after_sha256": "dca23fdb80cec1ac569a7ccc6899676100db23953df5b1fae9f092bd774e5434"
+        },
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "before_sha256": "9056666ffa304ab52ece493d55d072da83e81140330ead148f9ce30f94b01a16",
+          "after_sha256": "67b07af46a939203418309d2e278d1d135d1a8caaa92b6c7bbb3eb704c2b7434"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_signal_fixture.c",
+          "before_sha256": null,
+          "after_sha256": "cadae5facb0185304e55daf363c8b1efd59d3a4969ca8908ab4b7d8a3c77b4f7"
+        },
+        {
+          "path": "dlls/ntdll/unix/server.c",
+          "before_sha256": "23c0d22d373cd1825340d725232e5a4521f65aa3abece16fc312553bf2f9a4a7",
+          "after_sha256": "14b0d54d74a7c992ceebeb57c2fec2b05ca53bfa8b9ef698b126d06d77c76617"
+        },
+        {
+          "path": "dlls/ntdll/unix/signal_arm64.c",
+          "before_sha256": "444741c804b2a52a7a862389d09c5a4c1f823e5326573dd6a6e81a661814f81f",
+          "after_sha256": "ce0991f5e2be2d11a159e3552904714d7c32fd946365aa5c4034512e66bbc55c"
+        },
+        {
+          "path": "dlls/ntdll/unix/stage4_protocol.h",
+          "before_sha256": null,
+          "after_sha256": "fed6aec99834a1960e3a4ef4e116879fb64a0d7b019d84300c7cd82022635555"
+        },
+        {
+          "path": "dlls/ntdll/unix/thread.c",
+          "before_sha256": "0db3d5d025a7571d7370b3268bb52e52214e6a2c9c02dee5ef9d7c2c5c20af0d",
+          "after_sha256": "8ad51c83cfab8a30c844a9e90032e3cd89092e1c4b56ca80ed18908709192b24"
+        }
+      ],
+      "regression_ids": [
+        "stage4.worker-tls-teb",
+        "stage4.native-signal-context",
+        "stage4.controlled-suspend-resume",
+        "stage4.ordered-exception-recovery",
+        "stage4.controlled-fault-termination",
+        "stage4.atomic-native-observations"
+      ]
     }
   ],
   "port_complete": false,
-  "fixture_suite": "api-abi",
+  "fixture_suite": "threads-memory-exceptions",
   "code_publication_policy": "page-wx"
 }

@@ -437,6 +437,106 @@ class OrdinaryLifecycleTests(unittest.TestCase):
         self.assertEqual(self.session.observer.identity(sentinel.pid), sentinel.identity)
         self.assertTrue(self.finish(('sentinel',))['complete'])
 
+    def test_cleanup_without_interrupt_drains_natural_exit_and_preserves_sentinel(self):
+        sentinel = self.child('sentinel', 'import time; time.sleep(30)')
+        child = self.child('loader', 'import time; print("ready",flush=True); time.sleep(.15)')
+        try:
+            self.assertTrue(self.session.wait_for(
+                lambda: b'ready' in self.session.streams['loader', 'stdout']['data'], 3))
+            with patch.object(self.session.observer, 'signal_owned',
+                              wraps=self.session.observer.signal_owned) as observed:
+                cleanup = self.session.cleanup(('loader',), self.BOUNDS, allow_interrupt=False)
+            self.assertTrue(cleanup['complete'])
+            self.assertEqual(cleanup['signals'], [])
+            self.assertNotIn(signal.SIGINT, [call.args[1] for call in observed.call_args_list])
+            self.assertTrue(child.reaped)
+            self.assertEqual(child.exit_code, 0)
+            self.assertFalse(sentinel.exited)
+            self.assertEqual(self.session.observer.identity(sentinel.pid), sentinel.identity)
+        finally:
+            self.finish(('loader', 'sentinel'))
+
+    def test_cleanup_without_interrupt_waits_then_escalates_term_to_kill(self):
+        code = ('import signal,time; '
+                'signal.signal(signal.SIGINT, lambda *_: print("unexpected-interrupt",flush=True)); '
+                'signal.signal(signal.SIGTERM, signal.SIG_IGN); '
+                'print("ready",flush=True); time.sleep(30)')
+        child = self.child('loader', code)
+        sent = []
+        original = self.session.observer.signal_owned
+        def observe(target, number):
+            sent.append((number, time.monotonic()))
+            return original(target, number)
+        try:
+            self.assertTrue(self.session.wait_for(
+                lambda: b'ready' in self.session.streams['loader', 'stdout']['data'], 3))
+            start = time.monotonic()
+            with patch.object(self.session.observer, 'signal_owned', side_effect=observe):
+                cleanup = self.session.cleanup(('loader',), self.BOUNDS, allow_interrupt=False)
+            self.assertTrue(cleanup['complete'])
+            self.assertEqual([number for number, _ in sent], [signal.SIGTERM, signal.SIGKILL])
+            self.assertGreaterEqual(sent[0][1] - start, self.BOUNDS['grace_ms'] / 1000)
+            self.assertEqual(cleanup['signals'], [
+                {'role': 'loader', 'signal': int(signal.SIGTERM)},
+                {'role': 'loader', 'signal': int(signal.SIGKILL)}])
+            self.assertEqual(child.exit_code, -signal.SIGKILL)
+            self.assertNotIn(b'unexpected-interrupt', self.session.streams['loader', 'stdout']['data'])
+        finally:
+            self.finish(('loader',))
+
+    def test_cleanup_without_interrupt_retains_leader_for_owned_fork(self):
+        sentinel = self.child('sentinel', 'import time; time.sleep(30)')
+        code = ('import os,time; time.sleep(.05); pid=os.fork(); '
+                'print("owned-fork",flush=True); time.sleep(.1 if pid else 30)')
+        leader = self.child('loader', code)
+        observations = []
+        original = self.session.observer.signal_owned
+        def observe(target, number):
+            observations.append((number, target.reaped, self.session.observer.group_members(target)))
+            return original(target, number)
+        try:
+            # This base-session fork deliberately creates an observation gap;
+            # continue pumping to test safe cleanup without suppressing the gap.
+            deadline = time.monotonic() + 3
+            while not leader.exited and time.monotonic() < deadline:
+                self.session.pump()
+            self.assertTrue(leader.exited)
+            self.assertTrue(self.session.observer.group_members(leader))
+            with patch.object(self.session.observer, 'signal_owned', side_effect=observe):
+                cleanup = self.session.cleanup(('loader',), self.BOUNDS, allow_interrupt=False)
+            self.assertTrue(leader.reaped)
+            self.assertTrue(cleanup['observation_gap'])
+            self.assertFalse(cleanup['complete'])
+            self.assertTrue(any(members for _, _, members in observations))
+            self.assertTrue(all(not reaped and number != signal.SIGINT for number, reaped, _ in observations))
+            self.assertEqual(cleanup['signals'], [{'role': 'loader', 'signal': int(signal.SIGTERM)}])
+            self.assertNotIn('owned_group_survivor', [row['code'] for row in cleanup['errors']])
+            self.assertFalse(sentinel.exited)
+            self.assertEqual(self.session.observer.identity(sentinel.pid), sentinel.identity)
+        finally:
+            self.finish(('loader', 'sentinel'))
+
+    def test_cleanup_without_interrupt_preserves_refused_signal_error(self):
+        child = self.child('loader', 'import time; print("ready",flush=True); time.sleep(30)')
+        original = self.session.observer.signal_owned
+        numbers = []
+        def refused_once(target, number):
+            numbers.append(number)
+            if len(numbers) == 1:
+                raise PermissionError('Synthetic owned SIGTERM refusal')
+            return original(target, number)
+        try:
+            self.assertTrue(self.session.wait_for(
+                lambda: b'ready' in self.session.streams['loader', 'stdout']['data'], 3))
+            with patch.object(self.session.observer, 'signal_owned', side_effect=refused_once):
+                cleanup = self.session.cleanup(('loader',), self.BOUNDS, allow_interrupt=False)
+            self.assertFalse(cleanup['complete'])
+            self.assertTrue(child.reaped)
+            self.assertEqual(numbers, [signal.SIGTERM, signal.SIGKILL])
+            self.assertEqual(cleanup['errors'], [{'role': 'loader', 'code': 'signal_refused'}])
+        finally:
+            self.finish(('loader',))
+
     def test_real_timeout_cleanup_reaps_only_owned_child(self):
         child = self.child('loader', 'import time; time.sleep(30)')
         self.assertFalse(self.session.wait_for(lambda: child.exited, .08))

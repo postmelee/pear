@@ -615,3 +615,292 @@ class ProducerSnapshotTests(unittest.TestCase):
                 self.assertEqual(result['source.py'], digest)
                 self.assertEqual((root / 'run/producer/source.py').read_bytes(), (source / 'source.py').read_bytes())
                 with self.assertRaises(FileExistsError): api.snapshot_producers(root / 'run')
+
+
+class StagedCleanupTests(unittest.TestCase):
+    def test_failed_loader_cleanup_still_stops_server_and_retains_all_evidence(self):
+        loader_signal = {'role': 'loader', 'signal': int(signal.SIGTERM)}
+        server_signal = {'role': 'server', 'signal': int(signal.SIGINT)}
+        loader_error = {'role': 'loader', 'code': 'owned_group_survivor'}
+        server_error = {'role': 'server', 'code': 'signal_refused'}
+        loader = {'signals': [loader_signal], 'errors': [loader_error],
+                  'observation_gap': True, 'reaped': {'loader': False}, 'complete': False}
+        server = {'signals': [server_signal], 'errors': [server_error],
+                  'observation_gap': False, 'reaped': {'server': True}, 'complete': False}
+        session = api.APISession.__new__(api.APISession)
+        with patch.object(base.Session, 'cleanup', autospec=True, side_effect=[loader, server]) as cleanup, \
+                patch.object(session, 'registered_exit_barrier', return_value=None):
+            result = session.cleanup(('loader', 'server'), {'drain_ms': 1000})
+        self.assertEqual(result, {'signals': [loader_signal, server_signal],
+            'errors': [loader_error, server_error], 'observation_gap': True,
+            'reaped': {'loader': False, 'server': True}, 'complete': False})
+        self.assertEqual([call.args[1] for call in cleanup.call_args_list], [('loader',), ('server',)])
+        self.assertEqual(cleanup.call_args_list[0].kwargs, {'allow_interrupt': False})
+        self.assertEqual(cleanup.call_args_list[1].kwargs, {})
+
+    def test_first_incomplete_report_cannot_be_overwritten_by_server_success(self):
+        loader = {'signals': [], 'errors': [], 'observation_gap': False,
+                  'reaped': {'loader': True}, 'complete': False}
+        server = {'signals': [], 'errors': [], 'observation_gap': False,
+                  'reaped': {'server': True}, 'complete': True}
+        session = api.APISession.__new__(api.APISession)
+        with patch.object(base.Session, 'cleanup', autospec=True, side_effect=[loader, server]), \
+                patch.object(session, 'registered_exit_barrier', return_value=None):
+            result = session.cleanup(('loader', 'server'), {'drain_ms': 1000})
+        self.assertFalse(result['complete'])
+        self.assertEqual(result['reaped'], {'loader': True, 'server': True})
+
+    def test_other_owned_role_cleanup_keeps_existing_policy(self):
+        report = {'signals': [], 'errors': [], 'observation_gap': False,
+                  'reaped': {'sentinel': True}, 'complete': True}
+        session = api.APISession.__new__(api.APISession)
+        with patch.object(base.Session, 'cleanup', autospec=True, return_value=report) as cleanup:
+            self.assertIs(session.cleanup(('sentinel',), {}), report)
+        cleanup.assert_called_once_with(session, ('sentinel',), {})
+
+    def test_successful_server_signal_waits_for_all_registered_exit_observations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            record, _, _, _ = case_fixture(directory)
+            child = record['registrations'][2]
+            child.update(exit_code=-int(signal.SIGTERM), exit_status=int(signal.SIGTERM), exit_observed_ns=13)
+            record['pre_cleanup']['processes'][child['role']] = {
+                'exited': False, 'exit_code': None, 'exit_status': None}
+            record['cleanup']['signals'] = [{'role': 'loader', 'signal': int(signal.SIGTERM)},
+                                            {'role': 'server', 'signal': int(signal.SIGINT)}]
+            record['signal_observations'] = [
+                {'role': 'loader', 'signal': int(signal.SIGTERM), 'at_ns': 11,
+                 'live_registered_roles': [child['role']]},
+                {'role': 'server', 'signal': int(signal.SIGINT), 'at_ns': 14, 'live_registered_roles': []}]
+            api.assess_descendant_exits(record)
+            for mode in ('reported-live', 'unobserved-exit'):
+                changed = copy.deepcopy(record)
+                if mode == 'reported-live':
+                    changed['signal_observations'][1]['live_registered_roles'] = [child['role']]
+                else:
+                    # An empty live list cannot hide an exit observed after shutdown.
+                    changed['signal_observations'][1]['at_ns'] = 12
+                with self.subTest(mode=mode), self.assertRaisesRegex(Error, 'server_shutdown_before_descendants'):
+                    api.assess_descendant_exits(changed)
+
+    def test_native_exit_one_during_cleanup_remains_a_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            record, _, _, _ = case_fixture(directory)
+            child = record['registrations'][2]
+            child.update(exit_code=1, exit_status=1 << 8, exit_observed_ns=13)
+            record['pre_cleanup']['processes'][child['role']] = {
+                'exited': False, 'exit_code': None, 'exit_status': None}
+            record['events'][child['role']] = [row for row in record['events'][child['role']]
+                if row['event'] not in ('stage3_guest_exit', 'stage3_process_exit')]
+            record['cleanup']['signals'] = [{'role': 'loader', 'signal': int(signal.SIGINT)},
+                                            {'role': 'server', 'signal': int(signal.SIGINT)}]
+            record['signal_observations'] = [
+                {'role': 'loader', 'signal': int(signal.SIGINT), 'at_ns': 11,
+                 'live_registered_roles': [child['role']]},
+                {'role': 'server', 'signal': int(signal.SIGINT), 'at_ns': 14, 'live_registered_roles': []}]
+            with self.assertRaisesRegex(Error, 'unexpected_cleanup_window_exit'):
+                api.assess_descendant_exits(record)
+
+    def test_signal_reports_and_observations_must_keep_chronological_order(self):
+        with tempfile.TemporaryDirectory() as directory:
+            record, _, _, _ = case_fixture(directory)
+            record['cleanup']['signals'] = [{'role': 'loader', 'signal': int(signal.SIGTERM)},
+                                            {'role': 'server', 'signal': int(signal.SIGINT)}]
+            record['signal_observations'] = [
+                {'role': 'loader', 'signal': int(signal.SIGTERM), 'at_ns': 12, 'live_registered_roles': []},
+                {'role': 'server', 'signal': int(signal.SIGINT), 'at_ns': 11, 'live_registered_roles': []}]
+            with self.assertRaisesRegex(Error, 'cleanup_signal_time'):
+                api.assess_descendant_exits(record)
+            record['signal_observations'].reverse()
+            with self.assertRaisesRegex(Error, 'cleanup_signal_binding'):
+                api.assess_descendant_exits(record)
+
+    def test_late_registration_cannot_be_explained_by_staged_shutdown(self):
+        with tempfile.TemporaryDirectory() as directory:
+            record, _, _, _ = case_fixture(directory)
+            del record['pre_cleanup']['processes']['process-02']
+            with self.assertRaisesRegex(Error, 'late_or_unobserved_registration'):
+                api.assess_descendant_exits(record)
+
+    def test_duration_bound_includes_three_shutdown_phases_sentinel_wait_and_drain(self):
+        bounds = json.loads(api.CASES.read_text())['bounds']
+        self.assertEqual(api.cleanup_allowance_ms(bounds), 37000)
+        api.validate_duration(217000, 180000, bounds)
+        for elapsed in (217001, -1, True, 217000.0):
+            with self.subTest(elapsed=elapsed), self.assertRaisesRegex(Error, 'api_case_duration'):
+                api.validate_duration(elapsed, 180000, bounds)
+        changed = {**bounds, 'grace_ms': bounds['grace_ms'] + 1}
+        self.assertEqual(api.cleanup_allowance_ms(changed), 37003)
+        for key in ('grace_ms', 'terminate_ms', 'kill_ms', 'drain_ms'):
+            for invalid in (True, -1, 60001, 1.5):
+                with self.subTest(key=key, invalid=invalid), self.assertRaisesRegex(Error, 'api_cleanup_budget'):
+                    api.cleanup_allowance_ms({**bounds, key: invalid})
+
+    @unittest.skipUnless(sys.platform == 'darwin' and hasattr(__import__('select'), 'kqueue'),
+                         'ordinary native staged shutdown needs Darwin kqueue')
+    def test_native_loader_term_handler_receives_reply_before_server_shutdown(self):
+        # These are ordinary native Python processes with a local IPC dependency.
+        # No Wine fixture, fake signing grant or restricted execution is involved.
+        with tempfile.TemporaryDirectory(dir='/private/tmp') as directory:
+            root = Path(directory)
+            session = api.APISession(root, root, {}, NONCE)
+            env = {'PATH': '/usr/bin:/bin'}
+            executable = session.observer.executable(os.getpid())
+            bounds = {'grace_ms': 150, 'terminate_ms': 1000, 'kill_ms': 1000, 'drain_ms': 200}
+            endpoint = str(root / 'service')
+            server_code = '''import os,signal,socket,sys
+signal.signal(signal.SIGINT, lambda *_: os._exit(0))
+s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+s.bind(sys.argv[1]); s.listen(1)
+print('server-ready', flush=True)
+while True:
+    client, _ = s.accept()
+    if client.recv(1) == b'Q': client.sendall(b'A')
+    client.close()
+'''
+            loader_code = '''import os,signal,socket,sys,time
+signal.signal(signal.SIGINT, lambda *_: os._exit(99))
+def terminate(*_):
+    try:
+        client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        client.settimeout(0.8); client.connect(sys.argv[1]); client.sendall(b'Q')
+        if client.recv(1) != b'A': os._exit(92)
+        os.write(1, b'term-server-reply\\n')
+        os._exit(0)
+    except OSError:
+        os._exit(93)
+signal.signal(signal.SIGTERM, terminate)
+print('loader-ready', flush=True)
+while True: time.sleep(0.02)
+'''
+            try:
+                sentinel = session.launch('sentinel', [executable, '-c', 'import time; time.sleep(20)'], env)
+                server = session.launch('server', [executable, '-c', server_code, endpoint], env)
+                self.assertTrue(session.wait_for(lambda: b'server-ready' in
+                    session.streams[('server', 'stdout')]['data'], 3))
+                loader = session.launch('loader', [executable, '-c', loader_code, endpoint], env)
+                self.assertTrue(session.wait_for(lambda: b'loader-ready' in
+                    session.streams[('loader', 'stdout')]['data'], 3))
+                started = time.monotonic()
+                result = session.cleanup(('loader', 'server'), bounds)
+                self.assertGreaterEqual(time.monotonic() - started, bounds['grace_ms'] / 1000)
+                self.assertTrue(result['complete'], result)
+                self.assertEqual((loader.exit_code, server.exit_code), (0, 0))
+                self.assertEqual(result['signals'], [{'role': 'loader', 'signal': int(signal.SIGTERM)},
+                                                      {'role': 'server', 'signal': int(signal.SIGINT)}])
+                self.assertEqual([(row['role'], row['signal']) for row in session.observer.signal_observations],
+                                 [(row['role'], row['signal']) for row in result['signals']])
+                self.assertIn(b'term-server-reply\n', session.streams[('loader', 'stdout')]['data'])
+                session.observer.refresh()
+                self.assertFalse(sentinel.exited)
+                self.assertEqual(session.observer.identity(sentinel.pid), sentinel.identity)
+            finally:
+                session.cleanup(('loader', 'server'), bounds)
+                session.cleanup(('sentinel',), bounds)
+                for child in session.children.values():
+                    if not child.reaped:
+                        session.emergency_reap(child)
+                session.finish_logs(bounds['drain_ms'])
+
+
+class RegisteredExitBarrierTests(unittest.TestCase):
+    def session(self, row):
+        session = api.APISession.__new__(api.APISession)
+        session.failure = None
+        session.observer = SimpleNamespace(registrations={804: row})
+        return session
+
+    def reports(self):
+        return [{'signals': [], 'errors': [], 'observation_gap': False,
+                 'reaped': {'loader': True}, 'complete': True},
+                {'signals': [{'role': 'server', 'signal': int(signal.SIGINT)}], 'errors': [],
+                 'observation_gap': False, 'reaped': {'server': True}, 'complete': True}]
+
+    def test_delayed_note_exit_receipt_is_observed_before_server_cleanup(self):
+        row = {'exited': False, 'exit_code': None, 'exit_status': None, 'exit_observed_ns': None}
+        session = self.session(row)
+        observed = []
+        reports = self.reports()
+        def pump(wait):
+            self.assertGreaterEqual(wait, 0)
+            self.assertLessEqual(wait, .02)
+            observed.append('pump')
+            # Exited alone is insufficient: first pump lacks the actual status.
+            row['exited'] = True
+            if observed.count('pump') == 2:
+                row.update(exit_code=0, exit_status=0, exit_observed_ns=13)
+        session.pump = pump
+        def cleanup(owner, roles, bounds, **options):
+            observed.append(roles[0])
+            if roles == ('server',):
+                self.assertEqual(row['exit_observed_ns'], 13)
+                self.assertEqual(observed, ['loader', 'pump', 'pump', 'server'])
+            return reports[0 if roles == ('loader',) else 1]
+        with patch.object(base.Session, 'cleanup', autospec=True, side_effect=cleanup):
+            result = session.cleanup(('loader', 'server'), {'drain_ms': 1000})
+        self.assertTrue(result['complete'])
+        self.assertEqual(result['errors'], [])
+        self.assertEqual(result['signals'], reports[1]['signals'])
+
+    def test_receipt_timeout_still_cleans_server_and_cannot_pass(self):
+        row = {'exited': False, 'exit_code': None, 'exit_status': None, 'exit_observed_ns': None}
+        session = self.session(row)
+        session.pump = lambda wait: None
+        reports = self.reports()
+        with patch.object(base.Session, 'cleanup', autospec=True, side_effect=reports) as cleanup, \
+                patch.object(api.time, 'monotonic', side_effect=[0, 0, .011]):
+            result = session.cleanup(('loader', 'server'), {'drain_ms': 10})
+        self.assertEqual([call.args[1] for call in cleanup.call_args_list], [('loader',), ('server',)])
+        self.assertEqual(result['errors'], [{'role': 'observer', 'code': 'registered_exit_barrier_timeout'}])
+        self.assertTrue(result['observation_gap'])
+        self.assertFalse(result['complete'])
+        self.assertEqual(result['signals'], reports[1]['signals'])
+        self.assertEqual(result['reaped'], {'loader': True, 'server': True})
+
+    def test_pump_failure_preserves_reason_and_still_cleans_server(self):
+        row = {'exited': False}
+        for error in (Error('owned_identity_unavailable'), OSError('private OS diagnostic'), KeyboardInterrupt()):
+            session = self.session(row)
+            reports = self.reports()
+            expected = getattr(error, 'code', 'registered_exit_barrier_observation_failed')
+            with self.subTest(error=type(error).__name__), \
+                    patch.object(session, 'pump', create=True, side_effect=error), \
+                    patch.object(base.Session, 'cleanup', autospec=True, side_effect=reports) as cleanup:
+                result = session.cleanup(('loader', 'server'), {'drain_ms': 1000})
+            self.assertEqual(cleanup.call_count, 2)
+            self.assertEqual(result['errors'], [{'role': 'observer', 'code': expected}])
+            self.assertNotIn('private OS diagnostic', encoded(result).decode())
+            self.assertFalse(result['complete'])
+            self.assertTrue(result['observation_gap'])
+
+    def test_registration_or_stream_failure_is_not_hidden_by_exit_flags(self):
+        row = {'exited': True, 'exit_code': 0, 'exit_status': 0, 'exit_observed_ns': 13}
+        session = self.session(row)
+        def pump(wait):
+            session.failure = 'registration_ack_failed'
+        session.pump = pump
+        with patch.object(base.Session, 'cleanup', autospec=True, side_effect=self.reports()) as cleanup:
+            result = session.cleanup(('loader', 'server'), {'drain_ms': 1000})
+        self.assertEqual(cleanup.call_count, 2)
+        self.assertEqual(result['errors'], [{'role': 'observer', 'code': 'registration_ack_failed'}])
+        self.assertFalse(result['complete'])
+
+    def test_boolean_or_incomplete_exit_receipts_never_satisfy_barrier(self):
+        valid = {'exited': True, 'exit_code': 0, 'exit_status': 0, 'exit_observed_ns': 13}
+        for key, invalid in [('exited', 1), ('exited', False), ('exit_code', None), ('exit_code', False),
+                             ('exit_status', None), ('exit_status', False), ('exit_observed_ns', None),
+                             ('exit_observed_ns', 0), ('exit_observed_ns', True)]:
+            session = self.session({**valid, key: invalid})
+            session.pump = lambda wait: None
+            with self.subTest(key=key, invalid=invalid), \
+                    patch.object(api.time, 'monotonic', side_effect=[0, 0, .011]):
+                self.assertEqual(session.registered_exit_barrier(10), 'registered_exit_barrier_timeout')
+
+    def test_barrier_continues_observing_new_registrations(self):
+        row = {'exited': True, 'exit_code': 0, 'exit_status': 0, 'exit_observed_ns': 13}
+        session = self.session(row)
+        def pump(wait):
+            session.observer.registrations[805] = {'exited': False, 'exit_code': None,
+                                                   'exit_status': None, 'exit_observed_ns': None}
+        session.pump = pump
+        with patch.object(api.time, 'monotonic', side_effect=[0, 0, .011]):
+            self.assertEqual(session.registered_exit_barrier(10), 'registered_exit_barrier_timeout')
