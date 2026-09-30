@@ -326,7 +326,7 @@ def inspect_build(buildroot):
     root = task_path(buildroot).resolve()
     built = verify_build(root)
     need(built.get('configuration', {}).get('fixture_suite', built.get('fixture_suite')) in
-         ('api-abi', 'threads-memory-exceptions'),
+         ('api-abi', 'threads-memory-exceptions', 'mac-driver'),
          'abi_review_wrong_suite')
     commands = [row for row in built['commands'] if row['id'] == 'disassemble-ntdll']
     need(len(commands) == 1, 'abi_review_command_missing')

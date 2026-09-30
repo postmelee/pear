@@ -40,7 +40,12 @@ STAGE4_SUITE = 'threads-memory-exceptions'
 STAGE4_FIXTURES = ('threads_pe.c', 'memory_pe.c', 'exceptions_pe.c', 'threads_gateway.S',
                    'signal_native.c', 'stage4_protocol.h')
 FIXTURE_SUITES[STAGE4_SUITE] = FIXTURE_SUITES['api-abi'] + STAGE4_FIXTURES
-PE_SUITES = ('api-abi', STAGE4_SUITE)
+STAGE5_SUITE = 'mac-driver'
+STAGE5_FIXTURES = ('window_pe.c', 'stage5_protocol.h', 'window_control_pe.c', 'window_native.m',
+                   'stage5_census.h')
+FIXTURE_SUITES[STAGE5_SUITE] = FIXTURE_SUITES[STAGE4_SUITE] + STAGE5_FIXTURES
+PE_SUITES = ('api-abi', STAGE4_SUITE, STAGE5_SUITE)
+STAGE5_PE = {'libexec/pear-stage5/window-arm64.exe': 0xAA64}
 STAGE4_PE = {'libexec/pear-stage4/stage4-arm64.exe': 0xAA64}
 STAGE3_PE = {
     'libexec/pear-stage3/api-arm64.exe': 0xAA64,
@@ -79,8 +84,10 @@ def fixture_sources(value):
 
 def fixture_pe_outputs(suite, policy='none'):
     outputs = dict(STAGE3_PE, **(PAGE_WX_PE if policy == 'page-wx' else {})) if suite in PE_SUITES else {}
-    if suite == STAGE4_SUITE:
+    if suite in (STAGE4_SUITE, STAGE5_SUITE):
         outputs.update(STAGE4_PE)
+    if suite == STAGE5_SUITE:
+        outputs.update(STAGE5_PE)
     return outputs
 
 
@@ -126,7 +133,7 @@ def fixture_commands(root, tools, lock, suite, publication_policy='none'):
                             ('disassemble-abi', 'libexec/pear-stage3/abi-arm64.exe')]:
             commands[ident] = [str(tools / 'llvm-mingw/bin/llvm-objdump'), '--disassemble',
                               str(root / 'install' / path)]
-    if suite == STAGE4_SUITE:
+    if suite in (STAGE4_SUITE, STAGE5_SUITE):
         commands['fixture-stage4-arm64'] = [clang, '--target=aarch64-w64-windows-gnu',
             '-std=c11', '-Wall', '-Wextra', '-Werror', '-O1', '-fno-builtin', '-nostdlib',
             '-Wl,-e,mainCRTStartup', *[str(sources / name) for name in
@@ -134,6 +141,13 @@ def fixture_commands(root, tools, lock, suite, publication_policy='none'):
             '-lkernel32', '-o', str(root / 'install/libexec/pear-stage4/stage4-arm64.exe')]
         commands['disassemble-stage4'] = [str(tools / 'llvm-mingw/bin/llvm-objdump'), '--disassemble',
             str(root / 'install/libexec/pear-stage4/stage4-arm64.exe')]
+    if suite == STAGE5_SUITE:
+        commands['fixture-window-arm64'] = [clang, '--target=aarch64-w64-windows-gnu',
+            '-std=c11', '-Wall', '-Wextra', '-Werror', '-O1', '-fno-builtin', '-nostdlib',
+            '-Wl,-e,mainCRTStartup', str(sources / 'window_pe.c'), '-luser32', '-lkernel32',
+            '-o', str(root / 'install/libexec/pear-stage5/window-arm64.exe')]
+        commands['disassemble-window'] = [str(tools / 'llvm-mingw/bin/llvm-objdump'), '--disassemble',
+            str(root / 'install/libexec/pear-stage5/window-arm64.exe')]
     return commands
 
 
@@ -142,6 +156,15 @@ def verify_stage4_native_fixture(source, hashes):
                              ('stage4_protocol.h', 'stage4_protocol.h')]:
         need(sha256(source / 'dlls/ntdll/unix' / copied) == hashes.get(original),
              'build_stage4_native_fixture_source_mismatch')
+
+
+def verify_stage5_native_fixture(source, hashes):
+    for original, copied in [('window_native.m', 'pear_window_fixture.m'),
+                             ('window_control_pe.c', 'pear_window_control.c'),
+                             ('stage5_protocol.h', 'stage5_protocol.h'),
+                             ('stage5_census.h', 'stage5_census.h')]:
+        need(sha256(source / 'dlls/winemac.drv' / copied) == hashes.get(original),
+             'build_stage5_native_fixture_source_mismatch')
 
 
 WINMD_PATHS = frozenset('share/wine/winmd/' + name + '.winmd' for name in (
@@ -501,8 +524,10 @@ def verify_build_evidence(root, result, current=True):
     if fixture_suite(result) in PE_SUITES:
         need(sha256(root / 'source/dlls/ntdll/unix/pear_abi_fixture.c') == result['fixture_hashes']['abi_native.c'],
              'build_native_fixture_source_mismatch')
-    if fixture_suite(result) == STAGE4_SUITE:
+    if fixture_suite(result) in (STAGE4_SUITE, STAGE5_SUITE):
         verify_stage4_native_fixture(root / 'source', result['fixture_hashes'])
+    if fixture_suite(result) == STAGE5_SUITE:
+        verify_stage5_native_fixture(root / 'source', result['fixture_hashes'])
     config = load_json(REPO / RECORDS['config'])
     variant = next(row for row in config['variants'] if row['id'] == result['variant'])
     verify_build_commands(root, result, variant)
@@ -913,9 +938,12 @@ def build(variant_name, inputs, tools, output, jobs):
             (output / 'install/libexec/pear-stage3').mkdir(parents=True)
             need(sha256(source / 'dlls/ntdll/unix/pear_abi_fixture.c') == result['fixture_hashes']['abi_native.c'],
                  'build_native_fixture_source_mismatch')
-        if suite == STAGE4_SUITE:
+        if suite in (STAGE4_SUITE, STAGE5_SUITE):
             (output / 'install/libexec/pear-stage4').mkdir(parents=True)
             verify_stage4_native_fixture(source, result['fixture_hashes'])
+        if suite == STAGE5_SUITE:
+            (output / 'install/libexec/pear-stage5').mkdir(parents=True)
+            verify_stage5_native_fixture(source, result['fixture_hashes'])
         for ident, argv in fixture_commands(output, tools, lock, suite, policy).items():
             run_build_command(result['commands'], ident, argv, cwd, env, 60)
         artifacts = inventory(output / 'install', binary=True)

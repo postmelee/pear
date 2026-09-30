@@ -9,6 +9,7 @@ supervisor, an ordinary-user launch, or complete arbitrary-process observation.
 from __future__ import annotations
 
 import array
+import ctypes
 import hashlib
 import os
 from pathlib import Path
@@ -32,18 +33,26 @@ from exception_evidence import NATIVE_EVENTS as STAGE4_EVENTS, validate_native_s
 REPO = base.REPO
 CASES = REPO / 'tests/wine/cases-stage3.json'
 STAGE4_SUITE = 'threads-memory-exceptions'
-PE_SUITES = ('api-abi', STAGE4_SUITE)
+STAGE5_SUITE = 'mac-driver'
+STAGE5_EVENTS = frozenset({'stage5_window', 'stage5_window_images'})
+PE_SUITES = ('api-abi', STAGE4_SUITE, STAGE5_SUITE)
 
 
 def cases_path(suite):
     need(suite in PE_SUITES, 'unsupported_api_suite')
-    return CASES if suite == 'api-abi' else REPO / 'tests/wine/cases-stage4.json'
+    return {'api-abi': CASES, STAGE4_SUITE: REPO / 'tests/wine/cases-stage4.json',
+            STAGE5_SUITE: REPO / 'tests/wine/cases-stage5.json'}[suite]
 
 MAX_PROCESSES = 64
 TOTAL_EVENTS = 32 * 1024 * 1024
 # Finite case-reader envelope; not proof every theoretical event stream fits.
 CASE_JSON_BYTES = 16 * 1024 * 1024
 CASE_JSON_NODES = 1_000_000
+WINDOW_EVENT_LIMIT = 12 * 1024 * 1024
+WINDOW_CASE_JSON_BYTES = 32 * 1024 * 1024
+WINDOW_CASE_JSON_NODES = 2_000_000
+WINDOW_CASE = {'id': 'window', 'entrypoint': 'window_pe', 'args': [],
+               'timeout_ms': 180000, 'expected_exit': 0}
 # Wine's documented empty DLL override disables CLR loading and registration in
 # these disposable native fixtures. It is not a runtime/game default or CLR test.
 ENVIRONMENT_POLICY = {'id': 'native-api-abi-no-mono-v1',
@@ -55,7 +64,7 @@ LOADER_ENVIRONMENT = {'WINEDLLOVERRIDES': 'mscoree='}
 SENTINEL_WAIT_MS = 3000
 CLEANUP_OVERHEAD_MS = 2000
 ARENA_EVENTS = {'arena_reserve', 'arena_publish', 'arena_retire', 'arena_failure'}
-EVENTS = ARENA_EVENTS | DYNAMIC_EVENTS | STAGE4_EVENTS | base.PHASES | {'stage3_fork', 'stage3_pe_continue', 'stage3_guest_exit', 'stage3_process_exit'}
+EVENTS = ARENA_EVENTS | DYNAMIC_EVENTS | STAGE4_EVENTS | STAGE5_EVENTS | base.PHASES | {'stage3_fork', 'stage3_pe_continue', 'stage3_guest_exit', 'stage3_process_exit'}
 API_ARGS = ['space argument', 'Ω한글🚀']
 API_ENV = 'pear value Ω한글🚀'
 ABI_EXPECTED = {'version': 1, 'record_kind': 'pear_abi_result', 'passed': True, 'error_step': 0,
@@ -84,8 +93,23 @@ IMPORT_EXPECTED = [{'version': 1, 'record_kind': 'pear_import_rejection', 'event
                    for event, status in [('name', 3221225785), ('ordinal', 3221225784)]]
 
 
-def decode_case(data):
-    return json_record(decode_json(data, CASE_JSON_BYTES, max_nodes=CASE_JSON_NODES), 'wine_api_case')
+def case_json_limits(*, suite='api-abi', case_id=None):
+    """Select limits from the caller's validated manifest, never decoded data."""
+    need(suite in PE_SUITES, 'unsupported_api_suite')
+    if suite == STAGE5_SUITE and case_id == 'window':
+        return WINDOW_CASE_JSON_BYTES, WINDOW_CASE_JSON_NODES
+    return CASE_JSON_BYTES, CASE_JSON_NODES
+
+
+def event_limit(role, *, suite='api-abi', case_id=None):
+    need(suite in PE_SUITES, 'unsupported_api_suite')
+    return (WINDOW_EVENT_LIMIT if suite == STAGE5_SUITE and case_id == 'window' and role == 'loader'
+            else base.EVENT_LIMIT)
+
+
+def decode_case(data, *, suite='api-abi', case_id=None):
+    byte_limit, node_limit = case_json_limits(suite=suite, case_id=case_id)
+    return json_record(decode_json(data, byte_limit, max_nodes=node_limit), 'wine_api_case')
 
 
 def validate_environment_policy(value):
@@ -108,7 +132,7 @@ def validate_duration(elapsed_ms, timeout_ms, bounds):
          'api_case_duration')
 
 
-def fixture_loader_environment(home, prefix, nonce, endpoint, server_pid, *, stage4=False):
+def fixture_loader_environment(home, prefix, nonce, endpoint, server_pid, *, stage4=False, stage5=False):
     """Build the fixed fixture environment, without inheriting caller settings."""
     env = base.environment(home, prefix, nonce)
     need(set(env) == {'PATH', 'HOME', 'TMPDIR', 'LANG', 'LC_ALL', 'WINEPREFIX', 'WINEDEBUG',
@@ -119,10 +143,29 @@ def fixture_loader_environment(home, prefix, nonce, endpoint, server_pid, *, sta
                 **LOADER_ENVIRONMENT})
     if stage4:
         env['PEAR_WINE_STAGE4_FIXTURE'] = '1'
+    if stage5:
+        env['PEAR_WINE_STAGE5_FIXTURE'] = '1'
     return env
 
 
+def graphical_session():
+    """Read the same Security.framework session capability used by winemac."""
+    try:
+        security = ctypes.CDLL('/System/Library/Frameworks/Security.framework/Security')
+        function = security.SessionGetInfo
+        function.argtypes = [ctypes.c_uint32, ctypes.POINTER(ctypes.c_uint32), ctypes.POINTER(ctypes.c_uint32)]
+        function.restype = ctypes.c_int32
+        attributes = ctypes.c_uint32()
+        status = function(ctypes.c_uint32(0xffffffff), None, ctypes.byref(attributes))
+        return {'status': status, 'available': status == 0 and bool(attributes.value & 0x10)}
+    except (OSError, AttributeError):
+        return {'status': None, 'available': False}
+
+
 def expected_fixture_rows(kind):
+    if kind == 'window':
+        from window_evidence import expected_results
+        return expected_results()
     if kind == 'threads':
         from exception_evidence import expected_results
         return expected_results()
@@ -374,19 +417,28 @@ def validate_cases(value, suite='api-abi'):
                  'timeout_ms': 180000, 'expected_exit': 0},
                 {'id': 'abi', 'entrypoint': 'abi_pe', 'args': [],
                  'timeout_ms': 180000, 'expected_exit': 0}]
-    if suite == STAGE4_SUITE:
+    if suite in (STAGE4_SUITE, STAGE5_SUITE):
         expected.append({'id': 'threads', 'entrypoint': 'stage4_pe', 'args': [],
                          'timeout_ms': 180000, 'expected_exit': 0})
+    if suite == STAGE5_SUITE:
+        expected.append(dict(WINDOW_CASE))
     bounds = {'stdout_bytes': base.STREAM_LIMIT, 'stderr_bytes': base.STREAM_LIMIT,
               'event_bytes_per_process': base.EVENT_LIMIT, 'total_event_bytes': TOTAL_EVENTS,
               'max_processes': MAX_PROCESSES, 'registration_ms': 30000,
               'grace_ms': 3000, 'terminate_ms': 2000, 'kill_ms': 5000, 'drain_ms': 1000}
+    if suite == STAGE5_SUITE:
+        bounds['window_loader_event_bytes'] = WINDOW_EVENT_LIMIT
+        bounds['window_case_json_bytes'] = WINDOW_CASE_JSON_BYTES
+        bounds['window_case_json_nodes'] = WINDOW_CASE_JSON_NODES
     need(set(value) == {'schema_version', 'record_kind', 'suite', 'qualification', 'environment_policy',
                         'cases', 'controls', 'bounds', 'provenance'} and
-         value.get('schema_version') == 1 and value.get('record_kind') == 'wine_fixture_cases' and
+         type(value.get('schema_version')) is int and value['schema_version'] == 1 and
+         value.get('record_kind') == 'wine_fixture_cases' and
          value.get('qualification') == ('instrumented-arm64-pe-api-abi-only' if suite == 'api-abi'
-             else 'instrumented-arm64-thread-memory-exception-only') and
+             else 'instrumented-arm64-thread-memory-exception-only' if suite == STAGE4_SUITE
+             else 'instrumented-arm64-mac-driver-only') and
          value.get('suite') == suite and value.get('cases') == expected and
+         all(type(row.get(key)) is int for row in value['cases'] for key in ('timeout_ms', 'expected_exit')) and
          value.get('bounds') == bounds and value.get('controls') == ['x64_control', 'i386_control'],
          'unsupported_api_cases')
     return value
@@ -402,10 +454,14 @@ def producers(suite='api-abi'):
              'tests/wine/fixtures/lifetime_pe.c', 'tests/wine/fixtures/lifetime_pe.h',
              'tests/wine/fixtures/missing_import_pe.c', 'tests/wine/fixtures/missing_name.def',
              'tests/wine/fixtures/missing_ordinal.def')
-    if suite == STAGE4_SUITE:
+    if suite in (STAGE4_SUITE, STAGE5_SUITE):
         from build import STAGE4_FIXTURES
         names += ('tests/wine/cases-stage4.json',) + tuple(
             'tests/wine/fixtures/' + name for name in STAGE4_FIXTURES)
+    if suite == STAGE5_SUITE:
+        from build import STAGE5_FIXTURES
+        names += ('tools/wine/window_evidence.py', 'tests/wine/cases-stage5.json') + tuple(
+            'tests/wine/fixtures/' + name for name in STAGE5_FIXTURES)
     return {name: sha256(REPO / name) for name in names}
 
 
@@ -504,7 +560,9 @@ class APIObserver(base.DarwinObserver):
 
 
 class APISession(base.Session):
-    def __init__(self, output, runtime, signed, nonce):
+    def __init__(self, output, runtime, signed, nonce, *, suite='api-abi', case_id=None):
+        case_json_limits(suite=suite, case_id=case_id)
+        self.suite, self.case_id = suite, case_id
         super().__init__(output, observer=APIObserver())
         self.runtime, self.signed, self.nonce = runtime, signed, nonce
         self.control_dir = tempfile.TemporaryDirectory(prefix='pear-stage3-', dir='/private/tmp')
@@ -636,7 +694,8 @@ class APISession(base.Session):
                     self.failure = self.failure or 'truncated_event'
                 continue
             item['total_bytes'] += len(block)
-            limit = base.EVENT_LIMIT if item['channel'] == 'events' else base.STREAM_LIMIT
+            limit = (event_limit(item['role'], suite=self.suite, case_id=self.case_id)
+                     if item['channel'] == 'events' else base.STREAM_LIMIT)
             item['data'].extend(block[:max(0, limit + 1 - len(item['data']))])
             if item['channel'] == 'events':
                 self.event_bytes += len(block)
@@ -678,6 +737,9 @@ def fixture_observations(raw, kind, loader):
     need(lines, 'missing_fixture_output')
     helper = decode_json(lines[0], 32768)
     base.validate_helper(helper, 'pear_bootstrap_helper', loader)
+    if kind == 'window':
+        from window_evidence import decode_stdout_row, fixture_rows
+        return fixture_rows([decode_stdout_row(line) for line in lines[1:]]), [], []
     if kind == 'threads':
         from exception_evidence import decode_stdout_row, fixture_rows
         return fixture_rows([decode_stdout_row(line) for line in lines[1:]]), [], []
@@ -760,7 +822,7 @@ def assess_native_events(result, runtime, signed):
                 need(type(row.get('cpu_type')) is int and row['cpu_type'] == base.MACH_ARM64 and
                      isinstance(row.get('uuid'), str) and re.fullmatch('[0-9a-fA-F-]{32,36}', row['uuid']),
                      'observed_native_image_architecture')
-            if row['event'] in base.SNAPSHOTS | {'stage3_fork'}:
+            if row['event'] in base.SNAPSHOTS | {'stage3_fork', 'stage5_window_images'}:
                 base.native_snapshot(row, 16384 if role == 'server' else 4096)
                 need(row.get('prefix_error') == 0 and row.get('prefix_dev') == prefix['device'] and
                      row.get('prefix_ino') == prefix['inode'], 'native_prefix_mismatch')
@@ -1015,9 +1077,19 @@ def assess_case(result, raw_logs, runtime, signed, *, case_root=None):
     need(result.get('schema_version') == 1 and result.get('record_kind') == 'wine_api_case', 'api_case_version')
     validate_environment_policy(result.get('environment_policy'))
     stage4 = result.get('case', {}).get('id') == 'threads'
+    stage5 = result.get('case', {}).get('id') == 'window'
     if stage4:
         validate_suite_authorization(STAGE4_SUITE, signed)
-    expected_environment = {**LOADER_ENVIRONMENT, **({'PEAR_WINE_STAGE4_FIXTURE': '1'} if stage4 else {})}
+    if stage5:
+        validate_suite_authorization(STAGE5_SUITE, signed)
+        graphical = result.get('graphical_session')
+        need(isinstance(graphical, dict) and set(graphical) == {'status', 'available'} and
+             type(graphical.get('status')) is int and graphical['status'] == 0 and
+             graphical.get('available') is True, 'graphical_session_unavailable')
+    else:
+        need('graphical_session' not in result, 'unexpected_graphical_precondition')
+    expected_environment = {**LOADER_ENVIRONMENT, **({'PEAR_WINE_STAGE4_FIXTURE': '1'} if stage4 else {}),
+                            **({'PEAR_WINE_STAGE5_FIXTURE': '1'} if stage5 else {})}
     need(result.get('loader_environment') == expected_environment, 'api_loader_environment')
     need(result.get('error') is None and result.get('stream_error') is None and result.get('outcome') == 'exited',
          'api_operation_failed')
@@ -1055,11 +1127,18 @@ def assess_case(result, raw_logs, runtime, signed, *, case_root=None):
     for role, rows in result['events'].items():
         lines = raw_logs[(role, 'events')].splitlines()
         parsed = [decode_json(line, 32768) for line in lines]
-        need(all(len(line) + 1 <= 512 for line, row in zip(lines, parsed) if row.get('event') in STAGE4_EVENTS),
-             'stage4_native_atomic_record_bound')
+        need(all(len(line) + 1 <= 512 for line, row in zip(lines, parsed)
+                 if row.get('event') in STAGE4_EVENTS or row.get('event') == 'stage5_window'),
+             'window_native_atomic_record_bound' if stage5 else 'stage4_native_atomic_record_bound')
         need(parsed == rows, 'event_log_mismatch')
     pe_count = assess_native_events(result, runtime, signed)
     validate_stage4_native_scope(result)
+    if stage5:
+        from window_evidence import validate_native_scope as validate_stage5_native_scope
+        validate_stage5_native_scope(result)
+    else:
+        need(not any(row['event'] in STAGE5_EVENTS for rows in result['events'].values() for row in rows),
+             'window_native_scope')
     arena = assess_arena_events(result, signed, private_lifetime)
     relocation = (assess_relocation_events(result, private_relocation, runtime, signed, case_root)
                   if result['case']['id'] == 'abi' else None)
@@ -1069,6 +1148,11 @@ def assess_case(result, raw_logs, runtime, signed, *, case_root=None):
         from exception_evidence import assess as assess_stage4, decode_stdout_row
         rows = [decode_stdout_row(line) for line in raw_logs[('loader', 'stdout')].splitlines()[1:]]
         stage4_observations, controlled_exits = assess_stage4(rows, result, runtime, signed, dynamic)
+    window_observations = None
+    if stage5:
+        from window_evidence import assess as assess_window, decode_stdout_row
+        rows = [decode_stdout_row(line) for line in raw_logs[('loader', 'stdout')].splitlines()[1:]]
+        window_observations = assess_window(rows, result, runtime, signed, dynamic)
     assess_descendant_exits(result, controlled_exits)
     root_rows = result['events']['loader']
     need(any(row['event'] == 'stage3_guest_exit' and row.get('exit_code') == 0 for row in root_rows),
@@ -1082,10 +1166,19 @@ def assess_case(result, raw_logs, runtime, signed, *, case_root=None):
             'code_publication_policy': 'page-wx', 'environment_policy': dict(ENVIRONMENT_POLICY),
             'arena_observations': arena, **({'relocation_observations': relocation} if relocation else {}),
             **({'dynamic_observations': dynamic} if dynamic['dynamic_supported'] else {}),
-            **({'thread_memory_exception_observations': stage4_observations} if stage4 else {})}
+            **({'thread_memory_exception_observations': stage4_observations} if stage4 else {}),
+            **({'window_observations': window_observations} if stage5 else {})}
 
 
 def run_case(case, runtime, signed, output, bounds):
+    # Private diagnostics reuse this boundary. Require the fixed original case
+    # and actual Stage 5 authorization before granting its larger envelope.
+    suite = 'api-abi'
+    if case.get('id') == 'window':
+        need(case == WINDOW_CASE and all(type(case.get(key)) is int for key in
+             ('timeout_ms', 'expected_exit')), 'unsupported_api_cases')
+        validate_suite_authorization(STAGE5_SUITE, signed)
+        suite = STAGE5_SUITE
     output.mkdir(mode=0o700)
     home, prefix, work = output / 'home', output / 'prefix', output / 'work'
     for path in (home, prefix, work, home / 'tmp'):
@@ -1093,15 +1186,19 @@ def run_case(case, runtime, signed, output, bounds):
     prefix_record = base.prefix_identity(prefix)
     nonce = uuid.uuid4().hex
     paths = {key: runtime.joinpath(*relative(value)) for key, value in signed['entrypoints'].items()}
-    session = APISession(output, runtime, signed, nonce)
+    session = APISession(output, runtime, signed, nonce, suite=suite, case_id=case['id'])
     env = base.environment(home, prefix, nonce)
     loader_environment = None
+    graphical = None
     read_fd, control = os.pipe()
     error, outcome, survived = None, 'not_started', False
     start = time.monotonic()
     deadline = start + case['timeout_ms'] / 1000
     remaining = lambda cap: max(0, min(cap, deadline - time.monotonic()))
     try:
+        if case['id'] == 'window':
+            graphical = graphical_session()
+            need(graphical['available'], 'graphical_session_unavailable')
         sentinel = session.launch('sentinel', [str(paths['sentinel']), str(read_fd)], env, pass_fds=(read_fd,))
         os.close(read_fd)
         read_fd = None
@@ -1113,11 +1210,13 @@ def run_case(case, runtime, signed, output, bounds):
         need(session.wait_for(lambda: any(row.get('event') == 'server_ready' for row in session.events['server'])
                              or server.exited, remaining(30)) and not server.exited, 'server_start_failed')
         env = fixture_loader_environment(home, prefix, nonce, session.endpoint, server.pid,
-                                         stage4=case['id'] == 'threads')
+                                         stage4=case['id'] == 'threads', stage5=case['id'] == 'window')
         # Record the exact controlled values passed to the real launch boundary.
         loader_environment = {key: env[key] for key in LOADER_ENVIRONMENT}
         if case['id'] == 'threads':
             loader_environment['PEAR_WINE_STAGE4_FIXTURE'] = env['PEAR_WINE_STAGE4_FIXTURE']
+        if case['id'] == 'window':
+            loader_environment['PEAR_WINE_STAGE5_FIXTURE'] = env['PEAR_WINE_STAGE5_FIXTURE']
         # Popen's cwd is the dedicated writable fixture directory; prefix and home are separate.
         session.output = work
         try:
@@ -1176,6 +1275,8 @@ def run_case(case, runtime, signed, output, bounds):
               'observation_limitations': ['post-fork-pre-registration-native-window',
                                          'instrumented-descendants-retain-root-process-group',
                                          'loaded-native-image-snapshots-not-general-load-timeline']}
+    if case['id'] == 'window':
+        record['graphical_session'] = graphical
     try:
         assessment = assess_case(record, {(role, channel): bytes(item['data'])
                                          for (role, channel), item in session.streams.items()}, runtime, signed, case_root=output)
@@ -1211,13 +1312,16 @@ def target_controls(runtime, signed):
 
 
 def validate_suite_authorization(suite, signed):
-    scopes = ('development_windows_api_abi_fixtures', 'development_windows_thread_memory_exception_fixtures')
-    need(suite in PE_SUITES and signed.get('authorization_scope') in
-         (scopes if suite == 'api-abi' else scopes[1:]) and
+    scopes = ('development_windows_api_abi_fixtures', 'development_windows_thread_memory_exception_fixtures',
+              'development_windows_mac_driver_fixtures')
+    need(suite in PE_SUITES and signed.get('authorization_scope') in scopes[PE_SUITES.index(suite):] and
          signed.get('code_publication_policy') == 'page-wx', 'api_authorization_required')
-    if suite == STAGE4_SUITE:
+    if suite in (STAGE4_SUITE, STAGE5_SUITE):
         need(isinstance(signed.get('entrypoints'), dict) and 'stage4_pe' in signed['entrypoints'],
              'stage4_signed_entrypoint_missing')
+    if suite == STAGE5_SUITE:
+        need(all(name in signed['entrypoints'] for name in ('window_pe', 'window_driver_pe')),
+             'stage5_signed_entrypoint_missing')
 
 
 def run(runtime, output, require_empty, suite='api-abi'):
@@ -1265,7 +1369,7 @@ def run(runtime, output, require_empty, suite='api-abi'):
     return record
 
 
-def verify_logs(root, case_id, result):
+def verify_logs(root, case_id, result, *, suite='api-abi'):
     required = {(role, channel) for role in ('server', 'loader', 'sentinel') for channel in ('stdout', 'stderr')}
     required |= {(role, 'events') for role in result['events']}
     logs = result.get('logs')
@@ -1278,7 +1382,7 @@ def verify_logs(root, case_id, result):
         name = role + '.' + channel + '.log'
         need(row.get('path') == name, 'api_log_path')
         data = read_relative(root, case_id + '/' + name,
-                             base.EVENT_LIMIT if channel == 'events' else base.STREAM_LIMIT)
+                             event_limit(role, suite=suite, case_id=case_id) if channel == 'events' else base.STREAM_LIMIT)
         need(row.get('bytes') == len(data) == row.get('observed_bytes') and row.get('eof') is True and
              row.get('write_error') is None and hashlib.sha256(data).hexdigest() == row.get('sha256'),
              'api_log_integrity')
@@ -1320,13 +1424,13 @@ def validate_runs(root, suite='api-abi'):
         case_id = expected['id']
         need(row.get('path') == case_id + '/case.json' and
              row.get('assessment_path') == case_id + '/assessment.json', 'api_record_path')
-        data = read_relative(root, row['path'], CASE_JSON_BYTES)
+        data = read_relative(root, row['path'], case_json_limits(suite=suite, case_id=case_id)[0])
         gate = read_relative(root, row['assessment_path'])
         need(hashlib.sha256(data).hexdigest() == row.get('sha256') and
              hashlib.sha256(gate).hexdigest() == row.get('assessment_sha256'), 'changed_api_record')
         need(decode_json(gate) == {'schema_version': 1, 'record_kind': 'wine_case_gate_assessment',
                                   'case_sha256': row['sha256'], 'passed': True, 'error': None}, 'api_case_gate')
-        result = decode_case(data)
+        result = decode_case(data, suite=suite, case_id=case_id)
         need(result.get('case') == expected and result.get('passed') is True and row.get('passed') is True,
              'api_case_configuration')
         need(isinstance(result.get('nonce'), str) and re.fullmatch('[0-9a-f]{32}', result['nonce']) and
@@ -1337,18 +1441,20 @@ def validate_runs(root, suite='api-abi'):
         need(not prefix.is_symlink() and result['prefix']['device'] == info.st_dev and
              result['prefix']['inode'] == info.st_ino, 'api_prefix_changed')
         validate_duration(result.get('elapsed_ms'), expected['timeout_ms'], cases['bounds'])
-        assessment = assess_case(result, verify_logs(root, case_id, result), runtime, signed, case_root=root / case_id)
+        assessment = assess_case(result, verify_logs(root, case_id, result, suite=suite), runtime, signed, case_root=root / case_id)
         summaries.append({'id': case_id, 'case_sha256': row['sha256'], **assessment,
                           'fixture_results': expected_fixture_rows(case_id),
                           'cleanup_complete': True, 'sentinel_survived': True})
     need(record.get('passed') is True and validate_prepared(runtime) == signed, 'api_run_changed')
-    return {'schema_version': 1, 'record_kind': ('wine_api_abi_assessment' if suite == 'api-abi' else 'wine_thread_memory_exception_assessment'), 'suite': suite,
+    return {'schema_version': 1, 'record_kind': ('wine_api_abi_assessment' if suite == 'api-abi' else 'wine_thread_memory_exception_assessment' if suite == STAGE4_SUITE
+                else 'wine_mac_driver_assessment'), 'suite': suite,
             'environment_policy': dict(ENVIRONMENT_POLICY),
             'run_sha256': hashlib.sha256(raw).hexdigest(), 'signed_sha256': record['signed_sha256'],
             'code_publication_policy': 'page-wx', 'producer_sha256': producers(suite), 'cases': summaries, 'case_count': len(summaries),
             'controls': record['controls'], 'passed': True, 'pe_executed': True, 'runtime_qualified': False,
             'evidence_scope': ('instrumented-arm64-pe-api-abi-with-constrained-owned-descendants' if suite == 'api-abi'
-                else 'instrumented-arm64-thread-memory-exception-with-constrained-owned-descendants'),
+                else 'instrumented-arm64-thread-memory-exception-with-constrained-owned-descendants' if suite == STAGE4_SUITE
+                else 'instrumented-arm64-mac-driver-with-constrained-owned-descendants'),
             'game_qualified': False,
             'observation_limitations': ['post-fork-pre-registration-native-window',
                                        'instrumented-descendants-retain-root-process-group',

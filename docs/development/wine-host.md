@@ -1,6 +1,6 @@
 # Wine host development
 
-Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) and [Stage 2 native bootstrap](../../mydocs/working/task_m1_4_stage2.md) passed on the recorded host. The [Stage 3 original ARM64 Windows API/ABI fixtures](../../mydocs/working/task_m1_4_stage3.md) and [Stage 4 finite thread, memory and exception checks](../../mydocs/working/task_m1_4_stage4.md) also passed. Historical Stage 2 stopped before PE entry; general Windows application support, Rosetta-free Megabonk and an end-user release remain development goals.
+Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) and [Stage 2 native bootstrap](../../mydocs/working/task_m1_4_stage2.md) passed on the recorded host. The [Stage 3 original ARM64 Windows API/ABI fixtures](../../mydocs/working/task_m1_4_stage3.md) and [Stage 4 finite thread, memory and exception checks](../../mydocs/working/task_m1_4_stage4.md) also passed. The [Stage 5 finite Win32/Cocoa callback and teardown checks](../../mydocs/working/task_m1_4_stage5.md) passed on the same development host. Historical Stage 2 stopped before PE entry; general Windows application support, Rosetta-free Megabonk and an end-user release remain development goals.
 
 ## Scope and inputs
 
@@ -11,7 +11,7 @@ The [architecture](../architecture.md) defines the runtime goal. This component 
 | [Inputs](../../runtime/wine/inputs.json) | Selected Wine source, exact audit reference, dependencies and unresolved ports | Component input facts; no full-runtime approval |
 | [Toolchain](../../runtime/wine/toolchain.json) | Exact public tool artifacts and external native tool/SDK identities | Build inputs; no game runtime or independently rebuilt compiler claim |
 | [Build configuration](../../runtime/wine/build-config.json) | Native/PE variants, framework and feature decisions | Explicit fixture configuration, not a Steam/game configuration |
-| [Patch series](../../runtime/wine/patches/series.json) | Ordered attributable Wine changes | Stage 2 bootstrap, Stage 3 PE/API/ABI and Stage 4 finite thread/memory/exception scope verified; required Darwin ports are not complete |
+| [Patch series](../../runtime/wine/patches/series.json) | Ordered attributable Wine changes | Stage 2 bootstrap, Stage 3 PE/API/ABI, Stage 4 finite thread/memory/exception and Stage 5 finite Win32/Cocoa scope verified; required Darwin ports are not complete |
 
 The native host target is ARM64 macOS. `arm64` selects aarch64 PE components; `arm64ec-build` selects aarch64 plus ARM64EC components with an auxiliary x86_64 PE compiler. The latter is a build candidate, not evidence of FEX or x64 execution. Compiler-only x64/i386 fixtures are never executed in Stage 1.
 
@@ -212,6 +212,52 @@ python3 tools/wine/stage4_evidence.py --build .build/task4/build-stage4 --runs .
 
 Use fresh output names for retries. The passing report uses `runs-stage4-attempt4` and `runs-stage4-bootstrap-attempt2`; the earlier runs remain retained failures or historical evidence. Substitute those actual roots when inspecting the retained results. The exporter independently checks the complete suites, exact build/signed identities, actual assembly review and current producer hashes. It refuses diagnostic-only runs. These are same-host development checks with the existing loader authorization and protections. A native Windows reference, arbitrary asynchronous suspension, native-created callback threads, concurrent code mutation, x64 translation, games and ordinary-user distribution are outside this finite scope.
 
+## Stage 5 Mac-driver protocol
+
+The [Stage 5 report](../../mydocs/working/task_m1_4_stage5.md) records the passing final commands and exact retained output names. Use new empty output directories for another run; the public exporter rejects diagnostic-only or mixed-runtime evidence.
+
+The `mac-driver` suite requires the existing API, ABI and thread/memory/exception cases plus an original ARM64 window fixture. All four cases and the separate three bootstrap controls must pass on identical signed bytes. The observer reuses Wine's real C/Objective-C driver and existing PE/native callback gateways. Its diagnostic patch is enabled only for the owned window case; it does not assert a newly discovered production driver defect.
+
+The guest loads the actual `winemac.drv` PE module and calls its fixture export through a separate native Unix-call entry. Native initialization binds the real `winemac.so` image, Windows thread/TEB, Darwin thread and loaded AppKit/CoreFoundation images. Each of twenty sequential tool-window lifetimes follows this path:
+
+1. Create a Win32 window and observe the corresponding Cocoa window on AppKit's main thread.
+2. Invoke that Cocoa window's `performClose:` through Wine's main-thread request queue. Its ordinary close delegate places `WINDOW_CLOSE_REQUESTED` in the actual `WineEventQueue`.
+3. At dispatch of that exact owned event, deliver the deterministic application message through `NtUserMessageCall` and Wine's normal guest callback gateway. The guest WNDPROC changes the title, re-enters native code and returns the expected token.
+4. Continue the original close-event handler through `SC_CLOSE`, `WM_CLOSE` and `DestroyWindow`. Observe Cocoa close and queue discard.
+5. Post a tagged, windowless AppKit application-defined event using the upstream query-wakeup pattern, and observe its consumption after normal superclass dispatch. If the window remains alive, post another only after the preceding turn is consumed, with at most one in flight and 100 turns within the existing drain bound. The first turn is mandatory even after early deallocation; further posting stops once deallocation is observed. Bind each turn to its cycle and contiguous ordinal. Require actual post-super object deallocation, every posted turn to be consumed, and a subsequent main-thread barrier, no active Wine event frame, the matching owner queue, its directly observed empty array and an empty signaling FD before starting the next lifetime. The readiness result from `macdrv_ProcessEvents(QS_ALLINPUT)` alone is insufficient when a nested event frame suppresses dispatch. Independently repeat the queue checks at finalization.
+
+The guest and native observations must agree; guest stdout alone cannot pass the gate. Image hashes, actual exported entry points and executable sections, immutable PE publications, thread ownership, native x18 host mode, per-lifetime identities, callback results and teardown order are bound independently. Reused object addresses do not merge different lifetimes. Both PE images must be published before observer initialization and remain live through the final barrier. The tagged event advances the fixture run loop; it is not a keyboard/mouse event and does not target a window. Native records distinguish posting, consumption and the subsequent barrier. This is an instrumented fixture scheduling requirement, not a claim that an AppKit event strongly owns a closed window or that production Wine leaks it. The observer adds no persistent retain to a Cocoa window or event queue. Wine's per-thread queue and explicit driver-module reference intentionally last for the process.
+
+The native observation count is bounded by the lifecycle protocol: `527 + 4 * barriers + 4 * event_turns` atomic record parts, at most 16,527 parts. Only the trusted window-loader case receives a 12 MiB event limit and a 32 MiB/2,000,000-node saved-case JSON limit. Other processes retain their 2 MiB event limits; other cases retain 16 MiB/1,000,000-node limits. The shared 32 MiB event budget, per-line bounds and timeout/cleanup checks remain in force. Exceeding any bound fails verification; a saved record cannot select its own larger allowance.
+
+The finite no-late-callback observation ends at the final main-thread barrier and event drain. Normal process exit is verified separately; this is not observation of every possible event after that barrier. Local close/teardown loops check five-second deadlines and at most 100 drain attempts, while the separate 180-second host deadline also bounds blocked native calls through owned-process cleanup. The 320-by-180 windows use no-activation styles but can briefly overlap desktop content; do not interact with them during verification. No keyboard/mouse injection, display-mode change or screenshot is required.
+
+## Native driver interface handoff to #7
+
+This is a dated source/compile inspection of Wine base `4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf` with the recorded Pear patches and DXMT `7c8dee1c2d73415301ceb7d1fa810861cef4cd67`, reviewed September 30, 2026. It is not renderer execution or a stable public Wine API.
+
+Wine's `dlls/winemac.drv/macdrv.h` defines `struct macdrv_win_data` as `hwnd`, `cocoa_window`, `client_view`, then `rects`, at native ARM64 offsets 0, 8, 16 and 24. DXMT's `src/winemetal/unix/winemetal_unix.c` copies four pointer fields and reads `client_cocoa_view` at offset 24. That reads this Wine version's rectangle bytes as a pointer. The selected Wine source does not provide DXMT's `macdrv_functions` table, and the retained Stage 4 native driver does not publicly export the requested accessors/view functions. Recheck exports on the actual future paired artifact; adding exports alone cannot repair the structure mismatch.
+
+Relevant selected Wine declarations use the native Darwin C ABI:
+
+| Declaration | Contract |
+|---|---|
+| `struct macdrv_win_data *get_win_data(HWND)` | Returns data with the driver mutex held; invalid HWND returns null without a held lock |
+| `void release_win_data(struct macdrv_win_data *)` | Unlocks only; does not retain or release Cocoa objects |
+| `WineWindow *macdrv_get_cocoa_window(HWND, bool require_on_screen)` | Returns a borrowed pointer after unlocking |
+| `WineContentView *macdrv_create_view(CGRect)` / `void macdrv_dispose_view(WineContentView *)` | Creates/disposes the client view through Wine's main-thread queue |
+| `MTLDevice_id macdrv_create_metal_device(void)` | Native device type is `id<MTLDevice>` in Objective-C, opaque in C |
+| `WineMetalView *macdrv_view_create_metal_view(WineContentView *, MTLDevice_id)` | Can return a cached view without an extra retain on repeated acquisition |
+| `CAMetalLayer *macdrv_view_get_metal_layer(WineMetalView *)` | Returns a borrowed layer |
+| `void macdrv_view_release_metal_view(WineMetalView *)` | Removes and releases the view on the main thread |
+| `void OnMainThread(dispatch_block_t)` | Uses Wine's request queue; waiting can process query events and re-enter code |
+
+The selected native `bool` is one byte; Win32 `WINBOOL` is four. DXMT's particular native table spells the parameter `BOOL`, but that translation unit is compiled as Objective-C and imports Cocoa. The selected Apple ARM64 compile check confirms its Cocoa `BOOL` is type-compatible with one-byte `bool`. That spelling alone is not a demonstrated ABI mismatch. A PE `LRESULT (CALLBACK *)(HWND, UINT, WPARAM, LPARAM)` remains a different execution boundary and must use Wine's established callback and x18 transitions.
+
+The renderer client surface owns `client_view`, assigns it during presentation and clears it during detach. A plain window may have no such view. Copying the pointer after unlocking is not a lifetime guarantee. DXMT's current private-structure path also lacks a null check after `get_win_data`; missing exports can yield null outputs with a success status. #7 must define explicit error behavior and test missing/destroyed HWND, absent view, repeated acquisition, resize/detach/destroy races and balanced release on the actual selected pair.
+
+Reuse Wine's C/Objective-C implementation and scheduling. A typed, versioned opaque adapter or source-matched bridge must establish these contracts before renderer integration; a copied private structure or new language does not establish them. The signatures and view ownership above come from source inspection, not Metal execution. A passing window/event fixture does not qualify DXMT, D3D, FEX, game graphics or distribution.
+
 ## Interpret results
 
 Successful preparation is not a runtime build. A tool version string is not target support. Passing compiler fixtures is not Windows execution. Required missing tools, incorrect artifacts, skipped checks and unknown facts prevent the relevant gate from passing. Preserve original errors and failed attempts.
@@ -220,4 +266,4 @@ The commands use 0 for a passed requested gate, 1 for preparation/operation fail
 
 Raw local records can include paths and diagnostic details and remain under ignored `.build/`; the owned temporary path aliases described above also remain local. Publish only reviewed allowlisted evidence tied to exact sources/tools/configuration/fixtures/output bytes. No profiles, credentials, account state, saves or game files belong in this workflow.
 
-The native loader/page bootstrap, original ARM64 PE/API, guest x18 callbacks, Windows child processes and Stage 4 thread/memory/exception cases are verified only for the recorded finite scope. General thread/exception and dynamic-code semantics remain unqualified. Mac-driver integration is Stage 5 and final reconstruction is Stage 6 of #4. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.
+The native loader/page bootstrap, original ARM64 PE/API, guest x18 callbacks, Windows child processes and Stage 4 thread/memory/exception cases are verified only for the recorded finite scope. General thread/exception and dynamic-code semantics remain unqualified. The finite Mac-driver boundary passed Stage 5; fresh final reconstruction remains Stage 6 of #4. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.

@@ -96,6 +96,36 @@ class APICaseJSONTests(unittest.TestCase):
                 with self.assertRaisesRegex(common.Error, error):
                     api_runner.decode_case(raw)
 
+    def test_window_envelope_requires_trusted_case_and_suite(self):
+        raw = case_bytes({'case': {'id': 'window'}, 'suite': 'mac-driver',
+                          'observations': [0] * 1_100_000})
+        for selection in ({}, {'suite': api_runner.STAGE5_SUITE}, {'case_id': 'window'},
+                          {'suite': api_runner.STAGE5_SUITE, 'case_id': 'threads'}):
+            with self.subTest(selection=selection), self.assertRaisesRegex(common.Error, 'json_structure_limit'):
+                api_runner.decode_case(raw, **selection)
+        decoded = api_runner.decode_case(raw, suite=api_runner.STAGE5_SUITE, case_id='window')
+        self.assertEqual(len(decoded['observations']), 1_100_000)
+        self.assertEqual(api_runner.CASE_JSON_BYTES, 16 * 1024 * 1024)
+        self.assertEqual(api_runner.CASE_JSON_NODES, 1_000_000)
+
+    def test_window_byte_and_node_overflow_rejected_before_allocation(self):
+        selected = {'suite': api_runner.STAGE5_SUITE, 'case_id': 'window'}
+        too_large = b' ' * (32 * 1024 * 1024 + 1)
+        too_dense = b'{"v":[' + b'0,' * 2_000_000 + b'0]}'
+        for raw, code in ((too_large, 'input_size_limit'), (too_dense, 'json_structure_limit')):
+            with self.subTest(code=code), mock.patch.object(common.json, 'loads',
+                    side_effect=AssertionError('JSON allocated')), self.assertRaisesRegex(common.Error, code):
+                api_runner.decode_case(raw, **selected)
+
+    def test_window_reader_preserves_strict_scalars_keys_depth_and_kind(self):
+        for raw, code in ((b'{"x":1,"x":2}', 'duplicate_json_key'),
+                          (case_bytes({'x': 9007199254740992}), 'json_integer_limit'),
+                          (case_bytes({'x': 1.5}), 'noninteger_json_number'),
+                          (case_bytes({'record_kind': 'wine_bootstrap_case'}), 'unexpected_record_kind'),
+                          (b'{"x":' + b'[' * 49 + b'0' + b']' * 49 + b'}', 'json_structure_limit')):
+            with self.subTest(code=code), self.assertRaisesRegex(common.Error, code):
+                api_runner.decode_case(raw, suite=api_runner.STAGE5_SUITE, case_id='window')
+
     def test_invalid_budget_cannot_disable_limits(self):
         for budget in (None, True, 0, -1, float('inf')):
             with self.subTest(budget=budget), self.assertRaisesRegex(common.Error, 'invalid_json_budget'):

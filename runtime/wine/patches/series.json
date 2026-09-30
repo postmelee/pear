@@ -509,9 +509,115 @@
         "stage4.controlled-fault-termination",
         "stage4.atomic-native-observations"
       ]
+    },
+    {
+      "path": "0005-darwin-mac-driver-observation.patch",
+      "sha256": "dd0e7e47ffc573e2bee1fb85ac1e37913d133da6bb60dbd5de47ac147b888bbb",
+      "rationale": "Add explicitly enabled original Win32/Cocoa fixtures using the real main-thread request source, WineWindow close delegate, WineEventQueue and existing guest callback gateway. Observe native reentry and final object deallocation. After normal close/discard, request paced owned windowless AppKit event turns, at most one pending and 100 within the unchanged drain bound. Bind contiguous turn identities, stop further posting after observed deallocation, observe every ordinary consumption and require a subsequent barrier. Report independent fd, actual-array, current-Wine-event and queue-identity predicates for finite idle samples. Bounded private ownership diagnostics do not substitute for completion. The finite post-INIT direct-owner census and drawing-body/main-queue observations expose incomplete coverage and never determine qualification.",
+      "provenance": "Original Pear diagnostic integration against pinned Wine plus preceding ordered patches; source and observers keep their notices. Existing Wine C/Objective-C callbacks and x18 gateways are reused. No production boundary fix or renderer interface is claimed.",
+      "license": "MIT (original Pear fixtures); LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/winemac.drv/Makefile.in",
+          "before_sha256": "8aba97438b685d56e11574d1a84ef7efd6e39bb83a0cbe9f3f5a269a6553712d",
+          "after_sha256": "4ceac5825201e79344f5fd7c085530eeaaa5a67df0fe8cdc71ac74a437fe9ab0"
+        },
+        {
+          "path": "dlls/winemac.drv/unixlib.h",
+          "before_sha256": "210ed99192d37c333fe408cf8574d877cbcf3e7088224ecf17c0eb7878876615",
+          "after_sha256": "fa5b6dd79f04bf0aad74e032398a26773b8bba7267ee0607a791a614354f2443"
+        },
+        {
+          "path": "dlls/winemac.drv/macdrv_main.c",
+          "before_sha256": "080ba76c6051653404b0e1e4d6372df506558853049a868aaf66b9063994acb4",
+          "after_sha256": "5aecdce66843f72eb442d11578bb056401c83f3c43060a46cfca39809ed19944"
+        },
+        {
+          "path": "dlls/winemac.drv/event.c",
+          "before_sha256": "cdb454430ff065923137358ca472e74804d26c1928a8c7b80505042cb27ab939",
+          "after_sha256": "4e1f356dfee936496e88526bd806ad29c10447005073869dabf484673b9f7174"
+        },
+        {
+          "path": "dlls/winemac.drv/cocoa_window.m",
+          "before_sha256": "e0cb71dfbfd53d746ace4bf7347124d5f3440d5741a374c404d4855d74c10677",
+          "after_sha256": "c0e76d138b4970d735fed4b28bd01413756403a724a8c9878b408af799aa8655"
+        },
+        {
+          "path": "dlls/winemac.drv/winemac.drv.spec",
+          "before_sha256": null,
+          "after_sha256": "c5eb7b6098795cc4aa185cee6f64fdff7f5a9dc716df963c0c68c577e7d7a2ae"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_window_fixture.m",
+          "before_sha256": null,
+          "after_sha256": "34124c67632916b0f9ef5437a3c8e874deec32ee242903c85ffade688cb00ed1"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_window_control.c",
+          "before_sha256": null,
+          "after_sha256": "2cb1c0da0f9eac5f1d8c63a24ed74a2e6ed0f37d6f8fdf0c5d718afece057a44"
+        },
+        {
+          "path": "dlls/winemac.drv/stage5_protocol.h",
+          "before_sha256": null,
+          "after_sha256": "bb2990f08bdf693b9223a7d1271723c2915fa87dface3fe39e8771c6f93201e5"
+        },
+        {
+          "path": "dlls/winemac.drv/cocoa_app.m",
+          "before_sha256": "28f65732bee547814dcbecc95efc51fb3f235f61ae7b98c5b3d05fde63e906eb",
+          "after_sha256": "05037cecb2278e45fe24576f2720e6343b8ba1ec255f414761040d5270955ddf"
+        },
+        {
+          "path": "dlls/winemac.drv/cocoa_event.m",
+          "before_sha256": "74c73f76c24d810639a102642f2e484e34db3d7e3dc330affb1c2b0574b8c8b1",
+          "after_sha256": "bd6caaf1d052164586d3fc643aca199392016b1bb11d963a12c6e7572762a438"
+        },
+        {
+          "path": "dlls/winemac.drv/stage5_census.h",
+          "before_sha256": null,
+          "after_sha256": "2abc01e678e964c7d45c097f73ad6c2714ac65ae5c1e18453bf97d35786dd226"
+        }
+      ],
+      "regression_ids": [
+        "stage5.actual-cocoa-event-callback",
+        "stage5.main-thread-and-wine-owner",
+        "stage5.native-driver-reentry",
+        "stage5.twenty-window-teardowns",
+        "stage5.queue-empty-barrier",
+        "stage5.reused-address-generation",
+        "stage5.production-pe-control-compile",
+        "stage5.bounded-private-ownership-diagnostics",
+        "stage5.owned-appkit-turn-consumption",
+        "stage5.strict-queue-predicates",
+        "stage5.barrier-after-appkit-consumption",
+        "stage5.bounded-native-owner-census",
+        "stage5.source-owned-event-query-lifetimes",
+        "stage5.census-epoch-and-indirect-limits",
+        "stage5.paced-appkit-turn-ordinals",
+        "stage5.no-turn-overlap-or-post-deallocation-post",
+        "stage5.bounded-multiple-turn-evidence"
+      ]
+    },
+    {
+      "path": "0005a-window-fixture-capacity.patch",
+      "sha256": "8268f7c6699d56cf847a4f2056e84e2d292ae6dd2e56bf12712b7fe39506fcff",
+      "rationale": "Account for one original ARM64 window fixture and bounded growth of the built-in PE Mac-driver control export; retain the existing immutable PE owner and separate dynamic budget. Actual final image inventory must still fit the compiled limits.",
+      "provenance": "Original Pear finite-capacity adjustment on the preceding ordered patches. The measured window fixture rounds to 64 KiB; an additional 64 KiB is reserved for the existing driver PE, whose prior image ended on a 64 KiB boundary. No new memory permission or allocation class is introduced.",
+      "license": "MIT (original Pear owner header)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "before_sha256": "4fbfb56210bd6f011c4dde7d3389e6efa7f2bbe5116ee45d4ffd5b05c2a4c713",
+          "after_sha256": "5a62ac6debf9752387321776da0b31e2fdf1266c4f93eb154029179d800d8eba"
+        }
+      ],
+      "regression_ids": [
+        "stage5.finite-pe-inventory-capacity",
+        "stage5.dynamic-owner-unchanged"
+      ]
     }
   ],
   "port_complete": false,
-  "fixture_suite": "threads-memory-exceptions",
+  "fixture_suite": "mac-driver",
   "code_publication_policy": "page-wx"
 }

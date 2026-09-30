@@ -904,3 +904,91 @@ class RegisteredExitBarrierTests(unittest.TestCase):
         session.pump = pump
         with patch.object(api.time, 'monotonic', side_effect=[0, 0, .011]):
             self.assertEqual(session.registered_exit_barrier(10), 'registered_exit_barrier_timeout')
+
+
+class ScopedWindowCapacityTests(unittest.TestCase):
+    def test_manifest_enlarges_only_the_fixed_window_scope(self):
+        value = json.loads(api.cases_path(api.STAGE5_SUITE).read_text())
+        api.validate_cases(value, api.STAGE5_SUITE)
+        self.assertEqual(value['bounds']['event_bytes_per_process'], 2 * 1024 * 1024)
+        self.assertEqual(value['bounds']['total_event_bytes'], 32 * 1024 * 1024)
+        for key in ('window_loader_event_bytes', 'window_case_json_bytes', 'window_case_json_nodes'):
+            changed = copy.deepcopy(value); changed['bounds'][key] += 1
+            with self.subTest(key=key), self.assertRaises(Error):
+                api.validate_cases(changed, api.STAGE5_SUITE)
+        for suite in api.PE_SUITES[:-1]:
+            old = json.loads(api.cases_path(suite).read_text())
+            self.assertNotIn('window_loader_event_bytes', old['bounds'])
+            api.validate_cases(old, suite)
+
+    def test_window_launch_requires_fixed_case_and_signed_scope_before_session(self):
+        signed = {'authorization_scope': 'development_windows_thread_memory_exception_fixtures',
+                  'code_publication_policy': 'page-wx', 'entrypoints': {'stage4_pe': 'thread.exe'}}
+        with tempfile.TemporaryDirectory() as directory, patch.object(api, 'APISession',
+                side_effect=AssertionError('session created')):
+            output = Path(directory) / 'case'
+            with self.assertRaisesRegex(Error, 'api_authorization_required'):
+                api.run_case(dict(api.WINDOW_CASE), Path(directory), signed, output, {})
+            with self.assertRaisesRegex(Error, 'unsupported_api_cases'):
+                api.run_case({**api.WINDOW_CASE, 'expected_exit': False}, Path(directory), signed, output, {})
+            self.assertFalse(output.exists())
+
+    def pump_at_boundary(self, role, suite, case_id, seen, *, total=None):
+        # Real pipe transport, synthetic counters. No native/Wine process is started.
+        import selectors
+        session = api.APISession.__new__(api.APISession)
+        session.suite, session.case_id = suite, case_id
+        session.registration_pump = lambda: None
+        session.observer = SimpleNamespace(refresh=lambda: None)
+        session.failure = None
+        session.event_bytes = seen if total is None else total
+        session.events = {role: []}
+        session.streams = {}
+        session.selector = selectors.DefaultSelector()
+        read_fd, write_fd = os.pipe()
+        reader = os.fdopen(read_fd, 'rb', buffering=0)
+        try:
+            session.add_stream(role, 'events', reader)
+            session.streams[(role, 'events')]['total_bytes'] = seen
+            os.write(write_fd, b'{}\n')
+            session.pump(0)
+            return session.failure, session.events[role]
+        finally:
+            os.close(write_fd)
+            session.selector.close()
+            reader.close()
+
+    def test_actual_pipe_budget_only_expands_window_root(self):
+        normal, window = 2 * 1024 * 1024, 12 * 1024 * 1024
+        for role, suite, case in [('loader', 'api-abi', 'api'), ('loader', api.STAGE4_SUITE, 'threads'),
+                                  ('loader', api.STAGE5_SUITE, 'api'), ('process-01', api.STAGE5_SUITE, 'window'),
+                                  ('server', api.STAGE5_SUITE, 'window')]:
+            with self.subTest(role=role,suite=suite,case=case):
+                self.assertEqual(self.pump_at_boundary(role,suite,case,normal-3),(None,[{}]))
+                self.assertEqual(self.pump_at_boundary(role,suite,case,normal-2),('output_limit',[]))
+        self.assertEqual(self.pump_at_boundary('loader',api.STAGE5_SUITE,'window',normal),(None,[{}]))
+        self.assertEqual(self.pump_at_boundary('loader',api.STAGE5_SUITE,'window',window-3),(None,[{}]))
+        self.assertEqual(self.pump_at_boundary('loader',api.STAGE5_SUITE,'window',window-2),('output_limit',[]))
+        self.assertEqual(self.pump_at_boundary('loader',api.STAGE5_SUITE,'window',0,
+                         total=32*1024*1024-2),('output_limit',[]))
+
+    def test_saved_raw_log_limits_use_trusted_case_not_embedded_label(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); (root/'window').mkdir()
+            required={(role,channel) for role in ('loader','server','sentinel') for channel in ('stdout','stderr')}
+            required.add(('loader','events'))
+            rows=[]
+            for role,channel in sorted(required):
+                data=(b' '*(2*1024*1024)+b'\n') if channel=='events' else b''
+                name=role+'.'+channel+'.log'; (root/'window'/name).write_bytes(data)
+                rows.append({'role':role,'channel':channel,'path':name,'bytes':len(data),'observed_bytes':len(data),
+                             'eof':True,'write_error':None,'sha256':hashlib.sha256(data).hexdigest()})
+            result={'case':dict(api.WINDOW_CASE),'events':{'loader':[]},'logs':rows}
+            with self.assertRaisesRegex(Error,'input_size_limit'):api.verify_logs(root,'window',result)
+            actual=api.verify_logs(root,'window',result,suite=api.STAGE5_SUITE)
+            self.assertGreater(len(actual[('loader','events')]),2*1024*1024)
+            event=next(row for row in rows if row['channel']=='events')
+            old=root/'window'/event['path']; event.update(role='process-01',path='process-01.events.log')
+            old.rename(root/'window'/event['path']); result['events']={'process-01':[]}
+            with self.assertRaisesRegex(Error,'input_size_limit'):
+                api.verify_logs(root,'window',result,suite=api.STAGE5_SUITE)

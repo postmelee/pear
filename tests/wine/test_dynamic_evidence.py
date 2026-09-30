@@ -96,9 +96,13 @@ class DynamicEvidenceTests(unittest.TestCase):
             self.assertNotIn("'"+forbidden+"':", repr(observation))
 
     def test_api_abi_regressions_require_only_budgets(self):
-        for kind in ('api','abi'):
+        for kind in ('api','abi','window'):
             value=d.assess_events(case(rows(False),kind),signed())
             self.assertEqual(value['root']['reservations'],0)
+
+    def test_window_cannot_allocate_dynamic_code_or_omit_budget(self):
+        self.reject(kind='window')
+        self.reject(events=[], runtime=signed(False), kind='window')
 
     def test_legacy_source_capacity_preserves_no_dynamic_shape(self):
         record=case([],kind='api')

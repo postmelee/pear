@@ -336,7 +336,7 @@ def main(argv=None):
     builds.add_argument('--require-complete', action='store_true', required=True)
     runs = sub.add_parser('runs')
     runs.add_argument('--root', required=True)
-    runs.add_argument('--suite', choices=('bootstrap', 'api-abi', 'threads-memory-exceptions'), required=True)
+    runs.add_argument('--suite', choices=('bootstrap', 'api-abi', 'threads-memory-exceptions', 'mac-driver'), required=True)
     runs.add_argument('--require-complete', action='store_true', required=True)
     args = parser.parse_args(argv)
     try:
@@ -351,6 +351,7 @@ def main(argv=None):
         print(encoded({'schema_version': 1, 'record_kind': {'inputs': 'wine_input_assessment', 'build': 'wine_build_assessment',
                                        'runs': ('wine_api_abi_assessment' if getattr(args, 'suite', None) == 'api-abi'
                                                 else 'wine_thread_memory_exception_assessment' if getattr(args, 'suite', None) == 'threads-memory-exceptions'
+                                                else 'wine_mac_driver_assessment' if getattr(args, 'suite', None) == 'mac-driver'
                                                 else 'wine_bootstrap_assessment')}[args.command], 'gate_passed': False,
                        'error': getattr(exc, 'code', 'invalid_or_missing_evidence')}).decode(), end='')
         return 3 if isinstance(exc, Error) else 1

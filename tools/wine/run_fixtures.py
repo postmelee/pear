@@ -819,7 +819,7 @@ def run_case(case, runtime, entrypoints, output, bounds):
 
 
 def run(suite, runtime, output, require_empty):
-    if suite in ('api-abi', 'threads-memory-exceptions'):
+    if suite in ('api-abi', 'threads-memory-exceptions', 'mac-driver'):
         from api_runner import run as run_api
         return run_api(runtime, output, require_empty, suite)
     need(suite == 'bootstrap' and require_empty, 'explicit_bootstrap_empty_output_required')
@@ -1018,7 +1018,7 @@ def _validate_runs(root, suite='bootstrap'):
 
 def validate_runs(root, suite='bootstrap'):
     try:
-        if suite in ('api-abi', 'threads-memory-exceptions'):
+        if suite in ('api-abi', 'threads-memory-exceptions', 'mac-driver'):
             from api_runner import validate_runs as validate_api
             return validate_api(root, suite)
         return _validate_runs(root, suite)
@@ -1030,7 +1030,7 @@ def validate_runs(root, suite='bootstrap'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--suite', choices=['bootstrap', 'api-abi', 'threads-memory-exceptions'], required=True)
+    parser.add_argument('--suite', choices=['bootstrap', 'api-abi', 'threads-memory-exceptions', 'mac-driver'], required=True)
     parser.add_argument('--runtime', required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--require-empty', action='store_true')

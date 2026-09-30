@@ -188,11 +188,11 @@ def assess_events(result, signed):
     capacity = signed.get('arena_capacity', {})
     need(isinstance(capacity, dict), 'dynamic_capacity_type')
     case = result.get('case', {}).get('id')
-    need(case in ('api', 'abi', 'threads'), 'dynamic_fixture_case')
+    need(case in ('api', 'abi', 'threads', 'window'), 'dynamic_fixture_case')
     event_map = result.get('events')
     need(isinstance(event_map, dict) and 'loader' in event_map, 'dynamic_process_coverage')
     supported = 'dynamic_limits' in capacity
-    need(case != 'threads' or supported, 'dynamic_fixture_capacity_missing')
+    need(case not in ('threads', 'window') or supported, 'dynamic_fixture_capacity_missing')
     public, root = [], None
     for role, rows in event_map.items():
         selected = dynamic_rows(rows)
