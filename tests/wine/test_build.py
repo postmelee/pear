@@ -38,6 +38,197 @@ def arm64ec_bytes():
     return bytes(data)
 
 
+class PublicationPolicyTests(unittest.TestCase):
+    def test_legacy_builds_have_no_implicit_executable_publication_grant(self):
+        self.assertEqual(build.code_publication_policy({}), 'none')
+        self.assertEqual(build.code_publication_policy({'fixture_suite': 'api-abi'}), 'none')
+
+    def test_unknown_or_unscoped_publication_policy_rejects(self):
+        for policy in ('rwx', 'thread-jit', '', None, True):
+            with self.subTest(policy=policy), self.assertRaisesRegex(Error, 'build_code_publication_policy'):
+                build.code_publication_policy({'fixture_suite': 'api-abi', 'code_publication_policy': policy})
+        with self.assertRaisesRegex(Error, 'build_code_publication_scope'):
+            build.code_publication_policy({'code_publication_policy': 'page-wx'})
+        self.assertEqual(build.code_publication_policy({'fixture_suite': 'api-abi',
+                                                       'code_publication_policy': 'page-wx'}), 'page-wx')
+
+
+class NativeArchitecturePolicyTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.makefile = Path(self.temp.name) / 'Makefile'
+        self.variants = {
+            'arm64': {'id': 'arm64', 'pe_archs': ['aarch64']},
+            'arm64ec-build': {'id': 'arm64ec-build', 'pe_archs': ['aarch64', 'arm64ec']},
+        }
+
+    def configuration(self, variant='arm64', flags=None, enabled=True):
+        variant = self.variants[variant]
+        fields = {'HOST_ARCH': 'aarch64', 'PE_ARCHS': ' '.join(variant['pe_archs']),
+                  'aarch64_TARGET': 'aarch64-windows', 'arm64ec_TARGET': '',
+                  'x86_64_TARGET': 'x86_64-windows' if variant['id'] == 'arm64ec-build' else '',
+                  'APPKIT_LIBS': '-framework AppKit', 'CORETEXT_LIBS': '-framework CoreText',
+                  'FREETYPE_LIBS': '', 'FONTCONFIG_LIBS': '', 'COREAUDIO_LIBS': ''}
+        text = ''.join(key + ' = ' + value + '\n' for key, value in fields.items())
+        text += 'dlls/winemac.drv/cocoa_app.o:\n'
+        if flags is not None:
+            text += ''.join('PEAR_NATIVE_ONLY_ARCH_CFLAGS = ' + value + '\n' for value in flags)
+        self.makefile.write_text(text)
+        return build.observed_configuration(self.makefile, variant, native_architecture_policy=enabled)
+
+    def test_policy_comes_from_recorded_patch_not_current_series_or_override(self):
+        for record in ({}, {'patches': []}, {'native_architecture_policy': True},
+                       {'patches': [{'path': '0003k-image-observation-budget.patch'}]}):
+            self.assertFalse(build.has_native_architecture_policy(record))
+        self.assertTrue(build.has_native_architecture_policy({'patches': [
+            {'path': '0003l-native-architecture-policy.patch'}]}))
+
+    def test_historical_configuration_fields_are_unchanged(self):
+        for variant in self.variants:
+            old = self.configuration(variant, enabled=False)
+            self.assertNotIn('PEAR_NATIVE_ONLY_ARCH_CFLAGS', old)
+            self.assertEqual(self.configuration(variant, ['unassessed historical field'], False), old)
+
+    def test_native_build_requires_one_exact_macro(self):
+        actual = self.configuration(flags=['-DPEAR_NATIVE_ONLY_ARCH=1'])
+        self.assertEqual(actual['PEAR_NATIVE_ONLY_ARCH_CFLAGS'], '-DPEAR_NATIVE_ONLY_ARCH=1')
+        for flags in (None, [''], ['-DPEAR_NATIVE_ONLY_ARCH=0'],
+                      ['-DPEAR_NATIVE_ONLY_ARCH=1', '-DPEAR_NATIVE_ONLY_ARCH=1'],
+                      ['-DPEAR_NATIVE_ONLY_ARCH=1 -DOTHER=1']):
+            with self.subTest(flags=flags), self.assertRaisesRegex(Error, 'build_native_architecture_macro_mismatch'):
+                self.configuration(flags=flags)
+
+    def test_companion_preserves_empty_policy_and_rejects_native_only_macro(self):
+        actual = self.configuration('arm64ec-build', [''])
+        self.assertEqual(actual['PEAR_NATIVE_ONLY_ARCH_CFLAGS'], '')
+        for flags in (None, ['', ''], ['-DPEAR_NATIVE_ONLY_ARCH=1']):
+            with self.subTest(flags=flags), self.assertRaisesRegex(Error, 'build_native_architecture_macro_mismatch'):
+                self.configuration('arm64ec-build', flags)
+
+
+class ArenaCapacityTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.header = self.root / 'source/dlls/ntdll/unix/pear_pe_arena.h'
+        self.header.parent.mkdir(parents=True)
+        self.header.write_text('#define PEAR_ARENA_INTERIOR_BYTES ((SIZE_T)196608)\n'
+            '#define PEAR_ARENA_ALIGNMENT ((SIZE_T)65536)\n'
+            '#define PEAR_ARENA_MAX_IMAGE_BYTES ((SIZE_T)65536)\n'
+            '#define PEAR_ARENA_MAX_SLOTS 3u\n#define PEAR_ARENA_PAGE_BYTES ((SIZE_T)4096)\n')
+        self.install = self.root / 'install'
+        self.install.mkdir()
+        self.artifacts = {'files': []}
+        self.add_image('one.dll', 4096)
+        self.add_image('two.dll', 65536)
+
+    def add_image(self, name, size, machine=0xAA64):
+        data = bytearray(256)
+        data[:2] = b'MZ'
+        struct.pack_into('<I', data, 60, 64)
+        data[64:68] = b'PE\0\0'
+        struct.pack_into('<H', data, 68, machine)
+        struct.pack_into('<H', data, 88, 0x20B)
+        struct.pack_into('<I', data, 144, size)
+        (self.install / name).write_bytes(data)
+        self.artifacts['files'].append({'path': name, 'kind': 'pe', 'machine': machine})
+
+    def evidence(self):
+        return build.arena_capacity_evidence(self.root / 'source', self.install, self.artifacts)
+
+    def test_inventory_includes_preparation_slot_and_largest_image_margin(self):
+        self.add_image('unsupported-x64.exe', 65536, 0x8664)
+        value = self.evidence()
+        self.assertEqual(value['arm64_image_count'], 2)
+        self.assertEqual(value['total_slot_bytes'], 131072)
+        self.assertEqual(value['required_interior_bytes'], 196608)
+        self.assertEqual(value['required_slots'], 3)
+        self.assertFalse(value['wine_execution'])
+
+    def test_extra_images_and_larger_image_cannot_silently_exceed_compiled_limits(self):
+        self.add_image('third.dll', 4096)
+        with self.assertRaisesRegex(Error, 'arena_capacity_inventory_exceeds_limits'):
+            self.evidence()
+        self.artifacts['files'].pop()
+        data = bytearray((self.install / 'one.dll').read_bytes())
+        struct.pack_into('<I', data, 144, 69632)
+        (self.install / 'one.dll').write_bytes(data)
+        with self.assertRaisesRegex(Error, 'arena_capacity_inventory_exceeds_limits'):
+            self.evidence()
+
+    def test_truncated_headers_invalid_sizes_and_duplicate_definitions_reject(self):
+        path = self.install / 'one.dll'
+        original = path.read_bytes()
+        for data in (original[:80], original[:144] + bytes(4) + original[148:]):
+            path.write_bytes(data)
+            with self.assertRaises(Error):
+                self.evidence()
+        path.write_bytes(original)
+        self.header.write_text(self.header.read_text() + '#define PEAR_ARENA_MAX_SLOTS 3u\n')
+        with self.assertRaisesRegex(Error, 'arena_capacity_definition'):
+            self.evidence()
+
+
+    def copy_budget(self, image_size=4096):
+        path = 'libexec/pear-stage3/lifetime-arm64.dll'
+        (self.install / path).parent.mkdir(parents=True)
+        self.add_image(path, image_size)
+        self.header.write_text(self.header.read_text().replace('196608', '393216').replace('MAX_SLOTS 3u', 'MAX_SLOTS 6u') +
+                               '#define PEAR_ARENA_RELOCATION_COPIES 2u\n')
+        return path
+
+    def test_two_actual_fixture_copy_sizes_are_added_to_inventory_margin(self):
+        path = self.copy_budget()
+        value = self.evidence()
+        self.assertEqual(value['required_slots'], 6)
+        self.assertEqual(value['required_interior_bytes'], 393216)
+        self.assertEqual(value['fixture_copies'], {'path': path, 'count': 2, 'slot_bytes': 65536, 'total_bytes': 131072})
+        self.assertEqual(value['arm64_image_count'], 3)
+
+    def test_copy_budget_enforces_both_slot_and_byte_limits(self):
+        self.copy_budget()
+        original = self.header.read_text()
+        for text in (original.replace('MAX_SLOTS 6u', 'MAX_SLOTS 5u'), original.replace('393216', '327680')):
+            with self.subTest(text=text):
+                self.header.write_text(text)
+                with self.assertRaisesRegex(Error, 'arena_capacity_inventory_exceeds_limits'):
+                    self.evidence()
+
+    def test_larger_actual_copy_size_is_measured_instead_of_assuming_one_slot(self):
+        self.copy_budget(69632)
+        self.header.write_text(self.header.read_text().replace('393216', '655360').replace(
+            'MAX_IMAGE_BYTES ((SIZE_T)65536)', 'MAX_IMAGE_BYTES ((SIZE_T)131072)'))
+        value = self.evidence()
+        self.assertEqual(value['fixture_copies']['slot_bytes'], 131072)
+        self.assertEqual(value['fixture_copies']['total_bytes'], 262144)
+        self.assertEqual(value['required_interior_bytes'], 655360)
+
+    def test_missing_or_wrong_architecture_copy_source_rejects(self):
+        self.header.write_text(self.header.read_text() + '#define PEAR_ARENA_RELOCATION_COPIES 2u\n')
+        with self.assertRaisesRegex(Error, 'arena_fixture_copy_source_missing'):
+            self.evidence()
+        path = 'libexec/pear-stage3/lifetime-arm64.dll'
+        (self.install / path).parent.mkdir(parents=True)
+        self.add_image(path, 4096, 0x8664)
+        with self.assertRaisesRegex(Error, 'arena_fixture_copy_source_missing'):
+            self.evidence()
+
+    def test_changed_duplicate_or_malformed_copy_count_rejects(self):
+        self.copy_budget()
+        original = self.header.read_text()
+        for text in (original.replace('COPIES 2u', 'COPIES 1u'), original.replace('COPIES 2u', 'COPIES (2)'),
+                     original + '#define PEAR_ARENA_RELOCATION_COPIES 2u\n'):
+            with self.subTest(text=text):
+                self.header.write_text(text)
+                with self.assertRaisesRegex(Error, 'arena_fixture_copy_definition'):
+                    self.evidence()
+
+    def test_historical_capacity_record_has_no_retroactive_copy_fields(self):
+        self.assertNotIn('fixture_copies', self.evidence())
+
+
 class InventoryTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -189,6 +380,71 @@ class OutputCoverageTests(unittest.TestCase):
         value['files'].append({'path': 'lib/wine/arm64ec-windows/ntdll.dll', 'kind': 'pe', 'machine': 0x8664})
         with self.assertRaisesRegex(Error, 'build_unexpected_pe_path'):
             build.required_outputs(value, 'arm64ec-build')
+
+
+    def stage3(self):
+        value = self.complete()
+        value['files'].append({'path': 'libexec/pear-stage3/api-launch', 'kind': 'macho',
+                               'architectures': [build.MACH_ARM64]})
+        value['files'].extend({'path': name, 'kind': 'pe', 'machine': machine}
+                              for name, machine in build.STAGE3_PE.items())
+        return value
+
+    def test_control_pe_files_are_permitted_only_in_the_declared_fixture_suite(self):
+        value = self.stage3()
+        build.required_outputs(value, 'arm64', 'api-abi')
+        with self.assertRaisesRegex(Error, 'build_unexpected_pe_path'):
+            build.required_outputs(value, 'arm64', 'bootstrap')
+        value['files'].append({'path': 'lib/wine/aarch64-windows/unexpected.dll',
+                               'kind': 'pe', 'machine': 0x8664})
+        with self.assertRaisesRegex(Error, 'build_pe_architecture'):
+            build.required_outputs(value, 'arm64', 'api-abi')
+
+    def test_missing_stage3_fixture_or_wrong_machine_rejects(self):
+        for name in build.STAGE3_PE:
+            value = self.stage3()
+            value['files'] = [row for row in value['files'] if row['path'] != name]
+            with self.subTest(name=name), self.assertRaisesRegex(Error, 'build_required_outputs_missing'):
+                build.required_outputs(value, 'arm64', 'api-abi')
+            value = self.stage3()
+            row = next(row for row in value['files'] if row['path'] == name)
+            row['machine'] = 0x14c if row['machine'] != 0x14c else 0xAA64
+            with self.subTest(name=name), self.assertRaisesRegex(Error, 'build_fixture_pe_architecture'):
+                build.required_outputs(value, 'arm64', 'api-abi')
+
+    def test_page_wx_requires_each_original_dll_and_preserves_legacy_coverage(self):
+        legacy = self.stage3()
+        with self.assertRaisesRegex(Error, 'build_required_outputs_missing'):
+            build.required_outputs(legacy, 'arm64', 'api-abi', 'page-wx')
+        value = copy.deepcopy(legacy)
+        value['files'].extend({'path': name, 'kind': 'pe', 'machine': machine}
+                             for name, machine in build.PAGE_WX_PE.items())
+        build.required_outputs(value, 'arm64', 'api-abi', 'page-wx')
+        with self.assertRaisesRegex(Error, 'build_unexpected_pe_path'):
+            build.required_outputs(value, 'arm64', 'api-abi', 'none')
+        for name in build.PAGE_WX_PE:
+            changed = copy.deepcopy(value)
+            next(row for row in changed['files'] if row['path'] == name)['machine'] = 0x8664
+            with self.subTest(name=name), self.assertRaisesRegex(Error, 'build_fixture_pe_architecture'):
+                build.required_outputs(changed, 'arm64', 'api-abi', 'page-wx')
+
+    def test_legacy_recipe_does_not_retroactively_include_new_dll_commands(self):
+        with mock.patch.object(build, 'native_tool', return_value=Path('/owned/clang')):
+            legacy = build.fixture_commands(Path('/owned/build'), Path('/owned/tools'),
+                                            {'sdk': {'path': '/owned/sdk'}}, 'api-abi')
+            current = build.fixture_commands(Path('/owned/build'), Path('/owned/tools'),
+                                             {'sdk': {'path': '/owned/sdk'}}, 'api-abi', 'page-wx')
+        self.assertTrue(all(current[key] == value for key, value in legacy.items()))
+        self.assertEqual(set(current) - set(legacy), {'fixture-lifetime-dll',
+            'fixture-missing-name-importlib', 'fixture-missing-name-dll',
+            'fixture-missing-ordinal-importlib', 'fixture-missing-ordinal-dll'})
+        self.assertEqual(build.fixture_sources({'fixture_suite': 'api-abi'}), build.FIXTURE_SUITES['api-abi'])
+
+    def test_unknown_fixture_suite_cannot_fall_back_to_bootstrap(self):
+        with self.assertRaisesRegex(Error, 'build_fixture_suite'):
+            build.fixture_suite({'fixture_suite': 'unknown'})
+        with self.assertRaisesRegex(Error, 'build_fixture_suite'):
+            build.required_outputs(self.complete(), 'arm64', 'unknown')
 
 
 class SourceDerivationTests(unittest.TestCase):
@@ -382,6 +638,36 @@ class FinalizationTests(unittest.TestCase):
         self.assertEqual((self.root / 'build.json').read_bytes(), original)
         self.assertFalse((self.root / 'build-before-finalization.json').exists())
         self.assertFalse((self.root / 'finalizer').exists())
+
+    def test_page_wx_build_requires_actual_configured_native_pe_macro(self):
+        makefile = self.root / 'objects/Makefile'
+        variant = {'id': 'arm64', 'pe_archs': ['aarch64']}
+        with self.assertRaisesRegex(Error, 'build_publication_macro_mismatch'):
+            build.observed_configuration(makefile, variant, 'page-wx')
+        makefile.write_text(makefile.read_text() + 'PEAR_NATIVE_PE_PUBLICATION_CFLAGS = -DPEAR_NATIVE_PE_PUBLICATION=1\n')
+        value = build.observed_configuration(makefile, variant, 'page-wx')
+        self.assertEqual(value['PEAR_NATIVE_PE_PUBLICATION_CFLAGS'], '-DPEAR_NATIVE_PE_PUBLICATION=1')
+
+    def test_historical_verifier_derives_macro_gate_from_its_own_patch_record(self):
+        # Source/command derivation has its own tests; exercise the recorded
+        # policy selection at the verifier boundary without running a build.
+        self.result['patches'] = [{'path': '0003l-native-architecture-policy.patch'}]
+        with mock.patch.object(build, 'verify_source_derivation'), \
+             mock.patch.object(build, 'verify_build_commands'), \
+             self.assertRaisesRegex(Error, 'build_native_architecture_macro_mismatch'):
+            build.verify_build_evidence(self.root, self.result, current=False)
+        self.result['patches'] = []
+        build.verify_build_evidence(self.root, self.result, current=False)
+
+    def test_rehashed_series_cannot_change_recorded_publication_policy(self):
+        path = self.repo / build.RECORDS['patch_series']
+        path.write_bytes(encoded({'patches': [], 'fixture_suite': 'api-abi',
+                                 'code_publication_policy': 'page-wx'}))
+        self.result['record_hashes']['patch_series'] = sha256(path)
+        self.result['fixture_suite'] = 'api-abi'
+        self.result['code_publication_policy'] = 'none'
+        self.save()
+        self.assert_rejected_preserving_record('build_code_publication_changed')
 
     def test_completed_failure_finalizes_without_commands_and_retains_both_producers(self):
         raw = (self.root / 'build.json').read_bytes()

@@ -603,6 +603,26 @@ def bound_macho_uuid(path, expected_hash):
     return found[0]
 
 
+def system_image_origin(observed, resolved):
+    """Recognize OS library paths and their same-path OS Cryptex aliases.
+
+    This is an origin policy, not independent signature/shared-cache attestation.
+    A system-looking path resolving into arbitrary Preboot or user storage fails.
+    """
+    observed, resolved = Path(observed), Path(resolved)
+    if not observed.is_absolute() or not resolved.is_absolute() or '..' in observed.parts or '..' in resolved.parts:
+        return False
+    roots = (Path('/usr/lib'), Path('/System/Library'))
+    for root in roots:
+        if not observed.is_relative_to(root) or observed == root:
+            continue
+        if any(resolved.is_relative_to(allowed) and resolved != allowed for allowed in roots):
+            return True
+        cryptex = Path('/System/Volumes/Preboot/Cryptexes/OS')
+        return resolved == cryptex / observed.relative_to('/')
+    return False
+
+
 def validate_native_images(events, runtime, signed, expected):
     runtime = Path(runtime).resolve()
     known = {str((runtime / row['path']).resolve()): row for row in signed['native_images']}
@@ -621,7 +641,7 @@ def validate_native_images(events, runtime, signed, expected):
                 need(row.get('uuid', '').replace('-', '').lower() == native_uuid, 'loaded_uuid_mismatch')
                 observed.add(str(path))
             else:
-                need(str(path).startswith(('/usr/lib/', '/System/Library/')), 'external_loaded_image')
+                need(system_image_origin(row['path'], path), 'external_loaded_image')
         expected_main = (runtime / signed['entrypoints'][role]).resolve()
         need(Path(rows[0]['path']).resolve() == expected_main and str(expected_main) in observed,
              'wrong_loaded_executable')
@@ -797,6 +817,9 @@ def run_case(case, runtime, entrypoints, output, bounds):
 
 
 def run(suite, runtime, output, require_empty):
+    if suite == 'api-abi':
+        from api_runner import run as run_api
+        return run_api(runtime, output, require_empty)
     need(suite == 'bootstrap' and require_empty, 'explicit_bootstrap_empty_output_required')
     # Lazy import keeps portable data/lifecycle tests independent of signing tools.
     from signing import validate_prepared
@@ -993,6 +1016,9 @@ def _validate_runs(root, suite='bootstrap'):
 
 def validate_runs(root, suite='bootstrap'):
     try:
+        if suite == 'api-abi':
+            from api_runner import validate_runs as validate_api
+            return validate_api(root)
         return _validate_runs(root, suite)
     except Error:
         raise
@@ -1002,14 +1028,15 @@ def validate_runs(root, suite='bootstrap'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--suite', choices=['bootstrap'], required=True)
+    parser.add_argument('--suite', choices=['bootstrap', 'api-abi'], required=True)
     parser.add_argument('--runtime', required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--require-empty', action='store_true')
     args = parser.parse_args()
     try:
         result = run(args.suite, args.runtime, args.output, args.require_empty)
-        print('Native bootstrap checks passed.' if result['passed'] else 'Native bootstrap checks failed; evidence preserved.')
+        label = 'Native bootstrap' if args.suite == 'bootstrap' else 'Instrumented Windows API/ABI'
+        print(label + (' checks passed.' if result['passed'] else ' checks failed; evidence preserved.'))
         return 0 if result['passed'] else 1
     except KeyboardInterrupt:
         print('runner_interrupted', file=sys.stderr)

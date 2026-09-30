@@ -141,6 +141,23 @@ class ProfileTests(unittest.TestCase):
             with self.subTest(kind=kind), self.assertRaises(common.Error):
                 signing.profile_authorization(profile, identities, device, signing.BUNDLE_ID, NOW)
 
+    def test_loader_public_claim_does_not_mutate_or_broaden_private_authorization(self):
+        private = private_fixture()
+        original = copy.deepcopy(private)
+        expected = dict(private['claims'], **{signing.PROFILE.BASELINE.ALLOW_JIT: True})
+        self.assertEqual(signing.loader_claims(private, 'page-wx'), expected)
+        self.assertEqual(signing.loader_claims(private, 'none'), private['claims'])
+        self.assertEqual(private, original)
+        for key in ('com.apple.security.cs.disable-library-validation',
+                    'com.apple.security.cs.allow-unsigned-executable-memory',
+                    signing.PROFILE.BASELINE.ALLOW_JIT):
+            changed = copy.deepcopy(private)
+            changed['claims'][key] = True
+            with self.subTest(key=key), self.assertRaisesRegex(common.Error, 'unexpected_authorized_claims'):
+                signing.loader_claims(changed, 'page-wx')
+        with self.assertRaisesRegex(common.Error, 'build_code_publication_policy'):
+            signing.loader_claims(private, 'rwx')
+
     def test_only_actual_alternative_grant_is_selected(self):
         profile = profile_fixture()
         del profile['Entitlements'][signing.CROSS_KEYS[0]]
@@ -219,6 +236,7 @@ class LayoutTests(unittest.TestCase):
         (self.build / 'build.json').write_bytes(common.encoded(self.built))
         self.output = self.root / '.build/task4/signed'
         self.private = private_fixture()
+        self.observed_loader_claims = dict(self.private['claims'])
         self.profile = self.root / 'synthetic.provisionprofile'
         self.profile.write_bytes(self.private['profile_bytes'])
         self.local = self.root / '.build/task4/private/signing.json'
@@ -236,7 +254,7 @@ class LayoutTests(unittest.TestCase):
             return b'', metadata().encode()
         if '--display' in args and '--entitlements' in args:
             restricted = path == self.output / signing.BUNDLE or path == self.output / signing.MAIN
-            return plistlib.dumps(self.private['claims'] if restricted else {}), b''
+            return plistlib.dumps(self.observed_loader_claims if restricted else {}), b''
         return b'', b''
 
     def prepare(self):
@@ -250,6 +268,79 @@ class LayoutTests(unittest.TestCase):
              patch.object(signing, '_authorization', return_value=self.private), \
              patch.object(signing, '_native', side_effect=self.native):
             return signing.validate_prepared(self.output)
+
+    def add_api_fixtures(self, policy="none"):
+        self.built['fixture_suite'] = 'api-abi'
+        self.built['code_publication_policy'] = policy
+        if policy == 'page-wx':
+            self.built['arena_capacity'] = {'policy': policy, 'wine_execution': False,
+                                             'scope': 'synthetic signing fixture; no real capacity evidence'}
+        p = self.install / signing.API_LAUNCH
+        p.parent.mkdir(parents=True)
+        p.write_bytes(macho())
+        self.artifacts.append({'path': signing.API_LAUNCH, 'kind': 'macho', 'sha256': common.sha256(p)})
+        for name, machine, _ in signing.guest_fixtures_for(self.built).values():
+            p = self.install / name
+            data = bytearray(88)
+            data[:2] = b'MZ'
+            struct.pack_into('<I', data, 60, 64)
+            data[64:68] = b'PE\0\0'
+            struct.pack_into('<H', data, 68, machine)
+            p.write_bytes(data)
+            self.artifacts.append({'path': name, 'kind': 'pe', 'machine': machine, 'sha256': common.sha256(p)})
+
+    def test_api_scope_binds_guests_and_forbids_control_execution(self):
+        self.add_api_fixtures()
+        value = signing.requirement_map(self.build, self.built)
+        self.assertEqual(value['authorization_scope'], 'development_windows_api_abi_fixtures')
+        self.assertEqual({role for role, row in value['guest_fixtures'].items() if row['execution_permitted']},
+                         {'api_pe', 'abi_pe'})
+        self.assertEqual(sum(row['cross_architecture_profile_required'] for row in value['native_images']), 1)
+        self.assertFalse(next(row for row in value['native_images'] if row['role'] == 'api-launch-helper')
+                         ['cross_architecture_profile_required'])
+        prepared = self.prepare()
+        self.assertEqual(prepared['authorization_scope'], value['authorization_scope'])
+        changed = copy.deepcopy(prepared)
+        changed['authorization_scope'] = 'development_native_bootstrap_pre_pe'
+        (self.output / 'signed.json').write_bytes(common.encoded(changed))
+        with self.assertRaisesRegex(common.Error, 'signed_fixture_scope_changed'):
+            self.validate()
+
+    def test_page_wx_policy_is_bound_to_loader_only_and_signed_record(self):
+        self.add_api_fixtures('page-wx')
+        self.observed_loader_claims[signing.PROFILE.BASELINE.ALLOW_JIT] = True
+        requirements = signing.requirement_map(self.build, self.built)
+        self.assertEqual(requirements['code_publication_policy'], 'page-wx')
+        self.assertEqual([row['role'] for row in requirements['native_images'] if row['allow_jit']],
+                         ['wine-loader'])
+        result = self.prepare()
+        self.assertEqual(result['code_publication_policy'], 'page-wx')
+        claims = plistlib.loads((self.output / 'authorized-entitlements.plist').read_bytes())
+        self.assertEqual(claims, self.observed_loader_claims)
+        for row in result['native_images']:
+            expected = sorted(claims) if row['role'] == 'wine-loader' else []
+            self.assertEqual(row['signature']['claim_keys'], expected)
+        changed = dict(result, code_publication_policy='none')
+        (self.output / 'signed.json').write_bytes(common.encoded(changed))
+        with self.assertRaisesRegex(common.Error, 'signed_code_publication_changed'):
+            self.validate()
+
+    def test_page_wx_loader_without_actual_public_claim_rejects(self):
+        self.add_api_fixtures('page-wx')
+        with self.assertRaisesRegex(common.Error, 'entitlements_unexpected'):
+            self.prepare()
+        self.assertEqual(common.load_json(self.output / 'signed.json')['status'], 'failed')
+
+    def test_api_guest_header_must_match_claimed_architecture(self):
+        self.add_api_fixtures()
+        name = signing.API_GUESTS['api_pe'][0]
+        p = self.install / name
+        data = bytearray(p.read_bytes())
+        struct.pack_into('<H', data, 68, 0x8664)
+        p.write_bytes(data)
+        next(row for row in self.artifacts if row['path'] == name)['sha256'] = common.sha256(p)
+        with self.assertRaisesRegex(common.Error, 'signing_guest_fixture_mismatch'):
+            signing.requirement_map(self.build, self.built)
 
     def test_requirements_separate_actual_loader_server_and_wrapper(self):
         result = signing.requirement_map(self.build, self.built)

@@ -1,0 +1,110 @@
+From: Pear contributors
+Subject: [PATCH] ntdll: own Darwin loader exec environment strings
+
+Base: Wine 4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf plus preceding Pear patches.
+Original Pear integration. Keep the two existing exec environment values but
+copy their storage with checked setenv on Darwin ARM64. Preserve the first
+allocation error and other-platform behavior. Existing Wine LGPL-2.1-or-later
+notices apply. This change does not qualify runtime or game execution.
+
+--- a/dlls/ntdll/unix/loader.c
++++ b/dlls/ntdll/unix/loader.c
+@@ -670,82 +670,98 @@
+ #endif
+ }
+ 
+ /* exec the appropriate wine loader for the specified machine */
+ static NTSTATUS loader_exec( char **argv, WORD machine )
+ {
+     static char noexec[] = "WINELOADERNOEXEC=1";
+ 
+     putenv( noexec );
+ 
+     if (((argv[1] = get_alternate_wineloader( machine )))) preloader_exec( argv );
+ 
+     argv[1] = strdup( wineloader );
+     preloader_exec( argv );
+     return STATUS_INVALID_IMAGE_FORMAT;
+ }
+ 
+ 
+ /***********************************************************************
+  *           exec_wineloader
+  *
+  * argv[0] and argv[1] must be reserved for the preloader and loader respectively.
+  */
+ NTSTATUS exec_wineloader( char **argv, int socketfd, const struct pe_image_info *pe_info )
+ {
+     WORD machine = pe_info->machine;
+     ULONGLONG res_start = pe_info->base;
+     ULONGLONG res_end = pe_info->base + pe_info->map_size;
+     char preloader_reserve[64], socket_env[64];
+ 
+     if (pe_info->wine_fakedll) res_start = res_end = 0;
+     if (pe_info->image_flags & IMAGE_FLAGS_ComPlusNativeReady)
+         machine = is_machine_64bit( native_machine ) ? IMAGE_FILE_MACHINE_AMD64 : native_machine;
+ 
+     signal( SIGPIPE, SIG_DFL );
+ 
+     snprintf( socket_env, sizeof(socket_env), "WINESERVERSOCKET=%u", socketfd );
+     snprintf( preloader_reserve, sizeof(preloader_reserve), "WINEPRELOADRESERVE=%x%08x-%x%08x",
+              (UINT)(res_start >> 32), (UINT)res_start, (UINT)(res_end >> 32), (UINT)res_end );
+ 
++#if defined(__APPLE__) && defined(__aarch64__)
++    /* The exec environment must own these strings. Wine's Unix stack may sit
++     * near the task address limit, where Darwin copyinstr's full maximum-range
++     * check can reject even a short, readable stack string during exec. */
++    if (setenv( "WINEPRELOADRESERVE", preloader_reserve + sizeof("WINEPRELOADRESERVE=") - 1, 1 ) ||
++        setenv( "WINESERVERSOCKET", socket_env + sizeof("WINESERVERSOCKET=") - 1, 1 ))
++    {
++        int error = errno;
++        NTSTATUS status;
++        if (pear_bootstrap_enabled()) pear_bootstrap_failure( "loader", "exec_environment", error );
++        status = errno_to_status( error );
++        errno = error;
++        return status;
++    }
++#else
+     putenv( preloader_reserve );
+     putenv( socket_env );
++#endif
+ 
+     return loader_exec( argv, machine );
+ }
+ 
+ 
+ /***********************************************************************
+  *           exec_wineserver
+  *
+  * Exec a new wine server.
+  */
+ static int exec_wineserver( pid_t *pid, char **argv )
+ {
+     char *path;
+ 
+     if (!is_win64 && alt_build_dir)  /* look for 64-bit server */
+         return build_path_and_exec( pid, alt_build_dir, "server/wineserver", argv );
+ 
+     if (build_dir)
+         return build_path_and_exec( pid, build_dir, "server/wineserver", argv );
+ 
+     if (!build_path_and_exec( pid, bin_dir, "wineserver", argv )) return 0;
+     if ((path = getenv( "WINESERVER" )) && !build_path_and_exec( pid, "", path, argv )) return 0;
+ 
+     if ((path = getenv( "PATH" )))
+     {
+         for (path = strtok( strdup( path ), ":" ); path; path = strtok( NULL, ":" ))
+             if (!build_path_and_exec( pid, path, "wineserver", argv )) return 0;
+     }
+     return build_path_and_exec( pid, BINDIR, "wineserver", argv );
+ }
+ 
+ 
+ /***********************************************************************
+  *           start_server
+  *
+  * Start a new wine server.
+  */
+ void start_server( BOOL debug )
+ {
+     static BOOL started;  /* we only try once */

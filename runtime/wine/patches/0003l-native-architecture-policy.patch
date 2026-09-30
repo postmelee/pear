@@ -1,0 +1,592 @@
+From: Pear contributors
+Subject: [PATCH] wine: advertise the selected native-only Darwin architecture
+
+Base: Wine 4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf plus preceding Pear patches
+through 0003k. Original Pear configuration and architecture-policy correction.
+A Darwin ARM64 build with only aarch64 PE modules has no runnable I386/AMD64
+companion. The upstream server nevertheless advertises those architectures,
+causing real Wineboot initialization to start an absent syswow64/rundll32.exe.
+Derive an explicit server policy from the host and selected PE targets. Keep
+all upstream non-Darwin, other-host, companion-target and 32-bit-prefix paths
+unchanged. Consumers receive the corrected server capability list; no Wineboot
+initialization, failed exit, or fixture observation is bypassed. Generated
+configure changes match configure.ac without unrelated regeneration. Existing
+LGPL-2.1-or-later notices are preserved and apply. This change does not qualify
+translated execution, ARM64EC or game support.
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -914,90 +914,105 @@
+ 
+ AC_CHECK_HEADERS([pthread_np.h],,,[#include <pthread.h>])
+ 
+ AC_CHECK_HEADERS([linux/videodev2.h],,,
+ [#include <sys/time.h>
+ #include <sys/types.h>
+ #ifdef HAVE_ASM_TYPES_H
+ #include <asm/types.h>
+ #endif])
+ 
+ AC_CHECK_HEADERS([libprocstat.h],,,
+ [#ifdef HAVE_SYS_PARAM_H
+ #include <sys/param.h>
+ #endif
+ #include <sys/socket.h>
+ #ifdef HAVE_SYS_QUEUE_H
+ #include <sys/queue.h>
+ #endif])
+ 
+ AC_CHECK_HEADERS([bluetooth/rfcomm.h],,,
+ [#ifdef HAVE_BLUETOOTH_BLUETOOTH_H
+ #include <bluetooth/bluetooth.h>
+ #endif])
+ 
+ if test "x$ac_cv_header_sys_xattr_h" = xyes
+ then
+     AC_CACHE_CHECK([whether getxattr takes additional arguments], wine_cv_xattr_extra_args,
+         [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/xattr.h>]], [[getxattr("", "", "", 0, 0, 0);]])],
+                            [wine_cv_xattr_extra_args=yes],[wine_cv_xattr_extra_args=no])])
+     test $wine_cv_xattr_extra_args != yes || AC_DEFINE(XATTR_ADDITIONAL_OPTIONS, 1, [Define if xattr functions take additional arguments (macOS)])
+ fi
+ 
+ dnl **** Check for working dll ****
+ 
+ AC_SUBST(DLLFLAGS,"")
+ AC_SUBST(LDDLLFLAGS,"")
+ AC_SUBST(LDEXECFLAGS,"")
+ AC_SUBST(EXTRACFLAGS,"")
+ AC_SUBST(UNIXDLLFLAGS,"-fPIC")
+ AC_SUBST(UNIXLDFLAGS,["-shared -Wl,-Bsymbolic -Wl,-soname,\$(UNIXLIB)"])
+ AC_SUBST(TOP_INSTALL_LIB,"")
+ AC_SUBST(TOP_INSTALL_DEV,"")
+ AC_SUBST(WINELOADER_LDFLAGS,"")
+ AC_SUBST(WINEPRELOADER_LDFLAGS,"")
+ AC_SUBST(PEAR_NATIVE_PE_PUBLICATION_CFLAGS,"")
++AC_SUBST(PEAR_NATIVE_ONLY_ARCH_CFLAGS,"")
++dnl Advertise only native ARM64 for the Darwin build without companion PE targets.
++pear_native_only_archs=
++for pear_native_only_arch in $PE_ARCHS
++do
++    pear_native_only_archs="$pear_native_only_archs $pear_native_only_arch"
++done
++case "$HOST_ARCH-$host_os" in
++  aarch64-darwin*)
++    if test "$pear_native_only_archs" = " aarch64"
++    then
++        PEAR_NATIVE_ONLY_ARCH_CFLAGS="-DPEAR_NATIVE_ONLY_ARCH=1"
++    fi
++    ;;
++esac
+ LIBEXT="so"
+ WINE_PATH_SONAME_TOOLS
+ WINE_CONFIG_HELPERS
+ 
+ case $host_os in
+   cygwin*|mingw32*)
+     LIBEXT="dll"
+     ;;
+ 
+   darwin*)
+     LIBEXT="dylib"
+     DLLFLAGS="$DLLFLAGS -fPIC"
+     LDDLLFLAGS="-fPIC"
+     enable_winemac_drv=${enable_winemac_drv:-yes}
+     with_fontconfig=${with_fontconfig:-no}
+     dnl declare needed frameworks
+     AC_SUBST(CORETEXT_LIBS,"-framework CoreText")
+     AC_SUBST(COREFOUNDATION_LIBS,"-framework CoreFoundation")
+     AC_SUBST(DISKARBITRATION_LIBS,"-framework DiskArbitration -framework CoreFoundation")
+     AC_SUBST(IOKIT_LIBS,"-framework IOKit -framework CoreFoundation")
+     AC_SUBST(APPLICATIONSERVICES_LIBS,"-framework ApplicationServices")
+     AC_SUBST(CORESERVICES_LIBS,"-framework CoreServices")
+     AC_SUBST(APPKIT_LIBS,"-framework AppKit")
+     AC_SUBST(SECURITY_LIBS,"-framework Security -framework CoreFoundation")
+     AC_SUBST(SYSTEMCONFIGURATION_LIBS,"-framework SystemConfiguration")
+ 
+     WINELOADER_LDFLAGS="-Wl,-segalign,0x1000,-pagezero_size,0x1000,-sectcreate,__TEXT,__info_plist,loader/wine_info.plist"
+ 
+     case $HOST_ARCH in
+       i386) wine_use_preloader=yes ;;
+       aarch64)
+         dnl Select the same immutable publication policy in native and ARM64 PE ntdll.
+         PEAR_NATIVE_PE_PUBLICATION_CFLAGS="-DPEAR_NATIVE_PE_PUBLICATION=1"
+         dnl Match the authorized Apple Silicon guest layout with a 64 KiB null guard.
+         wine_use_preloader=no
+         WINELOADER_LDFLAGS="-Wl,-x86_64_layout_emulation,-segalign,0x1000,-pagezero_size,0x10000,-sectcreate,__TEXT,__info_plist,loader/wine_info.plist"
+         ;;
+       x86_64)
+         dnl If the -no_huge linker option is present (added in Xcode 15.3), use zerofill sections instead of the preloader
+         WINE_TRY_CFLAGS([-Wl,-no_huge],
+            [wine_use_preloader=no
+             WINELOADER_LDFLAGS="$WINELOADER_LDFLAGS -Wl,-no_pie,-image_base,0x200000000,-no_huge,-no_fixup_chains,-segalign,0x1000,-segaddr,WINE_RESERVE,0x1000,-segaddr,WINE_TOP_DOWN,0x7ff000000000"],
+            [wine_use_preloader=yes])
+         ;;
+       *)    wine_use_preloader=no ;;
+--- a/configure
++++ b/configure
+@@ -731,90 +731,91 @@
+ LCMS2_PE_LIBS
+ LCMS2_PE_CFLAGS
+ JXR_PE_LIBS
+ JXR_PE_CFLAGS
+ JPEG_PE_LIBS
+ JPEG_PE_CFLAGS
+ ICUI18N_PE_LIBS
+ ICUI18N_PE_CFLAGS
+ ICUCOMMON_PE_LIBS
+ ICUCOMMON_PE_CFLAGS
+ GSM_PE_LIBS
+ GSM_PE_CFLAGS
+ FLUIDSYNTH_PE_LIBS
+ FLUIDSYNTH_PE_CFLAGS
+ FFMPEG_PE_LIBS
+ FFMPEG_PE_CFLAGS
+ FAUDIO_PE_LIBS
+ FAUDIO_PE_CFLAGS
+ CXXABI_PE_LIBS
+ CXXABI_PE_CFLAGS
+ CXX_PE_LIBS
+ CXX_PE_CFLAGS
+ CAPSTONE_PE_LIBS
+ CAPSTONE_PE_CFLAGS
+ MINGW_PKG_CONFIG
+ ANDROID_HOME
+ GRADLE
+ WINELOADER_DEPENDS
+ OPENCL_LIBS
+ COREAUDIO_LIBS
+ SYSTEMCONFIGURATION_LIBS
+ SECURITY_LIBS
+ APPKIT_LIBS
+ CORESERVICES_LIBS
+ APPLICATIONSERVICES_LIBS
+ IOKIT_LIBS
+ DISKARBITRATION_LIBS
+ COREFOUNDATION_LIBS
+ CORETEXT_LIBS
+ CONFIGURE_TARGETS
+ DISABLED_SUBDIRS
+ SUBDIRS
+ READELF
+ OTOOL
+ LDD
++PEAR_NATIVE_ONLY_ARCH_CFLAGS
+ PEAR_NATIVE_PE_PUBLICATION_CFLAGS
+ WINEPRELOADER_LDFLAGS
+ WINELOADER_LDFLAGS
+ TOP_INSTALL_DEV
+ TOP_INSTALL_LIB
+ UNIXLDFLAGS
+ UNIXDLLFLAGS
+ EXTRACFLAGS
+ LDEXECFLAGS
+ LDDLLFLAGS
+ DLLFLAGS
+ OPENGL_LIBS
+ I386_LIBS
+ DLLEXT
+ PE_ARCHS
+ MSGFMT
+ ICOTOOL
+ CONVERT
+ RSVG
+ FONTFORGE
+ PKG_CONFIG
+ LN_S
+ STRIP
+ BISON
+ FLEX
+ SED_CMD
+ RUNTESTFLAGS
+ wine64dir
+ toolsdir
+ toolsext
+ x86_64_DISABLED_SUBDIRS
+ x86_64_DELAYLOADFLAG
+ x86_64_STRIP
+ x86_64_TARGET
+ x86_64_DEBUG
+ x86_64_LDFLAGS
+ x86_64_EXTRACXXFLAGS
+ x86_64_EXTRACFLAGS
+ x86_64_CXXFLAGS
+ x86_64_CFLAGS
+ x86_64_CXX
+ x86_64_CC
+ i386_DISABLED_SUBDIRS
+ i386_DELAYLOADFLAG
+ i386_STRIP
+@@ -11986,90 +11987,105 @@
+ getxattr("", "", "", 0, 0, 0);
+   ;
+   return 0;
+ }
+ _ACEOF
+ if ac_fn_c_try_compile "$LINENO"
+ then :
+   wine_cv_xattr_extra_args=yes
+ else case e in #(
+   e) wine_cv_xattr_extra_args=no ;;
+ esac
+ fi
+ rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext ;;
+ esac
+ fi
+ { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $wine_cv_xattr_extra_args" >&5
+ printf '%s\n' "$wine_cv_xattr_extra_args" >&6; }
+     test $wine_cv_xattr_extra_args != yes ||
+ printf '%s\n' "#define XATTR_ADDITIONAL_OPTIONS 1" >>confdefs.h
+ 
+ fi
+ 
+ 
+ DLLFLAGS=""
+ 
+ LDDLLFLAGS=""
+ 
+ LDEXECFLAGS=""
+ 
+ EXTRACFLAGS=""
+ 
+ UNIXDLLFLAGS="-fPIC"
+ 
+ UNIXLDFLAGS="-shared -Wl,-Bsymbolic -Wl,-soname,\$(UNIXLIB)"
+ 
+ TOP_INSTALL_LIB=""
+ 
+ TOP_INSTALL_DEV=""
+ 
+ WINELOADER_LDFLAGS=""
+ 
+ WINEPRELOADER_LDFLAGS=""
+ 
+ PEAR_NATIVE_PE_PUBLICATION_CFLAGS=""
+ 
++PEAR_NATIVE_ONLY_ARCH_CFLAGS=""
++
++pear_native_only_archs=
++for pear_native_only_arch in $PE_ARCHS
++do
++    pear_native_only_archs="$pear_native_only_archs $pear_native_only_arch"
++done
++case "$HOST_ARCH-$host_os" in
++  aarch64-darwin*)
++    if test "$pear_native_only_archs" = " aarch64"
++    then
++        PEAR_NATIVE_ONLY_ARCH_CFLAGS="-DPEAR_NATIVE_ONLY_ARCH=1"
++    fi
++    ;;
++esac
+ LIBEXT="so"
+ # Extract the first word of "ldd", so it can be a program name with args.
+ set dummy ldd; ac_word=$2
+ { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+ printf %s "checking for $ac_word... " >&6; }
+ if test ${ac_cv_path_LDD+y}
+ then :
+   printf %s "(cached) " >&6
+ else case e in #(
+   e) case $LDD in
+   [\\/]* | ?:[\\/]*)
+   ac_cv_path_LDD="$LDD" # Let the user override the test with a path.
+   ;;
+   *)
+   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+ as_dummy="/sbin:/usr/sbin:$PATH"
+ for as_dir in $as_dummy
+ do
+   IFS=$as_save_IFS
+   case $as_dir in #(((
+     '') as_dir=./ ;;
+     */) ;;
+     *) as_dir=$as_dir/ ;;
+   esac
+     for ac_exec_ext in '' $ac_executable_extensions; do
+   if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+     ac_cv_path_LDD="$as_dir$ac_word$ac_exec_ext"
+     printf '%s\n' "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+     break 2
+   fi
+ done
+   done
+ IFS=$as_save_IFS
+ 
+   test -z "$ac_cv_path_LDD" && ac_cv_path_LDD="true"
+   ;;
+ esac ;;
+ esac
+ fi
+ LDD=$ac_cv_path_LDD
+ if test -n "$LDD"; then
+   { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $LDD" >&5
+ printf '%s\n' "$LDD" >&6; }
+ else
+   { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
+@@ -24137,90 +24153,91 @@
+ i386_STRIP = $i386_STRIP
+ i386_DELAYLOADFLAG = $i386_DELAYLOADFLAG
+ i386_DISABLED_SUBDIRS = $i386_DISABLED_SUBDIRS
+ x86_64_CC = $x86_64_CC
+ x86_64_CXX = $x86_64_CXX
+ x86_64_CFLAGS = $x86_64_CFLAGS
+ x86_64_CXXFLAGS = $x86_64_CXXFLAGS
+ x86_64_EXTRACFLAGS = $x86_64_EXTRACFLAGS
+ x86_64_EXTRACXXFLAGS = $x86_64_EXTRACXXFLAGS
+ x86_64_LDFLAGS = $x86_64_LDFLAGS
+ x86_64_DEBUG = $x86_64_DEBUG
+ x86_64_TARGET = $x86_64_TARGET
+ x86_64_STRIP = $x86_64_STRIP
+ x86_64_DELAYLOADFLAG = $x86_64_DELAYLOADFLAG
+ x86_64_DISABLED_SUBDIRS = $x86_64_DISABLED_SUBDIRS
+ toolsext = $toolsext
+ toolsdir = $toolsdir
+ wine64dir = $wine64dir
+ RUNTESTFLAGS = $RUNTESTFLAGS
+ SED_CMD = $SED_CMD
+ FLEX = $FLEX
+ BISON = $BISON
+ STRIP = $STRIP
+ LN_S = $LN_S
+ PKG_CONFIG = $PKG_CONFIG
+ FONTFORGE = $FONTFORGE
+ RSVG = $RSVG
+ CONVERT = $CONVERT
+ ICOTOOL = $ICOTOOL
+ MSGFMT = $MSGFMT
+ PE_ARCHS = $PE_ARCHS
+ DLLEXT = $DLLEXT
+ I386_LIBS = $I386_LIBS
+ OPENGL_LIBS = $OPENGL_LIBS
+ DLLFLAGS = $DLLFLAGS
+ LDDLLFLAGS = $LDDLLFLAGS
+ LDEXECFLAGS = $LDEXECFLAGS
+ EXTRACFLAGS = $EXTRACFLAGS
+ UNIXDLLFLAGS = $UNIXDLLFLAGS
+ UNIXLDFLAGS = $UNIXLDFLAGS
+ TOP_INSTALL_LIB = $TOP_INSTALL_LIB
+ TOP_INSTALL_DEV = $TOP_INSTALL_DEV
+ WINELOADER_LDFLAGS = $WINELOADER_LDFLAGS
+ WINEPRELOADER_LDFLAGS = $WINEPRELOADER_LDFLAGS
+ PEAR_NATIVE_PE_PUBLICATION_CFLAGS = $PEAR_NATIVE_PE_PUBLICATION_CFLAGS
++PEAR_NATIVE_ONLY_ARCH_CFLAGS = $PEAR_NATIVE_ONLY_ARCH_CFLAGS
+ LDD = $LDD
+ OTOOL = $OTOOL
+ READELF = $READELF
+ SUBDIRS = $SUBDIRS
+ DISABLED_SUBDIRS = $DISABLED_SUBDIRS
+ CONFIGURE_TARGETS = $CONFIGURE_TARGETS
+ CORETEXT_LIBS = $CORETEXT_LIBS
+ COREFOUNDATION_LIBS = $COREFOUNDATION_LIBS
+ DISKARBITRATION_LIBS = $DISKARBITRATION_LIBS
+ IOKIT_LIBS = $IOKIT_LIBS
+ APPLICATIONSERVICES_LIBS = $APPLICATIONSERVICES_LIBS
+ CORESERVICES_LIBS = $CORESERVICES_LIBS
+ APPKIT_LIBS = $APPKIT_LIBS
+ SECURITY_LIBS = $SECURITY_LIBS
+ SYSTEMCONFIGURATION_LIBS = $SYSTEMCONFIGURATION_LIBS
+ COREAUDIO_LIBS = $COREAUDIO_LIBS
+ OPENCL_LIBS = $OPENCL_LIBS
+ WINELOADER_DEPENDS = $WINELOADER_DEPENDS
+ GRADLE = $GRADLE
+ ANDROID_HOME = $ANDROID_HOME
+ MINGW_PKG_CONFIG = $MINGW_PKG_CONFIG
+ CAPSTONE_PE_CFLAGS = $CAPSTONE_PE_CFLAGS
+ CAPSTONE_PE_LIBS = $CAPSTONE_PE_LIBS
+ CXX_PE_CFLAGS = $CXX_PE_CFLAGS
+ CXX_PE_LIBS = $CXX_PE_LIBS
+ CXXABI_PE_CFLAGS = $CXXABI_PE_CFLAGS
+ CXXABI_PE_LIBS = $CXXABI_PE_LIBS
+ FAUDIO_PE_CFLAGS = $FAUDIO_PE_CFLAGS
+ FAUDIO_PE_LIBS = $FAUDIO_PE_LIBS
+ FFMPEG_PE_CFLAGS = $FFMPEG_PE_CFLAGS
+ FFMPEG_PE_LIBS = $FFMPEG_PE_LIBS
+ FLUIDSYNTH_PE_CFLAGS = $FLUIDSYNTH_PE_CFLAGS
+ FLUIDSYNTH_PE_LIBS = $FLUIDSYNTH_PE_LIBS
+ GSM_PE_CFLAGS = $GSM_PE_CFLAGS
+ GSM_PE_LIBS = $GSM_PE_LIBS
+ ICUCOMMON_PE_CFLAGS = $ICUCOMMON_PE_CFLAGS
+ ICUCOMMON_PE_LIBS = $ICUCOMMON_PE_LIBS
+ ICUI18N_PE_CFLAGS = $ICUI18N_PE_CFLAGS
+ ICUI18N_PE_LIBS = $ICUI18N_PE_LIBS
+ JPEG_PE_CFLAGS = $JPEG_PE_CFLAGS
+ JPEG_PE_LIBS = $JPEG_PE_LIBS
+ JXR_PE_CFLAGS = $JXR_PE_CFLAGS
+ JXR_PE_LIBS = $JXR_PE_LIBS
+ LCMS2_PE_CFLAGS = $LCMS2_PE_CFLAGS
+ LCMS2_PE_LIBS = $LCMS2_PE_LIBS
+--- a/server/Makefile.in
++++ b/server/Makefile.in
+@@ -1,46 +1,47 @@
+ PROGRAMS = wineserver
++EXTRADEFS = $(PEAR_NATIVE_ONLY_ARCH_CFLAGS)
+ 
+ SOURCES = \
+ 	alpc.c \
+ 	async.c \
+ 	atom.c \
+ 	change.c \
+ 	class.c \
+ 	clipboard.c \
+ 	completion.c \
+ 	console.c \
+ 	d3dkmt.c \
+ 	debugger.c \
+ 	device.c \
+ 	directory.c \
+ 	event.c \
+ 	fd.c \
+ 	file.c \
+ 	handle.c \
+ 	hook.c \
+ 	inproc_sync.c \
+ 	mach.c \
+ 	mailslot.c \
+ 	main.c \
+ 	mapping.c \
+ 	mutex.c \
+ 	named_pipe.c \
+ 	object.c \
+ 	process.c \
+ 	procfs.c \
+ 	ptrace.c \
+ 	queue.c \
+ 	region.c \
+ 	registry.c \
+ 	request.c \
+ 	security.h \
+ 	semaphore.c \
+ 	serial.c \
+ 	signal.c \
+ 	sock.c \
+ 	symlink.c \
+ 	thread.c \
+ 	timer.c \
+ 	token.c \
+ 	trace.c \
+ 	unicode.c \
+--- a/server/registry.c
++++ b/server/registry.c
+@@ -1745,120 +1745,122 @@
+             fclose( f );
+         }
+         else file_set_error();
+     }
+ }
+ 
+ /* load one of the initial registry files */
+ static int load_init_registry_from_file( const char *filename, struct key *key )
+ {
+     FILE *f;
+ 
+     if ((f = fopen( filename, "r" )))
+     {
+         load_keys( key, filename, f, 0 );
+         fclose( f );
+         if (get_error() == STATUS_NOT_REGISTRY_FILE)
+         {
+             fprintf( stderr, "%s is not a valid registry file\n", filename );
+             return 1;
+         }
+     }
+ 
+     assert( save_branch_count < MAX_SAVE_BRANCH_INFO );
+ 
+     save_branch_info[save_branch_count].filename = filename;
+     save_branch_info[save_branch_count++].key = (struct key *)grab_object( key );
+     make_object_permanent( &key->obj );
+     return (f != NULL);
+ }
+ 
+ static WCHAR *format_user_registry_path( const struct sid *sid, struct unicode_str *path )
+ {
+     char buffer[7 + 11 + 11 + 11 * ARRAY_SIZE(sid->sub_auth)];
+     unsigned int i;
+     int len;
+ 
+     len = snprintf( buffer, sizeof(buffer), "User\\S-%u-%u", sid->revision,
+                     ((unsigned int)sid->id_auth[2] << 24) |
+                     ((unsigned int)sid->id_auth[3] << 16) |
+                     ((unsigned int)sid->id_auth[4] << 8) |
+                     ((unsigned int)sid->id_auth[5]) );
+     for (i = 0; i < sid->sub_count; i++) len += snprintf( buffer + len, sizeof(buffer) - len, "-%u", sid->sub_auth[i] );
+     return ascii_to_unicode_str( buffer, path );
+ }
+ 
+-#ifdef __aarch64__
++#if defined(__aarch64__) && (!defined(PEAR_NATIVE_ONLY_ARCH) || !defined(__APPLE__))
+ static bool supports_aarch32(void)
+ {
+ #if defined(HAVE_SYS_PERSONALITY_H)
+     int old = personality( PER_LINUX32 );
+     if (old == -1) return false;
+     personality( old );
+     return true;
+ #endif
+     return false;
+ }
+ #endif
+ 
+ static void init_supported_machines(void)
+ {
+     unsigned int count = 0;
+ #ifdef __i386__
+     if (prefix_type == PREFIX_32BIT) supported_machines[count++] = IMAGE_FILE_MACHINE_I386;
+ #elif defined(__x86_64__)
+     if (prefix_type == PREFIX_64BIT) supported_machines[count++] = IMAGE_FILE_MACHINE_AMD64;
+     supported_machines[count++] = IMAGE_FILE_MACHINE_I386;
+ #elif defined(__arm__)
+     if (prefix_type == PREFIX_32BIT) supported_machines[count++] = IMAGE_FILE_MACHINE_ARMNT;
+ #elif defined(__aarch64__)
+     if (prefix_type == PREFIX_64BIT)
+     {
+         supported_machines[count++] = IMAGE_FILE_MACHINE_ARM64;
++#if !defined(PEAR_NATIVE_ONLY_ARCH) || !defined(__APPLE__)
+         supported_machines[count++] = IMAGE_FILE_MACHINE_I386;
+         if (supports_aarch32()) supported_machines[count++] = IMAGE_FILE_MACHINE_ARMNT;
+         supported_machines[count++] = IMAGE_FILE_MACHINE_AMD64;
++#endif
+     }
+ #else
+ #error Unsupported machine
+ #endif
+     supported_machines_count = count;
+     native_machine = supported_machines[0];
+ }
+ 
+ /* registry initialisation */
+ void init_registry(void)
+ {
+     static const WCHAR REGISTRY[] = {'\\','R','E','G','I','S','T','R','Y'};
+     static const WCHAR HKLM[] = { 'M','a','c','h','i','n','e' };
+     static const WCHAR HKU_default[] = { 'U','s','e','r','\\','.','D','e','f','a','u','l','t' };
+     static const WCHAR classes_i386[] = {'S','o','f','t','w','a','r','e','\\',
+                                          'C','l','a','s','s','e','s','\\',
+                                          'W','o','w','6','4','3','2','N','o','d','e'};
+     static const WCHAR classes_arm[] = {'S','o','f','t','w','a','r','e','\\',
+                                         'C','l','a','s','s','e','s','\\',
+                                         'W','o','w','A','A','3','2','N','o','d','e'};
+     static const WCHAR perflib[] = {'S','o','f','t','w','a','r','e','\\',
+                                     'M','i','c','r','o','s','o','f','t','\\',
+                                     'W','i','n','d','o','w','s',' ','N','T','\\',
+                                     'C','u','r','r','e','n','t','V','e','r','s','i','o','n','\\',
+                                     'P','e','r','f','l','i','b','\\',
+                                     '0','0','9'};
+     static const WCHAR controlset[] = {'S','y','s','t','e','m','\\',
+                                        'C','u','r','r','e','n','t','C','o','n','t','r','o','l','S','e','t'};
+     static const WCHAR controlset001_path[] = {'\\','R','e','g','i','s','t','r','y','\\',
+                                                'M','a','c','h','i','n','e','\\',
+                                                'S','y','s','t','e','m','\\',
+                                                'C','o','n','t','r','o','l','S','e','t','0','0','1'};
+     static const struct unicode_str root_name = { REGISTRY, sizeof(REGISTRY) };
+     static const struct unicode_str HKLM_name = { HKLM, sizeof(HKLM) };
+     static const struct unicode_str HKU_name = { HKU_default, sizeof(HKU_default) };
+     static const struct unicode_str perflib_name = { perflib, sizeof(perflib) };
+     static const struct unicode_str controlset_name = { controlset, sizeof(controlset) };
+ 
+     WCHAR *current_user_path;
+     struct unicode_str current_user_str;
+     struct key *key, *hklm, *hkcu;
+     unsigned int i;
+     char *p;
+     struct key_init_data data = { .modif = current_time };
+     struct object_params params = { .ops = &key_ops, .name = root_name,

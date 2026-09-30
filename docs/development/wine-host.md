@@ -1,6 +1,6 @@
 # Wine host development
 
-Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) and [Stage 2 native bootstrap](../../mydocs/working/task_m1_4_stage2.md) passed on the recorded host. Stage 2 stops before Windows PE entry; Windows application support, Rosetta-free Megabonk and an end-user release remain development goals.
+Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) and [Stage 2 native bootstrap](../../mydocs/working/task_m1_4_stage2.md) passed on the recorded host. The [Stage 3 original ARM64 Windows API/ABI fixtures](../../mydocs/working/task_m1_4_stage3.md) also passed. Historical Stage 2 stopped before PE entry; general Windows application support, Rosetta-free Megabonk and an end-user release remain development goals.
 
 ## Scope and inputs
 
@@ -11,7 +11,7 @@ The [architecture](../architecture.md) defines the runtime goal. This component 
 | [Inputs](../../runtime/wine/inputs.json) | Selected Wine source, exact audit reference, dependencies and unresolved ports | Component input facts; no full-runtime approval |
 | [Toolchain](../../runtime/wine/toolchain.json) | Exact public tool artifacts and external native tool/SDK identities | Build inputs; no game runtime or independently rebuilt compiler claim |
 | [Build configuration](../../runtime/wine/build-config.json) | Native/PE variants, framework and feature decisions | Explicit fixture configuration, not a Steam/game configuration |
-| [Patch series](../../runtime/wine/patches/series.json) | Ordered attributable Wine changes | Stage 2 loader/bootstrap changes verified in the recorded pre-PE scope; required Darwin ports are not complete |
+| [Patch series](../../runtime/wine/patches/series.json) | Ordered attributable Wine changes | Stage 2 bootstrap and Stage 3 original ARM64 PE/API/ABI scope verified; required Darwin ports are not complete |
 
 The native host target is ARM64 macOS. `arm64` selects aarch64 PE components; `arm64ec-build` selects aarch64 plus ARM64EC components with an auxiliary x86_64 PE compiler. The latter is a build candidate, not evidence of FEX or x64 execution. Compiler-only x64/i386 fixtures are never executed in Stage 1.
 
@@ -125,6 +125,64 @@ The diagnostic uses the actual Wine loader and server handshake, then stops befo
 
 The development bundle preserves Wine's runtime directory layout under `Contents/Resources/runtime` so its native path discovery remains testable. This is an experimental local packaging choice, **not a qualified distribution layout**. Apple provides separate guidance for [bundle content placement](https://developer.apple.com/documentation/bundleresources/placing-content-in-a-bundle) and [nonstandard code structures](https://developer.apple.com/documentation/xcode/embedding-nonstandard-code-structures-in-a-bundle). Distribution, notarization and the user-facing launcher remain later work.
 
+## Stage 3 PE/API and x18 boundary checks
+
+Current gate (September 30, 2026): [Stage 3 passed](../../mydocs/working/task_m1_4_stage3.md) for the recorded development configuration. Original ARM64 Windows API/ABI fixtures, two actual PE placements and SecurityCookie initialization passed independent verification; all three bootstrap controls passed on the same final signed native Wine artifact. The standalone native prerequisite separately passed 4 KiB code/data separation, rollback, exhaustion, retirement/reuse and four matched protection-fault controls. These prototype results do not claim integrated Wine fault injection or exhaustion. Earlier failures and partial successes remain preserved in the [implementation plan](../../mydocs/plans/task_m1_4_impl.md). The commands below are the verification procedure; game support remains unqualified.
+
+Stage 3 adds self-owned ARM64 Windows programs and explicit Darwin x18 transitions to the actual Wine syscall, Unix-call, callback and initial-thread paths. The original Wine implementation languages are retained. The fixture suite is experimental; game and ordinary-user support require later evidence.
+
+The API fixture checks Unicode and space arguments, a fixed environment value, allocation/TLS, an owned file's write/read/hash and deletion, a missing-file error, and a real `CreateProcessW` child returning 37. It also queries the actual `SystemSupportedProcessorArchitectures` class 181 result used by Wineboot, requiring the native ARM64 entry, expected flags and a complete terminating entry. Class 181 filters AMD64 on ARM64 in this upstream source; this check does not independently cover every architecture-query API. The ABI fixture uses Wine's exported Unix dispatcher and its actual `KeUserModeCallback`/`NtCallbackReturn` machinery. Its declared results are 64 round trips, 32 nested callbacks, 16 injected error returns and 128 gateway/native calls, with real TEB/x18, stack-frame and preserved-register checks. Calling `NtCallbackReturn` without an active callback must return `STATUS_NO_CALLBACK_ACTIVE`.
+
+Two concurrently loaded, byte-identical owned DLL copies must occupy different nonpreferred bases. The host binds their original export RVAs and DIR64 entries to actual indirect code/data access, four probe observations and two retirements. A real PE load-config pointer exercises Wine's SecurityCookie initialization in both copies: nonzero, nondefault, below-48-bit values must remain stable across four observations. Public records omit cookie values and addresses. Two actual named/ordinal import failures and 32 callback-held unload/reload rounds also pass. The stable single-thread callback table and already pinned main-executable continuation limit this lifetime evidence; it does not establish arbitrary concurrent unloading.
+
+The selected native publisher owns one bounded `MAP_JIT` allocation with fixed code/data classes and 4 KiB page W^X. Relocations and loader-data validation precede immutable-code publication. The final loader receives public `allow-jit` in addition to its verified cross-architecture grant; ordinary helpers receive no restricted claims. The native baseline also passed without the added claim, so its empirical necessity is not established. Dynamic generated code, mixed writable/executable images and incompatible reuse remain outside this verified path. Hardened Runtime and library validation stay enabled.
+
+```sh
+python3 tools/wine/build.py --variant arm64 --inputs .build/task4/inputs --tools .build/task4/tools --output .build/task4/build-stage3 --jobs 4
+python3 tools/wine/abi_review.py --build .build/task4/build-stage3 --output .build/task4/build-stage3/abi-review.json
+python3 tools/wine/signing.py prepare --build .build/task4/build-stage3 --local-input .build/task4/private/signing.json --output .build/task4/signed-stage3 --require-empty
+python3 tools/wine/run_fixtures.py --suite bootstrap --runtime .build/task4/signed-stage3 --output .build/task4/runs-stage3-bootstrap --require-empty
+python3 tools/wine/verify.py runs --root .build/task4/runs-stage3-bootstrap --suite bootstrap --require-complete
+python3 tools/wine/run_fixtures.py --suite api-abi --runtime .build/task4/signed-stage3 --output .build/task4/runs-stage3 --require-empty
+python3 tools/wine/verify.py runs --root .build/task4/runs-stage3 --suite api-abi --require-complete
+```
+
+Before interpreting the two-placement results, also inspect the actual built DLL with the pinned ARM64 reader and the finite fixture checker. This step is separate from the automatic exporter:
+
+```sh
+python3 -B - <<'PYTHON'
+from pathlib import Path
+import subprocess
+import sys
+sys.path.insert(0, 'tests/wine')
+from test_relocation_fixture import inspect_relocation_indirection
+sys.path.insert(0, 'tools/wine')
+from api_runner import relocation_image
+root = Path('.build/task4/build-stage3')
+dll = root / 'install/libexec/pear-stage3/lifetime-arm64.dll'
+reader = Path('.build/task4/tools/llvm-mingw/bin/llvm-objdump')
+result = subprocess.run(['/usr/bin/arch', '-arm64', str(reader),
+    '--disassemble-symbols=PearRelocationAccess,PearRelocationProbe', str(dll)],
+    text=True, capture_output=True, check=True, timeout=30)
+print(inspect_relocation_indirection(dll.read_bytes(), result.stdout))
+print(relocation_image(dll.read_bytes()))
+PYTHON
+```
+
+Retain the final build, DLL, reader, checker and disassembly hashes locally, as in the [Stage 3 report](../../mydocs/working/task_m1_4_stage3.md). The checker proves only its declared original-fixture instruction/operand patterns. Actual Wine execution must independently bind runtime addresses, initialized cookies, file identities and retirement generations. Use fresh output names for every run; the report records the actual `attempt12` substitution and the complete `evidence.py --stage 3` export command. Export requires API/ABI and bootstrap on identical signed bytes plus all three retained native prerequisite attempts. This report export packages historical receipts, including two fixed failed source revisions; the commands above alone do not recreate those retained local inputs. Fresh prerequisite reconstruction and its reporting procedure remain Stage 6 work. Copied historical hashes do not qualify a new run.
+
+The assembly review binds the final native `ntdll.so` bytes and symbol table to reproduced output from the pinned LLVM disassembler. It checks six declared entry contracts and two mode helpers, including spills and the pre-resolved getter/setter targets. It does not prove arbitrary Wine control flow, signal-context restoration, unwind behavior or runtime execution. A minimal signal gateway enters host mode before invoking the existing Wine handlers; complete thread, fault and exception validation remains Stage 4.
+
+Real prefix initialization and Windows child creation are retained. An opt-in diagnostic protocol registers Wine-created native descendants before continuation, checks live peer/process identity, supplies a separate event pipe and keeps those descendants in the root process group for bounded cleanup. Native external execution is refused. The root remains unreaped until its owned group has been cleaned up. There is an acknowledged native interval between fork and registration. This instrumented fixture containment is not a general-purpose game process supervisor. Loaded-image snapshots also do not establish an exhaustive load/unload timeline.
+
+The fixed `native-api-abi-no-mono-v1` fixture policy applies Wine's documented `mscoree=` override only to the owned API/ABI loader and its descendants. It disables CLR loading and registration in those disposable native-test prefixes, avoiding an optional Mono installer wait. Genuine Wineboot and INF prefix creation remain required. The case and run records bind the exact policy and passed loader environment; bootstrap settings and future game configuration do not inherit it. CLR and Mono support are untested.
+
+Each API/ABI case receives a fresh synthetic home, prefix, working directory and nonce. The 180-second case deadline includes real prefix initialization; cleanup has separate bounded grace, termination, kill and drain intervals. Output, process and event counts are bounded. Early descendant crashes, missing observations, wrong page geometry, unexpected native images, lost sentinels and incomplete cleanup fail the gate. Keep actual failures and choose new output names for retries.
+
+The build also produces x64 and i386 PE controls, whose actual headers and hashes are verified. The runner rejects both targets before execution because no translator is qualified. This does not test a translator's behavior. The Stage 2 ARM64EC companion remains historical build evidence; it has not been rebuilt or executed with these Stage 3 patches. Stage 6 must reconcile final companion and native inputs.
+
+The pinned Wine loader selects `xtajit64.dll` for ARM64EC/x64 translation, with an `HKLM\Software\Microsoft\Wow64\amd64` override. Its i386-on-ARM64 WOW64 route selects `xtajit.dll`. Neither translator is installed in this native build. The selected source's `xtajit64` implementation terminates its unimplemented emulation entry points; its presence in an ARM64EC companion would not qualify FEX execution. Issue #5 must integrate and verify the actual emulator contract.
+
 ## Interpret results
 
 Successful preparation is not a runtime build. A tool version string is not target support. Passing compiler fixtures is not Windows execution. Required missing tools, incorrect artifacts, skipped checks and unknown facts prevent the relevant gate from passing. Preserve original errors and failed attempts.
@@ -133,4 +191,4 @@ The commands use 0 for a passed requested gate, 1 for preparation/operation fail
 
 Raw local records can include paths and diagnostic details and remain under ignored `.build/`; the owned temporary path aliases described above also remain local. Publish only reviewed allowlisted evidence tied to exact sources/tools/configuration/fixtures/output bytes. No profiles, credentials, account state, saves or game files belong in this workflow.
 
-The native loader/page bootstrap is verified only for the recorded finite cases. PE startup, guest x18 transitions, Windows child-process routes, thread/exception and Mac-driver integration remain later #4 stages. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.
+The native loader/page bootstrap and original ARM64 PE/API, guest x18 callback and Windows child-process cases are verified only for the recorded finite scope. Broader thread/exception and dynamic-memory behavior remain Stage 4, Mac-driver integration Stage 5, and final reconstruction Stage 6 of #4. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.

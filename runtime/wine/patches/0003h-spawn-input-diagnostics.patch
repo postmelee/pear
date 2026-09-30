@@ -1,0 +1,231 @@
+From: Pear contributors
+Subject: [PATCH] ntdll: bound opt-in native spawn input diagnostics
+
+Base: Wine 4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf plus preceding Pear patches.
+Original Pear read-only diagnostic integration. Retain actual spawn inputs and
+results; never print copied strings, pointers or paths. Existing Wine
+LGPL-2.1-or-later notices apply. This diagnostic does not qualify execution.
+
+--- a/dlls/ntdll/unix/loader.c
++++ b/dlls/ntdll/unix/loader.c
+@@ -434,12 +434,176 @@
+         asprintf( &ret, "%s/loader/wine", alt_build_dir );
+ 
+     return ret;
+ }
+ 
+ 
++#if defined(__APPLE__) && defined(__aarch64__)
++/* Bounded, opt-in observations only. A Mach read is a snapshot, not proof that
++ * posix_spawn's later copyin or opaque attribute validation will succeed.
++ * Never print copied bytes, pointer values, paths or environment contents. */
++#define PEAR_SPAWN_AUDIT_ENTRIES 4096u
++#define PEAR_SPAWN_AUDIT_STRING (128u * 1024u)
++#define PEAR_SPAWN_AUDIT_BYTES (1024u * 1024u)
++struct pear_spawn_audit
++{
++    const char *outcome, *part;
++    unsigned int index, offset, entries, bytes, reads;
++    int error;
++};
++
++static int pear_spawn_audit_read( uintptr_t address, void *buffer, size_t size,
++                                  struct pear_spawn_audit *audit )
++{
++    mach_vm_size_t copied = 0;
++    kern_return_t ret;
++
++    if (address > UINTPTR_MAX - size)
++    {
++        audit->outcome = "overflow";
++        return 0;
++    }
++    audit->reads++;
++    ret = mach_vm_read_overwrite( mach_task_self(), address, size, (uintptr_t)buffer, &copied );
++    if (ret != KERN_SUCCESS || copied != size)
++    {
++        audit->outcome = "unreadable";
++        audit->error = ret != KERN_SUCCESS ? ret : KERN_FAILURE;
++        return 0;
++    }
++    return 1;
++}
++
++static void pear_spawn_audit_string( uintptr_t address, struct pear_spawn_audit *audit )
++{
++    unsigned int offset = 0, count, i;
++    unsigned char buffer[256];
++
++    audit->part = "string";
++    while (offset < PEAR_SPAWN_AUDIT_STRING && audit->bytes < PEAR_SPAWN_AUDIT_BYTES)
++    {
++        audit->offset = offset;
++        if (address > UINTPTR_MAX - offset)
++        {
++            audit->outcome = "overflow";
++            return;
++        }
++        /* Do not read across the smallest supported page boundary, even if
++         * the string terminates immediately before an inaccessible page. */
++        count = 4096 - ((address + offset) & 4095);
++        if (count > sizeof(buffer)) count = sizeof(buffer);
++        if (count > PEAR_SPAWN_AUDIT_STRING - offset) count = PEAR_SPAWN_AUDIT_STRING - offset;
++        if (count > PEAR_SPAWN_AUDIT_BYTES - audit->bytes) count = PEAR_SPAWN_AUDIT_BYTES - audit->bytes;
++        if (!pear_spawn_audit_read( address + offset, buffer, count, audit )) return;
++        for (i = 0; i < count; i++)
++        {
++            audit->bytes++;
++            if (!buffer[i]) return;
++        }
++        offset += count;
++    }
++    audit->offset = offset;
++    audit->outcome = "limit";
++}
++
++static void pear_spawn_audit_vector( uintptr_t address, struct pear_spawn_audit *audit )
++{
++    uintptr_t entry;
++    unsigned int i;
++
++    for (i = 0; i <= PEAR_SPAWN_AUDIT_ENTRIES; i++)
++    {
++        audit->part = "vector";
++        audit->index = i;
++        audit->offset = 0;
++        if (address > UINTPTR_MAX - i * sizeof(entry))
++        {
++            audit->outcome = "overflow";
++            return;
++        }
++        if (!pear_spawn_audit_read( address + i * sizeof(entry), &entry, sizeof(entry), audit )) return;
++        if (!entry) return;
++        if (i == PEAR_SPAWN_AUDIT_ENTRIES)
++        {
++            audit->outcome = "limit";
++            return;
++        }
++        pear_spawn_audit_string( entry, audit );
++        if (strcmp( audit->outcome, "ok" )) return;
++        audit->entries++;
++    }
++}
++
++static void pear_spawn_audit_event( const char *event, const char *details )
++{
++    int saved_errno = errno;
++    /* Private diagnostic stderr only; do not extend the authenticated runner
++     * protocol or change the outcome when an observation cannot be written. */
++    fprintf( stderr, "{\"version\":1,\"record_kind\":\"pear_spawn_diagnostic\","
++             "\"pid\":%ld,\"event\":\"%s\"%s}\n", (long)getpid(), event, details );
++    errno = saved_errno;
++}
++
++static void pear_spawn_audit_report( const char *kind, const struct pear_spawn_audit *audit )
++{
++    char detail[512];
++
++    snprintf( detail, sizeof(detail),
++              ",\"kind\":\"%s\",\"outcome\":\"%s\",\"part\":\"%s\","
++              "\"index\":%u,\"offset\":%u,\"entries\":%u,\"bytes\":%u,\"reads\":%u,\"error\":%d",
++              kind, audit->outcome, audit->part, audit->index, audit->offset,
++              audit->entries, audit->bytes, audit->reads, audit->error );
++    pear_spawn_audit_event( "spawn_input_audit", detail );
++}
++
++static void pear_spawn_audit_inputs( const char *path, char *const *argv, char *const *envp,
++                                    const posix_spawnattr_t *attr )
++{
++    struct pear_spawn_audit audit = {.outcome = "ok", .part = "string"};
++    posix_spawnattr_t storage = NULL;
++    unsigned char byte;
++    unsigned char (*get_mode)(void) = dlsym( RTLD_DEFAULT, "os_custom_x18_abi_enabled" );
++    char detail[128];
++
++    snprintf( detail, sizeof(detail), ",\"foreign_mode\":%d,\"user_page\":%ld",
++              get_mode ? !!get_mode() : -1, sysconf(_SC_PAGESIZE) );
++    pear_spawn_audit_event( "spawn_input_context", detail );
++    pear_spawn_audit_string( (uintptr_t)path, &audit );
++    pear_spawn_audit_report( "path", &audit );
++    audit = (struct pear_spawn_audit){.outcome = "ok", .part = "vector"};
++    pear_spawn_audit_vector( (uintptr_t)argv, &audit );
++    pear_spawn_audit_report( "argv", &audit );
++    audit = (struct pear_spawn_audit){.outcome = "ok", .part = "vector"};
++    pear_spawn_audit_vector( (uintptr_t)envp, &audit );
++    pear_spawn_audit_report( "envp", &audit );
++    audit = (struct pear_spawn_audit){.outcome = "ok", .part = "object"};
++    if (pear_spawn_audit_read( (uintptr_t)attr, &storage, sizeof(storage), &audit ))
++    {
++        /* The public object is an opaque pointer. Only probe its first byte;
++         * no private payload layout or size is assumed. */
++        audit.part = "storage_first_byte";
++        pear_spawn_audit_read( (uintptr_t)storage, &byte, sizeof(byte), &audit );
++    }
++    pear_spawn_audit_report( "attr", &audit );
++}
++
++static int pear_spawn_diagnostics_enabled(void)
++{
++    const char *value = getenv( "PEAR_SPAWN_DIAGNOSTICS" );
++    return pear_bootstrap_enabled() && value && !strcmp( value, "1" );
++}
++
++static void pear_spawn_audit_step( const char *operation, int error )
++{
++    char detail[128];
++    snprintf( detail, sizeof(detail), ",\"operation\":\"%s\",\"error\":%d", operation, error );
++    pear_spawn_audit_event( "spawn_call_result", detail );
++}
++#endif
++
++
+ static void preloader_exec( char **argv )
+ {
+ #ifdef HAVE_WINE_PRELOADER
+     asprintf( &argv[0], "%s-preloader", argv[1] );
+ #ifdef __APPLE__
+     {
+@@ -455,13 +619,13 @@
+ #endif
+ #if defined(__APPLE__) && defined(__aarch64__)
+     {
+         typedef int (*set_4k_page_size_fn)(const posix_spawnattr_t *);
+         set_4k_page_size_fn set_4k_page_size;
+         posix_spawnattr_t attr;
+-        int ret;
++        int ret, diagnostics;
+ 
+         /* Every Wine loader exec, including process.c's forked child route,
+          * requests the guest page mode explicitly. Never retry in host mode. */
+         set_4k_page_size = (set_4k_page_size_fn)dlsym( RTLD_DEFAULT, "posix_spawnattr_set_4k_page_size_np" );
+         if (!set_4k_page_size)
+         {
+@@ -480,15 +644,26 @@
+             if (pear_bootstrap_number( "PEAR_BOOTSTRAP_GENERATION", 0, 1 ))
+                 pear_bootstrap_failure( "loader", "reexec_loop", ELOOP );
+             pear_bootstrap_event( "loader", "loader_reexec", ",\"next_generation\":1" );
+             if (setenv( "PEAR_BOOTSTRAP_GENERATION", "1", 1 ))
+                 pear_bootstrap_failure( "loader", "reexec_generation", errno );
+         }
+-        if (!(ret = posix_spawnattr_setflags( &attr, POSIX_SPAWN_SETEXEC )) &&
+-            !(ret = set_4k_page_size( &attr )))
++        diagnostics = pear_spawn_diagnostics_enabled();
++        ret = posix_spawnattr_setflags( &attr, POSIX_SPAWN_SETEXEC );
++        if (diagnostics) pear_spawn_audit_step( "setflags", ret );
++        if (!ret)
++        {
++            ret = set_4k_page_size( &attr );
++            if (diagnostics) pear_spawn_audit_step( "set_4k_page_size", ret );
++        }
++        if (!ret)
++        {
++            if (diagnostics) pear_spawn_audit_inputs( argv[1], argv + 1, environ, &attr );
+             ret = posix_spawn( NULL, argv[1], NULL, &attr, argv + 1, environ );
++            if (diagnostics) pear_spawn_audit_step( "posix_spawn", ret );
++        }
+         posix_spawnattr_destroy( &attr );
+         if (pear_bootstrap_enabled()) pear_bootstrap_failure( "loader", "loader_spawn", ret );
+         errno = ret;
+     }
+ #else
+     execv( argv[1], argv + 1 );

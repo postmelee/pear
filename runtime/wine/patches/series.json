@@ -79,7 +79,356 @@
         "stage2.server-handshake",
         "stage2.owned-timeout"
       ]
+    },
+    {
+      "path": "0003-darwin-x18-transitions.patch",
+      "sha256": "d9a812c69050850a502a0e9e688fbede6ae7047ce6ad597a266d631c4b7c712c",
+      "rationale": "Preserve Darwin x18 modes through actual Wine syscall, Unix-call, callback and initial thread boundaries; finite signal safety prerequisite.",
+      "provenance": "Original Pear integration against the selected Wine source with prior ordered Pear patches; existing notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration); original test fixture retains its MIT notice where present.",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/signal_arm64.c",
+          "before_sha256": "1bcecb9f809ba14c95032752afed568db41af561960e92a3d1658a2a2984001f",
+          "after_sha256": "444741c804b2a52a7a862389d09c5a4c1f823e5326573dd6a6e81a661814f81f"
+        }
+      ],
+      "regression_ids": [
+        "stage3.x18-boundaries",
+        "stage3.signal-gateway-prerequisite"
+      ]
+    },
+    {
+      "path": "0003a-native-api-fixtures.patch",
+      "sha256": "304944afa0acd069a3bf6db54a2977ce899da069605fa7a18997e388503c8f33",
+      "rationale": "Add original bounded API/ABI fixtures through the actual Wine Unix dispatcher and native-to-guest callback machinery.",
+      "provenance": "Original Pear integration against the selected Wine source with prior ordered Pear patches; existing notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration); original test fixture retains its MIT notice where present.",
+      "changes": [
+        {
+          "path": "dlls/ntdll/Makefile.in",
+          "before_sha256": "14e47555bc5e9149ca81d789d6dba17a77bd0b4fbb7960cff128a8bb08eba444",
+          "after_sha256": "36334d5256b07676d87fc51c2ea91cecca3202358e70e4aaed466ecf3c589bf6"
+        },
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "before_sha256": "7d83fa8aa26cbc63c9a08de2cb1c62b7b1a66014cb1f2bd4c871681b1854c24b",
+          "after_sha256": "f971985b852e0605d858a1e567e55a80feef0824dc46a9bd765faebb106e1d87"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_abi_fixture.c",
+          "before_sha256": null,
+          "after_sha256": "80836d204a101c52f2921212f015ffe5089b8e06a8303b31d8b27b268ebd027c"
+        }
+      ],
+      "regression_ids": [
+        "stage3.pe-api",
+        "stage3.nested-callback"
+      ]
+    },
+    {
+      "path": "0003b-owned-api-processes.patch",
+      "sha256": "90ecb105025c83efe7d9996e3b77e2fa7d60c46bfc97bcf91b4764790e332cb9",
+      "rationale": "Register and observe finite Wine-created processes before continuation while retaining actual prefix initialization and PE process creation.",
+      "provenance": "Original Pear integration against the selected Wine source with prior ordered Pear patches; existing notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration); original test fixture retains its MIT notice where present.",
+      "changes": [
+        {
+          "path": "loader/main.c",
+          "before_sha256": "02114af0c8d395f87cfc54aa414396d52f921db1a2b65d0b2c4283cc06361302",
+          "after_sha256": "8b8ac735e36de1a7d16b0bf2570e2fe657b741b113047331ecb54d475ba58bec"
+        },
+        {
+          "path": "include/Makefile.in",
+          "before_sha256": "96acfdb329de863f4e7147267eeaeafbb19804981cebfdd7ea1a5ac646b85515",
+          "after_sha256": "f89c7d5c47ed20f37dbb4d2fcc41f2a9ba650ad2eaa59f27cbd1973cb68eacc0"
+        },
+        {
+          "path": "include/wine/pear_bootstrap.h",
+          "before_sha256": "198535e51a025f04cb05ae1085a94c6cc4582d7dc4da333d44b63e1ade81b788",
+          "after_sha256": "e390c95c2db4573d7553cb51d1e1e42ff3c497aa8db982e93ebbc06c2af7e7b3"
+        },
+        {
+          "path": "dlls/ntdll/unix/process.c",
+          "before_sha256": "d2b284cc0222b8dfc0985fdf88b7f2d33096ae0dee4386dc26463e818c4593ff",
+          "after_sha256": "ade5a827d570e305efec238108ff3a178ea8d231592564073dc5d51dec85f050"
+        },
+        {
+          "path": "include/wine/pear_stage3.h",
+          "before_sha256": null,
+          "after_sha256": "2523601a29896a098049128c91a56381fff297403626d8a93bff0fc6021a859e"
+        }
+      ],
+      "regression_ids": [
+        "stage3.owned-processes",
+        "stage3.real-prefix-startup"
+      ]
+    },
+    {
+      "path": "0003c-native-pe-startup.patch",
+      "sha256": "b6aad691cd554330170db66350a2fea49cf802986f865ce8e6c6fc8c15699510",
+      "rationale": "Guard the optional ARM64EC bitmap before access during ordinary ARM64 PE context initialization.",
+      "provenance": "Original Pear correction against the selected Wine source, confirmed by bounded native startup fault diagnostics; upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "before_sha256": "26bf2d477dd7c5aa8a73546de82836af01b5a8e2e22e9131b1682c89b7ba8585",
+          "after_sha256": "1f58c6498782faa5fb89a9173e20335a5c7afc1487b67c9efd1b58a87c6ac1a8"
+        }
+      ],
+      "regression_ids": [
+        "stage3.native-pe-startup-guard",
+        "stage3.arm64ec-bitmap-semantics"
+      ]
+    },
+    {
+      "path": "0003d-pe-protection-failure.patch",
+      "sha256": "d3f4dba7deb7ca5747dd0e40d05db931b65cf9d264a1cae9ff4cab85277779e9",
+      "rationale": "Reject PE image loading immediately when final header, flat-image or section protection fails; retain the original OS error and existing view cleanup.",
+      "provenance": "Original Pear correctness fix against the selected Wine source after ordered startup patches; existing upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "before_sha256": "1f58c6498782faa5fb89a9173e20335a5c7afc1487b67c9efd1b58a87c6ac1a8",
+          "after_sha256": "f3219145c8a7063a0651f2f7d31f50c59eff834ce22651bd19be4ed275a19491"
+        }
+      ],
+      "regression_ids": [
+        "stage3.pe-protection-denial",
+        "stage3.pe-protection-fail-closed"
+      ]
+    },
+    {
+      "path": "0003e-darwin-pe-publication.patch",
+      "sha256": "08fb5e8fd003eaf3156e730c5ba2864836aa62ca3cd2fee969ba3bc9623667db",
+      "rationale": "Use one finite native page-W^X PE publication owner with checked relocation, Wine view ownership, non-executable data, actual retirement and compatible reuse.",
+      "provenance": "Original Pear native owner and integration against the selected Wine source after preceding ordered patches; existing upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine modifications); MIT (new original native arena files)",
+      "changes": [
+        {
+          "path": "configure",
+          "before_sha256": "4da8b4089c966e0e359979eedb7791cb20fb020c808551500778732468729d63",
+          "after_sha256": "a20e88fdde873e57b583b97b71fcd296a0c84d594fdfe282a5ea8a01485487d8"
+        },
+        {
+          "path": "configure.ac",
+          "before_sha256": "802bf17c6379a6ce33f8d4760131ecf2d400a1db78612b117f288986a63d5452",
+          "after_sha256": "7aa44d0826b6ad18d793474e3f46770292aeb1456d27532d13e5e47546a2331e"
+        },
+        {
+          "path": "dlls/ntdll/Makefile.in",
+          "before_sha256": "36334d5256b07676d87fc51c2ea91cecca3202358e70e4aaed466ecf3c589bf6",
+          "after_sha256": "d2aa58a7b5c19282e6a2c09a2420aca3c27b7b5f9b6da38285df154e16d167eb"
+        },
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "before_sha256": "f3219145c8a7063a0651f2f7d31f50c59eff834ce22651bd19be4ed275a19491",
+          "after_sha256": "9f7af4b1f5b829e9e53ed6ab2c443954df1b07093de09bbd0cb99a0f9e36d0eb"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "before_sha256": null,
+          "after_sha256": "50001d02e65344d6c8f852b399e0cba9b51ffa606e6193c5b6d5e68c4154707c"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "before_sha256": null,
+          "after_sha256": "79c77cf2335144ab5515242cd408ad95416a4b755b6489738019f410414dbd13"
+        }
+      ],
+      "regression_ids": [
+        "stage3.pe-arena-parser",
+        "stage3.pe-native-relocation",
+        "stage3.pe-publication-policy",
+        "stage3.pe-view-ownership",
+        "stage3.pe-retirement-reuse"
+      ]
+    },
+    {
+      "path": "0003f-pe-import-lifetime.patch",
+      "sha256": "d48e9f4ecda133477f1043222d843c9d5e517d60cbb145c58a5da93178950c26",
+      "rationale": "Reject unsupported guest-generated import stubs with typed errors and unwind failed native PE loads through existing Wine module references.",
+      "provenance": "Original Pear integration against the selected Wine source and preceding ordered Pear patches; upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/loader.c",
+          "before_sha256": "cd643f9bd17e1721f8ebe6f7bc3c2c192f7bc19cdbfa454c9d2836877c161aba",
+          "after_sha256": "1f9e4b5ae2192d60230f7c14c429ae9652ed153f66ebcbcfc576d705f0cb0230"
+        }
+      ],
+      "regression_ids": [
+        "stage3.pe-import-rejection",
+        "stage3.pe-import-rollback",
+        "stage3.callback-module-lifetime"
+      ]
+    },
+    {
+      "path": "0003g-relocated-main-startup.patch",
+      "sha256": "8777fcbc444f14429e18beeff63cf8564fa6b5c0afe48a040c8c6fbe914f8f9b",
+      "rationale": "Accept the completed native-relocated initial main image without discarding it for start.exe, while retaining mapping informational status and real startup errors.",
+      "provenance": "Original Pear startup correction against the selected Wine source after preceding ordered patches; existing upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/env.c",
+          "before_sha256": "eac82bd2769b1622dd2d308169f9e1750c41169640656e832eb1f8992248396f",
+          "after_sha256": "a02b358df08d35526124a415ab0f875de311f8987e5ef8c386fabd69fa749d40"
+        }
+      ],
+      "regression_ids": [
+        "stage3.relocated-main-startup",
+        "stage3.main-startup-failure-preservation"
+      ]
+    },
+    {
+      "path": "0003h-spawn-input-diagnostics.patch",
+      "sha256": "3a7a98e9bb0726be8de5c038bf68006c2c9b5357c564395c06b2ed7c63ce5e15",
+      "rationale": "Identify native child-spawn failures through opt-in bounded input-readability and operation observations without changing execution inputs or granting permissions.",
+      "provenance": "Original Pear diagnostic integration against the selected Wine source and preceding ordered patches; existing upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "before_sha256": "f971985b852e0605d858a1e567e55a80feef0824dc46a9bd765faebb106e1d87",
+          "after_sha256": "eabfcbdb5d8629370525e9ba774aa5c209c635c12b732eb452542e06ac43004d"
+        }
+      ],
+      "regression_ids": [
+        "stage3.spawn-input-readability",
+        "stage3.spawn-diagnostic-bounds"
+      ]
+    },
+    {
+      "path": "0003i-owned-exec-environment.patch",
+      "sha256": "db802cbeb24193400177dc29c353f9202b8a5c505e2a93508797292b4ae1707b",
+      "rationale": "Own the two Darwin ARM64 exec environment strings outside the Wine Unix stack, preserving values and allocation errors.",
+      "provenance": "Original Pear integration against the selected Wine source and preceding ordered patches; existing upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "before_sha256": "eabfcbdb5d8629370525e9ba774aa5c209c635c12b732eb452542e06ac43004d",
+          "after_sha256": "9056666ffa304ab52ece493d55d072da83e81140330ead148f9ce30f94b01a16"
+        }
+      ],
+      "regression_ids": [
+        "stage3.exec-environment-ownership",
+        "stage3.exec-environment-failure-preservation"
+      ]
+    },
+    {
+      "path": "0003j-image-count-diagnostic.patch",
+      "sha256": "37f62bf4203fd4ad66bc04cf0586c1c162d35d916d7b4a0b806aeefc526a2e29",
+      "rationale": "Retain the actual native-image count and unchanged limit when bounded observation rejects overflow, without skipping image validation.",
+      "provenance": "Original Pear diagnostic correction against the selected Wine source and preceding ordered patches; existing upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "include/wine/pear_bootstrap.h",
+          "before_sha256": "e390c95c2db4573d7553cb51d1e1e42ff3c497aa8db982e93ebbc06c2af7e7b3",
+          "after_sha256": "39b86d6fa02d03026d44c85586f18886195ba7c257a301a78cee4de3d95b7a11"
+        }
+      ],
+      "regression_ids": [
+        "stage3.native-image-overflow-evidence",
+        "stage3.native-image-enumeration-boundaries"
+      ]
+    },
+    {
+      "path": "0003k-image-observation-budget.patch",
+      "sha256": "c07b3a1db6875f7e9d504a2feac51d21d2cbf4f65821ea6763a94ec2f6b674b8",
+      "rationale": "Allow complete bounded native-image snapshots up to 2048 after an actual 1041-image snapshot exceeded 1024; preserve all identity checks and existing byte limits.",
+      "provenance": "Original Pear observation-budget adjustment based on retained actual Wine initialization evidence; selected Wine source and upstream notices retained.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "include/wine/pear_bootstrap.h",
+          "before_sha256": "39b86d6fa02d03026d44c85586f18886195ba7c257a301a78cee4de3d95b7a11",
+          "after_sha256": "c3844ad60ea81c96952bc1abdad4328ef25973d6ac80179992358a281018b299"
+        }
+      ],
+      "regression_ids": [
+        "stage3.complete-observed-image-coverage",
+        "stage3.native-image-budget-rejection"
+      ]
+    },
+    {
+      "path": "0003l-native-architecture-policy.patch",
+      "sha256": "fb2e97e8ed17ad67a0a4bf506e69ccb678bdefae5c9d6d72cdd8c3360e97f3f2",
+      "rationale": "Advertise only ARM64 in the configure-confirmed Darwin native-only build, preventing unsupported WOW64 initialization without bypassing Wineboot or failed exits.",
+      "provenance": "Original Pear capability correction against the selected Wine source and preceding ordered patches; upstream behavior retained for other host and companion-target builds.",
+      "license": "LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "configure.ac",
+          "before_sha256": "7aa44d0826b6ad18d793474e3f46770292aeb1456d27532d13e5e47546a2331e",
+          "after_sha256": "c7e40ccb0a8a61c5d940c2c9c43ca37a091eaf38a2faed19a043e0be7d292ec7"
+        },
+        {
+          "path": "configure",
+          "before_sha256": "a20e88fdde873e57b583b97b71fcd296a0c84d594fdfe282a5ea8a01485487d8",
+          "after_sha256": "acf2d62208f396208ed812cf7b27246685a541410ec98f1ef89102bc3bb1e217"
+        },
+        {
+          "path": "server/Makefile.in",
+          "before_sha256": "3b392512efa1322448567ef546ec2a7f060d25c4502048a71c08d429516a81a0",
+          "after_sha256": "1db7fadbda0e66a1f9f600d66bef1b85f28f38e9a80f3b9e7120ccd753dc3240"
+        },
+        {
+          "path": "server/registry.c",
+          "before_sha256": "c29125d9590afc0f2d864208a7c681f97657b1a2e925780524e31095de02a0f8",
+          "after_sha256": "c93b57df78d5394952baf227efb0beb3f6be375fdbb1cf94837758b9b45d98b1"
+        }
+      ],
+      "regression_ids": [
+        "stage3.native-architecture-configuration",
+        "stage3.native-supported-machine-list",
+        "stage3.original-companion-architecture-behavior"
+      ]
+    },
+    {
+      "path": "0003m-relocation-fixture-capacity.patch",
+      "sha256": "c726e97f2f24d4fe1fcec6695372827d7f55ffe3136cb44120d2d23c6ff00bcf",
+      "rationale": "Account for two simultaneous original fixture copies in addition to the installed ARM64 images and largest-image preparation margin, using measured PE sizes.",
+      "provenance": "Original Pear bounded owner-budget adjustment for the approved two-placement relocation gate; existing notices preserved.",
+      "license": "MIT (original Pear owner header); LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "before_sha256": "79c77cf2335144ab5515242cd408ad95416a4b755b6489738019f410414dbd13",
+          "after_sha256": "d4476ae8fdae5c985666fb83ca49bcedf235d7ca2a85d644c36a626b0cb6011b"
+        }
+      ],
+      "regression_ids": [
+        "stage3.relocation-copy-capacity",
+        "stage3.measured-fixture-copy-size",
+        "stage3.retained-historical-capacity"
+      ]
+    },
+    {
+      "path": "0003n-complete-security-cookie-field.patch",
+      "sha256": "e5de5c68c62616065c353a79c53a803404a0471c84b9aeb223234d455b801d8a",
+      "rationale": "Reject partial SecurityCookie pointer fields before executable publication, preserving complete ordinary-data destination checks.",
+      "provenance": "Original Pear native publication guard correction against the pinned Wine loader consumption rule; existing notices retained.",
+      "license": "MIT (original Pear owner); LGPL-2.1-or-later (Wine integration)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "before_sha256": "50001d02e65344d6c8f852b399e0cba9b51ffa606e6193c5b6d5e68c4154707c",
+          "after_sha256": "101aa7d8d762759621a9c61cf9d0dc7e29b7d5da81b86ea8179995ca81f4af27"
+        }
+      ],
+      "regression_ids": [
+        "stage3.partial-security-cookie-rejection",
+        "stage3.cookie-destination-bounds",
+        "stage3.actual-security-cookie-initialization"
+      ]
     }
   ],
-  "port_complete": false
+  "port_complete": false,
+  "fixture_suite": "api-abi",
+  "code_publication_policy": "page-wx"
 }

@@ -94,7 +94,68 @@ def sha256(path):
         return digest.hexdigest()
 
 
-def decode_json(data, max_bytes=MAX_JSON):
+# The preflight counts every container, key and scalar before json.loads can
+# allocate an object graph. The strict JSON parser still validates the grammar.
+_JSON_GAP = re.compile(r'[ \t\r\n,:]+')
+_JSON_STRING_MARK = re.compile(r'["\\\x00-\x1f]')
+_JSON_ATOM = re.compile(r'(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?|true|false|null|NaN|-?Infinity)')
+_JSON_HEX = re.compile(r'[0-9a-fA-F]{4}\Z')
+
+
+def _json_preflight(text, max_nodes):
+    position, count, containers = 0, 0, []
+    while position < len(text):
+        char = text[position]
+        if char in ' \t\r\n,:':
+            position = _JSON_GAP.match(text, position).end()
+            continue
+        if char in ']}':
+            need(containers and containers.pop() == ('[' if char == ']' else '{'), 'invalid_json')
+            position += 1
+            continue
+        count += 1
+        need(count <= max_nodes and len(containers) <= MAX_DEPTH, 'json_structure_limit')
+        if char in '[{':
+            containers.append(char)
+            position += 1
+        elif char == '"':
+            position += 1
+            while True:
+                mark = _JSON_STRING_MARK.search(text, position)
+                need(mark is not None, 'invalid_json')
+                position = mark.start()
+                if text[position] == '"':
+                    position += 1
+                    break
+                need(text[position] == '\\' and position + 1 < len(text), 'invalid_json')
+                escape = text[position + 1]
+                if escape == 'u':
+                    need(_JSON_HEX.fullmatch(text[position + 2:position + 6]) is not None, 'invalid_json')
+                    position += 6
+                else:
+                    need(escape in '"\\/bfnrt', 'invalid_json')
+                    position += 2
+        else:
+            atom = _JSON_ATOM.match(text, position)
+            need(atom is not None, 'invalid_json')
+            position = atom.end()
+    need(not containers, 'invalid_json')
+
+
+def _json_children(item, depth):
+    if isinstance(item, dict):
+        for key, value in item.items():
+            need(len(key) <= 256, 'json_key_limit')
+            yield key, depth
+            yield value, depth
+    else:
+        for value in item:
+            yield value, depth
+
+
+def decode_json(data, max_bytes=MAX_JSON, *, max_nodes=MAX_NODES):
+    need(type(max_bytes) is int and max_bytes > 0 and type(max_nodes) is int and max_nodes > 0,
+         'invalid_json_budget')
     need(isinstance(data, bytes) and len(data) <= max_bytes, 'input_size_limit')
     def pairs(items):
         result = {}
@@ -105,21 +166,25 @@ def decode_json(data, max_bytes=MAX_JSON):
     def forbidden(_):
         raise Error('noninteger_json_number')
     try:
-        value = json.loads(data.decode('utf-8'), object_pairs_hook=pairs,
+        text = data.decode('utf-8')
+        _json_preflight(text, max_nodes)
+        value = json.loads(text, object_pairs_hook=pairs,
                            parse_constant=forbidden, parse_float=forbidden)
     except (UnicodeError, ValueError, RecursionError):
         raise Error('invalid_json') from None
-    pending, count = [(value, 0)], 0
+    # Iterators keep the validation stack proportional to depth, not the number
+    # of siblings in a large event array. Keys count as nodes in both passes.
+    pending, count = [iter(((value, 0),))], 0
     while pending:
-        item, depth = pending.pop()
+        try:
+            item, depth = next(pending[-1])
+        except StopIteration:
+            pending.pop()
+            continue
         count += 1
-        need(count <= MAX_NODES and depth <= MAX_DEPTH, 'json_structure_limit')
-        if isinstance(item, dict):
-            for key, child in item.items():
-                need(len(key) <= 256, 'json_key_limit')
-                pending.extend(((key, depth + 1), (child, depth + 1)))
-        elif isinstance(item, list):
-            pending.extend((child, depth + 1) for child in item)
+        need(count <= max_nodes and depth <= MAX_DEPTH, 'json_structure_limit')
+        if isinstance(item, (dict, list)):
+            pending.append(_json_children(item, depth + 1))
         elif isinstance(item, str):
             need(len(item) <= MAX_STRING and all((ord(c) >= 32 or c in '\n\r\t') and ord(c) != 127
                  and not 0xD800 <= ord(c) <= 0xDFFF for c in item), 'json_string_limit')

@@ -1,0 +1,71 @@
+From: Pear contributors
+Subject: [PATCH] ntdll: accept native-relocated initial main images
+
+Original Pear integration against Wine 4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf
+with preceding ordered Pear patches through 0003f. After native PE publication
+has completed relocation, accept STATUS_IMAGE_NOT_AT_BASE for the initial
+main-image startup decision. Preserve NtMapViewOfSection's informational
+status, genuine load failures, DLL rejection and alternate-loader fallback.
+Existing Wine LGPL-2.1-or-later notices are preserved and apply.
+
+--- a/dlls/ntdll/unix/env.c
++++ b/dlls/ntdll/unix/env.c
+@@ -1909,50 +1909,58 @@
+     env[env_pos++] = 0;
+ 
+     get_full_path( main_argv[1], curdir, &nt_name );
+     status = load_main_exe( &nt_name, 0 );
+     /* fail only if the file contained an explicit path */
+     if (status == STATUS_DLL_NOT_FOUND &&
+         (strpbrk( main_argv[1], "/\\" ) || (main_argv[1][0] && main_argv[1][1] == ':')))
+     {
+         MESSAGE( "wine: failed to open %s\n", debugstr_a(main_argv[1]) );
+         NtTerminateProcess( GetCurrentProcess(), status );
+     }
+ 
+     if (NT_SUCCESS(status))
+     {
+         char *loader;
+ 
+         if (main_image_info.ImageCharacteristics & IMAGE_FILE_DLL) status = STATUS_INVALID_IMAGE_FORMAT;
+         /* if we have to use a different loader, fall back to start.exe */
+         if ((loader = get_alternate_wineloader( main_image_info.Machine )))
+         {
+             free( loader );
+             status = STATUS_INVALID_IMAGE_FORMAT;
+         }
+     }
+ 
++#ifdef PEAR_NATIVE_PE_PUBLICATION
++    /* The native owner already relocated this initial main image. Keep the
++     * informational status at NtMapViewOfSection, but accept this completed
++     * startup step instead of unmapping it and substituting start.exe. The
++     * DLL and alternate-loader errors above still require the fallback. */
++    if (status == STATUS_IMAGE_NOT_AT_BASE) status = STATUS_SUCCESS;
++#endif
++
+     if (status)  /* try launching it through start.exe */
+     {
+         static const char *args[] = { "start.exe", "/exec" };
+         free( nt_name.Buffer );
+         if (main_module) NtUnmapViewOfSection( GetCurrentProcess(), main_module );
+         load_start_exe( &nt_name );
+         prepend_argv( args, 2 );
+     }
+     else
+     {
+         rebuild_argv();
+         data->filesys_redir = FALSE;
+     }
+ 
+     virtual_alloc_first_teb();
+ 
+     main_wargv = build_wargv( get_dos_path( nt_name.Buffer ));
+     cmdline = build_command_line( main_wargv );
+ 
+     TRACE( "image %s cmdline %s dir %s\n",
+            debugstr_w(main_wargv[0]), debugstr_w(cmdline), debugstr_w(curdir) );
+ 
+     size = (sizeof(*params)
+             + MAX_PATH * sizeof(WCHAR)  /* curdir */
+             + (wcslen( cmdline ) + 1) * sizeof(WCHAR)  /* command line */

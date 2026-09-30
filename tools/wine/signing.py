@@ -1,6 +1,6 @@
 """Inspect and prepare local development authorization for the actual Wine host.
 
-The bundle layout is specific to the approved native bootstrap experiment. It
+The bundle layout is specific to the approved native bootstrap and PE/ABI fixtures. It
 preserves the installed Wine tree and does not authorize its bin/wine wrapper.
 Pure profile/signature checks are reused from Issue #2; its probe bundle and
 execution helpers are deliberately not reused. No function here executes Wine.
@@ -26,7 +26,8 @@ import time
 from xml.parsers.expat import ExpatError
 
 from common import Error, REPO, encoded, load_json, need, read_relative, record, relative, sha256
-from toolchain import MACH_ARM64, inspect_closure, inspect_macho
+from build import code_publication_policy
+from toolchain import MACH_ARM64, coff_machine, inspect_closure, inspect_macho
 
 _SPEC = importlib.util.spec_from_file_location('pear_wine_profile_checks',
                                              REPO / 'host/probe/provisioned_probe.py')
@@ -44,6 +45,26 @@ NTDLL = 'lib/wine/aarch64-unix/ntdll.so'
 SERVER = 'bin/wineserver'
 BOOTSTRAP_HELPER = 'libexec/pear-stage2/bootstrap-native'
 SENTINEL = 'libexec/pear-stage2/sentinel'
+API_LAUNCH = 'libexec/pear-stage3/api-launch'
+API_GUESTS = {
+    'api_pe': ('libexec/pear-stage3/api-arm64.exe', 0xAA64, True),
+    'abi_pe': ('libexec/pear-stage3/abi-arm64.exe', 0xAA64, True),
+    'x64_control': ('libexec/pear-stage3/api-x64.exe', 0x8664, False),
+    'i386_control': ('libexec/pear-stage3/api-i386.exe', 0x14C, False),
+}
+PAGE_WX_GUESTS = {
+    'lifetime_dll': ('libexec/pear-stage3/lifetime-arm64.dll', 0xAA64, True),
+    'missing_name_dll': ('libexec/pear-stage3/missing-name-arm64.dll', 0xAA64, True),
+    'missing_ordinal_dll': ('libexec/pear-stage3/missing-ordinal-arm64.dll', 0xAA64, True),
+}
+
+
+def guest_fixtures_for(built):
+    return dict(API_GUESTS, **(PAGE_WX_GUESTS if code_publication_policy(built) == 'page-wx' else {}))
+
+
+AUTHORIZATION_SCOPES = {'bootstrap': 'development_native_bootstrap_pre_pe',
+                        'api-abi': 'development_windows_api_abi_fixtures'}
 PROVENANCE = ('host/probe/provisioned_probe.py', 'host/probe/hardened_baseline.py')
 LIMIT = 2 * 1024 * 1024
 
@@ -124,7 +145,14 @@ def inventory(root):
 
 
 def requirement_map(build_root, built):
-    """Map actual verified outputs to fixed Stage 2 process responsibilities."""
+    """Map actual verified outputs to the approved finite fixture responsibilities."""
+    suite = built.get('fixture_suite', 'bootstrap')
+    need(suite in AUTHORIZATION_SCOPES, 'signing_fixture_suite')
+    policy = code_publication_policy(built)
+    capacity = built.get('arena_capacity')
+    need((policy == 'none' and capacity is None) or
+         (policy == 'page-wx' and isinstance(capacity, dict) and capacity.get('policy') == policy
+          and capacity.get('wine_execution') is False), 'signing_arena_capacity_missing')
     install = owned(built['install_root'])
     artifacts = built.get('artifacts')
     need(isinstance(artifacts, list) and 0 < len(artifacts) <= 100000, 'build_artifacts_missing')
@@ -145,9 +173,10 @@ def requirement_map(build_root, built):
                 'wine-wrapper' if name == 'bin/wine' else
                 'bootstrap-helper' if name == BOOTSTRAP_HELPER else
                 'sentinel' if name == SENTINEL else
+                'api-launch-helper' if name == API_LAUNCH else
                 'native-helper' if info['filetype'] == 2 else 'native-library')
         restricted = role == 'wine-loader'
-        need((role not in ('wine-loader', 'wine-server', 'wine-wrapper', 'bootstrap-helper', 'sentinel')) or info['filetype'] == 2,
+        need((role not in ('wine-loader', 'wine-server', 'wine-wrapper', 'bootstrap-helper', 'sentinel', 'api-launch-helper')) or info['filetype'] == 2,
              'process_role_not_executable')
         closure = inspect_closure(path, install)
         for image in closure:
@@ -159,13 +188,32 @@ def requirement_map(build_root, built):
                        'required_code_signature_page_size': 4096 if restricted else None,
                        'cross_architecture_profile_required': restricted,
                        'cross_architecture_grant_alternatives': list(CROSS_KEYS) if restricted else [],
-                       'allow_jit': False, 'hardened_runtime': True,
+                       'allow_jit': restricted and policy == 'page-wx', 'hardened_runtime': True,
                        'library_validation': 'enabled',
-                       'entitlement_policy': 'explicit_profile_app_team_and_one_cross_grant' if restricted else 'none',
+                       'entitlement_policy': ('explicit_profile_app_team_one_cross_grant_and_public_allow_jit'
+                            if policy == 'page-wx' else 'explicit_profile_app_team_and_one_cross_grant')
+                            if restricted else 'none',
                        'signed_path': MAIN if restricted else PAYLOAD + '/' + name})
     by_path = {item['source_path']: item for item in native}
     need({LOADER, NTDLL, SERVER, BOOTSTRAP_HELPER, SENTINEL}.issubset(by_path), 'required_native_output_missing')
     need(by_path[NTDLL]['macho']['filetype'] in (6, 8), 'ntdll_not_library')
+    entrypoints = {'loader': MAIN, 'server': PAYLOAD + '/' + SERVER,
+                   'ntdll': PAYLOAD + '/' + NTDLL,
+                   'bootstrap_helper': PAYLOAD + '/' + BOOTSTRAP_HELPER,
+                   'sentinel': PAYLOAD + '/' + SENTINEL}
+    guest_fixtures = {}
+    if suite == 'api-abi':
+        need(API_LAUNCH in by_path, 'api_launch_helper_missing')
+        entrypoints['api_launch'] = PAYLOAD + '/' + API_LAUNCH
+        artifact_map = {row['path']: row for row in artifacts}
+        for role, (name, machine, executable) in guest_fixtures_for(built).items():
+            item = artifact_map.get(name)
+            need(item is not None and item['kind'] == 'pe' and item['machine'] == machine and
+                 sha256(install / name) == item['sha256'] and coff_machine(install / name) == machine,
+                 'signing_guest_fixture_mismatch')
+            entrypoints[role] = PAYLOAD + '/' + name
+            guest_fixtures[role] = {'machine': machine, 'execution_permitted': executable,
+                                    'source_path': name, 'sha256': item['sha256']}
     return {'schema_version': 1, 'record_kind': 'wine_signing_requirements', 'scope': 'wine_component',
             'build_ref': {'path': str(owned(build_root) / 'build.json'),
                           'sha256': sha256(owned(build_root) / 'build.json')},
@@ -173,10 +221,10 @@ def requirement_map(build_root, built):
             'proposed_bundle_identifier': BUNDLE_ID,
             'bundle_layout': {'bundle': BUNDLE, 'payload': PAYLOAD, 'main': MAIN,
                               'ntdll_alias': NTDLL_ALIAS, 'loader_source': LOADER},
-            'entrypoints': {'loader': MAIN, 'server': PAYLOAD + '/' + SERVER,
-                           'ntdll': PAYLOAD + '/' + NTDLL,
-                           'bootstrap_helper': PAYLOAD + '/' + BOOTSTRAP_HELPER,
-                           'sentinel': PAYLOAD + '/' + SENTINEL},
+            'entrypoints': entrypoints, 'fixture_suite': suite, 'code_publication_policy': policy,
+            'arena_capacity': capacity,
+            'authorization_scope': AUTHORIZATION_SCOPES[suite],
+            'guest_fixtures': guest_fixtures,
             'required_profile_checks': ['cms_decode', 'explicit_application_match', 'unexpired',
                 'current_device', 'available_development_certificate', 'single_cross_architecture_grant'],
             'authorization': 'not_assessed', 'wine_execution': False,
@@ -271,6 +319,18 @@ def profile_authorization(profile, identities, device, bundle_id, now=None):
     need(set(result['claims']) == {APP_ID, TEAM_ID, result['granted_cross_architecture_key']},
          'unexpected_authorized_claims')
     return result
+
+
+def loader_claims(private, policy):
+    """Add the selected public JIT claim only after private profile matching."""
+    need(policy in ('none', 'page-wx'), 'build_code_publication_policy')
+    claims = dict(private['claims'])
+    grant = private['granted_cross_architecture_key']
+    need(grant in CROSS_KEYS and set(claims) == {APP_ID, TEAM_ID, grant}
+         and claims[grant] is True, 'unexpected_authorized_claims')
+    if policy == 'page-wx':
+        claims[PROFILE.BASELINE.ALLOW_JIT] = True
+    return claims
 
 
 def _authorization(profile_path, bundle_id, events):
@@ -476,10 +536,13 @@ def prepare(build_root, local_input, output, require_empty=True):
     local = _local_input(local_input)
     events = []
     private = _authorization(local['profile_path'], local['bundle_identifier'], events)
+    claims = loader_claims(private, requirements['code_publication_policy'])
     # No task output or signing mutation exists until actual profile matching passes.
     output.mkdir(parents=True, mode=0o700)
     report = {'schema_version': 1, 'record_kind': 'wine_signed_runtime', 'scope': 'wine_component',
-              'status': 'failed', 'authorization_scope': 'development_native_bootstrap_pre_pe',
+              'status': 'failed', 'authorization_scope': requirements['authorization_scope'],
+              'code_publication_policy': requirements['code_publication_policy'],
+              'arena_capacity': requirements['arena_capacity'],
               'build_ref': requirements['build_ref'], 'entrypoints': requirements['entrypoints'],
               'bundle': BUNDLE, 'profile_sha256': private['profile_sha256'],
               'profile_checks': private['checks'], 'commands': events, 'native_images': [],
@@ -499,7 +562,7 @@ def prepare(build_root, local_input, output, require_empty=True):
             'CFBundleVersion': '1', 'CFBundleShortVersionString': '0.1',
             'LSMinimumSystemVersion': '26.5'}))
         claims_path = output / 'authorized-entitlements.plist'
-        claims_path.write_bytes(plistlib.dumps(private['claims']))
+        claims_path.write_bytes(plistlib.dumps(claims))
         ordinary = sorted((x for x in requirements['native_images'] if x['role'] != 'wine-loader'),
                           key=lambda x: (x['macho']['filetype'] == 2, x['source_path']))
         for index, item in enumerate(ordinary):
@@ -516,8 +579,8 @@ def prepare(build_root, local_input, output, require_empty=True):
                  '--timestamp=none', '--pagesize', '4096', '--entitlements', str(claims_path), '--identifier', BUNDLE_ID, str(bundle)],
                 'loader.sign', events)
         main = output / MAIN
-        main_signature = _signature(main, private['claims'], private['claims'][TEAM_ID], 'loader', events)
-        _signature(bundle, private['claims'], private['claims'][TEAM_ID], 'bundle', events)
+        main_signature = _signature(main, claims, private['claims'][TEAM_ID], 'loader', events)
+        _signature(bundle, claims, private['claims'][TEAM_ID], 'bundle', events)
         original = next(x for x in requirements['native_images'] if x['role'] == 'wine-loader')
         report['native_images'].append({'path': MAIN, 'source_path': LOADER, 'role': 'wine-loader',
             'unsigned_sha256': original['unsigned_sha256'], 'sha256': sha256(main), 'signature': main_signature})
@@ -542,7 +605,7 @@ def validate_prepared(runtime_root):
     root = owned(runtime_root)
     report = record(load_json(root / 'signed.json'), 'wine_signed_runtime')
     need(report.get('scope') == 'wine_component' and report.get('status') == 'prepared' and
-         report.get('authorization_scope') == 'development_native_bootstrap_pre_pe' and
+         report.get('authorization_scope') in AUTHORIZATION_SCOPES.values() and
          report.get('wine_execution') is False and report.get('runtime_qualified') is False and
          report.get('distribution_qualified') is False, 'signed_runtime_scope_invalid')
     need(report.get('producer_sha256') == {name: sha256(Path(__file__).parent / name)
@@ -554,6 +617,10 @@ def validate_prepared(runtime_root):
     requirements = requirement_map(build_path.parent, built)
     need(sha256(root / 'requirements.json') == report['requirements_sha256'] and
          load_json(root / 'requirements.json') == requirements, 'signing_requirements_changed')
+    need(report['authorization_scope'] == requirements['authorization_scope'], 'signed_fixture_scope_changed')
+    need(report.get('code_publication_policy') == requirements['code_publication_policy'],
+         'signed_code_publication_changed')
+    need(report.get('arena_capacity') == requirements['arena_capacity'], 'signed_arena_capacity_changed')
     need(report['entrypoints'] == requirements['entrypoints'] and report['bundle'] == BUNDLE,
          'signed_entrypoint_changed')
     need(sha256(root / 'signed-files.json') == report['files_manifest_sha256'], 'signed_manifest_changed')
@@ -564,6 +631,7 @@ def validate_prepared(runtime_root):
     events = []
     private = _authorization(root / BUNDLE / 'Contents/embedded.provisionprofile', BUNDLE_ID, events)
     need(private['profile_sha256'] == report['profile_sha256'], 'signed_profile_changed')
+    expected_loader_claims = loader_claims(private, requirements['code_publication_policy'])
     info = plistlib.loads(read_relative(root, BUNDLE + '/Contents/Info.plist', LIMIT))
     need(info.get('CFBundleIdentifier') == BUNDLE_ID and info.get('CFBundleExecutable') == 'wine',
          'signed_bundle_identity_changed')
@@ -580,11 +648,11 @@ def validate_prepared(runtime_root):
              item['sha256'] == sha256(root / path), 'signed_native_identity_changed')
         info = inspect_macho(root / path)
         need(info == expected['macho'], 'signed_native_macho_changed')
-        claims = private['claims'] if expected['role'] == 'wine-loader' else {}
+        claims = expected_loader_claims if expected['role'] == 'wine-loader' else {}
         observed = _signature(root / path, claims, private['claims'][TEAM_ID], 'validate.' + str(index), events)
         need(observed == item['signature'], 'signed_claims_changed')
         inspect_closure(root / path, root / BUNDLE)
-    _signature(root / BUNDLE, private['claims'], private['claims'][TEAM_ID], 'validate.bundle', events)
+    _signature(root / BUNDLE, expected_loader_claims, private['claims'][TEAM_ID], 'validate.bundle', events)
     need(files['files'] == inventory(root / BUNDLE), 'signed_payload_changed')
     return report
 

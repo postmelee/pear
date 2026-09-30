@@ -31,6 +31,95 @@ PRODUCERS = ('build.py', 'common.py', 'prepare.py', 'toolchain.py')
 REVISION_KEYS = {'artifacts_manifest', 'native_artifact_count', 'pe_artifact_count',
                  'passed', 'error', 'private_error', 'completion_revision'}
 
+FIXTURE_SUITES = {
+    'bootstrap': ('bootstrap_native.c', 'sentinel.c'),
+    'api-abi': ('bootstrap_native.c', 'sentinel.c', 'api_launch.c',
+                'api_pe.c', 'abi_pe.c', 'abi_native.c', 'abi_gateway.S'),
+}
+STAGE3_PE = {
+    'libexec/pear-stage3/api-arm64.exe': 0xAA64,
+    'libexec/pear-stage3/api-x64.exe': 0x8664,
+    'libexec/pear-stage3/api-i386.exe': 0x14C,
+    'libexec/pear-stage3/abi-arm64.exe': 0xAA64,
+}
+
+PAGE_WX_FIXTURES = ('lifetime_pe.c', 'lifetime_pe.h', 'missing_import_pe.c',
+                    'missing_name.def', 'missing_ordinal.def')
+PAGE_WX_PE = {
+    'libexec/pear-stage3/lifetime-arm64.dll': 0xAA64,
+    'libexec/pear-stage3/missing-name-arm64.dll': 0xAA64,
+    'libexec/pear-stage3/missing-ordinal-arm64.dll': 0xAA64,
+}
+
+
+def fixture_suite(value):
+    suite = value.get('fixture_suite', 'bootstrap')
+    need(suite in FIXTURE_SUITES, 'build_fixture_suite')
+    return suite
+
+
+def code_publication_policy(value):
+    """Read a recorded implementation policy, never a caller-supplied launch override."""
+    policy = value.get('code_publication_policy', 'none')
+    need(policy in ('none', 'page-wx'), 'build_code_publication_policy')
+    need(policy == 'none' or fixture_suite(value) == 'api-abi', 'build_code_publication_scope')
+    return policy
+
+
+def fixture_sources(value):
+    return FIXTURE_SUITES[fixture_suite(value)] + (PAGE_WX_FIXTURES
+        if code_publication_policy(value) == 'page-wx' else ())
+
+
+def fixture_pe_outputs(suite, policy='none'):
+    return dict(STAGE3_PE, **(PAGE_WX_PE if policy == 'page-wx' else {})) if suite == 'api-abi' else {}
+
+
+def fixture_commands(root, tools, lock, suite, publication_policy='none'):
+    """Exact compile/inspection invocations; no PE fixture is executed here."""
+    need(suite in FIXTURE_SUITES, 'build_fixture_suite')
+    sources = REPO / 'tests/wine/fixtures'
+    commands = {}
+    native = [('fixture-bootstrap', 'bootstrap_native.c', 'libexec/pear-stage2/bootstrap-native'),
+              ('fixture-sentinel', 'sentinel.c', 'libexec/pear-stage2/sentinel')]
+    if suite == 'api-abi':
+        native.append(('fixture-api-launch', 'api_launch.c', 'libexec/pear-stage3/api-launch'))
+    for ident, filename, output in native:
+        commands[ident] = [str(native_tool(lock, 'clang')), '-arch', 'arm64', '-isysroot', lock['sdk']['path'],
+            '-std=c11', '-Wall', '-Wextra', '-Werror', str(sources / filename),
+            '-o', str(root / 'install' / output)]
+    if suite == 'api-abi':
+        clang = str(tools / 'llvm-mingw/bin/clang')
+        for target, suffix in [('aarch64', 'arm64'), ('x86_64', 'x64'), ('i686', 'i386')]:
+            commands['fixture-api-' + suffix] = [clang, '--target=' + target + '-w64-windows-gnu',
+                '-std=c11', '-Wall', '-Wextra', '-Werror', '-O1', '-fno-builtin', '-nostdlib',
+                '-Wl,-e,mainCRTStartup', str(sources / 'api_pe.c'), '-lkernel32',
+                '-o', str(root / 'install/libexec/pear-stage3' / ('api-' + suffix + '.exe'))]
+        commands['fixture-abi-arm64'] = [clang, '--target=aarch64-w64-windows-gnu',
+            '-std=c11', '-Wall', '-Wextra', '-Werror', '-O1', '-fno-builtin', '-nostdlib',
+            '-Wl,-e,mainCRTStartup', str(sources / 'abi_pe.c'), str(sources / 'abi_gateway.S'),
+            '-lkernel32', '-o', str(root / 'install/libexec/pear-stage3/abi-arm64.exe')]
+        if publication_policy == 'page-wx':
+            flags = [clang, '--target=aarch64-w64-windows-gnu', '-std=c11', '-Wall', '-Wextra',
+                     '-Werror', '-O1', '-fno-builtin', '-nostdlib', '-shared', '-Wl,-e,DllMain']
+            dest = root / 'install/libexec/pear-stage3'
+            commands['fixture-lifetime-dll'] = flags + [str(sources / 'lifetime_pe.c'), '-lkernel32',
+                                                       '-o', str(dest / 'lifetime-arm64.dll')]
+            for kind in ('name', 'ordinal'):
+                importlib = root / ('missing-' + kind + '.a')
+                commands['fixture-missing-' + kind + '-importlib'] = [
+                    str(tools / 'llvm-mingw/bin/llvm-dlltool'), '-m', 'arm64',
+                    '-d', str(sources / ('missing_' + kind + '.def')), '-l', str(importlib)]
+                commands['fixture-missing-' + kind + '-dll'] = flags + [
+                    str(sources / 'missing_import_pe.c'), str(importlib),
+                    '-o', str(dest / ('missing-' + kind + '-arm64.dll'))]
+        for ident, path in [('disassemble-ntdll', 'lib/wine/aarch64-unix/ntdll.so'),
+                            ('disassemble-abi', 'libexec/pear-stage3/abi-arm64.exe')]:
+            commands[ident] = [str(tools / 'llvm-mingw/bin/llvm-objdump'), '--disassemble',
+                              str(root / 'install' / path)]
+    return commands
+
+
 WINMD_PATHS = frozenset('share/wine/winmd/' + name + '.winmd' for name in (
     'windows.applicationmodel', 'windows.globalization', 'windows.graphics',
     'windows.media', 'windows.networking', 'windows.perception', 'windows.storage',
@@ -275,7 +364,13 @@ def run_build_command(rows, ident, argv, cwd, env, timeout, log_limit=MAX_BUILD_
     return row
 
 
-def observed_configuration(makefile, variant):
+def has_native_architecture_policy(value):
+    """Use this build's verified patch list, preserving historical configurations."""
+    return any(row.get('path') == '0003l-native-architecture-policy.patch'
+               for row in value.get('patches', []))
+
+
+def observed_configuration(makefile, variant, publication_policy="none", *, native_architecture_policy=False):
     text = Path(makefile).read_text()
     observed = {}
     for key in ('HOST_ARCH', 'PE_ARCHS', 'aarch64_TARGET', 'arm64ec_TARGET', 'x86_64_TARGET',
@@ -283,6 +378,17 @@ def observed_configuration(makefile, variant):
         values = re.findall('^' + key + r' = (.*)$', text, re.MULTILINE)
         need(len(values) == 1, 'build_configuration_field')
         observed[key] = values[0].strip()
+    if publication_policy == 'page-wx':
+        field = 'PEAR_NATIVE_PE_PUBLICATION_CFLAGS'
+        values = re.findall('^' + field + r' = (.*)$', text, re.MULTILINE)
+        need(values == ['-DPEAR_NATIVE_PE_PUBLICATION=1'], 'build_publication_macro_mismatch')
+        observed[field] = values[0]
+    if native_architecture_policy:
+        field = 'PEAR_NATIVE_ONLY_ARCH_CFLAGS'
+        values = re.findall('^' + field + r' = (.*)$', text, re.MULTILINE)
+        expected = '-DPEAR_NATIVE_ONLY_ARCH=1' if variant['id'] == 'arm64' else ''
+        need(values == [expected], 'build_native_architecture_macro_mismatch')
+        observed[field] = values[0]
     need(observed['HOST_ARCH'] == 'aarch64' and observed['PE_ARCHS'].split() == variant['pe_archs'],
          'build_configuration_architecture')
     need('dlls/winemac.drv/cocoa_app.o:' in text, 'build_mac_driver_missing')
@@ -323,7 +429,7 @@ def expected_source_inventory(original, patches):
             need((previous is None) if change['before_sha256'] is None else
                  previous is not None and previous['sha256'] == change['before_sha256'],
                  'patch_preimage_changed')
-            # Current Stage 2 series adds/changes ordinary files only.
+            # The ordered series adds/changes ordinary files only.
             need(isinstance(change['after_sha256'], str) and
                  re.fullmatch('[0-9a-f]{64}', change['after_sha256']), 'patch_postimage_shape')
             files[name] = {'path': name, 'sha256': change['after_sha256'],
@@ -343,11 +449,14 @@ def verify_build_evidence(root, result, current=True):
     need(result.get('scope') == 'wine_component'
          and result.get('wine_runtime_execution') is False, 'build_scope')
     need(result.get('variant') in ('arm64', 'arm64ec-build'), 'build_variant')
+    policy = code_publication_policy(result)
     if current:
         for key, name in RECORDS.items():
             need(sha256(REPO / name) == result['record_hashes'][key], 'build_input_changed')
         series = load_json(REPO / RECORDS['patch_series'])
-        need(result['patches'] == series['patches'], 'build_patch_series_changed')
+        need(result['patches'] == series['patches'] and fixture_suite(result) == fixture_suite(series),
+             'build_patch_series_changed')
+        need(policy == code_publication_policy(series), 'build_code_publication_changed')
         for row in result['patches']:
             validate_patch(None, row)
     source_ref = result['source_manifest']
@@ -363,12 +472,17 @@ def verify_build_evidence(root, result, current=True):
     need(result.get('install_root') == str(install), 'build_install_root')
     verify_producer_snapshot(root, 'producer', result['producer_sha256'])
     if current:
-        for name in ('bootstrap_native.c', 'sentinel.c'):
+        for name in fixture_sources(result):
             need(sha256(REPO / 'tests/wine/fixtures' / name) == result['fixture_hashes'].get(name), 'build_fixture_changed')
+    if fixture_suite(result) == 'api-abi':
+        need(sha256(root / 'source/dlls/ntdll/unix/pear_abi_fixture.c') == result['fixture_hashes']['abi_native.c'],
+             'build_native_fixture_source_mismatch')
     config = load_json(REPO / RECORDS['config'])
     variant = next(row for row in config['variants'] if row['id'] == result['variant'])
     verify_build_commands(root, result, variant)
-    need(observed_configuration(root / 'objects/Makefile', variant) == result['configuration'],
+    need(observed_configuration(root / 'objects/Makefile', variant, policy,
+                                native_architecture_policy=has_native_architecture_policy(result))
+         == result['configuration'],
          'build_configuration_evidence_changed')
     need(sha256(root / 'objects/Makefile') == result['makefile_sha256']
          and sha256(root / 'objects/config.log') == result['config_log_sha256'], 'build_configuration_changed')
@@ -395,7 +509,8 @@ def verify_build_commands(root, result, variant):
     expected['configure'] = ['/bin/sh', logical(root / 'source/configure'), '--prefix=' + logical(root / 'install'),
                             '--with-mingw=' + logical(tools / 'llvm-mingw/bin/clang'), *variant['configure_args']]
     commands = {row['id']: row for row in result['commands']}
-    expected_order = list(expected) + ['make', 'install', 'fixture-bootstrap', 'fixture-sentinel']
+    fixtures = fixture_commands(root, tools, lock, fixture_suite(result), code_publication_policy(result))
+    expected_order = list(expected) + ['make', 'install'] + list(fixtures)
     need([row['id'] for row in result['commands']] == expected_order and len(commands) == len(expected_order),
          'build_command_coverage')
     make = str(native_tool(lock, 'make'))
@@ -404,11 +519,7 @@ def verify_build_commands(root, result, variant):
     need(isinstance(make_args, list) and len(make_args) == 4 and make_args[-1] in ('-j1', '-j2', '-j3', '-j4'),
          'build_command_invocation')
     expected['make'], expected['install'] = [make, make_args[-1]], [make, 'install']
-    for ident, filename, output_name in (('fixture-bootstrap', 'bootstrap_native.c', 'bootstrap-native'),
-                                         ('fixture-sentinel', 'sentinel.c', 'sentinel')):
-        expected[ident] = [clang, '-arch', 'arm64', '-isysroot', lock['sdk']['path'],
-            '-std=c11', '-Wall', '-Wextra', '-Werror', str(REPO / 'tests/wine/fixtures' / filename),
-            '-o', str(root / 'install/libexec/pear-stage2' / output_name)]
+    expected.update(fixtures)
     for ident, row in commands.items():
         need(type(row.get('exit_code')) is int and row['exit_code'] == 0
              and row.get('timed_out') is False and row.get('output_limit') is False
@@ -488,8 +599,11 @@ def verify_build(root, current=True):
     verify_build_evidence(root, result, current)
     verify_completion_revision(root, result)
     artifacts = artifact_inventory(result, root)
-    required_outputs(artifacts, result['variant'])
+    required_outputs(artifacts, result['variant'], fixture_suite(result), code_publication_policy(result))
     need(inventory(root / 'install', binary=True) == artifacts, 'build_artifact_changed')
+    if code_publication_policy(result) == 'page-wx':
+        need(result.get('arena_capacity') == arena_capacity_evidence(root / 'source', root / 'install', artifacts),
+             'build_arena_capacity_changed')
     need(result['native_artifact_count'] == sum(row['kind'] == 'macho' for row in artifacts['files'])
          and result['pe_artifact_count'] == sum(row['kind'] == 'pe' for row in artifacts['files']),
          'build_artifact_counts')
@@ -509,7 +623,10 @@ def finalize_only(output):
          'build_finalization_destination_exists')
     verify_build_evidence(root, original, current=True)
     artifacts = inventory(root / 'install', binary=True)
-    required_outputs(artifacts, original['variant'])
+    required_outputs(artifacts, original['variant'], fixture_suite(original), code_publication_policy(original))
+    if code_publication_policy(original) == 'page-wx':
+        need(original.get('arena_capacity') == arena_capacity_evidence(root / 'source', root / 'install', artifacts),
+             'build_arena_capacity_changed')
     finalizer = {name: read_relative(Path(__file__).parent, name) for name in PRODUCERS}
     hashes = {name: hashlib.sha256(data).hexdigest() for name, data in finalizer.items()}
     need(read_relative(root, 'build.json') == raw, 'build_original_record_changed')
@@ -540,7 +657,7 @@ def finalize_only(output):
     os.replace(root / '.build-finalized.json', root / 'build.json')
     return 0
 
-def required_outputs(artifacts, variant):
+def required_outputs(artifacts, variant, suite='bootstrap', publication_policy='none'):
     files = {row['path']: row for row in artifacts['files']}
     required = {
         'lib/wine/aarch64-unix/wine': 'macho',
@@ -553,6 +670,10 @@ def required_outputs(artifacts, variant):
         'libexec/pear-stage2/bootstrap-native': 'macho',
         'libexec/pear-stage2/sentinel': 'macho',
     }
+    need(suite in FIXTURE_SUITES, 'build_fixture_suite')
+    if suite == 'api-abi':
+        required.update({path: 'pe' for path in fixture_pe_outputs(suite, publication_policy)})
+        required['libexec/pear-stage3/api-launch'] = 'macho'
     need(variant in ('arm64', 'arm64ec-build'), 'build_variant')
     # This Wine pin links ARM64X companions at the aarch64-windows paths.
     # modules.validate_inventory independently requires actual CHPE/DVRT hybrid evidence.
@@ -565,7 +686,10 @@ def required_outputs(artifacts, variant):
         if row['kind'] == 'macho':
             need(row['architectures'] == [MACH_ARM64], 'build_native_architecture')
         elif row['kind'] == 'pe':
-            if row['path'].startswith('lib/wine/aarch64-windows/'):
+            if row['path'] in fixture_pe_outputs(suite, publication_policy):
+                need(row.get('machine') == fixture_pe_outputs(suite, publication_policy)[row['path']],
+                     'build_fixture_pe_architecture')
+            elif row['path'].startswith('lib/wine/aarch64-windows/'):
                 if variant == 'arm64ec-build' and row['path'] in ARM64EC_PATHS:
                     need(row.get('machine') == 0x8664 and row.get('pe_abi') == 'arm64ec'
                          and row.get('chpe_version') == 2 and row.get('code_ranges')
@@ -579,6 +703,64 @@ def required_outputs(artifacts, variant):
             need(row['path'] in WINMD_PATHS and row.get('metadata_only') is True
                  and row.get('machine') == 0x14C, 'build_metadata_scope')
     return files
+
+
+def arena_capacity_evidence(source, install, artifacts):
+    """Check the built ARM64 image inventory against the compiled finite owner limits."""
+    header = Path(source) / 'dlls/ntdll/unix/pear_pe_arena.h'
+    text = header.read_text()
+    limits = {}
+    for name in ('INTERIOR_BYTES', 'ALIGNMENT', 'MAX_IMAGE_BYTES', 'MAX_SLOTS', 'PAGE_BYTES'):
+        rows = re.findall(r'^#define PEAR_ARENA_' + name + r' (?:\(\(SIZE_T\)([0-9]+)\)|([0-9]+)u)$',
+                          text, re.MULTILINE)
+        need(len(rows) == 1, 'arena_capacity_definition')
+        limits[name.lower()] = int(rows[0][0] or rows[0][1])
+    need(limits['alignment'] == 65536 and limits['page_bytes'] == 4096
+         and limits['interior_bytes'] % limits['alignment'] == 0,
+         'arena_capacity_geometry')
+    copy_rows = re.findall(r'^#[ \t]*define[ \t]+PEAR_ARENA_RELOCATION_COPIES\b(.*)$', text, re.MULTILINE)
+    need(not copy_rows or len(copy_rows) == 1 and copy_rows[0].strip() == '2u',
+         'arena_fixture_copy_definition')
+    copy_count = 2 if copy_rows else 0
+    copy_path = 'libexec/pear-stage3/lifetime-arm64.dll'
+    sizes, named_sizes = [], {}
+    for row in artifacts['files']:
+        if row.get('kind') != 'pe' or row.get('machine') != 0xAA64:
+            continue
+        path = Path(install).joinpath(*relative(row['path']))
+        with path.open('rb') as stream:
+            dos = stream.read(64)
+            need(len(dos) == 64 and dos[:2] == b'MZ', 'arena_capacity_pe_header')
+            offset = struct.unpack_from('<I', dos, 60)[0]
+            need(64 <= offset <= path.stat().st_size - 84, 'arena_capacity_pe_header')
+            stream.seek(offset)
+            pe = stream.read(84)
+        need(pe[:4] == b'PE\0\0' and struct.unpack_from('<H', pe, 4)[0] == 0xAA64
+             and struct.unpack_from('<H', pe, 24)[0] == 0x20B, 'arena_capacity_pe_header')
+        size = struct.unpack_from('<I', pe, 80)[0]
+        need(size > 0 and size % limits['page_bytes'] == 0, 'arena_capacity_pe_size')
+        rounded = (size + limits['alignment'] - 1) & ~(limits['alignment'] - 1)
+        sizes.append(rounded)
+        named_sizes[row['path']] = rounded
+    need(sizes, 'arena_capacity_inventory_empty')
+    if copy_count:
+        need(copy_path in named_sizes, 'arena_fixture_copy_source_missing')
+    copy_slot_bytes = named_sizes.get(copy_path, 0) if copy_count else 0
+    copy_bytes = copy_count * copy_slot_bytes
+    largest, total = max(sizes), sum(sizes)
+    required_bytes, required_slots = total + largest + copy_bytes, len(sizes) + 1 + copy_count
+    need(largest <= limits['max_image_bytes'] and required_slots <= limits['max_slots']
+         and required_bytes <= limits['interior_bytes'], 'arena_capacity_inventory_exceeds_limits')
+    result = {'policy': 'page-wx', 'header_sha256': sha256(header), 'limits': limits,
+              'arm64_image_count': len(sizes), 'total_slot_bytes': total,
+              'largest_slot_bytes': largest, 'preparation_margin_bytes': largest,
+              'required_interior_bytes': required_bytes, 'required_slots': required_slots,
+              'wine_execution': False}
+    # Historical headers had no copy allowance; preserve their exact evidence shape.
+    if copy_count:
+        result['fixture_copies'] = {'path': copy_path, 'count': copy_count,
+                                   'slot_bytes': copy_slot_bytes, 'total_bytes': copy_bytes}
+    return result
 
 
 def build(variant_name, inputs, tools, output, jobs):
@@ -597,13 +779,16 @@ def build(variant_name, inputs, tools, output, jobs):
     series = record(load_json(REPO / RECORDS['patch_series']), 'wine_patch_series')
     need(series['base_commit'] == prepared['components'][0]['commit']
          and series.get('port_complete') is False and isinstance(series.get('patches'), list), 'build_patch_base')
+    suite = fixture_suite(series)
+    policy = code_publication_policy(series)
     patch_paths = [validate_patch(series, row) for row in series['patches']]
     minimum_space = (8 if variant_name == 'arm64' else 12) * 1024**3
     free = shutil.disk_usage(REPO).free
     need(free >= minimum_space, 'build_storage_budget')
     output = empty_directory(output).resolve()
     result = {'schema_version': 1, 'record_kind': 'wine_build', 'scope': 'wine_component',
-              'variant': variant_name, 'record_hashes': {key: sha256(REPO / value) for key, value in RECORDS.items()},
+              'variant': variant_name, 'fixture_suite': suite, 'code_publication_policy': policy,
+              'record_hashes': {key: sha256(REPO / value) for key, value in RECORDS.items()},
               'inputs_sha256': sha256(REPO / RECORDS['inputs']),
               'config_sha256': sha256(REPO / RECORDS['config']),
               'toolchain_lock_sha256': sha256(REPO / RECORDS['toolchain']),
@@ -611,7 +796,7 @@ def build(variant_name, inputs, tools, output, jobs):
               'tool_prepared_sha256': sha256(tools / 'prepared.json'),
               'patch_series_sha256': sha256(REPO / RECORDS['patch_series']),
               'producer_sha256': {name: sha256(Path(__file__).parent / name) for name in ('build.py','common.py','prepare.py','toolchain.py')},
-              'fixture_hashes': {name: sha256(REPO / 'tests/wine/fixtures' / name) for name in ('bootstrap_native.c', 'sentinel.c')},
+              'fixture_hashes': {name: sha256(REPO / 'tests/wine/fixtures' / name) for name in fixture_sources(series)},
               'patches': series['patches'], 'sdk': sdk, 'commands': [],
               'storage': {'free_bytes_before': free, 'required_free_bytes': minimum_space},
               'source_inputs_root': str(inputs), 'tools_root': str(tools), 'install_root': str(output / 'install'),
@@ -673,23 +858,26 @@ def build(variant_name, inputs, tools, output, jobs):
         argv = [logical(source / 'configure'), '--prefix=' + str(logical(output / 'install')),
                 '--with-mingw=' + str(logical(tools / 'llvm-mingw/bin/clang')), *variant['configure_args']]
         run_build_command(result['commands'], 'configure', argv, cwd, env, 300)
-        result['configuration'] = observed_configuration(objects / 'Makefile', variant)
+        result['configuration'] = observed_configuration(objects / 'Makefile', variant, policy,
+                                    native_architecture_policy=has_native_architecture_policy(series))
         result['makefile_sha256'] = sha256(objects / 'Makefile')
         result['config_log_sha256'] = sha256(objects / 'config.log')
         make = native_tool(lock, 'make')
         run_build_command(result['commands'], 'make', [make, '-j' + str(jobs)], cwd, env, 3600)
         run_build_command(result['commands'], 'install', [make, 'install'], cwd, env, 600)
-        result['configuration'] = observed_configuration(objects / 'Makefile', variant)
-        fixture_root = output / 'install/libexec/pear-stage2'
-        fixture_root.mkdir(parents=True)
-        for ident, filename, output_name in [('fixture-bootstrap', 'bootstrap_native.c', 'bootstrap-native'),
-                                              ('fixture-sentinel', 'sentinel.c', 'sentinel')]:
-            run_build_command(result['commands'], ident,
-                [native_tool(lock, 'clang'), '-arch', 'arm64', '-isysroot', sdk_path,
-                 '-std=c11', '-Wall', '-Wextra', '-Werror',
-                 REPO / 'tests/wine/fixtures' / filename, '-o', fixture_root / output_name], cwd, env, 60)
+        result['configuration'] = observed_configuration(objects / 'Makefile', variant, policy,
+                                    native_architecture_policy=has_native_architecture_policy(series))
+        (output / 'install/libexec/pear-stage2').mkdir(parents=True)
+        if suite == 'api-abi':
+            (output / 'install/libexec/pear-stage3').mkdir(parents=True)
+            need(sha256(source / 'dlls/ntdll/unix/pear_abi_fixture.c') == result['fixture_hashes']['abi_native.c'],
+                 'build_native_fixture_source_mismatch')
+        for ident, argv in fixture_commands(output, tools, lock, suite, policy).items():
+            run_build_command(result['commands'], ident, argv, cwd, env, 60)
         artifacts = inventory(output / 'install', binary=True)
-        required_outputs(artifacts, variant_name)
+        if policy == 'page-wx':
+            result['arena_capacity'] = arena_capacity_evidence(source, output / 'install', artifacts)
+        required_outputs(artifacts, variant_name, suite, policy)
         native = [x for x in artifacts['files'] if x['kind'] == 'macho']
         guests = [x for x in artifacts['files'] if x['kind'] == 'pe']
         need(native and guests and any(x['path'].endswith('/ntdll.so') for x in native)
