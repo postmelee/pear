@@ -165,3 +165,7 @@ Run meaningful component/rejection/lifecycle tests and affected Wine regressions
 Approve this scope, reuse/platform direction, executable-memory/loader design gate, official document locations, initial sources and six tentative stages. Authorize detailed implementation-plan preparation; Stage 1 execution requires that concrete plan's explicit approval, and later stages retain their report/continuation checkpoints.
 
 The instruction to proceed in the stated order authorizes #5 planning with #7 parallel preparation. Until this concrete task plan is approved, tracked changes are limited to the plan and daily board; no implementation plan, runtime/source changes or translated execution is performed.
+
+## Approval Record
+
+On October 2, 2026, the requester replied “proceed” to the joint task-plan approval request. This approves the task scope, reuse direction, proposed official document locations and detailed implementation-plan preparation. Stage 1 implementation remains subject to approval of `task_m1_5_impl.md`; later stages retain explicit report/continuation checkpoints. No runtime source changes, component build or native execution are authorized by this planning approval alone.
