@@ -1,0 +1,296 @@
+{
+  "artifact_count": 15,
+  "capabilities_sha256": "2580b59f19d1d3e58a1ec35ef1e6fc51569f995d9b9fc5eea7c823ba4d71853a",
+  "checks": [
+    {
+      "id": "input-and-tool-closure",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "id": "aarch64-cxx20-layout-static-link",
+      "pe_execution": false,
+      "pe_facts": {
+        "chpe_metadata_pointer": 0,
+        "entrypoint": 5040,
+        "outer_machine": 43620
+      },
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec-cxx20-layout-static-link",
+      "pe_execution": false,
+      "pe_facts": {
+        "arm64ec_metadata": {
+          "chpe_version": 1,
+          "code_ranges": [
+            {
+              "code_kind": "arm64ec",
+              "rva": 4096,
+              "size_bytes": 186620
+            },
+            {
+              "code_kind": "x64",
+              "rva": 192512,
+              "size_bytes": 4128
+            }
+          ],
+          "pe_abi": "arm64ec"
+        },
+        "chpe_metadata_pointer": 6442656880,
+        "entrypoint": 196608,
+        "outer_machine": 34404
+      },
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "id": "static-runtime-member-inventory",
+      "required": true,
+      "status": "passed"
+    }
+  ],
+  "command_count": 17,
+  "component_built": false,
+  "config_sha256": "946186e3fcf98b4937be487d89478885160a7c0ad8dc7f613222510e6193187d",
+  "distribution_qualified": false,
+  "evidence_scope": "source-inspection-and-compile-link-only",
+  "fex_custom_crt_link": "unperformed",
+  "fex_dispatch": false,
+  "fixture_sha256": {
+    "declarations.cpp": "0f5aff0f017d1750824ca7ccb2c7ec68a082c0d767d9fef7f58944f5615dd7cc",
+    "language.cpp": "14dae00155ae062a854b1822e579c9489b18413f631c650612b68b42f3954bcd",
+    "layout.cpp": "0d5c902ae21459d2b9fa6a9d9f5644b9b8160be1746bfaa95e1e63ee185c87c9",
+    "static-runtime.cpp": "d9e39cd40cb808fda9a210c278a5a2a67c28bd23b117a5e1eb78d1e96578a8f6"
+  },
+  "game_qualified": false,
+  "input_sha256": "6fd39d2015b09c9a19e052c8915d9d152fcf14572cccde8a9cea50c704c7f1d8",
+  "interface_summary": {
+    "darwin_provider": "unperformed",
+    "effective_cpu_model": "unperformed",
+    "module_export_counts": {
+      "arm64ec": 20,
+      "wow64": 23
+    },
+    "native_search_suffix": ".so",
+    "observation": "source-inspection-and-compiled-layout-only",
+    "services": [
+      {
+        "alignment": 1,
+        "live_status": "unperformed",
+        "name": "SetHardwareTSOControl",
+        "ordinal": 0,
+        "size_bytes": 1
+      },
+      {
+        "alignment": 8,
+        "live_status": "unperformed",
+        "name": "SetKernelUnalignedAtomicControl",
+        "ordinal": 1,
+        "size_bytes": 8
+      },
+      {
+        "alignment": 8,
+        "live_status": "unperformed",
+        "name": "Madvise",
+        "ordinal": 2,
+        "size_bytes": 24
+      },
+      {
+        "alignment": 8,
+        "live_status": "unperformed",
+        "name": "SetVMAName",
+        "ordinal": 3,
+        "size_bytes": 24
+      },
+      {
+        "alignment": 8,
+        "live_status": "unperformed",
+        "name": "GetSHMStatsVMA",
+        "ordinal": 4,
+        "size_bytes": 16
+      },
+      {
+        "alignment": null,
+        "live_status": "unperformed",
+        "name": "DeleteSHMStatsFile",
+        "ordinal": 5,
+        "size_bytes": null
+      },
+      {
+        "alignment": 8,
+        "live_status": "unperformed",
+        "name": "MapFile",
+        "ordinal": 6,
+        "size_bytes": 24
+      },
+      {
+        "alignment": 4,
+        "live_status": "unperformed",
+        "name": "GetPID",
+        "ordinal": 7,
+        "size_bytes": 4
+      }
+    ],
+    "status_return": "signed_32bit_NTSTATUS",
+    "teb_cpu_area_offset": 6024
+  },
+  "link_contributions": {
+    "aarch64": {
+      "compiler-builtins": {
+        "required_symbol": "__udivti3",
+        "selected_members": 1
+      },
+      "libc++.a": {
+        "required_symbol": "_ZNSt3__16chrono12steady_clock3nowEv",
+        "selected_members": 1
+      },
+      "libc++abi.a": {
+        "required_symbol": "__cxa_guard_acquire",
+        "selected_members": 1
+      },
+      "libunwind.a": {
+        "required_symbol": "_Unwind_GetIP",
+        "selected_members": 1
+      }
+    },
+    "arm64ec": {
+      "compiler-builtins": {
+        "required_symbol": "__udivti3",
+        "selected_members": 1
+      },
+      "libc++.a": {
+        "required_symbol": "_ZNSt3__16chrono12steady_clock3nowEv",
+        "selected_members": 1
+      },
+      "libc++abi.a": {
+        "required_symbol": "__cxa_guard_acquire",
+        "selected_members": 1
+      },
+      "libunwind.a": {
+        "required_symbol": "_Unwind_GetIP",
+        "selected_members": 1
+      }
+    }
+  },
+  "link_probe_scope": "standalone_default_crt_static_prerequisites",
+  "pe_execution": false,
+  "record_kind": "fex_stage1_observations",
+  "runtime_options": {
+    "DiskCache": false,
+    "ProfileStats": false,
+    "TSOEnabled": true
+  },
+  "runtime_qualified": false,
+  "schema_version": 1,
+  "scope": "fex_component",
+  "source_components": [
+    {
+      "commit": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "file_count": 3601,
+      "id": "fex-upstream",
+      "total_bytes": 23099473,
+      "tree": "7509ab443d32692ac72ee51c0697ccf86d0a66af"
+    },
+    {
+      "commit": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+      "file_count": 11,
+      "id": "fex-cpp-optparse",
+      "total_bytes": 50400,
+      "tree": "83f3445fe4f223102506c20b2ec583f712b28910"
+    },
+    {
+      "commit": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+      "file_count": 145,
+      "id": "fex-fmt",
+      "total_bytes": 3140256,
+      "tree": "f7d6122a22a4b5a2241e9d14570817633b55ddc4"
+    },
+    {
+      "commit": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "file_count": 672,
+      "id": "fex-range-v3",
+      "total_bytes": 4015910,
+      "tree": "bddf4cfede92ace82abac9847af08962a82f36cf"
+    },
+    {
+      "commit": "09142d726429416bfa7b459151515fe3ab7622dd",
+      "file_count": 39,
+      "id": "fex-rpmalloc",
+      "total_bytes": 375309,
+      "tree": "8df22bc1162ac2da5d776bb20631f964598c8353"
+    },
+    {
+      "commit": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+      "file_count": 2393,
+      "id": "fex-unordered_dense",
+      "total_bytes": 4082537,
+      "tree": "40f25261cffbae5c901319dd76013224ff3658dd"
+    },
+    {
+      "commit": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+      "file_count": 87,
+      "id": "fex-xxhash",
+      "total_bytes": 5440024,
+      "tree": "9d4f447c856962a98e22f144bd9b0315ab4d18f8"
+    }
+  ],
+  "stage1_passed": true,
+  "static_runtime_libraries": {
+    "builtins": {
+      "coff_members": 580,
+      "ec_symbol_index": {
+        "indexed_members": 580,
+        "symbol_count": 442
+      },
+      "machines": {
+        "42561": 290,
+        "43620": 290
+      },
+      "sha256": "5c235a542d3c5a046297c77eaf0af4cf4a7f344ff44efec99cab5496958107e8",
+      "size_bytes": 760676
+    },
+    "libc++.a": {
+      "coff_members": 150,
+      "ec_symbol_index": {
+        "indexed_members": 150,
+        "symbol_count": 3653
+      },
+      "machines": {
+        "42561": 75,
+        "43620": 75
+      },
+      "sha256": "494382e27f298a7b4ee24b3981b2d6d0ffb26a3b0d1e2b3a9b6cc95852f35a8f",
+      "size_bytes": 8301462
+    },
+    "libc++abi.a": {
+      "coff_members": 34,
+      "ec_symbol_index": {
+        "indexed_members": 34,
+        "symbol_count": 538
+      },
+      "machines": {
+        "42561": 17,
+        "43620": 17
+      },
+      "sha256": "3b33c4fd796b965a10a62aaae54b01e32f0000ccf1e4434a54d80681399a6095",
+      "size_bytes": 1666876
+    },
+    "libunwind.a": {
+      "coff_members": 18,
+      "ec_symbol_index": {
+        "indexed_members": 18,
+        "symbol_count": 125
+      },
+      "machines": {
+        "42561": 9,
+        "43620": 9
+      },
+      "sha256": "dc7307a555666166b9be998e0c96d5ea714ffba49b31fa012c106dee2237dcd7",
+      "size_bytes": 231496
+    }
+  },
+  "toolchain_sha256": "d69b53d06a0cb99e49c3014f6e2c1abbbde6f65e78182ca721b9b42e4f153ed6",
+  "wine_runtime_execution": false
+}

@@ -1,0 +1,89 @@
+{
+  "cmake_options": {
+    "BUILD_FEXCONFIG": false,
+    "BUILD_FEX_LINUX_TESTS": false,
+    "BUILD_STEAM_SUPPORT": false,
+    "BUILD_TESTING": false,
+    "BUILD_THUNKS": false,
+    "ENABLE_CCACHE": false,
+    "ENABLE_FEXCORE_PROFILER": false,
+    "ENABLE_FEX_ALLOCATOR": true,
+    "ENABLE_JEMALLOC_GLIBC_ALLOC": false,
+    "ENABLE_LTO": false,
+    "ENABLE_OFFLINE_TELEMETRY": false,
+    "ENABLE_VIXL_DISASSEMBLER": false,
+    "ENABLE_VIXL_SIMULATOR": false,
+    "ENABLE_ZYDIS": false,
+    "FMT_TEST": false,
+    "RANGE_V3_DOCS": false,
+    "RANGE_V3_EXAMPLES": false,
+    "RANGE_V3_TESTS": false,
+    "TUNE_ARCH": "generic",
+    "TUNE_CPU": "none",
+    "XXHASH_BUILD_XXHSUM": false
+  },
+  "compile_flags": [
+    "-std=c++20",
+    "-fno-exceptions",
+    "-fno-strict-aliasing"
+  ],
+  "deployment_target": "26.5",
+  "host_architecture": "arm64",
+  "inputs_ref": {
+    "path": "runtime/fex/inputs.json",
+    "sha256": "6fd39d2015b09c9a19e052c8915d9d152fcf14572cccde8a9cea50c704c7f1d8"
+  },
+  "link_flags": [
+    "-static",
+    "-nostdlib",
+    "-nostartfiles",
+    "-nodefaultlibs"
+  ],
+  "native_root_cmake_status": "unsupported_pending_darwin_port",
+  "qualification": {
+    "distribution": "unperformed",
+    "game": "unperformed",
+    "runtime": "unperformed"
+  },
+  "record_kind": "fex_build_config",
+  "runtime_options": {
+    "DiskCache": false,
+    "ProfileStats": false,
+    "TSOEnabled": true
+  },
+  "schema_version": 1,
+  "scope": "fex_component",
+  "source_configuration_status": "source_inspected_not_configured",
+  "static_runtime_requirements": [
+    "c++",
+    "c++abi",
+    "unwind",
+    "compiler-builtins"
+  ],
+  "system_dependency_discovery": "disabled_for_selected_bundled_sources",
+  "targets": [
+    {
+      "guest_architecture": "x86_64",
+      "id": "arm64ec",
+      "module": "libarm64ecfex.dll",
+      "pe_target": "arm64ec-w64-mingw32",
+      "required": true
+    },
+    {
+      "guest_architecture": "i386",
+      "id": "wow64",
+      "live_scope": "conditional_later_stage",
+      "module": "libwow64fex.dll",
+      "pe_target": "aarch64-w64-mingw32",
+      "required_build": true
+    },
+    {
+      "format": "Mach-O",
+      "host_target": "arm64-apple-darwin",
+      "id": "unixlib",
+      "port_status": "unperformed",
+      "search_suffix": ".so"
+    }
+  ],
+  "unsupported_override_policy": "reject"
+}

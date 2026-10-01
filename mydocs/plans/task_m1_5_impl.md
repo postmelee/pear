@@ -4,7 +4,7 @@ Task plan: [`task_m1_5.md`](task_m1_5.md)
 GitHub Issue: [#5](https://github.com/postmelee/pear/issues/5)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-Prepared October 2, 2026. The requester approved the task plan and its document locations. This implementation plan and Stage 1 execution await explicit approval. All commands, artifacts and expected positive outcomes below describe planned work, not performed builds or runtime results.
+Prepared October 2, 2026. The requester approved the task plan and its document locations. The requester approved this implementation plan and Stage 1 execution on October 2, 2026. Stage 1 is implemented; its actual results are in the Stage 1 report. Later stages and their expected outcomes remain planned work.
 
 ## Applicable Context and Reuse
 
@@ -68,9 +68,9 @@ New:
 
 - `runtime/fex/AGENTS.md`, component rules with real records/tool implementation, not an empty placeholder directory.
 - `runtime/fex/inputs.json`, `toolchain.json`, `build-config.json`: versioned selected-source/gitlink/terms, build-only tool roles, disabled features, target/static-runtime and Wine layer records.
-- `tools/fex/{common,prepare,check,verify,tools}.py`: bounded FEX-specific input/materialization, local build-tool setup, capability/interface inventory and independently checked receipts. No full FEX build/native UnixLib port/translator entrypoint in this stage.
-- `tests/fex/test_stage1_inputs.py`, `test_stage1_capabilities.py`, `test_stage1_evidence.py` and original compile/link-only fixtures under `tests/fex/capabilities/`.
-- `mydocs/working/task_m1_5_stage1.md` and sanitized observations.
+- `tools/fex/{common,prepare,check,verify,tools,byte_readers}.py`: bounded FEX-specific input/materialization, local build-tool setup, capability/interface inventory and independently checked receipts. No full FEX build/native UnixLib port/translator entrypoint in this stage.
+- `tests/fex/test_stage1_inputs.py`, `test_stage1_capabilities.py`, `test_stage1_capability_replay.py`, `test_stage1_ec_archive.py`, `test_stage1_tools.py` and original compile/link-only fixtures under `tests/fex/capabilities/`.
+- `mydocs/working/task_m1_5_stage1.md` and `task_m1_5_stage1_observations.json`.
 
 Modified: the active-date board through root and this plan only for implemented command/pin clarifications within the approved scope. No historical #1/#4 record, existing patch series or official documentation changes.
 
@@ -106,7 +106,7 @@ Initial effective FEX configuration keeps `DiskCache=false`, `ProfileStats=false
 
 ### Build-only Tool Candidates
 
-These are metadata-based proposals as of October 2, not downloaded/verified installations. Stage 1 must cross-check authoritative checksum text and actual bytes before use. CMake's prebuilt universal developer tool is not a source-built runtime dependency or permission claim; select and verify its ARM64 slice.
+The table preserves the October 2 planning-time proposals. Their actual checksum/source/native qualification is now recorded in the [Stage 1 report](../working/task_m1_5_stage1.md). CMake's prebuilt universal developer tool remains distinct from a source-built runtime dependency or permission claim; its ARM64 slice was selected and verified.
 
 | Tool | Official Origin / Pin | Proposed Identity and Admission |
 |---|---|---|
@@ -115,15 +115,15 @@ These are metadata-based proposals as of October 2, not downloaded/verified inst
 
 ### Verification
 
-Inputs: approved initial records, exact selected read-only caches/#4 receipts and original capability fixtures. Tools: actual installed Python/Git/Xcode utilities, verified native task-local CMake/Ninja as needed, retained LLVM-MinGW 20260908 candidate. Planning found CMake/Ninja absent from inspected PATH; FEX static C++/CRT linking is unperformed. SDK/host/grants and tool slices are rechecked; Stage 1 does not require restricted permission or a graphical/Steam session.
+Inputs: approved initial records, exact selected read-only caches/#4 receipts and original capability fixtures. Tools: actual installed Python/Git/Xcode utilities, verified native task-local CMake/Ninja as needed, retained LLVM-MinGW 20260908 candidate. Planning found CMake/Ninja absent from inspected PATH. Stage 1 now verifies task-local tools and original static-runtime prerequisite fixtures; the full FEX custom-CRT/module link remains unperformed. SDK/host/grants and tool slices are rechecked; Stage 1 does not require restricted permission or a graphical/Steam session.
 
-Planned CLI (private placeholders are validated local handles; actual argument lists are retained privately):
+Implemented Stage 1 CLI (private placeholders are validated local handles; exact actual arguments are retained privately). The final accepted outputs below follow preserved earlier attempts:
 
 ```sh
-python3 tools/fex/tools.py prepare --toolchain runtime/fex/toolchain.json --output .build/task5/stage1-tools --require-empty
-python3 tools/fex/prepare.py --inputs runtime/fex/inputs.json --source-cache <read-only-selected-cache> --output .build/task5/stage1-inputs --require-empty
-python3 tools/fex/check.py capabilities --inputs runtime/fex/inputs.json --config runtime/fex/build-config.json --prepared .build/task5/stage1-inputs --tools .build/task5/stage1-tools --cross-tools <verified-locked-tools> --wine-roles <verified-local-Wine-role-record> --output .build/task5/stage1-capabilities --require-empty
-python3 tools/fex/verify.py stage1 --root .build/task5/stage1-capabilities --require-complete
+python3 tools/fex/tools.py prepare --toolchain runtime/fex/toolchain.json --output .build/task5/stage1-tools5 --artifact-cache .build/task5/stage1-tools/downloads --source-cache .build/task5/stage1-tools2/ninja.git --require-empty
+python3 tools/fex/prepare.py --inputs runtime/fex/inputs.json --source-cache <read-only-selected-cache> --output .build/task5/stage1-inputs3 --require-empty
+python3 tools/fex/check.py capabilities --inputs runtime/fex/inputs.json --config runtime/fex/build-config.json --prepared .build/task5/stage1-inputs3 --tools .build/task5/stage1-tools5 --cross-tools <verified-locked-tools> --wine-roles <verified-local-Wine-role-record> --output .build/task5/stage1-capabilities6 --require-empty
+python3 tools/fex/verify.py stage1 --root .build/task5/stage1-capabilities6 --require-complete
 python3 -B -m unittest discover -s tests/fex -p 'test_stage1_*.py'
 python3 tools/check_governance.py
 git diff --check
@@ -132,6 +132,11 @@ git diff --check
 Expected: complete selected identity/dependency/notice/mount closure, actual required compile/link capabilities and source-derived table/target/layout inventory pass independent replay. Tests reject changed Git/payload/tool/receipt bytes, unsafe archive/mount/JSON/path, missing imports/static libraries, wrong target classification, unsupported configuration and incomplete evidence. Capability fixture output is build-only; FEX module construction, Darwin services, JIT, hybrid dispatch and WoW64 execution remain unperformed.
 
 Retain bounded raw compiler/tool operations, rejected-control errors, exact fixtures/output headers/hashes, target matrix and source-derived contract. Export only sanitized role/digest/version/settings/outcome fields. A source inventory can be valid with named missing tools, but Stage 1's required compiler/static-link capability gate must pass before it completes; absence must not become a passing fixture or later build authorization.
+
+
+Implemented probe clarification: the original DLL fixture uses the complete default MinGW DLL CRT plus static libc++/libc++abi/libunwind/builtins. The full FEX `-nostdlib -nostartfiles -nodefaultlibs`/custom-CRT link in `build-config.json` is source-inspected and remains unperformed until Stage 2. Link libc++abi before libc++ so the latter's bundled ABI copy cannot conceal separate archive contribution. COFF `/map` (forwarded through MinGW `-Xlink`) binds actual selected library members to forced live symbols; ordinary `-Map` lacks that provenance. The default MinGW `chpe.S` emits Version 1, while the earlier #4 executable fixture uses another link form. The component reader checks this actual DLL form, including bounded executable section-alignment extents; it does not alter #4, authorize a host executable mapping or define the future FEX module predicate. Native ARM64 and both PE targets compile complete sizes/alignments and enum order for all eight UnixLib services.
+
+Tool closure binds official CMake bytes and its full extraction, the original Ninja commit/tree/archive/blob/mode/notice graph, selected SDK path/version and actual ARM64 tool execution. Safe framework aliases are resolved before parent traversal. The copied low-level Wine byte readers are component-local; no shared Wine helper or policy changes were made.
 
 ### Commit
 
@@ -362,3 +367,7 @@ Each stage commit includes implementation, meaningful fixtures/verification and 
 ## Approval Request
 
 Approve this six-stage implementation split, component/tool/interface/evidence contracts, exact document-location matches, memory-design review checkpoint and commit messages. Authorize Stage 1 source/tool/static-link/interface closure only. It does not include full FEX module builds, native UnixLib/JIT execution, x64 dispatch, Steam or Megabonk. Later stages need explicit continuation after their completed reports/commits and actual prerequisites.
+
+## Approval Record
+
+On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after the joint detailed-plan review request. This approves the implementation plan and Stage 1 only. Stage 2 and later transitions retain their separate report, commit and explicit-continuation checkpoints.
