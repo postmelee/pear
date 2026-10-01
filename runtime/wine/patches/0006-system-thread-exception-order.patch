@@ -1,0 +1,11 @@
+--- a/dlls/ntdll/unix/signal_arm64.c
++++ b/dlls/ntdll/unix/signal_arm64.c
+@@ -791,7 +791,7 @@
+ static void setup_raise_exception( struct thread_data *data, ucontext_t *sigcontext,
+                                    EXCEPTION_RECORD *rec, CONTEXT *context )
+ {
+-    CHPE_V2_CPU_AREA_INFO *chpe = data->teb->ChpeV2CpuAreaInfo;
++    CHPE_V2_CPU_AREA_INFO *chpe = data->teb ? data->teb->ChpeV2CpuAreaInfo : NULL;
+     struct exc_stack_layout *stack;
+     void *stack_ptr = (void *)(SP_sig(sigcontext) & ~15);
+ 

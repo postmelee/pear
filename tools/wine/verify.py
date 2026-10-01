@@ -338,17 +338,24 @@ def main(argv=None):
     runs.add_argument('--root', required=True)
     runs.add_argument('--suite', choices=('bootstrap', 'api-abi', 'threads-memory-exceptions', 'mac-driver'), required=True)
     runs.add_argument('--require-complete', action='store_true', required=True)
+    reproduction = sub.add_parser('reproduction')
+    reproduction.add_argument('--root', required=True)
+    reproduction.add_argument('--require-complete', action='store_true', required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == 'inputs':
             result = validate_stage1(args.inputs, args.config, args.toolchain)
         elif args.command == 'build':
             result = validate_builds(args.root, args.companion)
+        elif args.command == 'reproduction':
+            from reproduction_evidence import validate
+            result = validate(args.root)
         else:
             from run_fixtures import validate_runs
             result = validate_runs(args.root, args.suite)
     except (Error, OSError, ValueError, KeyError, TypeError) as exc:
         print(encoded({'schema_version': 1, 'record_kind': {'inputs': 'wine_input_assessment', 'build': 'wine_build_assessment',
+                                       'reproduction': 'wine_stage6_observations',
                                        'runs': ('wine_api_abi_assessment' if getattr(args, 'suite', None) == 'api-abi'
                                                 else 'wine_thread_memory_exception_assessment' if getattr(args, 'suite', None) == 'threads-memory-exceptions'
                                                 else 'wine_mac_driver_assessment' if getattr(args, 'suite', None) == 'mac-driver'

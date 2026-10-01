@@ -11,6 +11,7 @@
 - [Manager language decision](decisions/manager-language.md): Rust/Swift fixture evidence, the Rust supervisor choice, reproduction scope, and remaining production gates.
 - [Source qualification](source-qualification.md): reproduced public-source pins, the complete blocked audit, contributor verification commands and remaining Wine/FEX/DXMT port/build gates.
 - [Host capability diagnostics](host-capabilities.md): reproduce native host probes and understand their declared development-configuration evidence and limits.
+- [Wine host development](development/wine-host.md): exact component build, development authorization and finite native fixture reproduction; FEX, game and distribution gates remain open.
 - [Apple technical guidance](development/apple-tooling.md): select relevant pinned Metal expertise, check tool availability and preserve evidence boundaries.
 
 ## Research and observations

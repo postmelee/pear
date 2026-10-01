@@ -4,6 +4,12 @@ Pear's September 28, 2026 source audit is **complete with a `blocked` decision**
 
 The [inventory](../runtime/sources/manifest.json) is the factual source of truth. [Stage 4 evidence](../mydocs/working/task_m1_1_stage4_evidence.json) records repeat acquisition; [Stage 2 evidence](../mydocs/working/task_m1_1_stage2_evidence.json) records the inspected source ranges, terms and patch observations; [Stage 3 evidence](../mydocs/working/task_m1_1_stage3_evidence.json) records installed-tool metadata and validator scope. Runtime, game and distribution qualification remain unassessed. Issue closure does not change this decision.
 
+## Scoped Wine component update — October 1, 2026
+
+[Issue #4](https://github.com/postmelee/pear/issues/4) now has [independently verified fresh Wine-component reconstruction](../mydocs/working/task_m1_4_stage6_observations.json): two ARM64 native builds, a compile-only ARM64EC companion, strict unsigned comparison, actual development signing, and finite native bootstrap/API/ABI/thread/Win32-Cocoa fixtures. The [development guide](development/wine-host.md) documents the exact tested configuration and permissions; the [Stage 6 report](../mydocs/working/task_m1_4_stage6.md) records failures, limits and integration handoff.
+
+This dated component result preserves the September 28 audit and its blocked aggregate decision. Darwin FEX host services, translated execution, Wine/DXMT pairing, final dependency/notice closure, Steam/game qualification and general-user distribution still require their own evidence. Same-host fresh directories and a reverified compiler cache do not establish clean-machine or independent-compiler reproduction.
+
 ## Selected input set
 
 All pins below identify source. They do not identify a built or supported runtime.

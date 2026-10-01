@@ -22,6 +22,7 @@ from prepare import verify_prepared
 
 REPO = Path(__file__).resolve().parents[2]
 MACH_ARM64 = 0x100000C
+MAX_ARCHIVE_MTIME = (2**63 - 1) // 1_000_000_000
 TARGETS = {"aarch64": ("arm64", 0xAA64), "arm64ec": ("arm64ec", 0xA641),
            "x86_64": ("x64", 0x8664), "i686": ("x86", 0x14C)}
 FRAMEWORKS = ["AppKit", "Carbon", "Foundation", "IOKit", "Metal", "OpenGL",
@@ -159,6 +160,9 @@ def archive_members(archive, expected_root, max_bytes):
         names.add(rel)
         need(member.isfile() or member.isdir() or member.issym() or member.islnk(), "special_archive_member")
         if member.isfile():
+            # The locked releases use whole seconds; bound signed-64-bit nanoseconds.
+            need(type(member.mtime) is int and 0 <= member.mtime <= MAX_ARCHIVE_MTIME,
+                 "invalid_archive_mtime")
             total += member.size
             need(member.size >= 0 and total <= max_bytes, "archive_expansion_limit")
         if member.issym():
@@ -206,6 +210,10 @@ def extract_verified(spec, destination):
                 with archive.extractfile(member) as inp, path.open("xb") as out:
                     shutil.copyfileobj(inp, out, 1024 * 1024)
                 path.chmod(0o755 if member.mode & 0o111 else 0o644)
+                # Preserve release ordering instead of triggering maintainer regeneration.
+                stamp = member.mtime * 1_000_000_000
+                os.utime(path, ns=(stamp, stamp), follow_symlinks=False)
+                need(path.stat().st_mtime_ns == stamp, "archive_mtime_not_preserved")
                 files.append({"path": rel, "sha256": sha256(path), "size_bytes": member.size})
         for member, rel in members:
             path = destination.joinpath(*relative(rel))

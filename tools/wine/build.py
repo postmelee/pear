@@ -69,6 +69,15 @@ def fixture_suite(value):
     return suite
 
 
+def source_argument_policy(value):
+    """Keep absent historical records absolute; new records select one exact policy."""
+    if 'source_argument_policy' not in value:
+        return 'legacy_absolute_v1'
+    policy = value['source_argument_policy']
+    need(type(policy) is str and policy == 'stable_relative_v1', 'build_source_argument_policy')
+    return policy
+
+
 def code_publication_policy(value):
     """Read a recorded implementation policy, never a caller-supplied launch override."""
     policy = value.get('code_publication_policy', 'none')
@@ -417,9 +426,15 @@ def has_native_architecture_policy(value):
                for row in value.get('patches', []))
 
 
-def observed_configuration(makefile, variant, publication_policy="none", *, native_architecture_policy=False):
+def observed_configuration(makefile, variant, publication_policy="none", *, native_architecture_policy=False,
+                           source_policy="legacy_absolute_v1"):
     text = Path(makefile).read_text()
     observed = {}
+    need(source_policy in ('legacy_absolute_v1', 'stable_relative_v1'), 'build_source_argument_policy')
+    if source_policy == 'stable_relative_v1':
+        values = re.findall(r'^srcdir = (.*)$', text, re.MULTILINE)
+        need(values == ['../source'], 'build_relative_srcdir_mismatch')
+        observed['srcdir'] = values[0]
     for key in ('HOST_ARCH', 'PE_ARCHS', 'aarch64_TARGET', 'arm64ec_TARGET', 'x86_64_TARGET',
                 'APPKIT_LIBS', 'CORETEXT_LIBS', 'FREETYPE_LIBS', 'FONTCONFIG_LIBS', 'COREAUDIO_LIBS'):
         values = re.findall('^' + key + r' = (.*)$', text, re.MULTILINE)
@@ -497,6 +512,7 @@ def verify_build_evidence(root, result, current=True):
          and result.get('wine_runtime_execution') is False, 'build_scope')
     need(result.get('variant') in ('arm64', 'arm64ec-build'), 'build_variant')
     policy = code_publication_policy(result)
+    source_policy = source_argument_policy(result)
     if current:
         for key, name in RECORDS.items():
             need(sha256(REPO / name) == result['record_hashes'][key], 'build_input_changed')
@@ -532,7 +548,8 @@ def verify_build_evidence(root, result, current=True):
     variant = next(row for row in config['variants'] if row['id'] == result['variant'])
     verify_build_commands(root, result, variant)
     need(observed_configuration(root / 'objects/Makefile', variant, policy,
-                                native_architecture_policy=has_native_architecture_policy(result))
+                                native_architecture_policy=has_native_architecture_policy(result),
+                                source_policy=source_policy)
          == result['configuration'],
          'build_configuration_evidence_changed')
     need(sha256(root / 'objects/Makefile') == result['makefile_sha256']
@@ -557,7 +574,9 @@ def verify_build_commands(root, result, variant):
     for index, patch in enumerate(result['patches'], 1):
         expected['patch-' + str(index)] = ['/usr/bin/patch', '-p1', '--batch', '--forward', '--fuzz=0',
             '-i', str(REPO / 'runtime/wine/patches' / patch['path'])]
-    expected['configure'] = ['/bin/sh', logical(root / 'source/configure'), '--prefix=' + logical(root / 'install'),
+    configure_source = ('../source/configure' if source_argument_policy(result) == 'stable_relative_v1'
+                        else logical(root / 'source/configure'))
+    expected['configure'] = ['/bin/sh', configure_source, '--prefix=' + logical(root / 'install'),
                             '--with-mingw=' + logical(tools / 'llvm-mingw/bin/clang'), *variant['configure_args']]
     commands = {row['id']: row for row in result['commands']}
     fixtures = fixture_commands(root, tools, lock, fixture_suite(result), code_publication_policy(result))
@@ -653,7 +672,8 @@ def verify_build(root, current=True):
     required_outputs(artifacts, result['variant'], fixture_suite(result), code_publication_policy(result))
     need(inventory(root / 'install', binary=True) == artifacts, 'build_artifact_changed')
     if code_publication_policy(result) == 'page-wx':
-        need(result.get('arena_capacity') == arena_capacity_evidence(root / 'source', root / 'install', artifacts),
+        need(result.get('arena_capacity') == arena_capacity_evidence(root / 'source', root / 'install', artifacts,
+                                                               variant=result['variant']),
              'build_arena_capacity_changed')
     need(result['native_artifact_count'] == sum(row['kind'] == 'macho' for row in artifacts['files'])
          and result['pe_artifact_count'] == sum(row['kind'] == 'pe' for row in artifacts['files']),
@@ -676,7 +696,8 @@ def finalize_only(output):
     artifacts = inventory(root / 'install', binary=True)
     required_outputs(artifacts, original['variant'], fixture_suite(original), code_publication_policy(original))
     if code_publication_policy(original) == 'page-wx':
-        need(original.get('arena_capacity') == arena_capacity_evidence(root / 'source', root / 'install', artifacts),
+        need(original.get('arena_capacity') == arena_capacity_evidence(root / 'source', root / 'install', artifacts,
+                                                                 variant=original['variant']),
              'build_arena_capacity_changed')
     finalizer = {name: read_relative(Path(__file__).parent, name) for name in PRODUCERS}
     hashes = {name: hashlib.sha256(data).hexdigest() for name, data in finalizer.items()}
@@ -756,8 +777,14 @@ def required_outputs(artifacts, variant, suite='bootstrap', publication_policy='
     return files
 
 
-def arena_capacity_evidence(source, install, artifacts):
-    """Check the built ARM64 image inventory against the compiled finite owner limits."""
+def arena_capacity_evidence(source, install, artifacts, *, variant="arm64"):
+    """Measure ARM64 outer-header images; enforce owner limits only for native builds.
+
+    ARM64X companion images contain both PE views and are larger than their
+    native-only counterparts. Their measured requirements do not qualify that
+    compile-only variant for the native publication arena or runtime execution.
+    """
+    need(variant in ("arm64", "arm64ec-build"), "build_variant")
     header = Path(source) / 'dlls/ntdll/unix/pear_pe_arena.h'
     text = header.read_text()
     limits = {}
@@ -800,13 +827,22 @@ def arena_capacity_evidence(source, install, artifacts):
     copy_bytes = copy_count * copy_slot_bytes
     largest, total = max(sizes), sum(sizes)
     required_bytes, required_slots = total + largest + copy_bytes, len(sizes) + 1 + copy_count
-    need(largest <= limits['max_image_bytes'] and required_slots <= limits['max_slots']
-         and required_bytes <= limits['interior_bytes'], 'arena_capacity_inventory_exceeds_limits')
+    fits_native_limits = (largest <= limits['max_image_bytes']
+                          and required_slots <= limits['max_slots']
+                          and required_bytes <= limits['interior_bytes'])
+    if variant == 'arm64':
+        need(fits_native_limits, 'arena_capacity_inventory_exceeds_limits')
     result = {'policy': 'page-wx', 'header_sha256': sha256(header), 'limits': limits,
               'arm64_image_count': len(sizes), 'total_slot_bytes': total,
               'largest_slot_bytes': largest, 'preparation_margin_bytes': largest,
               'required_interior_bytes': required_bytes, 'required_slots': required_slots,
               'wine_execution': False}
+    if variant == 'arm64ec-build':
+        result['assessment'] = {
+            'scope': 'compile_only_arm64ec_companion',
+            'image_measurement': 'arm64_outer_headers_including_arm64x',
+            'fits_native_limits': fits_native_limits,
+            'native_runtime_qualification': 'unassessed'}
     dynamic_names = ('BYTES', 'SLOTS', 'SLOT_BYTES')
     dynamic = {}
     for name in dynamic_names:
@@ -854,6 +890,7 @@ def build(variant_name, inputs, tools, output, jobs):
     output = empty_directory(output).resolve()
     result = {'schema_version': 1, 'record_kind': 'wine_build', 'scope': 'wine_component',
               'variant': variant_name, 'fixture_suite': suite, 'code_publication_policy': policy,
+              'source_argument_policy': 'stable_relative_v1',
               'record_hashes': {key: sha256(REPO / value) for key, value in RECORDS.items()},
               'inputs_sha256': sha256(REPO / RECORDS['inputs']),
               'config_sha256': sha256(REPO / RECORDS['config']),
@@ -921,18 +958,23 @@ def build(variant_name, inputs, tools, output, jobs):
         objects.mkdir()
         cwd = logical(objects)
         env['PWD'] = str(cwd)
-        argv = [logical(source / 'configure'), '--prefix=' + str(logical(output / 'install')),
+        # A stable relative srcdir keeps Clang's anonymous namespace path hash
+        # independent of the owned output root. Explicit sh avoids resolving the
+        # relative script from the coordinator's working directory.
+        argv = ['/bin/sh', '../source/configure', '--prefix=' + str(logical(output / 'install')),
                 '--with-mingw=' + str(logical(tools / 'llvm-mingw/bin/clang')), *variant['configure_args']]
         run_build_command(result['commands'], 'configure', argv, cwd, env, 300)
         result['configuration'] = observed_configuration(objects / 'Makefile', variant, policy,
-                                    native_architecture_policy=has_native_architecture_policy(series))
+                                    native_architecture_policy=has_native_architecture_policy(series),
+                                    source_policy=source_argument_policy(result))
         result['makefile_sha256'] = sha256(objects / 'Makefile')
         result['config_log_sha256'] = sha256(objects / 'config.log')
         make = native_tool(lock, 'make')
         run_build_command(result['commands'], 'make', [make, '-j' + str(jobs)], cwd, env, 3600)
         run_build_command(result['commands'], 'install', [make, 'install'], cwd, env, 600)
         result['configuration'] = observed_configuration(objects / 'Makefile', variant, policy,
-                                    native_architecture_policy=has_native_architecture_policy(series))
+                                    native_architecture_policy=has_native_architecture_policy(series),
+                                    source_policy=source_argument_policy(result))
         (output / 'install/libexec/pear-stage2').mkdir(parents=True)
         if suite in PE_SUITES:
             (output / 'install/libexec/pear-stage3').mkdir(parents=True)
@@ -948,7 +990,8 @@ def build(variant_name, inputs, tools, output, jobs):
             run_build_command(result['commands'], ident, argv, cwd, env, 60)
         artifacts = inventory(output / 'install', binary=True)
         if policy == 'page-wx':
-            result['arena_capacity'] = arena_capacity_evidence(source, output / 'install', artifacts)
+            result['arena_capacity'] = arena_capacity_evidence(source, output / 'install', artifacts,
+                                                               variant=variant_name)
         required_outputs(artifacts, variant_name, suite, policy)
         native = [x for x in artifacts['files'] if x['kind'] == 'macho']
         guests = [x for x in artifacts['files'] if x['kind'] == 'pe']

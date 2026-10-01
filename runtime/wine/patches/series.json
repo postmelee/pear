@@ -615,6 +615,47 @@
         "stage5.finite-pe-inventory-capacity",
         "stage5.dynamic-owner-unchanged"
       ]
+    },
+    {
+      "path": "0006-system-thread-exception-order.patch",
+      "sha256": "fc959d58be8994ba104e2bc4dfbaa0ee72d9dd1333d409a52e59b6574c18ae13",
+      "rationale": "Allow registered native system-thread exceptions without a Windows TEB to reach the existing Wine fatal policy before ARM64 accesses CHPE state. Preserve native and simulated-guest exception routing.",
+      "provenance": "Pear correction of the pinned Wine ARM64 exception setup, reusing the shared send_debug_event system-thread policy already reached first on x86-64. Source-bound behavioral tests and native object compilation are retained; actual Wine failure-route and cumulative verification remain required. This does not identify or repair the initiating AppKit fault.",
+      "license": "LGPL-2.1-or-later (existing Wine source)",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/signal_arm64.c",
+          "before_sha256": "ce0991f5e2be2d11a159e3552904714d7c32fd946365aa5c4034512e66bbc55c",
+          "after_sha256": "c3ce004e3bae9e86f49e2613fb14bdf54cf055f7293c3a9d0149107bd6dc788a"
+        }
+      ],
+      "regression_ids": [
+        "stage6.registered-system-thread-null-teb-policy",
+        "stage6.native-debugger-exception-routing-unchanged",
+        "stage6.chpe-simulation-exception-routing-unchanged"
+      ]
+    },
+    {
+      "path": "0006a-cocoa-startup-request-lifetime.patch",
+      "sha256": "2733178e8b82b22a862e50c5ef2e840ced84525a1bb1828f5b066a5e84011b51",
+      "rationale": "Keep caller and callback startup data alive independently across completion and timeout. Cancel only an unclaimed request, invalidate the source, and release request ownership before the existing application loop. Preserve the five-second wait and existing publication and local run decisions.",
+      "provenance": "Pear lifetime correction to the pinned Wine Cocoa initialization using its Objective-C/MRC, NSConditionLock and CF source mechanism. Exact-source Foundation/CF bookkeeping, safe semantic controls, production-object compilation and independent review passed before promotion. These do not establish AppKit readiness, historical window-failure causation or runtime qualification.",
+      "license": "LGPL-2.1-or-later (existing Wine source)",
+      "changes": [
+        {
+          "path": "dlls/winemac.drv/cocoa_main.m",
+          "before_sha256": "041d1dc87bde43a3fcf73124cb6b7e0b4bd4461937d5b1a7fa564fc1f4aeb1da",
+          "after_sha256": "59c0daf5029b053d63ad23b55932382aed282b1d7a5571ebb196c27231c7492a"
+        }
+      ],
+      "regression_ids": [
+        "stage6.cocoa-caller-and-callback-request-ownership",
+        "stage6.cocoa-atomic-pending-request-cancellation",
+        "stage6.cocoa-timeout-no-relock-or-result-upgrade",
+        "stage6.cocoa-request-release-before-application-loop",
+        "stage6.cocoa-partial-preparation-cleanup",
+        "stage6.cocoa-existing-startup-publication-unchanged"
+      ]
     }
   ],
   "port_complete": false,

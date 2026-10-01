@@ -1,6 +1,9 @@
 """Portable rejection tests for the real tool preparation and format readers."""
 import io
 import json
+import math
+import shutil
+import subprocess
 from pathlib import Path
 import struct
 import sys
@@ -74,6 +77,110 @@ class ArchiveTests(unittest.TestCase):
             with self.subTest(rows=rows), self.archive(rows) as archive:
                 with self.assertRaises(Error):
                     toolchain.archive_members(archive, "root", 100)
+
+
+class ExtractionTimestampTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.repo = Path(self.temporary.name)
+        self.task = self.repo / ".build/task4"
+        self.task.mkdir(parents=True)
+        self.destination = self.task / "extracted"
+
+    def write_archive(self, rows, archive_format=tarfile.PAX_FORMAT):
+        source = self.task / "input.tar.gz"
+        with tarfile.open(source, "w:gz", format=archive_format) as archive:
+            for name, timestamp, content, kind, target in rows:
+                member = tarfile.TarInfo("root/" + name)
+                member.mtime = timestamp
+                member.type = kind
+                member.linkname = target
+                if type(timestamp) is float and not math.isfinite(timestamp):
+                    # Encode hostile PAX metadata without the writer rejecting it first.
+                    member.mtime = 0
+                    member.pax_headers["mtime"] = str(timestamp)
+                if kind == tarfile.REGTYPE:
+                    member.size = len(content)
+                    archive.addfile(member, io.BytesIO(content))
+                else:
+                    archive.addfile(member)
+        return {"id": "timestamp-fixture", "download_path": ".build/task4/input.tar.gz",
+                "size_bytes": source.stat().st_size, "sha256": toolchain.sha256(source),
+                "format": "tar.gz", "archive_root": "root", "max_unpacked_bytes": 100000}
+
+    def extract(self, rows):
+        spec = self.write_archive(rows)
+        with patch.object(toolchain, "REPO", self.repo):
+            return toolchain.extract_verified(spec, self.destination)
+
+    def test_archive_order_does_not_trigger_generated_makefile_regeneration(self):
+        make = shutil.which("make")
+        if make is None:
+            self.skipTest("make unavailable; generated-file freshness was not verified")
+        self.extract([
+            ("Makefile.in", 1700000001,
+             b"Makefile.in: aclocal.m4\n\t@exit 99\n", tarfile.REGTYPE, ""),
+            ("aclocal.m4", 1700000000, b"older source", tarfile.REGTYPE, ""),
+        ])
+        # Query mode runs no recipes: zero means the generated file remains current.
+        result = subprocess.run([make, "-q", "-f", "Makefile.in", "Makefile.in"],
+                                cwd=self.destination, capture_output=True, timeout=10,
+                                env={"PATH": os.defpath, "LC_ALL": "C"})
+        self.assertEqual(result.returncode, 0, result.stderr.decode(errors="replace"))
+
+    def test_epoch_and_release_times_preserved_and_ceiling_validated_without_fs_assumption(self):
+        self.extract([
+            ("epoch", 0, b"epoch", tarfile.REGTYPE, ""),
+            ("release", 1700000001, b"release", tarfile.REGTYPE, ""),
+        ])
+        self.assertEqual((self.destination / "epoch").stat().st_mtime_ns, 0)
+        self.assertEqual((self.destination / "release").stat().st_mtime_ns,
+                         1700000001 * 1_000_000_000)
+        # GNU's integer extension retains this bound without a PAX float conversion.
+        self.write_archive([("ceiling", toolchain.MAX_ARCHIVE_MTIME, b"x",
+                             tarfile.REGTYPE, "")], archive_format=tarfile.GNU_FORMAT)
+        with tarfile.open(self.task / "input.tar.gz") as archive:
+            members, size = toolchain.archive_members(archive, "root", 100)
+        self.assertEqual((members[0][0].mtime, size), (toolchain.MAX_ARCHIVE_MTIME, 1))
+
+    def test_invalid_timestamps_rejected_before_any_member_is_written(self):
+        for timestamp in (-1, 1.5, float("nan"), float("inf"), -float("inf"),
+                          toolchain.MAX_ARCHIVE_MTIME + 1):
+            with self.subTest(timestamp=timestamp):
+                with self.assertRaisesRegex(Error, "invalid_archive_mtime"):
+                    self.extract([
+                        ("first", 100, b"valid", tarfile.REGTYPE, ""),
+                        ("invalid", timestamp, b"invalid", tarfile.REGTYPE, ""),
+                    ])
+                self.assertFalse(self.destination.exists())
+        self.write_archive([("file", 100, b"x", tarfile.REGTYPE, "")])
+        with tarfile.open(self.task / "input.tar.gz") as archive:
+            # A boolean is not an archive integer, even though bool subclasses int.
+            archive.getmembers()[0].mtime = True
+            with self.assertRaisesRegex(Error, "invalid_archive_mtime"):
+                toolchain.archive_members(archive, "root", 100)
+
+    def test_hardlink_inherits_regular_mtime_and_symlink_is_not_stamped(self):
+        self.extract([
+            ("file", 100, b"content", tarfile.REGTYPE, ""),
+            ("hard", 999, b"", tarfile.LNKTYPE, "root/file"),
+            ("soft", 999, b"", tarfile.SYMTYPE, "file"),
+        ])
+        source = (self.destination / "file").stat()
+        hard = (self.destination / "hard").stat()
+        self.assertEqual(source.st_mtime_ns, 100 * 1_000_000_000)
+        self.assertEqual(hard.st_mtime_ns, source.st_mtime_ns)
+        self.assertEqual(hard.st_ino, source.st_ino)
+        self.assertTrue((self.destination / "soft").is_symlink())
+        self.assertEqual(os.readlink(self.destination / "soft"), "file")
+
+    def test_filesystem_timestamp_mismatch_fails_explicitly(self):
+        with patch.object(toolchain.os, "utime"):
+            with self.assertRaisesRegex(Error, "archive_mtime_not_preserved"):
+                self.extract([("file", 0, b"retained partial output", tarfile.REGTYPE, "")])
+        self.assertEqual((self.destination / "file").read_bytes(), b"retained partial output")
+        self.assertFalse((self.task / "timestamp-fixture-files.json").exists())
 
 
 class FormatTests(unittest.TestCase):

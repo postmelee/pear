@@ -39,6 +39,14 @@ def arm64ec_bytes():
 
 
 class PublicationPolicyTests(unittest.TestCase):
+    def test_source_argument_policy_preserves_only_absent_legacy_records(self):
+        self.assertEqual(build.source_argument_policy({}), 'legacy_absolute_v1')
+        self.assertEqual(build.source_argument_policy({'source_argument_policy': 'stable_relative_v1'}),
+                         'stable_relative_v1')
+        for value in ('legacy_absolute_v1', 'stable_relative_v2', '', None, True, 1, []):
+            with self.subTest(value=value), self.assertRaisesRegex(Error, 'build_source_argument_policy'):
+                build.source_argument_policy({'source_argument_policy': value})
+
     def test_legacy_builds_have_no_implicit_executable_publication_grant(self):
         self.assertEqual(build.code_publication_policy({}), 'none')
         self.assertEqual(build.code_publication_policy({'fixture_suite': 'api-abi'}), 'none')
@@ -135,8 +143,8 @@ class ArenaCapacityTests(unittest.TestCase):
         (self.install / name).write_bytes(data)
         self.artifacts['files'].append({'path': name, 'kind': 'pe', 'machine': machine})
 
-    def evidence(self):
-        return build.arena_capacity_evidence(self.root / 'source', self.install, self.artifacts)
+    def evidence(self, variant="arm64"):
+        return build.arena_capacity_evidence(self.root / 'source', self.install, self.artifacts, variant=variant)
 
     def test_inventory_includes_preparation_slot_and_largest_image_margin(self):
         self.add_image('unsupported-x64.exe', 65536, 0x8664)
@@ -227,6 +235,79 @@ class ArenaCapacityTests(unittest.TestCase):
 
     def test_historical_capacity_record_has_no_retroactive_copy_fields(self):
         self.assertNotIn('fixture_copies', self.evidence())
+
+
+    def test_native_evidence_shape_is_preserved_and_companion_fit_is_not_qualification(self):
+        native = self.evidence()
+        self.assertNotIn('assessment', native)
+        companion = self.evidence('arm64ec-build')
+        assessment = companion.pop('assessment')
+        self.assertEqual(companion, native)
+        self.assertEqual(assessment, {
+            'scope': 'compile_only_arm64ec_companion',
+            'image_measurement': 'arm64_outer_headers_including_arm64x',
+            'fits_native_limits': True, 'native_runtime_qualification': 'unassessed'})
+
+    def test_companion_reports_each_exceeded_native_limit_without_enlarging_it(self):
+        original = self.header.read_text()
+        for old, new in (('MAX_IMAGE_BYTES ((SIZE_T)65536)', 'MAX_IMAGE_BYTES ((SIZE_T)4096)'),
+                         ('MAX_SLOTS 3u', 'MAX_SLOTS 2u'),
+                         ('INTERIOR_BYTES ((SIZE_T)196608)', 'INTERIOR_BYTES ((SIZE_T)131072)')):
+            with self.subTest(limit=old):
+                self.header.write_text(original.replace(old, new))
+                with self.assertRaisesRegex(Error, 'arena_capacity_inventory_exceeds_limits'):
+                    self.evidence('arm64')
+                value = self.evidence('arm64ec-build')
+                self.assertFalse(value['assessment']['fits_native_limits'])
+                self.assertEqual(value['required_slots'], 3)
+                self.assertEqual(value['required_interior_bytes'], 196608)
+                self.assertEqual(value['largest_slot_bytes'], 65536)
+                self.assertEqual(value['header_sha256'], sha256(self.header))
+                self.assertFalse(value['wine_execution'])
+                self.assertEqual(self.header.read_text(), original.replace(old, new))
+
+    def test_companion_still_rejects_invalid_header_geometry_and_missing_copy_source(self):
+        original = self.header.read_text()
+        for changed, error in ((original.replace('PAGE_BYTES ((SIZE_T)4096)',
+                                                'PAGE_BYTES ((SIZE_T)16384)'), 'arena_capacity_geometry'),
+                               (original + '#define PEAR_ARENA_RELOCATION_COPIES 2u\n',
+                                'arena_fixture_copy_source_missing')):
+            with self.subTest(error=error):
+                self.header.write_text(changed)
+                with self.assertRaisesRegex(Error, error):
+                    self.evidence('arm64ec-build')
+        self.header.write_text(original)
+        (self.install / 'one.dll').write_bytes(b'not a PE')
+        with self.assertRaisesRegex(Error, 'arena_capacity_pe_header'):
+            self.evidence('arm64ec-build')
+        with self.assertRaisesRegex(Error, 'build_variant'):
+            self.evidence('unknown')
+
+    def test_companion_replay_recomputes_assessment_and_cannot_bypass_native_gate(self):
+        self.add_image('larger-arm64x-outer.dll', 131072)
+        capacity = self.evidence('arm64ec-build')
+        result = {'schema_version': 1, 'record_kind': 'wine_build', 'passed': True,
+                  'variant': 'arm64ec-build', 'fixture_suite': 'mac-driver',
+                  'code_publication_policy': 'page-wx', 'arena_capacity': capacity,
+                  'native_artifact_count': 0, 'pe_artifact_count': 3}
+        # Stub unrelated provenance gates; the replay uses real source and PE bytes
+        # to recompute capacity, then compares it with the recorded assessment.
+        with mock.patch.object(build, 'task_path', side_effect=Path), \
+             mock.patch.object(build, 'load_json', return_value=result), \
+             mock.patch.object(build, 'verify_build_evidence'), \
+             mock.patch.object(build, 'verify_completion_revision'), \
+             mock.patch.object(build, 'artifact_inventory', return_value=self.artifacts), \
+             mock.patch.object(build, 'required_outputs'), \
+             mock.patch.object(build, 'inventory', return_value=self.artifacts):
+            self.assertIs(build.verify_build(self.root), result)
+            result['arena_capacity'] = copy.deepcopy(capacity)
+            result['arena_capacity']['assessment']['fits_native_limits'] = True
+            with self.assertRaisesRegex(Error, 'build_arena_capacity_changed'):
+                build.verify_build(self.root)
+            result['arena_capacity'] = capacity
+            result['variant'] = 'arm64'
+            with self.assertRaisesRegex(Error, 'arena_capacity_inventory_exceeds_limits'):
+                build.verify_build(self.root)
 
 
 class InventoryTests(unittest.TestCase):
@@ -638,6 +719,49 @@ class FinalizationTests(unittest.TestCase):
         self.assertEqual((self.root / 'build.json').read_bytes(), original)
         self.assertFalse((self.root / 'build-before-finalization.json').exists())
         self.assertFalse((self.root / 'finalizer').exists())
+
+    def relative_policy(self):
+        self.result['source_argument_policy'] = 'stable_relative_v1'
+        self.result['commands'][0]['argv'][3] = '../source/configure'
+        makefile = self.root / 'objects/Makefile'
+        makefile.write_text(makefile.read_text() + 'srcdir = ../source\n')
+        self.result['configuration']['srcdir'] = '../source'
+        self.result['makefile_sha256'] = sha256(makefile)
+
+    def test_legacy_absolute_commands_remain_verified_without_policy(self):
+        build.verify_build_evidence(self.root, self.result, current=False)
+        self.result['commands'][0]['argv'][3] = '../source/configure'
+        with self.assertRaisesRegex(Error, 'build_command_invocation'):
+            build.verify_build_evidence(self.root, self.result, current=False)
+
+    def test_stable_relative_configuration_and_exact_command_are_bound(self):
+        self.relative_policy()
+        build.verify_build_evidence(self.root, self.result, current=False)
+        for script in (str(self.root / 'source/configure'), './configure', '../../source/configure'):
+            self.result['commands'][0]['argv'][3] = script
+            with self.subTest(script=script), self.assertRaisesRegex(Error, 'build_command_invocation'):
+                build.verify_build_evidence(self.root, self.result, current=False)
+        self.result['commands'][0]['argv'][3] = '../source/configure'
+        self.result['commands'][0]['cwd'] = str(self.root)
+        with self.assertRaisesRegex(Error, 'build_command_invocation'):
+            build.verify_build_evidence(self.root, self.result, current=False)
+
+    def test_relative_policy_requires_one_actual_relative_srcdir(self):
+        self.relative_policy()
+        makefile = self.root / 'objects/Makefile'
+        original = makefile.read_text()
+        for replacement in ('', 'srcdir = /arbitrary/source\n', 'srcdir = $(SOURCE_ROOT)\n',
+                            'srcdir = ../source\nsrcdir = ../source\n'):
+            makefile.write_text(original.replace('srcdir = ../source\n', replacement))
+            self.result['makefile_sha256'] = sha256(makefile)
+            with self.subTest(replacement=replacement), self.assertRaisesRegex(Error, 'build_relative_srcdir_mismatch'):
+                build.verify_build_evidence(self.root, self.result, current=False)
+
+    def test_unknown_policy_cannot_bypass_historical_or_current_validation(self):
+        self.result['source_argument_policy'] = None
+        for current in (False, True):
+            with self.subTest(current=current), self.assertRaisesRegex(Error, 'build_source_argument_policy'):
+                build.verify_build_evidence(self.root, self.result, current=current)
 
     def test_page_wx_build_requires_actual_configured_native_pe_macro(self):
         makefile = self.root / 'objects/Makefile'
