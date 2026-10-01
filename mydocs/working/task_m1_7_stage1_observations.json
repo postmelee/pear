@@ -1,0 +1,236 @@
+{
+  "accounted_inventory_gate_exit": 0,
+  "compilation_performed": false,
+  "disclosure": "Private roots and probe streams withheld; source/tool/layout inventory only.",
+  "dxmt_built": false,
+  "gpu_or_guest_execution_performed": false,
+  "inventory_complete": true,
+  "pairing_verified": false,
+  "probe_outcomes": [
+    {
+      "exit_code": 0,
+      "id": "git"
+    },
+    {
+      "exit_code": 0,
+      "id": "python"
+    },
+    {
+      "exit_code": 0,
+      "id": "sdk-version"
+    },
+    {
+      "exit_code": 0,
+      "id": "sdk-path"
+    },
+    {
+      "exit_code": 0,
+      "id": "metal-resolution"
+    },
+    {
+      "exit_code": 72,
+      "id": "metallib-resolution"
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec-w64-mingw32-gcc-version"
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec-w64-mingw32-g++-version"
+    },
+    {
+      "exit_code": 0,
+      "id": "clang-23-version"
+    }
+  ],
+  "readiness": {
+    "reason": "Required usable toolchain and actual compilation capabilities are not established in Stage 1.",
+    "shader_build_ready": false,
+    "unavailable_tools": [
+      "cmake",
+      "meson",
+      "metallib",
+      "ninja"
+    ],
+    "unperformed_capabilities": [
+      "native_llvm_15_headers_libraries",
+      "metal_compile",
+      "metallib_link",
+      "dxmt_cross_compile",
+      "wine_arm64ec_import_link"
+    ]
+  },
+  "record_kind": "dxmt_stage1_observations",
+  "runtime_eligible": false,
+  "schema_version": 1,
+  "scope": "dxmt_component",
+  "shader_build_ready_gate_exit": 3,
+  "source_components": [
+    {
+      "commit": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "entries": 381,
+      "id": "dxmt-upstream",
+      "materialized": true,
+      "source_checks_verified": 10,
+      "terms_verified": 7,
+      "tree": "c273b79a2bfa47e62e8526786559f4d18911625a",
+      "tree_listing_sha256": "958103ca0c78ba9817f672c15612dba2d4feff45e125ddd333a8fbcea42a8a01",
+      "unmaterialized_symlink_entries": 0
+    },
+    {
+      "commit": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "entries": 66,
+      "id": "dxmt-directx",
+      "materialized": true,
+      "source_checks_verified": 0,
+      "terms_verified": 3,
+      "tree": "66fcb250507a2c45bd9a22f44795d0e4c7b613f5",
+      "tree_listing_sha256": "80623e8570743b5848d707f1ddd207f419b4c2fd93f7bbf2de975c630b8b23f4",
+      "unmaterialized_symlink_entries": 0
+    },
+    {
+      "commit": "d08488fcc82eef313b0464db37d2955709691e94",
+      "entries": 32,
+      "id": "dxmt-nvapi",
+      "materialized": false,
+      "source_checks_verified": 0,
+      "terms_verified": 1,
+      "tree": "5f63f798f0e45a722e25ffdd8696f7f2397c9d75",
+      "tree_listing_sha256": "783eff0609e8224f9278d9c412e5ee6bf65970072664e39eec9273b5a96ffeef",
+      "unmaterialized_symlink_entries": 0
+    },
+    {
+      "commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+      "entries": 118554,
+      "id": "llvm-dxmt",
+      "materialized": false,
+      "source_checks_verified": 0,
+      "terms_verified": 2,
+      "tree": "420b581b39531e9ed0e26916e4ba81fc6a9d9f74",
+      "tree_listing_sha256": "fe0ed32d04a3f4d57f36a583fa758043df254cfd65c4eb8fd4a50cdf2fb45bb2",
+      "unmaterialized_symlink_entries": 17
+    },
+    {
+      "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "entries": 12457,
+      "id": "wine-upstream",
+      "materialized": false,
+      "source_checks_verified": 3,
+      "terms_verified": 3,
+      "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892",
+      "tree_listing_sha256": "c42a658d0e279f651d86627c683f9c902c4f573e2d73a771cb470d6ea5e0f9d7",
+      "unmaterialized_symlink_entries": 0
+    },
+    {
+      "commit": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+      "entries": 10900,
+      "id": "wine-dxmt-interface",
+      "materialized": false,
+      "source_checks_verified": 0,
+      "terms_verified": 2,
+      "tree": "56a0344be62c9ca8464ed22f8861798ce4ac717e",
+      "tree_listing_sha256": "1d1189310f74c821d5056cb6961943c42a2c065b65c0456fbb97775727d852ca",
+      "unmaterialized_symlink_entries": 0
+    },
+    {
+      "commit": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "entries": 95,
+      "id": "llvm-mingw-source",
+      "materialized": false,
+      "source_checks_verified": 2,
+      "terms_verified": 1,
+      "tree": "2db31fcce334eac492da9b4bc587bc80987f3642",
+      "tree_listing_sha256": "2df340b42320ffcf43f3cd98350a95b4b6b1524442b4419e595867122a04b021",
+      "unmaterialized_symlink_entries": 0
+    },
+    {
+      "commit": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689",
+      "entries": 180593,
+      "id": "llvm-mingw-llvm",
+      "materialized": false,
+      "source_checks_verified": 0,
+      "terms_verified": 2,
+      "tree": "831b6c2c2df160f87ef6a5e5623ddf477ef67402",
+      "tree_listing_sha256": "843136f08548429a2614ee11a3a73089b16466599d121d0f6664cdc0c5432199",
+      "unmaterialized_symlink_entries": 19
+    },
+    {
+      "commit": "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a",
+      "entries": 6950,
+      "id": "mingw-w64-source",
+      "materialized": false,
+      "source_checks_verified": 0,
+      "terms_verified": 3,
+      "tree": "73e43c0d8f2f0624037b9b0f76e3fd4f21724417",
+      "tree_listing_sha256": "a41f025ab14c6177a399510273254648d4aaf981217463b718e3983eed2f6486",
+      "unmaterialized_symlink_entries": 0
+    }
+  ],
+  "tool_states": [
+    {
+      "capability": "unperformed",
+      "id": "cmake",
+      "status": "unavailable"
+    },
+    {
+      "capability": "unperformed",
+      "id": "meson",
+      "status": "unavailable"
+    },
+    {
+      "capability": "unperformed",
+      "id": "ninja",
+      "status": "unavailable"
+    },
+    {
+      "capability": "unperformed",
+      "id": "metal",
+      "status": "resolved_unverified"
+    },
+    {
+      "capability": "unperformed",
+      "id": "metallib",
+      "status": "unavailable"
+    }
+  ],
+  "wine_roles": [
+    {
+      "build_sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb",
+      "import_archive_machines": [
+        [
+          43620
+        ],
+        [
+          43620
+        ],
+        [
+          43620
+        ]
+      ],
+      "role": "native",
+      "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "variant": "arm64"
+    },
+    {
+      "build_sha256": "d71d69ab5b5612d33b5fd73997d1e38f09b2a72a9625cd9c954817bbf05c77ad",
+      "import_archive_machines": [
+        [
+          42561,
+          43620
+        ],
+        [
+          42561,
+          43620
+        ],
+        [
+          42561,
+          43620
+        ]
+      ],
+      "role": "companion",
+      "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "variant": "arm64ec-build"
+    }
+  ]
+}

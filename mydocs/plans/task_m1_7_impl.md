@@ -3,7 +3,7 @@
 Task plan: [`task_m1_7.md`](task_m1_7.md)
 GitHub Issue: [#7](https://github.com/postmelee/pear/issues/7)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Prepared October 2, 2026. The requester approved the task plan. This implementation plan and Stage 1 execution await explicit approval; all commands and positive outcomes below are planned rather than performed.
+Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stage 1 is implemented; its actual results are in the Stage 1 report. Later stages and expected outcomes remain planned.
 
 ## Applicable Context and Reuse
 
@@ -64,8 +64,8 @@ New:
 - `runtime/dxmt/toolchain.json`: locked reusable #4 cross-tool candidate plus explicit local tool/SDK/Metal candidates, unresolved digest reasons and roles.
 - `runtime/dxmt/build-config.json`: candidate release/debug mode, builtin DLL selection, ARM64EC/ARM64X guest/native ARM64 targets, explicit disabled NVAPI/NVNGX/D3D12/Windows-airconv/tests, bounded jobs and owned layout.
 - `tools/dxmt/{common,prepare,check,verify}.py`: bounded input/materialization/availability/layout readers; no full-build or GPU entrypoint in Stage 1.
-- `tests/dxmt/test_stage1_inputs.py`, `test_stage1_layout.py`, `test_stage1_evidence.py`: original meaningful rejection and source-role tests.
-- `mydocs/working/task_m1_7_stage1.md` and reviewed public observations.
+- `tests/dxmt/test_stage1_inputs.py`, `test_stage1_layout.py`, `test_stage1_evidence.py`, `test_stage1_probes.py`, `test_stage1_ec_archive.py` and `support.py`: original meaningful rejection and source-role tests.
+- `mydocs/working/task_m1_7_stage1.md` and `task_m1_7_stage1_observations.json`.
 
 Modified: this implementation plan only for concrete selected pin/command clarifications within the approved scope, and active-date board through root. No docs, #4 patch series or original source manifest edits.
 
@@ -83,13 +83,13 @@ Modified: this implementation plan only for concrete selected pin/command clarif
 
 Inputs: approved component candidates and actual retained original source cache/#4 receipt locations. Tools: installed Python 3, Git, bounded file/header readers, existing Xcode inspection tools; exact Python/Git identities recorded. Planning observed CMake/Meson/Ninja absent from PATH, `metal` resolvable and `metallib` lookup exit 72. Present cache files were not reverified during planning.
 
-Planned CLI:
+Implemented Stage 1 CLI; the final accepted outputs below follow preserved earlier attempts:
 
 ```sh
-python3 tools/dxmt/prepare.py --inputs runtime/dxmt/inputs.json --source-cache <original-read-only-cache> --output .build/task7/stage1-inputs --require-empty
-python3 tools/dxmt/check.py inventory --inputs runtime/dxmt/inputs.json --toolchain runtime/dxmt/toolchain.json --config runtime/dxmt/build-config.json --prepared .build/task7/stage1-inputs --wine-native <retained-native-role> --wine-companion <retained-companion-role> --tools <retained-locked-tools> --output .build/task7/stage1-check --require-accounted
-python3 tools/dxmt/verify.py inventory --root .build/task7/stage1-check --require-accounted
-python3 tools/dxmt/verify.py inventory --root .build/task7/stage1-check --require-shader-build-ready
+python3 tools/dxmt/prepare.py --inputs runtime/dxmt/inputs.json --source-cache <original-read-only-cache> --output .build/task7/stage1-inputs5 --require-empty
+python3 tools/dxmt/check.py inventory --inputs runtime/dxmt/inputs.json --toolchain runtime/dxmt/toolchain.json --config runtime/dxmt/build-config.json --prepared .build/task7/stage1-inputs5 --wine-native <retained-native-role> --wine-companion <retained-companion-role> --tools <retained-locked-tools> --output .build/task7/stage1-check3 --require-accounted
+python3 tools/dxmt/verify.py inventory --root .build/task7/stage1-check3 --require-accounted
+python3 tools/dxmt/verify.py inventory --root .build/task7/stage1-check3 --require-shader-build-ready
 python3 -B -m unittest discover -s tests/dxmt -p 'test_stage1_*.py'
 python3 tools/check_governance.py
 git diff --check
@@ -100,6 +100,11 @@ Placeholders denote validated local private handles recorded by the actual comma
 Expected success: all required source/terms/layout facts are accounted for, actual invalid evidence is rejected, and all affected portable tests/governance/whitespace pass. Missing shader tools are recorded unavailable; the `--require-shader-build-ready` refusal is **expected exit 3** while missing prerequisites persist. It must never be presented as a passed readiness check. Stage 1 may complete with that explicit refusal; Stage 2's shader-build-dependent operations cannot proceed until the missing prerequisites are verified.
 
 Retain private raw receipts, failed/rejected controls, original byte hashes, source/target/dependency/notice matrix and current storage observations. Public report says whether the inventory passed and separately names unavailable tools/unperformed compilation. No #7 Issue criterion is closed by inventory alone.
+
+
+Implemented closure clarification: nine exact source components and their required selected notice/source-check sets are accounted for. Literal `%` filenames are accepted only by nonmaterialized Git-tree accounting without URL decoding; output/materialized path restrictions remain strict. ARM64EC `/<ECSYMBOLS>/` indices are bounded metadata, with real member references checked before reporting COFF machines. Native and companion import archives are inspected separately; mixed ARM64/ARM64EC companion members are observations, not a link-compatibility assertion.
+
+The inventory performs nine bounded metadata probes, including both SDK path and version. Existing shell wrappers are invoked through explicit ARM64 `/bin/sh`, after binding their real Clang alias/driver chain. The legacy #4 cross-tool manifest has no mode pin: actual regular/executable modes are observed and replay-bound, with the historical baseline explicitly unavailable rather than invented. No missing tool is installed or bootstrapped in this stage; FEX's task-local tools may become separately verified reuse candidates in Stage 2.
 
 ### Commit
 
@@ -295,3 +300,7 @@ Each stage commit includes its artifacts, tests/evidence and `mydocs/working/tas
 ## Approval Request
 
 Approve the five-stage implementation split, artifact/CLI/evidence contracts, separate inventory-versus-toolchain gates, document-location matches, typed adapter direction and commit messages. Authorize Stage 1 input/tool/layout closure only. Later stages require explicit continuation after their predecessor's report/commit, and actual shader/native runtime prerequisites must pass before their dependent operations.
+
+## Approval Record
+
+On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after the joint detailed-plan review request. This approves the implementation plan and Stage 1 only. Stage 2 and later transitions retain their separate report, commit and explicit-continuation checkpoints.

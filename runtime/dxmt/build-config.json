@@ -1,0 +1,29 @@
+{
+  "build_type": "release",
+  "features": {
+    "build_airconv_for_windows": false,
+    "enable_d3d12": false,
+    "enable_nvapi": false,
+    "enable_nvngx": false,
+    "enable_tests": false
+  },
+  "graphics_patch_status": "unimplemented",
+  "guest_flags": [
+    "-marm64x"
+  ],
+  "guest_target": "arm64ec-w64-mingw32",
+  "max_jobs": 4,
+  "native_llvm_major": 15,
+  "native_target": "arm64-apple-darwin",
+  "ownership_root": ".build/task7",
+  "record_kind": "dxmt_build_configuration",
+  "runtime_eligible": false,
+  "schema_version": 1,
+  "scope": "dxmt_component",
+  "shader_readiness_gate": "available_tools_and_unperformed_capabilities",
+  "source_accounting_gate": "accounted_inventory",
+  "source_terms_limit": "Selected source/header/build-tool notices only; shipped payload and corresponding-source closure remain later work.",
+  "unix_install_dir": "aarch64-unix",
+  "windows_install_dir": "aarch64-windows",
+  "wine_builtin_dll": true
+}
