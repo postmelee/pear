@@ -1,0 +1,30 @@
+From: Pear contributors
+Subject: [PATCH] ntdll: guard ARM64EC bitmap access for native ARM64 startup
+
+Original Pear correction against Wine 4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf.
+The ARM64EC bitmap is allocated only for images with CHPE metadata. Test the
+existing architecture/address guard before dereferencing that optional view,
+so an unoptimized native ARM64 build does not access a null ARM64EC view while
+initializing its first syscall context. Preserve the existing bitmap semantics.
+Existing Wine LGPL-2.1-or-later notices apply.
+
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -2792,15 +2792,16 @@
+ 
+ /***********************************************************************
+  *           is_emulated_code
+  */
+ BOOL is_emulated_code( ULONG_PTR ptr )
+ {
+-    const UINT64 *map = arm64ec_view->base;
++    const UINT64 *map;
+     ULONG_PTR page = ptr / page_size;
+     if (!is_arm64ec() || ptr >= (ULONG_PTR)user_space_limit) return FALSE;
++    map = arm64ec_view->base;
+     return !((map[page / 64] >> (page & 63)) & 1);
+ }
+ 
+ 
+ /***********************************************************************
+  *           alloc_arm64ec_map

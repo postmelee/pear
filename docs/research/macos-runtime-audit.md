@@ -155,3 +155,9 @@ Performance comparison follows correctness. Use the same scene, settings, frame 
 - Own an auditable release pipeline, runtime manifest, test harness, and compatibility record.
 
 These form a legitimate Pear runtime engineering effort. They are not merely launcher configuration. A new CPU translator can remain a later research option, but it must eventually pass the same host/API correctness gates and cannot bypass macOS distribution policy.
+
+## Scoped Wine component follow-up — October 1, 2026
+
+The original audit above remains dated analysis. [Issue #4's Stage 6 evidence](../../mydocs/working/task_m1_4_stage6_observations.json) now records fresh native/companion Wine builds, strict native unsigned comparison and independently verified finite ARM64 API/ABI/thread/Win32-Cocoa execution under development authorization. See the [Wine host guide](../development/wine-host.md) and [Stage 6 report](../../mydocs/working/task_m1_4_stage6.md) for tested display conditions, retained failures, source-bound startup lifetime correction and exact handoff.
+
+This advances a bounded native Wine component. It does not complete H0–H6 or qualify translated x64/ARM64EC execution, FEX host services, Metal/D3D, Steam/Megabonk, full process observation or ordinary-user distribution. The original combined source decision remains blocked; the compiler cache was reverified rather than independently rebuilt, and no second-Mac result is claimed.

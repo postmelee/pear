@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "record_kind": "wine_build_inputs",
+  "scope": "wine_component",
+  "audit_ref": {
+    "path": "runtime/sources/manifest.json",
+    "sha256": "535cdcb7b2e76d4bc536d63ad7d17d31f562f438b7850a75a0ace1b9c88466b8"
+  },
+  "components": [
+    {
+      "id": "wine",
+      "audit_component_id": "wine-upstream",
+      "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892",
+      "cache_path": "wine-upstream/repo.git",
+      "url": "https://github.com/wine-mirror/wine.git"
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "wine-source",
+      "role": "host-and-pe-source",
+      "terms": "LGPL-2.1-or-later; retain component notices",
+      "terms_path": "COPYING.LIB"
+    },
+    {
+      "id": "apple-sdk",
+      "role": "native-headers-frameworks-system-libraries",
+      "version": "26.5",
+      "frameworks": [
+        "AppKit",
+        "Carbon",
+        "Foundation",
+        "IOKit",
+        "Metal",
+        "OpenGL",
+        "QuartzCore",
+        "Security",
+        "CoreText",
+        "CoreFoundation",
+        "CoreServices",
+        "DiskArbitration",
+        "SystemConfiguration",
+        "ApplicationServices"
+      ],
+      "terms": "Apple SDK external prerequisite; not redistributed by this task"
+    },
+    {
+      "id": "llvm-mingw",
+      "role": "build-only-cross-compiler-headers-runtime",
+      "lock": "runtime/wine/toolchain.json",
+      "terms": "Bundled LLVM and MinGW component notices; not a play-time native Wine component"
+    },
+    {
+      "id": "bison-source",
+      "role": "build-only-parser-generator",
+      "version": "3.8.2",
+      "lock": "runtime/wine/toolchain.json",
+      "terms": "GPL-3.0-or-later with included output/skeleton exceptions; review actual COPYING and generated-output notices"
+    },
+    {
+      "id": "native-tools",
+      "role": "external-build-prerequisites",
+      "lock": "runtime/wine/toolchain.json",
+      "terms": "Existing Apple and local tool identities are recorded; not redistributed"
+    },
+    {
+      "id": "optional-features",
+      "role": "disabled-configuration",
+      "features": [
+        "alsa",
+        "capi",
+        "coreaudio",
+        "cups",
+        "dbus",
+        "ffmpeg",
+        "fontconfig",
+        "freetype",
+        "gettext",
+        "gettextpo",
+        "gphoto",
+        "gnutls",
+        "gssapi",
+        "gstreamer",
+        "hwloc",
+        "inotify",
+        "krb5",
+        "netapi",
+        "opencl",
+        "oss",
+        "pcap",
+        "pcsclite",
+        "pulse",
+        "sane",
+        "sdl",
+        "udev",
+        "usb",
+        "v4l2",
+        "va",
+        "vulkan",
+        "wayland",
+        "x"
+      ],
+      "reason": "Bounded non-network, no-font-rendering Wine host fixtures; no Steam, audio, video, Vulkan or game support claim"
+    }
+  ],
+  "unresolved_ports": [
+    {
+      "id": "darwin-loader-layout",
+      "status": "needs-port",
+      "owner": 4
+    },
+    {
+      "id": "darwin-x18-transitions",
+      "status": "needs-port",
+      "owner": 4
+    },
+    {
+      "id": "darwin-threads-signals-memory",
+      "status": "needs-port",
+      "owner": 4
+    },
+    {
+      "id": "mac-driver-boundary",
+      "status": "needs-port",
+      "owner": 4
+    },
+    {
+      "id": "fex-darwin-and-translated-state",
+      "status": "needs-port",
+      "owner": 5
+    },
+    {
+      "id": "dxmt-driver-and-renderer-pairing",
+      "status": "needs-port",
+      "owner": 7
+    },
+    {
+      "id": "ordinary-user-distribution",
+      "status": "needs-port",
+      "owner": 13
+    }
+  ]
+}

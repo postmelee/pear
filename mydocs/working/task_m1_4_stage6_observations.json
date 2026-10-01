@@ -1,0 +1,2765 @@
+{
+  "clean_machine_tested": false,
+  "companion": {
+    "guest_execution": false,
+    "native_arena_fit_observed": false,
+    "native_runtime_qualification": "unassessed",
+    "scope": "compile_only_arm64ec_companion",
+    "translator_execution": false
+  },
+  "compiler_rebuilt": false,
+  "distribution_qualified": false,
+  "fresh_reference": {
+    "build_sha256": "2d824a65849954543ef87124a888bf4cca8d87b370257bcacff30483023e12e9",
+    "commands_passed": 44,
+    "development_signed": false,
+    "host_architecture": "arm64",
+    "installed_manifest_sha256": "8427cfc67bf65596075c2111f127c9cd1a0a1ba7360428c9b0fb97231d78a4da",
+    "module_inventory_sha256": "8c6517344e34e96f8b9c2e16dc4f22fda11ee9c113f79c779dbe2cbfff0b5023",
+    "native_artifact_count": 38,
+    "pe_artifact_count": 755,
+    "pe_machine_counts": {
+      "332": 1,
+      "34404": 1,
+      "43620": 753
+    },
+    "runtime_executed": false,
+    "scope": "compile_and_inspect_only",
+    "selected_modules": [
+      {
+        "export_count": 1479,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "ntdll.dll",
+        "sha256": "3ed58f1317e0af76c3ef4ba798600a358cb9e9c40dbcd7c8c1b81591bd4d35e2"
+      },
+      {
+        "export_count": 1355,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "kernel32.dll",
+        "sha256": "444111d94714a059730cbf2167ec922f13125f7b0e5906d5dbfa8e112aceb60c"
+      },
+      {
+        "export_count": 1428,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "kernelbase.dll",
+        "sha256": "0f25e34066c0f66cf5cf29c78e6fd5fe61191055299c7e576c1f576cc926f9b6"
+      },
+      {
+        "export_count": 1540,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "win32u.dll",
+        "sha256": "147e4a2988eb45a56ddd04659986e10fab018aa5e692e675430dbb9e7962aa33"
+      },
+      {
+        "export_count": 1,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "winemac.drv",
+        "sha256": "53d007bdc855e8e769d6c6a7a26055317bbcf38e2bbcb05459167fd12964cac8"
+      },
+      {
+        "export_count": 0,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "wineboot.exe",
+        "sha256": "9440641cf1a7259f9718da4208588747be00d814c3283ed5e17550f644f449f7"
+      },
+      {
+        "export_count": 28,
+        "hybrid_metadata_required": false,
+        "machine": 43620,
+        "module": "wow64.dll",
+        "sha256": "80f8b7ea670bb568364ecb2fc3026a3ed5ffddbdd710be85a98bf7b5f0b43671"
+      }
+    ],
+    "source_argument_policy": "stable_relative_v1",
+    "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+    "variant": "arm64",
+    "wine_runtime_executed": false
+  },
+  "game_execution": false,
+  "historical_reference": {
+    "build_sha256": "a9d43c3f7fe1f922fba8319dc286b6d456e4dc1a704b2bf7253a125f33de115e",
+    "byte_equivalence_reference": false,
+    "byte_equivalence_to_fresh_builds_claimed": false,
+    "companion_same_final_patch_reference_available": false,
+    "observations_sha256": "91540517e5150d26217ba765c65e4b3aa9c15bd9d4cf47f82072a517bfc66c55",
+    "runtime_reexecuted": false,
+    "source_argument_policy": "legacy_absolute_v1",
+    "stage": 5
+  },
+  "independent_machine_tested": false,
+  "input_record_sha256": {
+    "config": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+    "inputs": "d96ac4d6970d9f0c4964d7d17afb2cd7ef5cbb16d3c7fc92d9df96b14825965f",
+    "patch_series": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086",
+    "toolchain": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc"
+  },
+  "limits": [
+    "Fresh directories on the same declared development Mac; reused compiler cache was reverified.",
+    "Native bootstrap and combined API/ABI/thread/window fixtures share one newly signed runtime.",
+    "The current standalone page-wx arena prerequisite is rebuilt, signed and rerun separately from Wine.",
+    "The two earlier failed thread-jit designs remain historical evidence and are not rerun.",
+    "The ARM64EC companion is compiled and inspected only; no translator or companion runtime execution is qualified.",
+    "Unsigned comparison covers two fresh native builds using the same stable relative source invocation.",
+    "Historical absolute-source builds contain observed ICU code and data layout differences; these are not relabeled metadata.",
+    "No byte or semantic equivalence to the historical Stage5 payload is claimed.",
+    "Unsigned-byte explanations are limited to independently parsed fields and exact reviewed path regions.",
+    "Signatures are separate identities; deterministic signed bytes are neither required nor claimed.",
+    "Prior failures and original evidence are retained; this is not a clean-machine or independent-tester result.",
+    "Steam, Megabonk, graphics pairing and ordinary-user distribution remain unqualified."
+  ],
+  "native_arena_prerequisite": {
+    "authorization": {
+      "allow_jit_empirically_required": false,
+      "bundle_metadata_bound": true,
+      "current_bundle_signature_verified": true,
+      "current_profile_authorization_assessed": true,
+      "hardened_runtime": true,
+      "library_validation": "enabled",
+      "native_probe_signature_page_bytes": 4096,
+      "ordinary_helpers_have_empty_claims": true,
+      "profile_snapshot_bound": true,
+      "scope": "fresh_development_authorization_and_signature_checks"
+    },
+    "cases": [
+      {
+        "actual_observation_counts": {
+          "leaf_return": 22,
+          "mutator_return": 22,
+          "publication": 6,
+          "retirement": 6
+        },
+        "case_sha256": "485883b42b4f062067dc00e90204b816e307d49156daf645edd9c4322a6029a4",
+        "cleanup_complete": true,
+        "exit_code": 0,
+        "fault_control": null,
+        "mode": "lifecycle",
+        "native_failure": null,
+        "passed": true,
+        "policy": "page-wx",
+        "sentinel_survived": true,
+        "variant": "original-claims"
+      },
+      {
+        "actual_observation_counts": {
+          "leaf_return": 22,
+          "mutator_return": 22,
+          "publication": 6,
+          "retirement": 6
+        },
+        "case_sha256": "c8ad8a9cfcb354a33eb0b82dafed05135082433820321c0d5c47234881d721b4",
+        "cleanup_complete": true,
+        "exit_code": 0,
+        "fault_control": null,
+        "mode": "lifecycle",
+        "native_failure": null,
+        "passed": true,
+        "policy": "page-wx",
+        "sentinel_survived": true,
+        "variant": "allow-jit"
+      },
+      {
+        "actual_observation_counts": {
+          "leaf_return": 22,
+          "mutator_return": 22,
+          "publication": 6,
+          "retirement": 4
+        },
+        "case_sha256": "1ad89a9d7e5d6d052550b779ef704e6a0485e5526f64e53eacaacd394968e809",
+        "cleanup_complete": true,
+        "exit_code": -10,
+        "fault_control": {
+          "crash_sha256": "6407e507e8367cbd900f9ea59c9281ffd68074406d4da73946cefa1e88f46c0c",
+          "matched": true,
+          "process_birth_matched": true,
+          "signal": "SIGBUS",
+          "signed_image_uuid_matched": true
+        },
+        "mode": "protected-write",
+        "native_failure": null,
+        "passed": true,
+        "policy": "page-wx",
+        "sentinel_survived": true,
+        "variant": "allow-jit"
+      },
+      {
+        "actual_observation_counts": {
+          "leaf_return": 22,
+          "mutator_return": 22,
+          "publication": 6,
+          "retirement": 5
+        },
+        "case_sha256": "13614dca0a37c7234d5c1b4a76ac043e4f26b6fa77931a4d100cc884e2345462",
+        "cleanup_complete": true,
+        "exit_code": -10,
+        "fault_control": {
+          "crash_sha256": "2adc1844e227356ee887478bbffb95a2b90b38728031b3c89c42ab7392137855",
+          "matched": true,
+          "process_birth_matched": true,
+          "signal": "SIGBUS",
+          "signed_image_uuid_matched": true
+        },
+        "mode": "retired-call",
+        "native_failure": null,
+        "passed": true,
+        "policy": "page-wx",
+        "sentinel_survived": true,
+        "variant": "allow-jit"
+      },
+      {
+        "actual_observation_counts": {
+          "leaf_return": 22,
+          "mutator_return": 22,
+          "publication": 6,
+          "retirement": 4
+        },
+        "case_sha256": "dcc064c0aefd740670325e7270ee300788281007719e2e58ba6968d1cae159e8",
+        "cleanup_complete": true,
+        "exit_code": -10,
+        "fault_control": {
+          "crash_sha256": "40925f35070c99b5d97cbc2d41516d440a8819533a16b485e2b17c5460c8dbe5",
+          "matched": true,
+          "process_birth_matched": true,
+          "signal": "SIGBUS",
+          "signed_image_uuid_matched": true
+        },
+        "mode": "data-exec",
+        "native_failure": null,
+        "passed": true,
+        "policy": "page-wx",
+        "sentinel_survived": true,
+        "variant": "allow-jit"
+      },
+      {
+        "actual_observation_counts": {
+          "leaf_return": 22,
+          "mutator_return": 22,
+          "publication": 6,
+          "retirement": 5
+        },
+        "case_sha256": "97de97aa526cbb7ca28c81cdcde72fab02b6a47b61dd854b312a92e81107305c",
+        "cleanup_complete": true,
+        "exit_code": -10,
+        "fault_control": {
+          "crash_sha256": "d9121e246404633b81f6af7b7b3a802ecdcb972736b48ba1ddcb7c7dfbf94bad",
+          "matched": true,
+          "process_birth_matched": true,
+          "signal": "SIGBUS",
+          "signed_image_uuid_matched": true
+        },
+        "mode": "preparation-exec",
+        "native_failure": null,
+        "passed": true,
+        "policy": "page-wx",
+        "sentinel_survived": true,
+        "variant": "allow-jit"
+      }
+    ],
+    "compiler_sha256": "7def90dd8829726686213a747fc5bff1583df933dae5edc55d755479e0bfe00a",
+    "game_qualified": false,
+    "gate_passed": true,
+    "input_sha256": {
+      "host/probe/hardened_baseline.py": "e10c985de82a93b852e8a6204c94f9877628f3cc49760b5c39d771635130947a",
+      "host/probe/provisioned_probe.py": "47f49422f4d6ccefb2826690a562d4d829c007d2c5a96fc156c86f7d446e2ee3",
+      "runtime/wine/toolchain.json": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+      "tests/wine/fixtures/api_launch.c": "17eb0c0b848440f4b27345aa915c6131a3cccbf112ac862aabd506d229242487",
+      "tests/wine/fixtures/pe_arena_native.c": "9ecba29acd56c2957cf80deaaacb5d670e5e821fcc637a9fcd7744691dffffe3",
+      "tests/wine/fixtures/sentinel.c": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6",
+      "tools/sources/validate_inventory.py": "a851ee6978002a4e45934b91e4abdfe0151d73178e862e45b2b0824a4e0b3710",
+      "tools/wine/arena_evidence.py": "2d7234e677c03c8f2a850d91919aaa645402a8ddb07b06afb51fc719de812d01",
+      "tools/wine/arena_reproduction.py": "02052ca44e3db566849fac2d4d7cddb5ae40b405fcc5922d5e23c265334e53e8",
+      "tools/wine/build.py": "d367c3dde2223d4f4f1862302a7c3cb3a997f0376ff0cbcb329833d7c436c22e",
+      "tools/wine/common.py": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+      "tools/wine/evidence.py": "d1d05966b5cca8188c6a98f28ae6acaedf452a7c6fa6854c4b4e2c1c4515460a",
+      "tools/wine/pe_arena_probe.py": "1656597ed17f6790dd7fccafb9abbc1c60ab39655f7eedc5b546119a76bb1d32",
+      "tools/wine/prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+      "tools/wine/run_fixtures.py": "e6d79880e6fb46a20ed23f3966d3fa4139e2c78181a4ccf5e05f86e2ab87f688",
+      "tools/wine/signing.py": "4c643405fab8b42b369a360d8431fe667f0dc60dd24c703074ff09afdcf3b71b",
+      "tools/wine/toolchain.py": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597",
+      "tools/wine/verify.py": "d75b0fdd83d8d54963e827d5fb9c46ef0f34f417d9dae23ae42271e667f0b7bd"
+    },
+    "limits": [
+      "Six original single-thread native cases do not execute Wine, FEX or a game.",
+      "Separate newly signed probe bytes do not replace final Wine-suite validation.",
+      "The two obsolete failed source revisions remain historical; they are not rerun."
+    ],
+    "policy": "page-wx",
+    "record_kind": "pear_native_arena_reproduction_observations",
+    "report_sha256": "6e214922bde14c73203f83cf10eef506007f905e272ab59c175fe400bd6a22db",
+    "reproduction_sha256": "2e47917896d2a1d0aeca73f42c047f619a4883d11f44c2e6649d75b279e84f6f",
+    "runtime_qualified": false,
+    "schema_version": 1,
+    "scope": "fresh_native_arena_prerequisite",
+    "sdk_settings_sha256": "f8d005f09381389167f9e0aeaa169bc9e7dff162ef22ca2fd8e98df7ff1acafe",
+    "source_sha256": "9ecba29acd56c2957cf80deaaacb5d670e5e821fcc637a9fcd7744691dffffe3",
+    "wine_execution": false
+  },
+  "native_fixture_evidence": {
+    "assembly_review": {
+      "analysis_passed": true,
+      "binary_binding": "verified",
+      "binary_sha256": "6edbb17d83e65bd3511c510f88b3208dceb3b7468d53b91b40d1c5fdc59762f9",
+      "disassembly_sha256": "810754e996dd512fb0dcbad3a5fb318b940fe9513114f46d5e008fc906ea7c4e",
+      "entries": [
+        {
+          "entry": "___wine_syscall_dispatcher",
+          "ordinary_calls_only_host": true,
+          "reachable_instruction_states": 137,
+          "required_entry_mode": 1,
+          "required_return_mode": 1,
+          "terminal_paths": 1,
+          "x18_only_foreign": true
+        },
+        {
+          "entry": "___wine_syscall_dispatcher_return",
+          "ordinary_calls_only_host": true,
+          "reachable_instruction_states": 61,
+          "required_entry_mode": 0,
+          "required_return_mode": 1,
+          "terminal_paths": 1,
+          "x18_only_foreign": true
+        },
+        {
+          "entry": "___wine_unix_call_dispatcher",
+          "ordinary_calls_only_host": true,
+          "reachable_instruction_states": 80,
+          "required_entry_mode": 1,
+          "required_return_mode": 1,
+          "terminal_paths": 2,
+          "x18_only_foreign": true
+        },
+        {
+          "entry": "_call_user_mode_callback",
+          "ordinary_calls_only_host": true,
+          "reachable_instruction_states": 37,
+          "required_entry_mode": 0,
+          "required_return_mode": 1,
+          "terminal_paths": 1,
+          "x18_only_foreign": true
+        },
+        {
+          "entry": "_user_mode_callback_return",
+          "ordinary_calls_only_host": true,
+          "reachable_instruction_states": 31,
+          "required_entry_mode": 0,
+          "required_return_mode": 0,
+          "terminal_paths": 1,
+          "x18_only_foreign": true
+        },
+        {
+          "entry": "_signal_start_thread",
+          "ordinary_calls_only_host": true,
+          "reachable_instruction_states": 68,
+          "required_entry_mode": 0,
+          "required_return_mode": 1,
+          "terminal_paths": 1,
+          "x18_only_foreign": true
+        }
+      ],
+      "helpers": [
+        {
+          "api_sequence": [
+            "getter",
+            "setter",
+            "getter"
+          ],
+          "entry": "_pear_x18_enter_host",
+          "instruction_count": 88,
+          "ordinary_calls": 0,
+          "pointer_symbols_bound": true,
+          "register_spills_checked": true,
+          "requested_mode": 0
+        },
+        {
+          "api_sequence": [
+            "getter",
+            "setter",
+            "getter"
+          ],
+          "entry": "_pear_x18_enter_guest",
+          "instruction_count": 88,
+          "ordinary_calls": 0,
+          "pointer_symbols_bound": true,
+          "register_spills_checked": true,
+          "requested_mode": 1
+        }
+      ],
+      "instruction_bytes_checked": 158163,
+      "reader_reproduced": true,
+      "reader_sha256": "1f9b2b7a9faf0641310deda00db05761d07bca87153b92203610f98eac484c1f",
+      "runtime_execution": false,
+      "scope": "six_declared_wine_assembly_entries_and_two_mode_helpers",
+      "unqualified": [
+        "arbitrary_native_callbacks",
+        "signal_context_semantics",
+        "unwinding",
+        "all_wine_control_flow",
+        "performance"
+      ]
+    },
+    "assembly_review_sha256": "e36fb4587742459598f71cc72ec7e9b9af90e963de8f0b32abfe43dabeeef284",
+    "build": {
+      "build_sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb",
+      "code_publication_policy": "page-wx",
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "patch-1",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-2",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-3",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-4",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-5",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-6",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-7",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-8",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-9",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-10",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-11",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-12",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-13",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-14",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-15",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-16",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-17",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-18",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-19",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-20",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-21",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-22",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "patch-23",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "configure",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "make",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "install",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-bootstrap",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-sentinel",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-api-launch",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-api-arm64",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-api-x64",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-api-i386",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-abi-arm64",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-lifetime-dll",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-missing-name-importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-missing-name-dll",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-missing-ordinal-importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-missing-ordinal-dll",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "disassemble-ntdll",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "disassemble-abi",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-stage4-arm64",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "disassemble-stage4",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "fixture-window-arm64",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "disassemble-window",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "fixture_suite": "mac-driver",
+      "input_record_sha256": {
+        "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+        "inputs_sha256": "d96ac4d6970d9f0c4964d7d17afb2cd7ef5cbb16d3c7fc92d9df96b14825965f",
+        "patch_series_sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086",
+        "source_prepared_sha256": "9f262d355f6148a66b3eefb74f3f0bee2f39f8168691aadfaeb02dabddf6b5bc",
+        "tool_prepared_sha256": "9512935ff92fe3600e8aa51539ed82be712e023d8a557dcaa1f7aa945a68f1d6",
+        "toolchain_lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc"
+      },
+      "metadata_container_count": 10,
+      "native_artifact_count": 38,
+      "ordered_patch_sha256": [
+        "3b209274fb06a5de8741704e4a805dcf4af58cbbe97f58ad041f4bf6e4b1b906",
+        "a01bb82c05c07be9d9d00a6aa41572e5124f6244e1b3b7a0e62cecc4355daa87",
+        "d9a812c69050850a502a0e9e688fbede6ae7047ce6ad597a266d631c4b7c712c",
+        "304944afa0acd069a3bf6db54a2977ce899da069605fa7a18997e388503c8f33",
+        "90ecb105025c83efe7d9996e3b77e2fa7d60c46bfc97bcf91b4764790e332cb9",
+        "b6aad691cd554330170db66350a2fea49cf802986f865ce8e6c6fc8c15699510",
+        "d3f4dba7deb7ca5747dd0e40d05db931b65cf9d264a1cae9ff4cab85277779e9",
+        "08fb5e8fd003eaf3156e730c5ba2864836aa62ca3cd2fee969ba3bc9623667db",
+        "d48e9f4ecda133477f1043222d843c9d5e517d60cbb145c58a5da93178950c26",
+        "8777fcbc444f14429e18beeff63cf8564fa6b5c0afe48a040c8c6fbe914f8f9b",
+        "3a7a98e9bb0726be8de5c038bf68006c2c9b5357c564395c06b2ed7c63ce5e15",
+        "db802cbeb24193400177dc29c353f9202b8a5c505e2a93508797292b4ae1707b",
+        "37f62bf4203fd4ad66bc04cf0586c1c162d35d916d7b4a0b806aeefc526a2e29",
+        "c07b3a1db6875f7e9d504a2feac51d21d2cbf4f65821ea6763a94ec2f6b674b8",
+        "fb2e97e8ed17ad67a0a4bf506e69ccb678bdefae5c9d6d72cdd8c3360e97f3f2",
+        "c726e97f2f24d4fe1fcec6695372827d7f55ffe3136cb44120d2d23c6ff00bcf",
+        "e5de5c68c62616065c353a79c53a803404a0471c84b9aeb223234d455b801d8a",
+        "2a80b367d3fe2b4f86dc5269c74a0dcf55323e0ba50c0e0a6f0618a26239ebb1",
+        "0af8fff4dffac4f380c970311e40c10a975d3c039a77a752224a606d97120e63",
+        "dd0e7e47ffc573e2bee1fb85ac1e37913d133da6bb60dbd5de47ac147b888bbb",
+        "8268f7c6699d56cf847a4f2056e84e2d292ae6dd2e56bf12712b7fe39506fcff",
+        "fc959d58be8994ba104e2bc4dfbaa0ee72d9dd1333d409a52e59b6574c18ae13",
+        "2733178e8b82b22a862e50c5ef2e840ced84525a1bb1828f5b066a5e84011b51"
+      ],
+      "patched_source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "pe_artifact_count": 755,
+      "variant": "arm64"
+    },
+    "distribution_qualified": false,
+    "game_execution": false,
+    "guest_x18_execution": true,
+    "host_observation": {
+      "architecture": "arm64",
+      "complete_load_timeline": false,
+      "scope": "validated_instrumented_process_and_loaded_image_snapshots",
+      "translated": false
+    },
+    "limits": [
+      "Same-host development execution of instrumented ARM64 fixtures only.",
+      "x64 and i386 controls were refused before execution; no guest translation or game claim follows.",
+      "The Mac-driver case covers twenty owned Win32/Cocoa lifetimes on the observed local graphical session.",
+      "No-late-callback checks end at the final main-thread barrier and event drain; normal process exit is verified separately.",
+      "Signals and suspension regressions cover only source-bound cooperative fixture windows.",
+      "Exception recovery and handler ordering do not establish general unwind support.",
+      "Native-created guest callback threads, arbitrary callbacks and concurrent code mutation remain unqualified.",
+      "Metal rendering, DXMT private-driver pairing and ordinary-user game launching remain unqualified.",
+      "Owned descendants retain the root process group; loaded-image snapshots are not a complete load timeline.",
+      "Per-process arena counters are observations, not performance measurements or a general JIT service.",
+      "Local paths, identities, signing materials, raw events and diagnostics are excluded."
+    ],
+    "pe_execution": true,
+    "producer_hashes": {
+      "assembly": {
+        "assembly_checker": "fa92d9707b3446f7bc806ec616a9a5637103922841b171b7659af307f6178d46",
+        "common": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+        "toolchain": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597"
+      },
+      "bootstrap_run": {
+        "bootstrap_cases": "e61a880c5d4b9b250e5f6048a08fbcc8a306c7c62198d43afdd6601a11b6f812",
+        "bootstrap_fixture": "83069424ceb5f44feefb78df4872157910202760c18b8b72c5b3c74e0a487fff",
+        "bootstrap_runner": "e6d79880e6fb46a20ed23f3966d3fa4139e2c78181a4ccf5e05f86e2ab87f688",
+        "sentinel_fixture": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6"
+      },
+      "build": {
+        "build_driver": "d367c3dde2223d4f4f1862302a7c3cb3a997f0376ff0cbcb329833d7c436c22e",
+        "common": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+        "input_preparer": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+        "toolchain": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597"
+      },
+      "signer": {
+        "common": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+        "signer": "4c643405fab8b42b369a360d8431fe667f0dc60dd24c703074ff09afdcf3b71b"
+      },
+      "stage5_run": {
+        "abi_gateway": "3b496ab4ff3303e91809bd69ed6fdedb8dfd308abd83abdc50f76a64ecf84ef5",
+        "abi_guest_fixture": "d8bfc5dc4a813b3fa219d312bc1b4b7fcd9f801d5dbb36001b24f8874a038769",
+        "abi_native_fixture": "80836d204a101c52f2921212f015ffe5089b8e06a8303b31d8b27b268ebd027c",
+        "api_cases": "153ceea6a23d2f123e2fb05e4f0368480740cfdb180c3bf4b600214497c88844",
+        "api_fixture": "00ce66bba9690a0c23f945ca447465639794ccca2e2e418777b2809ecd41e1d8",
+        "api_launch": "17eb0c0b848440f4b27345aa915c6131a3cccbf112ac862aabd506d229242487",
+        "api_runner": "ae59778c676b4d1e0d4a569809f149833e23814723357a379e9bf52138879a3d",
+        "assembly_checker": "fa92d9707b3446f7bc806ec616a9a5637103922841b171b7659af307f6178d46",
+        "bootstrap_runner": "e6d79880e6fb46a20ed23f3966d3fa4139e2c78181a4ccf5e05f86e2ab87f688",
+        "dynamic_validator": "d358c8f987297b94ba7938cc277f48b661169edf2d0400a714a914a47e6b1a0e",
+        "exception_validator": "db90c78f51f16d8747d751391b7cb8588ed9bda2dd0c4f3d57e6936cc2c99ded",
+        "exceptions_fixture": "417525919e9943fbfc278db6f8387799bf2b29eaf4c1b941e8eaa3e67ad09842",
+        "lifetime_fixture": "bffeacea94d65f70c56cefea190f15a0d0683bae0f0c2f3ee324ec871ee2d29a",
+        "lifetime_protocol": "3e7cdd47cf9b3ec0b007ea5adf7be7d94a6346faa2897021aa642368b541c2e6",
+        "memory_fixture": "dd764c9efde5221c0d3ef48531e9fee7e73a83a6ee86bf0787bbedf5ebb2b29d",
+        "missing_import_fixture": "5d8b432f0673d9b6cffb679c6b75eb1cf53d15a22dbd0fe5887232a1d94576d9",
+        "missing_named_import": "88a33f1edb4bfc417abfd2732552a92efe343d3b8ec9b36ea1c83bba2ba0d2c6",
+        "missing_ordinal_import": "c148f7f064c0be5a46777cd8d5ea7f03289e21f8fe4d0333267e16b43df818c7",
+        "pe_module_parser": "ee109f7934562082a4ed74c7c6f90beec75445adff042e2b8b9e82fef086225c",
+        "sentinel_fixture": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6",
+        "signal_native_fixture": "cadae5facb0185304e55daf363c8b1efd59d3a4969ca8908ab4b7d8a3c77b4f7",
+        "stage4_cases": "abceaf87b10776dc026e5cfa070a2528cd3dcb48633cfc90562692591a1baec6",
+        "stage4_protocol": "fed6aec99834a1960e3a4ef4e116879fb64a0d7b019d84300c7cd82022635555",
+        "stage5_cases": "46961be7947a011ceab37c981736f487af4cae6986118c2af0b40bfbe6e999c2",
+        "threads_fixture": "00e0c23d7d1babd54334d33fbcd3a12577200d0c16e244b80c6de77dbaad991d",
+        "threads_gateway": "fae78696858f5ee4ff9bf35260c948bc363eab06cff864e6cefe83dcf4867ed3",
+        "window_census_header": "2abc01e678e964c7d45c097f73ad6c2714ac65ae5c1e18453bf97d35786dd226",
+        "window_control_fixture": "2cb1c0da0f9eac5f1d8c63a24ed74a2e6ed0f37d6f8fdf0c5d718afece057a44",
+        "window_fixture": "a7210e570afca6c293f5c7f7d16c4dba2d36252da172c3423eadbf71f7deb3d5",
+        "window_native_fixture": "34124c67632916b0f9ef5437a3c8e874deec32ee242903c85ffade688cb00ed1",
+        "window_protocol": "bb2990f08bdf693b9223a7d1271723c2915fa87dface3fe39e8771c6f93201e5",
+        "window_validator": "210f86bdb19c791bd4f5e4aaa284c7645cb8002ee01f81f9ad83f1b1d95ee0d8"
+      }
+    },
+    "record_kind": "wine_stage5_observations",
+    "reviewed_source_hashes": {
+      "abi_gateway": "3b496ab4ff3303e91809bd69ed6fdedb8dfd308abd83abdc50f76a64ecf84ef5",
+      "abi_guest_fixture": "d8bfc5dc4a813b3fa219d312bc1b4b7fcd9f801d5dbb36001b24f8874a038769",
+      "abi_native_fixture": "80836d204a101c52f2921212f015ffe5089b8e06a8303b31d8b27b268ebd027c",
+      "api_cases": "153ceea6a23d2f123e2fb05e4f0368480740cfdb180c3bf4b600214497c88844",
+      "api_fixture": "00ce66bba9690a0c23f945ca447465639794ccca2e2e418777b2809ecd41e1d8",
+      "api_launch": "17eb0c0b848440f4b27345aa915c6131a3cccbf112ac862aabd506d229242487",
+      "api_runner": "ae59778c676b4d1e0d4a569809f149833e23814723357a379e9bf52138879a3d",
+      "assembly_checker": "fa92d9707b3446f7bc806ec616a9a5637103922841b171b7659af307f6178d46",
+      "bootstrap_cases": "e61a880c5d4b9b250e5f6048a08fbcc8a306c7c62198d43afdd6601a11b6f812",
+      "bootstrap_fixture": "83069424ceb5f44feefb78df4872157910202760c18b8b72c5b3c74e0a487fff",
+      "bootstrap_runner": "e6d79880e6fb46a20ed23f3966d3fa4139e2c78181a4ccf5e05f86e2ab87f688",
+      "build_driver": "d367c3dde2223d4f4f1862302a7c3cb3a997f0376ff0cbcb329833d7c436c22e",
+      "common": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+      "dynamic_validator": "d358c8f987297b94ba7938cc277f48b661169edf2d0400a714a914a47e6b1a0e",
+      "exception_validator": "db90c78f51f16d8747d751391b7cb8588ed9bda2dd0c4f3d57e6936cc2c99ded",
+      "exceptions_fixture": "417525919e9943fbfc278db6f8387799bf2b29eaf4c1b941e8eaa3e67ad09842",
+      "exporter": "d1d05966b5cca8188c6a98f28ae6acaedf452a7c6fa6854c4b4e2c1c4515460a",
+      "input_preparer": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+      "lifetime_fixture": "bffeacea94d65f70c56cefea190f15a0d0683bae0f0c2f3ee324ec871ee2d29a",
+      "lifetime_protocol": "3e7cdd47cf9b3ec0b007ea5adf7be7d94a6346faa2897021aa642368b541c2e6",
+      "memory_fixture": "dd764c9efde5221c0d3ef48531e9fee7e73a83a6ee86bf0787bbedf5ebb2b29d",
+      "missing_import_fixture": "5d8b432f0673d9b6cffb679c6b75eb1cf53d15a22dbd0fe5887232a1d94576d9",
+      "missing_named_import": "88a33f1edb4bfc417abfd2732552a92efe343d3b8ec9b36ea1c83bba2ba0d2c6",
+      "missing_ordinal_import": "c148f7f064c0be5a46777cd8d5ea7f03289e21f8fe4d0333267e16b43df818c7",
+      "pe_module_parser": "ee109f7934562082a4ed74c7c6f90beec75445adff042e2b8b9e82fef086225c",
+      "sentinel_fixture": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6",
+      "signal_native_fixture": "cadae5facb0185304e55daf363c8b1efd59d3a4969ca8908ab4b7d8a3c77b4f7",
+      "signer": "4c643405fab8b42b369a360d8431fe667f0dc60dd24c703074ff09afdcf3b71b",
+      "stage4_cases": "abceaf87b10776dc026e5cfa070a2528cd3dcb48633cfc90562692591a1baec6",
+      "stage4_exporter": "b91a2eac0ed9d00a23a5c0c2bcf778ebaef4aa82e2e1ba0c0729ccdfe4c54839",
+      "stage4_protocol": "fed6aec99834a1960e3a4ef4e116879fb64a0d7b019d84300c7cd82022635555",
+      "stage5_cases": "46961be7947a011ceab37c981736f487af4cae6986118c2af0b40bfbe6e999c2",
+      "stage5_exporter": "87bfc39e076c2a8a15047680ef4975e2bc712caa6216bc1f47982eef9421aac8",
+      "threads_fixture": "00e0c23d7d1babd54334d33fbcd3a12577200d0c16e244b80c6de77dbaad991d",
+      "threads_gateway": "fae78696858f5ee4ff9bf35260c948bc363eab06cff864e6cefe83dcf4867ed3",
+      "toolchain": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597",
+      "window_census_header": "2abc01e678e964c7d45c097f73ad6c2714ac65ae5c1e18453bf97d35786dd226",
+      "window_control_fixture": "2cb1c0da0f9eac5f1d8c63a24ed74a2e6ed0f37d6f8fdf0c5d718afece057a44",
+      "window_fixture": "a7210e570afca6c293f5c7f7d16c4dba2d36252da172c3423eadbf71f7deb3d5",
+      "window_native_fixture": "34124c67632916b0f9ef5437a3c8e874deec32ee242903c85ffade688cb00ed1",
+      "window_protocol": "bb2990f08bdf693b9223a7d1271723c2915fa87dface3fe39e8771c6f93201e5",
+      "window_validator": "210f86bdb19c791bd4f5e4aaa284c7645cb8002ee01f81f9ad83f1b1d95ee0d8"
+    },
+    "run_assessments": {
+      "bootstrap": {
+        "case_count": 3,
+        "cases": [
+          {
+            "actual_handshake": true,
+            "case_sha256": "bd8f48bb5d2d5cf8f6c99dd8ef8b1c1acf34a22dd34387668547f7cd6a6d1de6",
+            "cleanup_complete": true,
+            "expected": "bootstrap_stop",
+            "id": "bootstrap",
+            "native_process_count": 3,
+            "outcome": "exited",
+            "passed": true,
+            "reexecution_count": 1,
+            "sentinel_survived": true
+          },
+          {
+            "actual_handshake": true,
+            "case_sha256": "2666c257a2c3225ad7e0ef603d1dbc3bd1a99192dc20a7392752c86e00b706d6",
+            "cleanup_complete": true,
+            "expected": "timeout",
+            "id": "bootstrap-timeout",
+            "native_process_count": 3,
+            "outcome": "timeout",
+            "passed": true,
+            "reexecution_count": 1,
+            "sentinel_survived": true
+          },
+          {
+            "actual_handshake": false,
+            "case_sha256": "127bb24d309d8fb190d4d633e840ab26ce1ac92bcbdc91c11d92747894b74bed",
+            "cleanup_complete": true,
+            "expected": "server_refused",
+            "id": "wrong-prefix-server",
+            "native_process_count": 3,
+            "outcome": "exited",
+            "passed": true,
+            "reexecution_count": 1,
+            "sentinel_survived": true
+          }
+        ],
+        "passed": true,
+        "pe_executed": false,
+        "run_sha256": "008cf4a212215a8f2835586deffd5ace362b7a215b1aae0367a3c7c0c666377d"
+      },
+      "mac_driver": {
+        "case_count": 4,
+        "cases": [
+          {
+            "arena_observations": [
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 4,
+                "policy": "page-wx",
+                "publications": 6,
+                "published_code_pages": 306,
+                "published_data_pages": 2184,
+                "relocations": 725,
+                "retirements": 2,
+                "role": "loader"
+              },
+              {
+                "compatible_reuses": 20,
+                "live_images_at_last_observation": 27,
+                "policy": "page-wx",
+                "publications": 62,
+                "published_code_pages": 3744,
+                "published_data_pages": 31120,
+                "relocations": 28365,
+                "retirements": 35,
+                "role": "process-02"
+              },
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 20,
+                "policy": "page-wx",
+                "publications": 21,
+                "published_code_pages": 1344,
+                "published_data_pages": 9520,
+                "relocations": 8921,
+                "retirements": 1,
+                "role": "process-04"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-07"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-08"
+              },
+              {
+                "compatible_reuses": 8,
+                "live_images_at_last_observation": 40,
+                "policy": "page-wx",
+                "publications": 89,
+                "published_code_pages": 4560,
+                "published_data_pages": 41264,
+                "relocations": 60516,
+                "retirements": 49,
+                "role": "process-10"
+              },
+              {
+                "compatible_reuses": 4,
+                "live_images_at_last_observation": 33,
+                "policy": "page-wx",
+                "publications": 38,
+                "published_code_pages": 2048,
+                "published_data_pages": 17664,
+                "relocations": 17057,
+                "retirements": 5,
+                "role": "process-12"
+              },
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 4,
+                "policy": "page-wx",
+                "publications": 6,
+                "published_code_pages": 306,
+                "published_data_pages": 2184,
+                "relocations": 725,
+                "retirements": 2,
+                "role": "process-14"
+              }
+            ],
+            "case_sha256": "f461c3630d19ca18249d127f979c5870aa9bef10e1d019d7ff58e70d1ce1fe26",
+            "cleanup_complete": true,
+            "code_publication_policy": "page-wx",
+            "dynamic_observations": {
+              "dynamic_supported": true,
+              "game_qualified": false,
+              "policy": "page-wx",
+              "processes": [
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "loader",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-02",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-04",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-07",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-08",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-10",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-12",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-14",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                }
+              ],
+              "root": {
+                "budget_bytes": 524288,
+                "budget_verified": true,
+                "commits": 0,
+                "committed_pages": 0,
+                "compatible_reuses": 0,
+                "decommits": 0,
+                "decommitted_pages": 0,
+                "executable_publications": 0,
+                "live_allocations_at_last_observation": 0,
+                "protects": 0,
+                "releases": 0,
+                "reservations": 0,
+                "slot_bytes": 65536,
+                "slots": 8,
+                "writable_transitions": 0
+              },
+              "runtime_qualified": false
+            },
+            "environment_policy": {
+              "WINEDLLOVERRIDES": "mscoree=",
+              "clr_support": "disabled-for-native-fixtures",
+              "id": "native-api-abi-no-mono-v1",
+              "mono_support": "not-exercised",
+              "prefix_initialization": "fresh-wineboot",
+              "scope": "owned-api-abi-loader-and-descendants"
+            },
+            "fixture_results": [
+              {
+                "flags": [
+                  7
+                ],
+                "machines": [
+                  43620
+                ],
+                "record_kind": "pear_architecture_result",
+                "returned_bytes": 8,
+                "status": 0,
+                "terminator": 0,
+                "version": 1
+              },
+              {
+                "checks_bitmask": 15,
+                "child_exit": 0,
+                "error_step": 0,
+                "fnv1a64": "0000000000000000",
+                "record_kind": "pear_api_result",
+                "role": "child",
+                "version": 1,
+                "win32_error": 0
+              },
+              {
+                "checks_bitmask": 255,
+                "child_exit": 37,
+                "error_step": 0,
+                "fnv1a64": "eb776cf97e933998",
+                "record_kind": "pear_api_result",
+                "role": "parent",
+                "version": 1,
+                "win32_error": 0
+              }
+            ],
+            "id": "api",
+            "native_processes": 17,
+            "passed": true,
+            "pe_processes": 8,
+            "sentinel_survived": true
+          },
+          {
+            "arena_observations": [
+              {
+                "compatible_reuses": 37,
+                "live_images_at_last_observation": 4,
+                "policy": "page-wx",
+                "publications": 44,
+                "published_code_pages": 347,
+                "published_data_pages": 2407,
+                "relocations": 837,
+                "retirements": 40,
+                "role": "loader"
+              },
+              {
+                "compatible_reuses": 20,
+                "live_images_at_last_observation": 27,
+                "policy": "page-wx",
+                "publications": 62,
+                "published_code_pages": 3744,
+                "published_data_pages": 31120,
+                "relocations": 28365,
+                "retirements": 35,
+                "role": "process-02"
+              },
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 20,
+                "policy": "page-wx",
+                "publications": 21,
+                "published_code_pages": 1344,
+                "published_data_pages": 9520,
+                "relocations": 8921,
+                "retirements": 1,
+                "role": "process-04"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-07"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-08"
+              },
+              {
+                "compatible_reuses": 8,
+                "live_images_at_last_observation": 40,
+                "policy": "page-wx",
+                "publications": 89,
+                "published_code_pages": 4560,
+                "published_data_pages": 41264,
+                "relocations": 60516,
+                "retirements": 49,
+                "role": "process-10"
+              },
+              {
+                "compatible_reuses": 4,
+                "live_images_at_last_observation": 33,
+                "policy": "page-wx",
+                "publications": 38,
+                "published_code_pages": 2048,
+                "published_data_pages": 17664,
+                "relocations": 17057,
+                "retirements": 5,
+                "role": "process-12"
+              }
+            ],
+            "case_sha256": "b6c0df671f5d3e904fbde7af12ae69e5f60902a5bc9187a4670d7cb9e12eb5a6",
+            "cleanup_complete": true,
+            "code_publication_policy": "page-wx",
+            "dynamic_observations": {
+              "dynamic_supported": true,
+              "game_qualified": false,
+              "policy": "page-wx",
+              "processes": [
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "loader",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-02",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-04",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-07",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-08",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-10",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-12",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                }
+              ],
+              "root": {
+                "budget_bytes": 524288,
+                "budget_verified": true,
+                "commits": 0,
+                "committed_pages": 0,
+                "compatible_reuses": 0,
+                "decommits": 0,
+                "decommitted_pages": 0,
+                "executable_publications": 0,
+                "live_allocations_at_last_observation": 0,
+                "protects": 0,
+                "releases": 0,
+                "reservations": 0,
+                "slot_bytes": 65536,
+                "slots": 8,
+                "writable_transitions": 0
+              },
+              "runtime_qualified": false
+            },
+            "environment_policy": {
+              "WINEDLLOVERRIDES": "mscoree=",
+              "clr_support": "disabled-for-native-fixtures",
+              "id": "native-api-abi-no-mono-v1",
+              "mono_support": "not-exercised",
+              "prefix_initialization": "fresh-wineboot",
+              "scope": "owned-api-abi-loader-and-descendants"
+            },
+            "fixture_results": [
+              {
+                "code_pointer_checks": 4,
+                "copies": 2,
+                "data_pointer_checks": 4,
+                "error_step": 0,
+                "loads": 2,
+                "passed": true,
+                "probe_calls": 4,
+                "record_kind": "pear_relocation_result",
+                "retirements": 2,
+                "value_checks": 4,
+                "version": 1,
+                "win32_error": 0
+              },
+              {
+                "callback_holds": 32,
+                "callback_releases": 32,
+                "callback_unload_attempts": 32,
+                "compatible_reuses": 31,
+                "continuation_holds": 32,
+                "continuation_releases": 32,
+                "error_step": 0,
+                "failed_load_cleanup_checks": 2,
+                "held_mapping_checks": 32,
+                "loads": 32,
+                "named_import_status": 3221225785,
+                "ordinal_import_status": 3221225784,
+                "passed": true,
+                "record_kind": "pear_lifetime_result",
+                "rejected_imports": 2,
+                "retirements": 32,
+                "version": 1
+              },
+              {
+                "callbacks": 32,
+                "error_returns": 16,
+                "error_step": 0,
+                "frame_checks": 32,
+                "gateway_calls": 128,
+                "host_checks": 256,
+                "inactive_callback_status": 3221226072,
+                "native_calls": 128,
+                "nested_calls": 32,
+                "passed": true,
+                "record_kind": "pear_abi_result",
+                "register_failure_mask": 0,
+                "roundtrips": 64,
+                "teb_checks": 128,
+                "version": 1
+              }
+            ],
+            "id": "abi",
+            "native_processes": 15,
+            "passed": true,
+            "pe_processes": 7,
+            "relocation_observations": {
+              "code_targets_verified": true,
+              "copied_files_verified": 2,
+              "data_isolation_verified": true,
+              "distinct_bases": true,
+              "distinct_slots": true,
+              "fixture_sha256": "173e71d2d0fc810f0c19b4fbcfff44042ccfff3cf7669374b6dd2fa17fcde051",
+              "nonzero_deltas": true,
+              "original_pointer_rvas_verified": true,
+              "placements": 2,
+              "probe_calls_verified": 4,
+              "relocated_pointer_slots": 4,
+              "retirements_verified": 2,
+              "security_cookie_destination_verified": true,
+              "security_cookie_images": 2,
+              "security_cookie_initialized": true,
+              "security_cookie_load_config_verified": true,
+              "security_cookie_observations": 4,
+              "security_cookie_stable": true,
+              "simultaneous_live": true
+            },
+            "sentinel_survived": true
+          },
+          {
+            "arena_observations": [
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 4,
+                "policy": "page-wx",
+                "publications": 6,
+                "published_code_pages": 309,
+                "published_data_pages": 2185,
+                "relocations": 884,
+                "retirements": 2,
+                "role": "loader"
+              },
+              {
+                "compatible_reuses": 20,
+                "live_images_at_last_observation": 27,
+                "policy": "page-wx",
+                "publications": 62,
+                "published_code_pages": 3744,
+                "published_data_pages": 31120,
+                "relocations": 28365,
+                "retirements": 35,
+                "role": "process-02"
+              },
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 20,
+                "policy": "page-wx",
+                "publications": 21,
+                "published_code_pages": 1344,
+                "published_data_pages": 9520,
+                "relocations": 8921,
+                "retirements": 1,
+                "role": "process-04"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-07"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-08"
+              },
+              {
+                "compatible_reuses": 8,
+                "live_images_at_last_observation": 40,
+                "policy": "page-wx",
+                "publications": 89,
+                "published_code_pages": 4560,
+                "published_data_pages": 41264,
+                "relocations": 60516,
+                "retirements": 49,
+                "role": "process-10"
+              },
+              {
+                "compatible_reuses": 4,
+                "live_images_at_last_observation": 33,
+                "policy": "page-wx",
+                "publications": 38,
+                "published_code_pages": 2048,
+                "published_data_pages": 17664,
+                "relocations": 17057,
+                "retirements": 5,
+                "role": "process-12"
+              },
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 4,
+                "policy": "page-wx",
+                "publications": 6,
+                "published_code_pages": 309,
+                "published_data_pages": 2185,
+                "relocations": 884,
+                "retirements": 2,
+                "role": "process-14"
+              }
+            ],
+            "case_sha256": "4e466356cd3b0e6a02cff67f80cefaad4fd5258ec2a95e9658a64cde34fa6318",
+            "cleanup_complete": true,
+            "code_publication_policy": "page-wx",
+            "dynamic_observations": {
+              "dynamic_supported": true,
+              "game_qualified": false,
+              "policy": "page-wx",
+              "processes": [
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 3,
+                  "committed_pages": 3,
+                  "compatible_reuses": 1,
+                  "decommits": 3,
+                  "decommitted_pages": 3,
+                  "executable_publications": 2,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 3,
+                  "releases": 2,
+                  "reservations": 2,
+                  "role": "loader",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 4
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-02",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-04",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-07",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-08",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-10",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-12",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-14",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                }
+              ],
+              "root": {
+                "budget_bytes": 524288,
+                "budget_verified": true,
+                "commits": 3,
+                "committed_pages": 3,
+                "compatible_reuses": 1,
+                "decommits": 3,
+                "decommitted_pages": 3,
+                "executable_publications": 2,
+                "live_allocations_at_last_observation": 0,
+                "protects": 3,
+                "releases": 2,
+                "reservations": 2,
+                "slot_bytes": 65536,
+                "slots": 8,
+                "writable_transitions": 4
+              },
+              "runtime_qualified": false
+            },
+            "environment_policy": {
+              "WINEDLLOVERRIDES": "mscoree=",
+              "clr_support": "disabled-for-native-fixtures",
+              "id": "native-api-abi-no-mono-v1",
+              "mono_support": "not-exercised",
+              "prefix_initialization": "fresh-wineboot",
+              "scope": "owned-api-abi-loader-and-descendants"
+            },
+            "fixture_results": [
+              {
+                "access_faults": 2,
+                "code_calls": 2,
+                "dynamic_commits": 3,
+                "dynamic_decommits": 1,
+                "dynamic_protects": 3,
+                "dynamic_releases": 2,
+                "dynamic_reserves": 2,
+                "error_code": 0,
+                "error_step": 0,
+                "first_value": 42,
+                "flushes": 2,
+                "guard_faults": 1,
+                "negative_controls": 3,
+                "ordinary_commits": 2,
+                "ordinary_decommits": 1,
+                "ordinary_protects": 3,
+                "ordinary_releases": 1,
+                "queries": 22,
+                "record_kind": "pear_memory_result",
+                "reuse_checks": 1,
+                "second_value": 84,
+                "sentinel_checks": 4,
+                "version": 1,
+                "zero_bytes": 28672
+              },
+              {
+                "child_passed": 1,
+                "error_step": 0,
+                "exceptions_status": 0,
+                "handlers_removed": 1,
+                "injected_errors": 2,
+                "memory_status": 0,
+                "passed": 1,
+                "record_kind": "pear_stage4_result",
+                "signals": 2,
+                "suspends": 1,
+                "version": 1,
+                "win32_error": 0,
+                "workers": 2,
+                "workers_cleaned": 1
+              }
+            ],
+            "id": "threads",
+            "native_processes": 17,
+            "passed": true,
+            "pe_processes": 8,
+            "sentinel_survived": true,
+            "thread_memory_exception_observations": {
+              "access_faults_recovered": 3,
+              "controlled_fault_terminations": 1,
+              "controlled_native_exit": 5,
+              "controlled_suspensions": 1,
+              "controlled_windows_exit": 3221225477,
+              "dynamic_owner": {
+                "dynamic_supported": true,
+                "game_qualified": false,
+                "policy": "page-wx",
+                "processes": [
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 3,
+                    "committed_pages": 3,
+                    "compatible_reuses": 1,
+                    "decommits": 3,
+                    "decommitted_pages": 3,
+                    "executable_publications": 2,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 3,
+                    "releases": 2,
+                    "reservations": 2,
+                    "role": "loader",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 4
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-02",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-04",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-07",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-08",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-10",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-12",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  },
+                  {
+                    "budget_bytes": 524288,
+                    "budget_verified": true,
+                    "commits": 0,
+                    "committed_pages": 0,
+                    "compatible_reuses": 0,
+                    "decommits": 0,
+                    "decommitted_pages": 0,
+                    "executable_publications": 0,
+                    "live_allocations_at_last_observation": 0,
+                    "protects": 0,
+                    "releases": 0,
+                    "reservations": 0,
+                    "role": "process-14",
+                    "slot_bytes": 65536,
+                    "slots": 8,
+                    "writable_transitions": 0
+                  }
+                ],
+                "root": {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 3,
+                  "committed_pages": 3,
+                  "compatible_reuses": 1,
+                  "decommits": 3,
+                  "decommitted_pages": 3,
+                  "executable_publications": 2,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 3,
+                  "releases": 2,
+                  "reservations": 2,
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 4
+                },
+                "runtime_qualified": false
+              },
+              "dynamic_results": [
+                42,
+                84
+              ],
+              "fixture_sha256": "ccc6742ac6f675bc76a38a23340828be3f8cac0a33a75408b7331a830b0a0a85",
+              "guard_faults_retried": 1,
+              "guest_signals": 1,
+              "handler_order_checks": 6,
+              "host_signals": 1,
+              "memory_result": {
+                "access_faults": 2,
+                "code_calls": 2,
+                "dynamic_commits": 3,
+                "dynamic_decommits": 1,
+                "dynamic_protects": 3,
+                "dynamic_releases": 2,
+                "dynamic_reserves": 2,
+                "error_code": 0,
+                "error_step": 0,
+                "first_value": 42,
+                "flushes": 2,
+                "guard_faults": 1,
+                "negative_controls": 3,
+                "ordinary_commits": 2,
+                "ordinary_decommits": 1,
+                "ordinary_protects": 3,
+                "ordinary_releases": 1,
+                "queries": 22,
+                "reuse_checks": 1,
+                "second_value": 84,
+                "sentinel_checks": 4,
+                "zero_bytes": 28672
+              },
+              "native_anchor_parts": 34,
+              "native_fixture_library_sha256": "585f23ce2176481eb019141686674a76752f02ac20a62f3c487e9ecc42912aa7",
+              "software_exceptions": 1,
+              "tls_teb_isolation": true,
+              "unqualified": [
+                "general_unwinding",
+                "arbitrary_asynchronous_suspension",
+                "native_created_callback_thread",
+                "x64_guest_translation",
+                "game_execution",
+                "general_jit_service"
+              ],
+              "workers": 2
+            }
+          },
+          {
+            "arena_observations": [
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 14,
+                "policy": "page-wx",
+                "publications": 16,
+                "published_code_pages": 994,
+                "published_data_pages": 6694,
+                "relocations": 4184,
+                "retirements": 2,
+                "role": "loader"
+              },
+              {
+                "compatible_reuses": 20,
+                "live_images_at_last_observation": 27,
+                "policy": "page-wx",
+                "publications": 62,
+                "published_code_pages": 3744,
+                "published_data_pages": 31120,
+                "relocations": 28365,
+                "retirements": 35,
+                "role": "process-02"
+              },
+              {
+                "compatible_reuses": 1,
+                "live_images_at_last_observation": 20,
+                "policy": "page-wx",
+                "publications": 21,
+                "published_code_pages": 1344,
+                "published_data_pages": 9520,
+                "relocations": 8921,
+                "retirements": 1,
+                "role": "process-04"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-07"
+              },
+              {
+                "compatible_reuses": 0,
+                "live_images_at_last_observation": 21,
+                "policy": "page-wx",
+                "publications": 22,
+                "published_code_pages": 1424,
+                "published_data_pages": 12384,
+                "relocations": 11164,
+                "retirements": 1,
+                "role": "process-08"
+              },
+              {
+                "compatible_reuses": 8,
+                "live_images_at_last_observation": 40,
+                "policy": "page-wx",
+                "publications": 89,
+                "published_code_pages": 4560,
+                "published_data_pages": 41264,
+                "relocations": 60516,
+                "retirements": 49,
+                "role": "process-10"
+              },
+              {
+                "compatible_reuses": 4,
+                "live_images_at_last_observation": 33,
+                "policy": "page-wx",
+                "publications": 38,
+                "published_code_pages": 2048,
+                "published_data_pages": 17664,
+                "relocations": 17057,
+                "retirements": 5,
+                "role": "process-12"
+              }
+            ],
+            "case_sha256": "8af4491ba06d8cc2abb4422c459eda0900120718bfa0b3b9120248a6b1edafe8",
+            "cleanup_complete": true,
+            "code_publication_policy": "page-wx",
+            "dynamic_observations": {
+              "dynamic_supported": true,
+              "game_qualified": false,
+              "policy": "page-wx",
+              "processes": [
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "loader",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-02",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-04",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-07",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-08",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-10",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                },
+                {
+                  "budget_bytes": 524288,
+                  "budget_verified": true,
+                  "commits": 0,
+                  "committed_pages": 0,
+                  "compatible_reuses": 0,
+                  "decommits": 0,
+                  "decommitted_pages": 0,
+                  "executable_publications": 0,
+                  "live_allocations_at_last_observation": 0,
+                  "protects": 0,
+                  "releases": 0,
+                  "reservations": 0,
+                  "role": "process-12",
+                  "slot_bytes": 65536,
+                  "slots": 8,
+                  "writable_transitions": 0
+                }
+              ],
+              "root": {
+                "budget_bytes": 524288,
+                "budget_verified": true,
+                "commits": 0,
+                "committed_pages": 0,
+                "compatible_reuses": 0,
+                "decommits": 0,
+                "decommitted_pages": 0,
+                "executable_publications": 0,
+                "live_allocations_at_last_observation": 0,
+                "protects": 0,
+                "releases": 0,
+                "reservations": 0,
+                "slot_bytes": 65536,
+                "slots": 8,
+                "writable_transitions": 0
+              },
+              "runtime_qualified": false
+            },
+            "environment_policy": {
+              "WINEDLLOVERRIDES": "mscoree=",
+              "clr_support": "disabled-for-native-fixtures",
+              "id": "native-api-abi-no-mono-v1",
+              "mono_support": "not-exercised",
+              "prefix_initialization": "fresh-wineboot",
+              "scope": "owned-api-abi-loader-and-descendants"
+            },
+            "fixture_results": [
+              {
+                "app_messages": 20,
+                "class_registered": 1,
+                "class_unregistered": 1,
+                "cleanup_complete": 1,
+                "closes": 20,
+                "cycles": 20,
+                "destroys": 20,
+                "error_code": 0,
+                "error_step": 0,
+                "late_callbacks": 0,
+                "native_final": 1,
+                "ncdestroys": 20,
+                "passed": 1,
+                "record_kind": "pear_window_result",
+                "reentries": 20,
+                "version": 1
+              }
+            ],
+            "id": "window",
+            "native_processes": 15,
+            "passed": true,
+            "pe_processes": 7,
+            "sentinel_survived": true,
+            "window_observations": {
+              "active_windows_at_completion": 0,
+              "appkit_event_turns": 153,
+              "application_messages": 20,
+              "callback_reentries": 20,
+              "cocoa_close_events": 20,
+              "cycles": 20,
+              "deallocated_windows": 20,
+              "destroyed_windows": 20,
+              "driver_pe_sha256": "61e886d617fb2311b09c9853a08182d42f229cd3991a8d963f0ec9fef45cd542",
+              "event_drains": 173,
+              "final_queue_idle_verified": true,
+              "fixture_sha256": "6bd9631d72ec87bd7a238ef2ec70c156813b54b2d601d0ba835538c7d09b03e2",
+              "loaded_appkit_verified": true,
+              "loaded_corefoundation_verified": true,
+              "loaded_driver_verified": true,
+              "main_thread_barriers": 173,
+              "native_anchor_parts": 1831,
+              "native_driver_sha256": "5c7cbefdcdcf6d0e63435a14e826ab34d4fcddfa8edf7f794fa1aab4ef7ba7bb",
+              "native_image_snapshot_count": 615,
+              "native_main_thread_verified": true,
+              "observation_scope": "twenty_owned_lifetimes_through_final_barrier",
+              "observed_late_callbacks": 0,
+              "pending_owned_events_at_completion": 0,
+              "unqualified": [
+                "metal_rendering",
+                "dxmt_driver_pairing",
+                "general_callbacks",
+                "native_created_guest_callback_thread",
+                "x64_guest_translation",
+                "game_execution",
+                "ordinary_user_distribution"
+              ],
+              "wine_callback_thread_verified": true
+            }
+          }
+        ],
+        "controls": [
+          {
+            "accepted": false,
+            "executed": false,
+            "machine": "x86_64",
+            "reason": "translator-not-qualified-for-target",
+            "role": "x64_control",
+            "sha256": "73941632afd3dff70c7766fcc67fb3b9f67be61695c756c8ddef12bbff4be2ea"
+          },
+          {
+            "accepted": false,
+            "executed": false,
+            "machine": "i386",
+            "reason": "translator-not-qualified-for-target",
+            "role": "i386_control",
+            "sha256": "6cf1e1739fe87cf001993834473e376f3416ab17c71c3813241276e4c76ea676"
+          }
+        ],
+        "passed": true,
+        "run_sha256": "e53d36ee00ba31252bd9a47c17b1a3dc7141a6085d0eecc1c3fbbc8d63b156be"
+      }
+    },
+    "runtime_qualified": false,
+    "schema_version": 1,
+    "scope": "instrumented_arm64_windows_mac_driver_fixtures",
+    "sdk": {
+      "canonical_name": "macosx26.5",
+      "settings_sha256": "f8d005f09381389167f9e0aeaa169bc9e7dff162ef22ca2fd8e98df7ff1acafe",
+      "version": "26.5"
+    },
+    "signed_sha256": "e1b99402ed15b84a03fe27ef1403974a338812a2508618761dc89f9d9f487764",
+    "signing_validation": {
+      "allow_jit_scope": "wine-loader-only",
+      "current_validation_passed": true,
+      "execution_scope": "development_windows_mac_driver_fixtures",
+      "hardened_runtime": true,
+      "library_validation": "enabled",
+      "loader_signature_page_bytes": 4096,
+      "native_images_signed": 38,
+      "native_role_counts": {
+        "api-launch-helper": 1,
+        "bootstrap-helper": 1,
+        "native-helper": 6,
+        "native-library": 26,
+        "sentinel": 1,
+        "wine-loader": 1,
+        "wine-server": 1,
+        "wine-wrapper": 1
+      },
+      "ordinary_user_distribution_qualified": false
+    },
+    "translator_execution": false,
+    "unqualified": [
+      "general_unwinding",
+      "arbitrary_asynchronous_suspension",
+      "native_created_callback_thread",
+      "x64_guest_translation",
+      "game_execution",
+      "general_jit_service",
+      "metal_rendering",
+      "dxmt_driver_pairing",
+      "general_callbacks",
+      "native_created_guest_callback_thread",
+      "ordinary_user_distribution"
+    ]
+  },
+  "native_rebuild_count": 2,
+  "operations": [
+    {
+      "id": "prepare_inputs",
+      "record_sha256": "9f262d355f6148a66b3eefb74f3f0bee2f39f8168691aadfaeb02dabddf6b5bc",
+      "status": "passed"
+    },
+    {
+      "id": "toolchain_check",
+      "record_sha256": "0b0b3b1041638051b79c4e8a5fde8f8f9a1f2b2c4c132dcc0fa724f29b49d937",
+      "status": "passed"
+    },
+    {
+      "id": "native_arena",
+      "record_sha256": "2e47917896d2a1d0aeca73f42c047f619a4883d11f44c2e6649d75b279e84f6f",
+      "status": "passed"
+    },
+    {
+      "id": "native_reference_build",
+      "record_sha256": "2d824a65849954543ef87124a888bf4cca8d87b370257bcacff30483023e12e9",
+      "status": "passed"
+    },
+    {
+      "id": "native_reference_modules",
+      "record_sha256": "8c6517344e34e96f8b9c2e16dc4f22fda11ee9c113f79c779dbe2cbfff0b5023",
+      "status": "passed"
+    },
+    {
+      "id": "native_build",
+      "record_sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb",
+      "status": "passed"
+    },
+    {
+      "id": "native_modules",
+      "record_sha256": "3342ba3946e7a4b81d44f29db98befa0901f13830c6e5d5c125602eb50c0435d",
+      "status": "passed"
+    },
+    {
+      "id": "native_abi",
+      "record_sha256": "e36fb4587742459598f71cc72ec7e9b9af90e963de8f0b32abfe43dabeeef284",
+      "status": "passed"
+    },
+    {
+      "id": "companion_build",
+      "record_sha256": "d71d69ab5b5612d33b5fd73997d1e38f09b2a72a9625cd9c954817bbf05c77ad",
+      "status": "passed"
+    },
+    {
+      "id": "companion_modules",
+      "record_sha256": "1a87fcb537dea3e5e21dd21d30d6e650c2c553786e79bdfd8eec61d25c2332dc",
+      "status": "passed"
+    },
+    {
+      "id": "unsigned_compare",
+      "record_sha256": "5ddb7ee59e41beee1c334ef33ffd36b8d2094fd4bc3e2720f85e5373be41bec1",
+      "status": "passed"
+    },
+    {
+      "id": "signing",
+      "record_sha256": "e1b99402ed15b84a03fe27ef1403974a338812a2508618761dc89f9d9f487764",
+      "status": "passed"
+    },
+    {
+      "id": "bootstrap",
+      "record_sha256": "008cf4a212215a8f2835586deffd5ace362b7a215b1aae0367a3c7c0c666377d",
+      "status": "passed"
+    },
+    {
+      "id": "mac_driver",
+      "record_sha256": "e53d36ee00ba31252bd9a47c17b1a3dc7141a6085d0eecc1c3fbbc8d63b156be",
+      "status": "passed"
+    }
+  ],
+  "producer_sha256": {
+    "abi_gateway": "3b496ab4ff3303e91809bd69ed6fdedb8dfd308abd83abdc50f76a64ecf84ef5",
+    "abi_guest_fixture": "d8bfc5dc4a813b3fa219d312bc1b4b7fcd9f801d5dbb36001b24f8874a038769",
+    "abi_native_fixture": "80836d204a101c52f2921212f015ffe5089b8e06a8303b31d8b27b268ebd027c",
+    "api_cases": "153ceea6a23d2f123e2fb05e4f0368480740cfdb180c3bf4b600214497c88844",
+    "api_fixture": "00ce66bba9690a0c23f945ca447465639794ccca2e2e418777b2809ecd41e1d8",
+    "api_launch": "17eb0c0b848440f4b27345aa915c6131a3cccbf112ac862aabd506d229242487",
+    "api_runner": "ae59778c676b4d1e0d4a569809f149833e23814723357a379e9bf52138879a3d",
+    "assembly_checker": "fa92d9707b3446f7bc806ec616a9a5637103922841b171b7659af307f6178d46",
+    "bootstrap_cases": "e61a880c5d4b9b250e5f6048a08fbcc8a306c7c62198d43afdd6601a11b6f812",
+    "bootstrap_fixture": "83069424ceb5f44feefb78df4872157910202760c18b8b72c5b3c74e0a487fff",
+    "bootstrap_runner": "e6d79880e6fb46a20ed23f3966d3fa4139e2c78181a4ccf5e05f86e2ab87f688",
+    "build_driver": "d367c3dde2223d4f4f1862302a7c3cb3a997f0376ff0cbcb329833d7c436c22e",
+    "common": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+    "dynamic_validator": "d358c8f987297b94ba7938cc277f48b661169edf2d0400a714a914a47e6b1a0e",
+    "exception_validator": "db90c78f51f16d8747d751391b7cb8588ed9bda2dd0c4f3d57e6936cc2c99ded",
+    "exceptions_fixture": "417525919e9943fbfc278db6f8387799bf2b29eaf4c1b941e8eaa3e67ad09842",
+    "exporter": "d1d05966b5cca8188c6a98f28ae6acaedf452a7c6fa6854c4b4e2c1c4515460a",
+    "hardened_signature_validator": "e10c985de82a93b852e8a6204c94f9877628f3cc49760b5c39d771635130947a",
+    "input_and_variant_validator": "d75b0fdd83d8d54963e827d5fb9c46ef0f34f417d9dae23ae42271e667f0b7bd",
+    "input_preparer": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+    "lifetime_fixture": "bffeacea94d65f70c56cefea190f15a0d0683bae0f0c2f3ee324ec871ee2d29a",
+    "lifetime_protocol": "3e7cdd47cf9b3ec0b007ea5adf7be7d94a6346faa2897021aa642368b541c2e6",
+    "memory_fixture": "dd764c9efde5221c0d3ef48531e9fee7e73a83a6ee86bf0787bbedf5ebb2b29d",
+    "missing_import_fixture": "5d8b432f0673d9b6cffb679c6b75eb1cf53d15a22dbd0fe5887232a1d94576d9",
+    "missing_named_import": "88a33f1edb4bfc417abfd2732552a92efe343d3b8ec9b36ea1c83bba2ba0d2c6",
+    "missing_ordinal_import": "c148f7f064c0be5a46777cd8d5ea7f03289e21f8fe4d0333267e16b43df818c7",
+    "module_validator": "ee109f7934562082a4ed74c7c6f90beec75445adff042e2b8b9e82fef086225c",
+    "native_arena_fixture": "9ecba29acd56c2957cf80deaaacb5d670e5e821fcc637a9fcd7744691dffffe3",
+    "native_arena_probe": "1656597ed17f6790dd7fccafb9abbc1c60ab39655f7eedc5b546119a76bb1d32",
+    "native_arena_receipt_reader": "2d7234e677c03c8f2a850d91919aaa645402a8ddb07b06afb51fc719de812d01",
+    "native_arena_reconstruction": "02052ca44e3db566849fac2d4d7cddb5ae40b405fcc5922d5e23c265334e53e8",
+    "pe_module_parser": "ee109f7934562082a4ed74c7c6f90beec75445adff042e2b8b9e82fef086225c",
+    "prerequisite_toolchain_lock": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+    "profile_validator": "47f49422f4d6ccefb2826690a562d4d829c007d2c5a96fc156c86f7d446e2ee3",
+    "reproduction_coordinator": "a10d9916b17643370dac117672c7f79f0ec32119c3390db0a21b4b3a8bbf80d8",
+    "reproduction_validator": "75da2e75754b03c83714d4a4980cd4f0264a16ba7d9199904f19087a968297a6",
+    "sentinel_fixture": "8b2d609fc44e6b86ba9e139988747fefbd477bf6664032bc18f0f372b1b3f6a6",
+    "signal_native_fixture": "cadae5facb0185304e55daf363c8b1efd59d3a4969ca8908ab4b7d8a3c77b4f7",
+    "signer": "4c643405fab8b42b369a360d8431fe667f0dc60dd24c703074ff09afdcf3b71b",
+    "source_inventory_validator": "a851ee6978002a4e45934b91e4abdfe0151d73178e862e45b2b0824a4e0b3710",
+    "stage4_cases": "abceaf87b10776dc026e5cfa070a2528cd3dcb48633cfc90562692591a1baec6",
+    "stage4_exporter": "b91a2eac0ed9d00a23a5c0c2bcf778ebaef4aa82e2e1ba0c0729ccdfe4c54839",
+    "stage4_protocol": "fed6aec99834a1960e3a4ef4e116879fb64a0d7b019d84300c7cd82022635555",
+    "stage5_cases": "46961be7947a011ceab37c981736f487af4cae6986118c2af0b40bfbe6e999c2",
+    "stage5_exporter": "87bfc39e076c2a8a15047680ef4975e2bc712caa6216bc1f47982eef9421aac8",
+    "threads_fixture": "00e0c23d7d1babd54334d33fbcd3a12577200d0c16e244b80c6de77dbaad991d",
+    "threads_gateway": "fae78696858f5ee4ff9bf35260c948bc363eab06cff864e6cefe83dcf4867ed3",
+    "toolchain": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597",
+    "unsigned_comparator": "65b6ce8bab71ecb4f6af5e5e68f98fd23f921f093a80e4fc300abd182a43fb62",
+    "window_census_header": "2abc01e678e964c7d45c097f73ad6c2714ac65ae5c1e18453bf97d35786dd226",
+    "window_control_fixture": "2cb1c0da0f9eac5f1d8c63a24ed74a2e6ed0f37d6f8fdf0c5d718afece057a44",
+    "window_fixture": "a7210e570afca6c293f5c7f7d16c4dba2d36252da172c3423eadbf71f7deb3d5",
+    "window_native_fixture": "34124c67632916b0f9ef5437a3c8e874deec32ee242903c85ffade688cb00ed1",
+    "window_protocol": "bb2990f08bdf693b9223a7d1271723c2915fa87dface3fe39e8771c6f93201e5",
+    "window_validator": "210f86bdb19c791bd4f5e4aaa284c7645cb8002ee01f81f9ad83f1b1d95ee0d8"
+  },
+  "record_kind": "wine_stage6_observations",
+  "reproduction_passed": true,
+  "reproduction_sha256": "fb39c578ae50030703b10ca718af63e76786c42bc02ffc231d4e0b4f40fdffff",
+  "runtime_qualified": false,
+  "same_host": true,
+  "schema_version": 1,
+  "scope": "same_host_fresh_wine_component_reproduction",
+  "source": {
+    "archive_sha256": "f5d89a11b33ca5db93576d8e53fd3bbe86d68f18a3d711ef5e21ed994bf8c662",
+    "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "manifest_sha256": "f83d84967b58dbb5622a56bee2ad4390d95c95fb9cf2a6e29dcc790b45fce988",
+    "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892"
+  },
+  "source_argument_policy": "stable_relative_v1",
+  "source_rematerialized": true,
+  "start_sha256": "550e17fcf33e21689b5ed759ea36c7e6e781a4e0bded4df20bdea92161cdd6ff",
+  "tool_cache": {
+    "checks_passed": 34,
+    "commands_passed": 58,
+    "fresh_feature_check_sha256": "0b0b3b1041638051b79c4e8a5fde8f8f9a1f2b2c4c132dcc0fa724f29b49d937",
+    "independently_rebuilt": false,
+    "prepared_sha256": "9512935ff92fe3600e8aa51539ed82be712e023d8a557dcaa1f7aa945a68f1d6",
+    "reused": true
+  },
+  "translator_execution": false,
+  "unsigned_comparison": {
+    "byte_identity": false,
+    "candidate_build_sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb",
+    "candidate_files": 2729,
+    "candidate_inventory_sha256": "15f6021af281269baac31437445369d0b28bd3c89e9329989db962b0edb852d9",
+    "comparison_sha256": "5ddb7ee59e41beee1c334ef33ffd36b8d2094fd4bc3e2720f85e5373be41bec1",
+    "exact_files": 1959,
+    "explained_metadata_files": 770,
+    "extra_files": 0,
+    "gate_passed": true,
+    "metadata_changed_files": 0,
+    "missing_files": 0,
+    "policy_ids": [
+      "coff-timestamp-field",
+      "pe-debug-timestamp-field",
+      "pe-codeview-guid-field",
+      "recorded-build-path-string",
+      "wine-generated-source-banner",
+      "macho-linker-uuid-field",
+      "macho-verified-adhoc-page-hash",
+      "coff-bound-symbol-string-table",
+      "coff-verified-section-checksum",
+      "coff-bound-archive-symbol-index",
+      "coff-verified-debug-string-reference"
+    ],
+    "reference_build_sha256": "2d824a65849954543ef87124a888bf4cca8d87b370257bcacff30483023e12e9",
+    "reference_files": 2729,
+    "reference_inventory_sha256": "8427cfc67bf65596075c2111f127c9cd1a0a1ba7360428c9b0fb97231d78a4da",
+    "signed_byte_identity_claimed": false,
+    "symlinks_equal": true,
+    "unexplained_files": 0
+  },
+  "variants": [
+    {
+      "build_sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb",
+      "commands_passed": 44,
+      "host_architecture": "arm64",
+      "installed_manifest_sha256": "15f6021af281269baac31437445369d0b28bd3c89e9329989db962b0edb852d9",
+      "module_inventory_sha256": "3342ba3946e7a4b81d44f29db98befa0901f13830c6e5d5c125602eb50c0435d",
+      "native_artifact_count": 38,
+      "pe_artifact_count": 755,
+      "pe_machine_counts": {
+        "332": 1,
+        "34404": 1,
+        "43620": 753
+      },
+      "selected_modules": [
+        {
+          "export_count": 1479,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "ntdll.dll",
+          "sha256": "dbd0f1cc4e48be6bbddfc81451cd2adcbcf56c15f2c7b97632b3700418bdfb50"
+        },
+        {
+          "export_count": 1355,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "kernel32.dll",
+          "sha256": "2c0ceceed46e37f9afe2ed068d10b8942b5335af4ce709848130d550b164154d"
+        },
+        {
+          "export_count": 1428,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "kernelbase.dll",
+          "sha256": "108871c0fcc5d8d7b4862a7c763532dba3fbcef48aa3670a225e13437fecd895"
+        },
+        {
+          "export_count": 1540,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "win32u.dll",
+          "sha256": "2b10cfc2bab4de62ed6ceab101c39b522b87758af34391631a0b68a4815f1838"
+        },
+        {
+          "export_count": 1,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "winemac.drv",
+          "sha256": "61e886d617fb2311b09c9853a08182d42f229cd3991a8d963f0ec9fef45cd542"
+        },
+        {
+          "export_count": 0,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "wineboot.exe",
+          "sha256": "14732c269d535bd0af39705a9f5cf23a314cc799c934e770e1e2a21079f15887"
+        },
+        {
+          "export_count": 28,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "wow64.dll",
+          "sha256": "7b24a3bc1cecd6938eb3a65b05770af65163797a967daf36eab939cd2c48f1c4"
+        }
+      ],
+      "source_argument_policy": "stable_relative_v1",
+      "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "variant": "arm64",
+      "wine_runtime_executed": true
+    },
+    {
+      "build_sha256": "d71d69ab5b5612d33b5fd73997d1e38f09b2a72a9625cd9c954817bbf05c77ad",
+      "commands_passed": 44,
+      "host_architecture": "arm64",
+      "installed_manifest_sha256": "2043ecc6a3310ed8044ba93936694330f7d16557407eac626d244fea037462a6",
+      "module_inventory_sha256": "1a87fcb537dea3e5e21dd21d30d6e650c2c553786e79bdfd8eec61d25c2332dc",
+      "native_artifact_count": 38,
+      "pe_artifact_count": 758,
+      "pe_machine_counts": {
+        "332": 1,
+        "34404": 4,
+        "43620": 753
+      },
+      "selected_modules": [
+        {
+          "export_count": 1479,
+          "hybrid_metadata_required": true,
+          "machine": 43620,
+          "module": "ntdll.dll",
+          "sha256": "280df528a4835d98a7c5c562540841ec6228958e918aa3e5fcb4b41a10f60325"
+        },
+        {
+          "export_count": 1355,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "kernel32.dll",
+          "sha256": "f432341e35c747ab063a00d9ccb42fa3a5414f53ac6c4d77542e5bb863786a77"
+        },
+        {
+          "export_count": 1428,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "kernelbase.dll",
+          "sha256": "6f0ff409b24dc326a29a24eec212dba860d1adcbba52265918413d4439fc1496"
+        },
+        {
+          "export_count": 1540,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "win32u.dll",
+          "sha256": "b12b1507d5ad5bc7d5d51cd3f198162707a849028e0e4301adda64ec4aede0fe"
+        },
+        {
+          "export_count": 1,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "winemac.drv",
+          "sha256": "aa276b6c18d1815e3681d38a788f5dfa7bc967fdb55c28865390451796010f7c"
+        },
+        {
+          "export_count": 0,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "wineboot.exe",
+          "sha256": "1fecd20a522a0df3a8460d11e5c741badb7f5c17dd83d96adebe7136be98008a"
+        },
+        {
+          "export_count": 28,
+          "hybrid_metadata_required": false,
+          "machine": 43620,
+          "module": "wow64.dll",
+          "sha256": "b24de437b8fee7c7385e22fede7656ec25ee1c66594522fb885d39a1b6fa358f"
+        }
+      ],
+      "source_argument_policy": "stable_relative_v1",
+      "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "variant": "arm64ec-build",
+      "wine_runtime_executed": false
+    }
+  ],
+  "wine_variants_rebuilt": [
+    "arm64",
+    "arm64ec-build"
+  ]
+}

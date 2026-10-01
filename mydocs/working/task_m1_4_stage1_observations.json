@@ -1,0 +1,1659 @@
+{
+  "assessment": {
+    "artifacts": [
+      {
+        "id": "native/native",
+        "sha256": "aa1d2d69368e7b261c66bfa81e19b1af5e409d48bf353af22f31cb441999813c"
+      },
+      {
+        "id": "frameworks/frameworks",
+        "sha256": "54467fa7dda8a4c8d7c236508ca3e4b832b0b6380b675d066a4511afde959f89"
+      },
+      {
+        "id": "aarch64.compile/main.obj",
+        "sha256": "dcedfaa54fedae228ec7213fa5d145dfcf75e0e3a15a0ba0aa25ff27054b74ab"
+      },
+      {
+        "id": "aarch64.compile/dll.obj",
+        "sha256": "1a83aa7d3ceddd91b63e0edb1f8bc2eebfa0657fe24f27dfebc2c54655df938b"
+      },
+      {
+        "id": "aarch64.cxx/cpp.obj",
+        "sha256": "00d37d58c558e4c0f6a62ce8a813972f4240a08f5da7a40ac65ec734bfe32eeb"
+      },
+      {
+        "id": "aarch64.unwind/seh.obj",
+        "sha256": "f536782c31ccc76fa5f884b8148f8fc47e684f913a2e69210a1769d36d40d52c"
+      },
+      {
+        "id": "aarch64.link/fixture.exe",
+        "sha256": "b2fbbf7625129e0496a6212637be85a31bf15775f330a8df7e1a6563659923c2"
+      },
+      {
+        "id": "aarch64.link/pear-toolchain.dll",
+        "sha256": "69ab2fff7d9670d646e0b58868c763537867f5642187a5599d637733e70958ba"
+      },
+      {
+        "id": "aarch64.imports/fixture.lib",
+        "sha256": "25625fa6cb4eb398a3c8061ec1620a933d9b14f1a084ea211b4a41576e703ab7"
+      },
+      {
+        "id": "aarch64.resources/fixture.res",
+        "sha256": "1c25543b2567457a18105900382538c9924925a78e61d5441044812fc62ece8d"
+      },
+      {
+        "id": "arm64ec.compile/main.obj",
+        "sha256": "d2e9d52c5c139342b07f2f32bab877c879d131cabe852d10468f4d70f5c5ae95"
+      },
+      {
+        "id": "arm64ec.compile/dll.obj",
+        "sha256": "dff395fef82a60bbd58d68b640f96792dc83c3254d5fbb7560317971518d407a"
+      },
+      {
+        "id": "arm64ec.cxx/cpp.obj",
+        "sha256": "c43e213fc9bf3c8ebbe6a2280db69e8cd9811994e6d1a75905eda7bcf9c6166a"
+      },
+      {
+        "id": "arm64ec.unwind/seh.obj",
+        "sha256": "1dcb3e80ce4a369b0a47753506806f3c470790f5e88f586db60750cb10c3b0e6"
+      },
+      {
+        "id": "arm64ec.link/fixture.exe",
+        "sha256": "f44e61016b543b2174fb5fcf48d35ef89fc2f6bb3ce8de66d90700c00a508cd3"
+      },
+      {
+        "id": "arm64ec.link/pear-toolchain.dll",
+        "sha256": "6b984bc565107399e30b14d44f6a9f56d2de6344948993b6976174da5d1183be"
+      },
+      {
+        "id": "arm64ec.imports/fixture.lib",
+        "sha256": "8cdb0924f7e41b5252037bd6d8734bbd989dc7cc1cefc36670d09a2e66fde07e"
+      },
+      {
+        "id": "arm64ec.resources/fixture.res",
+        "sha256": "1c25543b2567457a18105900382538c9924925a78e61d5441044812fc62ece8d"
+      },
+      {
+        "id": "x86_64.compile/main.obj",
+        "sha256": "def65142e52f6f3cdbb9984450f44a4690a637cad7da5855bf07da8d165eff68"
+      },
+      {
+        "id": "x86_64.compile/dll.obj",
+        "sha256": "3d00d24faca8b1981dd491d18dff849d863e4785baf7016c00f47ae8a0809042"
+      },
+      {
+        "id": "x86_64.cxx/cpp.obj",
+        "sha256": "0ac0e2a404adefe86ab7d0009bce5bdfd1525b4d6a2175014ed57ce644b1a087"
+      },
+      {
+        "id": "x86_64.unwind/seh.obj",
+        "sha256": "04275e26ecf9404a12252e665864cdc81b17561092b7c89e382593b413b4ed94"
+      },
+      {
+        "id": "x86_64.link/fixture.exe",
+        "sha256": "5fdac36c04c179ee2b517808c0f2004d3eef487cd82ec3c3d19acc3a91ee5256"
+      },
+      {
+        "id": "x86_64.link/pear-toolchain.dll",
+        "sha256": "a44f135a5da73dafaea80daf75b9e6130aac3325a0b5da2762ef401bcec674f2"
+      },
+      {
+        "id": "x86_64.imports/fixture.lib",
+        "sha256": "21e5a028e51f8eab759769b9fa3df7a09368d68fb072f85fb48009c52dbbcf69"
+      },
+      {
+        "id": "x86_64.resources/fixture.res",
+        "sha256": "1c25543b2567457a18105900382538c9924925a78e61d5441044812fc62ece8d"
+      },
+      {
+        "id": "i686.compile/main.obj",
+        "sha256": "a46eeace1f4c38239a8a3c7b75406f6e5a2153dd4c6777a8605b16a1d9dd4f8e"
+      },
+      {
+        "id": "i686.compile/dll.obj",
+        "sha256": "eb7a4852985abf1eb5b6cd65b044a001f1309a1a8ec3825957d5b4c2482a741b"
+      },
+      {
+        "id": "i686.cxx/cpp.obj",
+        "sha256": "b70673d1b93aa6011cf1e2ed320d5941365aad1669e0656c1525d7ae29affc7c"
+      },
+      {
+        "id": "i686.assembly/seh.obj",
+        "sha256": "91e832a91414a9900d6902993369a585b8ac749dac3e90fa6b68b5c8370b3963"
+      },
+      {
+        "id": "i686.link/fixture.exe",
+        "sha256": "911fe9d6639291109a178632510b15e10625d50c79f9a68628b6bfed2263009c"
+      },
+      {
+        "id": "i686.link/pear-toolchain.dll",
+        "sha256": "ad6775a4cd1bf778532e577cc9fb414345cf2432abf6cc170bba056a9d16148f"
+      },
+      {
+        "id": "i686.imports/fixture.lib",
+        "sha256": "e77a26e81095493aa65195ae1a0744e6fdfe37e0ff74f24111af539d6b7bc1d4"
+      },
+      {
+        "id": "i686.resources/fixture.res",
+        "sha256": "1c25543b2567457a18105900382538c9924925a78e61d5441044812fc62ece8d"
+      }
+    ],
+    "audit_ref": {
+      "path": "runtime/sources/manifest.json",
+      "sha256": "535cdcb7b2e76d4bc536d63ad7d17d31f562f438b7850a75a0ace1b9c88466b8"
+    },
+    "checks_passed": 34,
+    "commands_passed": 58,
+    "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+    "gate_passed": true,
+    "inputs_sha256": "d96ac4d6970d9f0c4964d7d17afb2cd7ef5cbb16d3c7fc92d9df96b14825965f",
+    "original_audit_decision": "blocked",
+    "qualification": {
+      "distribution": "unassessed",
+      "game": "unassessed",
+      "runtime": "unassessed"
+    },
+    "record_kind": "wine_input_assessment",
+    "requested_gate": "stage1_inputs_and_toolchain",
+    "schema_version": 1,
+    "scope": "wine_component",
+    "source_manifest_sha256": "f83d84967b58dbb5622a56bee2ad4390d95c95fb9cf2a6e29dcc790b45fce988",
+    "source_ports_complete": false,
+    "source_prepared_sha256": "9f262d355f6148a66b3eefb74f3f0bee2f39f8168691aadfaeb02dabddf6b5bc",
+    "tool_prepared_sha256": "e338f58fb7b6967430f95efb303706237da328ba866ac5a4d406f2ae4c1faf19",
+    "toolchain_evidence_sha256": "81bdc87e4d2b33ee3327520190d1ec8954975fd0c147a3a93b169a68de678bbe",
+    "toolchain_lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc"
+  },
+  "bison_version": "3.8.2",
+  "checks": [
+    {
+      "id": "native",
+      "status": "passed"
+    },
+    {
+      "id": "frameworks",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.compile",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.cxx",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.unwind",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.link",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.imports",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.exports",
+      "status": "passed"
+    },
+    {
+      "id": "aarch64.resources",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.compile",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.cxx",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.unwind",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.link",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.support",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.imports",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.exports",
+      "status": "passed"
+    },
+    {
+      "id": "arm64ec.resources",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.compile",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.cxx",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.unwind",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.link",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.imports",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.exports",
+      "status": "passed"
+    },
+    {
+      "id": "x86_64.resources",
+      "status": "passed"
+    },
+    {
+      "id": "i686.compile",
+      "status": "passed"
+    },
+    {
+      "id": "i686.cxx",
+      "status": "passed"
+    },
+    {
+      "id": "i686.assembly",
+      "status": "passed"
+    },
+    {
+      "id": "i686.link",
+      "status": "passed"
+    },
+    {
+      "id": "i686.imports",
+      "status": "passed"
+    },
+    {
+      "id": "i686.exports",
+      "status": "passed"
+    },
+    {
+      "id": "i686.resources",
+      "status": "passed"
+    },
+    {
+      "id": "bison",
+      "status": "passed"
+    },
+    {
+      "id": "configure.arm64",
+      "status": "passed"
+    },
+    {
+      "id": "configure.arm64ec-build",
+      "status": "passed"
+    }
+  ],
+  "commands": [
+    {
+      "exit_code": 0,
+      "id": "compiler.version",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 259,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "native.compile",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "native.run",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 50,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "frameworks.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.main.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.dll.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.cpp.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.assemble",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.unwind.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 416,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.resource.compile",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.dll.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.importlib",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.exe.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.imports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 300,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.exports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 238,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "aarch64.resources.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 924,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.main.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.dll.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.cpp.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.assemble",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.unwind.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 418,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.resource.compile",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.dll.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.importlib",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.exe.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.support.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 4151,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.imports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 302,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.exports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 240,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "arm64ec.resources.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 927,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.main.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.dll.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.cpp.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.assemble",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.unwind.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 551,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.resource.compile",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.dll.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.importlib",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.exe.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.imports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 299,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.exports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 237,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "x86_64.resources.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 923,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.main.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.dll.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.cpp.obj",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.assemble",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.unwind.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 238,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.resource.compile",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.dll.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.importlib",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.exe.link",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 0,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.imports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 293,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.exports.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 231,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "i686.resources.inspect",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 917,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "bison.version",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 274,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "configure.arm64",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 15402,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "configure.arm64.make-query",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 8089,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "configure.arm64ec-build",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 24224,
+      "timed_out": false
+    },
+    {
+      "exit_code": 0,
+      "id": "configure.arm64ec-build.make-query",
+      "output_limit": false,
+      "stderr_bytes": 0,
+      "stdout_bytes": 8089,
+      "timed_out": false
+    }
+  ],
+  "failed_attempts": [
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "native.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.run",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "frameworks.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 1,
+          "id": "aarch64.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "completed_checks": [
+        "native",
+        "frameworks",
+        "aarch64.compile",
+        "aarch64.cxx",
+        "aarch64.unwind"
+      ],
+      "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+      "fixture_hashes": {
+        "toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+        "toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+        "toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+        "toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+        "toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+        "toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+        "toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+        "toolchain_seh.S": "466114c3c742d44478294e54d78142a3ac06d1271e12e7dd7acdee77bd4bc3d7"
+      },
+      "id": "attempt-1",
+      "lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+      "passed": false,
+      "prepared_sha256": "e338f58fb7b6967430f95efb303706237da328ba866ac5a4d406f2ae4c1faf19",
+      "record_sha256": "30a566048bf44ab8ec799d38f07d0f5c701722794b1e83d398aff1570eb298e2"
+    },
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "compiler.version",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.run",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "frameworks.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 1,
+          "id": "aarch64.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "completed_checks": [
+        "native",
+        "frameworks",
+        "aarch64.compile",
+        "aarch64.cxx",
+        "aarch64.unwind"
+      ],
+      "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+      "fixture_hashes": {
+        "toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+        "toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+        "toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+        "toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+        "toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+        "toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+        "toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+        "toolchain_seh.S": "466114c3c742d44478294e54d78142a3ac06d1271e12e7dd7acdee77bd4bc3d7"
+      },
+      "id": "attempt-2",
+      "lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+      "passed": false,
+      "prepared_sha256": "e338f58fb7b6967430f95efb303706237da328ba866ac5a4d406f2ae4c1faf19",
+      "record_sha256": "5d3cdb3410e07bd1880fffeb1a987f542c1431a3a952dfac78342cf11f8ceff6"
+    },
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "compiler.version",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.run",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "frameworks.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.exe.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.imports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.exports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.resources.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 1,
+          "id": "arm64ec.assemble",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "completed_checks": [
+        "native",
+        "frameworks",
+        "aarch64.compile",
+        "aarch64.cxx",
+        "aarch64.unwind",
+        "aarch64.link",
+        "aarch64.imports",
+        "aarch64.exports",
+        "aarch64.resources",
+        "arm64ec.compile",
+        "arm64ec.cxx"
+      ],
+      "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+      "fixture_hashes": {
+        "toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+        "toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+        "toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+        "toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+        "toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+        "toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+        "toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+        "toolchain_seh.S": "466114c3c742d44478294e54d78142a3ac06d1271e12e7dd7acdee77bd4bc3d7"
+      },
+      "id": "attempt-3",
+      "lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+      "passed": false,
+      "prepared_sha256": "e338f58fb7b6967430f95efb303706237da328ba866ac5a4d406f2ae4c1faf19",
+      "record_sha256": "9d50974ef1009da7b5f01a7c2407cc37b957205e236b4dab583cf26d06fd7cac"
+    },
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "compiler.version",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.run",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "frameworks.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.exe.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.imports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.exports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.resources.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 1,
+          "id": "arm64ec.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "completed_checks": [
+        "native",
+        "frameworks",
+        "aarch64.compile",
+        "aarch64.cxx",
+        "aarch64.unwind",
+        "aarch64.link",
+        "aarch64.imports",
+        "aarch64.exports",
+        "aarch64.resources",
+        "arm64ec.compile",
+        "arm64ec.cxx",
+        "arm64ec.unwind"
+      ],
+      "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+      "fixture_hashes": {
+        "toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+        "toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+        "toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+        "toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+        "toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+        "toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+        "toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+        "toolchain_seh.S": "65e2380fb3d0b80f8f9b4fbdf7890dd23fd25199785b092a6d0b4c061cdeec95"
+      },
+      "id": "attempt-4",
+      "lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+      "passed": false,
+      "prepared_sha256": "e338f58fb7b6967430f95efb303706237da328ba866ac5a4d406f2ae4c1faf19",
+      "record_sha256": "ac39f1495328468c572d3b78c3a2751e4a92f3bb0d7c68e1260b76b644e6a44e"
+    },
+    {
+      "completed_check_report": false,
+      "diagnostic_provenance": "Execution tool output transcribed after completion.",
+      "exit_code": 1,
+      "id": "attempt-5",
+      "kind": "uncaught_driver_exception",
+      "passed": false,
+      "record_sha256": "586c8892c3179318f73fd7c079bfa0847bb451082bb0227ee7766d7396a38042"
+    },
+    {
+      "commands": [
+        {
+          "exit_code": 0,
+          "id": "compiler.version",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "native.run",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "frameworks.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.exe.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.imports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.exports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "aarch64.resources.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.exe.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.support.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.imports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.exports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "arm64ec.resources.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.importlib",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.exe.link",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.imports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.exports.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "x86_64.resources.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "i686.main.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "i686.dll.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "i686.cpp.obj",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "i686.assemble",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "i686.unwind.inspect",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 0,
+          "id": "i686.resource.compile",
+          "output_limit": false,
+          "timed_out": false
+        },
+        {
+          "exit_code": 1,
+          "id": "i686.dll.link",
+          "output_limit": false,
+          "timed_out": false
+        }
+      ],
+      "completed_checks": [
+        "native",
+        "frameworks",
+        "aarch64.compile",
+        "aarch64.cxx",
+        "aarch64.unwind",
+        "aarch64.link",
+        "aarch64.imports",
+        "aarch64.exports",
+        "aarch64.resources",
+        "arm64ec.compile",
+        "arm64ec.cxx",
+        "arm64ec.unwind",
+        "arm64ec.link",
+        "arm64ec.support",
+        "arm64ec.imports",
+        "arm64ec.exports",
+        "arm64ec.resources",
+        "x86_64.compile",
+        "x86_64.cxx",
+        "x86_64.unwind",
+        "x86_64.link",
+        "x86_64.imports",
+        "x86_64.exports",
+        "x86_64.resources",
+        "i686.compile",
+        "i686.cxx",
+        "i686.assembly"
+      ],
+      "config_sha256": "e998ccd223fb44ba475a40a9338e4401839aed855e1835d1a0b8a4d24d628fed",
+      "fixture_hashes": {
+        "toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+        "toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+        "toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+        "toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+        "toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+        "toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+        "toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+        "toolchain_seh.S": "65e2380fb3d0b80f8f9b4fbdf7890dd23fd25199785b092a6d0b4c061cdeec95"
+      },
+      "id": "attempt-6",
+      "lock_sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc",
+      "passed": false,
+      "prepared_sha256": "e338f58fb7b6967430f95efb303706237da328ba866ac5a4d406f2ae4c1faf19",
+      "record_sha256": "486ae27f0bb09d62f96c3acea052288e7103701b385a956ee162ebe72b8eea6a"
+    }
+  ],
+  "fixture_hashes": {
+    "toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+    "toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+    "toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+    "toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+    "toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+    "toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+    "toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+    "toolchain_seh.S": "65e2380fb3d0b80f8f9b4fbdf7890dd23fd25199785b092a6d0b4c061cdeec95"
+  },
+  "limits": [
+    "Same-host component/tool checks, not independent compiler reproduction.",
+    "No PE, Wine runtime, game or distribution execution is qualified.",
+    "Command paths, raw output and identifiers remain in ignored local records."
+  ],
+  "llvm_clang_version": "23.1.1",
+  "native_fixture_stdout": "{\"fixture\":\"pear-toolchain-native-v1\",\"value\":42}\n",
+  "pe_execution": false,
+  "record_kind": "wine_stage1_observations",
+  "reviewed_source_hashes": {
+    "tests/wine/fixtures/toolchain_cpp.cpp": "adfc185a879e3d7b7b1ae3df6e7b6d583a524260cd586f75e5c16f236397d443",
+    "tests/wine/fixtures/toolchain_dll.c": "5cefe97d49b0acae9cf200cf506628b7dae5ca35afc371a93f7ea6225f43728a",
+    "tests/wine/fixtures/toolchain_dll.def": "107a60695e0bbb4a4db962f720b07698e4813908b38370bf68d718b264e364bf",
+    "tests/wine/fixtures/toolchain_frameworks.m": "94f4f36c45f9bff510599fa200ab970e5dfe1f31875b66563c743c446c1a8488",
+    "tests/wine/fixtures/toolchain_native.c": "253de498d3c22e28ace15e36ab85ce1dab6940edbf32d0c6d3c5788ba8f6718c",
+    "tests/wine/fixtures/toolchain_pe.c": "f1212e6a2aa686e3c99c490b97b23efede55c16aa7418821880cc30d303a2b4e",
+    "tests/wine/fixtures/toolchain_resource.rc": "79e0516d7c688132a82510e86809f04541cbc5b7d12895f2ee97209a4e58bf20",
+    "tests/wine/fixtures/toolchain_seh.S": "65e2380fb3d0b80f8f9b4fbdf7890dd23fd25199785b092a6d0b4c061cdeec95",
+    "tests/wine/test_inputs.py": "11b2840f6fc5c32f15f4c22349f661ce3790dc5d605496055fe4f94620f10761",
+    "tests/wine/test_preparation.py": "def53f0526ec4d439891c702cecc59d2b49a92fdd235e99d37404e9abac0f0a4",
+    "tests/wine/test_toolchain.py": "ee14349bf853a8636a16cfc4875d36e3900b20bcb6b670480977e96829955319",
+    "tests/wine/test_verification.py": "3de10c0e3b51a99fd98d7435f704aa84e7de73951c4ac6d1348163f3cfce0edd",
+    "tools/wine/common.py": "c5beecb5c2ab1b3fe9eec0c82bc557ecc42b8f34790c68b3dae80c63fdb8893b",
+    "tools/wine/evidence.py": "3f0264cd77388b65067c2b59936e6e3cb38cbb15e904d07db308db240b7f451a",
+    "tools/wine/prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+    "tools/wine/toolchain.py": "5108de484493230ebf925de48729d4083c66837084f308d20f9daabb9bd52421",
+    "tools/wine/verify.py": "7a86f103cc35c2c8fc60b498d038c8edbc5677358d2c724fdf0f19dd56fe9f34"
+  },
+  "schema_version": 1,
+  "scope": "component_inputs_and_compiler_fixtures",
+  "sdk": {
+    "canonical_name": "macosx26.5",
+    "settings_sha256": "f8d005f09381389167f9e0aeaa169bc9e7dff162ef22ca2fd8e98df7ff1acafe",
+    "version": "26.5"
+  },
+  "wine_runtime_execution": false
+}

@@ -1,0 +1,595 @@
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -129,8 +129,9 @@
+     void         *base;          /* base address */
+     size_t        size;          /* size in bytes */
+     unsigned int  protect;       /* protection for all pages at allocation time and SEC_* flags */
+-    unsigned int  pear_owned;    /* 0 normal, 1 occupied arena reservation, 2 native PE image */
++    unsigned int  pear_owned;    /* 0 normal, 1 occupied reservation, 2 PE image, 3 dynamic private */
+     struct pear_pe_slot *pear_slot;
++    struct pear_dynamic_slot *pear_dynamic;
+     ULONGLONG pear_generation;
+ };
+ 
+@@ -1834,14 +1835,14 @@
+  *
+  * Deletes a view. virtual_mutex must be held by caller.
+  */
+-static void pear_release_image_view( struct file_view *view );
++static void pear_release_owned_view( struct file_view *view );
+ 
+ static void delete_view( struct file_view *view ) /* [in] View */
+ {
+     if (view->pear_owned)
+     {
+-        if (view->pear_owned != 2) pear_pe_arena_fatal( "generic reservation delete" );
+-        pear_release_image_view( view );
++        if (view->pear_owned != 2 && view->pear_owned != 3) pear_pe_arena_fatal( "generic reservation delete" );
++        pear_release_owned_view( view );
+         return;
+     }
+     if (!(view->protect & VPROT_SYSTEM)) unmap_area( view->base, view->size );
+@@ -1905,6 +1906,7 @@
+     view->protect = vprot;
+     view->pear_owned = 0;
+     view->pear_slot = NULL;
++    view->pear_dynamic = NULL;
+     view->pear_generation = 0;
+     if (use_kernel_writewatch) vprot &= ~VPROT_WRITEWATCH;
+     set_page_vprot( base, size, vprot );
+@@ -1937,8 +1939,7 @@
+     return STATUS_SUCCESS;
+ }
+ 
+-static NTSTATUS pear_create_image_view( struct file_view **ret, struct pear_pe_slot *slot,
+-                                       void *base, SIZE_T size )
++static NTSTATUS pear_create_owned_view( struct file_view **ret, void *base, SIZE_T size )
+ {
+     struct file_view *view = find_view( base, size ), *left = NULL, *right = NULL;
+     char *old_base, *old_end;
+@@ -1970,24 +1971,64 @@
+     }
+     view->base = base;
+     view->size = size;
+-    view->protect = SEC_IMAGE | SEC_FILE | VPROT_COMMITTED | VPROT_READ | VPROT_EXEC | VPROT_WRITECOPY;
+-    view->pear_owned = 2;
+-    view->pear_slot = slot;
+-    view->pear_generation = pear_pe_slot_generation( slot );
++    view->protect = 0;
++    view->pear_owned = 1;
++    view->pear_slot = NULL;
++    view->pear_dynamic = NULL;
++    view->pear_generation = 0;
+     register_view( view );
+     *ret = view;
+     return STATUS_SUCCESS;
+ }
+ 
+-static void pear_release_image_view( struct file_view *view )
++static NTSTATUS pear_create_image_view( struct file_view **ret, struct pear_pe_slot *slot,
++                                       void *base, SIZE_T size )
++{
++    NTSTATUS status = pear_create_owned_view( ret, base, size );
++    if (status) return status;
++    (*ret)->protect = SEC_IMAGE | SEC_FILE | VPROT_COMMITTED | VPROT_READ | VPROT_EXEC | VPROT_WRITECOPY;
++    (*ret)->pear_owned = 2;
++    (*ret)->pear_slot = slot;
++    (*ret)->pear_generation = pear_pe_slot_generation( slot );
++    return STATUS_SUCCESS;
++}
++
++static NTSTATUS pear_reserve_dynamic_view( struct file_view **ret, SIZE_T size, unsigned int vprot )
++{
++    struct pear_dynamic_slot *slot;
++    void *base;
++    NTSTATUS status = pear_initialize_views();
++    if (status) return status;
++    if ((status = pear_dynamic_reserve( size, &slot, &base ))) return status;
++    if ((status = pear_create_owned_view( ret, base, size )))
++    {
++        if (pear_dynamic_release( slot, pear_dynamic_generation( slot ) ))
++            pear_pe_arena_fatal( "dynamic_failed_view_cleanup" );
++        return status;
++    }
++    (*ret)->protect = vprot; /* Genuine MEM_PRIVATE allocation, never SEC_IMAGE. */
++    (*ret)->pear_owned = 3;
++    (*ret)->pear_dynamic = slot;
++    (*ret)->pear_generation = pear_dynamic_generation( slot );
++    set_page_vprot( base, size, 0 );
++    return STATUS_SUCCESS;
++}
++
++static void pear_release_owned_view( struct file_view *view )
+ {
+     struct wine_rb_entry *entry;
+     struct file_view *other;
+-    pear_pe_slot_retire( view->pear_slot, view->pear_generation );
++    if (view->pear_owned == 3)
++    {
++        if (pear_dynamic_release( view->pear_dynamic, view->pear_generation ))
++            pear_pe_arena_fatal( "dynamic_release" );
++    }
++    else pear_pe_slot_retire( view->pear_slot, view->pear_generation );
+     set_page_vprot( view->base, view->size, 0 );
+     view->protect = 0;
+     view->pear_owned = 1;
+     view->pear_slot = NULL;
++    view->pear_dynamic = NULL;
+     view->pear_generation = 0;
+     /* Adjacent unused ranges remain real occupied reservations, regardless of
+      * their retained per-page backing classes in the separate arena owner. */
+@@ -2143,7 +2184,11 @@
+ {
+     if (view->pear_owned)
+     {
+-        if (view->pear_owned != 2 || pear_pe_slot_protect( view->pear_slot, view->pear_generation, base, size, vprot )) return FALSE;
++        if (view->pear_owned == 3)
++        {
++            if (pear_dynamic_protect( view->pear_dynamic, view->pear_generation, base, size, vprot, FALSE )) return FALSE;
++        }
++        else if (view->pear_owned != 2 || pear_pe_slot_protect( view->pear_slot, view->pear_generation, base, size, vprot )) return FALSE;
+         set_page_vprot( base, size, vprot );
+         return TRUE;
+     }
+@@ -2183,6 +2228,19 @@
+         if ((view->protect & access) != access) return STATUS_INVALID_PAGE_PROTECTION;
+     }
+ 
++    /* Ordinary anonymous backing cannot acquire JIT authorization in place.
++     * Refuse before changing Wine's page metadata; do not fake API success. */
++    if (pear_pe_arena_enabled() && is_view_valloc( view ) && !view->pear_owned && (vprot & VPROT_EXEC))
++        return STATUS_NOT_SUPPORTED;
++    if (view->pear_owned == 3)
++    {
++        if (protect != PAGE_NOACCESS && protect != PAGE_READONLY &&
++            protect != PAGE_READWRITE && protect != PAGE_EXECUTE_READ) return STATUS_INVALID_PAGE_PROTECTION;
++        status = pear_dynamic_protect( view->pear_dynamic, view->pear_generation, base, size,
++                                       vprot | VPROT_COMMITTED, FALSE );
++        if (!status) set_page_vprot( base, size, vprot | VPROT_COMMITTED );
++        return status;
++    }
+     if (!set_vprot( view, base, size, vprot | VPROT_COMMITTED )) return STATUS_ACCESS_DENIED;
+     return STATUS_SUCCESS;
+ }
+@@ -2599,6 +2657,14 @@
+ {
+     char *host_end, *host_start = (char *)ROUND_SIZE( 0, base, host_page_mask );
+ 
++    if (view->pear_owned == 3)
++    {
++        NTSTATUS status;
++        if (!size) size = view->size;
++        status = pear_dynamic_decommit( view->pear_dynamic, view->pear_generation, base, size );
++        if (!status) set_page_vprot( base, size, 0 );
++        return status;
++    }
+     if (view->pear_owned) return STATUS_INVALID_PARAMETER;
+     if (!size)
+     {
+@@ -2639,6 +2705,7 @@
+         new_view->protect = view->protect;
+         new_view->pear_owned = 0;
+         new_view->pear_slot = NULL;
++        new_view->pear_dynamic = NULL;
+         new_view->pear_generation = 0;
+ 
+         unregister_view( view );
+@@ -5428,6 +5495,13 @@
+             if (protect & PAGE_NOCACHE) vprot |= SEC_NOCACHE;
+ 
+             if (vprot & VPROT_WRITECOPY) status = STATUS_INVALID_PAGE_PROTECTION;
++            else if (pear_pe_arena_enabled() && (vprot & VPROT_EXEC))
++            {
++                if (vprot & (VPROT_WRITE | VPROT_WRITECOPY)) status = STATUS_INVALID_PAGE_PROTECTION;
++                else if (base || type != MEM_RESERVE || protect != PAGE_EXECUTE_READ ||
++                         limit_low || limit_high || align || attributes) status = STATUS_NOT_SUPPORTED;
++                else status = pear_reserve_dynamic_view( &view, size, vprot );
++            }
+             else if (is_dos_memory) status = allocate_dos_memory( &view, vprot );
+             else status = map_view( &view, base, size, type, vprot, limit_low, limit_high,
+                                     align ? align - 1 : granularity_mask );
+@@ -5435,7 +5509,7 @@
+             if (status == STATUS_SUCCESS)
+             {
+                 base = view->base;
+-                if (vprot & VPROT_EXEC || force_exec_prot) mprotect_range( base, size, 0, 0 );
++                if (view->pear_owned != 3 && (vprot & VPROT_EXEC || force_exec_prot)) mprotect_range( base, size, 0, 0 );
+             }
+         }
+     }
+@@ -5448,6 +5522,18 @@
+     else  /* commit the pages */
+     {
+         if (!(view = find_view( base, size ))) status = STATUS_NOT_MAPPED_VIEW;
++        else if (view->pear_owned == 3)
++        {
++            if (type != MEM_COMMIT || attributes || align || limit_low || limit_high) status = STATUS_NOT_SUPPORTED;
++            else if (protect != PAGE_NOACCESS && protect != PAGE_READONLY &&
++                     protect != PAGE_READWRITE && protect != PAGE_EXECUTE_READ) status = STATUS_INVALID_PAGE_PROTECTION;
++            else if (!(status = get_vprot_flags( protect, &vprot, FALSE )))
++            {
++                status = pear_dynamic_protect( view->pear_dynamic, view->pear_generation, base, size,
++                                               vprot | VPROT_COMMITTED, TRUE );
++                if (!status) set_page_vprot( base, size, vprot | VPROT_COMMITTED );
++            }
++        }
+         else if (view->pear_owned) status = STATUS_INVALID_PARAMETER;
+         else if (view->protect & SEC_FILE) status = STATUS_ALREADY_COMMITTED;
+         else if (view->protect & VPROT_FREE_PLACEHOLDER) status = STATUS_CONFLICTING_ADDRESSES;
+@@ -5741,6 +5827,18 @@
+         status = STATUS_INVALID_PARAMETER;
+     }
+     else if (!(view = find_view( base, 0 ))) status = STATUS_MEMORY_NOT_ALLOCATED;
++    else if (view->pear_owned == 3)
++    {
++        if (!size && base != view->base) status = STATUS_FREE_VM_NOT_AT_BASE;
++        else if ((char *)view->base + view->size - base < size) status = STATUS_UNABLE_TO_FREE_VM;
++        else if (type == MEM_DECOMMIT) status = decommit_pages( view, base, size );
++        else if (type == MEM_RELEASE && !size && base == view->base)
++        {
++            size = view->size;
++            pear_release_owned_view( view );
++        }
++        else status = STATUS_INVALID_PARAMETER;
++    }
+     else if (view->pear_owned || !is_view_valloc( view )) status = STATUS_INVALID_PARAMETER;
+     else if (!size && base != view->base) status = STATUS_FREE_VM_NOT_AT_BASE;
+     else if ((char *)view->base + view->size - base < size && !(type & MEM_COALESCE_PLACEHOLDERS))
+@@ -5947,6 +6045,17 @@
+ 
+     server_enter_uninterrupted_section( &virtual_mutex, &sigset );
+     view = get_memory_region_size( base, &alloc_base, &alloc_end, &fake_reserved );
++    if (view && view->pear_owned == 1)
++    {
++        void *free_start, *free_end;
++        if (pear_dynamic_free_range( base, &free_start, &free_end ))
++        {
++            view = NULL;
++            alloc_base = free_start;
++            alloc_end = free_end;
++            fake_reserved = FALSE;
++        }
++    }
+ 
+     /* Fill the info structure */
+ 
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -38,7 +38,7 @@
+ WINE_DEFAULT_DEBUG_CHANNEL(virtual);
+ 
+ #define PAGE PEAR_ARENA_PAGE_BYTES
+-#define PAGES (PEAR_ARENA_INTERIOR_BYTES / PAGE)
++#define PAGES (PEAR_ARENA_TOTAL_BYTES / PAGE)
+ #define PV_READ 0x01
+ #define PV_WRITE 0x02
+ #define PV_EXEC 0x04
+@@ -48,7 +48,7 @@
+ #define MAX_SECTIONS 96u
+ /* A complete 8-byte destination cannot occur more than once per image. */
+ #define MAX_RELOCATIONS (PEAR_ARENA_MAX_IMAGE_BYTES / sizeof(ULONGLONG))
+-enum backing { VIRGIN, CODE, ORDINARY };
++enum backing { VIRGIN, CODE, ORDINARY, DYNAMIC };
+ enum slot_state { SLOT_RESERVED, SLOT_PREPARING, SLOT_PUBLISHED, SLOT_FAILED, SLOT_RETIRED };
+ struct pear_pe_plan
+ {
+@@ -65,16 +65,23 @@
+     ULONGLONG generation, original_base;
+     enum slot_state state;
+ };
++struct pear_dynamic_slot
++{
++    SIZE_T size;
++    ULONGLONG generation;
++    BOOL active;
++};
+ static struct
+ {
+     unsigned char *mapping, *interior;
+     unsigned char *classes, *protection, *vprot;
+     struct pear_pe_slot slots[PEAR_ARENA_MAX_SLOTS];
++    struct pear_dynamic_slot dynamic[PEAR_ARENA_DYNAMIC_SLOTS];
+     unsigned int count;
+     SIZE_T used;
+     BOOL attempted;
+     pid_t owner_pid;
+-    unsigned long long sequence;
++    unsigned long long sequence, dynamic_sequence;
+ } arena;
+ 
+ /* Events are opt-in owned diagnostics. They do not authorize execution. */
+@@ -90,6 +97,24 @@
+     if (count < 0 || count >= sizeof(fields)) _exit(125);
+     count = snprintf(detail, sizeof(detail), ",\"policy\":\"page-wx\",\"arena_sequence\":%llu%s",
+                      ++arena.sequence, fields);
++    if (count < 0 || count >= sizeof(detail)) _exit(125);
++    pear_bootstrap_event("loader", event, detail);
++    errno = saved;
++}
++
++/* Independent stream: Stage 3 image events keep their original sequence. */
++static void dynamic_event(const char *event, const char *format, ...)
++{
++    char fields[1536], detail[1664];
++    int saved = errno, count;
++    va_list args;
++    if (!getenv("PEAR_STAGE3_CONTROL")) return;
++    va_start(args, format);
++    count = vsnprintf(fields, sizeof(fields), format, args);
++    va_end(args);
++    if (count < 0 || count >= sizeof(fields)) _exit(125);
++    count = snprintf(detail, sizeof(detail), ",\"policy\":\"page-wx\",\"dynamic_sequence\":%llu%s",
++                     ++arena.dynamic_sequence, fields);
+     if (count < 0 || count >= sizeof(detail)) _exit(125);
+     pear_bootstrap_event("loader", event, detail);
+     errno = saved;
+@@ -199,6 +224,10 @@
+                 (unsigned long long)(ULONG_PTR)arena.mapping, (unsigned long long)(ULONG_PTR)arena.interior,
+                 (unsigned long long)PEAR_ARENA_MAPPING_BYTES, (unsigned long long)PEAR_ARENA_INTERIOR_BYTES,
+                 PEAR_ARENA_MAX_SLOTS);
++    dynamic_event("dynamic_budget", ",\"policy_version\":1,\"base\":%llu,\"bytes\":%llu,\"slots\":%u,\"slot_bytes\":%llu",
++                (unsigned long long)(ULONG_PTR)(arena.interior + PEAR_ARENA_INTERIOR_BYTES),
++                (unsigned long long)PEAR_ARENA_DYNAMIC_BYTES, PEAR_ARENA_DYNAMIC_SLOTS,
++                (unsigned long long)PEAR_ARENA_DYNAMIC_SLOT_BYTES);
+     TRACE("Pear page-W^X arena reserved %lu bytes, %u slots, one MAP_JIT allocation\n",
+           (unsigned long)PEAR_ARENA_MAPPING_BYTES, PEAR_ARENA_MAX_SLOTS);
+ done:
+@@ -738,8 +767,213 @@
+     ULONG_PTR address = (ULONG_PTR)base, start = (ULONG_PTR)arena.interior;
+     SIZE_T i, first;
+     if (!arena.mapping || address < start || (address | size) & (PAGE - 1) ||
+-        !extent(address - start, size, PEAR_ARENA_INTERIOR_BYTES)) return FALSE;
++        !extent(address - start, size, PEAR_ARENA_TOTAL_BYTES)) return FALSE;
+     first = (address - start) / PAGE;
+     for (i = 0; i < size / PAGE; ++i) if (arena.protection[first + i] != protection) return FALSE;
+     return TRUE;
+ }
++
++/* Original Pear Stage 4 dynamic-code owner. The caller holds virtual_mutex
++ * and supplies quiescence before changing/freeing code. A Windows allocation
++ * declared executable at reserve time gets a fixed private slot; ordinary
++ * anonymous memory is never remapped into this authorization domain.
++ * Immutable PE CODE and converted ORDINARY backing retain their old rules. */
++static BOOL dynamic_index(const struct pear_dynamic_slot *slot, SIZE_T *index)
++{
++    ULONG_PTR value = (ULONG_PTR)slot, first = (ULONG_PTR)arena.dynamic;
++    if (value < first || value - first >= sizeof(arena.dynamic) ||
++        (value - first) % sizeof(*slot)) return FALSE;
++    *index = (value - first) / sizeof(*slot);
++    return TRUE;
++}
++
++static unsigned char *dynamic_base(SIZE_T index)
++{
++    return arena.interior + PEAR_ARENA_INTERIOR_BYTES + index * PEAR_ARENA_DYNAMIC_SLOT_BYTES;
++}
++
++static NTSTATUS dynamic_range(struct pear_dynamic_slot *slot, ULONGLONG generation,
++                              const void *pointer, SIZE_T size, SIZE_T *index, SIZE_T *first)
++{
++    ULONG_PTR address = (ULONG_PTR)pointer, start;
++    require_owner();
++    if (!arena.mapping || !dynamic_index(slot, index) || !slot->active ||
++        !generation || slot->generation != generation || !size || (address | size) & (PAGE - 1))
++        return STATUS_INVALID_PARAMETER;
++    start = (ULONG_PTR)dynamic_base(*index);
++    if (address < start || !extent(address - start, size, slot->size)) return STATUS_INVALID_PARAMETER;
++    *first = (address - (ULONG_PTR)arena.interior) / PAGE;
++    return STATUS_SUCCESS;
++}
++
++NTSTATUS pear_dynamic_reserve(SIZE_T size, struct pear_dynamic_slot **ret, void **base)
++{
++    SIZE_T i, page, first;
++    struct pear_dynamic_slot *slot;
++    require_owner();
++    if (!arena.mapping) return STATUS_NOT_SUPPORTED;
++    if (!size || size > PEAR_ARENA_DYNAMIC_SLOT_BYTES || size & (PAGE - 1)) return STATUS_INVALID_PARAMETER;
++    for (i = 0; i < PEAR_ARENA_DYNAMIC_SLOTS; ++i)
++    {
++        slot = &arena.dynamic[i];
++        if (slot->active || slot->generation == ~(ULONGLONG)0) continue;
++        if (!actual_protection(dynamic_base(i), PEAR_ARENA_DYNAMIC_SLOT_BYTES, PROT_NONE))
++            pear_pe_arena_fatal("dynamic_reservation_protection");
++        first = (PEAR_ARENA_INTERIOR_BYTES + i * PEAR_ARENA_DYNAMIC_SLOT_BYTES) / PAGE;
++        for (page = 0; page < PEAR_ARENA_DYNAMIC_SLOT_BYTES / PAGE; ++page)
++        {
++            if (arena.classes[first + page] != VIRGIN && arena.classes[first + page] != DYNAMIC)
++                pear_pe_arena_fatal("dynamic_backing_class");
++            arena.classes[first + page] = DYNAMIC;
++            arena.protection[first + page] = PROT_NONE;
++            arena.vprot[first + page] = 0;
++        }
++        slot->size = size;
++        ++slot->generation;
++        slot->active = TRUE;
++        *ret = slot;
++        *base = dynamic_base(i);
++        dynamic_event("dynamic_reserve", ",\"slot\":%u,\"slot_generation\":%llu,\"base\":%llu,\"size\":%llu,\"capacity\":65536",
++                    (unsigned)i, (unsigned long long)slot->generation, (unsigned long long)(ULONG_PTR)*base,
++                    (unsigned long long)size);
++        return STATUS_SUCCESS;
++    }
++    return STATUS_NO_MEMORY;
++}
++
++ULONGLONG pear_dynamic_generation(const struct pear_dynamic_slot *slot)
++{
++    return slot->generation;
++}
++
++static NTSTATUS dynamic_rollback(const char *operation, struct pear_dynamic_slot *slot, SIZE_T index,
++                                 const void *pointer, SIZE_T size, SIZE_T first, int saved)
++{
++    SIZE_T i;
++    for (i = 0; i < size / PAGE; ++i)
++        if (mprotect((unsigned char *)pointer + i * PAGE, PAGE, arena.protection[first + i]))
++            pear_pe_arena_fatal("dynamic_protection_rollback");
++    for (i = 0; i < size / PAGE; ++i)
++        if (!actual_protection((unsigned char *)pointer + i * PAGE, PAGE, arena.protection[first + i]))
++            pear_pe_arena_fatal("dynamic_rollback_verification");
++    errno = saved;
++    dynamic_event("dynamic_failure", ",\"operation\":\"%s\",\"status\":%u,\"errno\":%d,\"slot\":%u,\"slot_generation\":%llu",
++                operation, (unsigned)STATUS_ACCESS_DENIED, saved, (unsigned)index,
++                (unsigned long long)slot->generation);
++    return STATUS_ACCESS_DENIED;
++}
++
++NTSTATUS pear_dynamic_protect(struct pear_dynamic_slot *slot, ULONGLONG generation,
++                              const void *pointer, SIZE_T size, BYTE vprot, BOOL commit)
++{
++    SIZE_T index, first, i;
++    NTSTATUS status = dynamic_range(slot, generation, pointer, size, &index, &first);
++    int protection = unix_protection(vprot);
++    if (status) return status;
++    if (vprot != PV_COMMITTED && vprot != (PV_COMMITTED | PV_READ) &&
++        vprot != (PV_COMMITTED | PV_READ | PV_WRITE) && vprot != (PV_COMMITTED | PV_READ | PV_EXEC))
++        return STATUS_INVALID_PAGE_PROTECTION;
++    for (i = 0; i < size / PAGE; ++i)
++    {
++        if (arena.classes[first + i] != DYNAMIC) return STATUS_INVALID_PAGE_PROTECTION;
++        if (!commit && !(arena.vprot[first + i] & PV_COMMITTED)) return STATUS_NOT_COMMITTED;
++    }
++    for (i = 0; i < size / PAGE; ++i)
++    {
++        unsigned char *page = (unsigned char *)pointer + i * PAGE;
++        /* Recommit of an already committed page preserves all existing data. */
++        if (commit && !(arena.vprot[first + i] & PV_COMMITTED))
++        {
++            if (mprotect(page, PAGE, PROT_READ | PROT_WRITE))
++                return dynamic_rollback("commit_prepare", slot, index, pointer, size, first, errno);
++            if (!actual_protection(page, PAGE, PROT_READ | PROT_WRITE))
++                pear_pe_arena_fatal("dynamic_commit_prepare_verification");
++            memset(page, 0, PAGE);
++        }
++        if (mprotect(page, PAGE, protection))
++            return dynamic_rollback(commit ? "commit" : "protect", slot, index, pointer, size, first, errno);
++        if (!actual_protection(page, PAGE, protection)) pear_pe_arena_fatal("dynamic_protection_verification");
++    }
++    for (i = 0; i < size / PAGE; ++i)
++    {
++        arena.protection[first + i] = protection;
++        arena.vprot[first + i] = vprot;
++    }
++    dynamic_event("dynamic_protect", ",\"operation\":\"%s\",\"slot\":%u,\"slot_generation\":%llu,\"offset\":%llu,"
++                "\"size\":%llu,\"vprot\":%u,\"unix_protection\":%u,\"committed_pages\":%llu,\"protection_verified\":true",
++                commit ? "commit" : "protect", (unsigned)index, (unsigned long long)generation,
++                (unsigned long long)((ULONG_PTR)pointer - (ULONG_PTR)dynamic_base(index)),
++                (unsigned long long)size, (unsigned)vprot, (unsigned)protection, (unsigned long long)(size / PAGE));
++    return STATUS_SUCCESS;
++}
++
++NTSTATUS pear_dynamic_decommit(struct pear_dynamic_slot *slot, ULONGLONG generation,
++                               const void *pointer, SIZE_T size)
++{
++    SIZE_T index, first, i;
++    NTSTATUS status = dynamic_range(slot, generation, pointer, size, &index, &first);
++    if (status) return status;
++    for (i = 0; i < size / PAGE; ++i)
++        if (arena.classes[first + i] != DYNAMIC) return STATUS_INVALID_PAGE_PROTECTION;
++    /* Acquire all write permissions before destroying any old contents. */
++    for (i = 0; i < size / PAGE; ++i)
++    {
++        unsigned char *page = (unsigned char *)pointer + i * PAGE;
++        if (mprotect(page, PAGE, PROT_READ | PROT_WRITE))
++            return dynamic_rollback("decommit_prepare", slot, index, pointer, size, first, errno);
++        if (!actual_protection(page, PAGE, PROT_READ | PROT_WRITE))
++            pear_pe_arena_fatal("dynamic_decommit_prepare_verification");
++    }
++    for (i = 0; i < size / PAGE; ++i)
++    {
++        unsigned char *page = (unsigned char *)pointer + i * PAGE;
++        memset(page, 0, PAGE);
++        /* Once bytes are scrubbed, an incomplete revoke cannot be rolled back
++         * to the original executable contents. End the owned process instead. */
++        if (mprotect(page, PAGE, PROT_NONE)) pear_pe_arena_fatal("dynamic_decommit_revoke");
++        if (!actual_protection(page, PAGE, PROT_NONE)) pear_pe_arena_fatal("dynamic_decommit_verification");
++    }
++    for (i = 0; i < size / PAGE; ++i)
++    {
++        arena.protection[first + i] = PROT_NONE;
++        arena.vprot[first + i] = 0;
++    }
++    dynamic_event("dynamic_decommit", ",\"slot\":%u,\"slot_generation\":%llu,\"offset\":%llu,\"size\":%llu,"
++                "\"zeroed_pages\":%llu,\"protection_verified\":true", (unsigned)index,
++                (unsigned long long)generation, (unsigned long long)((ULONG_PTR)pointer - (ULONG_PTR)dynamic_base(index)),
++                (unsigned long long)size, (unsigned long long)(size / PAGE));
++    return STATUS_SUCCESS;
++}
++
++NTSTATUS pear_dynamic_release(struct pear_dynamic_slot *slot, ULONGLONG generation)
++{
++    SIZE_T index;
++    NTSTATUS status;
++    require_owner();
++    if (!dynamic_index(slot, &index) || !slot->active || generation != slot->generation)
++        return STATUS_INVALID_PARAMETER;
++    if ((status = pear_dynamic_decommit(slot, generation, dynamic_base(index), slot->size))) return status;
++    if (!actual_protection(dynamic_base(index), PEAR_ARENA_DYNAMIC_SLOT_BYTES, PROT_NONE))
++        pear_pe_arena_fatal("dynamic_release_verification");
++    slot->active = FALSE;
++    dynamic_event("dynamic_release", ",\"slot\":%u,\"slot_generation\":%llu,\"base\":%llu,\"size\":%llu,"
++                "\"capacity\":65536,\"protection_verified\":true", (unsigned)index, (unsigned long long)generation,
++                (unsigned long long)(ULONG_PTR)dynamic_base(index), (unsigned long long)slot->size);
++    return STATUS_SUCCESS;
++}
++
++/* VirtualQuery may expose logically free dynamic slots while Wine's internal
++ * reservation view continues to protect the one MAP_JIT allocation from mmap. */
++BOOL pear_dynamic_free_range(const void *pointer, void **start, void **end)
++{
++    ULONG_PTR address = (ULONG_PTR)pointer, first = (ULONG_PTR)arena.interior + PEAR_ARENA_INTERIOR_BYTES;
++    SIZE_T index, offset;
++    require_owner();
++    if (!arena.mapping || address < first || address - first >= PEAR_ARENA_DYNAMIC_BYTES) return FALSE;
++    index = (address - first) / PEAR_ARENA_DYNAMIC_SLOT_BYTES;
++    offset = (address - first) % PEAR_ARENA_DYNAMIC_SLOT_BYTES;
++    if (arena.dynamic[index].active && offset < arena.dynamic[index].size) return FALSE;
++    *start = dynamic_base(index) + (arena.dynamic[index].active ? arena.dynamic[index].size : 0);
++    *end = dynamic_base(index) + PEAR_ARENA_DYNAMIC_SLOT_BYTES;
++    return TRUE;
++}
+--- a/dlls/ntdll/unix/pear_pe_arena.h
++++ b/dlls/ntdll/unix/pear_pe_arena.h
+@@ -3,17 +3,24 @@
+ #ifndef __PEAR_PE_ARENA_H
+ #define __PEAR_PE_ARENA_H
+ 
+-#define PEAR_ARENA_INTERIOR_BYTES ((SIZE_T)1050148864)
++/* Installed Stage 4 ARM64 fixture adds one measured 64 KiB image slot. */
++#define PEAR_ARENA_INTERIOR_BYTES ((SIZE_T)1050214400)
+ #define PEAR_ARENA_ALIGNMENT ((SIZE_T)65536)
+-#define PEAR_ARENA_MAPPING_BYTES (PEAR_ARENA_INTERIOR_BYTES + PEAR_ARENA_ALIGNMENT)
++/* Dynamic allocations have a separate finite budget in the SAME MAP_JIT. */
++#define PEAR_ARENA_DYNAMIC_SLOTS 8u
++#define PEAR_ARENA_DYNAMIC_SLOT_BYTES ((SIZE_T)65536)
++#define PEAR_ARENA_DYNAMIC_BYTES ((SIZE_T)524288)
++#define PEAR_ARENA_TOTAL_BYTES (PEAR_ARENA_INTERIOR_BYTES + PEAR_ARENA_DYNAMIC_BYTES)
++#define PEAR_ARENA_MAPPING_BYTES (PEAR_ARENA_TOTAL_BYTES + PEAR_ARENA_ALIGNMENT)
+ #define PEAR_ARENA_MAX_IMAGE_BYTES ((SIZE_T)38993920)
+-#define PEAR_ARENA_MAX_SLOTS 754u
++#define PEAR_ARENA_MAX_SLOTS 755u
+ /* Two simultaneously owned copies of the original relocation fixture. */
+ #define PEAR_ARENA_RELOCATION_COPIES 2u
+ #define PEAR_ARENA_PAGE_BYTES ((SIZE_T)4096)
+ 
+ struct pear_pe_plan;
+ struct pear_pe_slot;
++struct pear_dynamic_slot;
+ 
+ struct pear_pe_image
+ {
+@@ -38,4 +45,13 @@
+ extern BOOL pear_pe_arena_matches_protection(const void *base, SIZE_T size, int protection);
+ extern void DECLSPEC_NORETURN pear_pe_arena_fatal(const char *operation);
+ 
++extern NTSTATUS pear_dynamic_reserve(SIZE_T size, struct pear_dynamic_slot **slot, void **base);
++extern ULONGLONG pear_dynamic_generation(const struct pear_dynamic_slot *slot);
++extern NTSTATUS pear_dynamic_protect(struct pear_dynamic_slot *slot, ULONGLONG generation,
++                                    const void *base, SIZE_T size, BYTE vprot, BOOL commit);
++extern NTSTATUS pear_dynamic_decommit(struct pear_dynamic_slot *slot, ULONGLONG generation,
++                                     const void *base, SIZE_T size);
++extern NTSTATUS pear_dynamic_release(struct pear_dynamic_slot *slot, ULONGLONG generation);
++extern BOOL pear_dynamic_free_range(const void *base, void **start, void **end);
++
+ #endif

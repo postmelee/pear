@@ -1,0 +1,4 @@
+; Original Pear import-library fixture for llvm-dlltool.
+LIBRARY pear-toolchain.dll
+EXPORTS
+    pear_toolchain_add

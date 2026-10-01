@@ -1,0 +1,43 @@
+From: Pear contributors
+Subject: [PATCH] wine: reject truncated security-cookie pointers before publication
+
+Base: Wine 4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf plus preceding Pear patches
+through 0003m. Original Pear native publication guard correction. Wine's
+update_load_config reads the complete SecurityCookie pointer when the reported
+load-config size extends past the field's first byte. Reject a partial pointer
+before executable publication, then retain complete ordinary-destination checks.
+Short configurations that do not expose the field remain accepted. This is
+parser safety, not proof that actual Wine cookie initialization has passed.
+The original Pear owner retains its MIT notice; Wine integration retains its
+existing LGPL-2.1-or-later notices. No protection policy is relaxed.
+
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -344,20 +344,24 @@
+             }
+         }
+     }
+     if (!directory(nt, IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG, plan->size, &dir)) return STATUS_INVALID_IMAGE_FORMAT;
+     if (dir)
+     {
+         ULONG length;
+         ULONGLONG cookie;
+-        SIZE_T field = offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, SecurityCookie);
++        SIZE_T available, field = offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, SecurityCookie);
+         memcpy(&length, plan->staging + dir->VirtualAddress, sizeof(length));
+-        if (extent(field, sizeof(cookie), min((SIZE_T)length, (SIZE_T)dir->Size)))
+-        {
++        available = min((SIZE_T)length, (SIZE_T)dir->Size);
++        /* Wine reads the complete pointer whenever Size extends past its first
++         * byte. Reject partial fields before publishing executable pages. */
++        if (available > field)
++        {
++            if (!extent(field, sizeof(cookie), available)) return STATUS_INVALID_IMAGE_FORMAT;
+             memcpy(&cookie, plan->staging + dir->VirtualAddress + field, sizeof(cookie));
+             if (cookie && !ordinary_va(plan, cookie, sizeof(cookie))) return STATUS_INVALID_IMAGE_FORMAT;
+         }
+     }
+     return STATUS_SUCCESS;
+ }
+ 
+ NTSTATUS pear_pe_plan_read(int fd, struct pear_pe_plan **ret, struct pear_pe_image *image)
