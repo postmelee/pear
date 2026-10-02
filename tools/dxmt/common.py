@@ -97,7 +97,7 @@ def clean_env():
             'GIT_CONFIG_NOSYSTEM': '1', 'GIT_TERMINAL_PROMPT': '0', 'GIT_LFS_SKIP_SMUDGE': '1'}
 
 
-def run_bounded(argv, *, cwd=None, timeout=60, limit=MAX_LISTING, env=None):
+def run_bounded(argv, *, cwd=None, timeout=60, limit=MAX_LISTING, env=None, log_directory=None):
     """Read-only developer-tool calls with bounded pipes and owned cleanup."""
     need(isinstance(argv, list) and argv and all(isinstance(a, str) and '\0' not in a for a in argv), 'command_arguments')
     started = time.monotonic_ns()
@@ -137,7 +137,18 @@ def run_bounded(argv, *, cwd=None, timeout=60, limit=MAX_LISTING, env=None):
     result = {'argv': argv, 'exit_code': code, 'timed_out': timed_out, 'output_limit': limited,
               'elapsed_ms': (time.monotonic_ns() - started) // 1_000_000,
               'stdout': bytes(chunks['stdout']), 'stderr': bytes(chunks['stderr'])}
-    need(not timed_out and not limited, 'command_bound')
+    if log_directory is not None:
+        directory = Path(log_directory)
+        need(directory.is_dir() and not directory.is_symlink(), 'command_log_directory')
+        for stream in ['stdout', 'stderr']:
+            with (directory / stream).open('xb') as output:
+                output.write(result[stream])
+    if timed_out or limited:
+        error = Error('command_bound')
+        # Failure-only finite facts: consumers must not infer the observed bound
+        # from output length or fabricate an exit code when the call raises.
+        error.bound_outcome = {key: result[key] for key in ['timed_out', 'output_limit', 'elapsed_ms']}
+        raise error
     return result
 
 

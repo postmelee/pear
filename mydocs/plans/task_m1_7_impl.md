@@ -134,14 +134,21 @@ Materialize and compile the required airconv/DXMT built-in Metal shader prerequi
 Required tools: finalized candidates with actual available ARM64 execution, CMake >=3.27, selected Ninja/Meson 1.10.0, LLVM-MinGW 20260908, Xcode/SDK consistent with the recorded target, and functioning `metal`/`metallib`. Settings: task-owned output, measured sufficient disk/memory, bounded serial jobs, no persistent configuration changes. Source/tools must pass exact identity verification before build commands.
 
 ```sh
-python3 tools/dxmt/tools.py prepare --toolchain runtime/dxmt/toolchain.json --output .build/task7/stage2-tools --require-empty
-python3 tools/dxmt/check.py shader-tools --toolchain runtime/dxmt/toolchain.json --tools .build/task7/stage2-tools --output .build/task7/stage2-capabilities --require-ready
-python3 tools/dxmt/build_native.py --inputs runtime/dxmt/inputs.json --config runtime/dxmt/build-config.json --source-cache <read-only-selected-cache> --tools .build/task7/stage2-tools --output .build/task7/stage2-native --require-empty
-python3 tools/dxmt/verify.py native --root .build/task7/stage2-native --require-complete
+python3 -B tools/dxmt/prepare.py --inputs runtime/dxmt/inputs.json --source-cache "$pear_dxmt_source_cache" --output "$pear_dxmt_stage2_inputs" --require-empty
+python3 -B tools/dxmt/tools.py prepare --toolchain runtime/dxmt/toolchain.json --reuse-root "$pear_dxmt_tool_reuse" --meson-repository "$pear_dxmt_meson_repository" --output "$pear_dxmt_stage2_tools" --require-empty
+python3 -B tools/dxmt/build_native.py prepare --inputs runtime/dxmt/inputs.json --prepared "$pear_dxmt_stage2_inputs" --source-cache "$pear_dxmt_source_cache" --output "$pear_dxmt_native_source" --require-empty
+python3 -B tools/dxmt/build_native.py llvm --source "$pear_dxmt_native_source" --tools "$pear_dxmt_stage2_tools" --output "$pear_dxmt_llvm" --jobs 2 --max-growth-bytes 17179869184 --reserve-free-bytes 4294967296 --require-empty
+python3 -B tools/dxmt/verify.py native --root "$pear_dxmt_llvm" --require-llvm
+python3 -B tools/dxmt/check.py shader-tools --toolchain runtime/dxmt/toolchain.json --tools "$pear_dxmt_stage2_tools" --output "$pear_dxmt_shader_capabilities" --require-ready
+python3 -B tools/dxmt/verify.py shader-tools --root "$pear_dxmt_shader_capabilities" --require-ready
+python3 -B tools/dxmt/build_native.py shaders --llvm "$pear_dxmt_llvm" --prepared "$pear_dxmt_stage2_inputs" --tools "$pear_dxmt_stage2_tools" --capabilities "$pear_dxmt_shader_capabilities" --output "$pear_dxmt_stage2_native" --jobs 2 --max-growth-bytes 8589934592 --reserve-free-bytes 4294967296 --require-empty
+python3 -B tools/dxmt/verify.py native --root "$pear_dxmt_stage2_native" --require-complete
 python3 -B -m unittest discover -s tests/dxmt -p 'test_*.py'
 python3 tools/check_governance.py
 git diff --check
 ```
+
+Implementation clarification: task-specific variables select verified private caches and fresh `.build/task7/` outputs; their private values are not repository artifacts. Split source preparation, LLVM-only and Metal-dependent gates preserve unavailable shader tooling explicitly. The 16 GiB LLVM and 8 GiB shader ceilings with 4 GiB free reserve are operational stop limits, not measured build peaks; admission must be rechecked immediately before each operation. Existing exact candidate/configuration selectors retain their source-inspected state; actual acquisition, tool execution and finalized native options are recorded separately in producer-bound `prepared.json`/`build.json` receipts and explicit `build_native.py` recipes. This prevents a selection lock from being mistaken for an availability or support claim. No approved artifact root, GPU/guest scope or separate Metal-install approval requirement changes.
 
 Expected: actual compile/link capability fixtures, required native LLVM major/library/header closure, ARM64-only host output/dependencies and all required shader-generation steps pass. A Metal shim path or version alone cannot pass. Record compiler warnings, rejected outputs and private command/output hashes. No guest/GPU/renderer execution occurs here.
 
@@ -304,3 +311,7 @@ Approve the five-stage implementation split, artifact/CLI/evidence contracts, se
 ## Approval Record
 
 On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after the joint detailed-plan review request. This approves the implementation plan and Stage 1 only. Stage 2 and later transitions retain their separate report, commit and explicit-continuation checkpoints.
+
+On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after both completed Stage 1 reports and bundled commits. This authorizes Stage 2 within its approved scope. Later stages, the concrete FEX executable-memory design and any additional Metal installation/account interaction retain their separate approval checkpoints.
+
+On October 2, 2026, the requester explicitly approved the reviewed official Metal Toolchain 17F109 download and installation action. The exact Apple command and bounded private installation receipt are retained under the task-owned output. This authorizes that component setup and the already approved Stage 2 compiler qualification; no account/license acceptance, Xcode selection or security-setting change is included.

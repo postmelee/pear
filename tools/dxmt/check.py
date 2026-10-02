@@ -8,6 +8,7 @@ import shutil
 import stat
 import subprocess
 import sys
+import time
 from common import (REPO, MACH_ARM64, Error, archive_machines, decode_json, digest, encoded, fields,
                     hex_digest, load_json, macho_slices, need, output_directory, producer_hashes,
                     read_relative, real_directory, relative, resolve_contained, run_bounded, sha256, write_new)
@@ -336,6 +337,142 @@ def inventory(inputs_path, toolchain_path, config_path, prepared_path, wine_nati
     return result
 
 
+# Private reviewed integration draft; root owns applying it to check.py.
+SHADER_PROBE=b'#include <metal_stdlib>\nusing namespace metal;\nkernel void pear_shader_probe(device uint* output [[buffer(0)]], uint i [[thread_position_in_grid]]) { output[i] = i + 1; }\n'
+
+
+def shader_producers(repo=REPO):
+    return {p:digest(read_relative(repo,p)) for p in ['tools/dxmt/check.py','tools/dxmt/common.py','tools/dxmt/tools.py','tools/wine/common.py','tools/wine/toolchain.py']}
+
+
+def shader_environment(root,record):
+    from common import clean_env
+    env={**clean_env(),'SDKROOT':record['sdk']['path'],'TMPDIR':str(root/'tmp')}
+    if 'HOME' in os.environ:env['HOME']=os.environ['HOME']
+    return env
+
+
+def shader_recipe(root,selected):
+    result={name+'.version':['/usr/bin/arch','-arm64',selected[name]['path'],'--version'] for name in ['metal','metallib'] if selected[name] is not None}
+    if all(selected[n] is not None for n in ['metal','metallib']):
+        result['metal.compile']=['/usr/bin/arch','-arm64',selected['metal']['path'],'-o',str(root/'probe.air'),'-c',str(root/'probe.metal'),'-std=metal3.1','--target=air64-apple-macos14.0']
+        result['metallib.link']=['/usr/bin/arch','-arm64',selected['metallib']['path'],'-o',str(root/'probe.metallib'),str(root/'probe.air')]
+    return result
+
+
+def shader_command(root,ident,argv,env,commands):
+    directory=root/'logs'/ident;directory.mkdir(parents=True,mode=0o700)
+    started=time.monotonic_ns()
+    row={'id':ident,'argv':list(argv),'cwd':str(root),'environment':dict(env),
+         'exit_code':None,'timed_out':None,'output_limit':None,'elapsed_ms':0,'logs':{}}
+    try:
+        result=run_bounded(argv,cwd=root,env=env,timeout=120,limit=512*1024,log_directory=directory)
+        row.update({key:result[key] for key in ['argv','exit_code','timed_out','output_limit','elapsed_ms']})
+        return result
+    except (Error,OSError,ValueError,subprocess.SubprocessError) as error:
+        row.update(status='failed',error=error.code if isinstance(error,Error) else type(error).__name__,
+                   elapsed_ms=(time.monotonic_ns()-started)//1000000)
+        observed=getattr(error,'bound_outcome',None)
+        if isinstance(observed,dict) and set(observed)=={'timed_out','output_limit','elapsed_ms'}:
+            if type(observed['timed_out']) is bool and type(observed['output_limit']) is bool and type(observed['elapsed_ms']) is int and observed['elapsed_ms']>=0:
+                row.update(observed)
+        # The raised API exposes no exit status. Keep it unavailable even when
+        # owned cleanup killed the process; the observed bound remains explicit.
+        raise
+    finally:
+        for stream in ['stdout','stderr']:
+            path=directory/stream
+            if path.exists():
+                row['logs'][stream]={'path':path.relative_to(root).as_posix(),'sha256':sha256(path),'size_bytes':path.stat().st_size}
+        commands.append(row)
+
+
+def shader_output(path,kind):
+    data=read_relative(Path(path).parent,Path(path).name,16*1024**2)
+    need(len(data)>32 and (data.startswith(b'MTLB') if kind=='metallib' else data[:4] in [b'BC\xc0\xde',b'\xde\xc0\x17\x0b']),'shader_output_format')
+    return {'path':Path(path).name,'sha256':digest(data),'size_bytes':len(data),'kind':kind}
+
+
+def shader_capabilities(toolchain_path,tools_path,output_value,metal=None,metallib=None,repo=REPO):
+    import tools as tool_api
+    from common import owned_directory
+    toolchain=validate_toolchain(load_json(Path(repo)/toolchain_path),repo)
+    tools_root=owned_directory(tools_path,repo);record=tool_api.verify_tools(tools_root,repo)
+    need(record['toolchain_ref']=={'path':toolchain_path,'sha256':sha256(Path(repo)/toolchain_path)},'shader_toolchain_input')
+    need((metal is None)==(metallib is None),'shader_selected_pair')
+    root=output_directory(output_value,repo);(root/'tmp').mkdir();env=shader_environment(root,record)
+    value={'schema_version':1,'record_kind':'dxmt_shader_capabilities','scope':'dxmt_component',
+      'tools_ref':{'path':str(tools_root),'sha256':sha256(tools_root/'prepared.json')},'producers':shader_producers(repo),
+      'selection_mode':'explicit_paths' if metal else 'xcrun_resolution','selected':{'metal':None,'metallib':None},
+      'environment':env,'commands':[],'outputs':[],'shader_build_ready':False,'gpu_or_guest_execution_performed':False,'runtime_eligible':False}
+    try:
+        if metal:
+            value['selected']={n:tool_api.native_file(p) for n,p in [('metal',metal),('metallib',metallib)]}
+        else:
+            for name in ['metal','metallib']:
+                result=shader_command(root,name+'.resolve',['/usr/bin/arch','-arm64',record['native_tools']['xcrun']['path'],'--sdk','macosx','--find',name],env,value['commands'])
+                path=result['stdout'].decode().strip()
+                if result['exit_code']==0 and Path(path).is_absolute() and Path(path).is_file():value['selected'][name]=tool_api.native_file(path)
+        (root/'probe.metal').write_bytes(SHADER_PROBE)
+        for ident,argv in shader_recipe(root,value['selected']).items():
+            if ident=='metallib.link' and not(root/'probe.air').is_file():break
+            result=shader_command(root,ident,argv,env,value['commands'])
+            if ident in ['metal.compile','metallib.link'] and result['exit_code']!=0:break
+        for name,kind in [('probe.air','air'),('probe.metallib','metallib')]:
+            if (root/name).is_file():value['outputs'].append(shader_output(root/name,kind))
+        codes={r['id']:r['exit_code'] for r in value['commands']}
+        value['shader_build_ready']=all(codes.get(k)==0 for k in ['metal.version','metallib.version','metal.compile','metallib.link']) and len(value['outputs'])==2
+        write_new(root/'capabilities.json',value)
+        return value
+    except (Error,OSError,ValueError,KeyError,UnicodeError,subprocess.SubprocessError) as error:
+        failure={**value,'record_kind':'dxmt_shader_capability_failure',
+                 'error':error.code if isinstance(error,Error) else type(error).__name__,
+                 'shader_build_ready':False,'output_qualification':'incomplete'}
+        write_new(root/'failure.json',failure)
+        raise
+
+
+def verify_shader_capabilities(root,repo=REPO):
+    import tools as tool_api
+    from common import owned_directory
+    root=owned_directory(root,repo)
+    need(not(root/'failure.json').exists(),'failed_shader_capability_probe')
+    value=load_json(root/'capabilities.json')
+    fields(value,['schema_version','record_kind','scope','tools_ref','producers','selection_mode','selected','environment','commands','outputs','shader_build_ready','gpu_or_guest_execution_performed','runtime_eligible'],'dxmt_shader_capabilities')
+    need(value['scope']=='dxmt_component' and value['gpu_or_guest_execution_performed'] is False and value['runtime_eligible'] is False and type(value['shader_build_ready']) is bool,'shader_capability_scope')
+    need(value['producers']==shader_producers(repo),'shader_producer_changed')
+    tools_root=owned_directory(value['tools_ref']['path'],repo);record=tool_api.verify_tools(tools_root,repo)
+    need(sha256(tools_root/'prepared.json')==value['tools_ref']['sha256'],'shader_tools_changed')
+    need(set(value['selected'])=={'metal','metallib'} and value['selection_mode'] in ['explicit_paths','xcrun_resolution'],'shader_tool_selection')
+    for fact in value['selected'].values():
+        if fact is not None:need(tool_api.native_file(fact['path'])==fact,'shader_tool_changed')
+    env=shader_environment(root,record);need(value['environment']==env,'shader_environment_changed')
+    need(read_relative(root,'probe.metal')==SHADER_PROBE,'shader_probe_source_changed')
+    recipe=shader_recipe(root,value['selected'])
+    if value['selection_mode']=='xcrun_resolution':
+        recipe={**{n+'.resolve':['/usr/bin/arch','-arm64',record['native_tools']['xcrun']['path'],'--sdk','macosx','--find',n] for n in ['metal','metallib']},**recipe}
+    allowed=list(recipe);rows=value['commands'];ids=[r.get('id') for r in rows]
+    need(ids==allowed or (allowed and allowed[-1]=='metallib.link' and ids==allowed[:-1] and next(r['exit_code'] for r in rows if r['id']=='metal.compile')!=0),'shader_command_set')
+    for row in rows:
+        fields(row,['id','argv','cwd','environment','exit_code','timed_out','output_limit','elapsed_ms','logs'])
+        need(row['argv']==recipe[row['id']] and row['cwd']==str(root) and row['environment']==env and type(row['exit_code']) is int and row['timed_out'] is False and row['output_limit'] is False and type(row['elapsed_ms']) is int and row['elapsed_ms']>=0,'shader_command_recipe')
+        fields(row['logs'],['stdout','stderr'])
+        for stream,ref in row['logs'].items():
+            fields(ref,['path','sha256','size_bytes']);need(ref['path']=='logs/'+row['id']+'/'+stream,'shader_log_path')
+            raw=read_relative(root,ref['path'],512*1024);need(len(raw)==ref['size_bytes'] and digest(raw)==ref['sha256'],'shader_log_changed')
+    if value['selection_mode']=='xcrun_resolution':
+        for name in ['metal','metallib']:
+            row=next(r for r in rows if r['id']==name+'.resolve');raw=read_relative(root,row['logs']['stdout']['path'],512*1024).decode().strip();fact=value['selected'][name]
+            need((fact is not None)==(row['exit_code']==0 and Path(raw).is_absolute() and Path(raw).is_file()) and (fact is None or fact['path']==raw),'shader_resolution_claim')
+    actual=[]
+    for name,kind in [('probe.air','air'),('probe.metallib','metallib')]:
+        if (root/name).exists():actual.append(shader_output(root/name,kind))
+    need(actual==value['outputs'],'shader_outputs_changed')
+    codes={r['id']:r['exit_code'] for r in rows};ready=all(codes.get(k)==0 for k in ['metal.version','metallib.version','metal.compile','metallib.link']) and len(actual)==2
+    need(value['shader_build_ready']==ready,'shader_readiness_claim')
+    return value
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest='operation', required=True)
@@ -343,8 +480,18 @@ def main():
     for name in ['inputs', 'toolchain', 'config', 'prepared', 'wine-native', 'wine-companion', 'tools', 'output']:
         inv.add_argument('--' + name, required=True)
     inv.add_argument('--require-accounted', required=True, action='store_true')
+    shader = sub.add_parser('shader-tools')
+    for name in ['toolchain','tools','output']:
+        shader.add_argument('--'+name,required=True)
+    shader.add_argument('--metal');shader.add_argument('--metallib')
+    shader.add_argument('--require-ready',action='store_true',required=True)
     a = p.parse_args()
     try:
+        if a.operation=='shader-tools':
+            v=shader_capabilities(a.toolchain,a.tools,a.output,a.metal,a.metallib)
+            verify_shader_capabilities(a.output)
+            print(encoded({'shader_build_ready':v['shader_build_ready'],'gpu_or_guest_execution_performed':False,'runtime_eligible':False}).decode(),end='')
+            return 0 if v['shader_build_ready'] else 3
         v = inventory(a.inputs, a.toolchain, a.config, a.prepared, a.wine_native, a.wine_companion, a.tools, a.output)
         print(encoded({'inventory_complete': True, 'shader_build_ready': v['readiness']['shader_build_ready'],
                        'unavailable_tools': v['readiness']['unavailable_tools'], 'runtime_eligible': False}).decode(), end='')

@@ -128,8 +128,26 @@ def main():
     gates = inv.add_mutually_exclusive_group(required=True)
     gates.add_argument('--require-accounted', action='store_true')
     gates.add_argument('--require-shader-build-ready', action='store_true')
+    shader=sub.add_parser('shader-tools')
+    shader.add_argument('--root',required=True);shader.add_argument('--require-ready',action='store_true',required=True)
+    native=sub.add_parser('native');native.add_argument('--root',required=True)
+    native_gates=native.add_mutually_exclusive_group(required=True)
+    native_gates.add_argument('--require-llvm',action='store_true');native_gates.add_argument('--require-complete',action='store_true')
     a = p.parse_args()
     try:
+        if a.operation=='shader-tools':
+            from check import verify_shader_capabilities
+            value=verify_shader_capabilities(a.root)
+            print(encoded({'shader_build_ready':value['shader_build_ready'],'gpu_or_guest_execution_performed':False,'runtime_eligible':False}).decode(),end='')
+            return 0 if value['shader_build_ready'] else 3
+        if a.operation=='native':
+            from build_native import verify_llvm,verify_shader_build
+            root=owned_directory(a.root);kind=load_json(root/'build.json').get('record_kind')
+            need(kind in ['dxmt_llvm_native_build','dxmt_native_shader_build'],'native_build_record_kind')
+            complete=kind=='dxmt_native_shader_build'
+            (verify_shader_build if complete else verify_llvm)(root)
+            print(encoded({'llvm_native_prerequisites':True,'shader_compilation_performed':complete,'stage2_complete':complete,'runtime_eligible':False}).decode(),end='')
+            return 3 if a.require_complete and not complete else 0
         value = verify_inventory(a.root)
         status = gate_result(value, a.require_shader_build_ready)
         result = public_observations(value)
