@@ -3,7 +3,7 @@
 Task plan: [`task_m1_7.md`](task_m1_7.md)
 GitHub Issue: [#7](https://github.com/postmelee/pear/issues/7)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stage 1 is implemented; its actual results are in the Stage 1 report. Later stages and expected outcomes remain planned.
+Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stages 1–3 are implemented; actual results are in their stage reports. Stage 4 and later expected outcomes remain planned.
 
 ## Applicable Context and Reuse
 
@@ -177,13 +177,14 @@ Record Wine builtin postprocessing separately from compiler output and installat
 Inputs: completed native prerequisite records, exact Wine role records and the declared DXMT configuration. Tools/settings: Stage 2 verified toolchain, new owned build/install, bounded serial jobs and current storage admission. No PE/hybrid execution or loader-guard expansion in this stage.
 
 ```sh
-python3 tools/dxmt/build.py --inputs runtime/dxmt/inputs.json --config runtime/dxmt/build-config.json --toolchain runtime/dxmt/toolchain.json --native .build/task7/stage2-native --wine-roles <verified-local-Wine-role-record> --output .build/task7/stage3-build --require-empty
-python3 tools/dxmt/inspect.py --root .build/task7/stage3-build --require-complete
-python3 tools/dxmt/verify.py artifacts --root .build/task7/stage3-build --require-complete
+python3 -B tools/dxmt/build.py --inputs runtime/dxmt/inputs.json --config runtime/dxmt/build-config.json --toolchain runtime/dxmt/toolchain.json --native .build/task7/stage2-native-shaders1 --prepared .build/task7/stage2-inputs2 --tools .build/task7/stage2-tools2 --cross-tools "$pear_dxmt_cross_tools" --wine-roles "$pear_dxmt_wine_roles" --output .build/task7/stage3-build --jobs 2 --max-growth-bytes 8589934592 --reserve-free-bytes 4294967296 --require-empty
+python3 -B tools/dxmt/inspect.py --root .build/task7/stage3-build --require-complete
 python3 -B -m unittest discover -s tests/dxmt -p 'test_*.py'
 python3 tools/check_governance.py
 git diff --check
 ```
+
+Implementation clarification: keep every Stage 2 source/tool/native producer byte unchanged. Stage 3 uses new `build.py` and `inspect.py` for construction and independent exact-byte replay; the new inspector command replaces the equivalent planned `verify.py artifacts` dispatch so an additive CLI edit cannot invalidate native prerequisites. Reuse the existing Wine PE class and hybrid reader by fixed AST selection of those two definitions only, binding the full reader source digest; the native-view wrapper is not used to normalize raw headers. The owned Wine layout combines verified native `winebuild`, `ntdll.so`, `winemac.so` and transitive `win32u.so` with companion ARM64/ARM64EC imports. Native/compiler outputs, four explicit in-place builtin-marker operations and installation have separate byte identities. A bounded owned Git adapter returns the full selected DXMT commit for the sole `describe --always` request, preventing discovery of the parent Pear repository. The original DXMT source remains unchanged. Exact generated adapters/configuration, source notices, role origins and commands are replay-bound. The 8 GiB ceiling / 4 GiB reserve are operational limits with fresh admission, not measured peaks. This stays within the approved artifact-construction and internal-plan locations; the typed driver interface, signing and GPU/guest execution remain later gates.
 
 Expected: complete versioned artifacts and dependency/notice inventories, exact native ARM64 slices and valid configured hybrid metadata; unknown/missing/changed outputs fail the relevant gate. Test wrong target/slice/major/role, unaccounted dependency, builtin mode mismatch, bad rpath, changed bytes and omitted outputs. Missing typed interface remains a Stage 4 prerequisite, not something compilation can resolve by assertion. Retain failed builds with exact errors.
 
@@ -315,3 +316,5 @@ On October 2, 2026, the requester explicitly continued in the same thread with �
 On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after both completed Stage 1 reports and bundled commits. This authorizes Stage 2 within its approved scope. Later stages, the concrete FEX executable-memory design and any additional Metal installation/account interaction retain their separate approval checkpoints.
 
 On October 2, 2026, the requester explicitly approved the reviewed official Metal Toolchain 17F109 download and installation action. The exact Apple command and bounded private installation receipt are retained under the task-owned output. This authorizes that component setup and the already approved Stage 2 compiler qualification; no account/license acceptance, Xcode selection or security-setting change is included.
+
+After reviewing both completed Stage 2 reports and bundled commits, the requester explicitly continued in the same thread. This authorizes Stage 3 artifact construction for #7 and the concrete executable-memory design review for #5. The #5 owner prototype still requires explicit approval of that completed design; later stages retain their own checkpoints.
