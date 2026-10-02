@@ -166,13 +166,17 @@ Replace Linux-only CPU register/registry assumptions with a truthful Darwin-supp
 Inputs: completed Stage 1 sources/tools/roles, exact new patch layer and original service fixtures. Required tools/platform: verified native/cross compilers/CMake/SDK, isolated owned Wine build/fixture scope, actual private signing/provisioning handle for each restricted executable. Settings: disk admission before full build, bounded serial jobs, controlled descriptors/owned threads/timeouts and preserved failure outputs.
 
 ```sh
-python3 tools/fex/build.py modules --inputs runtime/fex/inputs.json --config runtime/fex/build-config.json --tools <verified-local-tools> --wine-roles <verified-patched-Wine-roles> --output .build/task5/stage2-build --require-empty
-python3 tools/fex/services.py --build .build/task5/stage2-build --local-signing <private-authorization-handle> --output .build/task5/stage2-services --require-empty
-python3 tools/fex/verify.py services --root .build/task5/stage2-services --require-complete
+python3 -B tools/fex/build.py modules --phase complete --inputs runtime/fex/inputs.json --config runtime/fex/build-config.json --prepared .build/task5/stage1-inputs3 --tools .build/task5/stage1-tools5 --host-metadata .build/task5/stage2-host-metadata1/observations.json --cross-tools "$pear_fex_cross_tools" --wine-roles .build/task5/stage1-wine-roles.json --output "$pear_fex_stage2_build" --require-empty
+python3 -B tools/fex/verify.py modules --root "$pear_fex_stage2_build" --require-complete
+python3 -B tools/fex/sign_services.py --build "$pear_fex_stage2_build" --profile "$pear_fex_service_profile" --output "$pear_fex_stage2_signed" --require-empty
+python3 -B tools/fex/services.py run --authorization "$pear_fex_stage2_signed" --output "$pear_fex_stage2_services" --require-empty
+python3 -B tools/fex/verify.py stage2 --root "$pear_fex_stage2_build" --services-root "$pear_fex_stage2_services" --require-complete
 python3 -B -m unittest discover -s tests/fex -p 'test_*.py'
 python3 tools/check_governance.py
 git diff --check
 ```
+
+Implementation clarification: the command templates now match the implemented split build, signing, live preflight and service replay APIs. Resolve task-specific variables from verified private inputs and fresh `.build/task5/` outputs; never commit their private values. The ordinary service bundle uses the existing Host Probe development profile and requests only application/team claims, with no restricted architecture/JIT/library-validation exception. The pinned source's local `GetSystemInfo` implementation in `CommonWindowsRuntime` queries `NtQuerySystemInformation`; actual selected-member/import proof must establish its use without widening the bootstrap dependency set. These are Stage 2 implementation details in the already approved locations; no engine initialization or new product-documentation scope is added.
 
 Expected: actual native ARM64 UnixLib and required PE modules build/link; source-to-binary table/export/dependency identities and finite service/capability/thread tests pass. Retain syscall/API error domains/codes, optional-service status and fallback, per-thread policy query/observation limitations, grants and owned cleanup. Build and inspect PE modules only. Service/feature/policy fixtures use isolated native/source-defined paths and must not invoke FEX `ProcessInit`, `ThreadInit`, `Context::InitCore` or `CreateThread`. The pinned ARM64EC initialization already creates the core and allocates a RWX return stub before dispatch; merely avoiding x64 execution does not avoid that path. Use owned native fixture threads for policy checks and label them as such; actual translated engine/thread initialization remains deferred to Stage 4/5 after the memory gate. No unsupported executable allocation or engine initialization occurs in Stage 2. If a required platform service cannot work, Stage 2 remains incomplete and records the precise amendment/prerequisite.
 
@@ -371,3 +375,5 @@ Approve this six-stage implementation split, component/tool/interface/evidence c
 ## Approval Record
 
 On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after the joint detailed-plan review request. This approves the implementation plan and Stage 1 only. Stage 2 and later transitions retain their separate report, commit and explicit-continuation checkpoints.
+
+On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after both completed Stage 1 reports and bundled commits. This authorizes Stage 2 within its approved scope. Later stages, the concrete FEX executable-memory design and any additional Metal installation/account interaction retain their separate approval checkpoints.

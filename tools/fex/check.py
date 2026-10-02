@@ -47,9 +47,9 @@ def validate_ec_archive_index(entries):
     offsets = struct.unpack_from('<'+'I'*count,second,4)
     regular = {offset for offset,name,_ in entries if name not in ('/','//','/SYM64/','/<ECSYMBOLS>/')}
     need(len(set(offsets))==count and all(offset in regular for offset in offsets), 'ec_linker_member_reference')
-    def names_and_indices(body,start,number):
+    def names_and_indices(body,start,number,allow_empty=False):
         end = start+number*2
-        need(0<number<=1000000 and end<=len(body), 'ec_symbol_index_bounds')
+        need((0 if allow_empty else 1)<=number<=1000000 and end<=len(body), 'ec_symbol_index_bounds')
         indices = struct.unpack_from('<'+'H'*number,body,start)
         need(all(1<=index<=count for index in indices), 'ec_symbol_member_reference')
         cursor = end; names = []
@@ -60,7 +60,12 @@ def validate_ec_archive_index(entries):
         need(body[cursor:] in (b'',b'\0') and names==sorted(set(names)), 'ec_symbol_string_table')
         return number
     number=struct.unpack_from('<I',second,end)[0]
-    names_and_indices(second,end+4,number)
+    # A full source-built pure-EC archive can have no ordinary symbols.
+    # Its ordinary table must then be genuinely empty; the EC table below
+    # still requires positive symbols and valid real-member references.
+    if number==0:
+        need(symbols[0]==bytes(4),'ec_empty_ordinary_first_table')
+    names_and_indices(second,end+4,number,allow_empty=True)
     need(len(ec[0])>=4, 'ec_symbol_index_bounds')
     ec_count=struct.unpack_from('<I',ec[0])[0]
     names_and_indices(ec[0],4,ec_count)

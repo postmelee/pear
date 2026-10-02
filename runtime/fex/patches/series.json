@@ -1,0 +1,134 @@
+{
+  "base_commit": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+  "base_tree": "7509ab443d32692ac72ee51c0697ccf86d0a66af",
+  "component_built": false,
+  "fex_initialization": false,
+  "guest_execution": false,
+  "patches": [
+    {
+      "changes": [
+        {
+          "after_sha256": "6e51fd10338f8cd3868f985a5ae68b955ad42e371aa737792314df52cdbcbe66",
+          "before_sha256": "f21019f636c1172b4bd822a04d5fd098d2212f17681c4e42b825ceef527e883f",
+          "path": "Source/Windows/UnixLib/CMakeLists.txt"
+        },
+        {
+          "after_sha256": "6b9e52f9a4951752ca0d6606c4109283d13d621e784255ba0553ff8e980f66e8",
+          "before_sha256": null,
+          "path": "Source/Windows/UnixLib/FEXUnixLibDarwin.cpp"
+        },
+        {
+          "after_sha256": "546d82072faebb63206ccc131086a5d585f8fd7ae32c70f44a86b4fb544588b5",
+          "before_sha256": "0946d1a2b406a04dc778597009ba2098e2c35cad359333c44aebed5e2151da23",
+          "path": "Source/Windows/UnixLib/FEXUnixLib.h"
+        }
+      ],
+      "license": "MIT (FEX integration and original Pear code); existing notices retained",
+      "path": "0002a-darwin-unixlib-services.patch",
+      "provenance": "Original Pear downstream integration against pinned FEX 59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa. No upstream submission.",
+      "rationale": "Port the exact eight-service native boundary, preserve transferred FD ownership and refuse unsupported Linux controls without false success.",
+      "sha256": "c3c37726997e6cb9417c50372bfb18b6e6b763e9862825a1fb19a324680bd3d5"
+    },
+    {
+      "changes": [
+        {
+          "after_sha256": "6ac1c8dff1295e7bc9b32225682a6e7e92e3ed57562316cd92f634556432e79a",
+          "before_sha256": "a9ff29663ee6de4d60da233b762e0df37a0fb9f9ad79184080c01b7184524a1e",
+          "path": "Source/Windows/Common/CPUFeatures.cpp"
+        },
+        {
+          "after_sha256": "89ac64af3346457a18fa635112e3d26e8263dcbf107a84c08f6e7ad85a15ba9d",
+          "before_sha256": "c95ca0b2ba91b4b3340af8b81edccc27799f8e23b8e67b63c748ba3488783073",
+          "path": "FEXCore/include/FEXCore/Core/HostFeatures.h"
+        },
+        {
+          "after_sha256": "917b8a07a670cd4e5f18f113ba885af0810583ec5d1bebee2592489adff1370d",
+          "before_sha256": "ef0797817bdeee8c06424296bc64fdc3082731b5513ed64e6c16c0e27c1fad1d",
+          "path": "FEXCore/Source/Interface/Core/CPUID.cpp"
+        }
+      ],
+      "license": "MIT (FEX integration and original Pear code); existing notices retained",
+      "path": "0002b-darwin-conservative-features.patch",
+      "provenance": "Original Pear downstream integration against pinned FEX 59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa. No upstream submission.",
+      "rationale": "Use verified cache-line geometry and real Wine processor count without Linux register/MIDR fabrication; retain all optional instruction accelerations disabled.",
+      "sha256": "37f6e9548d5da42626fb61423e64948c5714ba1742f3479030df6182a101cee8"
+    },
+    {
+      "changes": [
+        {
+          "after_sha256": "a6adab38815d97d22b55d4e0f79c72054510e85041fa89a1de85d77bf08e5c09",
+          "before_sha256": "f1b1be4a3be65c0369c1c754590376ba7bb0b26700a75959de110bef0b729597",
+          "path": "Source/Windows/ARM64EC/CMakeLists.txt"
+        },
+        {
+          "after_sha256": "55e3d82783941a76d0337dc553a129b46c577f9842bfedb50ce7c93dfff416cc",
+          "before_sha256": "7ded9799dbe6e8b7e45cc02f31d35135fe04c8e5e29e5b01013034472a5076fc",
+          "path": "Source/Windows/WOW64/CMakeLists.txt"
+        }
+      ],
+      "license": "MIT (FEX integration and original Pear code); existing notices retained",
+      "path": "0002c-explicit-static-abi-link.patch",
+      "provenance": "Original Pear downstream integration against pinned FEX 59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa. No upstream submission.",
+      "rationale": "Preserve the full source-defined custom CRT and make separate static libc++abi precede the bundled ABI copy in libc++.",
+      "sha256": "ea901fe1c9bf1de3f718162dae04458e1beb4662d11c118cbc3fa9016dca0230"
+    },
+    {
+      "changes": [
+        {
+          "after_sha256": "dd6b8c2ea9d8f8c58d369be68ec87ec9e7d6a36b5f2bdc2943928c5716531a7c",
+          "before_sha256": null,
+          "path": "Source/Windows/Common/DarwinConfigPolicy.h"
+        },
+        {
+          "after_sha256": "e8a419f01e3454245bd1d035fcabe14ff297e06e1934489e63e09bcbecb6b588",
+          "before_sha256": null,
+          "path": "Source/Windows/Common/DarwinConfigPolicy.cpp"
+        },
+        {
+          "after_sha256": "fbcaba03ea7c68546e7ce2670eb4b6eccba72e6f879b1b7c0a8ced1bb6f7d64f",
+          "before_sha256": "00a60898a6451602016f2256aca7ca72c1ff2630149b9454748ab4e5af65e42b",
+          "path": "Source/Windows/Common/CMakeLists.txt"
+        },
+        {
+          "after_sha256": "b06a8f3812446bd90f4aaf826e1ba432d6c96f86263f1410072ecd226f7d3ec2",
+          "before_sha256": "53e63adb74437b4bca09337fb4ead28681cfabdd95adf768a1ad0a163ebf1a66",
+          "path": "Source/Common/Config.cpp"
+        },
+        {
+          "after_sha256": "fc8ec43ff66c4816297142d2e5e72f46195d814d15773cfe5611fb31d68302ef",
+          "before_sha256": "b6e9a6da61b5c89476f41c3b2b774231bd3da3e11c14fc55a1c1c4330e9c7ea0",
+          "path": "Source/Windows/ARM64EC/Module.cpp"
+        },
+        {
+          "after_sha256": "24c10fed3e902eb440442b4b3bc844fbfcaf1b39819e75aff60b78ed66122547",
+          "before_sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+          "path": "Source/Windows/WOW64/Module.cpp"
+        }
+      ],
+      "license": "MIT (FEX integration and original Pear code); existing notices retained",
+      "path": "0002d-enforced-darwin-config-policy.patch",
+      "provenance": "Original Pear downstream integration against pinned FEX 59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa. No upstream submission.",
+      "rationale": "Reject conflicting application/environment entries before each Set and apply conservative software-ordering defaults before any profiler/context initialization. No engine initialization occurs in Stage 2.",
+      "sha256": "66910f5569fa3710bdcb610f99d4158be74ef438e191e081a8be3e2d36c1dda9"
+    },
+    {
+      "changes": [
+        {
+          "after_sha256": "16ab4b3165d58b708458816cf2b24c69236925763aec2805e1d76c836f71423e",
+          "before_sha256": "44280c7e0d5c09cbbfd18e9b0dcc2b735b40770b687ec81de734807e51ed8149",
+          "path": "FEXCore/Source/CMakeLists.txt"
+        }
+      ],
+      "license": "MIT (FEX integration and original Pear code); existing notices retained",
+      "path": "0002e-source-bound-generator-interpreter.patch",
+      "provenance": "Original Pear downstream integration against pinned FEX 59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa. No upstream submission.",
+      "rationale": "Execute the explicitly qualified Python interpreter for source-defined IR/configuration build generators; preserve generator source and output rules.",
+      "sha256": "b87cbe0dba15b606baf41a8dd0997a58ecb16821a7d39fb700c7b2713ead6fcb"
+    }
+  ],
+  "record_kind": "fex_patch_series",
+  "runtime_qualified": false,
+  "schema_version": 1,
+  "scope": "fex_component",
+  "wine_baseline_series_sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086"
+}

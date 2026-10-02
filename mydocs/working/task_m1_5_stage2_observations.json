@@ -1,0 +1,366 @@
+{
+  "artifact_count": 28,
+  "build_command_count": 9,
+  "build_sha256": "0a2c854c0c42484ace9c077b8fb69a73b6e8a323d0b2a8b5e7c8cead90fb21ed",
+  "config_sha256": "946186e3fcf98b4937be487d89478885160a7c0ad8dc7f613222510e6193187d",
+  "distribution_qualified": false,
+  "evidence_scope": "full-module-construction-and-ordinary-native-services",
+  "exporter_sha256": "0914d7d145b49e72d3aec8fa7b2afcde41e3720263cc16f081e5f909a42b88c1",
+  "fex_initialization": false,
+  "full_custom_crt_modules": "built_not_executed",
+  "guest_execution": false,
+  "half_barrier_runtime_suitability": "unperformed",
+  "hardware_tso": "unsupported",
+  "host_cache_line_bytes": 128,
+  "host_processor_count_provider_execution": "unperformed",
+  "inputs_sha256": "6fd39d2015b09c9a19e052c8915d9d152fcf14572cccde8a9cea50c704c7f1d8",
+  "jit_execution": false,
+  "native_images": [
+    {
+      "role": "arm64ec_native_unixlib",
+      "sha256": "329e2ba704474ca2330a3e8fcd261990afe8f625afb5cca0951528a051d41ed2",
+      "size_bytes": 35104
+    },
+    {
+      "role": "wow64_native_unixlib",
+      "sha256": "5c2949d76e47f357db7b3be5a17c4bf2bf7f6fc5cb752572fa492b4c268fb064",
+      "size_bytes": 35104
+    },
+    {
+      "role": "native_service_fixture",
+      "sha256": "34e2948cdf3a6462682f63bf5c9ec771333dfb69feeca68e55c88f31364ebbe8",
+      "size_bytes": 36960
+    }
+  ],
+  "native_service_command_count": 2,
+  "native_service_results": {
+    "arm64ec": {
+      "cache_line_bytes": 128,
+      "descriptor_cleanup": true,
+      "fex_initialization": false,
+      "guest_execution": false,
+      "hardware_tso_status": -1073741637,
+      "jit_execution": false,
+      "kernel_control_status": -1073741637,
+      "linux_advice_status": -1073741637,
+      "mapping_controls": 7,
+      "owned_workers": 2,
+      "passed": true,
+      "pe_execution": false,
+      "policy_controls": 20,
+      "record_kind": "fex_native_service_observation",
+      "restricted_operations": false,
+      "schema_version": 1,
+      "scope": "fex_component",
+      "service_count": 8,
+      "software_tso_required": true,
+      "stats_status": -1073741637,
+      "vma_naming_status": -1073741637,
+      "workers_joined": 2
+    },
+    "wow64": {
+      "cache_line_bytes": 128,
+      "descriptor_cleanup": true,
+      "fex_initialization": false,
+      "guest_execution": false,
+      "hardware_tso_status": -1073741637,
+      "jit_execution": false,
+      "kernel_control_status": -1073741637,
+      "linux_advice_status": -1073741637,
+      "mapping_controls": 7,
+      "owned_workers": 2,
+      "passed": true,
+      "pe_execution": false,
+      "policy_controls": 20,
+      "record_kind": "fex_native_service_observation",
+      "restricted_operations": false,
+      "schema_version": 1,
+      "scope": "fex_component",
+      "service_count": 8,
+      "software_tso_required": true,
+      "stats_status": -1073741637,
+      "vma_naming_status": -1073741637,
+      "workers_joined": 2
+    }
+  },
+  "optional_instruction_acceleration": "disabled",
+  "ordinary_development_signature": "verified",
+  "patch_series_sha256": "6f2661dec28951d3372d743701b00e787027aa3a04f57afce0368438cf0df825",
+  "pe_execution": false,
+  "pe_modules": [
+    {
+      "pe": {
+        "arm64ec_metadata": {
+          "chpe_version": 1,
+          "code_ranges": [
+            {
+              "code_kind": "arm64ec",
+              "rva": 4096,
+              "size_bytes": 2119552
+            },
+            {
+              "code_kind": "x64",
+              "rva": 2125824,
+              "size_bytes": 4368
+            }
+          ],
+          "pe_abi": "arm64ec"
+        },
+        "exports": [
+          {
+            "name": "BTCpu64FlushInstructionCache",
+            "rva": 2129936,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpu64IsProcessorFeaturePresent",
+            "rva": 2129952,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpu64NotifyMemoryDirty",
+            "rva": 2129968,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpu64NotifyReadFile",
+            "rva": 2129984,
+            "source_data_export": false
+          },
+          {
+            "name": "BeginSimulation",
+            "rva": 1071780,
+            "source_data_export": true
+          },
+          {
+            "name": "DispatchJump",
+            "rva": 1071712,
+            "source_data_export": true
+          },
+          {
+            "name": "ExitToX64",
+            "rva": 1071756,
+            "source_data_export": true
+          },
+          {
+            "name": "FlushInstructionCacheHeavy",
+            "rva": 2130000,
+            "source_data_export": false
+          },
+          {
+            "name": "NotifyMapViewOfSection",
+            "rva": 2130016,
+            "source_data_export": false
+          },
+          {
+            "name": "NotifyMemoryAlloc",
+            "rva": 2130032,
+            "source_data_export": false
+          },
+          {
+            "name": "NotifyMemoryFree",
+            "rva": 2130048,
+            "source_data_export": false
+          },
+          {
+            "name": "NotifyMemoryProtect",
+            "rva": 2130064,
+            "source_data_export": false
+          },
+          {
+            "name": "NotifyUnmapViewOfSection",
+            "rva": 2130080,
+            "source_data_export": false
+          },
+          {
+            "name": "ProcessInit",
+            "rva": 2130096,
+            "source_data_export": false
+          },
+          {
+            "name": "ProcessTerm",
+            "rva": 2130112,
+            "source_data_export": false
+          },
+          {
+            "name": "ResetToConsistentState",
+            "rva": 2130128,
+            "source_data_export": false
+          },
+          {
+            "name": "RetToEntryThunk",
+            "rva": 1071720,
+            "source_data_export": true
+          },
+          {
+            "name": "ThreadInit",
+            "rva": 2130144,
+            "source_data_export": false
+          },
+          {
+            "name": "ThreadTerm",
+            "rva": 2130160,
+            "source_data_export": false
+          },
+          {
+            "name": "UpdateProcessorInformation",
+            "rva": 2130176,
+            "source_data_export": false
+          }
+        ],
+        "imports": [
+          "ntdll.dll"
+        ],
+        "outer_machine": 34404,
+        "pe_execution": false,
+        "source_custom_crt": true,
+        "wine_builtin_marker_sha256": "8f15265269b70d27579fb7525ec418fde87a7a1e8ac97e00c04c2238c0aaf5b9"
+      },
+      "role": "full_fex_module",
+      "sha256": "0e87e2da8d38e39b3bc6f4e0fc41a11364ba8ac6ea1849bd709c233593d5a11d",
+      "size_bytes": 46276608
+    },
+    {
+      "pe": {
+        "exports": [
+          {
+            "name": "BTCpuFlushInstructionCache2",
+            "rva": 1019260,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuFlushInstructionCacheHeavy",
+            "rva": 1019344,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuGetBopCode",
+            "rva": 1017344,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuGetContext",
+            "rva": 1017368,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuIsProcessorFeaturePresent",
+            "rva": 1020124,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyMapViewOfSection",
+            "rva": 1019744,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyMemoryAlloc",
+            "rva": 1019512,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyMemoryDirty",
+            "rva": 1019428,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyMemoryFree",
+            "rva": 1019672,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyMemoryProtect",
+            "rva": 1019596,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyProcessExecuteFlagsChange",
+            "rva": 1020060,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyReadFile",
+            "rva": 1019928,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuNotifyUnmapViewOfSection",
+            "rva": 1019812,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuProcessInit",
+            "rva": 1013220,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuProcessTerm",
+            "rva": 1016216,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuResetToConsistentState",
+            "rva": 1019208,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuSetContext",
+            "rva": 1017376,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuSimulate",
+            "rva": 1017384,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuSuspendLocalThread",
+            "rva": 1017520,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuThreadInit",
+            "rva": 1016220,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuThreadTerm",
+            "rva": 1016724,
+            "source_data_export": false
+          },
+          {
+            "name": "BTCpuUpdateProcessorInformation",
+            "rva": 1020160,
+            "source_data_export": false
+          },
+          {
+            "name": "__wine_get_unix_opcode",
+            "rva": 1017356,
+            "source_data_export": false
+          }
+        ],
+        "imports": [
+          "ntdll.dll",
+          "wow64.dll"
+        ],
+        "outer_machine": 43620,
+        "pe_execution": false,
+        "source_custom_crt": true,
+        "wine_builtin_marker_sha256": "8f15265269b70d27579fb7525ec418fde87a7a1e8ac97e00c04c2238c0aaf5b9"
+      },
+      "role": "full_fex_module",
+      "sha256": "65a9c884d784f68695298f10c42a62426e7db91a4ea3a722bfd111db34dac75e",
+      "size_bytes": 45301760
+    }
+  ],
+  "record_kind": "fex_stage2_observations",
+  "restricted_operations": false,
+  "runtime_policy_source_enforced": true,
+  "runtime_qualified": false,
+  "schema_version": 1,
+  "scope": "fex_component",
+  "services_sha256": "7a1f2ee38d7b56687be6dd780adf0fc92c20bc9bb0d219fbda62c0e825b53580",
+  "software_tso_required": true,
+  "stage2_passed": true,
+  "toolchain_sha256": "d69b53d06a0cb99e49c3014f6e2c1abbbde6f65e78182ca721b9b42e4f153ed6"
+}

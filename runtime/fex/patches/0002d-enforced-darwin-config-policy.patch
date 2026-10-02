@@ -1,0 +1,174 @@
+diff --git a/Source/Windows/Common/DarwinConfigPolicy.h b/Source/Windows/Common/DarwinConfigPolicy.h
+--- /dev/null
++++ b/Source/Windows/Common/DarwinConfigPolicy.h
+@@ -0,0 +1,33 @@
++// SPDX-License-Identifier: MIT
++// Conservative Pear downstream policy; no engine or privileged API is invoked.
++#pragma once
++#include <string_view>
++
++namespace FEX::Windows::DarwinPolicy {
++struct Setting { std::string_view JSONName; std::string_view EnvironmentName; std::string_view Value; };
++inline constexpr Setting Settings[] {
++  {"DiskCache", "FEX_DISKCACHE", "0"},
++  {"ProfileStats", "FEX_PROFILESTATS", "0"},
++  {"TSOEnabled", "FEX_TSOENABLED", "1"},
++  {"VectorTSOEnabled", "FEX_VECTORTSOENABLED", "1"},
++  {"MemcpySetTSOEnabled", "FEX_MEMCPYSETTSOENABLED", "1"},
++  // Retain the upstream half-barrier handler; runtime suitability is unperformed.
++  {"HalfBarrierTSOEnabled", "FEX_HALFBARRIERTSOENABLED", "1"},
++  {"StrictInProcessSplitLocks", "FEX_STRICTINPROCESSSPLITLOCKS", "1"},
++  {"KernelUnalignedAtomicBackpatching", "FEX_KERNELUNALIGNEDATOMICBACKPATCHING", "0"},
++  {"HostFeatures", "FEX_HOSTFEATURES", "0"},
++};
++constexpr bool AcceptJSON(std::string_view name, std::string_view value) {
++  for (const auto& setting : Settings) if (setting.JSONName == name) return value == setting.Value;
++  // Additional application tuning needs a reviewed platform-specific contract.
++  return false;
++}
++constexpr bool AcceptEnvironment(std::string_view name, std::string_view value) {
++  for (const auto& setting : Settings) if (setting.EnvironmentName == name) return value == setting.Value;
++  // These upstream selectors name configuration locations; loaded entries are
++  // independently checked before each Set, including per-application layers.
++  return name == "FEX_APP_CONFIG" || name == "FEX_APP_DATA_LOCATION" ||
++         name == "FEX_APP_CONFIG_LOCATION" || name == "FEX_APP_CACHE_LOCATION";
++}
++void Apply();
++} // namespace FEX::Windows::DarwinPolicy
+diff --git a/Source/Windows/Common/DarwinConfigPolicy.cpp b/Source/Windows/Common/DarwinConfigPolicy.cpp
+--- /dev/null
++++ b/Source/Windows/Common/DarwinConfigPolicy.cpp
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: MIT
++#include "DarwinConfigPolicy.h"
++#include <FEXCore/Config/Config.h>
++
++namespace FEX::Windows::DarwinPolicy {
++void Apply() {
++#ifdef PEAR_FEX_DARWIN
++  // Apply after ReloadMetaLayer and before profiler/context/engine creation.
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_DISKCACHE, "0");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_PROFILESTATS, "0");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_TSOENABLED, "1");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_VECTORTSOENABLED, "1");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_MEMCPYSETTSOENABLED, "1");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_HALFBARRIERTSOENABLED, "1");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_STRICTINPROCESSSPLITLOCKS, "1");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_KERNELUNALIGNEDATOMICBACKPATCHING, "0");
++  FEXCore::Config::Set(FEXCore::Config::CONFIG_HOSTFEATURES, "0");
++#endif
++}
++} // namespace FEX::Windows::DarwinPolicy
+diff --git a/Source/Windows/Common/CMakeLists.txt b/Source/Windows/Common/CMakeLists.txt
+--- a/Source/Windows/Common/CMakeLists.txt
++++ b/Source/Windows/Common/CMakeLists.txt
+@@ -9,6 +9,7 @@
+ add_library(CommonWindows STATIC
+   Allocator.cpp
+   CPUFeatures.cpp
++  DarwinConfigPolicy.cpp
+   EnvironmentVariablesHandling.cpp
+   FEXUnixLib.cpp
+   SHMStats.cpp
+diff --git a/Source/Common/Config.cpp b/Source/Common/Config.cpp
+--- a/Source/Common/Config.cpp
++++ b/Source/Common/Config.cpp
+@@ -2,6 +2,9 @@
+ #include "Common/ArgumentLoader.h"
+ #include "Common/Config.h"
+ #include "Common/JSONPool.h"
++#ifdef PEAR_FEX_DARWIN
++#include "Windows/Common/DarwinConfigPolicy.h"
++#endif
+ 
+ #include <FEXCore/Config/Config.h>
+ #include <FEXCore/fextl/fmt.h>
+@@ -218,6 +221,11 @@
+   : FEXCore::Config::Layer(Layer) {}
+ 
+ void OptionMapper::MapNameToOption(const char* ConfigName, const char* ConfigString) {
++#ifdef PEAR_FEX_DARWIN
++  if (!FEX::Windows::DarwinPolicy::AcceptJSON(ConfigName, ConfigString)) {
++    ERROR_AND_DIE_FMT("Unsupported Pear Darwin configuration override '{}'", ConfigName);
++  }
++#endif
+   std::optional<FEXCore::Config::ConfigOption> KeyOptionValue;
+   for (auto& it : ConfigLookup) {
+     if (it.first != ConfigName) {
+@@ -303,6 +311,11 @@
+ 
+     std::string_view Key = Var.substr(0, pos);
+     std::string_view Value_View {Var.substr(pos + 1)};
++#ifdef PEAR_FEX_DARWIN
++    if (!FEX::Windows::DarwinPolicy::AcceptEnvironment(Key, Value_View)) {
++      ERROR_AND_DIE_FMT("Unsupported Pear Darwin environment override '{}'", Key);
++    }
++#endif
+     std::optional<fextl::string> Value;
+ 
+ #define ENVLOADER
+@@ -332,12 +345,24 @@
+ 
+   std::optional<std::string_view> Value;
+ 
++#ifdef PEAR_FEX_DARWIN
++  // GetVar also falls back to getenv; validate those values before generated Set.
++  auto ValidateEnvironment = [](std::string_view name, const auto& value) {
++    if (value && !FEX::Windows::DarwinPolicy::AcceptEnvironment(name, *value)) {
++      ERROR_AND_DIE_FMT("Unsupported Pear Darwin environment override '{}'", name);
++    }
++  };
++#else
++  auto ValidateEnvironment = [](std::string_view, const auto&) {};
++#endif
+   // Walk all the environment options and corresponding config option.
+ #define OPT_BASE(type, group, enum, json, default) \
+   Value = GetVar(EnvMap, "FEX_" #enum);            \
++  ValidateEnvironment("FEX_" #enum, Value);        \
+   if (Value.has_value()) Set(FEXCore::Config::ConfigOption::CONFIG_##enum, *Value);
+ #define OPT_STRARRAY(group, enum, json, default) \
+   Value = GetVar(EnvMap, "FEX_" #enum);          \
++  ValidateEnvironment("FEX_" #enum, Value);      \
+   if (Value.has_value()) AppendStrArrayValue(FEXCore::Config::ConfigOption::CONFIG_##enum, *Value);
+ 
+ #include <FEXCore/Config/ConfigValues.inl>
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1,3 +1,6 @@
++#ifdef PEAR_FEX_DARWIN
++#include "Common/DarwinConfigPolicy.h"
++#endif
+ // SPDX-License-Identifier: MIT
+ /*
+ $info$
+@@ -588,6 +591,9 @@
+   AppConfigName = FEX::Windows::BaseName(ExecutablePath);
+   FEX::Config::LoadConfig(AppConfigName, _environ, FEX::ReadPortabilityInformation());
+   FEXCore::Config::ReloadMetaLayer();
++#ifdef PEAR_FEX_DARWIN
++  FEX::Windows::DarwinPolicy::Apply();
++#endif
+   FEX::Windows::Logging::Init();
+   FEXCore::Config::Set(FEXCore::Config::CONFIG_APP_FILENAME, ExecutablePath);
+   FEXCore::Config::Set(FEXCore::Config::CONFIG_APP_CONFIG_NAME, AppConfigName);
+diff --git a/Source/Windows/WOW64/Module.cpp b/Source/Windows/WOW64/Module.cpp
+--- a/Source/Windows/WOW64/Module.cpp
++++ b/Source/Windows/WOW64/Module.cpp
+@@ -1,3 +1,6 @@
++#ifdef PEAR_FEX_DARWIN
++#include "Common/DarwinConfigPolicy.h"
++#endif
+ // SPDX-License-Identifier: MIT
+ /*
+ $info$
+@@ -505,6 +508,9 @@
+   const auto ExecutableName = FEX::Windows::BaseName(ExecutablePath);
+   FEX::Config::LoadConfig(fextl::string {ExecutableName}, _environ, FEX::ReadPortabilityInformation());
+   FEXCore::Config::ReloadMetaLayer();
++#ifdef PEAR_FEX_DARWIN
++  FEX::Windows::DarwinPolicy::Apply();
++#endif
+   FEX::Windows::Logging::Init();
+ 
+   FEXCore::Config::Set(FEXCore::Config::CONFIG_INTERPRETER_INSTALLED, "0");

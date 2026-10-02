@@ -136,15 +136,69 @@ def public_observation(root):
     return {'schema_version':1,'record_kind':'fex_stage1_observations','scope':'fex_component','capabilities_sha256':sha256(Path(root)/'capabilities.json'),'input_sha256':data['bindings']['inputs']['sha256'],'config_sha256':data['bindings']['config']['sha256'],'toolchain_sha256':data['bindings']['toolchain']['sha256'],'checks':[{'id':r['id'],'status':r['status'],'required':r['required'],**({'pe_facts':r['pe_facts'],'pe_execution':False} if 'pe_facts' in r else {})} for r in data['checks']],'fixture_sha256':data['fixtures'],'source_components':[{'id':r['id'],'commit':r['commit'],'tree':r['tree'],'file_count':r['file_count'],'total_bytes':r['total_bytes']} for r in sources['components']],'artifact_count':len(data['artifacts']),'command_count':len(data['commands']),'static_runtime_libraries':data['static_libraries'],'link_contributions':data['link_contributions'],'link_probe_scope':data['link_probe_scope'],'fex_custom_crt_link':data['fex_custom_crt_link'],'evidence_scope':'source-inspection-and-compile-link-only','stage1_passed':True,**dict.fromkeys(FALSE_FLAGS,False)}
 
 
+def verify_stage2(build_root,services_root):
+    if __package__:
+        from .build import verify_build
+        from .services import verify_services
+    else:
+        from build import verify_build
+        from services import verify_services
+    built=verify_build(build_root)
+    need(built['phase']=='complete' and built['component_built'] is True,'incomplete_stage2_module_build')
+    exercised=verify_services(services_root)
+    need(exercised['build_ref']=={'path':str(operation_output(build_root,require_empty=False,create=False)),
+         'sha256':sha256(Path(build_root)/'build.json')},'stage2_service_build_mismatch')
+    return built,exercised
+
+
+def stage2_observations(build_root,services_root):
+    built,exercised=verify_stage2(build_root,services_root)
+    # Fixed derivative fields omit private paths, signing identity/profile/device
+    # data, raw diagnostics and native process IDs.
+    return {'schema_version':1,'record_kind':'fex_stage2_observations','scope':'fex_component',
+        'exporter_sha256':sha256(Path(__file__)),
+        'build_sha256':sha256(Path(build_root)/'build.json'),'services_sha256':sha256(Path(services_root)/'services.json'),
+        'inputs_sha256':built['bindings']['inputs']['sha256'],'config_sha256':built['bindings']['config']['sha256'],
+        'toolchain_sha256':built['bindings']['toolchain']['sha256'],'patch_series_sha256':built['patch_series_sha256'],
+        'artifact_count':len(built['artifacts']),'build_command_count':len(built['commands']),
+        'native_images':[{key:row[key] for key in ('role','sha256','size_bytes')} for row in built['artifacts'] if 'native_closure' in row],
+        'pe_modules':[{key:row[key] for key in ('role','sha256','size_bytes','pe')} for row in built['artifacts'] if row['role']=='full_fex_module'],
+        'native_service_results':{role:{name:value for name,value in row.items() if name!='pid'} for role,row in exercised['observations'].items()},
+        'host_cache_line_bytes':built['host_features']['cache_line_bytes'],
+        'optional_instruction_acceleration':'disabled','hardware_tso':'unsupported','software_tso_required':True,
+        'host_processor_count_provider_execution':'unperformed','half_barrier_runtime_suitability':'unperformed',
+        'full_custom_crt_modules':'built_not_executed','runtime_policy_source_enforced':True,
+        'native_service_command_count':len(exercised['commands']),'ordinary_development_signature':'verified',
+        'restricted_operations':False,'stage2_passed':True,
+        'evidence_scope':'full-module-construction-and-ordinary-native-services',
+        'fex_initialization':False,'jit_execution':False,'pe_execution':False,'guest_execution':False,
+        'runtime_qualified':False,'distribution_qualified':False}
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=('stage1',))
+    parser.add_argument('action',choices=('stage1','modules','services','stage2'))
     parser.add_argument('--root',required=True)
+    parser.add_argument('--services-root')
     parser.add_argument('--require-complete',action='store_true',required=True)
     args=parser.parse_args()
     try:
-        data,_=verify_stage1(Path(args.root))
-        print(f"PASS: independently replayed {len(data['checks'])} required checks, {len(data['artifacts'])} compile-only artifacts; no FEX dispatch")
+        if args.action=='stage1':
+            data,_=verify_stage1(Path(args.root))
+            print(f"PASS: independently replayed {len(data['checks'])} required checks, {len(data['artifacts'])} compile-only artifacts; no FEX dispatch")
+        else:
+            if __package__:
+                from .build import verify_build
+                from .services import verify_services
+            else:
+                from build import verify_build
+                from services import verify_services
+            if args.action=='modules':
+                data=verify_build(Path(args.root));need(data['component_built'] is True,'incomplete_stage2_module_build')
+            elif args.action=='services':data=verify_services(Path(args.root))
+            else:
+                need(args.services_root,'stage2_missing_services_root');verify_stage2(Path(args.root),Path(args.services_root))
+            print('PASS: independently replayed Stage 2 component evidence; FEX/PE/JIT/guest execution unperformed')
         return 0
     except (Error,OSError,ValueError,KeyError,StopIteration) as exc:
         code=getattr(exc,'code',type(exc).__name__)
