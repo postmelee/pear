@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "record_kind": "pear_task7_stage4_public_observations",
+  "date": "2026-10-03",
+  "scope": "finite_native_metal_api_pairing",
+  "source_revisions": {
+    "wine": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "dxmt": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67"
+  },
+  "receipt_sha256": {
+    "build": "e2ebeab2e7e26c4b15dbd483b45c4a970e7439ad8071a21a9faf10a21771c682",
+    "runtime": "e32abfa26d4aaeea5733ef8503f739cd1d458bd3b227ca71e1a326ee7c83ba3e",
+    "run": "7ed6de150a3cf7cd27306bbe568def44508305e7519598cf1fbc7f5bd5502912",
+    "assessment": "d93ed81b54a472caa974f63313360d2ac3330b0679e1baa38d01284b2f40fec3",
+    "explicit_diagnostics_review": "c266be8c93c88c35eaff67a2731a0ea8b1c5f42045d6c94be5e9552c8679a93f"
+  },
+  "native_abi": {
+    "version": 1,
+    "table_bytes": 48,
+    "query_bytes": 32,
+    "required_features": 7,
+    "maximum_live_leases": 64
+  },
+  "construction": {
+    "command_count": 10,
+    "all_commands_exit_zero": true,
+    "artifact_count": 8,
+    "warning_occurrences": 69,
+    "native_formats": "thin_arm64_macho",
+    "dxmt_dll_format": "arm64x_with_arm64ec_emission",
+    "original_wine_series_preserved": true
+  },
+  "development_admission": {
+    "native_image_count": 39,
+    "pe_image_count": 756,
+    "actual_current_profile_and_leaf_checks": "passed",
+    "library_validation_preserved": true,
+    "ordinary_user_distribution_qualified": false
+  },
+  "finite_native_observations": {
+    "case_count": 39,
+    "physical_lifetime": "observed_balanced",
+    "created_views": 3,
+    "deallocated_views": 3,
+    "created_layers": 3,
+    "deallocated_layers": 3,
+    "created_proxies": 1,
+    "deallocated_proxies": 1,
+    "final_lease_count": 0,
+    "final_attachment_count": 0,
+    "pe_terminal": {
+      "cleanup_error": 0,
+      "cleanup_flags": 7,
+      "completed_phases": 6,
+      "primary_error": 0
+    },
+    "registered_pe_process_count": 7
+  },
+  "execution": {
+    "native_arm64_without_rosetta_observed": true,
+    "wine_process_page_bytes": 4096,
+    "kernel_page_bytes": 16384,
+    "ordinary_arm64_pe_execution_performed": true,
+    "owned_cleanup": "passed",
+    "unrelated_sentinel_survived": true
+  },
+  "diagnostics": {
+    "review": "performed_by_root",
+    "nonvalidation_directory_warning_lines": 3,
+    "validation_enabled_notice_lines": 12,
+    "metal_api_validation": "reviewed_no_errors",
+    "shader_validation_environment_enabled": true,
+    "shader_workload_qualification": "unperformed"
+  },
+  "verification": {
+    "dxmt_tests": 284,
+    "wine_tests": 842,
+    "wine_skipped": 10,
+    "governance_documents_before_report": 22,
+    "governance_local_targets_before_report": 172,
+    "independent_native_evidence_gate": "passed"
+  },
+  "unperformed": [
+    "fex_initialization",
+    "hybrid_execution",
+    "translated_guest_execution",
+    "general_renderer",
+    "shader_workload",
+    "steam",
+    "megabonk",
+    "performance",
+    "thermal_measurement",
+    "fresh_final_reconstruction",
+    "ordinary_user_distribution"
+  ],
+  "runtime_eligible": false,
+  "game_qualified": false,
+  "distribution_qualified": false
+}

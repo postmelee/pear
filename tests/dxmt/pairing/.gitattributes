@@ -1,0 +1,2 @@
+# Preserve the exact selected upstream notice bytes.
+upstream/LICENSE -whitespace
