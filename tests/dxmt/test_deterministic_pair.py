@@ -36,14 +36,16 @@ class Temporary(unittest.TestCase):
 
 
 class Recipe(Temporary):
-    def test_cross_flags_preserve_original_and_both_path_spellings(self):
+    def test_fixed_cross_flags_preserve_native_policy_under_spaces(self):
         physical=Path('/private/tmp/a path');invocation=Path('/private/tmp/alias')
         wine,dxmt=pair.environments({'CFLAGS':'native-original'},{'PATH':'native'},physical,invocation)
-        self.assertEqual(pair.shlex.split(wine['CROSSCFLAGS']),['-g','-O2',
-            '-fdebug-prefix-map=/private/tmp/a path/wine/objects=/pear/reconstruction/wine/objects',
-            '-fdebug-prefix-map=/private/tmp/alias/wine/objects=/pear/reconstruction/wine/objects'])
+        self.assertEqual(wine['CROSSCFLAGS'].split(),['-g','-O2',pair.WINE_COMPILATION_DIRECTORY_FLAG])
+        self.assertEqual(pair.shlex.split(wine['CROSSCFLAGS']),wine['CROSSCFLAGS'].split())
+        self.assertNotIn(str(physical),wine['CROSSCFLAGS'])
         self.assertEqual(wine['CFLAGS'],'native-original');self.assertEqual(dxmt['SOURCE_DATE_EPOCH'],'0')
-    def test_same_spelling_deduplicated(self):self.assertEqual(len(pair.maps(self.root,self.root)),1)
+    def test_fixed_flag_is_root_independent(self):
+        self.assertEqual(pair.environments({}, {},self.root,self.root)[0],
+            pair.environments({}, {},self.root/'other path',self.root/'alias')[0])
     def test_existing_cross_policy_refused(self):
         for key in ('CROSSCFLAGS','SOURCE_DATE_EPOCH'):
             with self.subTest(key=key),self.assertRaises(reuse.Error):pair.environments({key:'0'},{},self.root,self.root)
@@ -53,12 +55,12 @@ class Recipe(Temporary):
         self.write('Makefile',b'CFLAGS = -arch arm64\n')
         with self.assertRaisesRegex(reuse.Error,'det_config_cross_flags_missing'):
             pair.input_configuration(self.root,self.root,'Makefile')
-    def test_configure_wrong_map_or_lost_optimization_refused(self):
+    def test_configure_wrong_directory_or_lost_optimization_refused(self):
         for flags in ('-g -O0','-g -O2 -ffile-prefix-map=a=b','-g -O2'):
             self.write('Makefile',('aarch64_CFLAGS = '+flags+'\naarch64_CXXFLAGS = '+flags+'\n').encode())
             with self.assertRaises(reuse.Error):pair.input_configuration(self.root,self.root,'Makefile')
     def test_configure_exact_actual_flags(self):
-        flags=pair.shlex.join(['-g','-O2',*pair.maps(self.root,self.root)])
+        flags=' '.join(pair.cross_flags())
         self.write('Makefile',('aarch64_CFLAGS = '+flags+'\naarch64_CXXFLAGS = '+flags+'\n').encode())
         self.assertEqual(pair.input_configuration(self.root,self.root,'Makefile')['aarch64_CFLAGS'],pair.shlex.split(flags))
     def test_duplicate_configure_field_refused(self):
@@ -512,6 +514,90 @@ class SpecBinding(Temporary):
     def test_current_generated_spec_pin_is_in_wrapper(self):
         expected='e'*64;raw=pair.wrapper(self.root,'/python',{'metallib':{'path':'/metallib'}},expected)
         self.assertIn(('--spec-sha '+expected).encode(),raw)
+
+
+
+
+
+class FixedDirectoryPortable(Temporary):
+    def common(self):
+        with reuse.legacy(REPO)as capture:return capture.load('tools/dxmt/common.py')
+    def makefile(self):
+        flags=' '.join(pair.cross_flags())
+        return ('aarch64_CFLAGS = '+flags+'\naarch64_CXXFLAGS = '+flags+'\n').encode()
+    def observation(self):
+        path=self.write('data',b'finite non-executable observation',0o644)
+        return pair.external_fact(path,self.common())
+    def test_closed_fixed_configuration_positive(self):
+        result=pair.fixed_makefile(self.makefile())
+        self.assertEqual(result['aarch64_CFLAGS'],pair.cross_flags())
+        self.assertEqual(result['aarch64_CXXFLAGS'],pair.cross_flags())
+    def test_old_quoted_prefix_maps_cannot_pass_configuration(self):
+        flags="-g -O2 '-fdebug-prefix-map=/a path=/stable'"
+        raw=('aarch64_CFLAGS = '+flags+'\naarch64_CXXFLAGS = '+flags+'\n').encode()
+        with self.assertRaises(reuse.Error):pair.fixed_makefile(raw)
+    def test_altered_fixed_directory_or_extra_flag_refused(self):
+        for flags in ['-g -O2 -fdebug-compilation-dir=/other', ' '.join(pair.cross_flags())+' -O0',
+                      ' '.join(pair.cross_flags())+' -fdebug-prefix-map=/a=/b']:
+            raw=('aarch64_CFLAGS = '+flags+'\naarch64_CXXFLAGS = '+flags+'\n').encode()
+            with self.subTest(flags=flags),self.assertRaises(reuse.Error):pair.fixed_makefile(raw)
+    def test_duplicate_missing_boolean_configuration_refused(self):
+        for raw in [b'aarch64_CFLAGS = -g -O2\n',self.makefile()+self.makefile(),b'']:
+            with self.assertRaises(reuse.Error):pair.fixed_makefile(raw)
+        with self.assertRaises(reuse.Error):pair.fixed_makefile(True)
+    def test_real_regular_observation_positive(self):
+        row=self.observation()
+        self.assertEqual(pair.fixed_observations([row],[row['path']],self.common()),[row])
+    def test_changed_observed_mode_or_content_refused(self):
+        row=self.observation()
+        for key,value in [('mode',0o755),('sha256','0'*64),('size_bytes',0)]:
+            altered={**row,key:value}
+            with self.subTest(key=key),self.assertRaises(reuse.Error):pair.fixed_observations([altered],[row['path']],self.common())
+    def test_observation_alias_and_hardcoded_canonical_summary_refused(self):
+        row=self.observation();alias=self.root/'alias';alias.symlink_to('data')
+        altered={**row,'path':str(alias),'resolved_path':str(alias)}
+        with self.assertRaises(reuse.Error):pair.fixed_observations([altered],[str(alias)],self.common())
+    def test_observation_parent_alias_refused(self):
+        row=self.observation();alias=self.root/'parent';alias.symlink_to(self.root,target_is_directory=True)
+        altered={**row,'path':str(alias/'data'),'resolved_path':str(alias/'data')}
+        with self.assertRaises(Exception):pair.fixed_observations([altered],[str(alias/'data')],self.common())
+    def test_observation_missing_duplicate_extra_paths_refused(self):
+        row=self.observation()
+        for rows,paths in [([], [row['path']]),([row,row],[row['path']]),([row],[row['path']+'/extra'])]:
+            with self.assertRaises(reuse.Error):pair.fixed_observations(rows,paths,self.common())
+    def test_observation_boolean_size_mode_refused(self):
+        row=self.observation()
+        for key in ['mode','size_bytes']:
+            with self.assertRaises(reuse.Error):pair.fixed_observations([{**row,key:True}],[row['path']],self.common())
+    def test_post_observation_scope_cannot_be_promoted(self):
+        value=dict.fromkeys(pair.BINDING_FIELDS)
+        value.update(schema_version=1,record_kind='root_Wine_fixed_directory_post_probe_binding',
+            observation_phase='post_original_probe',before_after_unchanged=True,
+            native_operations_performed=False,initial_probe_modes_observed=False,full_build_qualified=False,stage5_complete=False)
+        for key in ['native_operations_performed','initial_probe_modes_observed','full_build_qualified','stage5_complete']:
+            with self.subTest(key=key),self.assertRaises(reuse.Error):
+                pair.fixed_post_binding({**value,key:True},{},{},self.root,self.common())
+        with self.assertRaises(reuse.Error):pair.fixed_post_binding({**value,'observation_phase':'original_native_probe'},{},{},self.root,self.common())
+    def test_old_qualification2_cannot_admit_new_flag(self):
+        value=dict.fromkeys(pair.QUAL_FIELDS)
+        value.update(schema_version=2,record_kind='dxmt_deterministic_input_qualification',
+            scope='compiler_source_and_resource_bytes_only',source_date_epoch='0',
+            native_engine_execution_performed=False,gpu_execution_performed=False)
+        path=self.write('qualification',pair.encoded(value))
+        with self.assertRaises(reuse.Error):pair.qualification({'path':str(path),'sha256':pair.digest(path.read_bytes())},self.root,self.common())
+
+
+@unittest.skipUnless(QUAL is not None and QUAL.get('schema_version')==3,
+                     'optional actual fixed-directory controls require qualification3')
+class FixedDirectoryActual(unittest.TestCase):
+    def test_actual_source_dependency_configuration_and_post_observation_closure(self):
+        with reuse.legacy(REPO)as capture:
+            common=capture.load('tools/dxmt/common.py')
+            original=Path(QUAL['original_ref']['path']).parent
+            prior=pair.wine_control(QUAL['wine_control_ref'],original,common)
+            value=pair.fixed_compilation_directory(QUAL['wine_compilation_directory_ref'],
+                QUAL['wine_compilation_directory_binding_ref'],QUAL['wine_control_ref'],prior,common)
+            self.assertFalse(value['full_build']);self.assertTrue(value['configure_source_reused_read_only'])
 
 
 if __name__=='__main__':unittest.main()

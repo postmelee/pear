@@ -53,8 +53,10 @@ OWN_FILES={'tools/dxmt/deterministic_pair.py':'deterministic_pair.py',
            'tools/dxmt/reuse-pins.json':'reuse-pins.json'}
 ADDITIONS=('constructor_sources','recipe_policy','qualification_ref','shader_commands','shader_spec_ref')
 STABLE_WINE_OBJECTS='/pear/reconstruction/wine/objects'
+WINE_COMPILATION_DIRECTORY_FLAG='-fdebug-compilation-dir='+STABLE_WINE_OBJECTS
 QUAL_FIELDS={'schema_version','record_kind','scope','original_ref','wine_control_ref','metal_control_ref',
-             'resource_ref','source_date_epoch','native_engine_execution_performed','gpu_execution_performed','metal_predecessor_refs'}
+             'resource_ref','source_date_epoch','native_engine_execution_performed','gpu_execution_performed','metal_predecessor_refs',
+             'wine_compilation_directory_ref','wine_compilation_directory_binding_ref'}
 
 
 def digest(raw):return hashlib.sha256(raw).hexdigest()
@@ -65,23 +67,24 @@ def own_sources():
             for name,leaf in OWN_FILES.items()}
 
 
-def maps(physical,invocation):
-    return ['-fdebug-prefix-map='+str(path/'wine/objects')+'='+STABLE_WINE_OBJECTS
-            for path in dict.fromkeys((Path(physical),Path(invocation)))]
+def cross_flags():
+    # Autoconf expands this variable as shell words. These three closed tokens
+    # contain no whitespace or quote syntax, regardless of the physical root.
+    return ['-g','-O2',WINE_COMPILATION_DIRECTORY_FLAG]
 
 
 def environments(old_wine,old_dxmt,physical,invocation):
     need('CROSSCFLAGS'not in old_wine and 'SOURCE_DATE_EPOCH'not in old_wine
          and 'SOURCE_DATE_EPOCH'not in old_dxmt,'det_existing_policy')
     wine,dxmt=dict(old_wine),dict(old_dxmt)
-    wine['CROSSCFLAGS']=shlex.join(['-g','-O2',*maps(physical,invocation)])
+    wine['CROSSCFLAGS']=' '.join(cross_flags())
     wine['SOURCE_DATE_EPOCH']=dxmt['SOURCE_DATE_EPOCH']='0'
     return wine,dxmt
 
 
 def policy(root,invocation):
-    return {'schema_version':1,'source_date_epoch':'0','stable_wine_objects':STABLE_WINE_OBJECTS,
-        'debug_prefix_maps':maps(root,invocation),'source_interface':'stdin_exact_original_bytes',
+    return {'schema_version':2,'source_date_epoch':'0','stable_wine_objects':STABLE_WINE_OBJECTS,
+        'debug_compilation_directory_flag':WINE_COMPILATION_DIRECTORY_FLAG,'source_interface':'stdin_exact_original_bytes',
         'shader_options':metal.EXTRAS,'shader_inputs':{name:{'sha256':pin[0],'size_bytes':pin[1]}
             for name,pin in metal.SOURCES.items()},'normalization':'none',
         'raw_product_comparison_required':True,'fresh_native_evidence_required':True}
@@ -444,17 +447,167 @@ def wine_control(ref,original,common):
     return value
 
 
+WINE_FIXED_PRODUCER='554eb73a0936a7055c2119b1119ed4d675d9f4d715d7833d27c4cf906976fc07'
+WINE_BINDING_PRODUCER='b408c17979d6a4d13af7d23b5afb535630e58b26a0f36896e4fac0b94fe85afd'
+WINE_FAILED_CONFIGURE='320be8ba6941f87be6ce5b676214b142934a7c6f871a7747d0cb833a9abc9b93'
+FIXED_FIELDS={'record_kind','producer','prior_ref','failed_configure_ref','inputs','commands','wine_configuration',
+ 'compiler_flag','objects_complete_bytes_equal','coincident_object_timestamps_are_not_fixed_epoch_proof',
+ 'configure_source_reused_read_only','all_inputs_unchanged','full_build','module_loading','gpu_execution','stage5_complete'}
+BINDING_FIELDS={'schema_version','record_kind','observation_phase','control_ref','probe_producer','observer_producer',
+ 'input_before','input_after','generated_before','generated_after','diagnostic_source_alias','wine_configuration',
+ 'before_after_unchanged','native_operations_performed','initial_probe_modes_observed','full_build_qualified','stage5_complete'}
+GENERATED_FIXED=('wine/objects/Makefile','wine/objects/config.log','wine/objects/include/config.h','wine/objects/config.status')
+
+
+def fixed_observations(rows,expected_paths,common):
+    need(type(rows)is list and len(rows)==len(expected_paths),'det_fixed_observation_count')
+    need([row['path']for row in rows]==expected_paths,'det_fixed_observation_paths')
+    for row in rows:
+        common.fields(row,['path','resolved_path','sha256','size_bytes','mode'])
+        need(type(row['size_bytes'])is int and row['size_bytes']>=0 and type(row['mode'])is int
+             and 0<=row['mode']<=0o777,'det_fixed_observation_types')
+        path=Path(row['path']);need(path.is_absolute()and '..'not in path.parts,'det_fixed_observation_path')
+        common.real_directory(path.parent)
+        need(not path.is_symlink()and path.resolve(strict=True)==path,'det_fixed_observation_alias')
+        same(row,external_fact(path,common),'det_fixed_observation_changed')
+    return rows
+
+
+def fixed_makefile(raw):
+    need(type(raw)is bytes and len(raw)<=64*1024**2,'det_fixed_makefile_bound')
+    text=raw.decode();result={}
+    for name in ['aarch64_CFLAGS','aarch64_CXXFLAGS']:
+        found=re.findall(r'^'+name+r' = (.*)$',text,re.M)
+        need(len(found)==1,'det_fixed_configuration_field')
+        result[name]=shlex.split(found[0]);same(result[name],cross_flags(),'det_fixed_configuration_flags')
+    return result
+
+
+def fixed_post_binding(value,proof,control_ref,root,common):
+    need(type(value)is dict and set(value)==BINDING_FIELDS and type(value['schema_version'])is int
+         and value['schema_version']==1 and value['record_kind']=='root_Wine_fixed_directory_post_probe_binding'
+         and value['observation_phase']=='post_original_probe','det_fixed_binding_scope')
+    need(value['before_after_unchanged']is True and all(value[name]is False for name in
+        ['native_operations_performed','initial_probe_modes_observed','full_build_qualified','stage5_complete']),
+        'det_fixed_binding_claims')
+    same(value['control_ref'],control_ref,'det_fixed_binding_control')
+    same(value['probe_producer'],proof['producer'],'det_fixed_binding_producer')
+    _,observer=ref_file(value['observer_producer'],common)
+    need(value['observer_producer']['sha256']==WINE_BINDING_PRODUCER,'det_fixed_observer_producer')
+    need(declared_path(observer,'root')==root,'det_fixed_observer_root')
+    expected=sorted(proof['inputs'])
+    before=fixed_observations(value['input_before'],expected,common)
+    after=fixed_observations(value['input_after'],expected,common)
+    same(before,after,'det_fixed_post_inputs_changed')
+    for row in before:
+        same({key:row[key]for key in ['sha256','size_bytes']},proof['inputs'][row['path']],
+            'det_fixed_binding_input_changed')
+    paths=[str(root/name)for name in GENERATED_FIXED]
+    generated_before=fixed_observations(value['generated_before'],paths,common)
+    generated_after=fixed_observations(value['generated_after'],paths,common)
+    same(generated_before,generated_after,'det_fixed_generated_changed')
+    expected_alias={'path':str(root/'wine/source'),'target':str(Path(proof['failed_configure_ref']['path']).parent/'wine/source')}
+    same(value['diagnostic_source_alias'],expected_alias,'det_fixed_source_alias_scope')
+    alias=Path(expected_alias['path']);need(alias.is_symlink()and os.readlink(alias)==expected_alias['target'],
+        'det_fixed_source_alias_changed');common.real_directory(expected_alias['target'])
+    observed=fixed_makefile(common.read_relative(root,GENERATED_FIXED[0],64*1024**2))
+    same(value['wine_configuration'],observed,'det_fixed_binding_configuration')
+    same(proof['wine_configuration'],observed,'det_fixed_probe_configuration')
+    return value
+
+
+def fixed_compilation_directory(control_ref,binding_ref,prior_ref,prior,common):
+    path,raw=ref_file(control_ref,common,16*1024**2);root=path.parent
+    value=common.decode_json(raw,max_bytes=16*1024**2,max_nodes=300000)
+    need(type(value)is dict and set(value)==FIXED_FIELDS and
+         value['record_kind']=='root_actual_fixed_Wine_compilation_directory_and_configure_probe',
+         'det_fixed_probe_shape')
+    same(value['prior_ref'],prior_ref,'det_fixed_prior')
+    _,producer=ref_file(value['producer'],common)
+    need(value['producer']['sha256']==WINE_FIXED_PRODUCER and declared_path(producer,'out')==root
+         and declared_path(producer,'old_control')==Path(prior_ref['path']),'det_fixed_producer')
+    need(value['compiler_flag']==WINE_COMPILATION_DIRECTORY_FLAG and
+         all(value[name]is True for name in ['coincident_object_timestamps_are_not_fixed_epoch_proof',
+         'configure_source_reused_read_only','all_inputs_unchanged'])and all(value[name]is False for name in
+         ['full_build','module_loading','gpu_execution','stage5_complete']), 'det_fixed_probe_claims')
+    failed_path,failed_raw=ref_file(value['failed_configure_ref'],common)
+    need(value['failed_configure_ref']['sha256']==WINE_FAILED_CONFIGURE
+         and declared_path(producer,'failed_root')==failed_path.parent,'det_fixed_failed_reference')
+    failed=common.decode_json(failed_raw,max_bytes=8*1024**2,max_nodes=300000)
+    need(failed['record_kind']==KIND and failed['passed']is False and failed['phase']=='wine.configure'
+         and len(failed['commands'])==1,'det_fixed_failure_scope')
+    original=failed['commands'][0]
+    need(original['id']=='wine.configure'and type(original['exit_code'])is int and original['exit_code']==1,
+         'det_fixed_original_configure')
+    expected_inputs={}
+    def add(path,fact):
+        if path in expected_inputs:same(expected_inputs[path],fact,'det_fixed_conflicting_input')
+        expected_inputs[path]=fact
+    for side in prior['dependency_closure'].values():
+        for item in side['wine_object']['before']:add(item['path'],{key:item[key]for key in ['sha256','size_bytes']})
+    for path,item in prior['tools'].items():add(path,item)
+    source=failed_path.parent/'wine/source'
+    for item in failed['source']['wine']['after_files']:
+        add(str(source/item['path']),{key:item[key]for key in ['sha256','size_bytes']})
+    same(value['inputs'],expected_inputs,'det_fixed_input_closure')
+    for path,item in expected_inputs.items():
+        data=external_bytes(path,common,64*1024**2)
+        same(item,{'sha256':digest(data),'size_bytes':len(data)},'det_fixed_input_bytes')
+    commands=value['commands'];need(type(commands)is list and len(commands)==3,'det_fixed_command_count')
+    selected=[row for row in prior['commands']if row['name']=='wine_object']
+    need(len(selected)==2,'det_fixed_predecessor_command_count');products=[]
+    for index,old in enumerate(selected):
+        row=commands[index]
+        common.fields(row,['id','argv','cwd','exit_code','elapsed_ms','stdout','stderr','output','depfile',
+            'dependencies_unchanged_from_qualified_full_MD'])
+        expected=[arg for arg in old['argv']if not arg.startswith('-fdebug-prefix-map=')]+[WINE_COMPILATION_DIRECTORY_FLAG]
+        expected[expected.index('-o')+1]=str(root/('object'+str(index)+'.obj'))
+        expected[expected.index('-MF')+1]=str(root/('object'+str(index)+'.d'))
+        same(row['argv'],expected,'det_fixed_compile_recipe')
+        need(row['id']=='wine_object_'+str(index)and row['cwd']==old['cwd']
+             and row['dependencies_unchanged_from_qualified_full_MD']is True,'det_fixed_compile_scope')
+        replay_probe_streams(root,row,common)
+        need(row['output']['path']=='object'+str(index)+'.obj'and row['depfile']['path']=='object'+str(index)+'.d',
+             'det_fixed_output_path')
+        product=probe_output(root,row['output'],common)
+        need(len(product)>=20 and struct.unpack_from('<H',product)[0]==0xaa64,'det_fixed_coff');products.append(product)
+        target,deps=make_dependencies(probe_output(root,row['depfile'],common,65536))
+        need(target==expected[expected.index('-o')+1],'det_fixed_dependency_target')
+        paths=sorted({str((Path(old['cwd'])/name).resolve(strict=True))for name in deps})
+        same(paths,sorted(item['path']for item in prior['dependency_closure'][old['side']]['wine_object']['before']),
+             'det_fixed_dependency_set')
+    need(len(products[0])==len(products[1])and products[0][:4]==products[1][:4]
+         and products[0][8:]==products[1][8:],'det_fixed_non_timestamp_difference')
+    need(value['objects_complete_bytes_equal']is (products[0]==products[1]),'det_fixed_object_comparison')
+    row=commands[2];common.fields(row,['id','argv','cwd','environment','exit_code','elapsed_ms','stdout','stderr'])
+    expected=[('--prefix='+str(root/'wine/install'))if arg.startswith('--prefix=')else arg for arg in original['argv']]
+    same(row['argv'],expected,'det_fixed_configure_recipe')
+    expected_env=dict(original['environment']);expected_env.update(TMPDIR=str(root/'tmp'),CROSSCFLAGS=' '.join(cross_flags()))
+    same(row['environment'],expected_env,'det_fixed_configure_environment')
+    need(row['id']=='wine.configure'and row['cwd']==str(root/'wine/objects'),'det_fixed_configure_scope')
+    replay_probe_streams(root,row,common)
+    binding_path,binding_raw=ref_file(binding_ref,common,32*1024**2)
+    binding=common.decode_json(binding_raw,max_bytes=32*1024**2,max_nodes=1000000)
+    fixed_post_binding(binding,value,control_ref,root,common)
+    # Both records and their exact producers remain unchanged after replay.
+    need(ref_file(control_ref,common,16*1024**2)[1]==raw and ref_file(binding_ref,common,32*1024**2)[1]==binding_raw,
+         'det_fixed_records_changed')
+    return value
+
+
 def qualification(ref,original,common):
     _,raw=ref_file(ref,common);value=common.decode_json(raw)
     need(type(value)is dict and set(value)==QUAL_FIELDS and type(value['schema_version'])is int
-         and value['schema_version']==2 and value['record_kind']=='dxmt_deterministic_input_qualification'
+         and value['schema_version']==3 and value['record_kind']=='dxmt_deterministic_input_qualification'
          and value['scope']=='compiler_source_and_resource_bytes_only'and value['source_date_epoch']=='0'
          and value['native_engine_execution_performed']is False and value['gpu_execution_performed']is False,
          'det_qualification_record')
     same(value['original_ref'],{'path':str(original/'build.json'),'sha256':common.sha256(original/'build.json')},'det_qualification_original')
     resource=resource_sidecar(value['resource_ref'],common)
     metal_control(value['metal_control_ref'],list(metal.SOURCES),original,resource,value['metal_predecessor_refs'],common)
-    wine_control(value['wine_control_ref'],original,common)
+    prior=wine_control(value['wine_control_ref'],original,common)
+    fixed_compilation_directory(value['wine_compilation_directory_ref'],value['wine_compilation_directory_binding_ref'],
+        value['wine_control_ref'],prior,common)
     return value,resource
 
 
@@ -495,7 +648,7 @@ def input_configuration(root,invocation,makefile):
         matches=re.findall(r'^'+name+r' = (.*)$',raw,re.M)
         need(len(matches)==1,'det_config_cross_flags_missing')
         observed=shlex.split(matches[0])
-        same(observed,['-g','-O2',*maps(root,invocation)],'det_config_cross_flags_changed')
+        same(observed,cross_flags(),'det_config_cross_flags_changed')
         result[name]=observed
     return result
 
@@ -804,7 +957,7 @@ def main(argv=None):
                  and args.reserve_free_bytes is not None,'det_construct_arguments');construct(args,repo)
         else:verify_build(args.output,repo)
         print(encoded({'record_kind':KIND,'build_replayed':args.verify,'pair_constructed':True,
-            'recipe':'source_bound_stdin_and_epoch_v1','raw_reproduction_complete':False,
+            'recipe':'source_bound_stdin_epoch_fixed_compilation_directory_v2','raw_reproduction_complete':False,
             'native_engine_execution_performed':False,'gpu_execution_performed':False,'game_qualified':False,
             'runtime_eligible':False}).decode(),end='');return 0
     except Exception as error:

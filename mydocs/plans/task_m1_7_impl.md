@@ -614,3 +614,52 @@ growth, not a measured peak; monitoring still refuses the ceiling/reserve.
 Two fresh complete products, strict raw comparison, current native admission
 and fresh final-candidate39-case verification remain required. Stage5 remains
 in progress and every game/distribution claim remains false.
+
+
+### October 3 Fixed Compilation Directory, Source Admission and Exact Storage Retirement
+
+Two actual selected Wine object compiles and genuine configure passed with
+`-fdebug-compilation-dir=/pear/reconstruction/wine/objects`, retaining native
+CFLAGS and cross `-g -O2`. Control:
+`b1d29c6898b946a7f8fdd9a9f4b277c0d7ec3ca5d9454284017de43b2831f14e`.
+Complete object bytes happened to match; coincident intermediate timestamps
+remain insufficient reproducibility proof. A separate post-probe binding
+checks12,537 current regular byte/mode observations and four generated files.
+Initial probe mode observations remain explicitly unperformed; this is not
+retroactive provenance. Qualification3 preserves the previous refs and binds
+the new control and post-only observation, with native/GPU qualification false.
+
+Constructor6 admits the exact three whitespace-free cross tokens and requires
+raw generated configuration equality before component make and on replay. Its
+independent review passed93 guarded controls and the full379-resource
+qualification replay with zero actual tool routes. A separate test-only
+correction moves unittest.main to the true file end so direct invocation also
+includes the13 new controls. Only two existing public files changed.
+
+Root's first whole suite attempted436 tests but refused five cases because
+actual disk free space was below inherited reserves (four errors/one failure);
+the original test streams remain preserved. After exact duplicate reclamation,
+the same436 tests passed with eight explicit optional private-input skips.
+No runtime reserve was lowered to make tests pass. The distinct native adapter
+and coordinator were independently reviewed after fixing executed-source
+identity, early source-capture failure records and attached native errors. Root
+then passed all33 added portable controls. Exact constructor/helper pinning,
+per-image current authorization, the original39-case protocol and immutable
+explicit diagnostics review remain required for actual final-candidate use.
+Signing, native execution and raw two-product equality remain unperformed.
+
+Requester-authorized storage retirement removed286,307 identical leaves from
+23 inactive Wine source copies (9,189,166,762 logical bytes), retaining350
+unique leaves,928 controls and the complete current donor. Plan identity:
+`612f6437e6fc6d03ab812620f7bfbd4c5af6eb55070771991536a7236753a505`.
+A second retirement removed104,443 exact duplicates from inactive tools/LLVM
+and older reconstruction payloads (3,801,009,435 logical bytes), retaining
+31,101 unique leaves and411 controls. Plan identity:
+`2a16806bad814f294c9ea959e7dec3985b4c1ec0ebd770d22f1afac43655f669`.
+Current task reference audits found no selected old-root dependency. Original
+failures, active donors, private state and current qualification sources remain
+intact. Historical payload replay requires exact donor rehydration. Observed
+volume free increases were1,296,900,096 and2,599,272,448 bytes, respectively;
+APFS physical reclamation is not independently established. Only sanitized
+findings/source are published. Stage5 remains in progress; two fresh complete
+builds, exact comparison and fresh current native qualification are pending.

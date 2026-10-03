@@ -1,0 +1,10 @@
+{
+  "files": {
+    "deterministic_pair.py": "9eddc30652baf1e536dbcc311163a3b49d9cdfc51ac40da4484fdc47e8c4c599",
+    "deterministic_reuse.py": "2fd9148d8261ab9e9b57b637e4a103ce0e2b2c9d448640e83e776a75cc874297",
+    "metal_stdin.py": "ab478c4e51026640450b8cbe901def5705b999c23cc49f48b2fd53124d8327e1",
+    "reuse-pins.json": "d2563ddc36ba8f9f9e35b438ccdf1b4aeefb03a299be9d854ca4fca93205e121"
+  },
+  "record_kind": "dxmt_deterministic_constructor_sources",
+  "schema_version": 1
+}
