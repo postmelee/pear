@@ -241,8 +241,10 @@ class CompilerAndLinkProof(OwnedFixture):
         # finite owner-only map control mocks only that separate baseline fact.
         prefix='_ZN7FEXCore5Utils13PearFEXMemory';lines=[]
         def add(symbol,owner):lines.append(' 0001:00000001 '+symbol+' 0000000180000001 '+owner)
-        for name in ('Init','Reserve','RegisterExecutor','Enter','Exit','Handoff','Poll','AttachAllocatedThread'):
+        for name in ('Init','Reserve','RegisterExecutor','Enter','Exit','Handoff','Poll'):
             add('#'+prefix+str(len(name))+name+'Ev','libCommonWindows:PearFEXMemory.cpp.obj')
+        add('#'+prefix+'15SourceLifecycle21AttachAllocatedThreadEPKNS_7Context7ContextEPNS_4Core19InternalThreadStateEj',
+            'libCommonWindows:PearFEXMemory.cpp.obj')
         for name in ('AdmissionOpen','PoisonSourceAdmission','EnqueueDetached','DrainAtNativeGate'):
             add('#'+prefix+'10Retirement'+str(len(name))+name+'Ev','PearFEXRetirement.cpp.obj')
         add('#'+prefix+'5Links18EntryAdmissionOpenEv','PearJITLinks.cpp.obj')
@@ -257,7 +259,8 @@ class CompilerAndLinkProof(OwnedFixture):
     def test_actual_owner_map_and_generated_thunk(self):
         with patch.object(evidence.original,'source_map_proof',return_value={'baseline':'checked'}):
             proof=evidence.source_symbol_proof(self.real_map())
-        self.assertEqual(len(proof['owner_symbols']['adapter']),8)
+        self.assertEqual(len(proof['owner_symbols']['adapter']),7)
+        self.assertEqual(len(proof['owner_symbols']['source_lifecycle']),1)
     def test_wrong_body_owner(self):
         text=self.real_map().replace('libCommonWindows:PearFEXMemory.cpp.obj','libCommonWindows:Foreign.cpp.obj',1)
         with patch.object(evidence.original,'source_map_proof',return_value={}),self.assertRaises(evidence.Error):evidence.source_symbol_proof(text)

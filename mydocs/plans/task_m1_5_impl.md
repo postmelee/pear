@@ -1186,3 +1186,66 @@ gate or build success assumption is not. Reuse the exact completed outputs
 for pure assessment once that contract is proven instead of immediately
 repeating the same nine compilation commands. Current lifetime, aggregate
 metadata, initializer and runtime qualification remain open.
+
+
+### October 3 Separate Immutable Artifact Assessment and Storage Retirement
+
+The source19 allocator exception admits only the exact unchanged upstream
+AllocatorHooks.cpp JemallocLibs translation unit, its selected target, allocator
+configuration and three original source dependencies. All 107 owner-dependent
+C++ units per PE target retain the original owner gates. The lifecycle symbol
+reader requires the exact SourceLifecycle::AttachAllocatedThread signature
+and Common archive body; a legacy alias or generated exit thunk cannot replace
+it. No source, compiler configuration, wire or security permission was changed
+by these two reader corrections.
+
+A separate offline assessor admits only the reviewed reader transition
+59f5a7de to3cd37aa1 while retaining every other historical producer and copied
+input. It replays actual Stage2, Wine8, source19, command/log/tool/dependency
+and complete raw payload closure before and after inspection. It writes no
+historical build.json and invokes no compiler, module or new native process.
+The original modules4 constructor remains failed with primary owner-macro
+refusal and digest9bcfe26d; nine original successful command receipts are
+evidence of those original operations only.
+
+The first separate assessment was created, but its verification refused
+json_structure_limit: its complete7,849,168-byte record has326,542 JSON nodes
+including keys, exceeding the inherited250,000 default. Original assessment1
+and its producer are preserved. A narrow assessor-only repair uses matching
+8MiB/500,000-node limits for its successful record, with complete exact-byte
+preflight before exclusive creation. Historical reader/failure budgets and
+depth, duplicate-key, numeric, scalar, path and file-identity restrictions stay
+unchanged. Independent68 controls passed without actual process routes.
+
+Root passed551 current FEX tests with one explicit APFS fixture skip. A fresh
+assessment2 under the new assessor producer was then created and independently
+verified with actual exit0 in each command. Its identity is
+`d65f87085008c990def4b332e138aae7c2e55625f4f9a51bfc4f782832a1e8e8`.
+It confirms all32 retained artifacts,211 copied current inputs and nine
+original command/log records while preserving the unchanged original failed
+build. Its own passed status qualifies only this bounded offline inspection.
+Source initialization, aggregate metadata, owner/active-thread bridge, atomic
+resume, delivered exceptions, paired EC identity, guest/game/distribution and
+Stage3 completion remain unperformed/unqualified. Future source/checker
+changes invalidate current replay until exact checkpoint rehydration; they
+never retrospectively change this observation or admit a new build.
+
+Requester-authorized exact duplicate retirement preserved active donors,
+unique failures, private state and controls. Source-copy plan612f6437 removed
+286,307 identical leaves/9,189,166,762 logical bytes while retaining350 unique
+leaves and928 controls. Tools/reconstruction plan2a16806b removed104,443
+identical leaves/3,801,009,435 logical bytes, retaining31,101 unique leaves
+and411 controls. Current-reference audits found no selected old-root use.
+Observed volume increases were1,296,900,096 and2,599,272,448 bytes; these are
+not independent APFS physical-reclamation measurements.
+
+A further exact ledger109effcd selected3,432 regular system PE DLL/EXE copies
+from six closed historical API/ABI fixture prefixes (5,490,737,152 logical
+bytes), with1,716 original signed-resource donors retained. Root applied and
+verified the retirement; all other prefix objects, case/log/producer records,
+registry/user/save/credential/symlink/profile/signing material remain intact.
+Its observed free-space delta was-6,111,232 bytes, so no physical increase is
+claimed. Historical prefix/payload replay requires exact donor rehydration.
+Lossless bounded archival of inactive intermediate objects is under review;
+no unique intermediate payload is discarded without a verified recoverable
+copy. Only sanitized results/source are published. Stage3 remains in progress.

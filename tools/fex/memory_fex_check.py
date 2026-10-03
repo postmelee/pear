@@ -511,6 +511,63 @@ WIRE_REQUIRED_SOURCES={
     'FEXCore/Source/Utils/PearFEXRetirement.cpp','FEXCore/Source/Utils/ArchHelpers/Arm64.cpp'}
 
 
+
+# Exact unchanged upstream JemallocLibs translation unit. This is not an
+# owner-dependent executable allocator header or a general macro exemption.
+UPSTREAM_ALLOCATOR_SOURCE = 'FEXCore/Source/Utils/AllocatorHooks.cpp'
+UPSTREAM_ALLOCATOR_OBJECT = 'FEXCore/Source/CMakeFiles/JemallocLibs.dir/Utils/AllocatorHooks.cpp.obj'
+UPSTREAM_ALLOCATOR_INPUTS = {
+    UPSTREAM_ALLOCATOR_SOURCE: ('f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f', 6402, 0o644),
+    'FEXCore/include/FEXCore/Utils/PrctlUtils.h': ('c4c967ccba37536149b0bd44cfaf2a0f108fe8e54d276211dc6f34d06b611b68', 1118, 0o644),
+    'External/rpmalloc/rpmalloc/rpmalloc.h': ('81c4970f89951c177cd83f29ec7c1989e14c31f3bb5e2eda4a2b84e1dd338fb6', 19032, 0o644),
+}
+
+
+def upstream_allocator_compile_proof(row, source):
+    """Admit only the pinned non-owner source and its genuine Jemalloc target."""
+    source = Path(source)
+    rel = Path(row['file']).relative_to(source).as_posix()
+    if rel != UPSTREAM_ALLOCATOR_SOURCE:
+        return False
+    need(row['output'] == UPSTREAM_ALLOCATOR_OBJECT, 'fex_memory_allocator_compile_target')
+    raw, mode = regular_bytes(source, rel, MAX_SOURCE_FILE)
+    need((H(raw), len(raw), mode) == UPSTREAM_ALLOCATOR_INPUTS[rel],
+         'fex_memory_allocator_source_changed')
+    defines, undefined = macro_values(shlex.split(row['command']))
+    need(not any(name.startswith('PEAR_FEX_MEMORY') for name in set(defines) | undefined),
+         'fex_memory_allocator_owner_macro_override')
+    need(defines.get('ENABLE_FEX_ALLOCATOR') == ['1'] and 'ENABLE_FEX_ALLOCATOR' not in undefined,
+         'fex_memory_allocator_source_configuration')
+    roots = include_arguments(shlex.split(row['command']))
+    need(str(source.parent / 'wire') not in roots, 'fex_memory_allocator_wire_include')
+    return True
+
+
+def upstream_allocator_dependency_proof(row, source, paths):
+    """The entire selected-source closure remains byte-identical to Stage 2."""
+    source = Path(source)
+    if not upstream_allocator_compile_proof(row, source):
+        return None
+    selected = {}
+    for name in paths:
+        path = Path(name)
+        need(not path.is_relative_to(source.parent / 'wire') and
+             'Pear' not in path.name and 'pear_fex' not in path.name,
+             'fex_memory_allocator_owner_dependency')
+        if path.is_relative_to(source):
+            rel = path.relative_to(source).as_posix()
+            need(rel in UPSTREAM_ALLOCATOR_INPUTS, 'fex_memory_allocator_dependency_closure')
+            raw, mode = regular_bytes(source, rel, MAX_SOURCE_FILE)
+            need((H(raw), len(raw), mode) == UPSTREAM_ALLOCATOR_INPUTS[rel],
+                 'fex_memory_allocator_dependency_changed')
+            selected[rel] = {'sha256': H(raw), 'size_bytes': len(raw), 'mode': mode}
+    need(set(selected) == set(UPSTREAM_ALLOCATOR_INPUTS), 'fex_memory_allocator_dependency_closure')
+    return {'source': UPSTREAM_ALLOCATOR_SOURCE, 'object': UPSTREAM_ALLOCATOR_OBJECT,
+            'target': 'JemallocLibs', 'baseline_source_manifest_sha256': BASE_SOURCE_SHA,
+            'selected_source_inputs': selected, 'owner_macro_required': False,
+            'source_runtime_qualified': False, 'initializer_execution': 'unperformed'}
+
+
 def dependency_proof(row,output,source,tc,header_cache):
     name=row['output']+'.d';raw,_=regular_bytes(output,name,8*1024**2)
     target,names=make_dependencies(raw)
@@ -548,9 +605,13 @@ def dependency_proof(row,output,source,tc,header_cache):
     need(str(Path(row['file'])) in paths,'fex_memory_depfile_source_missing')
     if Path(row['file']).relative_to(source).as_posix() in WIRE_REQUIRED_SOURCES:
         need(str(wire) in paths,'fex_memory_depfile_required_wire_missing')
-    return {'path':output.relative_to(source.parent).as_posix()+'/'+name,'sha256':H(raw),
-            'size_bytes':len(raw),'object':row['output'],'dependencies':paths,
-            'selected_header_semantics':'unperformed','compiler_execution':'unperformed_in_pure_replay'}
+    proof = {'path':output.relative_to(source.parent).as_posix()+'/'+name,'sha256':H(raw),
+             'size_bytes':len(raw),'object':row['output'],'dependencies':paths,
+             'selected_header_semantics':'unperformed','compiler_execution':'unperformed_in_pure_replay'}
+    allocator = upstream_allocator_dependency_proof(row, source, paths)
+    if allocator is not None:
+        proof['unmodified_upstream_allocator'] = allocator
+    return proof
 
 
 def owner_compile_proof(row,output,source,tc,triple,features,policy):
@@ -558,7 +619,8 @@ def owner_compile_proof(row,output,source,tc,triple,features,policy):
     selected_include_proof(row,source,policy)
     arguments=shlex.split(row['command']);defines,undefined=macro_values(arguments)
     rel=Path(row['file']).relative_to(source).as_posix()
-    if Path(row['file']).suffix!='.S' and rel.startswith(('FEXCore/','Source/Windows/')):
+    allocator = upstream_allocator_compile_proof(row, source)
+    if Path(row['file']).suffix!='.S' and rel.startswith(('FEXCore/','Source/Windows/')) and not allocator:
         need(defines.get('PEAR_FEX_MEMORY_OWNER') and
              set(defines['PEAR_FEX_MEMORY_OWNER'])=={'1'} and 'PEAR_FEX_MEMORY_OWNER' not in undefined,
              'fex_memory_owner_macro')
@@ -715,7 +777,7 @@ def source_symbol_proof(text):
     base='_ZN7FEXCore5Utils13PearFEXMemory'
     groups={
       'adapter':(base,('libCommonWindows','PearFEXMemory.cpp.obj'),
-                 ('Init','Reserve','RegisterExecutor','Enter','Exit','Handoff','Poll','AttachAllocatedThread')),
+                 ('Init','Reserve','RegisterExecutor','Enter','Exit','Handoff','Poll')),
       'retirement':(base+'10Retirement',(None,'PearFEXRetirement.cpp.obj'),
                     ('AdmissionOpen','PoisonSourceAdmission','EnqueueDetached','DrainAtNativeGate')),
       'links':(base+'5Links',(None,'PearJITLinks.cpp.obj'),('EntryAdmissionOpen',))}
@@ -729,6 +791,18 @@ def source_symbol_proof(text):
                  'fex_memory_selected_symbol_owner:'+group+':'+name)
             matches.update(actual)
         selected[group]=[{'symbol':name,'archive':owner[0],'member':owner[1]} for name in sorted(matches)]
+    # The admitted lifecycle source moved this method into its nonforgeable
+    # SourceLifecycle class. Require the exact actual signature and body owner;
+    # a legacy top-level alias or compiler exit thunk is not this method.
+    prefix = base + '15SourceLifecycle21AttachAllocatedThreadE'
+    expected = prefix + 'PKNS_7Context7ContextEPNS_4Core19InternalThreadStateEj'
+    matches = {sym: owner for sym, owner in owners.items() if sym.startswith(prefix) and '$' not in sym}
+    need(set(matches) == {expected} and matches[expected] == {('libCommonWindows', 'PearFEXMemory.cpp.obj')},
+         'fex_memory_selected_source_lifecycle_symbol:AttachAllocatedThread')
+    need(not any(sym.startswith(base + '21AttachAllocatedThread') for sym in owners),
+         'fex_memory_legacy_lifecycle_symbol:AttachAllocatedThread')
+    selected['source_lifecycle'] = [{'symbol': expected, 'archive': 'libCommonWindows',
+                                    'member': 'PearFEXMemory.cpp.obj'}]
     direct={
         'InitPearCore':('_ZN7FEXCore7Context11ContextImpl12InitPearCoreE',
                        'RNS_5Utils13PearFEXMemory6ResultE','Core.cpp.obj'),
