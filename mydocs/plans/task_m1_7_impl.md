@@ -476,6 +476,8 @@ The complete four-source control then compiled each actual shader twice from
 different owned paths using source bytes on stdin, the original constants
 header, owned quote includes and emitted dependency records. All8 actual
 compiler commands exited0, and all4 pairs matched complete AIR bytes exactly.
+That first probe reused airconv target flags for dxmt_command rather than its
+original default target; it does not establish original command-recipe equivalence.
 Original sources and compiler bytes remained unchanged. Control SHA-256:
 `74252bb78d2b8bb6de3592ce867dc05c51a648ef240173df02a96ac94e488e1a`.
 This is compiler input/reproducibility evidence, not a full native rebuild,
@@ -489,3 +491,46 @@ and its complete outputs; the original producer/checker cannot be relabelled.
 Actual PE prefix-map qualification, an additive reviewed constructor and any
 required final-candidate native verification remain open. No unexplained code
 or shader bytes are accepted, and Stage5 remains in progress.
+
+
+### October 3 Original Shader Recipes, Independent Caches and Bound Resources
+
+The original source recipes differ: the three airconv shaders use Metal3.1 and
+AIR/macOS14 flags; dxmt_command uses the selected compiler defaults. A separate
+actual default-command probe passed two compilations with equal complete AIR
+bytes. A fresh all-four probe then retained each original shader's own options
+and used independent owned caches for the two source locations. All8 actual
+compiler commands passed, and all4 complete AIR byte pairs are equal.
+
+The stronger final probe binds its exact producer, source/header copies, emitted
+dependency files, stdout/stderr, AIR bytes, SDKSettings and the complete canonical
+selected Metal toolchain resource tree before/after. It passed with control
+`0a1261b70e8143d879a33895990a7568f529e4ab08e63a44e60c115246afb9e1`.
+It is compiler-source/resource reproducibility evidence, not GPU execution,
+complete Wine/DXMT construction or native engine qualification. A contained
+toolchain directory alias remains explicitly enumerated without traversal.
+The selected compiler/std/header semantics are preserved; source-name metadata
+and the generated dxmt_command initializer symbol change under stdin input.
+An independently bound new constructor and fresh finite native verification
+are required for the resulting candidate. All14 predecessor producer bodies
+and the original26-difference failed candidate remain immutable.
+
+Actual direct Wine object compilation preserved the original source-relative
+invocation and debug level while adding only an object-directory debug prefix
+map. The selected LLD fixture link with SOURCE_DATE_EPOCH=0 produced equal
+complete PE bytes with timestamp0. Intermediate compiler-produced object
+timestamps are not fixed by that LLD setting; a coincident equal timestamp is
+not deterministic object proof. Initial fixture compilation failed because a
+required protocol header was not copied; that failure is preserved. These early
+probes lack the stronger complete producer/dependency bindings and cannot
+admit the new full constructor.
+
+The next strengthened dependency probe refused its first compiled object:
+-M discovery includes system headers while -MMD excludes them. This is a
+dependency-observation mismatch, not evidence of game or runtime failure.
+Its original output and producer are preserved. The corrected probe uses full
+-MD dependencies and records actual discovery streams, the pre-overwrite
+depfile, source/protocol inputs and every dependency hash before/after. Its
+current result is pending. Actual configure CROSSCFLAGS insertion/quoting,
+two full fresh deterministic builds and final native binding are unperformed.
+No unsigned comparison policy was relaxed. Stage5 remains in progress.
