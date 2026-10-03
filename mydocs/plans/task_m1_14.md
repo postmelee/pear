@@ -75,3 +75,11 @@ Integrated acceptance retains #14's failing-fixture detection, incompatible-prom
 ## Approval Record and Later Approval Boundary
 
 The current same-thread instruction to proceed adopts the preceding research-note/rules/template proposal and non-conflicting preparation. This plan records that bounded approval rather than asking for it again. Later Stage 2/3 details are proposals, not blanket authorization. Request explicit continuation after the Stage 1 report, with a concrete Stage 2 plan.
+
+## October 4 Stage 2 approval and location refinement
+
+After the Stage 1 report and a concrete recommendation to refine temporary-output rules, qualify five master-only suites on Linux, coordinate DXMT fixes with #7, and connect only passing suites to CI, the requester explicitly said to proceed in this thread. Stage 2 is now approved; Stage 3 remains unapproved. Earlier Stage 1 exclusions describe that completed stage, not this approval.
+
+Stage 2 may modify tests/AGENTS.md and the existing .github/workflows/documentation.yml, plus these task plans, the daily board and a Stage 2 report. No production validator/test implementation, #5/#7 file or dependency lock is changed. tests/AGENTS.md is scoped agent policy; the workflow is automation configuration. Neither is a new product document. The stage report stays in mydocs/working/task_m1_14_stage2.md. These locations implement the approved recommendation without a new policy manual.
+
+Five candidates: source inventory; Wine report assessment, input validation, unsigned comparison and ABI review. Use existing Python unittest with no package installation. The current local Docker daemon is unavailable; qualify in GitHub's clean Ubuntu 24.04/Python 3.12 hosted jobs instead of starting a competing VM. Initially restrict the new job to workflow_dispatch on the task publication branch; only after positive and negative-control evidence passes enable the PR trigger. Existing documentation checks continue unchanged. Source commits, runner/image identity, Python/Git versions, executed counts/skips, run URLs and control behavior must be recorded.
