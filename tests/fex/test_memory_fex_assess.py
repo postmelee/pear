@@ -28,7 +28,11 @@ def failed_record():
 
 class SourceIdentity(unittest.TestCase):
     def test_genuine_supplied_package_identity(self):
-        self.assertEqual(a.source_identity(REPO), REPO)
+        if a.reference(REPO / a.READER_PATH)['sha256'] == a.REVIEWED_READER_SHA:
+            self.assertEqual(a.source_identity(REPO), REPO)
+        else:
+            # A later source graph must not impersonate the source19 reader.
+            with self.assertRaises(a.Error): a.source_identity(REPO)
     def test_unrelated_repository_cannot_select_reader(self):
         with tempfile.TemporaryDirectory(prefix='pear-assessment-identity-') as directory:
             with self.assertRaises(a.Error): a.source_identity(Path(directory).resolve())

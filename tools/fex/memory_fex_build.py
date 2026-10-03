@@ -149,12 +149,22 @@ def construct(baseline,projection,derivatives,wine_build,output,*,max_growth=MAX
              'fex_memory_producer_changed_during_build')
         value.update(modules_built_not_loaded=True,passed=True)
         value.pop('phase')
-        need(len(verifier.encoded(value))<=8*1024**2,'fex_memory_final_receipt_size')
-        write_json(root/'build.json',value)
+        write_successful_build_record(root,value)
         verifier.verify_build(root,repo)
         return value
     except BaseException as exc:
         preserve_failure(root,value,exc);raise
+
+
+def write_successful_build_record(root,value):
+    # Serialize/roundtrip completely before creating the fixed owned record.
+    # A failed scope, byte/node bound or grammar leaves build.json absent.
+    raw=verifier.encoded_successful_build_record(value)
+    with (Path(root)/'build.json').open('xb') as stream:stream.write(raw)
+    (Path(root)/'build.json').chmod(0o600)
+    observed,written=verifier.successful_build_record_bytes(root)
+    need(written==raw and observed==value,'fex_memory_written_receipt_changed')
+    return {'path':'build.json','sha256':verifier.H(raw)}
 
 
 def main():

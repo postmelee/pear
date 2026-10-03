@@ -1,0 +1,86 @@
+{
+  "attribution": "Original Pear downstream integration against pinned FEX; existing C++ languages, allocator semantics, compiler policy and upstream notices retained; no upstream submission.",
+  "compilation_performed": false,
+  "empty_source_proof_constants_closed": 12,
+  "empty_target_default_off": true,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/CMakeLists.txt",
+      "postimage_bytes": 1630,
+      "postimage_sha256": "097934c05a0fc551ce79e1015e5d3f28d86381570f0753c6daa640ed568d2720",
+      "preimage_sha256": "9de13e8036b3762b7b2dac898c3302a54e51f9a32fc042089a59dbf355edd54a"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/CMakeLists.txt",
+      "postimage_bytes": 1070,
+      "postimage_sha256": "e9202b3af6a6c0255e568216ac28eeb7584a477591314e20c4744c6af29d77b6",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "postimage_bytes": 22226,
+      "postimage_sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+      "postimage_bytes": 1239,
+      "postimage_sha256": "0de9589adbabca6ff819a9fdbebde26863415eb73cfd8cecb8fd1ce014fb8f12",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 9056,
+      "postimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.def",
+      "postimage_bytes": 59,
+      "postimage_sha256": "42c3727c1473d7e43da199c6949c3d65b6fd2c502ddae667bc321633ba9521ca",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1345,
+      "postimage_sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Report.h",
+      "postimage_bytes": 2040,
+      "postimage_sha256": "9360ef88c8e6857583023c9813d0dd8a5157dc3838de394d248ff4dc495a8381",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Tests/Windows/PearEmptyInit/caller.cpp",
+      "postimage_bytes": 3365,
+      "postimage_sha256": "6084fe624b8a0eddefea9d39c59637df03fcd3648b02dee739d022b5c6a7623b",
+      "preimage_sha256": null
+    }
+  ],
+  "guest_execution_performed": false,
+  "historical_source_manifest_sha256": "5692499dbd180cd49b2a8d19a4d0883423fe486700d02f0e3461c40556867e68",
+  "historical_source_primitives": "Author inspection metadata retained as data; only canonical changes prove current source bytes",
+  "historical_strict_patch_sha256": "a5cd8dce450bf4cd3b7cec6cb375413926ba3677d68c4aea3e3832cbbca6a396",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "metadata_budget_qualified": false,
+  "name": "closed-empty-source-fixture",
+  "native_runtime_execution": false,
+  "new_qualified_runtime_claim": false,
+  "old_normal_apis_retained": true,
+  "opaque_allocator_and_global_constructor_contracts": "unqualified",
+  "order": 23,
+  "owner_execution_performed": false,
+  "persistent_identity_ledger_added": false,
+  "record_kind": "fex_memory_source_layer",
+  "reporting_corrections_selection_freeze_sha256": "162992de6ae9cbd0b6bf04bfc588c7019fe304cd2a73fd93e48f73425004f0bf",
+  "retained_sources": [],
+  "reviewed_candidate_freeze_sha256": "421bd0c5525d43b950db0c72484b46894b9b1f260751722b33ddb42bb56cda2b",
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

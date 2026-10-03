@@ -799,6 +799,154 @@
           "preimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd"
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/20-0003m-fex-checked-context-allocation.patch",
+      "git_file": "memory/source-graph/git/20-0003m-fex-checked-context-allocation.git.patch",
+      "git_sha256": "1cb5a44a6df1c7b7d05da68675d8019a27cf99dc1093dc0ed1e768979d7e0250",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "checked-context-allocation",
+      "order": 20,
+      "provenance_manifest": "memory/source-graph/provenance/20-checked-context-allocation.json",
+      "provenance_sha256": "74195fa4467748bab853d3d2a21e5b65b55e0f0db63034c1acaa111b505dae47",
+      "sha256": "1cb5a44a6df1c7b7d05da68675d8019a27cf99dc1093dc0ed1e768979d7e0250",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 8011,
+          "postimage_sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883",
+          "preimage_sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1"
+        }
+      ]
+    },
+    {
+      "file": "memory/source-graph/strict/21-0003n-fex-checked-environment.patch",
+      "git_file": "memory/source-graph/git/21-0003n-fex-checked-environment.git.patch",
+      "git_sha256": "476e052dad2fdeff1da936f5084ee6499f4d12bcc4670832964ea0cd89a54bcd",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "checked-environment",
+      "order": 21,
+      "provenance_manifest": "memory/source-graph/provenance/21-checked-environment.json",
+      "provenance_sha256": "8a73de41346edfa276911f2716b57f0fd814244695142dc5deafaef9c1db2706",
+      "sha256": "5ef325bc149a126b8e8dac742fe23521d4869d959be6eae17b6ad44d8d0ec4f5",
+      "sources": [
+        {
+          "path": "Source/Windows/Common/CRT/Misc.cpp",
+          "postimage_bytes": 7341,
+          "postimage_sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea",
+          "preimage_sha256": "df6d971e6046bfbd2d884db64b5344514699f2f4abe746b5436aa487861ba3bc"
+        },
+        {
+          "path": "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+          "postimage_bytes": 969,
+          "postimage_sha256": "ec96b961925118ce4878f9b3f7cce314aa75c140bf599234d651f3803a2cea39",
+          "preimage_sha256": null
+        }
+      ]
+    },
+    {
+      "file": "memory/source-graph/strict/22-0003p-fex-checked-selected-factories.patch",
+      "git_file": "memory/source-graph/git/22-0003p-fex-checked-selected-factories.git.patch",
+      "git_sha256": "611ef7dc67b62ffc03515ca805002d019a082bfbe7887dd0f1ae458626629e91",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "checked-selected-factories",
+      "order": 22,
+      "provenance_manifest": "memory/source-graph/provenance/22-checked-selected-factories.json",
+      "provenance_sha256": "45a5335e28dd20e7f7f51f38e3d68bd4440ee9ac4c55d4d1e1fe5063228143f7",
+      "sha256": "611ef7dc67b62ffc03515ca805002d019a082bfbe7887dd0f1ae458626629e91",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 104331,
+          "postimage_sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5",
+          "preimage_sha256": "83de462ad8c4ee6d024a76debf48a6d89387e2aca8a0a1a20c6fead92921415b"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 89244,
+          "postimage_sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e",
+          "preimage_sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6"
+        },
+        {
+          "path": "Source/Tools/CommonTools/DummyHandlers.cpp",
+          "postimage_bytes": 2102,
+          "postimage_sha256": "4fddd369e6b194e0fc63ef6c1ae4132ac25e94336a0b6ad9dd1772f46d12040c",
+          "preimage_sha256": "4c4dc902c65b09587f4ee1e965055992d07c56b530eb7315a408d426f0e622b4"
+        },
+        {
+          "path": "Source/Tools/CommonTools/DummyHandlers.h",
+          "postimage_bytes": 1826,
+          "postimage_sha256": "a7bbe3aadf0b2f0b895a546f3ea6409347d60ff431f440d5508de4ae6c266d23",
+          "preimage_sha256": "e5ae9f81564a73441395ad704ee3ed61cb48abb1960ddf5b55c06cb07ca3ea19"
+        }
+      ]
+    },
+    {
+      "file": "memory/source-graph/strict/23-0003o-fex-empty-source-fixture.patch",
+      "git_file": "memory/source-graph/git/23-0003o-fex-empty-source-fixture.git.patch",
+      "git_sha256": "9b5ddc6e6e4a71bfa19eee76d22372eff905a093723ce3c414453c63841a8395",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "closed-empty-source-fixture",
+      "order": 23,
+      "provenance_manifest": "memory/source-graph/provenance/23-closed-empty-source-fixture.json",
+      "provenance_sha256": "bb2f373c5b40132f951f1dc04ab5fbd59c669d9039cfab350d48444c433ed44e",
+      "sha256": "a5cd8dce450bf4cd3b7cec6cb375413926ba3677d68c4aea3e3832cbbca6a396",
+      "sources": [
+        {
+          "path": "Source/Windows/CMakeLists.txt",
+          "postimage_bytes": 1630,
+          "postimage_sha256": "097934c05a0fc551ce79e1015e5d3f28d86381570f0753c6daa640ed568d2720",
+          "preimage_sha256": "9de13e8036b3762b7b2dac898c3302a54e51f9a32fc042089a59dbf355edd54a"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CMakeLists.txt",
+          "postimage_bytes": 1070,
+          "postimage_sha256": "e9202b3af6a6c0255e568216ac28eeb7584a477591314e20c4744c6af29d77b6",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 22226,
+          "postimage_sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+          "postimage_bytes": 1239,
+          "postimage_sha256": "0de9589adbabca6ff819a9fdbebde26863415eb73cfd8cecb8fd1ce014fb8f12",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9056,
+          "postimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.def",
+          "postimage_bytes": 59,
+          "postimage_sha256": "42c3727c1473d7e43da199c6949c3d65b6fd2c502ddae667bc321633ba9521ca",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1345,
+          "postimage_sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Report.h",
+          "postimage_bytes": 2040,
+          "postimage_sha256": "9360ef88c8e6857583023c9813d0dd8a5157dc3838de394d248ff4dc495a8381",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Tests/Windows/PearEmptyInit/caller.cpp",
+          "postimage_bytes": 3365,
+          "postimage_sha256": "6084fe624b8a0eddefea9d39c59637df03fcd3648b02dee739d022b5c6a7623b",
+          "preimage_sha256": null
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -822,7 +970,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 19,
+    "layer_count": 23,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }

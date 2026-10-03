@@ -29,7 +29,7 @@ else:
 
 BASE_BUILD_SHA='0a2c854c0c42484ace9c077b8fb69a73b6e8a323d0b2a8b5e7c8cead90fb21ed'
 BASE_SOURCE_SHA='d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff'
-GRAPH_SHA='38bac0349a77b6e5cd59f79852426dcc4bac8ca6c6fe6922cdc3be69c012bf2a'
+GRAPH_SHA='30c42edf02fb3d3aa90dca983d11e51a48e55d9822b2c783839c31481dc9de50'
 MAX_FILES=12000
 MAX_SOURCE_BYTES=128*1024**2
 MAX_SOURCE_FILE=8*1024**2
@@ -153,7 +153,7 @@ def publication_series_gate(derivatives,graph):
             'provenance_manifest':'memory/source-graph/'+layer['source_manifest']['path'],
             'provenance_sha256':layer['source_manifest']['sha256'],'sources':layer['changes']})
     need(series['patches']==expected and series['source_graph']=={'file':'memory/source-graph/derivatives.json',
-         'layer_count':19,'reference_scope':'derivatives_root_relative_v1'},'fex_memory_publication_series_graph')
+         'layer_count':23,'reference_scope':'derivatives_root_relative_v1'},'fex_memory_publication_series_graph')
     return series
 
 
@@ -173,7 +173,7 @@ def selected_projection(baseline,derivatives):
     raw,_=regular_bytes(derivatives,'derivatives.json',8*1024**2)
     need(H(raw)==GRAPH_SHA,'fex_memory_selected_graph_changed')
     graph=decode_json(raw,max_bytes=8*1024**2)
-    need(len(graph['layers'])==19 and graph['reference_scope']=='derivatives_root_relative_v1' and graph['wire_version']==2
+    need(len(graph['layers'])==23 and graph['reference_scope']=='derivatives_root_relative_v1' and graph['wire_version']==2
          and all(graph[key] is False for key in
          ('git_execution_performed','compilation_performed','module_initialization_performed',
           'owner_execution_performed','stage3_complete')),'fex_memory_graph_scope')
@@ -208,11 +208,11 @@ def selected_projection(baseline,derivatives):
     final=sorted(rows.values(),key=lambda row:row['path'])
     need(len(final)<=MAX_FILES and sum(row['size_bytes'] for row in final)<=MAX_SOURCE_BYTES,'fex_memory_final_source_bounds')
     need([{**rows[path]} for path in sorted(changed)]==graph['final_changed_source_rows'],'fex_memory_final_changed_rows')
-    return {'scope':'source_only','source_files':final,'changed_bytes':changed,'layer_count':19,
+    return {'scope':'source_only','source_files':final,'changed_bytes':changed,'layer_count':23,
         'retained_layer_rows':retained,'graph_sha256':H(raw),'source_initialization':False,'stage3_complete':False}
 
 
-PROJECTION_MANIFEST_SHA='e0fbe556fa5c9f8ddf8734286ba6b80a6f2fe0b243b9eeb3b8fd9c1a95992725'
+PROJECTION_MANIFEST_SHA='16f1453f47d293e02c84bd2199810a02e06f597faaed08c03fafaa80cb897383'
 SOURCE_HELPER_SHA='be606e51e6031298cfa35b9eb5588c45233eff8aa481d5fa1842ad20d34a785e'
 WIRE_SHA='bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf'
 FALSE_FLAGS=('source_runtime_qualified','metadata_qualified','fex_initialization','jit_execution',
@@ -287,8 +287,8 @@ def projection_gate(projection,baseline,derivatives,*,source_helper,expected_con
          and type(value['source_bytes']) is int
          and value['source_bytes']==sum(row['size_bytes'] for row in derived['source_files'])
          and value['passed'] is True and value['baseline_unchanged_observed'] is True
-         and value['git_execution_performed'] is True and value['layers']==19
-         and value['changed_paths']==39 and value['new_files']==13
+         and value['git_execution_performed'] is True and value['layers']==23
+         and value['changed_paths']==52 and value['new_files']==22
          and value['inputs']['derivatives_sha256']==GRAPH_SHA
          and value['inputs']['baseline_manifest_sha256']==BASE_SOURCE_SHA,
          'fex_memory_projection_scope')
@@ -306,7 +306,7 @@ def projection_gate(projection,baseline,derivatives,*,source_helper,expected_con
              'baseline_manifest_sha256':BASE_SOURCE_SHA,'derivatives_manifest_sha256':GRAPH_SHA,
              'files':derived['source_files'],'materialization_performed':False,'compilation_performed':False},
          'fex_memory_projection_helper_manifest_changed')
-    need(type(value['commands']) is list and len(value['commands'])==38,'fex_memory_git_command_count')
+    need(type(value['commands']) is list and len(value['commands'])==46,'fex_memory_git_command_count')
     for index,row in enumerate(value['commands']):
         exact(row,('action','layer','argv','cwd','attempted','exit_code','elapsed_ms',
               'stdout','stdout_bytes','stdout_sha256','stderr','stderr_bytes','stderr_sha256'),
@@ -958,11 +958,13 @@ def qualification_gate(value):
          'fex_memory_build_qualification_overclaim')
 
 
-def verify_build(root,repo=REPO):
-    """Offline independent replay of current source/recipe/object/link closure."""
-    root=operation_output(root,repo_root=repo,require_empty=False,create=False)
-    need(not (root/'failure.json').exists(),'fex_memory_failed_build')
-    value,_=record_bytes(root,'build.json')
+# This budget belongs only to a completed build.json artifact-proof record.
+# Generic input/failure/projection readers retain their original node budgets.
+SUCCESS_BUILD_MAX_BYTES=8*1024**2
+SUCCESS_BUILD_MAX_NODES=500000
+
+
+def successful_build_record_gate(value):
     exact(value,('schema_version','record_kind','scope','bindings','producer_sha256','input_snapshots',
         'materialized_source','wire','source_interfaces','commands','artifacts','module_proofs','resources','output_manifest',
         'modules_built_not_loaded','qualification','passed',*FALSE_FLAGS),'fex_memory_build_fields')
@@ -970,6 +972,34 @@ def verify_build(root,repo=REPO):
          and value['record_kind']=='fex_memory_modules_build' and value['scope']=='fex_component'
          and value['passed'] is True and value['modules_built_not_loaded'] is True,'fex_memory_build_scope')
     qualification_gate(value)
+
+
+def decode_successful_build_record(raw):
+    value=decode_json(raw,max_bytes=SUCCESS_BUILD_MAX_BYTES,max_nodes=SUCCESS_BUILD_MAX_NODES)
+    successful_build_record_gate(value)
+    return value
+
+
+def successful_build_record_bytes(root):
+    raw,_=regular_bytes(root,'build.json',SUCCESS_BUILD_MAX_BYTES)
+    return decode_successful_build_record(raw),raw
+
+
+def encoded_successful_build_record(value):
+    # Admit the known complete-record scope before encoding, then exercise the
+    # same bounded strict reader before a writer can expose build.json.
+    successful_build_record_gate(value)
+    raw=encoded(value)
+    need(len(raw)<=SUCCESS_BUILD_MAX_BYTES,'fex_memory_final_receipt_size')
+    need(decode_successful_build_record(raw)==value,'fex_memory_final_receipt_roundtrip')
+    return raw
+
+
+def verify_build(root,repo=REPO):
+    """Offline independent replay of current source/recipe/object/link closure."""
+    root=operation_output(root,repo_root=repo,require_empty=False,create=False)
+    need(not (root/'failure.json').exists(),'fex_memory_failed_build')
+    value,_=successful_build_record_bytes(root)
     need(value['producer_sha256']=={p:sha256(Path(repo)/p) for p in LOCAL_PRODUCERS},'fex_memory_producer_changed')
     bindings=value['bindings'];exact(bindings,('baseline','projection','derivatives','wine_build'),'fex_memory_bindings')
     baseline=Path(bindings['baseline']['root']);old=original.verify_build(baseline)

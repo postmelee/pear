@@ -1249,3 +1249,46 @@ claimed. Historical prefix/payload replay requires exact donor rehydration.
 Lossless bounded archival of inactive intermediate objects is under review;
 no unique intermediate payload is discarded without a verified recoverable
 copy. Only sanitized results/source are published. Stage3 remains in progress.
+
+### October 3 Final Source Closure and Bounded Successful Records
+
+The independently reviewed 22-path update preserves all nineteen predecessor
+layers and appends checked Context allocation, checked finite environment
+preparation, checked selected factories and the private finite empty fixture.
+Upstream C++ and assembly, ordinary target flags and normal initialization
+paths remain preserved. The fixture target is OFF; all twelve proof constants
+are literally false. No source object has been constructed or initialized.
+
+The outer publication patch passed the private pure parser but its actual Git
+check refused a new-file header before any shared mutation. The original
+packet and failed wrapper remain preserved. Root rechecked every preimage and
+applied the exact frozen postimages directly. This publication check does not
+qualify the separate ordered source derivatives.
+
+A fresh source10 projection then completed all 46 actual Git check/apply
+operations for the 23 ordered derivatives with exit 0. Its control digest is
+`cc991d517d694874f43b77c13742a36cc9fa601360009d8ba8b080cf241eb1d0`.
+The final inventory contains 6,973 files and 40,537,903 bytes, with digest
+`16f1453f47d293e02c84bd2199810a02e06f597faaed08c03fafaa80cb897383`.
+The original selected baseline was rechecked unchanged. Root ran 578 FEX
+tests successfully, with one explicit APFS fixture skip.
+
+Only complete successful module build records now use the matching
+8 MiB/500,000-node decoder and exact-byte writer preflight. Generic and failed
+records retain 250,000 nodes and all existing strict JSON/file controls. This
+prevents the separately reproduced 250,351-node successful-record shape from
+being written and then refused solely by the old reader limit. It is a bounded
+serialization correction, not a completed source23 module build.
+
+The source19 assessment2 observation and its producer checkpoint were
+published first and remain immutable. Its current replay is now unavailable
+until the exact source19 namespace is rehydrated. It cannot supply a source23
+build, initialization, guest or game result.
+
+A reviewed three-unit compile-only measurement is being prepared against the
+actual source10 receipt. It measures 51 constants from real fixture, wrapper
+and selected libc++ control-block types. Constant extraction, ordinary object
+code emission, linking, loading and initialization are distinct observations.
+Allocator rounding, full static alignment, phase-bound stack/retention peaks
+and the complete 256 KiB aggregate remain unresolved. Stage 3 remains in
+progress; no initialization proof flag is opened by these source or test results.

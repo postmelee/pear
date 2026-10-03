@@ -1,7 +1,7 @@
 {
   "baseline_manifest_sha256": "d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff",
   "compilation_performed": false,
-  "derivatives_manifest_sha256": "38bac0349a77b6e5cd59f79852426dcc4bac8ca6c6fe6922cdc3be69c012bf2a",
+  "derivatives_manifest_sha256": "30c42edf02fb3d3aa90dca983d11e51a48e55d9822b2c783839c31481dc9de50",
   "files": [
     {
       "mode": 420,
@@ -21264,8 +21264,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.cpp",
-      "sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1",
-      "size_bytes": 7508
+      "sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883",
+      "size_bytes": 8011
     },
     {
       "mode": 420,
@@ -21330,8 +21330,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Core.cpp",
-      "sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6",
-      "size_bytes": 88817
+      "sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e",
+      "size_bytes": 89244
     },
     {
       "mode": 420,
@@ -21348,8 +21348,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
-      "sha256": "83de462ad8c4ee6d024a76debf48a6d89387e2aca8a0a1a20c6fead92921415b",
-      "size_bytes": 103904
+      "sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5",
+      "size_bytes": 104331
     },
     {
       "mode": 420,
@@ -23106,14 +23106,14 @@
     {
       "mode": 420,
       "path": "Source/Tools/CommonTools/DummyHandlers.cpp",
-      "sha256": "4c4dc902c65b09587f4ee1e965055992d07c56b530eb7315a408d426f0e622b4",
-      "size_bytes": 785
+      "sha256": "4fddd369e6b194e0fc63ef6c1ae4132ac25e94336a0b6ad9dd1772f46d12040c",
+      "size_bytes": 2102
     },
     {
       "mode": 420,
       "path": "Source/Tools/CommonTools/DummyHandlers.h",
-      "sha256": "e5ae9f81564a73441395ad704ee3ed61cb48abb1960ddf5b55c06cb07ca3ea19",
-      "size_bytes": 1492
+      "sha256": "a7bbe3aadf0b2f0b895a546f3ea6409347d60ff431f440d5508de4ae6c266d23",
+      "size_bytes": 1826
     },
     {
       "mode": 420,
@@ -24384,8 +24384,8 @@
     {
       "mode": 420,
       "path": "Source/Windows/CMakeLists.txt",
-      "sha256": "9de13e8036b3762b7b2dac898c3302a54e51f9a32fc042089a59dbf355edd54a",
-      "size_bytes": 1298
+      "sha256": "097934c05a0fc551ce79e1015e5d3f28d86381570f0753c6daa640ed568d2720",
+      "size_bytes": 1630
     },
     {
       "mode": 420,
@@ -24456,8 +24456,8 @@
     {
       "mode": 420,
       "path": "Source/Windows/Common/CRT/Misc.cpp",
-      "sha256": "df6d971e6046bfbd2d884db64b5344514699f2f4abe746b5436aa487861ba3bc",
-      "size_bytes": 2424
+      "sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea",
+      "size_bytes": 7341
     },
     {
       "mode": 420,
@@ -24584,6 +24584,12 @@
       "path": "Source/Windows/Common/CRT/Musl/strtoumax.c",
       "sha256": "e6f42765b73ce293bb3267063ea31e7741cd33df74961e734d0eb25d5fc5bb0d",
       "size_bytes": 4067
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+      "sha256": "ec96b961925118ce4878f9b3f7cce314aa75c140bf599234d651f3803a2cea39",
+      "size_bytes": 969
     },
     {
       "mode": 420,
@@ -24797,6 +24803,48 @@
     },
     {
       "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/CMakeLists.txt",
+      "sha256": "e9202b3af6a6c0255e568216ac28eeb7584a477591314e20c4744c6af29d77b6",
+      "size_bytes": 1070
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3",
+      "size_bytes": 22226
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+      "sha256": "0de9589adbabca6ff819a9fdbebde26863415eb73cfd8cecb8fd1ce014fb8f12",
+      "size_bytes": 1239
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee",
+      "size_bytes": 9056
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/Fixture.def",
+      "sha256": "42c3727c1473d7e43da199c6949c3d65b6fd2c502ddae667bc321633ba9521ca",
+      "size_bytes": 59
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c",
+      "size_bytes": 1345
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/Report.h",
+      "sha256": "9360ef88c8e6857583023c9813d0dd8a5157dc3838de394d248ff4dc495a8381",
+      "size_bytes": 2040
+    },
+    {
+      "mode": 420,
       "path": "Source/Windows/UnixLib/CMakeLists.txt",
       "sha256": "6e51fd10338f8cd3868f985a5ae68b955ad42e371aa737792314df52cdbcbe66",
       "size_bytes": 698
@@ -24872,6 +24920,12 @@
       "path": "Source/Windows/wine_builtin.bin",
       "sha256": "8f15265269b70d27579fb7525ec418fde87a7a1e8ac97e00c04c2238c0aaf5b9",
       "size_bytes": 32
+    },
+    {
+      "mode": 420,
+      "path": "Tests/Windows/PearEmptyInit/caller.cpp",
+      "sha256": "6084fe624b8a0eddefea9d39c59637df03fcd3648b02dee739d022b5c6a7623b",
+      "size_bytes": 3365
     },
     {
       "mode": 420,
