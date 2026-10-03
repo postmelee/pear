@@ -757,6 +757,20 @@
     "raw_equal": true,
     "symlinks": 16
   },
+  "small_stub_current_native_preparation": {
+    "admission_receipt_sha256": "96b077716e18839eddf827987d5aaefb638ab0e6d63c865b2c25d0a2315fc76a",
+    "command_exit_code": 0,
+    "current_admission_commands": 163,
+    "distribution_qualified": false,
+    "elapsed_ms": 2255876,
+    "execution_performed": false,
+    "native_images": 39,
+    "passed": true,
+    "pe_images": 756,
+    "runtime_eligible": false,
+    "runtime_receipt_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+    "signing_commands": 199
+  },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
     "full_install_comparison": "in_progress",
@@ -882,5 +896,5 @@
     "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
     "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
   },
-  "work_gate": "complete_raw_comparison_passed_fresh_native_preparation_started"
+  "work_gate": "current_development_admission_passed_finite_native_run_started"
 }

@@ -1048,3 +1048,22 @@ schedule now follow under the shared lock. Explicit raw-log review and final
 reconstruction replay remain required. Stage 5, translated/game execution and
 ordinary-user distribution are not qualified by this comparison. The immutable
 prior mismatch, interrupted comparison and observer failure remain preserved.
+
+
+### 2026-10-04: Fresh Candidate Development Admission Passed
+
+Preparation of the matching candidate finished with exit zero. The isolated
+materialization contains 39 native images and 756 PE images. All 199 signing
+commands and 163 current-admission commands passed, followed by independent
+source/payload replay. Runtime receipt:
+`d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd`;
+current-admission receipt:
+`96b077716e18839eddf827987d5aaefb638ab0e6d63c865b2c25d0a2315fc76a`.
+Preparation took 2,255,876 ms on this host, including prerequisite replay;
+this is a verification-cost observation, not a runtime performance result.
+
+The same-candidate finite native run is now started under the shared lock,
+with process-scoped display/idle prevention and the unchanged Metal validation
+environment. The run, explicit raw-log review and complete final reconstruction
+remain unqualified until their actual completion. Private signatures, profiles,
+certificate information and raw diagnostic streams remain outside Git.
