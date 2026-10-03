@@ -3,7 +3,7 @@
 Task plan: [task_m1_31.md](task_m1_31.md)
 GitHub Issue: [#31](https://github.com/postmelee/pear/issues/31)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: Stages 1-3 complete; final reporting/publication approval pending.
+Status: Stages 1-3 and final reporting complete; publication approved; merge pending.
 Date: October 4, 2026 (Asia/Seoul).
 
 The requester approved the task plan and document locations by explicit
@@ -261,3 +261,11 @@ The requester explicitly continued after Stage 2 commit 0d10f6d. The
 arithmetic, local links, source availability and privacy review. All three
 implementation stages are complete; final reporting/publication awaits approval.
 Merge, Issue closure and other-task communication/integration remain deferred.
+
+## Final Reporting and Publication Approval
+
+The requester explicitly continued after Stage 3 commit 9b6f27e, approving final
+reporting and PR publication. The [final report](../report/task_m1_31_report.md)
+records acceptance results and limitations. Publication uses codex/publish-task31
+against master. Merge, Issue closure, other-task messages and integration advice
+remain outside this approval.
