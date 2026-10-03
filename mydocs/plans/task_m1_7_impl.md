@@ -663,3 +663,28 @@ volume free increases were1,296,900,096 and2,599,272,448 bytes, respectively;
 APFS physical reclamation is not independently established. Only sanitized
 findings/source are published. Stage5 remains in progress; two fresh complete
 builds, exact comparison and fresh current native qualification are pending.
+
+### October 3 Shared Storage Preservation Checkpoint
+
+Root completed the shared inactive-object archival: all 104 archive/verify/
+prune/retained-verify actions across 26 batches returned zero. The 24,716 leaves
+(5,136,652,549 logical bytes, 24,366 distinct payloads) have verified compressed
+retention of 1,503,904,568 bytes. Aggregate identity:
+`7489e2b1a9825385056c602d1f83c0b358d54d60a23e5e0724d3ecf9349a1517`.
+A separate same-build install retirement removed 42,955 exact copies while
+retaining 688 unique leaves and the original signed donors. Its observed volume
+free increase was 1,555,550,208 bytes during concurrent builder activity;
+physical APFS reclamation is not independently measured. Original receipts,
+logs and current #5/#7 qualification inputs remain protected, and historical
+payload replay requires exact rehydration. The stage6 research candidate is
+frozen and unapplied.
+
+The earlier 178.078 GiB project inventory is an observed footprint, not all
+necessary live storage. A later inventory observed 156.304 GiB, a 21.774 GiB
+lower folder aggregate during construction. Shared APFS extents can be counted
+more than once; no unique physical reclamation is established. Nine major
+protected roots totaled 14.024 GiB; this
+partial grouping is not a complete required minimum. Fresh storage/reserve
+checks apply to each operation. The new graphics constructor is replaying current input qualification;
+no fresh product has been created at this checkpoint. Complete raw comparison
+and current native qualification remain unperformed. These storage observations do not complete Stage5.
