@@ -447,3 +447,45 @@ approved independent metadata/path explanation boundary; unexplained code,
 shader or other data changes remain failures. Preserve these bytes instead of
 blindly repeating the same construction. All hybrid/game/distribution gates
 remain false.
+
+
+### October 3 Exact Difference Audit and Actual Shader Input Probe
+
+An independent source/format audit mapped all26 refused inventory entries to
+18 actual byte pairs. Simple PE pairs differ only at their COFF and debug
+directory timestamps. Wine PE code/data/pdata/relocations remain identical,
+but debug compilation paths,1328 DW_FORM_strp operands and a synthetic CodeView
+GUID also change. All4 AIR pairs retain decoded function bodies, while their
+air.source_file_name strings and dependent bitstream offsets change. Embedded
+AIR growth changes actual winemetal instructions, array sizes, native layout and
+link metadata. These findings do not justify blanket binary normalization,
+semantic native-code equivalence, GPU validation or Stage5 completion.
+Private audit manifest:
+`e2cdef1fb4c7386241d6de923693df38b04423b4f56d4efc59fb7320a25761f6`;
+18 explicitly portable audit controls passed without native/compiler execution.
+
+The root then ran actual Metal compile probes with the currently selected
+compiler, owned module cache and unchanged original sources. An earlier default
+cache attempt failed permission checks and remains preserved. Six minimal
+shader compiles with owned caches passed, but accepted file/debug prefix-map
+flags did not make source-path-dependent AIR identical. Two further minimal
+stdin compiles produced equal complete AIR bytes; that alone did not qualify
+the actual selected shader dependency closure.
+
+The complete four-source control then compiled each actual shader twice from
+different owned paths using source bytes on stdin, the original constants
+header, owned quote includes and emitted dependency records. All8 actual
+compiler commands exited0, and all4 pairs matched complete AIR bytes exactly.
+Original sources and compiler bytes remained unchanged. Control SHA-256:
+`74252bb78d2b8bb6de3592ce867dc05c51a648ef240173df02a96ac94e488e1a`.
+This is compiler input/reproducibility evidence, not a full native rebuild,
+shader/GPU execution, driver qualification or pipeline change. The failed
+original candidate and all Stage3/4 producer contracts remain untouched.
+
+Selected LLD source supports a fixed SOURCE_DATE_EPOCH, and Wine's actual
+PE configure path supports CROSSCFLAGS/debug prefix maps. Any deterministic
+recipe must independently bind these changed environment/adapter identities
+and its complete outputs; the original producer/checker cannot be relabelled.
+Actual PE prefix-map qualification, an additive reviewed constructor and any
+required final-candidate native verification remain open. No unexplained code
+or shader bytes are accepted, and Stage5 remains in progress.
