@@ -1,0 +1,128 @@
+{
+  "candidate_native_execution_performed": false,
+  "current_native_adapter_sha256": "d1681b698a4adc25ab99d9628746ff52a2f23c6d27051bd6aa9aaf7bf39cc1e0",
+  "distribution_qualified": false,
+  "dxmt_regression": {
+    "passed": true,
+    "skipped": 8,
+    "tests": 518
+  },
+  "game_qualified": false,
+  "observed_on": "2026-10-04",
+  "reconstruction_complete": false,
+  "record_kind": "dxmt_current_reconstruction_checkpoint",
+  "reference": {
+    "artifacts": [
+      {
+        "path": "wine/objects/dlls/winemac.drv/winemac.so",
+        "sha256": "f007b17d438511ec2780979dec47c244cb457c0dca930b77574d29b44ec55f4a",
+        "size_bytes": 857080
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/unix/winemetal.so",
+        "sha256": "63ff47337db698dcabe33c2bb0ccab639e3e3944e2b892477ddf7606a58bbaa0",
+        "size_bytes": 47178688
+      },
+      {
+        "path": "wine/objects/dlls/winemac.drv/aarch64-windows/winemac.drv",
+        "sha256": "a8d319a89c609af6dd55e0e2f5007f476964f73c033ca71414c01cace085ccf6",
+        "size_bytes": 917504
+      },
+      {
+        "path": "dxmt/objects/src/d3d11/d3d11.dll",
+        "sha256": "964b7b930c8e9996814677a54802941bbc7b16d452857cf2b50b06fd44ebb059",
+        "size_bytes": 9105408
+      },
+      {
+        "path": "dxmt/objects/src/dxgi/dxgi.dll",
+        "sha256": "29d200f35b64f45a8b77794c13bf5f95682afc143c96a1607e3c2a2ed08ec445",
+        "size_bytes": 2895872
+      },
+      {
+        "path": "dxmt/objects/src/d3d10/d3d10core.dll",
+        "sha256": "05058e9e1f5144a62e87f652d0856ee6619b737a3d223879a083491cc42f06df",
+        "size_bytes": 2383872
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/winemetal.dll",
+        "sha256": "9f4c198f33b936c9079c73152b1621a720b272e5c57036e3b0513c45f9889714",
+        "size_bytes": 212992
+      },
+      {
+        "path": "fixtures/pear-metal-pairing-arm64.exe",
+        "sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "size_bytes": 7680
+      }
+    ],
+    "build_record_sha256": "8298d615a47464b93defa223503abd2d1f9a6808bb47d4b34747883ec031bf01",
+    "commands": [
+      {
+        "elapsed_ms": 17382,
+        "exit_code": 0,
+        "id": "wine.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 16186,
+        "exit_code": 0,
+        "id": "wine.driver",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1674,
+        "exit_code": 0,
+        "id": "fixture.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 11409,
+        "exit_code": 0,
+        "id": "dxmt.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 77091,
+        "exit_code": 0,
+        "id": "dxmt.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1678,
+        "exit_code": 0,
+        "id": "builtin.d3d11.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1719,
+        "exit_code": 0,
+        "id": "builtin.dxgi.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1680,
+        "exit_code": 0,
+        "id": "builtin.d3d10core.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1698,
+        "exit_code": 0,
+        "id": "builtin.winemetal.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 2832,
+        "exit_code": 0,
+        "id": "dxmt.install",
+        "stop_reason": null
+      }
+    ],
+    "passed": true
+  },
+  "schema_version": 1,
+  "wine_regression": {
+    "passed": true,
+    "skipped": 10,
+    "tests": 842
+  }
+}

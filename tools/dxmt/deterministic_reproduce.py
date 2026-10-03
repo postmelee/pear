@@ -17,7 +17,7 @@ import sys
 from types import SimpleNamespace
 
 HERE=Path(__file__).resolve().parent
-NATIVE_SOURCE_PIN='04103e9fc44e2fc2956a7f025c017af1f584dfa53d891d869af35c35a6bdb45c'
+NATIVE_SOURCE_PIN='d1681b698a4adc25ab99d9628746ff52a2f23c6d27051bd6aa9aaf7bf39cc1e0'
 
 
 def capture_native_source(root):

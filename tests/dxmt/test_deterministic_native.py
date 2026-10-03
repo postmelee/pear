@@ -273,4 +273,32 @@ class CoordinatorRepairs(Temporary):
         self.assertNotEqual(first,reproduction.source_signature(value,adapter))
 
 
+class ReviewContextJSON(unittest.TestCase):
+    def test_sets_export_as_sorted_lists_without_mutating_raw_review(self):
+        context={'notice_pids':{'loader':{32,8},'server':{10}},'run_ref':{'sha256':'a'*64}}
+        result=native.review_context_json(context)
+        self.assertEqual(json.loads(native.encoded(result))['notice_pids'],{'loader':[8,32],'server':[10]})
+        self.assertEqual(context['notice_pids']['loader'],{8,32})
+        self.assertIs(result['run_ref'],context['run_ref'])
+    def test_malformed_process_identity_refused(self):
+        for value in (None,{}, {'loader':[]}, {'loader':set()}, {'loader':{True}},
+                      {'loader':{0}}, {'loader':{2**31}}, {4:{10}}):
+            with self.subTest(value=value),self.assertRaises(native.Error):
+                native.review_context_json({'notice_pids':value})
+    def test_unknown_set_is_not_generically_coerced(self):
+        value=native.review_context_json({'notice_pids':{'loader':{10}},'unexpected':{1}})
+        with self.assertRaises(TypeError):native.encoded(value)
+    def test_cli_outputs_actual_context_shape(self):
+        context={'notice_pids':{'loader':{32,8}},'run_ref':{'sha256':'b'*64}}
+        @contextmanager
+        def fake_adapter(*args):yield SimpleNamespace(review_context=lambda root:(context,{}))
+        output=io.StringIO()
+        with mock.patch.object(native,'adapter',fake_adapter),mock.patch('sys.stdout',output):
+            status=native.main(['--repo',str(REPO),'--constructor-root',str(CONSTRUCTOR),
+                                '--review-context','--run-root','owned-run'])
+        self.assertEqual(status,0)
+        self.assertEqual(json.loads(output.getvalue())['notice_pids']['loader'],[8,32])
+        self.assertEqual(context['notice_pids']['loader'],{8,32})
+
+
 if __name__=='__main__':unittest.main()

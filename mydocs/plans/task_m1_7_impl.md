@@ -862,3 +862,41 @@ APFS sharing and another builder prevent unique physical attribution. Current
 free space is approximately 5.8 GiB, below the unchanged 6 GiB graphics build
 admission (2 GiB growth allowance plus 4 GiB reserve). Do not lower that floor
 or start a doomed full build; preserve this source/test checkpoint on GitHub.
+
+
+### 2026-10-04: Fresh Build Admission Restored and First Current Build Passed
+
+The requester confirmed additional space and explicitly continued. Actual free
+space was approximately 17 GiB at admission; no growth or reserve floor changed.
+The first new current-constructor build completed all ten commands and eight
+required artifacts with no stop reason. Build record:
+`8298d615a47464b93defa223503abd2d1f9a6808bb47d4b34747883ec031bf01`.
+The second fresh build is serialized after that success and source recheck.
+Comparison, new final-candidate native execution and completion remain pending.
+
+The reviewed official locations now contain the pinned contributor guide,
+index link and dated research/Wine follow-ups. Preserve the original source
+mismatch and Stage 4 evidence rather than rewriting them as current results.
+The guide explicitly explains private historical qualification prerequisites,
+full versus component reconstruction, permissions and unperformed game gates.
+
+A current CLI audit found that the raw native review context contains process-ID
+sets. Export only that validated field as sorted JSON lists; keep the in-memory
+review API unchanged and refuse malformed identities or unrelated set values.
+Update the exact enclosing native source pin. Four new controls include actual
+CLI JSON serialization with a fixture adapter; the native and pin suites pass
+37 and 9 tests respectively. Full DXMT verification passes 518 tests with eight
+optional private-input skips. Wine regression passes 842 tests with ten
+conditional skips. These tests do not run the final graphics candidate.
+
+Direct script-path help attempts exposed local `inspect.py` shadowing Python
+3.14's standard library during argparse initialization. The three current
+`deterministic_*` module entrypoints pass actual `--help` invocation. Document
+those module commands separately from historical split tools, which retain
+their recorded Python 3.13.5/local-import route; do not relabel the historical
+CLI as a tested Python 3.14 package entrypoint or change frozen producers.
+Offline governance passes 23 documents and 198 local targets; whitespace checks
+pass. The selected Metal-validation reference remains Apple's revision
+`4f42344c90be22112f46becc3fb9687f423f2f88`, plugin 1.0.0-beta.1. The planned
+current native run keeps the approved environment before device creation and
+uses a process-scoped awake-display assertion without changing system settings.

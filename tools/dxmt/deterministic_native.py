@@ -45,6 +45,18 @@ def encoded(value):return (json.dumps(value,sort_keys=True,separators=(',',':'))
 def same(left,right,code):need(encoded(left)==encoded(right),code)
 
 
+
+def review_context_json(context):
+    """Serialize reviewed process identities without changing the raw review API."""
+    pids=context.get('notice_pids')
+    need(type(pids)is dict and pids and all(type(role)is str and type(values)is set
+         and values and all(type(pid)is int and 1<pid<=2147483647 for pid in values)
+         for role,values in pids.items()),'native_review_notice_identities')
+    result=dict(context)
+    result['notice_pids']={role:sorted(values)for role,values in pids.items()}
+    return result
+
+
 def selected_functions(raw,namespace,path):
     """Closed record-kind/scope derivation; every other AST node is preserved."""
     before=[node for node in ast.parse(raw).body if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef))
@@ -306,7 +318,7 @@ def main(argv=None):
             elif args.admit:result=value.admit(args.runtime)
             elif args.run:result=value.run(args.runtime,args.output)
             elif args.verify_run:result=value.verify_run(args.run_root)
-            elif args.review_context:result=value.review_context(args.run_root)[0]
+            elif args.review_context:result=review_context_json(value.review_context(args.run_root)[0])
             else:result=value.verify_evidence(args.run_root)
             print(encoded(result).decode(),end='');return 0
     except Exception as error:
