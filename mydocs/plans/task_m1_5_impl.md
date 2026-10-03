@@ -730,8 +730,38 @@ guest/game execution, new permission, release, merge or Issue closure follows.
 
 The October 3 incremental source checkpoint passed all 268 currently tracked
 FEX portable tests and offline governance (22 documents/172 local targets),
-with whitespace checks clean. These are portable/source observations only;
+with unstaged whitespace checks clean. The first staged check exposed one
+pre-existing trailing space in the newly added builder; a follow-up removes
+that space before fresh construction. These are portable/source observations only;
 Wine Run 2 remains failed and Stage 3 remains incomplete. The checkpoint
 contains ABI1 diagnostic source; approved ABI2/resume and initialization work
 has not yet been promoted or executed. Historical free-space observations above
 are dated measurements, not current admission.
+
+
+### October 3 Storage and Diagnostic Build Checkpoint
+
+The reviewed source checkpoint is Git commit `7c78e59` on
+`codex/publish-task5`. After preserving private per-file hash/size/mode/link
+inventories and embedded profile copies, root removed only the generated
+`install` children of failed Wine builds 2–4 and app-bundle children of failed
+Wine runtimes 2–4. Source trees, inputs, producer snapshots, receipts,
+configuration, commands and raw errors remain local; accepted build5/runtime5/
+run2 and all required #4/#5/#7 donors remain. The observed free-space delta
+was 6,317,473,792 bytes (about 5.88 GiB), not an inferred `du` total. Full replay
+of those six pruned historical payloads is now unavailable; retained inventory
+records do not substitute for their bytes. Private cleanup receipt SHA-256:
+`43abf8b245262db463533e46e2472c12721c0d7d08c94b17349d20e013c39f1e`.
+
+Fresh diagnostic Wine build6 completed four compiler/build commands with exit0.
+Its current source/tool/configuration/install replay passed independently.
+The only builder change after the source checkpoint removes one trailing space;
+21 builder controls passed. Receipt SHA-256:
+`927d3b11d240e71d9833c31d21167d6bc37acdedbba5928b547666dfc6b653b9`;
+source inventory `957b25bee9aeaf3184f280b464fd31442f008bfb9c03feac05de61b987fc9173`;
+unsigned install inventory
+`b9b12dac3bb55e6578dffdedad9a3b191039c5831df8dc2381b11d63c92ae3bd`.
+This is a rebuilt ntdll/fixture slice over the preserved #4 baseline install,
+not a freshly rebuilt entire runtime. It retains ABI1. No initializer,
+translated guest or game ran in this construction. Fresh signing, actual
+bitmap diagnosis and approved ABI2/source-lifetime work remain separate gates.

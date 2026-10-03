@@ -652,7 +652,7 @@ def verify_build(value):
              and row['timeout_seconds'] == timeout and row['max_stream_bytes'] == MAX_LOG
              and type(row['exit_code']) is int and row['exit_code'] == 0 and row['status'] == 'completed'
              and row['error_domain'] is None and row['error_code'] is None
-             and not any(k in row for k in ('cleanup_error', 'log_collection_error', 'record_write_error')), 
+             and not any(k in row for k in ('cleanup_error', 'log_collection_error', 'record_write_error')),
              'memory_wine_command_replay')
         need(set(row['logs']) == {'stdout', 'stderr'}, 'memory_wine_command_logs')
         need(load_json(root / 'logs' / ident / 'command.json') == row, 'memory_wine_command_record')
