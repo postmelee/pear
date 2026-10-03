@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "component": "wine-fex-memory",
+  "runtime_execution": false,
+  "baseline": {
+    "wine_revision": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "wine_patch_series_sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086",
+    "qualified_source_files_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7"
+  },
+  "patches": [
+    {
+      "file": "memory/0003a-wine-owner-core.patch",
+      "sha256": "4447ee9328cf64b198a9b387ac3f70607e28865fd95dbbf7853138a0be5bfced",
+      "license": "MIT (original Pear additions); baseline Wine LGPL-2.1-or-later files retain their notices",
+      "sources": [
+        {
+          "path": "include/wine/pear_fex_memory.h",
+          "preimage_sha256": null,
+          "postimage_sha256": "2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1",
+          "postimage_bytes": 6874
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_fex_memory_private.h",
+          "preimage_sha256": null,
+          "postimage_sha256": "fc30e4644ac76554413697006cb36780ceceea32a5531f91ce2726fb4be3cdd3",
+          "postimage_bytes": 2739
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_fex_memory.c",
+          "preimage_sha256": null,
+          "postimage_sha256": "8d8effbbef90ef671c43a348bebb993d0a164b3d44fdd2dbbae49740895fe915",
+          "postimage_bytes": 37059
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "preimage_sha256": "5a62ac6debf9752387321776da0b31e2fdf1266c4f93eb154029179d800d8eba",
+          "postimage_sha256": "e6fc8f13b71cdfa4a72cbdf175e1aa6d26c4fcb0eb83356e1cc545d848899572",
+          "postimage_bytes": 3566
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "preimage_sha256": "e3e70366af63da6d9fa3c0f87485c8ab58d3561fcbcdefd4f56fb41c2858a9d7",
+          "postimage_sha256": "53fc470a5e0117324cacbbb58f493d420a0d3fa23fdc5e5a9cd7d715e618c6ce",
+          "postimage_bytes": 51946
+        }
+      ]
+    },
+    {
+      "file": "memory/0003b-wine-owner-bridge.patch",
+      "sha256": "d5e70eca7b9c9b5da91c2f29fb7f62b5762af103825a653266df0046f16bdc1c",
+      "license": "MIT (original Pear additions); baseline Wine LGPL-2.1-or-later files retain their notices",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "preimage_sha256": "121787b1485c3c424c32e660a184ab0bee3206a9ed9486f99d247d80bfa9896b",
+          "postimage_sha256": "90de95689164e98ba3d027a9692ba0769222ae915749110712aa239d3dc5505e",
+          "postimage_bytes": 294404
+        },
+        {
+          "path": "dlls/ntdll/Makefile.in",
+          "preimage_sha256": "dca23fdb80cec1ac569a7ccc6899676100db23953df5b1fae9f092bd774e5434",
+          "postimage_sha256": "31cc3f52a7d258e88d19b42a014bdbb4fd102ff057e5d8d5424d6fa7281ca139",
+          "postimage_bytes": 1818
+        },
+        {
+          "path": "dlls/ntdll/unixlib.h",
+          "preimage_sha256": "b80d8d2ad7e68516627b3611020c093555176ff585dfcb88cb0244e32ca0ade3",
+          "postimage_sha256": "2815e818d5fa34a5de251fec58899048da6440caef9b12a939dd6d35c82a25ff",
+          "postimage_bytes": 2153
+        },
+        {
+          "path": "dlls/ntdll/unix/loader.c",
+          "preimage_sha256": "67b07af46a939203418309d2e278d1d135d1a8caaa92b6c7bbb3eb704c2b7434",
+          "postimage_sha256": "cec2d1a1e00131a02750046bea52a7931a5ee3bf8e470a7b22dea763e72172cc",
+          "postimage_bytes": 81036
+        },
+        {
+          "path": "dlls/ntdll/ntdll.spec",
+          "preimage_sha256": "63f7958120f7c51514422ca768b37fe7bb3452de88e2ce988e1fac757cc7da54",
+          "postimage_sha256": "0bfef154483bfd48a20f3ff9f7822bc8cef769ee24e65affd6dede87c80fab81",
+          "postimage_bytes": 88245
+        },
+        {
+          "path": "dlls/ntdll/pear_fex_memory.c",
+          "preimage_sha256": null,
+          "postimage_sha256": "857baee07e2f0c3e3dd05da2a2a3eb96c5aa9b3d40b242aa511d9b09d83b349d",
+          "postimage_bytes": 4776
+        },
+        {
+          "path": "include/Makefile.in",
+          "preimage_sha256": "f89c7d5c47ed20f37dbb4d2fcc41f2a9ba650ad2eaa59f27cbd1973cb68eacc0",
+          "postimage_sha256": "7b0dd9c2957aacb944185e7ac039c990b25bd4fbf6718e4ab01e7b1051724b53",
+          "postimage_bytes": 22138
+        }
+      ]
+    }
+  ],
+  "preserved_baseline": {
+    "pe_interior_bytes": 1050345472,
+    "dynamic_bytes": 524288,
+    "dynamic_slots": 8,
+    "alignment_bytes": 65536
+  },
+  "prototype": {
+    "mapping_bytes": 1588985856,
+    "shared_bytes": 536870912,
+    "dispatcher_bytes": 1048576,
+    "metadata_limit_bytes": 262144,
+    "wire_record_bytes": 128,
+    "unix_index": 10
+  }
+}

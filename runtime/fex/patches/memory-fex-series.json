@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "component": "fex-memory-adapter",
+  "runtime_execution": false,
+  "baseline": {
+    "fex_revision": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+    "fex_tree": "7509ab443d32692ac72ee51c0697ccf86d0a66af",
+    "stage2_patch_series_sha256": "6f2661dec28951d3372d743701b00e787027aa3a04f57afce0368438cf0df825",
+    "qualified_source_files_sha256": "d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff"
+  },
+  "authoritative_header": {
+    "path": "include/wine/pear_fex_memory.h",
+    "sha256": "2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1",
+    "build_relative_path": "wine/pear_fex_memory.h",
+    "source_component": "wine-fex-memory"
+  },
+  "patches": [
+    {
+      "file": "memory/0003c-fex-memory-adapter.patch",
+      "sha256": "fd42ac2ca2b12bde3f7304dbd83194995f1cf57f6497154401ee3eaeb596f846",
+      "license": "MIT (FEX source and original Pear additions); upstream contribution policy remains separate from downstream reuse",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "preimage_sha256": null,
+          "postimage_sha256": "5e93ab3ff838d907d192e445172715ec6f7ae5227390c12209620421f0a666c8",
+          "postimage_bytes": 9244
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": null,
+          "postimage_sha256": "9ea7e3b0188a0fade09bfa276451887b0c3c1df4cc751ed8a6c6e71de5fc8e6c",
+          "postimage_bytes": 46816
+        },
+        {
+          "path": "Source/Windows/Common/CMakeLists.txt",
+          "preimage_sha256": "fbcaba03ea7c68546e7ce2670eb4b6eccba72e6f879b1b7c0a8ced1bb6f7d64f",
+          "postimage_sha256": "597be805df33ae88a67d3052cd02c9a8fc502e92d6b1b9dcc0297f3ee90c22e7",
+          "postimage_bytes": 2104
+        }
+      ]
+    }
+  ],
+  "preserved_abi": {
+    "fex_unixlib_services": 8,
+    "wire_record_bytes": 128,
+    "ntdll_unix_index": 10
+  },
+  "source_gates": {
+    "paired_module_identity": false,
+    "fex_initialization": false,
+    "guest_execution": false,
+    "raw_signal_handoff": false
+  }
+}

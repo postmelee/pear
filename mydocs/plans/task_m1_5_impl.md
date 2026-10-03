@@ -4,7 +4,7 @@ Task plan: [`task_m1_5.md`](task_m1_5.md)
 GitHub Issue: [#5](https://github.com/postmelee/pear/issues/5)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-Prepared October 2, 2026. The requester approved the task plan and its document locations. The requester approved this implementation plan and Stage 1 execution on October 2, 2026. Stage 1 is implemented; its actual results are in the Stage 1 report. Later stages and their expected outcomes remain planned work.
+Prepared October 2, 2026. The requester approved the task plan and its document locations. The requester approved this implementation plan and Stage 1 execution on October 2, 2026. Stages 1 and 2 are implemented; their actual results are in the corresponding stage reports. The requester explicitly approved the concrete Stage 3 design and its implementation/prototype on October 3, 2026. Source integration and actual verification remain in progress. Later implementation and expected outcomes remain planned work.
 
 ## Applicable Context and Reuse
 
@@ -35,7 +35,7 @@ Pear Apple-tooling and its Metal experts are not applicable to this CPU/host tas
 | 5 | Bounded translated lifecycle and conditional WoW64 | Thread/context/callback/invalidation fixtures and applicable i386 route | Finite translated state/lifetime behavior, explicit exception/helper limitations and actual permission controls |
 | 6 | Fresh reconstruction and handoff | Final paired Wine/FEX rebuild, independently verified evidence and contributor guide | Same final signed candidate passes declared suites, affected native regressions and strict explained reconstruction comparison |
 
-Each stage has a report/verification/commit and requires explicit continuation before the next. Stage 3's concrete capacities, registration, publication/backpatch and retirement design remains unselected by this plan. Present the measured design refinement for requester approval with the Stage 3 continuation request before any owner prototype or integration, even when the broad scope is unchanged. No successful inventory or compiler fixture promotes runtime eligibility.
+Each stage has a report/verification/commit and requires explicit continuation before the next. The original stage split did not select Stage 3's concrete capacities, registration, publication/backpatch and retirement strategy. The source-bound proposal below awaits requester approval before any owner prototype or integration, even when the broad scope is unchanged. No successful inventory or compiler fixture promotes runtime eligibility.
 
 ## Document Location Check
 
@@ -199,11 +199,173 @@ Task #5 Stage 2: port Darwin host services and build FEX modules
 
 Before implementing the owner prototype, review the concrete inventory: every executable allocator, initial 16 MiB/growing 128 MiB shared buffers, dispatch stubs, code bitmap, invalidation and disabled persistent-cache paths. #4's eight 64 KiB slots cannot serve these by assertion. Define measured reservation sizing/admission, alignment, allocation classes, ARM64EC code registration, exhaustion/error behavior and release/reuse rules. Preserve immutable PE versus mutable generated-code ownership and normal security/signature requirements, including actual code-signing page geometry. Do not turn off #4 RWX rejection or use an unqualified private/security shortcut.
 
-Choose a documented feasible publication and patching protocol through an explicitly reviewed design refinement. Protection transitions/dual mappings are alternatives to investigate, not existing FEX options or assumed allowed designs. Specify all writer and executor synchronization, source-address/relocation assumptions, I-cache maintenance, callback reentry, multi-thread observation and retired-version lifetime. The concrete owner strategy is not selected by this plan: present its capacity, registration, synchronization, publication/backpatch and retirement contract for explicit requester approval before any owner prototype/integration, regardless of whether the broad scope changes. Include that refinement with the Stage 3 continuation checkpoint after the completed Stage 2 report. Additional ownership/ABI/security scope changes also require an amended plan before implementation. A successful single code buffer is insufficient for all configured allocation classes.
+Choose a documented feasible publication and patching protocol through an explicitly reviewed design refinement. Protection transitions/dual mappings are alternatives to investigate, not existing FEX options or assumed allowed designs. Specify all writer and executor synchronization, source-address/relocation assumptions, I-cache maintenance, callback reentry, multi-thread observation and retired-version lifetime. The concrete owner strategy in the checkpoint below was explicitly approved on October 3, 2026. Its capacity, registration, synchronization, publication/backpatch and retirement contract now authorizes the finite owner prototype and Stage 3 integration within that scope. Include that refinement with the Stage 3 continuation checkpoint after the completed Stage 2 report. Additional ownership/ABI/security scope changes also require an amended plan before implementation. A successful single code buffer is insufficient for all configured allocation classes.
 
 Reuse temporary emission/relocation and version-held retired buffers; integrate actual copy/publish/rewrite/backpatch/invalidate/free semantics. Published active-code atomic stores must be coordinated with write/execute protection, code registration, instruction cache and all observers. Keep persistent disk cache disabled; identify deferred asynchronous readers/invalidation edges explicitly. Exhaustion, allocation/registration/cache-operation failure and unsupported permission paths produce preserved errors and no partial success.
 
 Run original small native generated-code fixture operations under actual declared executable authorization, then the Wine/FEX owner boundary without translated guest execution. Cover bounded sequential and multi-thread schedules, lookup-versus-retire, patch-versus-entry, immutable mapping refusal and allocation generation/reuse. Use checked errors and controlled finite operations; no new deliberate native fatal-fault fixture or retry of the previously blocked no-TEB route.
+
+### Stage 3 Concrete Design Checkpoint — Approved October 3, 2026
+
+This October 3 refinement selects a **single-address, page-W^X owner with cooperative native quiescence** for the first prototype. It is a proposed design, not a measured working FEX JIT or a completed stage. The requester approved this completed concrete checkpoint on October 3, 2026; source changes, owner construction and finite generated-code fixtures are authorized within its bounds. Additional scope/geometry/ABI/permission changes retain a concrete amendment gate. The location remains this existing implementation plan; no official document, product API or new task-document location is introduced.
+
+#### Source-Bound Inventory and Reuse Decision
+
+The inventory is bound to FEX commit `59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa` and the five-patch Stage 2 source used by `stage2-modules3`. References below are relative to that materialized FEX tree; the ARM64EC/WoW64 module line numbers refer to the Stage 2 derivative. Wine references are relative to #4's final materialized source, manifest `2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7`, rather than an earlier partial patch or the unpatched reproduction input. Those private build roots remain untracked. Revalidate this inventory against the final supplement source/build manifests before accepting a prototype.
+
+| Path and Source Lines | Observed Responsibility | Required Owner Treatment |
+|---|---|---|
+| `FEXCore/include/FEXCore/Utils/AllocatorHooks.h:49-101`; `Source/Windows/Common/WinAPI/Alloc.cpp:33-103` | Windows executable allocation requests RWX; ARM64EC adds `MEM_EXTENDED_PARAMETER_EC_CODE`; wrappers reach Wine NT allocation/protection | Replace only configured executable paths with explicit owner transactions. Keep ordinary RW allocation separate. Refuse unmanaged executable allocation/protection instead of weakening #4. |
+| `FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp:15-46,59-110` | Shared code starts at 16 MiB, grows to 128 MiB, has a final 4 KiB guard, and frees through allocator hooks | Preserve source growth, guard and shared-generation semantics in a larger bounded owner pool. A guard-protection failure becomes a constructor failure. The upstream comments at 61-79 describe possible mprotect/mirror approaches; neither is an implemented dual-alias option. |
+| `FEXCore/Source/Interface/Core/SharedCodeBufferManager.h:34-86` | Atomic 16-byte suballocation; reset changes the cursor | Preserve block alignment and address arithmetic. Reset/reuse requires retirement proof; cursor reset does not revoke escaped pointers. |
+| `FEXCore/Source/Interface/Core/JIT/JIT.cpp:853-876,899-921,1144-1168` | Temporary emission, final-address adjustment, copy to shared code, I-cache maintenance; failed allocation currently clears/retries | Reuse emission and relocation. Enter the write transaction before the final copy; publish only after RX/registration/cache verification. Replace unbounded exhaustion retry with a preserved terminal allocation result. |
+| `FEXCore/Source/Interface/Core/JIT/JITClass.h:113`; `FEXCore/include/FEXCore/Utils/ThreadPoolAllocator.h:18-38,385-399,410-435`; `FEXCore/Source/Interface/Context/Context.h:437` | Temporary emitter buffers are ordinary RW pooled allocations with timed storage reuse | Retain the non-executable pool. Its 5,000/500 ms reuse policy is not an executable-code retirement grace period. Bound the fixture's temporary storage separately. |
+| `FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp:37-51,54-668` | Fixed four-FEX-page dispatcher is emitted directly into executable allocation, then freed | Give the dispatcher a distinct 16 KiB allocation class, staged emission and publication before exposing any pointer. Its entry/parking helpers must remain outside pages undergoing a write transition. |
+| `FEXCore/Source/Interface/Core/Core.cpp:869-875,886-913,922-928,1010-1012` | Lookup reads return executable pointers; compilation or cache load precedes lookup insertion | A generation/entry lease must cover every escaped executable pointer and lookup level. Code construction alone does not publish. Cached paths are refused by policy below. |
+| `FEXCore/Source/Interface/Core/JIT/JIT.cpp:535-563,603-643,1056-1084`; `FEXCore/Source/Interface/Core/CPUBackend.h:76-99` | Direct/indirect link and delink instruction stores; embedded 64-bit `HostCode`; embedded tail `SpinLockFutex` | All instruction and embedded mutable-data writers belong to one write transaction. Atomics and the current lookup lock do not grant write permission or exclude instruction fetch. Use ordinary RW owner metadata for patch coordination, retaining source-bound code/tail layout unless a separately reviewed layout change is necessary. |
+| `FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:1932-1955,2103-2162`; `Source/Windows/ARM64EC/Module.cpp:318-324,730-733`; `Source/Windows/WOW64/Module.cpp:348-357,784-787` | Unaligned-access handling locks the embedded tail and rewrites up to two instructions before retry | Route preparation and write/retry through the checked native exception handoff described below. Disabling the kernel option does not disable these user-space writes; switching to NonAtomic is not an ordering-preserving workaround. |
+| `FEXCore/Source/Interface/Core/LookupCache.h:116-145`; `FEXCore/Source/Interface/Core/Core.cpp:484-506,1048-1075` | Invalidation invokes delinkers under lookup locks, clears caches and tracks weak buffer versions | Prepare the affected generation/patch set, release blocking locks before quiescence, then revalidate and commit with existing invalidation/lookup coordination. Detach L1/L2/L3, direct links and call/return references before reclamation. |
+| `FEXCore/Source/Interface/Core/CPUBackend.cpp:311-355`; `FEXCore/Source/Interface/Core/CPUBackend.h:148-157`; `FEXCore/Source/Interface/Core/JIT/JIT.cpp:709-716` | Shared references retain current/previous versions, including signal-handler continuations | Retain these references and add explicit executor/continuation pins. A reference, timer or empty lookup alone does not prove that no thread can resume at an old PC. |
+| `FEXCore/Source/Interface/Core/JIT/JIT.cpp:802-849`; `Source/Windows/ARM64EC/Module.cpp:688-694,741-749`; `Source/Windows/WOW64/Module.cpp:377-386` | Upstream Windows suspension uses a doorbell and `brk`/exception reconstruction | Reuse state preservation/entry placement where applicable, but do not use this trap as the prototype's parking mechanism or introduce a fatal-fault test. Add a cooperative branch to a native compiled parking helper. Full delivered suspend/exception behavior remains Stage 5. |
+| `Source/Windows/ARM64EC/Module.cpp:640-643`; `Source/Windows/WOW64/Module.cpp:556-563` | x64 RET and x86 syscall/unix-call instruction bytes currently request executable memory; WoW64 needs low-2-GiB guest addresses | Classify as guest instruction data, not ARM64EC host code. Preserve guest logical execution/notifications with physical NX data backing through the later loader integration; do not mark them in the EC bitmap. This route is source/build checked here, actual guest/low-address behavior stays Stage 4/conditional Stage 5. |
+| `FEXCore/Source/Interface/Core/JIT/JIT.cpp:1202-1215`; `FEXCore/Source/Interface/Core/CodeCache.cpp:665-756,944-1011`; `Source/Windows/Common/ImageTracker.cpp:154,249-264` | Disk-cache copy plus separate experimental file-cache executable allocations/mappings and relocation/finalization | Source-enforce all persistent-cache exclusions below. Keep these paths in the inventory and reject calls while excluded; do not port Linux remap or assume DiskCache alone gates them. |
+| `FEXCore/Source/Utils/atomic_segmented_bitmap_allocator.h:54-93,97-155` | Generic executable bucket allocator and ordinary RW bitset, with non-thread-safe clear | No selected Windows runtime consumer was found; the observed instantiations are API tests. Record as unselected and refuse enabling it in this profile. It is distinct from Wine's required EC bitmap; no invented active capacity is assigned. |
+| `FEXCore/Source/Interface/Core/LookupCache.cpp:27-92`; `Source/Windows/Common/CallRetStack.h:25-34`; `Source/Windows/Common/InvalidationTracker.cpp:219-248`; `FEXCore/Source/Interface/Core/Core.cpp:1171-1186` | Ordinary RW lookup/call-return storage; guest self-modification and Mono guest writes trigger translated-code invalidation | Keep data backing NX. Audit these notification/delinker edges into the code-owner protocol; do not reinterpret a guest write as authorization to write host JIT code. Guest protection emulation belongs to the later loader/lifecycle stages. |
+| Wine `dlls/ntdll/unix/pear_pe_arena.h:7-19`; `pear_pe_arena.c:126-151,192-223,773-940` | One MAP_JIT with immutable PE ownership, eight 64 KiB dynamic slots, actual protection query and checked generation/rollback | Extend this C owner with distinct FEX classes in the same mapping. Retain immutable PE rules, original dynamic class, owner PID/generation and checked rollback; no second MAP_JIT, RWX request, remap alias or relaxation of original PE checks. |
+| Wine `dlls/ntdll/unix/virtual.c:1294-1329,2255-2263,3018-3058,5553-5556`; `dlls/ntdll/signal_arm64ec.c:1395,1904` | EC bitmap backing and set/clear are used by call classification; bitmap commit helper currently has no returned status | Reuse the source bitmap representation and classification. Add checked registration/rollback/clear for exact owned code views. Bitmap membership is neither memory permission nor evidence of translated execution. |
+
+Retain upstream C++/assembly and Wine C. New code is the narrowly scoped allocation/lifecycle adapter and its finite tests, not a replacement decoder, IR, ARM64 backend, Rust port or independent CPU engine. Retain MIT/LGPL notices and the independent FEX upstream contribution restriction. No upstream submission is authorized.
+
+#### Allocation Classes, Capacity and Geometry
+
+The following are **initial finite prototype/admission limits**, not measured game requirements or performance targets. Preserve #4's existing reservation as a distinct region: immutable PE interior `1,050,345,472` bytes, dynamic budget `524,288` bytes (8 × 64 KiB), alignment allowance `65,536` bytes. Do not shrink or repurpose those classes. Add two independently bounded classes in the same owner reservation:
+
+| Class | Initial Bound | Alignment / Lifetime |
+|---|---|---|
+| `fex_shared_code` | 512 MiB (`536,870,912` bytes), 32 × 16 MiB allocation units; allocation sizes 16, 32, 64 or 128 MiB | 64 KiB base alignment; source guard is the final 4 KiB within each allocation; split/coalesce only complete retired extents. Budget counts current and retained versions across all contexts. |
+| `fex_dispatcher` | 1 MiB (`1,048,576` bytes), at most 64 source-sized 16 KiB slots | 16 KiB base alignment; publish once and retain until its context/continuations drain. Reserved helper capacity is not a license to add unidentified executable stubs. |
+| `owner_metadata` / temporary emission | Ordinary NX backing; at most 128 new FEX extent records, 64 registered executor records, 128 live continuation records and 64 preallocated patch/handoff descriptors for this profile; finite fixtures cap aggregate temporary buffers at 16 MiB | Not part of executable reservation. Reuse source RW emitter storage. Required extra records/workers or larger fixture buffers return a checked capacity error; fixed NX metadata pools must fit a separately asserted 256 KiB total allocation. Descriptor admission allows one pending handoff per executor; nested requests are refused while its slot is occupied. Production limits require later measured review. |
+| `guest_instruction_data` | Source-sized ARM64EC RET page and conditional WoW64 stub page | Ordinary NX guest backing, never `fex_shared_code`/EC registered. Low-address admission and guest protection semantics remain later-stage gates. |
+
+With 4 KiB verified protection geometry, insert one 64 KiB no-access separator before each new executable class, retaining class-base alignment. Initial MAP_JIT request is therefore `1,050,345,472 + 524,288 + 536,870,912 + 1,048,576 + 2 × 65,536 + 65,536 = 1,588,985,856` bytes. This is virtual reservation, not a resident-memory estimate. Metadata and temporary RW buffers are excluded from that total. Preserve prefix/suffix alignment slack as NONE; no guard or slack page is allocatable.
+
+The 512 MiB proposal can retain source generations 16 + 32 + 64 + 128 + 128 + 128 MiB (496 MiB) simultaneously. It does not guarantee indefinite nesting or four 128 MiB buffers plus a new generation. Admission accounts for fragmentation and extents, not only free-byte totals. Exhaustion preserves old code and returns `STATUS_NO_MEMORY`/the source adapter's explicit failure; no forced freeing, retry loop or implicit expansion. Generation wrap, foreign/inherited owner, zero/overflow/truncated size, wrong class, duplicate free, stale token and fixed-address requests outside admitted guest-data routes are refused.
+
+Before reservation, bind the actual signed process's guest/native VM page sizes, required protection alignment and code-signing CodeDirectory page geometry. The initial design accepts the qualified 4 KiB Wine compatibility process and existing #4 page-W^X route only when the new executable proves the same operative geometry; an ordinary 16 KiB ARM64 host is not silently admitted. Record CodeDirectory page size independently; it is not substituted for the process VM page size. An operative protection grain above 4 KiB, unavailable geometry/authorization implication or overlapping immutable/generated ownership blocks construction and requires a reviewed geometry amendment. Suballocations may retain source 16-byte offsets, but write transactions include every full protection page they touch, including adjacent published blocks on that page.
+
+This first profile uses no RW/RX aliases and no MAP_FIXED remapping. Keep single-address relocation, branch range, inline tail and exception PC reconstruction assumptions. Measure reservation success, committed/peak resident use, allocation failures and source block-size pressure after approval. Do not advertise these bounds as suitable for Megabonk until the later game milestone measures them.
+
+The reservation does not imply that every pair of code buffers or an external native gate is within an ARM64 immediate-branch range. Preserve the actual `JIT.cpp:603-643` `IsInt26` check and existing indirect `HostCode` thunk fallback. Source-local delink branches still target their same-block thunk; relocation and block-relative ADR/restart rules remain unchanged. New cooperative polling/parking transitions to native compiled functions outside MAP_JIT use a reviewed indirect call/branch with source-equivalent register/vector/flags spill and return reconstruction, or an independently range-checked source-supported form. Do not emit an unchecked immediate branch or assume the 512 MiB class fits a signed 26-bit displacement. Finite controls cover both range boundaries and a deliberately out-of-range target through metadata/owned placement; they do not require a new executable trampoline class. A required new stub/layout or unsupported branch form returns for an amendment before construction.
+
+
+#### Internal Boundary and ARM64EC Registration
+
+Wine's native ntdll owner remains the authority for MAP_JIT, view classes, effective protection and the EC bitmap. FEX retains its source shared buffer/emitter/generation objects and requests owner operations through a separately versioned **private** Wine/FEX bridge. This bridge is an additional internal ntdll entry, not a renumbering or extension of the source-defined eight-service UnixLib table. Its paired declaration/import/export/build identity and native implementation must be verified; missing/version-mismatched pairing refuses before engine initialization. Keep custom-CRT dependency closure explicit and source matched. The precise ABI layout is reviewed with the fixture before compilation; it must not smuggle an unbounded guest pointer or expose an unrestricted VirtualProtect facility.
+
+The first bridge contract covers `reserve`, `begin_write`, `publish`, `abort_write`, `retire`, `query`, executor register/entry/exit and continuation pin/unpin. A token binds owner PID, class, allocation identity, monotonically increasing generation, exact extent, EC role and lifecycle state; request sizes/opcodes are closed and checked. Requests to immutable PE or ordinary NX backing fail. Allocation states are `reserved_none -> writing_rw_nx -> published_rx -> retiring -> retired_none`; reuse creates a new generation. A published rewrite records the same generation under a closed write epoch and returns to RX before entry can resume. Abort/partial failures never set `published_rx` merely because bytes were copied. Executor/continuation metadata and patch descriptions live outside the executable pages. Validate source-selected offsets, signed ranges, alignment, instruction widths and expected old bytes before any patch. No zero/success fabrication on a refused or unavailable operation.
+
+**Proposed fixed bridge layout for requester review:** private ABI version 1 uses exactly 128-byte request and 128-byte response records with fixed-width C fields and 8-byte alignment; no compiler-sized `bool`, `size_t`, C++ container, callback pointer or architecture-dependent packing appears in the wire record. Keep the existing UnixLib service table unchanged. Verify paired declarations, offsets, sizes, calling convention and import/export identities with static assertions and original portable records before compiling the owner; this proposal is not an implemented or public ABI.
+
+| Record | Fields in Byte Order | Required Validation |
+|---|---|---|
+| Request, 128 bytes | Four `uint32_t`: `version`, `size`, `opcode`, `flags`; ten `uint64_t`: `owner_pid`, `allocation_id`, `generation`, `write_epoch`, `executor_id`, `continuation_id`, `extent_offset`, `extent_size`, `operation_offset`, `operation_size`; four `uint32_t`: `allocation_class`, `ec_role`, `expected_state`, `reserved0`; two `uint64_t`: `reserved1`, `reserved2` | Exact version/size; closed opcode and opcode-specific allowed fields; reserved/unused fields zero; PID/generation/token/epoch checked; overflow-safe bounded extent/subrange arithmetic. No input pointer or unrestricted protection request. |
+| Response, 128 bytes | Seven `uint32_t` and one signed `int32_t` in this order: `version`, `size`, `status`, `flags`, `native_error_domain`, **`native_error_code` (`int32_t`)**, `allocation_class`, `ec_role`; nine `uint64_t`: `owner_pid`, `allocation_id`, `generation`, `write_epoch`, `executor_id`, `continuation_id`, `extent_offset`, `extent_size`, `private_write_base`; two `uint32_t`: `lifecycle_state`, `effective_protection`; two `uint64_t`: `capabilities`, `reserved0` | Zero-initialize before validation. Echo only checked identities; no success/token/address on failure. `private_write_base` is nonzero only for the exact owned `writing_rw_nx` window after observed permission admission, valid only during its closed write epoch; it is never a guest pointer or a general VirtualProtect facility. |
+
+Proposed closed opcodes are `reserve=1`, `begin_write=2`, `publish=3`, `abort_write=4`, `retire=5`, `query=6`, `executor_register=7`, `executor_entry=8`, `executor_exit=9`, `continuation_pin=10`, `continuation_unpin=11`, `executor_unregister=12` and `executor_handoff=13`. Unregister requires no active entry/continuation/request and prevents stale executor reuse. Handoff performs the atomic active-entry-to-native-pinned state transfer below; it is not callable from an unqualified raw asynchronous handler. All request flags are zero in version 1. Publish/abort do not accept a new extent or protection value; they consume the exact existing write epoch. Patch bytes/expected instructions remain source-derived, bounded preallocated FEX NX descriptors, not a pointer-bearing bridge extension. Reject unknown enum values, capabilities and nonzero reserved fields instead of ignoring them.
+
+The following numeric values and field masks close the **proposed** version 1 record. They are subject to requester review; portable layout/validation controls must match them before compilation. No implemented readiness, pointer validation or safe runtime handoff is implied. Both selected host/PE ABIs use the explicitly little-endian fixed-width representation; field offsets, padding and signedness must be asserted in both declarations. Request field offsets are `0,4,8,12;16,24,32,40,48,56,64,72,80,88;96,100,104,108;112,120`; response offsets are `0,4,8,12,16,20,24,28;32,40,48,56,64,72,80,88,96;104,108;112,120`, in their table order. No reserved byte is ignored.
+
+| Domain | Closed Numeric Values / Mask |
+|---|---|
+| Bridge status | `ok=0`, `invalid_request=1`, `version_mismatch=2`, `unavailable=3`, `capacity=4`, `quiescence_timeout=5`, `stale_identity=6`, `native_failure=7`, `quarantined=8` |
+| Native error domain | `none=0`, `errno=1`, `ntstatus=2`, `mach=3`. `native_error_code` is signed 32-bit: preserve the original source NTSTATUS signed value/bit pattern, native errno or Mach code without converting failure to zero or narrowing another width. Domain `none` requires code zero; `ok` requires both zero. Native errors are private evidence; a void cache API supplies no invented native status. |
+| Allocation class | `none=0` for unused/global/executor-only fields; `fex_shared_code=1`; `fex_dispatcher=2`. Neither #4 immutable PE/dynamic slots nor guest NX instruction data are reserveable through this bridge. |
+| EC role | `none=0` for unused/global fields; `arm64ec_host_code=1`; `native_non_ec_host_code=2`. A nonzero role is checked against the paired source/module profile and allocation class; callers cannot opt into an EC bit or change an existing allocation's role. |
+| Allocation lifecycle / expected state | `none=0` only where unused; `reserved_none=1`, `writing_rw_nx=2`, `published_rx=3`, `retiring=4`, `retired_none=5`. Quarantine is a refusal/status, never a successful unknown-protection state. |
+| Effective protection | `none=0`, `rw_nx=1`, `rx=2`; no RWX value. The field describes the checked operation window, excluding source guard/slack pages; exact per-page/guard observations remain separately required. Unavailable/unknown protection cannot become `none` on a successful query. |
+| Executor state | `none=0`, `native_idle=1`, `managed_active=2`, `native_pinned=3`, `parked=4`, `unregistered=5`. Response `flags` bits 0-2 carry this closed executor-state value only when an executor is part of the response; bits 3-31 and all request flags are zero. Allocation lifecycle retains its separate field and is never reused as executor state. |
+| Capabilities | Bit 0 (`0x01`): this single-MAP_JIT owner; bit 1 (`0x02`): observed admitted 4 KiB geometry; bit 2 (`0x04`): global cooperative gate; bit 3 (`0x08`): checked EC bitmap operations. Allowed mask `0x0f`; values reflect actually verified admission, not requested permission. The selected ARM64EC profile needs all four; non-EC fixtures cannot claim the EC bit merely by signing. |
+
+For the opcode table, common header `H` is exactly `version=1`, `size=128`, the listed opcode, `flags=0`, and all three reserved request fields zero. Every operation includes the current `owner_pid`. Token group `T` is the exact owner-issued `allocation_id`, `generation`, `extent_offset`, `extent_size`, `allocation_class` and `ec_role`; ID/generation/size are nonzero and the complete group is checked together. A request never chooses a base address. `X` is a nonzero registered executor ID bound to the actual calling native thread/source context; `C` is a live continuation ID bound to `X` plus the exact allocation generation. Identity counters do not wrap or silently reuse values. Fields absent from a row are **required zero**, rather than defaulted or ignored. An optional `C` may be zero only where stated; an invented cross-thread/foreign continuation is refused.
+
+| Opcode | Allowed Nonheader Fields in Addition to `owner_pid` | State / Zero-Mask Rule |
+|---|---|---|
+| `reserve=1` | `allocation_class`, `ec_role`, `extent_size`, `X` | Class/role must be selected; source-sized extent admission applies. All allocation IDs/generation/offsets/epochs/continuation/state/operation fields zero. Return a fresh `reserved_none` token. |
+| `begin_write=2` | `T`, `X`, optional `C`, `write_epoch`, `expected_state`, `operation_offset`, `operation_size` | Expected state is `reserved_none` or `published_rx`; epoch matches the observed current token state. Nonempty subrange is overflow-checked within usable extent, includes its full protection pages and excludes guard/slack. Close a fresh writer epoch only after native quiescence. |
+| `publish=3` | `T`, `X`, optional `C`, `write_epoch`, `expected_state` | Expected state `writing_rw_nx`; exact open write epoch/extent/role/writer must match. Both operation fields zero: consume the stored transaction window, never a new size/protection. Only verified RX/cache/EC/source-entry closure can succeed. |
+| `abort_write=4` | `T`, `X`, optional `C`, `write_epoch`, `expected_state` | Expected state `writing_rw_nx`; same exact stored transaction. Both operation fields zero. Verified rollback to its prior state is required; uncertainty returns quarantine with entry closed. |
+| `retire=5` | `T`, `X`, `write_epoch`, `expected_state` | Expected state `reserved_none` or `published_rx`; match current epoch. All continuation/operation fields zero. Detachment and complete pin drainage precede EC clear/NONE/reuse; already retired/stale tokens fail. |
+| `query=6` | Either `T` with optional `X`/`C`, or optional `X` alone for a global/executor query | All epoch/expected-state/operation fields zero. If allocation ID is zero, every `T` field is zero. Nonzero `C` requires `X` and its complete `T`. Return checked current facts, never fill an unavailable observation with a passing value. |
+| `executor_register=7` | `ec_role` | Check the source/module role and actual native caller, return a fresh `X` in `native_idle`. All token/class/epoch/continuation/state/operation fields zero. Capacity counts live records. |
+| `executor_entry=8` | `T`, `X`, optional `C`, `write_epoch`, `expected_state`, `operation_offset`, `operation_size` | Expected state `published_rx`, current open epoch; `operation_size=4` and source-bound admitted entry/resume offset is aligned/in bounds, not inline data/guard. Acquire active lease before exposing entry. A source-held continuation requires matching `C`. |
+| `executor_exit=9` | `T`, `X`, `write_epoch`, `expected_state` | Expected state `published_rx`; checked active lease/entry epoch. Continuation and operation fields zero. Only at the native gate with no saved managed resumption needing a pin; otherwise use handoff. |
+| `continuation_pin=10` | `T`, `X`, `write_epoch`, `expected_state`, `operation_offset`, `operation_size` | Expected state `published_rx`; checked active/held native state; `operation_size=4` and source-bound resume offset. Input continuation ID zero; mint `C` before the last active protection is relinquished. |
+| `continuation_unpin=11` | `T`, `X`, `C`, `write_epoch`, `expected_state` | Expected state `published_rx` or `retiring`; epoch belongs to the existing pin, not a fabricated current epoch. Operation fields zero; source proves no remaining saved return/context can resume through this pin before disposal. |
+| `executor_unregister=12` | `X` | All allocation/role/epoch/continuation/state/operation fields zero. No active lease, continuation, parked acknowledgment or pending request may remain; consume the executor identity and report `unregistered` without reusing its ID. |
+| `executor_handoff=13` | `T`, `X`, optional `C`, `write_epoch`, `expected_state`, `operation_offset`, `operation_size` | Expected state `published_rx`; checked active lease; `operation_size=4` and source-bound saved retry/resume offset. Mint or validate `C`, preserve source state in preallocated NX storage, then atomically transfer to `native_pinned`; parked acknowledgment follows only at the native gate. Unknown/nested/unqualified delivered paths are refused. |
+
+Implementation clarification for the approved native cooperative gate: opcode 13 with `operation_size=0` polls only an already source-bound continuation at its exact saved offset and original pin epoch. It requires nonzero `C`, the same `T`/`X`, `published_rx` and `native_pinned`; it never creates a pin, accepts a new offset or weakens QUERY masks. The initial active handoff still uses `operation_size=4`; nested initial handoffs remain refused. This is the bounded native acknowledgment route for the existing descriptor, with the 128-byte layout and 13-opcode set unchanged. The finite fixture retains missing/foreign/stale continuation, changed offset and inferred-current-epoch refusals and uses that wire route during all four-worker schedules. Source consumers retain the original pin epoch through later writes and must dispose of the pin at a native gate before fresh entry.
+
+All successful responses use `version=1`, `size=128`, `status=ok`, reserved zero and exactly the checked identities/observations relevant to that opcode; unused response fields are zero. Only successful `begin_write` exposes `private_write_base`, and only for its stored bounded window/epoch. Allocation operations report the actual allocation lifecycle and checked window protection; executor-only operations leave those fields zero. Query returns capability bits only from observed owner admission. Failures leave identity/address/capability/state fields zero, preserve the finite status and applicable original signed native error, and do not assert a lifecycle/protection observation. This refusal-only zeroing is not evidence that a failed owner is safe/NONE. A source function cannot dereference or execute a record merely because it parsed; actual native admission, expected-byte/pin checks and the independent source/bridge controls remain mandatory. Any needed additional field/opcode/capability or changed semantics requires a new concrete requester review before implementation.
+
+
+
+EC registration applies to generated ARM64EC code emitted by the ARM64EC module, and explicitly identified native dispatcher/helper roles required by that module's call classification. The WoW64 CPU module's native host code follows its actual source role, not an EC flag inferred from its filename. Ordinary x64/x86 guest bytes never acquire EC bits. Commit bitmap backing with observed NT status and actual protection, associate the exact owner view with `VPROT_ARM64EC`, register before publishing any entry pointer and roll back on partial failure. Clear only after entry detachment and generation/continuation drainage, while the owner prevents new entrants; verify exact bits and backing afterward. Retain mixed-role PE/CHPE metadata restrictions for Stage 4. A bitmap read/set fixture does not qualify a hybrid loader or dispatcher.
+
+#### Publication, Patching, Reentry and Retirement Protocol
+
+One process-local writer serializes all managed code transitions. A native compiled gate outside the owner mapping maintains an epoch, executor state and version/continuation pins. Requesting a write closes new managed-code entries, then asks every registered executor to leave/park at that native gate. Active direct links, dispatcher loops, translated block entries, native helper/callback transitions and callback/exception resumes must participate; a direct link cannot bypass the gate. Add cooperative polling at source entry/backedge locations as needed to prevent a tight guest loop from indefinitely hiding from a writer. Preserve guest registers/flags/vector/control state using source spill/reconstruction rules. Do not use a new deliberate trap, a protected-page fault, arbitrary OS suspension or the unqualified no-TEB route to obtain quiescence.
+
+Waiting occurs **before** acquiring Wine `virtual_mutex`, FEX invalidation/lookup/list locks, thread-creation/interval locks or a block-tail spin lock. Existing `CompileBlock`, linker, invalidation and exception callers must therefore prepare/pin their operation, release those locks, acquire quiescence, reacquire the applicable source lock order and revalidate generation/lookup/old bytes. While quiescent, use one reviewed acquisition direction: owner writer gate, FEX invalidation coordination, relevant source list/lookup coordination, then Wine VM ownership. No callback or parking wait occurs under a lower-level lock. Enumerate the final call/lock graph and refuse any reverse edge; this proposal does not claim the upstream graph already obeys that order. Native threads outside the executor registry may not read/write/execute escaped managed pointers; unknown/unregistered reentry blocks publication.
+
+The source inventory finds one mutable inline tail-lock consumer, `ArchHelpers/Arm64.cpp:2106`, and one emitter initialization, `JIT.cpp:1083`. For this first globally serialized profile, replace that consumer's `UniqueSpinMutex(&InlineTail->SpinLockFutex)` coordination with the checked NX owner-writer transaction after validating the pinned generation, block extent, tail offset and expected instruction pair. Keep the source `JITCodeTail` field/layout for reconstruction and initialize `SpinLockFutex` to zero as inert data; neither preparation nor retry may store or lock it in RX memory. The global writer is the replacement serialization authority, so this proposal does not invent an unbounded per-block NX lock table. A newly found consumer or necessary tail/layout change is a refused inventory gap requiring review.
+
+Executor states are explicitly `native_idle`, `managed_active`, `native_pinned`, `parked` and `unregistered`, bound to executor identity plus observed owner epoch. Entry changes `native_idle`/a validated continuation resume to `managed_active` only while the gate is open. Ordinary exit occurs at a compiled native gate outside MAP_JIT. Cooperative/exception handoff first preserves the source state and acquires the generation continuation pin, then atomically transfers its own active lease to `native_pinned` before the writer counts it as quiescent; it never waits for its own interrupted lease. `native_pinned` is not itself a quiescence acknowledgment. Copy every required instruction pair, tail/reconstruction value and expected-byte descriptor into preallocated NX storage while the active/read lease still prevents a writer, before releasing that last read protection. The native gate acknowledges the requested closed epoch and enters `parked` only after no managed-code/data read or write remains pending; saved code/return/tail metadata remain pinned. The writer counts only this completed acknowledgment (or a checked native-idle participant with no pending managed access), never a pin alone, as quiescent. All later preparation uses the NX snapshot and revalidates expected bytes inside the actual closed write transaction. Resume requires a new open epoch, current RX/cache/EC observations and validated continuation identity before restoring state/returning to managed code. Late acknowledgments for a canceled epoch are ignored; callback reentry must take the same entry path. The final source call/lock graph and every such transition are mandatory source-function/bridge evidence before engine initialization.
+
+Prototype quiescence uses a declared monotonic deadline, proposed 2,500 ms per writer request, recorded as an operational refusal bound rather than a performance target. Waits release lower-level locks. Timeout, missing participant, nested unsupported handoff or stale acknowledgment before any permission change returns a preserved refusal, cancels that epoch and keeps existing code/pins intact; reopen only after independently checking the unchanged RX/registration state and publishing a fresh open epoch. Never force a participant, reclaim its pinned generation or treat a timeout as quiescence. A timeout/error after any page/bitmap change requires the existing verified rollback path; uncertain state quarantines the candidate and leaves entry closed. If these outcomes or nested native/exception state cannot be safely represented, the adapter is unavailable and the positive Stage 3 gate remains blocked.
+
+
+After all affected executors are native/parked, a normal transaction is:
+
+1. Check token, pins, exact pages, current observed RX/NONE state, EC role and expected bytes; no new entry is visible.
+2. Change only those full pages to RW/NX, using #4's checked protection/rollback machinery and the actual signed process's JIT permission state. Observe effective protection before writing. No page is simultaneously writable/executable; untouched immutable PE pages keep their original protection.
+3. Copy already-emitted code or perform the source-equivalent bounded link/delink/backpatch and embedded-record stores. Retain source barriers/order. Patch coordination uses ordinary RW owner metadata; no lock write is attempted in an RX inline tail.
+4. Restore RX, independently observe every page, maintain the ARM64 instruction/data cache through the reviewed source/platform primitive for all changed code and inline literals, and verify required EC registration. If any step fails, detach partial entries and execute no candidate bytes. A recoverable verified rollback is recorded; an uncertain protection/registration state quarantines the owner and stops the candidate. Preserve existing fail-closed fatal handling without deliberately testing that fatal route.
+5. Only then release-publish executable pointers/lookup entries and advance the visible epoch; reopen the native gate. Readers acquire the epoch/token before use. Keep a continuation pin whenever a saved return, exception/suspend context or native callback may resume in a generation; a pin prevents retirement but permits a controlled patch while the thread is safely outside managed code.
+
+The entire managed mapping is quiesced in this first design even if a transaction touches one page. It favors a reviewable correctness boundary and makes no throughput/low-power claim. A later concurrent/alias or lock-free publication design needs measured motivation and its own amendment.
+
+**Unaligned exception handoff is a mandatory design gate.** The interrupted executor retains a generation/continuation pin, copies a finite patch/retry descriptor into preallocated NX storage under its active/read lease, transfers its active execution state to the native gate before the writer counts it as parked, and re-enters only after RX/cache/registration verification. Do not wait for its own interrupted lease, allocate/log/lock arbitrarily in a raw asynchronous signal handler or write `JITCodeTail::SpinLockFutex` before quiescence. Keep the source instruction/order/retry-PC behavior; optional kernel backpatch remains unsupported. Source-level review and finite directly invoked exception/patch preparation controls can establish the handoff adapter's bounded contract without provoking a fatal fault. They do not establish real delivered guest exception behavior, which belongs to Stage 5. If the adapter cannot safely transfer every required path, Stage 3 is incomplete and Stage 4 blocked; neither unchecked RWX nor altered TSO semantics is an alternative.
+
+Delivered asynchronous/raw-signal handoff viability remains **unresolved/no-go** in this checkpoint. The current ARM64EC/WoW64 exception entry and source unaligned emulation are not assumed async-signal-safe merely because the owner serializes writers. After requester approval, only directly invoked owned finite preparation/state-transfer fixtures may exercise the proposed descriptor and retry-PC contract in Stage 3. No new handler installs, fault triggering or raw-handler owner/locking calls are authorized by that fixture result. Actual delivered qualification remains Stage 5 work. The mandatory safe source-function/bridge handoff contract must nevertheless pass Stage 3 before any Stage 4 initialization. An unresolved unsafe required source edge keeps Stage 3 incomplete and Stage 4 blocked; if delivered qualification is necessary to establish that required contract sooner, obtain a concrete stage-order amendment rather than creating a Stage 4/5 circular dependency. Optional unselected/raw paths remain explicitly refused, with no invented handler behavior or generic initialization support. Record the exact delivered exception domain/source path and preserve every required edge; never silently enable the source inline write.
+
+
+Retirement first detaches lookup entries, direct links and call/return caches under source invalidation rules, obtains the native barrier and rechecks all source shared references, active readers and continuation pins. Clear EC registration and make the full retired extent NONE, verify it, then zero/recycle only in a controlled RW/NX phase. Allocate a new generation before reuse. Retain `SignalHandlerCodeBuffers` and inline-context/state reconstruction metadata until their last possible resumption; do not free on weak-pointer expiration, wall-clock delay or a single thread's cache reset. If a pinned old generation consumes the budget, refuse the new allocation rather than steal its backing.
+
+#### Disabled Paths and Actual Permission Admission
+
+In addition to Stage 2's DiskCache/ProfileStats exclusions and required software/vector/memcpy TSO policy, source-enforce `EnableCodeCachingWIP=false`, `EnableLazyCodeCachingWIP=false`, `EnableCodeCacheValidation=false` and refusal of cache-generation/AOT cache publication in this profile. Reject conflicting loaded application/environment overrides before constructing the core. Keep the generic segmented executable allocator, persistent mapped-cache registration/finalization and source paths that cannot identify an owner token unavailable. Document/debug/profiling readers that can retain code ranges must either join the pin protocol or stay disabled. Kernel acceleration is not used to justify unaligned user-space writes or memory ordering.
+
+Apple's [JIT porting guidance](https://developer.apple.com/documentation/apple-silicon/porting-just-in-time-compilers-to-apple-silicon) documents the single MAP_JIT region with Hardened Runtime/allow-jit and thread write/execute restrictions. Its [allow-jit entitlement guidance](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.security.cs.allow-jit) does not establish this new process's permission or these owner transitions. Preserve the actual #4 page-W^X candidate route and verify it, including any operative thread-local JIT permission requirement, rather than treating `mprotect` success alone as admission. Do not add an unreviewed write-allowlist mode, private entitlement, unsigned-executable-memory exception, disabled library validation or disabled executable-page protection.
+
+Every native owner fixture/Wine loader executable has its own current source/binary/signature/profile/team/device/OS and actual native-ARM64 admission record. Required cross-architecture framework authorization for the compatibility page/x18 route and the declared public JIT entitlement are checked separately; a signed ordinary Stage 2 Host Probe is not the authorization for this new restricted executable. Record CodeDirectory geometry and actual protection observations privately. Genuine signing, an inherited profile path, a parent grant or an EC bitmap cannot satisfy the missing operational capability. Any denied/unavailable/unsupported prerequisite is preserved before restricted operations; distribution/notarization and general user eligibility remain unperformed.
+
+#### Finite Verification and Approval Gate
+
+After approval, implement in this order: (a) attributed source adapters and portable inventory/state/capacity/lock/ABI refusal tests; (b) the actual separately authorized native owner and original ARM64 code fixtures; (c) matched Wine/FEX source/binary integration without `ProcessInit`, `ThreadInit`, `InitCore`, `CreateThread` or guest dispatch. Native fixture workers are original owned threads, not FEX initialized threads. Full-module construction remains serial and root-admitted, preserving all failed build/run outputs. No installed game, Steam login, GPU experiment or new fatal-fault fixture is included.
+
+Initial live fixtures use at most four owned workers, 32 coordinated schedules per case, 16 MiB aggregate RW staging, an explicit operation/output/time budget, unrelated sentinel survival and exact owned cleanup. Reserve the complete proposed VA budget but commit only the bounded fixture pages; an accounting test is distinguished from a full 128 MiB active execution test. Required controls include:
+
+- Exact 16/32/64/128 MiB shared extent admission/guard geometry, dispatcher slot bounds, fragmentation/exhaustion with held generations, immutable/ordinary/foreign/stale/wrong-role/wrapped-generation refusal and unchanged #4 PE/dynamic classes.
+- Actual emitted ARM64 fixture results before/after publication and source-equivalent bounded link, delink, inline-literal and each selected unaligned instruction-pair patch. Cross-page writes include adjacent live blocks; effective page protections, cache primitive and bitmap observations are independent of a success boolean.
+- Lookup versus retirement, entry versus writer closure, old shared-reference and saved-continuation retention, helper/callback reentry, multiple patch requesters and ordinary directly invoked exception handoff preparation. Hold a participant at each native checkpoint to expose premature publication/reuse. Direct links/backedges cannot bypass the gate; no arbitrary managed-code reader is omitted.
+- Checked protection and bitmap commit/register/clear failure injection through controlled return paths; preserve the real observation/error domain and no entry on failure. Cache wrappers may inject an explicit refusal before the actual primitive, but a void cache-maintenance API has no fabricated kernel return/status; verify actual command/source use and fixture behavior separately. Test verified recoverable rollback and refusal/quarantine decisions without deliberately causing a native fatal fault.
+- Independent receipt replay of current source/ordered supplements/producers/tools/config/actual signing origin, command and owned logs, every class/token/epoch/protection/bitmap/cache/pin sequence and bounded output closure. Public derivatives contain capacities/counts/digests/named statuses only; no pointers, private roots, profiles or raw diagnostics.
+
+A native owner prototype passing one class is not completion. Stage 3's positive gate requires every configured executable allocation/writer/reader/retirement edge to have a source-bound owner decision and corresponding finite source-function/bridge evidence, actual permission/geometry/registration/protection/cache admission, preserved refusal controls and meaningful affected #4 Wine regressions. Deferred real translated exception/suspend/guest-protection behavior is named Stage 4/5 work, not a passed observation. A required handoff or source path that remains unsafe/unverified keeps Stage 3 incomplete and blocks engine initialization/Stage 4. Runtime, Megabonk and ordinary-user distribution remain false/unperformed.
+
+**Checkpoint requested:** approve this single-address page-W^X strategy, finite reservation/classes, separate internal owner bridge, global cooperative native gate, exception-handoff and reader/retirement invariants, expanded persistent-cache refusal and finite verification scope. Approval authorizes its prototype and Stage 3 implementation only after independent review; it does not approve Stage 4 guest execution or silently waive any failed prerequisite. Any necessary different page geometry, larger budget, alias/concurrent strategy, unqualified handoff, metadata/ABI layout or permission change returns for a concrete amendment before implementation.
+
 
 ### Verification
 
@@ -353,7 +515,7 @@ Each stage commit includes implementation, meaningful fixtures/verification and 
 
 - Stage 1 requires explicit approval of this implementation plan and its first-stage scope.
 - Stage 2 requires completed Stage 1 capability gates/report/commit and explicit continuation; required real host permission and full-build storage admission precede operations.
-- Stage 3 requires completed services/modules and explicit continuation approving the concrete measured memory-design refinement before any owner prototype/integration; the broad plan alone does not select or authorize that unresolved protocol. No JIT shortcut follows from a compile success.
+- Stage 3 requires completed services/modules and explicit continuation approving the concrete source-bound memory-design refinement before any owner prototype/integration; the broad plan alone does not select or authorize that unresolved protocol. No JIT shortcut follows from a compile success.
 - Stage 4 requires verified owner/registration/publication/retirement and source-matched hybrid contracts plus explicit continuation. Missing required geometry/permission/lifetime evidence blocks translated execution.
 - Stage 5 requires real verified small-x64 dispatch and explicit continuation; its mandatory/optional WoW64 scope is declared, not inferred from upstream names.
 - Stage 6 requires all declared service/memory/dispatch/lifecycle gates and explicit continuation. Final completion also requires the Issue's relevant source/permission/native prerequisite evidence; historical Issue closure alone is insufficient.
@@ -377,3 +539,199 @@ Approve this six-stage implementation split, component/tool/interface/evidence c
 On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after the joint detailed-plan review request. This approves the implementation plan and Stage 1 only. Stage 2 and later transitions retain their separate report, commit and explicit-continuation checkpoints.
 
 On October 2, 2026, the requester explicitly continued in the same thread with “Proceed.” (translated from Korean) after both completed Stage 1 reports and bundled commits. This authorizes Stage 2 within its approved scope. Later stages, the concrete FEX executable-memory design and any additional Metal installation/account interaction retain their separate approval checkpoints.
+
+The requester explicitly continued in the same thread after both completed Stage 2 reports and commits. This authorizes the Stage 3 inventory and concrete-design review recorded above. It does not approve that new owner strategy or its prototype; independent review and explicit requester approval of the concrete checkpoint remain required.
+
+On October 3, 2026, the requester explicitly approved the completed Task #5 concrete single-address memory-owner design and continuation to Task #7 Stage 4 in the same thread. This authorizes Task #5 Stage 3 implementation/prototype within its reviewed capacity, ABI, synchronization, permission and finite verification scope, and Task #7 typed-driver implementation/native verification within its approved plan. Later stages, guest/game execution, new security or shared-scope changes and PR publication retain their separate gates.
+
+
+## Proposed Stage 3 Resume and Initialization Qualification Amendment
+
+Prepared October 3, 2026; explicitly approved by the requester in the same
+thread on October 3, 2026 after the amendment explanation. This authorizes A
+and B only within the prerequisites and exclusions below; it is not a Stage 3
+completion report. It stays
+in the previously approved task implementation-plan location in `mydocs/plans/`;
+no product, integration or architecture document is added or changed.
+
+### Observed Need and Completed Independent Work
+
+The version-1 source gate currently performs an original dispatcher continuation
+UNPIN followed by ENTRY. A source marker may close, or a direct owner retirement
+may intervene, after UNPIN. ENTRY with the original continuation instead retains
+it in MANAGED_ACTIVE, where current EXIT/UNPIN cannot consume it. A marker ticket
+alone cannot establish owner mapping or C++ object lifetime. Do not qualify either
+sequence as completed resumption.
+
+The eleven current source layers passed 22 genuine Git check/application commands
+on a new source copy: 6,963 regular files, 40,431,343 bytes, complete expected
+bytes/modes and an unchanged baseline. The existing Stage 2 and Wine memory-build
+records were independently replayed against current files. Eight genuine
+compile-only layout commands subsequently passed, with actual depfiles closed and
+input bytes/modes unchanged. The matched ordinary Windows ARM64 C++ and native
+macOS C constant tables measure owner+mutex+condition103,392 bytes,
+Common Bindings64=18,944 bytes, link Registry13,896 bytes and the compacted reader
+snapshot424 bytes. No object was linked/loaded, instance constructed or engine
+initialized. Concurrent transient/source-object counts and the genuine unaligned
+saved context remain unclosed; these measurements do not pass the aggregate
+262,144-byte gate. These are source/build prerequisites only. Actual Wine run2
+entered the ordinary ARM64 fixture and passed
+three readiness calls, then failed its first reserve because bitmap restoration
+was not proved. Its output and cleanup records remain preserved. Diagnostic
+instrumentation, compiled metadata accounting and all mandatory source handoff
+edges remain separate unfinished obligations.
+
+### A. Atomic Original-Continuation Resume
+
+Propose paired private ABI version 2 and `PEAR_FEX_EXECUTOR_RESUME = 14`. Retain
+both 128-byte layouts and offsets, Unix index10, role1/role2, every arena/page
+geometry and capacity, the 256-KiB aggregate metadata ceiling and current signing
+and permission policy. The other thirteen operations retain their meanings.
+Version-mismatched peers refuse; retain all version-1 producer/input/results.
+
+The closed request mask is T|E|X|C|O|S. Supply the genuine dispatcher extent and
+registered executor, current published epoch, original nonzero continuation,
+exact original resume offset, operation_size4 and PUBLISHED_RX expected state.
+Flags/reserved words remain zero. No caller-selected callback or replacement
+original epoch is accepted. The continuation/descriptor retain the original epoch;
+source validation also compares the real gate's saved epoch before the call.
+
+Under the existing owner mutex, validate the executor/extent/continuation and sole
+original descriptor, NATIVE_PINNED, matching allocation/generation/role/offset and
+original continuation/executor/descriptor epoch. Keep the original pin through
+bounded park and every precommit refusal. Re-resolve/revalidate every identity,
+current epoch/state/bounds, backend entry and actual RX observation after any wait
+that releases the mutex. A changed current epoch returns stale; a bounded caller
+may refresh its real dispatcher snapshot and retry with the unchanged original pin.
+
+Only after those checks, atomically consume the original continuation/descriptor
+and renew MANAGED_ACTIVE on the current epoch. Perform no fallible native call or
+allocation after that commit. Return continuation_id0, MANAGED_ACTIVE flags and
+exact published/RX extent facts. Common updates its actual ACTIVE lease from the
+validated response. A malformed post-call response is unresolved; it is not proof
+of either retained pin or renewed ACTIVE. A subsequent expected-word mismatch
+preserves the primary failure and separately attempts checked EXIT; it cannot
+claim that the consumed original pin was restored.
+
+Source resumption also requires a bounded sealed entry reservation, actual
+Context/Thread/Dispatcher lifetime admission and every direct writer/retirement
+edge. Do not hold source locks over owner park/wait. Temporary source closure
+uses the existing original-descriptor Poll plus a finite condition wait. Record
+the composed source/owner deadlines honestly; do not promise a single 2,500-ms
+wall-clock bound when an in-flight owner call has its own bound.
+
+Required finite ordinary-ARM64 controls cover valid consumption, duplicate/stale
+resume, wrong executor/extent/role/offset/epoch/continuation, closed-gate park,
+retire refusal while pinned, precommit timeout/native-error pin retention,
+malformed response uncertainty, postcommit byte-check cleanup and subsequent
+ordinary ENTRY/EXIT. Rebuild and replay the changed paired owner/bridge/source
+identities; old native success does not qualify version 2. No guest, game, hybrid
+load, GPU or new security permission is included in this operation.
+
+### B. Narrow Source Initialization Qualification Within Stage 3
+
+Propose a separately gated empty-process fixture for the ordinary ARM64/role2
+source route, allowing only actual source Context creation, `InitPearCore` and
+`CreatePearThread`/matching cleanup after complete input/build/ABI/current
+permission and memory-owner admission. It must reuse actual FEX configuration,
+host-feature policy, selected source DummySignalDelegator, Windows host services,
+real TEB and source-created Thread/Frame/backend. No substitute structures,
+borrowed Thread, module-return impersonation or fabricated ACTIVE lease qualify.
+
+Before execution, source/compile/link verification must close that fixture's
+actual selected initialization/cleanup call graph and typed failure propagation.
+Add a source-known finite native transfer site and spill/restore contract for
+original owned ARM64 fixtures; compile/link return labels do not become exception
+return labels. Retain the real dispatcher, actual retained JIT owner and required
+bounded saved context while changing leases. Qualify directly invoked finite
+snapshot/transfer/patch preparation only after those prerequisites pass. Count
+all added persistent and concurrent transient metadata before admission; an
+unknown size or total over262,144 bytes blocks this fixture.
+
+This narrow exception to the current Stage 3 no-initialization rule permits no
+translated x86/x64 instruction, guest dispatch, full exported Module ProcessInit
+or ThreadInit path, hybrid image/CPU-area fabrication, delivered/raw fault or
+handler installation, arbitrary suspension, Steam or game. ARM64EC/role1 and real
+delivered exception behavior retain their later qualification gates. A missing
+legitimate finite source path remains unavailable rather than being bypassed.
+Stage 3 still requires all mandatory source-function/bridge evidence and affected
+Wine regressions before reporting completion; ordinary initialization alone
+cannot open Stage 4 or satisfy the Issue acceptance criteria.
+
+### Requested Decision
+
+Approve A's exact paired version-2 atomic resume contract and finite controls,
+and B's narrow source-initialization qualification order with the listed mandatory
+pre-execution gates. Until explicit approval, continue only the already approved
+source/build/finite noninitializing controls. Larger capacities, new permissions,
+raw delivered behavior, guest execution, later stages and publication remain
+outside this amendment.
+
+## Stage 3 Diagnostic Integration Checkpoint — October 3, 2026
+
+This is a clarification of implementation within the approved Stage 3 source
+and finite diagnostic scope, not a completion report or approval of the proposed
+resume/initialization amendment above. Wine Run 2 remains failed at the first
+shared reservation; its original bitmap-restoration failure and quarantined
+prefix are preserved. No newly built Wine diagnostic or FEX initializer ran.
+
+The reviewed diagnostic instrumentation is folded into the existing second
+Wine supplement. Its new patch SHA-256 is
+`d5e70eca7b9c9b5da91c2f29fb7f62b5762af103825a653266df0046f16bdc1c`;
+the new two-patch series SHA-256 is
+`538bfba9aa864e5edd105469e24550aa364f42f9280469e855848db39f491a96`.
+Only the previous `virtual.c` postimage changes, to
+`90de95689164e98ba3d027a9692ba0769222ae915749110712aa239d3dc5505e`.
+The original ten-field primary record, success predicates, quarantine,
+native-observer call order, geometry, ABI and security policy are preserved.
+The 320-byte diagnostic/storage assertion is a local source bound; its actual
+compiled size and whole-process metadata accounting remain unperformed/unclosed.
+The unchanged builder replayed the genuine #4 source/install baseline and all
+12 supplement source postimages without running a compiler or native process.
+
+`tools/fex/memory_wine_bitmap.py` provides closed diagnostic pairing and is
+included in the runner's producer snapshot. Completed assessment still requires
+the independently derived full self-test count and every original successful
+primary predicate with zero native error. Separate failed-prefix observations
+retain only validated adjacent pairs with raw offsets, spans and hashes; they
+never qualify a completed count. Malformed stdout cannot suppress original
+stderr failures, and paired parser refusals cannot replace the primary error.
+Independent review re-ran 34 private source/parser controls and 13 prefix/stream
+controls. The tracked suites passed 129 distinct relevant portable tests across
+the initial 121-test run and the subsequent 80-test run containing eight new
+prefix controls. These observations establish Python/source behavior only.
+
+The proposed full-FEX constructor/checker remains private and unpromoted.
+Independent review found four derivation gaps requiring correction before an
+actual build: selected headers/depfiles, exact source method identities,
+canonical system dependency paths and native-link-output-to-install origin.
+Fresh Wine/FEX builds, signed runtime admission, bitmap diagnosis, aggregate
+metadata and the genuine source handoff remain open. Current available storage
+is about 4.0 GiB; fresh construction retains its 8 GiB admission requirement.
+Stage 3, translated execution, Megabonk and distribution remain unqualified.
+
+
+## Incremental Preservation and Storage Authorization — October 3, 2026
+
+The requester explicitly continued and instructed incremental GitHub preservation
+of important verification results and artifacts, with removal of unnecessary
+repeated local outputs. Publish reviewed source and sanitized in-progress
+observations to `codex/publish-task5`; do not call this a completed Stage 3 or
+open a final PR before the required checks pass. Preserve original errors,
+receipts, commands, producer/source versions and inventories before pruning
+redundant generated install/app payloads. Preserve required current donors and
+private inputs. Record every pruned root and distinguish retained evidence from
+a now-unavailable complete historical payload replay. Never upload profiles,
+private diagnostics, prefixes, game content, account state or saves. This
+instruction supersedes blanket retention of redundant generated payloads, not
+retention of unique failure evidence. Heavy builds and native runs remain
+serialized under the root owner with fresh disk admission. No later stage,
+guest/game execution, new permission, release, merge or Issue closure follows.
+
+The October 3 incremental source checkpoint passed all 268 currently tracked
+FEX portable tests and offline governance (22 documents/172 local targets),
+with whitespace checks clean. These are portable/source observations only;
+Wine Run 2 remains failed and Stage 3 remains incomplete. The checkpoint
+contains ABI1 diagnostic source; approved ABI2/resume and initialization work
+has not yet been promoted or executed. Historical free-space observations above
+are dated measurements, not current admission.
