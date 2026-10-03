@@ -43,13 +43,14 @@ def local(name):
     module=importlib.util.module_from_spec(spec);exec(compile(bytes(raw),str(path),'exec'),vars(module));return module
 
 
-reuse=local('deterministic_reuse');metal=local('metal_stdin')
+reuse=local('deterministic_reuse');metal=local('metal_stdin');monitor=local('deterministic_monitor')
 Error,need= reuse.Error,reuse.need
 KIND='dxmt_deterministic_pairing_build'
 SCOPE='typed_native_metal_pairing'
 OWN_FILES={'tools/dxmt/deterministic_pair.py':'deterministic_pair.py',
            'tools/dxmt/deterministic_reuse.py':'deterministic_reuse.py',
            'tools/dxmt/metal_stdin.py':'metal_stdin.py',
+           'tools/dxmt/deterministic_monitor.py':'deterministic_monitor.py',
            'tools/dxmt/reuse-pins.json':'reuse-pins.json'}
 ADDITIONS=('constructor_sources','recipe_policy','qualification_ref','shader_commands','shader_spec_ref')
 STABLE_WINE_OBJECTS='/pear/reconstruction/wine/objects'
@@ -615,7 +616,9 @@ def helpers(capture):
     names={'common':'common','stage3':'build','native':'build_native','builder':'pairing_build',
            'reader':'pairing_check','source':'pairing_source','wine_reuse':'pairing_reuse',
            'monitor':'pairing_monitor','tools':'tools'}
-    return {key:capture.load('tools/dxmt/'+name+'.py')for key,name in names.items()}
+    result = {key:capture.load('tools/dxmt/'+name+'.py')for key,name in names.items()}
+    result['monitor'] = monitor.bind(result['monitor'])
+    return result
 
 
 def producer_values(h,capture,repo):

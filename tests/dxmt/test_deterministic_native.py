@@ -76,7 +76,7 @@ class Source(Temporary):
             with self.subTest(name=name),self.assertRaises(native.Error):native.bounded_source(self.root,name)
     def test_changed_constructor_refused_before_source_execution(self):
         path=self.root/'constructor';path.mkdir()
-        for leaf in ('deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','reuse-pins.json'):
+        for leaf in ('deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','deterministic_monitor.py','reuse-pins.json'):
             shutil.copyfile(CONSTRUCTOR/leaf,path/leaf)
         target=path/'deterministic_pair.py';target.write_bytes(target.read_bytes()+b'\nraise AssertionError("unreviewed execution")\n')
         with self.assertRaisesRegex(native.Error,'native_constructor_source_changed'):

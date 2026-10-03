@@ -28,7 +28,7 @@ class ConstructorPinChain(unittest.TestCase):
     def test_exact_manifest_sources_and_coordinator_are_current(self):
         raw=native.bounded_source(IMPLEMENTATION,'constructor-pins.json');pin=json.loads(raw)
         self.assertEqual(native.digest(raw),native.CONSTRUCTOR_PIN_SHA)
-        self.assertEqual(set(pin['files']),{'deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','reuse-pins.json'})
+        self.assertEqual(set(pin['files']),{'deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','deterministic_monitor.py','reuse-pins.json'})
         for leaf,expected in pin['files'].items():
             with self.subTest(leaf=leaf):self.assertEqual(native.digest(native.bounded_source(CONSTRUCTOR,leaf)),expected)
         actual=native.bounded_source(IMPLEMENTATION,'deterministic_native.py')
@@ -46,7 +46,7 @@ class ConstructorPinChain(unittest.TestCase):
             self.assertTrue(descriptor['source_gates']['fresh_39_case_native_execution_required'])
     def test_changed_constructor_leaf_refused_before_source_execution(self):
         original=native.bounded_source
-        for leaf in ['deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','reuse-pins.json']:
+        for leaf in ['deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','deterministic_monitor.py','reuse-pins.json']:
             def altered(root,name,selected=leaf):
                 value=original(root,name)
                 return value+b'\nraise AssertionError("unreviewed source executed")\n'if Path(root)==CONSTRUCTOR and name==selected else value

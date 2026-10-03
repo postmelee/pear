@@ -795,3 +795,70 @@ checkpoint; its five failures remain preserved. No storage reserve was lowered.
 Governance and whitespace checks passed. Two genuinely fresh complete products,
 raw byte comparison and fresh final-candidate native qualification remain
 pending. No prior product is retagged and Stage5 is still in progress.
+
+
+### 2026-10-04: Actual Construction and Transient Metal Cache Locks
+
+The first fresh deterministic construction completed all ten commands, four
+original shader compilations and eight required products. Its original build
+record is `66a3f1840d20343efd5a242f9c1506bfa9e2b1cab5d48ba7c23d7c9e49800333`.
+The second fresh construction was stopped during DXMT compilation by
+`pair_monitor_unlisted_alias`; the supervisor killed and reaped its process
+with exit -9. Preserve failure
+`847bd57214948c94200d134fd07a622a5e1e4d0574b7765fb7b48ac673f95358`.
+The original observer did not record the exact offending alias. A subsequent
+small actual compiler probe observed transient absolute sibling links under
+the owned Metal module cache, including module PCM and module-index locks.
+This establishes a reproducible rejected link family; it does not recover the
+specific historical offending path.
+
+Reuse decision: leave the historical `pairing_monitor.py`, supervisor and
+receipt interpretation unchanged. Add `deterministic_monitor.py` to the exact
+constructor source closure and extend its pre-execution pin set explicitly.
+Bind the captured original command adapter to a private globals copy with only
+the size observer replaced. Retain process ownership, time/output/storage
+bounds, source-bound Wine locale checks and primary failures. Admit only the
+observed module-cache lock namespace and absolute same-parent target with an
+eight-digit hexadecimal suffix. Never follow a cache link for accounting;
+require an ordinary single-link target when it still exists. Reject directory,
+external, malformed, hardlinked-target and special-file aliases. Allow exact
+lock disappearance during compiler cleanup. Neither renderer behavior nor
+signing/permission scope changes.
+
+The actual four-shader probe passed with 1,264 size observations and 80 observed
+transient aliases. All four whole AIR products equal the original recipe bytes;
+379 selected tool-resource facts are identical before and after. Probe identity:
+`34bcc0aee0fdc48ab50885621a61d77692d47d655008ad57757205b1e4295008`.
+Portable controls cover accounting, target validation, disappearance/replacement,
+legacy interpretation, original locale rejection and actual owned supervision.
+The first full regression had one stale expected-source-list failure. After
+updating that explicit list, all 514 tests passed with eight optional private
+input skips. No historical result was relabeled as a new-constructor result.
+Two fresh current-constructor builds, raw comparison and final-candidate finite
+native qualification remain pending; game and distribution qualification remain
+unperformed. Allowlisted measurements are in
+[the partial observation record](../working/task_m1_7_stage5_cache_monitor_observations.json).
+
+### 2026-10-04: Additional Recoverable Storage Reduction
+
+Six inactive synthetic Wine prefixes contributed 4,104 repeated builtin ARM64
+PE copies, totaling 6,197,280,768 logical bytes. Their exact payloads and original
+metadata were archived in 1,354 compressed payloads (341,147,718 bytes), fully
+decoded and hashed before retirement. Preserve the original producer, restore
+index, operation journal and failure records privately. No game, account,
+registry, save or signing input was selected. The restore index is
+`9d47fd1716e64a080e5dd4845f2989a2cf0aeaf864de0b7c2a42f41ebd1567a1`.
+Observed volume free space fell by 345,223,168 bytes during this archive step;
+logical removal therefore must not be reported as physical recovery.
+
+A subsequent byte-, decoded-hash- and attribute-verified deduplication shared
+684 identical compressed payloads between the two private archives without
+changing their bytes or restore indices. Shared compressed content totals
+170,585,644 bytes; observed volume free space rose by 170,430,464 bytes during
+that step. Two earlier maintenance attempts failed before replacing any
+payload: an incorrect index filename and unavailable Python xattr API. The
+successful attempt uses the macOS xattr command and retains its own journal.
+APFS sharing and another builder prevent unique physical attribution. Current
+free space is approximately 5.8 GiB, below the unchanged 6 GiB graphics build
+admission (2 GiB growth allowance plus 4 GiB reserve). Do not lower that floor
+or start a doomed full build; preserve this source/test checkpoint on GitHub.

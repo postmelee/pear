@@ -20,7 +20,7 @@ import sys
 from types import SimpleNamespace
 
 HERE=Path(__file__).resolve().parent
-CONSTRUCTOR_PIN_SHA='de00f6306e49df551efab363f96751a9cdc897ddc12606e976f398c89eac9e2b'
+CONSTRUCTOR_PIN_SHA='43934970ee74b287282e73e86746f5dc141fd9c9c34175b7a66310227a4d5641'
 PIN_SHA='b0240dff62d8b152ee40650ee3b363f6ed4a35b6a2f9a2176fa9050435e65ff4'
 OWN={'tools/dxmt/deterministic_native.py':'deterministic_native.py',
      'tools/dxmt/native-pins.json':'native-pins.json',
@@ -120,7 +120,7 @@ class Adapter:
         pin=json.loads(pin_raw)
         need(set(pin)=={'schema_version','record_kind','files'}and type(pin['schema_version'])is int
              and pin['schema_version']==1 and pin['record_kind']=='dxmt_deterministic_constructor_sources'
-             and set(pin['files'])=={'deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','reuse-pins.json'},
+             and set(pin['files'])=={'deterministic_pair.py','deterministic_reuse.py','metal_stdin.py','deterministic_monitor.py','reuse-pins.json'},
              'native_constructor_pin_set')
         constructor_raw={leaf:bounded_source(self.constructor_root,leaf)for leaf in pin['files']}
         need(all(digest(constructor_raw[leaf])==expected for leaf,expected in pin['files'].items()),
@@ -131,7 +131,7 @@ class Adapter:
         raw=constructor_raw['deterministic_pair.py']
         modules={}
         def frozen_local(name):
-            need(name in ('deterministic_reuse','metal_stdin'),'native_constructor_helper')
+            need(name in ('deterministic_reuse','metal_stdin','deterministic_monitor'),'native_constructor_helper')
             if name not in modules:
                 path=self.constructor_root/(name+'.py')
                 helper_spec=importlib.util.spec_from_file_location('_pear_deterministic_native_'+name,path)
