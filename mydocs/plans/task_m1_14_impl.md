@@ -83,10 +83,6 @@ Review the exact matrix, job permissions, expected-failure control, scoped-rule 
 
 Use Task #14 [Stage 2.N] checkpoints for required remote experiments, then bundle final configuration/report in Task #14 Stage 2: qualify portable verifier CI and temporary-output rules.
 
-## Stage 4 - Maintenance and promotion coverage (proposal)
-
-Refine after the relevant #3/#6/#8/#9/#10/#13 outcomes exist. Bind candidate/source/test revisions and retain patch provenance, rebase conditions and contribution limits. Qualify incompatible promotion rejection without exposing game/account/signing data. Do not close #14 based on portable CI alone.
-
 ## Stage Dependencies, Risks and Approval Boundary
 
 Stages 1/2 used their recorded explicit approvals and are complete. Stage 2 superseded its earlier source-inspection-only Linux status with two successful hosted executions. Stage 3 has now been explicitly approved for partial publication; Stage 4 remains proposed. #5/#7 owners keep their own scopes and operating order.
@@ -124,3 +120,7 @@ Additionally inspect actual PR head/base, changed-file scope, workflow event/sou
 Write mydocs/working/task_m1_14_stage3.md and mydocs/report/task_m1_14_report.md, with explicit preparatory-delivery-only status and remaining #14 dependencies. Stage 3 publication is complete only when the Open PR is reviewable and final-head checks pass. The report commit describes the first PR execution; the PR body links final-head CI without requiring a self-referential report commit.
 
 Commit: Task #14 Stage 3: publish the verified preparatory delivery.
+
+## Stage 4 - Maintenance and promotion coverage (proposal)
+
+Refine after the relevant #3/#6/#8/#9/#10/#13 outcomes exist. Bind candidate/source/test revisions and retain patch provenance, rebase conditions and contribution limits. Qualify incompatible promotion rejection without exposing game/account/signing data. Do not close #14 based on portable CI alone.

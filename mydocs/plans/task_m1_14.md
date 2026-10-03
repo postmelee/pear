@@ -83,7 +83,7 @@ Each stage follows its own same-thread continuation. The Stage 1 and Stage 2 rep
 
 ## October 4 Stage 2 approval and location refinement
 
-After the Stage 1 report and a concrete recommendation to refine temporary-output rules, qualify five master-only suites on Linux, coordinate DXMT fixes with #7, and connect only passing suites to CI, the requester explicitly said to proceed in this thread. Stage 2 is now approved; Stage 3 remains unapproved. Earlier Stage 1 exclusions describe that completed stage, not this approval.
+After the Stage 1 report and a concrete recommendation to refine temporary-output rules, qualify five master-only suites on Linux, coordinate DXMT fixes with #7, and connect only passing suites to CI, the requester explicitly said to proceed in this thread. At that checkpoint Stage 2 was approved and later work was not. The separate Stage 3 approval below now supersedes that proposed publication status. Earlier Stage 1 exclusions describe that completed stage, not this approval.
 
 Stage 2 may modify tests/AGENTS.md and the existing .github/workflows/documentation.yml, plus these task plans, the daily board and a Stage 2 report. No production validator/test implementation, #5/#7 file or dependency lock is changed. tests/AGENTS.md is scoped agent policy; the workflow is automation configuration. Neither is a new product document. The stage report stays in mydocs/working/task_m1_14_stage2.md. These locations implement the approved recommendation without a new policy manual.
 
