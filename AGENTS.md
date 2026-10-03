@@ -9,6 +9,8 @@ Pear is an open-source platform under development for running owned Windows game
 - Read the relevant GitHub Issue, approved task and implementation plans, latest available stage report, applicable ancestor/scoped `AGENTS.md` files and selected skills. During registration and planning, use the artifacts that already exist.
 - Start with [README](README.md), the [official documentation index](docs/README.md), [architecture](docs/architecture.md) and the single [delivery plan](docs/delivery-plan.md). Read the requirements relevant to the affected area before choosing an implementation.
 - Review reusable upstream implementations before new subsystem code and record the reuse decision. Retain upstream languages unless a measured, reviewed reason justifies replacement; Rust is not mandatory. Respect upstream licenses and contribution policies.
+- Before new implementation, inspect relevant open Issues, active work branches/worktrees and latest reports; record existing reusable work and unresolved integration dependencies.
+- Reuse verification evidence only when its recorded inputs and claim scope remain valid; revalidate affected evidence after integration or relevant source, toolchain, configuration or artifact changes. Preserve approved required checks. See the [dated reuse investigation](mydocs/tech/20261004_recompilation_and_verification_reuse.md) for non-normative examples.
 
 ## Approval and workflow
 
