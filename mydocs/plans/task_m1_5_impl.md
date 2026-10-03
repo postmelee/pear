@@ -1018,3 +1018,41 @@ reviewed before any FEX initialization. Original upstream assertions, security
 permissions and historical source layers remain unchanged. Whole metadata,
 actual source lifetime/entry/Core, complete compiler/link and empty initialization
 gates remain open; Stage3 remains incomplete.
+
+
+### October 3 Targeted Compiler Repair and Diagnostic Prefix Deduplication
+
+Layer15 supplies the actual uint32_t UniqueSpinMutex specialization required
+by std::optional, matching the selected backend's uint32_t SpinLockFutex.
+Every prior layer remains unchanged and every eligibility flag remains false.
+The entire actual source6 projection passed30 Git check/apply commands:6963
+files /40,437,690 bytes, with manifest
+`149fd85469e4c71d9c6fdc282c49552326027cce2b04cb53d368a26a1239750d`.
+The complete current FEX suite passed450 controls with one APFS skip.
+
+A separate actual one-object diagnostic reuses the retained failed compiler's
+exact target/options/generated headers, changes only its owned output and
+fresh complete source15 paths, and compiles the genuine Arm64.cpp translation
+unit. It passed with exit0 in2.989s. All original/current source, generated
+prerequisites and compiler bytes stayed unchanged. Control SHA-256:
+`8d6ee4f684693932b066d6be7e339b065c43e0f3cdd18475f3703f9d1a2807ee`.
+This repairs the observed type compilation error; it is neither full FEX
+construction/link proof, a rewritten old failed build, module load nor init.
+Always-on source safety guards, lifetime/sealed entry/Core integration and
+complete metadata/initializer admission remain required.
+
+Independent current Wine build8 source/tool/output replay passed without
+execution. A separate duplicate audit then compared old owned finite diagnostic
+prefixes2/3 to the retained prefix4 and preserved every differing file.
+Root independently rehashed both copies and checked identities at the deletion
+barrier before removing only1336 identical generated system32/syswow64 DLL/EXE
+copies, totaling2,021,785,600 logical bytes. Two unique system payloads remain.
+Registry, user directories, credentials, saves, Steam prefixes, symlinks, current
+prefix4,91 control/log/producer files and all other files are excluded.
+Observed volume free space increased2,023,305,216 bytes (about1.88GiB);
+APFS physical-reclaim measurement remains unknown. Completed receipt:
+`125bae746b97f9e0a7b757864f39245a5c739cf9a115aad7e57cb6f7806061fa`.
+Historical complete-prefix replay requires exact donor rehydration. Initial
+read-only audit preparation refused access-time tuple comparison, then an absent
+optional syswow64 directory; no files were removed in those failed attempts.
+This cleanup does not change the current native results or qualify Stage3.

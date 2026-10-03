@@ -1,0 +1,26 @@
+{
+  "attribution": "Original Pear downstream integration against pinned FEX; no upstream submission.",
+  "compilation_performed": false,
+  "compilation_performed_for_this_layer": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+      "postimage_bytes": 80018,
+      "postimage_sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+      "preimage_sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248"
+    }
+  ],
+  "historical_strict_patch_sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "spinmutex-template",
+  "native_runtime_execution": false,
+  "observed_compiler_error": "std::optional requires the actual uint32_t UniqueSpinMutex specialization; CTAD cannot supply a template argument",
+  "order": 15,
+  "original_failed_build_receipt_sha256": "bc12916f8ce2a3e9110355428a2413ab8788922e5a11db4da9be3b9ca471875b",
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

@@ -135,8 +135,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
-      "sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248",
-      "size_bytes": 80008
+      "sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+      "size_bytes": 80018
     },
     {
       "mode": 420,
@@ -882,6 +882,34 @@
         "sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
         "size_bytes": 515
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+          "postimage_bytes": 80018,
+          "postimage_sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+          "preimage_sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/15-0003l-fex-spinmutex-template.git.patch",
+        "sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+        "size_bytes": 749
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "spinmutex-template",
+      "order": 15,
+      "source_manifest": {
+        "path": "provenance/15-spinmutex-template.json",
+        "sha256": "c8e2b3343d247358db57f8c7e4bbc69fc047a4c251fd1fbf13fa597c02ac9090",
+        "size_bytes": 1205
+      },
+      "strict_patch": {
+        "path": "strict/15-0003l-fex-spinmutex-template.patch",
+        "sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+        "size_bytes": 749
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -907,8 +935,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "be674f90ee7605d72e33f6bccb4e7f1568d11c06dce10e936016138dac1ccc2f",
-    "size_bytes": 28491
+    "sha256": "b06576bf1442c41fd65a7fa8cb3f9c56a1bf458096eb71d264f1a19c9efe673c",
+    "size_bytes": 29518
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",

@@ -536,6 +536,25 @@
           "preimage_sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f"
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/15-0003l-fex-spinmutex-template.patch",
+      "git_file": "memory/source-graph/git/15-0003l-fex-spinmutex-template.git.patch",
+      "git_sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "spinmutex-template",
+      "order": 15,
+      "provenance_manifest": "memory/source-graph/provenance/15-spinmutex-template.json",
+      "provenance_sha256": "c8e2b3343d247358db57f8c7e4bbc69fc047a4c251fd1fbf13fa597c02ac9090",
+      "sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+          "postimage_bytes": 80018,
+          "postimage_sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+          "preimage_sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248"
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -559,7 +578,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 14,
+    "layer_count": 15,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }
