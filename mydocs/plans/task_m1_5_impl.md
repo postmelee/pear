@@ -1329,3 +1329,44 @@ identifies its ledger. The stage6 research candidate remains frozen and unapplie
 Fresh per-operation storage checks and serialized compilation remain required.
 Source23's three measurement compiles await the shared lock. Stage3 and all
 initialization, complete metadata, runtime and game gates remain open.
+
+### October 3 Genuine Layout Probe and Reviewed Include Ordering
+
+Root executed the independently reviewed compile-only supervisor against the
+current Source23 projection and genuine ordinary ARM64 tool/header closure.
+The first layout unit failed with actual compiler exit 1; the two later units
+were explicitly unperformed and no layout table was produced. The original
+control is retained at identity
+`8909ed109170646117b4d518df24550a1f8f0d38063868aae34b7b8423ea8422`.
+All seven post-operation input/source/producer/identity gates passed. No object
+was linked or loaded and no FEX instance or owner operation was performed.
+
+The real SDK diagnostics show a version macro redefinition followed by an
+unavailable directory-notification type. The fixture included CheckedCRT's
+Windows headers before the existing upstream AllocatorHooks version setting;
+the measurement also included sysinfoapi before that fixture. A separately
+reviewed Source24 proposal moves those existing includes into the required
+order without changing SDK headers, platform flags, ABI, fixture body or any
+of the 12 false permission/lifetime/budget proof flags. Its 23 guarded pure
+controls passed independently. The proposal has not been promoted: fresh
+24-layer Git projection and genuine current layout compilation remain pending.
+Original Source23 inputs, compiler failure and preceding layers stay intact.
+The complete 256 KiB metadata accounting, retention/lifetime bounds, source
+build and admitted empty initialization remain unqualified. Stage3 continues.
+
+### Latest User-Requested Storage Inventory
+
+Fresh folder allocation observations totaled 156.882 GiB: primary workspace
+4.908 GiB, prior Wine worktree 133.676 GiB, prior source worktree 0.727 GiB,
+current FEX worktree 9.292 GiB, current graphics worktree 6.658 GiB and
+Pear-named temporary entries 1.622 GiB. Inventory identity:
+`94e59a1cbe1bc1702cbc7ce37a4a5aa45479ddc266a1e0752432e217794ee012`.
+This observed retention footprint is not a required minimum. APFS shared
+extents can be counted repeatedly; unique physical allocation was not measured.
+Compared with the earlier 178.078 GiB inventory the folder aggregate is
+21.196 GiB lower, including intervening construction. Another builder is active;
+volume free-space movement cannot be attributed entirely to Pear. Whole-build
+admission floors of 6 GiB for graphics and 8 GiB for FEX are operation policies,
+not a claim that the whole project needs only those amounts. Complete minimum
+storage remains unmeasured; old repeated build retention is the main reduction
+opportunity. Current donors, unique failures and private user state are retained.
