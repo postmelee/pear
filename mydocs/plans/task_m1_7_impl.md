@@ -751,3 +751,47 @@ admission floors of 6 GiB for graphics and 8 GiB for FEX are operation policies,
 not a claim that the whole project needs only those amounts. Complete minimum
 storage remains unmeasured; old repeated build retention is the main reduction
 opportunity. Current donors, unique failures and private user state are retained.
+
+### Requester-Approved Cleanup Before Further Development
+
+Root retired 37,768 frozen exact source/tool/install/object duplicates from the
+inactive Wine Stage6 research workspace (1,886,081,409 logical bytes). Every
+selected leaf and retained donor was rehashed under the shared lock; current
+references and original controls were checked again after retirement. Receipt:
+`3e09fc0a8305f709bfaab64d6dd627fa53eb0c87322ed6d4560f10b89f30c4f4`.
+The journal and unchanged retained donors permit exact byte/mode rehydration;
+unique files, original failure records and current build inputs remain present.
+
+Five inactive synthetic Wine run roots contained 19 original fixture prefixes.
+Root archived only known Wine builtin ARM64 PE system files, verifying case and
+prefix provenance, file identity, ordinary PE format and current non-use. No
+registry, account, game, save or user-directory payload was selected. Exact
+xattrs and observed ACL absence were recorded with original metadata. Of
+12,996 retired copies (19,609,747,456 logical bytes), 3,364 distinct payloads
+occupy 852,661,060 compressed bytes. Every gzip payload was fully decoded and
+hashed before unlink, and the complete retained set was verified again after.
+The restore index and operation producers remain in the private archive.
+Receipt: `361aa52843975250ff9c182341144f8e167524998ef18c3d3627286447bff4c5`.
+Restore index: `d4e5259ed1b393258e52db9f4dd42708bd9c47c731c2cac89fe2976ee95955e2`.
+Historical execution requires exact restoration and new admission; original
+inode/ctime/birthtime identities and execution qualification are not recreated.
+
+The combined folder inventory fell from 156.882 to 137.674 GiB, including new
+archives and the new source projection; project/worktree roots alone total
+136.041 GiB and Pear temporary entries 1.633 GiB. Inventory identity:
+`a78a893d6f01ce9e322b983e86f2bbb000fde47bec623397c314d72b859de1f1`.
+Observed volume free space rose from approximately 2.5 to 10.4 GiB. APFS shared
+extents and another active builder prevent attributing that whole change to
+Pear. These are measured observations, not a complete minimum working-set claim.
+
+### Regression Recovery After Storage Cleanup
+
+The shared cleanup above preserved the graphics constructor's current sources,
+original Wine donors, failed reconstruction and prior finite native evidence.
+With actual space available, the complete 498-test DXMT regression run passed
+with eight explicit optional private-input skips. This supersedes the previous
+space-constrained regression attempt for the current unchanged graphics source
+checkpoint; its five failures remain preserved. No storage reserve was lowered.
+Governance and whitespace checks passed. Two genuinely fresh complete products,
+raw byte comparison and fresh final-candidate native qualification remain
+pending. No prior product is retagged and Stage5 is still in progress.
