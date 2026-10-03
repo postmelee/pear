@@ -1093,3 +1093,34 @@ APFS reclamation is not measured. Historical complete source replay requires
 exact donor rehydration. Current admission dependencies and unique evidence
 remain protected. Source snapshots and local hash receipts are not uploaded
 as proprietary/private binary evidence. Stage3 remains in progress.
+
+
+### October 3 Checked Deletion Source and Actual Compilation Refusal
+
+Reviewed layer18 preserves the old void/nonowner APIs and adds typed actual
+destructor/deallocation observations. Destroyed is recorded only after the
+genuine destructor returns; Freed means only that the validated allocator's
+deallocation call returned, never physical OS reclamation. Consumed unique
+ownership is not retried after a destroyed-but-not-erased identity. Unknown
+cleanup retains its source tombstone/dependencies. The independent source review
+passed29 portable controls; it did not establish compiler or runtime acceptance.
+
+Fresh source8 passed36 actual Git check/apply commands:6964 files /40,487,535
+bytes,39 affected paths and13 additions. Manifest:
+`914d8b5fe92cc44fc0caad6537ae0ac9d56888e23a6d3b5342b3c866a48a637d`;
+graph `eb5c0003a31c4131ca6dbcae0fa225341d0cb8266c9fe39d2684edab3ac05056`;
+actual source control
+`e996ca09e8b43599bfe2cfd889f7bcfed3f760068d3370312c1ee1070530a5c1`.
+The complete current FEX suite passed450 controls with one APFS skip.
+
+The third actual full constructor passed native configure/build/fixture and
+ARM64EC configuration, then failed Context.cpp compilation: the checked base
+Context method calls private SourceLifecycle methods, but existing friendship
+belongs to the derived ContextImpl and the deleter. Failed receipt:
+`c0150cb790a1be26ddd25ee051d7cca2c0e94352ba2f8bdbfd87688d9f24aa28`.
+The five original compiler errors, source, objects and observations remain.
+No successful full module/link, load, initializer or allocator execution is
+inferred. The repair must retain private lifecycle authority and be independently
+reviewed, then pass the exact failed translation unit before any whole-build
+repetition. Current data-only sizeof and aggregate budget checks remain pending.
+All initialization/guest/game/distribution gates remain false.

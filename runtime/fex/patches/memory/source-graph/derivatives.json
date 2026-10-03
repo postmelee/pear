@@ -33,14 +33,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.cpp",
-      "sha256": "56d8057f228677cb4e48b2e803a2ca8c8d06601723a16022ff3602d7658304ab",
-      "size_bytes": 6508
+      "sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b",
+      "size_bytes": 7213
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.h",
-      "sha256": "e6b5c41cdbd3abfdd460bd5934a93092b92060eebb920551151a11173e08d6b0",
-      "size_bytes": 23541
+      "sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd",
+      "size_bytes": 23730
     },
     {
       "mode": 420,
@@ -57,8 +57,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Core.cpp",
-      "sha256": "6978534b89fffc0a1985c1e2c22f674f4816b54d51d8740b583e91805f601559",
-      "size_bytes": 88045
+      "sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6",
+      "size_bytes": 88817
     },
     {
       "mode": 420,
@@ -165,8 +165,8 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/Core/Context.h",
-      "sha256": "3317ec3d98ba2e7759020536471f96dde361d785fa9969e4c662e13757b2d8ed",
-      "size_bytes": 10846
+      "sha256": "49fdcc378509bfb59e8a56826b37d2913b0f571a8a071d7d100c35ff370c47d2",
+      "size_bytes": 11363
     },
     {
       "mode": 420,
@@ -1128,6 +1128,52 @@
         "sha256": "2dfcaa7d350c5ff9a97b80caf0649590c3a4bb87aa330c1f5ea797808f62b5c6",
         "size_bytes": 47841
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 7213,
+          "postimage_sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b",
+          "preimage_sha256": "56d8057f228677cb4e48b2e803a2ca8c8d06601723a16022ff3602d7658304ab"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 23730,
+          "postimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd",
+          "preimage_sha256": "e6b5c41cdbd3abfdd460bd5934a93092b92060eebb920551151a11173e08d6b0"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 88817,
+          "postimage_sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6",
+          "preimage_sha256": "6978534b89fffc0a1985c1e2c22f674f4816b54d51d8740b583e91805f601559"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "postimage_bytes": 11363,
+          "postimage_sha256": "49fdcc378509bfb59e8a56826b37d2913b0f571a8a071d7d100c35ff370c47d2",
+          "preimage_sha256": "3317ec3d98ba2e7759020536471f96dde361d785fa9969e4c662e13757b2d8ed"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/18-0003l-fex-checked-source-deletion.git.patch",
+        "sha256": "6f5a9993c783c325257a4b6a7db3a52355b4ea91db3f11321f329c470e270b5f",
+        "size_bytes": 8332
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-source-deletion",
+      "order": 18,
+      "source_manifest": {
+        "path": "provenance/18-checked-source-deletion.json",
+        "sha256": "fd3d6963db155826714624f6ca98b6e5f38637e03673df416e47024c7f68152c",
+        "size_bytes": 2219
+      },
+      "strict_patch": {
+        "path": "strict/18-0003l-fex-checked-source-deletion.patch",
+        "sha256": "6f5a9993c783c325257a4b6a7db3a52355b4ea91db3f11321f329c470e270b5f",
+        "size_bytes": 8332
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -1154,8 +1200,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "59115580326f7d5edf86900bb8d53d4ceed0509f31817a721ca6a6a7816dee69",
-    "size_bytes": 39124
+    "sha256": "9ac4d57526732772eb5e3d9cbb2de393cab9f715fe75222b927181d6e75a2129",
+    "size_bytes": 41109
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",

@@ -1,0 +1,147 @@
+diff --git a/FEXCore/Source/Interface/Context/Context.cpp b/FEXCore/Source/Interface/Context/Context.cpp
+--- a/FEXCore/Source/Interface/Context/Context.cpp
++++ b/FEXCore/Source/Interface/Context/Context.cpp
+@@ -35,22 +35,36 @@
+   }
+   return PearContextOwner {Actual.release()};
+ }
++bool Context::DestroyPearContextChecked(PearContextOwner& Owner, FEXCore::Utils::PearFEXMemory::Result& Outcome,
++                                       bool& Destroyed, bool& Freed) {
++  namespace Memory=FEXCore::Utils::PearFEXMemory;
++  Destroyed=false; Freed=false;
++  auto* Actual=Owner.get();
++  if (!Actual) { Outcome={PEAR_FEX_INVALID_REQUEST,0,0}; return false; }
++  if (!Actual->PreparePearConstructionCleanup(Outcome)) {
++    Memory::SourceLifecycle::Retain(Actual,Outcome); return false;
++  }
++  Outcome=Memory::SourceLifecycle::BeginContextDestruction(Actual);
++  if (!Outcome) { Memory::SourceLifecycle::Retain(Actual,Outcome); return false; }
++  // Consume C++ deletion ownership once before destructor execution. If the
++  // later identity completion refuses, the actual backing is already destroyed
++  // and must not be retried through a dangling unique_ptr.
++  Owner.release();
++  std::destroy_at(Actual); Destroyed=true;
++  Outcome=Memory::SourceLifecycle::Deleted(Actual);
++  if (!Outcome) { Memory::SourceLifecycle::RetainDestroyed(Actual,Outcome); return false; }
++  FEXCore::Allocator::aligned_free(Actual); Freed=true;
++  return true;
++}
+ void PearContextDeleter::operator()(Context* Actual) const {
+   if (!Actual) return;
+-  namespace Memory=FEXCore::Utils::PearFEXMemory;
+-  Memory::Result Outcome;
+-  if (!Actual->PreparePearConstructionCleanup(Outcome)) {
+-    // Keep this actual allocation alive in its fixed Context identity record.
+-    // A refusal from a destructor body cannot prevent member destruction.
+-    Memory::SourceLifecycle::Retain(Actual,Outcome); return;
+-  }
+-  const auto Started=Memory::SourceLifecycle::BeginContextDestruction(Actual);
+-  if (!Started) { Memory::SourceLifecycle::Retain(Actual,Started); return; }
+-  std::destroy_at(Actual);
+-  // Erase the exact source tombstone before allocator reuse of this address.
+-  const auto Deleted=Memory::SourceLifecycle::Deleted(Actual);
+-  if (!Deleted) { Memory::SourceLifecycle::RetainDestroyed(Actual,Deleted); return; }
+-  FEXCore::Allocator::aligned_free(Actual);
++  PearContextOwner Owner {Actual};
++  FEXCore::Utils::PearFEXMemory::Result Outcome;
++  bool Destroyed {},Freed {};
++  (void)Context::DestroyPearContextChecked(Owner,Outcome,Destroyed,Freed);
++  // A known alive refusal is retained by SourceLifecycle. Prevent recursive
++  // unique_ptr deletion and keep dependencies for the original refusal.
++  if (Owner) Owner.release();
+ }
+ #else
+ fextl::unique_ptr<FEXCore::Context::Context> FEXCore::Context::Context::CreateNewContext(const FEXCore::HostFeatures& Features) {
+diff --git a/FEXCore/Source/Interface/Context/Context.h b/FEXCore/Source/Interface/Context/Context.h
+--- a/FEXCore/Source/Interface/Context/Context.h
++++ b/FEXCore/Source/Interface/Context/Context.h
+@@ -211,6 +211,10 @@
+    * @param Thread The internal FEX thread state object
+    */
+   void DestroyThread(FEXCore::Core::InternalThreadState* Thread) override;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  bool DestroyPearThreadChecked(FEXCore::Core::InternalThreadState*,
++    FEXCore::Utils::PearFEXMemory::Result&, bool& Destroyed, bool& Freed) override;
++#endif
+ 
+ #ifndef _WIN32
+   void LockBeforeFork(FEXCore::Core::InternalThreadState* Thread) override;
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -829,28 +829,41 @@
+ }
+ #endif
+ 
+-void ContextImpl::DestroyThread(FEXCore::Core::InternalThreadState* Thread) {
+-#ifdef PEAR_FEX_MEMORY_OWNER
++#ifdef PEAR_FEX_MEMORY_OWNER
++bool ContextImpl::DestroyPearThreadChecked(FEXCore::Core::InternalThreadState* Thread,
++    FEXCore::Utils::PearFEXMemory::Result& Outcome,bool& Destroyed,bool& Freed) {
+   namespace Memory=FEXCore::Utils::PearFEXMemory;
++  Destroyed=false; Freed=false;
+   auto ContextHold=Memory::SourceLifecycle::HoldContext(this);
+-  if (!ContextHold) { Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_UNAVAILABLE,0,0}); return; }
++  if (!ContextHold) { Outcome={PEAR_FEX_UNAVAILABLE,0,0}; Memory::Retirement::PoisonSourceAdmission(Outcome); return false; }
+   const auto Closed=Memory::SourceLifecycle::CloseThread(this,Thread);
+   if (!Closed || !Memory::SourceBindingCanRelease(Thread)) {
+     const auto Original=Closed ? Memory::GetOriginalAttachFailure(Thread) : Closed;
+-    Memory::Retirement::PoisonSourceAdmission(Original); return;
++    // A successful old attach result is not a deletion refusal. Preserve a
++    // genuine failure; otherwise label the actual local release denial.
++    Outcome=Original ? Memory::Result {PEAR_FEX_UNAVAILABLE,0,0} : Original;
++    Memory::Retirement::PoisonSourceAdmission(Outcome); return false;
+   }
+   // Native cleanup must already have detached backend/lookup before owner
+   // unregister. A bare source predicate cannot perform teardown implicitly.
+   if (Thread->CTX != this || Thread->CPUBackend || Thread->LookupCache) {
+-    Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_UNAVAILABLE,0,0}); return;
++    Outcome={PEAR_FEX_UNAVAILABLE,0,0}; Memory::Retirement::PoisonSourceAdmission(Outcome); return false;
+   }
+   const auto DeleteSealed=Memory::SourceLifecycle::SealThreadDelete(Thread);
+-  if (!DeleteSealed) { Memory::Retirement::PoisonSourceAdmission(DeleteSealed); return; }
+-  std::destroy_at(Thread);
++  if (!DeleteSealed) { Outcome=DeleteSealed; Memory::Retirement::PoisonSourceAdmission(DeleteSealed); return false; }
++  std::destroy_at(Thread); Destroyed=true;
+   const auto Deleted=Memory::SourceLifecycle::DeletedThread(Thread);
+-  if (!Deleted) { Memory::Retirement::PoisonSourceAdmission(Deleted); return; }
++  if (!Deleted) { Outcome=Deleted; Memory::Retirement::PoisonSourceAdmission(Deleted); return false; }
+   { std::scoped_lock Lock {PearConstruction.Mutex}; if (PearConstruction.PublishedThreads) --PearConstruction.PublishedThreads; }
+-  FEXCore::Allocator::aligned_free(Thread);
++  FEXCore::Allocator::aligned_free(Thread); Freed=true;
++  Outcome=Deleted; return true;
++}
++#endif
++void ContextImpl::DestroyThread(FEXCore::Core::InternalThreadState* Thread) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result Outcome;
++  bool Destroyed {},Freed {};
++  (void)DestroyPearThreadChecked(Thread,Outcome,Destroyed,Freed);
+ #else
+   FEXCore::Allocator::VirtualProtect(&Thread->InterruptFaultPage, sizeof(Thread->InterruptFaultPage),
+                                      Allocator::ProtectOptions::Read | Allocator::ProtectOptions::Write);
+diff --git a/FEXCore/include/FEXCore/Core/Context.h b/FEXCore/include/FEXCore/Core/Context.h
+--- a/FEXCore/include/FEXCore/Core/Context.h
++++ b/FEXCore/include/FEXCore/Core/Context.h
+@@ -67,6 +67,10 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   FEX_DEFAULT_VISIBILITY static PearContextOwner CreateNewContext(const FEXCore::HostFeatures& Features);
+   FEX_DEFAULT_VISIBILITY static PearContextOwner CreatePearContext(const FEXCore::HostFeatures& Features, FEXCore::Utils::PearFEXMemory::Result&);
++  // Private selected-source receipt, not a wire or stable export. Freed means
++  // the genuine aligned_free/rpfree call returned, not OS page reclamation.
++  static bool DestroyPearContextChecked(PearContextOwner&, FEXCore::Utils::PearFEXMemory::Result&,
++                                       bool& Destroyed, bool& Freed);
+ #else
+   FEX_DEFAULT_VISIBILITY static fextl::unique_ptr<FEXCore::Context::Context> CreateNewContext(const FEXCore::HostFeatures& Features);
+ #endif
+@@ -145,6 +149,10 @@
+ #endif
+ 
+   FEX_DEFAULT_VISIBILITY virtual void DestroyThread(FEXCore::Core::InternalThreadState* Thread) = 0;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  virtual bool DestroyPearThreadChecked(FEXCore::Core::InternalThreadState*,
++    FEXCore::Utils::PearFEXMemory::Result&, bool& Destroyed, bool& Freed) = 0;
++#endif
+ #ifndef _WIN32
+   FEX_DEFAULT_VISIBILITY virtual void LockBeforeFork(FEXCore::Core::InternalThreadState* Thread) {}
+   FEX_DEFAULT_VISIBILITY virtual void UnlockAfterFork(FEXCore::Core::InternalThreadState* Thread, bool Child) {}
