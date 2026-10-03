@@ -18,7 +18,7 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         self.assertEqual(manifest['preserved_abi'], {
             'fex_unixlib_services': 8, 'wire_record_bytes': 128, 'ntdll_unix_index': 10, 'wire_version': 2})
         self.assertTrue(all(v is False for v in manifest['source_gates'].values()))
-        self.assertEqual(len(manifest['patches']), 18)
+        self.assertEqual(len(manifest['patches']), 19)
         row = manifest['patches'][0]
         raw = (root / row['file']).read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(), row['sha256'])
@@ -53,7 +53,7 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         observed = current.selected_projection(baseline, graph)
         proposal = json.loads((graph / 'final-source-proposal.json').read_bytes())
         self.assertEqual(observed['source_files'], proposal['files'])
-        self.assertEqual(observed['layer_count'], 18)
+        self.assertEqual(observed['layer_count'], 19)
 
     def test_closed_additive_layer_reproduces_every_postimage(self):
         self.materialized()

@@ -33,14 +33,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.cpp",
-      "sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b",
-      "size_bytes": 7213
+      "sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1",
+      "size_bytes": 7508
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.h",
-      "sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd",
-      "size_bytes": 23730
+      "sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba",
+      "size_bytes": 24177
     },
     {
       "mode": 420,
@@ -1174,6 +1174,40 @@
         "sha256": "6f5a9993c783c325257a4b6a7db3a52355b4ea91db3f11321f329c470e270b5f",
         "size_bytes": 8332
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 7508,
+          "postimage_sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1",
+          "preimage_sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 24177,
+          "postimage_sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba",
+          "preimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/19-0003l1-fex-checked-deletion-access.git.patch",
+        "sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+        "size_bytes": 1685
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-deletion-access",
+      "order": 19,
+      "source_manifest": {
+        "path": "provenance/19-checked-deletion-access.json",
+        "sha256": "d4d0aeb2b1c28f33d1b0c598f2c96847b6c07862d36c4ba9b1a05b9a92694947",
+        "size_bytes": 2698
+      },
+      "strict_patch": {
+        "path": "strict/19-0003l1-fex-checked-deletion-access.patch",
+        "sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+        "size_bytes": 1685
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -1200,8 +1234,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "9ac4d57526732772eb5e3d9cbb2de393cab9f715fe75222b927181d6e75a2129",
-    "size_bytes": 41109
+    "sha256": "d6a85ecaa0c3631dfe970aaa392d29bfe835c0eaf721c259abcd0db7370b5ebc",
+    "size_bytes": 42474
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",

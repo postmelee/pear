@@ -1124,3 +1124,45 @@ inferred. The repair must retain private lifecycle authority and be independentl
 reviewed, then pass the exact failed translation unit before any whole-build
 repetition. Current data-only sizeof and aggregate budget checks remain pending.
 All initialization/guest/game/distribution gates remain false.
+
+
+### October 3 Context Access Repair and Actual Data-only Layouts
+
+The independently reviewed layer19 keeps the existing private SourceLifecycle
+authority and effectful deletion body: the checked base method delegates to a
+private derived helper, with friendship for that exact method only. No object
+data layout, wire, whole-base friendship or nonowner behavior changes. The
+actual failed Context.cpp translation unit compiled successfully after the
+repair, exit0 in2176ms; diagnostic control:
+`dbe921fe2174685ec9fffbc9ead5672d5a4ac461405ac86b6b9901051298dbc4`.
+This does not replace the immutable failed full-module receipt or qualify
+linking/loading/initialization.
+
+Before promoting layer19, root completed all nine data-only source18/Wine8
+layout compilations and genuine prerequisite/source/tool/input replay before
+and after. All nine commands exited0, emitted dependencies were closed and
+constant tables were extracted from object bytes without linking/loading.
+Control: `b53bbc53e80117b8828448f3daae98f5553b44a92de139e0481459609b213fa6`.
+The corrected driver reused8373 already prepared original/prepared byte/mode
+pairs. The prior driver failed JSON serialization before any compiler, and
+incorrectly exited0 with passed=false; that original control/producer remains
+untouched and is not passing evidence. A missing standard-library import was
+also corrected before the actual nine-command dispatch.
+
+A sizeof subtotal is not the complete256KiB added-metadata gate. One process
+owner, each PE module's separate static pools, allocator/control-block storage,
+heap/stack transient peaks, alignment and simultaneous lifetimes still require
+source-bound counting. Original-context payload is distinct from added owner
+metadata; count rows must not be summed as bytes. No source initializer, owner
+call or object loading was performed by this layout probe.
+
+Root verified all10 proposed file preimages and55 retained publication files
+before promotion. Fresh source9 then passed38 actual Git check/apply commands:
+6964 files /40,488,277 bytes,39 affected paths and13 additions. Graph:
+`38bac0349a77b6e5cd59f79852426dcc4bac8ca6c6fe6922cdc3be69c012bf2a`;
+manifest `e0fbe556fa5c9f8ddf8734286ba6b80a6f2fe0b243b9eeb3b8fd9c1a95992725`;
+source control
+`b1d3522358dd748818b4db51d911bb4b295d72bccbd94e5d39d5770cbfbf33ee`.
+All450 current FEX tests passed with one APFS skip. The fresh full module
+constructor is in progress; metadata/lifetime/initialization/guest/game and
+distribution remain unqualified. No prior full-build result is relabelled.

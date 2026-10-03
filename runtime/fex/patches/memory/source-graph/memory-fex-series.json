@@ -774,6 +774,31 @@
           "preimage_sha256": "3317ec3d98ba2e7759020536471f96dde361d785fa9969e4c662e13757b2d8ed"
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/19-0003l1-fex-checked-deletion-access.patch",
+      "git_file": "memory/source-graph/git/19-0003l1-fex-checked-deletion-access.git.patch",
+      "git_sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "checked-deletion-access",
+      "order": 19,
+      "provenance_manifest": "memory/source-graph/provenance/19-checked-deletion-access.json",
+      "provenance_sha256": "d4d0aeb2b1c28f33d1b0c598f2c96847b6c07862d36c4ba9b1a05b9a92694947",
+      "sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 7508,
+          "postimage_sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1",
+          "preimage_sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 24177,
+          "postimage_sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba",
+          "preimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd"
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -797,7 +822,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 18,
+    "layer_count": 19,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }
