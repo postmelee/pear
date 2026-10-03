@@ -41,13 +41,38 @@ def owner_row(control, opcode=6, status=0):
     return value
 
 
+def atomic_rows():
+    """Synthetic state/order controls; never an observation of the native owner."""
+    identity=dict(allocation_id=17,generation=19,extent_offset=4096,extent_size=16384,executor_id=23)
+    def good(control,opcode,state,epoch=29,continuation=0,protection=0):
+        row=owner_row(control,opcode);row.update(identity)
+        row.update(executor_state=state,write_epoch=epoch,continuation_id=continuation,
+                   lifecycle=3,protection=protection,requested_state=3,
+                   operation_size=format(4 if opcode in (8,14) or control=='atomic_handoff_dispatcher' else 0,'016x'))
+        return row
+    rows=[good('atomic_enter_dispatcher',8,2,protection=2),
+          good('atomic_handoff_dispatcher',13,3,continuation=31)]
+    for control,status in [('atomic_wrong_size',1),('atomic_wrong_offset',1),
+            ('atomic_wrong_continuation',6),('atomic_missing_continuation',1),
+            ('atomic_stale_current_epoch',6),('atomic_old_wire_version',2),
+            ('atomic_wrong_generation',6),('atomic_wrong_executor',6),('atomic_wrong_role',6)]:
+        rows += [owner_row(control,14,status),
+                 good('atomic_refusal_preserves_original_pin',13,3,continuation=31)]
+    rows += [owner_row('atomic_retirement_preserves_original_pin',5,3),
+             owner_row('atomic_original_epoch_requires_retry',14,6),
+             good('atomic_consume_original_pin_on_current_epoch',14,2,epoch=37,protection=2),
+             owner_row('atomic_consumed_continuation_cannot_repeat',14,6),
+             good('atomic_exit_consumed_continuation',9,1,epoch=37)]
+    return rows
+
+
 def native_rows():
     """Structural transcript fixture only; counters never establish host admission."""
     rows = [helper(), ready(), dict(version=1, record_kind='pear_fex_memory_admission',
         event='initialize', status=0, native_error_domain=0, native_error_code=0,
         checked_ec=False, wine_view_registration=False)]
     groups = {'register_actual_native_executor': (1, 7), 'reserve_extent': (103, 1),
-        'query_current_token': (103, 6), 'begin_two_page_write': (38, 2), 'publish_two_pages': (38, 3),
+        'query_current_token': (103, 6), 'begin_two_page_write': (39, 2), 'publish_two_pages': (39, 3),
         'enter_owned_leaf': (73, 8), 'exit_to_native_gate': (73, 9), 'begin_cross_page_instruction_pair': (1, 2),
         'publish_cross_page_instruction_pair': (1, 3), 'enter_before_source_continuation': (1, 8),
         'pin_saved_source_resume': (1, 10), 'direct_owned_handoff_to_native': (1, 13),
@@ -57,7 +82,7 @@ def native_rows():
         'abort_unpublished_window': (1, 4), 'retire_extent': (103, 5), 'unregister_actual_native_executor': (1, 12)}
     for control, (count, opcode) in groups.items():
         rows += [owner_row(control, opcode) for _ in range(count)]
-    failures = {'version_mismatch': (6, 2), 'record_size_mismatch': (6, 1), 'unknown_opcode': (14, 1),
+    failures = {'version_mismatch': (6, 2), 'record_size_mismatch': (6, 1), 'unknown_opcode': (15, 1),
         'unknown_flags': (6, 1), 'reserved_word': (6, 1), 'reserved_word64': (6, 1), 'foreign_owner': (6, 6),
         'stale_generation': (6, 6), 'foreign_allocation': (6, 6), 'offset_alias': (6, 6), 'extent_alias': (6, 6),
         'unselected_role': (6, 1), 'native_fixture_cannot_select_arm64ec_role': (7, 3),
@@ -70,15 +95,16 @@ def native_rows():
         'duplicate_retirement': (5, 6), 'shared_capacity_exhausted': (1, 4),
         'fragmented_free_bytes_refused': (1, 4), 'dispatcher_capacity_exhausted': (1, 4)}
     rows += [owner_row(c, op, status) for c, (op, status) in failures.items()]
-    rows += [owner_row('mixed_extent_query_unavailable', 6, 3) for _ in range(111)]
+    rows += [owner_row('mixed_extent_query_unavailable', 6, 3) for _ in range(112)]
+    rows += atomic_rows()
     for index, row in enumerate(rows[3:], 1): row['sequence'] = index
     calls = len(rows) - 3
     rows += [dict(version=1, record_kind='pear_fex_memory_fixture', scope='native_owner', sequence=calls+1,
-        event='suite_complete', passed=True, checked_ec=False, owner_calls=calls, refusals=140,
-        allocations=103, retirements=103, publications=39, owned_code_calls=73,
-        protection_observations=81, patch_rounds=32, fragmentation_controls=1, continuation_controls=1,
+        event='suite_complete', passed=True, checked_ec=False, owner_calls=calls, refusals=153,
+        allocations=103, retirements=103, publications=40, owned_code_calls=73,
+        protection_observations=83, patch_rounds=32, fragmentation_controls=1, continuation_controls=2,
         fex_initialization=False, translated_guest_execution=False, game_execution=False),
-        dict(version=1, record_kind='pear_fex_memory_admission', event='finish', observed_regions=81,
+        dict(version=1, record_kind='pear_fex_memory_admission', event='finish', observed_regions=83,
         native_owned_code_execution=True, native_arm64_pe_execution=False, checked_ec=False,
         wine_view_registration=False, fex_initialization=False, translated_guest_execution=False,
         game_execution=False, exit_code=0)]
@@ -143,9 +169,9 @@ class AdmissionAndResult(unittest.TestCase):
 
     def test_successful_structural_transcript_keeps_native_scope_and_128_pins(self):
         value = runner.validate_result(native_rows(), 'pear-fex-memory')
-        self.assertEqual(value['terminal']['continuation_controls'], 1)
-        self.assertEqual(value['owner_calls'], 936)
-        self.assertEqual(value['controlled_refusals'], 140)
+        self.assertEqual(value['terminal']['continuation_controls'], 2)
+        self.assertEqual(value['owner_calls'], 964)
+        self.assertEqual(value['controlled_refusals'], 153)
 
     def test_duplicate_or_missing_trace_sequence_never_passes(self):
         for change in ('duplicate', 'missing'):

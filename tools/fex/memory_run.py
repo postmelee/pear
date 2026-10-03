@@ -26,8 +26,13 @@ else:
     from memory_reuse import wine_namespace
     from memory_sign import PRODUCERS as signing_producers
 
+if __package__:
+    from . import memory_resume_checks as atomic_checks
+else:
+    import memory_resume_checks as atomic_checks
+
 BOUNDS = {'grace_ms': 3000, 'terminate_ms': 2000, 'kill_ms': 5000, 'drain_ms': 1000}
-PRODUCERS = ('tools/fex/memory_run.py', 'tools/fex/memory_check.py', 'tools/fex/memory_reuse.py',
+PRODUCERS = ('tools/fex/memory_run.py', 'tools/fex/memory_resume_checks.py', 'tools/fex/memory_check.py', 'tools/fex/memory_reuse.py',
              'tools/wine/signing.py', 'tools/wine/run_fixtures.py', 'host/probe/provisioned_probe.py',
              'host/probe/hardened_baseline.py')
 
@@ -127,7 +132,7 @@ def validate_result(rows, name):
                      and (row['native_error_domain'] or not row['native_error_code'])
                      and (row['status'] or not (row['native_error_domain'] or row['native_error_code'])),
                      'memory_fixture_call_status')
-                need(row['opcode'] in range(1, 15) and row['executor_state'] in range(6)
+                need(row['opcode'] in range(1, 16) and row['executor_state'] in range(6)
                      and all(0 <= row[k] <= 2**53-1 for k in integer_fields - {'native_error_code'}),
                      'memory_fixture_call_values')
                 facts = {'executor_id', 'continuation_id', 'executor_state', 'write_epoch'}
@@ -173,18 +178,18 @@ def validate_result(rows, name):
              'memory_fixture_terminal_order')
         terminal = suites[0]
         expected = {'owner_calls': len(calls), 'refusals': sum(r['status'] != 0 for r in calls),
-            'allocations': 103, 'retirements': 103, 'publications': 39, 'owned_code_calls': 73,
-            'protection_observations': 81, 'patch_rounds': 32, 'fragmentation_controls': 1, 'continuation_controls': 1}
+            'allocations': 103, 'retirements': 103, 'publications': 40, 'owned_code_calls': 73,
+            'protection_observations': 83, 'patch_rounds': 32, 'fragmentation_controls': 1, 'continuation_controls': 2}
         need(all(type(terminal.get(k)) is int and terminal[k] == v for k, v in expected.items()),
              'memory_fixture_suite_counts')
-        counted = {'reserve_extent': 103, 'retire_extent': 103, 'begin_two_page_write': 38, 'publish_two_pages': 38,
+        counted = {'reserve_extent': 103, 'retire_extent': 103, 'begin_two_page_write': 39, 'publish_two_pages': 39,
             'enter_owned_leaf': 73, 'exit_to_native_gate': 73, 'begin_cross_page_instruction_pair': 1,
             'publish_cross_page_instruction_pair': 1, 'pin_saved_source_resume': 1,
             'admit_finite_saved_resume': 127, 'discard_owned_saved_resume': 127,
             'release_original_pin_epoch': 1, 'continuation_capacity_preserves_old_pins': 1,
             'begin_unpublished_abort_control': 1, 'abort_unpublished_window': 1}
         counted.update({'register_actual_native_executor': 1, 'query_current_token': 103,
-            'mixed_extent_query_unavailable': 111, 'enter_before_source_continuation': 1,
+            'mixed_extent_query_unavailable': 112, 'enter_before_source_continuation': 1,
             'direct_owned_handoff_to_native': 1, 'poll_existing_owned_handoff': 1, 'unregister_actual_native_executor': 1})
         refusal_status = {'version_mismatch': 2, 'record_size_mismatch': 1, 'unknown_opcode': 1,
             'unknown_flags': 1, 'reserved_word': 1, 'reserved_word64': 1, 'foreign_owner': 6,
@@ -197,6 +202,9 @@ def validate_result(rows, name):
             'new_epoch_cannot_release_original_pin': 1, 'duplicate_retirement': 6,
             'shared_capacity_exhausted': 4, 'fragmented_free_bytes_refused': 4, 'dispatcher_capacity_exhausted': 4}
         counted.update({control: 1 for control in refusal_status})
+        atomic_counts, atomic_refusals, atomic_opcodes = atomic_checks.controls()
+        counted.update(atomic_counts)
+        refusal_status.update(atomic_refusals)
         need(controls == counted, 'memory_fixture_control_counts')
         opcode_by_control = dict.fromkeys(counted, 6)
         opcode_by_control.update({'register_actual_native_executor': 7, 'reserve_extent': 1,
@@ -207,7 +215,7 @@ def validate_result(rows, name):
             'admit_finite_saved_resume': 10, 'discard_owned_saved_resume': 11,
             'release_original_pin_epoch': 11, 'begin_unpublished_abort_control': 2,
             'abort_unpublished_window': 4, 'retire_extent': 5,
-            'unregister_actual_native_executor': 12, 'unknown_opcode': 14,
+            'unregister_actual_native_executor': 12, 'unknown_opcode': 15,
             'native_fixture_cannot_select_arm64ec_role': 7, 'wrapped_write_range': 2,
             'source_guard_write': 2, 'empty_write': 2, 'ordinary_exit_cannot_drop_saved_resume': 9,
             'nested_handoff_refused': 13, 'poll_existing_owned_handoff': 13, 'poll_requires_original_pin_epoch': 13,
@@ -217,6 +225,8 @@ def validate_result(rows, name):
             'new_epoch_cannot_release_original_pin': 11, 'duplicate_retirement': 5,
             'shared_capacity_exhausted': 1, 'fragmented_free_bytes_refused': 1,
             'dispatcher_capacity_exhausted': 1})
+        opcode_by_control.update(atomic_opcodes)
+        atomic_checks.validate(fixture_calls, need)
         for row in fixture_calls:
             expected_status = 3 if row['control'] == 'mixed_extent_query_unavailable' else refusal_status.get(row['control'], 0)
             need(row['status'] == expected_status and row['opcode'] == opcode_by_control[row['control']],

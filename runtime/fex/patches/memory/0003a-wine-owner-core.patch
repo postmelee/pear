@@ -9,7 +9,7 @@ diff --git a/include/wine/pear_fex_memory.h b/include/wine/pear_fex_memory.h
 +#include <stdint.h>
 +#include <stddef.h>
 +
-+#define PEAR_FEX_MEMORY_VERSION 1u
++#define PEAR_FEX_MEMORY_VERSION 2u
 +#define PEAR_FEX_MEMORY_RECORD_BYTES 128u
 +#define PEAR_FEX_MEMORY_UNIX_INDEX 10u
 +#define PEAR_FEX_MEMORY_PAGE_BYTES UINT64_C(4096)
@@ -28,7 +28,7 @@ diff --git a/include/wine/pear_fex_memory.h b/include/wine/pear_fex_memory.h
 +    PEAR_FEX_EXECUTOR_REGISTER = 7, PEAR_FEX_EXECUTOR_ENTRY = 8,
 +    PEAR_FEX_EXECUTOR_EXIT = 9, PEAR_FEX_CONTINUATION_PIN = 10,
 +    PEAR_FEX_CONTINUATION_UNPIN = 11, PEAR_FEX_EXECUTOR_UNREGISTER = 12,
-+    PEAR_FEX_EXECUTOR_HANDOFF = 13
++    PEAR_FEX_EXECUTOR_HANDOFF = 13, PEAR_FEX_EXECUTOR_RESUME = 14
 +};
 +enum pear_fex_memory_status {
 +    PEAR_FEX_OK = 0, PEAR_FEX_INVALID_REQUEST = 1, PEAR_FEX_VERSION_MISMATCH = 2,
@@ -206,7 +206,7 @@ diff --git a/dlls/ntdll/unix/pear_fex_memory_private.h b/dlls/ntdll/unix/pear_fe
 diff --git a/dlls/ntdll/unix/pear_fex_memory.c b/dlls/ntdll/unix/pear_fex_memory.c
 --- /dev/null
 +++ b/dlls/ntdll/unix/pear_fex_memory.c
-@@ -0,0 +1,713 @@
+@@ -0,0 +1,770 @@
 +/* Original Pear bounded code-owner protocol. MIT-licensed.
 + * Never called from a raw signal handler. All waiters are compiled native
 + * gates outside MAP_JIT; the source caller owns saved-context reconstruction. */
@@ -524,7 +524,8 @@ diff --git a/dlls/ntdll/unix/pear_fex_memory.c b/dlls/ntdll/unix/pear_fex_memory
 +    case PEAR_FEX_RETIRE: mask = T|E|X|S; break;
 +    case PEAR_FEX_QUERY: mask = T|X|C; break;
 +    case PEAR_FEX_EXECUTOR_REGISTER: mask = 1u<<10; break;
-+    case PEAR_FEX_EXECUTOR_ENTRY: case PEAR_FEX_EXECUTOR_HANDOFF: mask = T|E|X|C|O|S; break;
++    case PEAR_FEX_EXECUTOR_ENTRY: case PEAR_FEX_EXECUTOR_HANDOFF:
++    case PEAR_FEX_EXECUTOR_RESUME: mask = T|E|X|C|O|S; break;
 +    case PEAR_FEX_EXECUTOR_EXIT: mask = T|E|X|S; break;
 +    case PEAR_FEX_CONTINUATION_PIN: mask = T|E|X|O|S; break;
 +    case PEAR_FEX_CONTINUATION_UNPIN: mask = T|E|X|C|S; break;
@@ -534,6 +535,33 @@ diff --git a/dlls/ntdll/unix/pear_fex_memory.c b/dlls/ntdll/unix/pear_fex_memory
 +    for (i = 0; i < sizeof(values)/sizeof(values[0]); ++i)
 +        if (!(mask & (1u<<i)) && values[i]) return 0;
 +    return 1;
++}
++
++/* Resolve the sole original descriptor while the owner mutex is held.
++ * Original continuation epoch is never supplied as the requested current epoch.
++ * Reuse this entire check after park released/reacquired the mutex. */
++static struct owner_descriptor *resume_descriptor(const struct pear_fex_memory_request *q,
++    const struct owner_executor *x, const struct owner_extent *e, const struct owner_continuation *c)
++{
++    struct owner_descriptor *found = NULL;
++    unsigned i, count = 0;
++    if (!x || !e || !c || e->allocation_class != PEAR_FEX_CLASS_DISPATCHER ||
++        e->state != PEAR_FEX_PUBLISHED_RX || q->expected_state != PEAR_FEX_PUBLISHED_RX ||
++        !q->write_epoch || !c->epoch || e->epoch < c->epoch ||
++        x->state != PEAR_FEX_NATIVE_PINNED || x->role != e->role ||
++        x->continuation != c->id || x->allocation_id != e->id || x->generation != e->generation ||
++        x->epoch != c->epoch || q->operation_size != 4 || q->operation_offset != c->offset ||
++        (q->operation_offset & 3) || !range(q->operation_offset, 4, usable(e))) return NULL;
++    for (i = 0; i < PEAR_FEX_MEMORY_MAX_CONTINUATIONS; ++i)
++        if (owner.continuations[i].id && owner.continuations[i].executor == x->id &&
++            owner.continuations[i].id != c->id) return NULL;
++    for (i = 0; i < PEAR_FEX_MEMORY_MAX_DESCRIPTORS; ++i)
++        if (owner.descriptors[i].executor == x->id)
++        { found = &owner.descriptors[i]; ++count; }
++    if (count != 1 || !found || found->continuation != c->id || found->allocation_id != e->id ||
++        found->generation != e->generation || found->epoch != c->epoch || found->offset != c->offset)
++        return NULL;
++    return found;
 +}
 +
 +uint32_t pear_fex_memory_initialize(const struct pear_fex_memory_backend *backend,
@@ -824,6 +852,35 @@ diff --git a/dlls/ntdll/unix/pear_fex_memory.c b/dlls/ntdll/unix/pear_fex_memory
 +        x->allocation_id = e->id; x->generation = e->generation; x->epoch = e->epoch;
 +        x->state = PEAR_FEX_MANAGED_ACTIVE; reply(r, e, x, q->continuation_id);
 +        r->effective_protection = PEAR_FEX_PROTECTION_RX; break;
++    case PEAR_FEX_EXECUTOR_RESUME:
++    {
++        struct owner_descriptor *d;
++        uint64_t original_epoch;
++        if (!(d = resume_descriptor(q, x, e, c)))
++        { status = PEAR_FEX_INVALID_REQUEST; break; }
++        original_epoch = c->epoch;
++        if (e->epoch != q->write_epoch) { status = PEAR_FEX_STALE_IDENTITY; break; }
++        if (owner.gate_closed && (status = park(x, &error)) != PEAR_FEX_OK) break;
++        /* A park may release the mutex. Resolve every actual identity again,
++         * retaining the original pin until all native checks have completed. */
++        x = executor(q->executor_id); e = extent(q);
++        c = x && e ? continuation(q->continuation_id, x, e) : NULL;
++        if (!(d = resume_descriptor(q, x, e, c)) || c->epoch != original_epoch)
++        { status = PEAR_FEX_STALE_IDENTITY; break; }
++        if (e->epoch != q->write_epoch) { status = PEAR_FEX_STALE_IDENTITY; break; }
++        if (!owner.backend.entry(e->offset, usable(e), q->operation_offset, e->allocation_class, e->role))
++        { status = PEAR_FEX_INVALID_REQUEST; break; }
++        if (owner.backend.query(e->offset + (q->operation_offset & ~(PAGE-1)), PAGE,
++                                PEAR_FEX_PROTECTION_RX, &error))
++        { status = PEAR_FEX_NATIVE_FAILURE; break; }
++        /* Atomic commit: no fallible observation, mapping, allocation or wait
++         * follows. Existing dispatch releases its already-owned mutex. */
++        memset(c, 0, sizeof(*c)); memset(d, 0, sizeof(*d));
++        x->continuation = 0; x->allocation_id = e->id; x->generation = e->generation;
++        x->epoch = e->epoch; x->state = PEAR_FEX_MANAGED_ACTIVE;
++        reply(r, e, x, 0); r->effective_protection = PEAR_FEX_PROTECTION_RX;
++        break;
++    }
 +    case PEAR_FEX_EXECUTOR_EXIT:
 +        if (!e || q->expected_state != PEAR_FEX_PUBLISHED_RX || q->write_epoch != e->epoch ||
 +            x->state != PEAR_FEX_MANAGED_ACTIVE || x->allocation_id != e->id || x->generation != e->generation ||

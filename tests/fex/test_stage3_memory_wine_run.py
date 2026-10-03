@@ -95,7 +95,7 @@ class WineMemoryOutputControls(unittest.TestCase):
 
     def test_synthetic_wine_scope_has_distinct_readiness_and_view_observations(self):
         result=runner.owner_output(transcript(wine_rows()),CHILD,self.helper)
-        self.assertEqual((result['owner_calls'],result['refusals'],result['readiness_calls']),(936,140,3))
+        self.assertEqual((result['owner_calls'],result['refusals'],result['readiness_calls']),(964,153,3))
         self.assertEqual(result['shared_reservation_count'],38)
         self.assertTrue(result['wine_view_registration_observed']);self.assertFalse(result['checked_ec'])
         self.assertFalse(result['fex_initialization']);self.assertFalse(result['arm64ec_role_qualified'])
@@ -132,7 +132,7 @@ class WineMemoryOutputControls(unittest.TestCase):
     def test_bootstrap_snapshot_is_distinct_from_actual_wine_admission(self):
         rows=wine_rows();rows[0]['user_page']=rows[0]['vm_page']=4096
         result=runner.owner_output(transcript(rows),CHILD,self.helper)
-        self.assertEqual(result['owner_calls'],936)
+        self.assertEqual(result['owner_calls'],964)
         rows[0]['version']=True
         with self.assertRaises(Error):runner.owner_output(transcript(rows),CHILD,self.helper)
 

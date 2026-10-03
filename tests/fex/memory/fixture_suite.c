@@ -73,7 +73,7 @@ static int call(struct fixture *fixture, const char *control,
            response->write_epoch, response->executor_id, response->continuation_id,
            response->flags, response->lifecycle_state, response->effective_protection,
            response->capabilities, response->native_error_domain, response->native_error_code);
-    CHECK(fixture, response->version == 1 && response->size == 128 &&
+    CHECK(fixture, response->version == PEAR_FEX_MEMORY_VERSION && response->size == 128 &&
           status == response->status && status <= PEAR_FEX_QUARANTINED && !response->reserved0,
           "exact_response_header");
     CHECK(fixture, response->native_error_domain <= PEAR_FEX_ERROR_MACH &&
@@ -81,7 +81,7 @@ static int call(struct fixture *fixture, const char *control,
     if (status)
     {
         struct pear_fex_memory_response empty = {0};
-        empty.version = 1; empty.size = 128; empty.status = status;
+        empty.version = PEAR_FEX_MEMORY_VERSION; empty.size = 128; empty.status = status;
         empty.native_error_domain = response->native_error_domain;
         empty.native_error_code = response->native_error_code;
         CHECK(fixture, !memcmp(&empty, response, sizeof(empty)), "refusal_zero_facts");
@@ -204,11 +204,11 @@ static int execute_code(struct fixture *fixture, struct token *token, unsigned i
 static int malformed_controls(struct fixture *fixture, const struct token *token)
 {
     struct pear_fex_memory_request value = request(fixture, PEAR_FEX_QUERY);
-    value.version = 2;
+    value.version = 1;
     if (refusal(fixture, "version_mismatch", value)) return -1;
     value = request(fixture, PEAR_FEX_QUERY); value.size = 127;
     if (refusal(fixture, "record_size_mismatch", value)) return -1;
-    value = request(fixture, 14);
+    value = request(fixture, 15);
     if (refusal(fixture, "unknown_opcode", value)) return -1;
     value = request(fixture, PEAR_FEX_QUERY); value.flags = 1;
     if (refusal(fixture, "unknown_flags", value)) return -1;
@@ -375,11 +375,80 @@ static int abort_controls(struct fixture *fixture)
     if (emit_code(fixture, &token, 42) || execute_code(fixture, &token, 42, 0) || retire(fixture, &token)) return -1;
     return 0;
 }
+/* Actual owner operations on a real published dispatcher extent. These
+ * finite API controls do not initialize FEX or qualify source object lifetime. */
+static int atomic_resume_controls(struct fixture *fixture, struct token *token)
+{
+    struct pear_fex_memory_request value = request(fixture, PEAR_FEX_EXECUTOR_ENTRY);
+    struct pear_fex_memory_response response;
+    identity(&value, token); value.executor_id = fixture->executor;
+    value.write_epoch = token->facts.write_epoch; value.expected_state = PEAR_FEX_PUBLISHED_RX;
+    value.operation_size = 4;
+    if (success(fixture, "atomic_enter_dispatcher", value, &response)) return -1;
+    value.opcode = PEAR_FEX_EXECUTOR_HANDOFF;
+    if (success(fixture, "atomic_handoff_dispatcher", value, &response)) return -1;
+    const uint64_t original_continuation = response.continuation_id;
+    const uint64_t original_epoch = value.write_epoch;
+    CHECK(fixture, original_continuation && response.flags == PEAR_FEX_NATIVE_PINNED,
+          "atomic_original_dispatcher_pin");
+    const char *labels[] = {"atomic_wrong_size", "atomic_wrong_offset", "atomic_wrong_continuation",
+                           "atomic_missing_continuation", "atomic_stale_current_epoch", "atomic_old_wire_version",
+                           "atomic_wrong_generation", "atomic_wrong_executor", "atomic_wrong_role"};
+    for (unsigned int control = 0; control < 9; ++control)
+    {
+        struct pear_fex_memory_request resume = value;
+        resume.opcode = PEAR_FEX_EXECUTOR_RESUME; resume.continuation_id = original_continuation;
+        if (control == 0) resume.operation_size = 0;
+        else if (control == 1) resume.operation_offset = 4;
+        else if (control == 2) ++resume.continuation_id;
+        else if (control == 3) resume.continuation_id = 0;
+        else if (control == 4) ++resume.write_epoch;
+        else if (control == 5) resume.version = 1;
+        else if (control == 6) ++resume.generation;
+        else if (control == 7) ++resume.executor_id;
+        else resume.ec_role = fixture->platform->role == PEAR_FEX_ROLE_NATIVE ?
+                                  PEAR_FEX_ROLE_ARM64EC : PEAR_FEX_ROLE_NATIVE;
+        if (refusal(fixture, labels[control], resume)) return -1;
+        struct pear_fex_memory_request poll = value;
+        poll.continuation_id = original_continuation; poll.operation_size = 0;
+        if (success(fixture, "atomic_refusal_preserves_original_pin", poll, &response)) return -1;
+        CHECK(fixture, response.continuation_id == original_continuation &&
+              response.flags == PEAR_FEX_NATIVE_PINNED, "atomic_refusal_keeps_actual_pin");
+    }
+    value.opcode = PEAR_FEX_RETIRE; value.continuation_id = 0; value.operation_size = 0;
+    if (refusal(fixture, "atomic_retirement_preserves_original_pin", value)) return -1;
+    /* A real owner write advances the current epoch while the original
+     * descriptor/continuation remains pinned. The original instruction stays42. */
+    if (emit_code(fixture, token, 42)) return -1;
+    CHECK(fixture, token->facts.write_epoch > original_epoch, "atomic_real_epoch_advance");
+    value = request(fixture, PEAR_FEX_EXECUTOR_RESUME); identity(&value, token);
+    value.executor_id = fixture->executor; value.continuation_id = original_continuation;
+    value.write_epoch = original_epoch; value.expected_state = PEAR_FEX_PUBLISHED_RX;
+    value.operation_size = 4;
+    if (refusal(fixture, "atomic_original_epoch_requires_retry", value)) return -1;
+    value.write_epoch = token->facts.write_epoch;
+    if (success(fixture, "atomic_consume_original_pin_on_current_epoch", value, &response)) return -1;
+    CHECK(fixture, response.flags == PEAR_FEX_MANAGED_ACTIVE && !response.continuation_id &&
+          response.write_epoch == token->facts.write_epoch &&
+          response.lifecycle_state == PEAR_FEX_PUBLISHED_RX &&
+          response.effective_protection == PEAR_FEX_PROTECTION_RX,
+          "atomic_resume_active_without_continuation");
+    if (refusal(fixture, "atomic_consumed_continuation_cannot_repeat", value)) return -1;
+    value = request(fixture, PEAR_FEX_EXECUTOR_EXIT); identity(&value, token);
+    value.executor_id = fixture->executor; value.write_epoch = token->facts.write_epoch;
+    value.expected_state = PEAR_FEX_PUBLISHED_RX;
+    if (success(fixture, "atomic_exit_consumed_continuation", value, &response)) return -1;
+    CHECK(fixture, response.flags == PEAR_FEX_NATIVE_IDLE && !response.continuation_id,
+          "atomic_resume_checked_native_exit");
+    ++fixture->continuation_controls;
+    return 0;
+}
 static int dispatcher_controls(struct fixture *fixture)
 {
     struct token token = {0};
     if (reserve(fixture, &token, PEAR_FEX_CLASS_DISPATCHER, 16384) ||
-        emit_code(fixture, &token, 42) || execute_code(fixture, &token, 42, 0) ||
+        emit_code(fixture, &token, 42) || atomic_resume_controls(fixture, &token) ||
+        execute_code(fixture, &token, 42, 0) ||
         execute_code(fixture, &token, 42, 4096) || emit_code(fixture, &token, 84) ||
         execute_code(fixture, &token, 84, 0) || retire(fixture, &token)) return -1;
     return 0;

@@ -72,7 +72,7 @@ static int readiness_call(const char *control, struct pear_fex_memory_request *r
            "\"control\":\"%s\",\"opcode\":%u,\"returned_status\":%u,\"status\":%u,"
            "\"native_error_domain\":%u,\"native_error_code\":%d}\n", control, request->opcode, status,
            response->status, response->native_error_domain, response->native_error_code);
-    return status != PEAR_FEX_OK || response->status != PEAR_FEX_OK || response->version != 1 ||
+    return status != PEAR_FEX_OK || response->status != PEAR_FEX_OK || response->version != PEAR_FEX_MEMORY_VERSION ||
         response->size != 128 || response->reserved0 || response->native_error_domain || response->native_error_code;
 }
 int main(void)
@@ -91,7 +91,7 @@ int main(void)
      * an EC role. A checked bitmap capability, if observed, remains distinct
      * from performing source-qualified EC registration. */
     struct pear_fex_memory_request request = {0};
-    request.version = 1; request.size = 128; request.opcode = PEAR_FEX_EXECUTOR_REGISTER;
+    request.version = PEAR_FEX_MEMORY_VERSION; request.size = 128; request.opcode = PEAR_FEX_EXECUTOR_REGISTER;
     request.owner_pid = owner_pid; request.ec_role = PEAR_FEX_ROLE_NATIVE;
     struct pear_fex_memory_response response = {0};
     /* The selected export initializes only through admitted native REGISTER or

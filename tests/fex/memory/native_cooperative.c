@@ -53,13 +53,13 @@ static int worker_call(struct worker *worker, const char *control,
            response->executor_id, response->continuation_id, response->flags, response->write_epoch,
            response->native_error_domain, response->native_error_code);
     pthread_mutex_unlock(&shared->trace_mutex);
-    int valid = status == expected && response->status == expected && response->version == 1 &&
+    int valid = status == expected && response->status == expected && response->version == PEAR_FEX_MEMORY_VERSION &&
         response->size == 128 && !response->reserved0 && response->native_error_domain <= PEAR_FEX_ERROR_MACH &&
         (response->native_error_domain || !response->native_error_code);
     if (status)
     {
         struct pear_fex_memory_response zero = {0};
-        zero.version = 1; zero.size = 128; zero.status = status;
+        zero.version = PEAR_FEX_MEMORY_VERSION; zero.size = 128; zero.status = status;
         zero.native_error_domain = response->native_error_domain; zero.native_error_code = response->native_error_code;
         valid = valid && !memcmp(&zero, response, sizeof(zero));
     }
@@ -69,7 +69,7 @@ static int worker_call(struct worker *worker, const char *control,
 static struct pear_fex_memory_request worker_request(struct worker *worker, uint32_t opcode)
 {
     struct pear_fex_memory_request value = {0};
-    value.version = 1; value.size = 128; value.opcode = opcode;
+    value.version = PEAR_FEX_MEMORY_VERSION; value.size = 128; value.opcode = opcode;
     value.owner_pid = (uint64_t)getpid(); value.executor_id = worker->executor;
     return value;
 }

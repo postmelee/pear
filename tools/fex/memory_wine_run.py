@@ -33,6 +33,11 @@ else:
     import memory_wine_build as builder
     import memory_wine_bitmap as bitmap_policy
 
+if __package__:
+    from . import memory_resume_checks as atomic_checks
+else:
+    import memory_resume_checks as atomic_checks
+
 SCOPE = 'finite_ordinary_arm64_wine_memory_owner'
 BOUNDS = {'grace_ms':3000, 'terminate_ms':2000, 'kill_ms':5000, 'drain_ms':1000}
 TIMEOUT_MS = 180000
@@ -47,7 +52,7 @@ FALSE_FLAGS = ('fex_initialization','hybrid_execution','translated_guest_executi
                'arm64ec_role_qualified','ec_registration_qualified','runtime_qualified',
                'game_qualified','distribution_qualified','stage3_complete','runtime_eligible')
 PRODUCERS = tuple(sorted(set(materializer.PRODUCERS) |
-    {'tools/fex/memory_wine_run.py', 'tools/fex/memory_run.py', 'tools/fex/memory_wine_bitmap.py'} |
+    {'tools/fex/memory_wine_run.py', 'tools/fex/memory_run.py', 'tools/fex/memory_resume_checks.py', 'tools/fex/memory_wine_bitmap.py'} |
     {'tools/wine/' + name + '.py' for name in WINE_HELPERS}))
 
 
@@ -160,13 +165,13 @@ def suite_contract():
     Reuse decision: retain the source fixture and its reviewed control counts,
     but do not project fabricated native-admission rows into memory_run's parser.
     """
-    counts={'reserve_extent':103,'retire_extent':103,'begin_two_page_write':38,'publish_two_pages':38,
+    counts={'reserve_extent':103,'retire_extent':103,'begin_two_page_write':39,'publish_two_pages':39,
         'enter_owned_leaf':73,'exit_to_native_gate':73,'begin_cross_page_instruction_pair':1,
         'publish_cross_page_instruction_pair':1,'enter_before_source_continuation':1,
         'pin_saved_source_resume':1,'direct_owned_handoff_to_native':1,'poll_existing_owned_handoff':1,
         'admit_finite_saved_resume':127,'discard_owned_saved_resume':127,'release_original_pin_epoch':1,
         'begin_unpublished_abort_control':1,'abort_unpublished_window':1,
-        'register_actual_native_executor':1,'query_current_token':103,'mixed_extent_query_unavailable':111,
+        'register_actual_native_executor':1,'query_current_token':103,'mixed_extent_query_unavailable':112,
         'unregister_actual_native_executor':1}
     refusals={'version_mismatch':2,'record_size_mismatch':1,'unknown_opcode':1,'unknown_flags':1,
         'reserved_word':1,'reserved_word64':1,'foreign_owner':6,'stale_generation':6,'foreign_allocation':6,
@@ -184,7 +189,7 @@ def suite_contract():
         'publish_cross_page_instruction_pair':3,'enter_before_source_continuation':8,'pin_saved_source_resume':10,
         'direct_owned_handoff_to_native':13,'poll_existing_owned_handoff':13,'admit_finite_saved_resume':10,
         'discard_owned_saved_resume':11,'release_original_pin_epoch':11,'begin_unpublished_abort_control':2,
-        'abort_unpublished_window':4,'retire_extent':5,'unregister_actual_native_executor':12,'unknown_opcode':14,
+        'abort_unpublished_window':4,'retire_extent':5,'unregister_actual_native_executor':12,'unknown_opcode':15,
         'native_fixture_cannot_select_arm64ec_role':7,'wrapped_write_range':2,'source_guard_write':2,'empty_write':2,
         'ordinary_exit_cannot_drop_saved_resume':9,'nested_handoff_refused':13,'poll_requires_original_pin_epoch':13,
         'poll_requires_exact_resume_offset':13,'poll_requires_existing_continuation':13,
@@ -192,6 +197,8 @@ def suite_contract():
         'continuation_capacity_preserves_old_pins':10,'new_epoch_cannot_release_original_pin':11,
         'duplicate_retirement':5,'shared_capacity_exhausted':1,'fragmented_free_bytes_refused':1,
         'dispatcher_capacity_exhausted':1})
+    atomic_counts, atomic_refusals, atomic_opcodes = atomic_checks.controls()
+    counts.update(atomic_counts); refusals.update(atomic_refusals); opcodes.update(atomic_opcodes)
     return counts,refusals,opcodes
 
 
@@ -241,11 +248,12 @@ def owner_output(raw,child,helper):
                  'memory_wine_refusal_facts')
         counts[row['control']]+=1
     need(counts==counted,'memory_wine_control_counts')
+    atomic_checks.validate(calls, need)
     terminal={'version':1,'record_kind':'pear_fex_memory_fixture','scope':'wine_owner',
         'sequence':len(calls)+1,'event':'suite_complete','passed':True,'checked_ec':False,
         'owner_calls':len(calls),'refusals':sum(row['status']!=0 for row in calls),'allocations':103,
-        'retirements':103,'publications':39,'owned_code_calls':73,'protection_observations':81,
-        'patch_rounds':32,'fragmentation_controls':1,'continuation_controls':1,
+        'retirements':103,'publications':40,'owned_code_calls':73,'protection_observations':83,
+        'patch_rounds':32,'fragmentation_controls':1,'continuation_controls':2,
         'fex_initialization':False,'translated_guest_execution':False,'game_execution':False}
     same(rows[-2],terminal,'memory_wine_suite_terminal')
     finish=rows[-1]
@@ -256,7 +264,7 @@ def owner_output(raw,child,helper):
         'checked_ec':False,'ec_registration_exercised':False,'wine_view_registration':True,
         'fex_initialization':False,'translated_guest_execution':False,'game_execution':False,'exit_code':0}
     same({k:v for k,v in finish.items() if k!='virtual_query_observations'},wanted,'memory_wine_finish')
-    need(integer(finish['virtual_query_observations'],81,100000),'memory_wine_virtual_query_count')
+    need(integer(finish['virtual_query_observations'],83,100000),'memory_wine_virtual_query_count')
     shared=sum(row['control']=='reserve_extent' and row['status']==0 and row['extent_size']>=16777216
                for row in calls)
     need(shared==38,'memory_wine_shared_reservation_count')

@@ -11,7 +11,7 @@ SPEC.loader.exec_module(WIRE)
 
 def original_response(**fields):
     value = dict.fromkeys(WIRE.RESPONSE_NAMES, 0)
-    value.update(version=1, size=128)
+    value.update(version=2, size=128)
     value.update(fields)
     return WIRE.RESPONSE.pack(*(value[name] for name in WIRE.RESPONSE_NAMES))
 
@@ -29,6 +29,12 @@ class MemoryProtocolTests(unittest.TestCase):
             WIRE.request(owner_pid=True)
         with self.assertRaises(WIRE.ProtocolError):
             WIRE.request(operation_offset=1 << 64)
+
+    def test_abi2_refuses_old_or_unknown_wire_versions(self):
+        self.assertEqual(int.from_bytes(WIRE.request(opcode=14)[:4], "little"), 2)
+        for version in (0, 1, 3):
+            with self.subTest(version=version), self.assertRaises(WIRE.ProtocolError):
+                WIRE.response(original_response(version=version))
 
     def test_original_signed_ntstatus_is_preserved_in_refusal(self):
         raw = original_response(status=7, native_error_domain=2,

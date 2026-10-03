@@ -10,14 +10,14 @@
   "patches": [
     {
       "file": "memory/0003a-wine-owner-core.patch",
-      "sha256": "4447ee9328cf64b198a9b387ac3f70607e28865fd95dbbf7853138a0be5bfced",
+      "sha256": "70bf01c6bdf5b6b3ad7d36b369db77d4668243daf9cc8270fae460631573ba07",
       "license": "MIT (original Pear additions); baseline Wine LGPL-2.1-or-later files retain their notices",
       "sources": [
         {
           "path": "include/wine/pear_fex_memory.h",
           "preimage_sha256": null,
-          "postimage_sha256": "2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1",
-          "postimage_bytes": 6874
+          "postimage_sha256": "bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf",
+          "postimage_bytes": 6905
         },
         {
           "path": "dlls/ntdll/unix/pear_fex_memory_private.h",
@@ -28,8 +28,8 @@
         {
           "path": "dlls/ntdll/unix/pear_fex_memory.c",
           "preimage_sha256": null,
-          "postimage_sha256": "8d8effbbef90ef671c43a348bebb993d0a164b3d44fdd2dbbae49740895fe915",
-          "postimage_bytes": 37059
+          "postimage_sha256": "8999a814e9e85c0526602d13d9d8bea67a612b5f12c21cf1dbd6ca21a6bcd82d",
+          "postimage_bytes": 40520
         },
         {
           "path": "dlls/ntdll/unix/pear_pe_arena.h",
@@ -47,14 +47,14 @@
     },
     {
       "file": "memory/0003b-wine-owner-bridge.patch",
-      "sha256": "d5e70eca7b9c9b5da91c2f29fb7f62b5762af103825a653266df0046f16bdc1c",
+      "sha256": "20b04404e365cda100f9829cfbad38ae822d54b927cf6d9719c9933d863b2fbe",
       "license": "MIT (original Pear additions); baseline Wine LGPL-2.1-or-later files retain their notices",
       "sources": [
         {
           "path": "dlls/ntdll/unix/virtual.c",
           "preimage_sha256": "121787b1485c3c424c32e660a184ab0bee3206a9ed9486f99d247d80bfa9896b",
-          "postimage_sha256": "90de95689164e98ba3d027a9692ba0769222ae915749110712aa239d3dc5505e",
-          "postimage_bytes": 294404
+          "postimage_sha256": "d75164516a1ff8eb6ab5e7c53a20be41388ce7f6986c3536fcf79b793427ec6b",
+          "postimage_bytes": 295323
         },
         {
           "path": "dlls/ntdll/Makefile.in",

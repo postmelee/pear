@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import struct
 
+VERSION = 2
+
 REQUEST_NAMES = ('version', 'size', 'opcode', 'flags', 'owner_pid',
     'allocation_id', 'generation', 'write_epoch', 'executor_id', 'continuation_id',
     'extent_offset', 'extent_size', 'operation_offset', 'operation_size',
@@ -32,7 +34,7 @@ def request(**fields):
     if unknown:
         raise ProtocolError('unknown_request_field')
     value = dict.fromkeys(REQUEST_NAMES, 0)
-    value.update(version=1, size=128)
+    value.update(version=VERSION, size=128)
     value.update(fields)
     if any(type(v) is not int for v in value.values()):
         raise ProtocolError('non_integer_request_field')
@@ -47,7 +49,7 @@ def response(raw):
     if not isinstance(raw, bytes) or len(raw) != RESPONSE.size:
         raise ProtocolError('response_size')
     value = dict(zip(RESPONSE_NAMES, RESPONSE.unpack(raw)))
-    if value['version'] != 1 or value['size'] != 128:
+    if value['version'] != VERSION or value['size'] != 128:
         raise ProtocolError('response_header')
     if value['status'] not in range(9) or value['native_error_domain'] not in range(4):
         raise ProtocolError('response_status_domain')

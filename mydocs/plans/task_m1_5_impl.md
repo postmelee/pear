@@ -765,3 +765,78 @@ This is a rebuilt ntdll/fixture slice over the preserved #4 baseline install,
 not a freshly rebuilt entire runtime. It retains ABI1. No initializer,
 translated guest or game ran in this construction. Fresh signing, actual
 bitmap diagnosis and approved ABI2/source-lifetime work remain separate gates.
+
+
+### October 3 Actual Bitmap Failure Diagnosis
+
+Fresh runtime6 passed genuine current development authorization for39 native
+images and756 PE images; signed preparation executed no Wine. Fresh Run3 then
+entered the ordinary ARM64 fixture, passed readiness and registration, and
+failed its first shared reservation with owner status7 and native error0/0.
+The actual diagnostic mask was6176 (32+2048+4096): release classification
+returned-1, so native release was not attempted and original bitmap/PEB
+identities were not restored. Bitmap set/clear, RW cleanup and page-protection
+restoration passed; force-exec was false. This rules out the previously
+considered force-exec hypothesis for this run. No generated leaf, FEX
+initializer, translated instruction or game ran. Loader exit1 was retained;
+all owned processes were reaped, cleanup had no errors or observation gap,
+and the unrelated sentinel survived. Case receipt SHA-256:
+`87934dff2a07ea1f30fbe20c2fcb74068cfbdb6ea8fb2df70d07b8de5566aa53`;
+source-failure receipt
+`481514a320dd9080d7510b5521b9f96b86f776187f22c2ef97f1da29dce18144`.
+The prefix remains quarantined. Stage3 remains incomplete.
+
+Source inspection found the legacy reservation classifier uses a strict
+`area_start > view_end` comparison whereas Wine unmap uses half-open
+`area_start >= view_end`. Exact adjacency can therefore report partial overlap.
+Actual boundary geometry is unperformed; this is a source-supported candidate,
+not a confirmed runtime cause. A local bitmap classifier proposal preserves
+the generic Wine helper and every genuine partial-overlap/arena/native-error/
+restoration refusal. Independently review and test it before promotion. Combine
+any accepted fix with the approved ABI2 slice in the next fresh build to avoid
+redundant construction; retain Wine6 and its original diagnostic evidence.
+
+
+### October 3 ABI2 Owner Checkpoint — In Progress
+
+The reviewed atomic leaf now uses private paired wire version2, still128 bytes
+and Unix index10. The owner retains the actual original continuation and its
+epoch until current source identity, executor, offset, current extent epoch and
+RX observation pass. Re-resolution follows any mutex-releasing park. Only then
+is the original continuation consumed atomically into ACTIVE; no fallible
+operation follows the commit. Source Common retains the pre-call tuple as
+Unresolved on called or malformed uncertainty, without retry/ACTIVE authority.
+Core call-site replacement, sealed source entry and Context/thread lifetime
+remain unclosed; an owner protocol success does not qualify those source paths.
+
+The bitmap release fix changes only its local reservation classifier to
+half-open ranges; the generic Wine classifier and all original genuine-partial,
+restoration, native-error and quarantine refusals remain intact. Independent
+numeric review covered1197 cases and an actual ARM64 C metadata fixture passed
+32 cases. C receipt SHA-256:
+`bd288c3136f8db02f7aeedb2cef64ce69f963324fbd089add49006aeafbbefc3`.
+The actual failed Wine address geometry is still unperformed; its cause is not
+claimed fixed before a fresh integrated run.
+
+The original real C fixture adds nine malformed atomic-resume requests, each
+followed by an actual original-pin poll, then a real owner write, old-current-
+epoch refusal, current-epoch resume, consumed-pin refusal and checked native
+exit. Seventy-two portable wire/transcript controls passed. A freshly built,
+individually authorized/signed native owner passed964 calls,153 controlled
+refusals,40 publications,83 protection observations and73 owned leaf calls.
+The separate cooperative fixture passed four owned workers,32 schedules,96
+handoffs/leaf calls,30 writes and96 actual wire polls. Both owned sessions
+reaped their owner and sentinel with complete cleanup, no cleanup errors and
+no observation gaps. Native receipt SHA-256:
+`24d0f0737fd25779240ddd335053d2f3f3605c863a08c93661ef8b0683110aef`.
+These are finite ordinary ARM64 prototype results, not Wine EC registration,
+FEX initialization, translated guest, game, general race-freedom or distribution
+qualification. All corresponding eligibility flags remain false.
+
+The first combined Wine attempt rejected an extra manifest field before
+compilation (`memory_wine_series_geometry`). The existing closed geometry
+schema was retained; authoritative wire-version2 lives in the exact paired
+header. That failed receipt remains preserved. The next fresh constructor
+combines only the reviewed bitmap boundary fix and ABI2 owner/fixture sources
+against the same qualified #4 baseline; no obsolete build is relabelled.
+Stage3 remains in progress with full metadata/lifetime/source gates open.
