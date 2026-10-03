@@ -517,6 +517,25 @@
           "preimage_sha256": "597be805df33ae88a67d3052cd02c9a8fc502e92d6b1b9dcc0297f3ee90c22e7"
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/14-0003k-fex-dispatcher-retirement-include.patch",
+      "git_file": "memory/source-graph/git/14-0003k-fex-dispatcher-retirement-include.git.patch",
+      "git_sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "dispatcher-retirement-include",
+      "order": 14,
+      "provenance_manifest": "memory/source-graph/provenance/14-dispatcher-retirement-include.json",
+      "provenance_sha256": "770978414d189b35dacd9e8d4fdf86592abc53edd7aa518462c4f766dae50ce5",
+      "sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 7965,
+          "postimage_sha256": "cafcffe5a53b33f989ae38f974b440e46411d5c680b427dd1f7993e8f95282db",
+          "preimage_sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f"
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -540,7 +559,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 13,
+    "layer_count": 14,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }

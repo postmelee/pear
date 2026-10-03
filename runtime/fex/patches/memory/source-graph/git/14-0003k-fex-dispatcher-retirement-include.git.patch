@@ -1,0 +1,11 @@
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+@@ -8,6 +8,7 @@
+ #include <FEXCore/fextl/memory.h>
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ #include <FEXCore/Utils/PearFEXMemory.h>
++#include <FEXCore/Utils/PearFEXRetirement.h>
+ #ifdef VIXL_SIMULATOR
+ #error Pear owner source hooks require the selected native dispatcher.
+ #endif

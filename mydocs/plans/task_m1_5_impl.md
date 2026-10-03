@@ -975,3 +975,46 @@ The complete current FEX suite then passed449 controls with one APFS skip;
 governance checked22 documents/172 local targets and the diff check passed.
 These include source-only Git and explicitly labelled portable control scopes;
 there is still no initializer/game qualification.
+
+
+### October 3 Actual Compiler Refusals and Complete Source Regression
+
+The first real supplemental FEX constructor passed native configure/build/
+fixture and ARM64EC configuration, then failed compilation because Dispatcher.h
+used Retirement without including its declaration. Its immutable failed receipt
+is `9826f46195f6a907813411227d934652a10e843594f25ab14eb48caa498c4474`.
+The new layer14 adds only the required conditional PearFEXRetirement.h include;
+the first13 strict layers and all closed eligibility gates remain unchanged.
+
+Two source-preparation attempts refused malformed newly written metadata before
+creating any output: a required provenance field was absent, then a final source
+row used postimage rather than inventory field names. Both preparation failures
+are retained. A new regression replays the entire actual selected baseline and
+complete graph when available, with an explicit unavailable skip otherwise.
+It detected the second defect before any compiler or initializer was called.
+
+The corrected source5 projection passed28 real Git check/apply commands and an
+independent final-byte check:6963 files /40,437,680 bytes,36 affected source paths
+and12 additions. The final manifest is
+`abd8987ac5027540dcdc4c04059f9394b248224deb61abc89d6318d310081495`,
+the graph is `6fe637dcd7f952836bbb3653b128f2016c8df26c942fc3a30b4440cd1c1cdcf1`,
+and actual source control is
+`d0a3279c5a840e112552230ad445fd3ebe51eb77b172051d42e5bdf80ec4a36d`.
+The complete FEX suite passed450 controls with one APFS case-collision skip.
+
+The second actual constructor again passed the native operations and ARM64EC
+configuration, then refused a missing UniqueSpinMutex template parameter in
+the selected unaligned-handler source. Failed receipt:
+`bc12916f8ce2a3e9110355428a2413ab8788922e5a11db4da9be3b9ca471875b`.
+Both original compiler logs and failed source/objects remain; neither is a
+successful full module build, load, initialization or guest qualification.
+
+Inspection of that actual RelWithDebInfo build also confirmed
+ENABLE_ASSERTIONS=OFF. Pinned LogManager.h therefore evaluates
+LOGMAN_THROW_A_FMT predicates without enforcing refusal. Pear's admission and
+lifetime predicates cannot depend on this optional upstream assertion policy.
+A separate always-on, no-exception Pear guard derivative must be independently
+reviewed before any FEX initialization. Original upstream assertions, security
+permissions and historical source layers remain unchanged. Whole metadata,
+actual source lifetime/entry/Core, complete compiler/link and empty initialization
+gates remain open; Stage3 remains incomplete.

@@ -18,7 +18,7 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         self.assertEqual(manifest['preserved_abi'], {
             'fex_unixlib_services': 8, 'wire_record_bytes': 128, 'ntdll_unix_index': 10, 'wire_version': 2})
         self.assertTrue(all(v is False for v in manifest['source_gates'].values()))
-        self.assertEqual(len(manifest['patches']), 13)
+        self.assertEqual(len(manifest['patches']), 14)
         row = manifest['patches'][0]
         raw = (root / row['file']).read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(), row['sha256'])
@@ -43,6 +43,17 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
             postimages[entry['path']] = after
         self.assertEqual(set(postimages), set(sections))
         return manifest, postimages, sections
+
+    def test_complete_current_graph_matches_actual_selected_source_if_available(self):
+        from tools.fex import memory_fex_check as current
+        baseline = ROOT / '.build/task5/stage2-modules3'
+        if not (baseline / 'build.json').is_file():
+            self.skipTest('Actual selected Stage 2 baseline unavailable; complete graph replay unperformed')
+        graph = ROOT / 'runtime/fex/patches/memory/source-graph'
+        observed = current.selected_projection(baseline, graph)
+        proposal = json.loads((graph / 'final-source-proposal.json').read_bytes())
+        self.assertEqual(observed['source_files'], proposal['files'])
+        self.assertEqual(observed['layer_count'], 14)
 
     def test_closed_additive_layer_reproduces_every_postimage(self):
         self.materialized()

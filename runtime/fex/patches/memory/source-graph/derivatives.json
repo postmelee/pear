@@ -63,8 +63,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
-      "sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f",
-      "size_bytes": 7920
+      "sha256": "cafcffe5a53b33f989ae38f974b440e46411d5c680b427dd1f7993e8f95282db",
+      "size_bytes": 7965
     },
     {
       "mode": 420,
@@ -854,6 +854,34 @@
         "sha256": "52c56fe33d0e87e2ecab3a069526c2f47a55de4c7ab5bd595d8bbe10f0b4cef2",
         "size_bytes": 802
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 7965,
+          "postimage_sha256": "cafcffe5a53b33f989ae38f974b440e46411d5c680b427dd1f7993e8f95282db",
+          "preimage_sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/14-0003k-fex-dispatcher-retirement-include.git.patch",
+        "sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
+        "size_bytes": 515
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "dispatcher-retirement-include",
+      "order": 14,
+      "source_manifest": {
+        "path": "provenance/14-dispatcher-retirement-include.json",
+        "sha256": "770978414d189b35dacd9e8d4fdf86592abc53edd7aa518462c4f766dae50ce5",
+        "size_bytes": 1188
+      },
+      "strict_patch": {
+        "path": "strict/14-0003k-fex-dispatcher-retirement-include.patch",
+        "sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
+        "size_bytes": 515
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -879,8 +907,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "d42123d27a66c7090d86cea2830eb2dc1366d000935513f2d20a5668d94d981e",
-    "size_bytes": 27410
+    "sha256": "be674f90ee7605d72e33f6bccb4e7f1568d11c06dce10e936016138dac1ccc2f",
+    "size_bytes": 28491
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",
