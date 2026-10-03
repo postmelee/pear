@@ -1,0 +1,204 @@
+{
+  "format_version": 1,
+  "inspected_producers": [
+    {
+      "path": "tools/dxmt/build_native.py",
+      "sha256": "decbf173ec806def181133111fa0536e4d125516cf4ea633bb5c82a080f68765"
+    },
+    {
+      "path": "tools/dxmt/deterministic_monitor.py",
+      "sha256": "d12c420ba6efd1c9020fa6385066b6acc80438836fd83817d0afeeb3fcfadc92"
+    },
+    {
+      "path": "tools/dxmt/deterministic_pair.py",
+      "sha256": "aa34d972492e2aacdc35b60421ec5880496173896098f32598378d7c995f22b0"
+    },
+    {
+      "path": "tools/dxmt/pairing_monitor.py",
+      "sha256": "78751b39e38b9323c39e36df1ba64d6f5a17b2ea07090b3c8a58306c54753a52"
+    }
+  ],
+  "kind": "dated_build_timing_analysis",
+  "method": {
+    "builds_or_diagnostic_commands_executed": false,
+    "command_spans": "serial_top_level_monitored_commands",
+    "command_time_includes_supervisor_overhead": true,
+    "controlled_performance_experiment": false,
+    "full_provenance_replay_performed": false,
+    "later_independent_comparison_included": false,
+    "native_qualification_included": false,
+    "remainder": "wrapper_elapsed_ms_minus_command_sum_ms",
+    "wrapper_lock_wait_included": false
+  },
+  "observations": {
+    "path": "mydocs/working/task_m1_7_stage5_reconstruction_observations.json",
+    "pinned_sha256": "4c7bac2dbb731ddeaf40db01308d0a2a168c19d77b3c8e404342cb6ac26dece1",
+    "planning_working_copy_sha256": "8a3d8fda4cb037e95f2425ff086d3f295134d08a8cd14f942e47de19964756a1",
+    "planning_working_copy_status": "historical_digest_only_not_retained_here"
+  },
+  "operator_source": {
+    "label": "retained_local_build7_build8_wrapper",
+    "public_source_copy_retained": false,
+    "sha256": "35863db8fe67ce9cff4cd14db2e07a1bdec69fd854d25a0789e6ab88dcd90ee7"
+  },
+  "review_date": "2026-10-04",
+  "runs": [
+    {
+      "build_record_sha256": "fb5648ddb21836b5f0a80a1e546910ee3f46fb9a563a54c1197fe3743cd5dce1",
+      "commands": [
+        {
+          "elapsed_ms": 15851,
+          "exit_code": 0,
+          "id": "wine.configure",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 15702,
+          "exit_code": 0,
+          "id": "wine.driver",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1501,
+          "exit_code": 0,
+          "id": "fixture.compile",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 8614,
+          "exit_code": 0,
+          "id": "dxmt.configure",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 82978,
+          "exit_code": 0,
+          "id": "dxmt.compile",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1509,
+          "exit_code": 0,
+          "id": "builtin.d3d11.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1558,
+          "exit_code": 0,
+          "id": "builtin.dxgi.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1549,
+          "exit_code": 0,
+          "id": "builtin.d3d10core.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1535,
+          "exit_code": 0,
+          "id": "builtin.winemetal.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1529,
+          "exit_code": 0,
+          "id": "dxmt.install",
+          "stop_reason": null
+        }
+      ],
+      "derived": {
+        "command_sum_ms": 132326,
+        "dxmt_compile_ms": 82978,
+        "unattributed_ms": 770050,
+        "unattributed_percent": 85.34
+      },
+      "label": "small_stub_reference",
+      "operator_receipt": {
+        "elapsed_ms": 902376,
+        "exit_code": 0,
+        "phase": "build7"
+      },
+      "operator_receipt_sha256": "d93facf569f505236c856687c9d3c246398f558ca05fff0d15d46ef3be1135d1"
+    },
+    {
+      "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
+      "commands": [
+        {
+          "elapsed_ms": 15879,
+          "exit_code": 0,
+          "id": "wine.configure",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 15779,
+          "exit_code": 0,
+          "id": "wine.driver",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1528,
+          "exit_code": 0,
+          "id": "fixture.compile",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 8661,
+          "exit_code": 0,
+          "id": "dxmt.configure",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 70049,
+          "exit_code": 0,
+          "id": "dxmt.compile",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1524,
+          "exit_code": 0,
+          "id": "builtin.d3d11.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1534,
+          "exit_code": 0,
+          "id": "builtin.dxgi.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1536,
+          "exit_code": 0,
+          "id": "builtin.d3d10core.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1533,
+          "exit_code": 0,
+          "id": "builtin.winemetal.dll",
+          "stop_reason": null
+        },
+        {
+          "elapsed_ms": 1545,
+          "exit_code": 0,
+          "id": "dxmt.install",
+          "stop_reason": null
+        }
+      ],
+      "derived": {
+        "command_sum_ms": 119568,
+        "dxmt_compile_ms": 70049,
+        "unattributed_ms": 773943,
+        "unattributed_percent": 86.62
+      },
+      "label": "small_stub_candidate",
+      "operator_receipt": {
+        "elapsed_ms": 893511,
+        "exit_code": 0,
+        "phase": "build8"
+      },
+      "operator_receipt_sha256": "7accc5fdc754ff5b1054fe2ad5f7ec120bae76cc053d99d73cf07e6869c86f89"
+    }
+  ],
+  "source_commit": "e41b7bd7daaab707c3609693ff11e14af6f2d085"
+}

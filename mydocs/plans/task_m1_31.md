@@ -2,7 +2,7 @@
 
 GitHub Issue: [#31](https://github.com/postmelee/pear/issues/31)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: task plan and document locations approved; implementation plan prepared for approval.
+Status: task and implementation plans approved; Stage 1 complete; Stage 2 awaiting explicit continuation.
 Planning date: October 4, 2026 (Asia/Seoul).
 
 ## Purpose
@@ -243,6 +243,13 @@ constitute approval of the newly specified document locations or later stages.
 
 The subsequent explicit continuation approved this scope, document-location
 judgment and three-stage sequence. The [implementation plan](task_m1_31_impl.md)
-now specifies artifacts and verification. Implementation-plan approval and
-Stage 1 execution are the next gate under the task workflow; later stage
-transitions still require explicit continuation.
+now specifies artifacts and verification. A further explicit continuation approved the implementation plan and Stage 1.
+Later stage transitions still require explicit continuation.
+
+
+## Stage 1 Result — October 4, 2026
+
+The [Stage 1 report](../working/task_m1_31_stage1.md) records completed source
+identity, projection, arithmetic and documentation checks. The two original runs
+remain unchanged; the pinned Git observation digest is distinguished from the
+plan's historical working-copy digest. Stage 2 awaits explicit continuation.
