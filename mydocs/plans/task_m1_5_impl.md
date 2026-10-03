@@ -1452,3 +1452,46 @@ complete allocation costs or runtime RSS. The 256 KiB added-metadata gate still
 needs allocation rounding, concurrent/retained object counts, static placement,
 stack peaks and Wine/PMR provider attribution. All initialization, translated
 execution, complete metadata and Stage3 completion claims remain false.
+
+
+### October 4 Source-Bound Allocation Classes and PMR Layouts
+
+The requester explicitly continued the existing Stage 3 work. This checkpoint
+uses the approved tests and internal observation/plan locations; it introduces
+no product document, runtime patch, permission or budget change. The original
+compile-only PMR fixture is retained at `tests/fex/pmr_layout.cpp`; allowlisted
+results are in `mydocs/working/task_m1_5_stage3_layout_observations.json`.
+
+Root reused the exact Source24 compiler, closed source/header envelope and
+bounded supervisor. Both new ordinary ARM64 data-only compiles exited 0; all
+1,116/1,094 dependencies were admitted and the three independent post-checks
+passed. The objects were never linked or loaded. Control identity:
+`02332fa2f6b2293f134a110c7f6d73e336a9d898a6bce5a31a3842e4228d3f1f`.
+
+The actual owner/baseline map objects are both 32 bytes, PMR resource objects
+both 64 bytes and polymorphic allocators both 8 bytes. The selected libc++ map
+node is 64 versus 56 bytes, with mapped values 16 versus 8. Its private node alias
+was reconciled with the pinned map/__tree headers. The initial empty map takes
+one source-calculated 4,096-byte PMR buffer on either route; this is not an
+observed commit/RSS result. No linked node is inserted by the finite empty
+fixture, and later population/clear growth needs its own accounting.
+
+The Source24 six-allocation comparison uses the unchanged upstream rpmalloc
+classes and real measured alignments. For one instance of each selected object,
+class-block deltas are 160 bytes for the combined CodeBuffer/control block,
+192 for Dispatcher, 368 for Arm64JITCore, 512 for ContextImpl, and 0 for
+GuestToHostMap/InternalThreadState: 1,232 bytes total. The bit-index classifier
+agreed with a separate linear class-table oracle for 131,072 bounded requests.
+This conditional subtotal excludes embedded aliases and cannot qualify total
+metadata, multiplicity, backing-page deltas or retention. The fixture's
+Storage/Invoked/Retained member sum is 4,476 bytes before linked placement gaps.
+
+Source inspection found another lifetime obligation: the selected upstream
+named_monotonic_page_buffer_resource exposes release(), but defines no
+destructor invoking it, and the selected GuestToHostMap has no call to that
+release(). The Windows VirtualFree wrapper also discards its native return
+value. This is a source finding, not an observed runtime leak, and inherited
+allocator reuse cannot establish physical release. Exact selected source
+identities and the current false qualification flags are preserved. Linked
+static/provider proof, complete concurrent/retained counts, stack peaks and
+Wine view/vprot attribution still block the 262,144-byte gate. Stage 3 continues.

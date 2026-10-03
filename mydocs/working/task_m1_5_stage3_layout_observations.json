@@ -1,0 +1,348 @@
+{
+  "FEX_initialization": false,
+  "allocation_classes": [
+    {
+      "allocation_identity": "allocate_shared.ControlBlock",
+      "block_delta_bytes": 160,
+      "instance_count_for_comparison": 1,
+      "owner_disabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 64,
+        "class_index": 4,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 56,
+        "size_bytes": 56,
+        "usable_bytes_unobserved": true
+      },
+      "owner_enabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 224,
+        "class_index": 14,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 216,
+        "size_bytes": 216,
+        "usable_bytes_unobserved": true
+      }
+    },
+    {
+      "allocation_identity": "GuestToHostMap",
+      "block_delta_bytes": 0,
+      "instance_count_for_comparison": 1,
+      "owner_disabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 176,
+        "class_index": 11,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 176,
+        "size_bytes": 176,
+        "usable_bytes_unobserved": true
+      },
+      "owner_enabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 176,
+        "class_index": 11,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 176,
+        "size_bytes": 176,
+        "usable_bytes_unobserved": true
+      }
+    },
+    {
+      "allocation_identity": "Dispatcher",
+      "block_delta_bytes": 192,
+      "instance_count_for_comparison": 1,
+      "owner_disabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 544,
+        "class_index": 34,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 544,
+        "size_bytes": 544,
+        "usable_bytes_unobserved": true
+      },
+      "owner_enabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 736,
+        "class_index": 46,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 728,
+        "size_bytes": 728,
+        "usable_bytes_unobserved": true
+      }
+    },
+    {
+      "allocation_identity": "Arm64JITCore",
+      "block_delta_bytes": 368,
+      "instance_count_for_comparison": 1,
+      "owner_disabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 448,
+        "class_index": 28,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 448,
+        "size_bytes": 448,
+        "usable_bytes_unobserved": true
+      },
+      "owner_enabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 816,
+        "class_index": 51,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 808,
+        "size_bytes": 808,
+        "usable_bytes_unobserved": true
+      }
+    },
+    {
+      "allocation_identity": "ContextImpl",
+      "block_delta_bytes": 512,
+      "instance_count_for_comparison": 1,
+      "owner_disabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 1536,
+        "class_index": 66,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 1328,
+        "size_bytes": 1328,
+        "usable_bytes_unobserved": true
+      },
+      "owner_enabled": {
+        "alignment": 8,
+        "allocation_performed": false,
+        "block_bytes": 2048,
+        "class_index": 68,
+        "class_page_bytes": 65536,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 1904,
+        "size_bytes": 1904,
+        "usable_bytes_unobserved": true
+      }
+    },
+    {
+      "allocation_identity": "InternalThreadState",
+      "block_delta_bytes": 0,
+      "instance_count_for_comparison": 1,
+      "owner_disabled": {
+        "alignment": 4096,
+        "allocation_performed": false,
+        "block_bytes": 16384,
+        "class_index": 80,
+        "class_page_bytes": 4194304,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 16384,
+        "size_bytes": 12288,
+        "usable_bytes_unobserved": true
+      },
+      "owner_enabled": {
+        "alignment": 4096,
+        "allocation_performed": false,
+        "block_bytes": 16384,
+        "class_index": 80,
+        "class_page_bytes": 4194304,
+        "committed_page_delta_unobserved": true,
+        "effective_request_bytes": 16384,
+        "size_bytes": 12288,
+        "usable_bytes_unobserved": true
+      }
+    }
+  ],
+  "allocation_provider": "pinned upstream rpmalloc; source arithmetic only",
+  "allocator_executed": false,
+  "class_oracle_comparisons": 131072,
+  "excluded_embedded_aliases": [
+    "CodeBuffer is inside allocate_shared.ControlBlock",
+    "CpuStateFrame is inside InternalThreadState",
+    "CRTPlan and Report are inside fixture State/Storage"
+  ],
+  "fixture_static_member_sum_bytes": 4476,
+  "game_qualified": false,
+  "metadata_budget_qualified": false,
+  "object_loaded": false,
+  "observed_on": "2026-10-04",
+  "pmr_buffer_request_scope": "one empty map; source calculation, not observed allocation",
+  "pmr_compiles": [
+    {
+      "dependency_entries": 1116,
+      "exit_code": 0,
+      "object_sha256": "424decfbc51f8b8531b9892760a71f99dc7f7a2a8b2a74317a773b00226c8df8",
+      "unit": 13
+    },
+    {
+      "dependency_entries": 1094,
+      "exit_code": 0,
+      "object_sha256": "07b0ae61a1e31451fdfa365ff411cd6d3c55dfe48abf7b0c4b111a09e04e5e2f",
+      "unit": 14
+    }
+  ],
+  "pmr_first_buffer_owner_baseline_delta_bytes": 0,
+  "pmr_first_buffer_request_bytes": 4096,
+  "pmr_fixture_sha256": "c3352090e261c59beb90bb2255503e09e49b2ebbf017dfff155547b4725dcce2",
+  "pmr_layout_control_sha256": "02332fa2f6b2293f134a110c7f6d73e336a9d898a6bce5a31a3842e4228d3f1f",
+  "pmr_layouts": [
+    {
+      "FEX_initialization": false,
+      "compiler_or_source_admitted_by_extractor": false,
+      "data_only_extraction": true,
+      "format": "coff-arm64-object",
+      "metadata_budget_qualified": false,
+      "object_loaded": false,
+      "object_sha256": "424decfbc51f8b8531b9892760a71f99dc7f7a2a8b2a74317a773b00226c8df8",
+      "owner_calls": false,
+      "rows": [
+        {
+          "bytes_or_count": 32,
+          "id": 600,
+          "name": "Map.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 601,
+          "name": "Map.align"
+        },
+        {
+          "bytes_or_count": 64,
+          "id": 602,
+          "name": "Map.node.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 603,
+          "name": "Map.node.align"
+        },
+        {
+          "bytes_or_count": 64,
+          "id": 604,
+          "name": "Resource.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 605,
+          "name": "Resource.align"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 606,
+          "name": "Allocator.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 607,
+          "name": "Allocator.align"
+        },
+        {
+          "bytes_or_count": 16,
+          "id": 608,
+          "name": "MappedType.size"
+        },
+        {
+          "bytes_or_count": 4096,
+          "id": 609,
+          "name": "FEX_PAGE_SIZE"
+        }
+      ],
+      "unit": 13
+    },
+    {
+      "FEX_initialization": false,
+      "compiler_or_source_admitted_by_extractor": false,
+      "data_only_extraction": true,
+      "format": "coff-arm64-object",
+      "metadata_budget_qualified": false,
+      "object_loaded": false,
+      "object_sha256": "07b0ae61a1e31451fdfa365ff411cd6d3c55dfe48abf7b0c4b111a09e04e5e2f",
+      "owner_calls": false,
+      "rows": [
+        {
+          "bytes_or_count": 32,
+          "id": 600,
+          "name": "Map.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 601,
+          "name": "Map.align"
+        },
+        {
+          "bytes_or_count": 56,
+          "id": 602,
+          "name": "Map.node.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 603,
+          "name": "Map.node.align"
+        },
+        {
+          "bytes_or_count": 64,
+          "id": 604,
+          "name": "Resource.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 605,
+          "name": "Resource.align"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 606,
+          "name": "Allocator.size"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 607,
+          "name": "Allocator.align"
+        },
+        {
+          "bytes_or_count": 8,
+          "id": 608,
+          "name": "MappedType.size"
+        },
+        {
+          "bytes_or_count": 4096,
+          "id": 609,
+          "name": "FEX_PAGE_SIZE"
+        }
+      ],
+      "unit": 14
+    }
+  ],
+  "pmr_post_checks": {
+    "envelopes": true,
+    "references": true,
+    "tools": true
+  },
+  "pmr_release_observation": "The selected resource has an explicit release method but no resource destructor invoking it; no selected GuestToHostMap caller invokes it. Windows VirtualFree wrapper discards the native return value. Physical release is unqualified.",
+  "prior_layout_control_sha256": "8a3d70034d4b5f62c6fdf55ac5b91de5e66735238de1fa610da94334b6d6eef6",
+  "record_kind": "fex_stage3_partial_layout_observations",
+  "runtime_eligible": false,
+  "schema_version": 1,
+  "scope": "compile_only_and_source_arithmetic",
+  "selected_one_each_class_delta_bytes": 1232,
+  "source_manifest_sha256": "9833aa29c2bc04778f195ffdffd2ab95038be4270df5f442c8acd45c04670b83",
+  "stage3_complete": false,
+  "unresolved": [
+    "linked static padding and provider closure",
+    "concurrent and failure-retained object counts",
+    "whole call-stack peak",
+    "Wine view/vprot allocation attribution",
+    "PMR physical release and failure retention"
+  ]
+}
