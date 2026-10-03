@@ -3,7 +3,7 @@
 Task plan: [`task_m1_7.md`](task_m1_7.md)
 GitHub Issue: [#7](https://github.com/postmelee/pear/issues/7)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stages 1–3 are implemented; actual results are in their stage reports. The requester explicitly approved Stage 4 on October 3, 2026; its typed-driver implementation and finite native verification are complete and recorded in the Stage 4 report. Stage 5 remains planned.
+Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stages 1–3 are implemented; actual results are in their stage reports. The requester explicitly approved Stage 4 on October 3, 2026; its typed-driver implementation and finite native verification are complete and recorded in the Stage 4 report. The requester explicitly approved Stage 5 continuation on October 3, 2026; reconstruction and its required verification remain in progress.
 
 ## Applicable Context and Reuse
 
@@ -342,3 +342,63 @@ On October 2, 2026, the requester explicitly approved the reviewed official Meta
 After reviewing both completed Stage 2 reports and bundled commits, the requester explicitly continued in the same thread. This authorizes Stage 3 artifact construction for #7 and the concrete executable-memory design review for #5. The #5 owner prototype still requires explicit approval of that completed design; later stages retain their own checkpoints.
 
 On October 3, 2026, the requester explicitly approved the completed Task #5 concrete single-address memory-owner design and continuation to Task #7 Stage 4 in the same thread. This authorizes Task #5 Stage 3 implementation/prototype within its reviewed capacity, ABI, synchronization, permission and finite verification scope, and Task #7 typed-driver implementation/native verification within its approved plan. Later stages, guest/game execution, new security or shared-scope changes and PR publication retain their separate gates.
+
+
+On October 3, 2026, the requester explicitly continued in the same thread,
+approving Stage 5 within the completed Stage 4 handoff and approved reconstruction
+and documentation scope. The requester also authorized incremental GitHub
+preservation of important results and pruning unnecessary repeated local outputs.
+Completed Stages 1–4 are preserved on `codex/publish-task7`. Keep unique source,
+producer, command, failure and inventory records before removing redundant
+generated payloads, and retain current dependency donors. A pruned historical
+payload is unavailable for complete replay; retained receipts do not substitute
+for its bytes. Upload only reviewed source and sanitized observations, never
+private diagnostic/signing/profile/prefix/game/account data. This supersedes
+blanket retention of redundant generated payloads. Root serializes shared Wine,
+heavy builds, native execution, cleanup and publication with fresh disk admission.
+Stage 5 completion/final publication still require actual verification; no merge,
+Issue closure or ordinary-user release is authorized by this continuation.
+
+
+### Stage 5 Finalized CLI and Verification Boundaries
+
+Finalize the approved routine CLI against the existing paired builder and
+independent checker. New `tools/dxmt/reproduce.py` and `compare.py` reconstruct
+the complete conceptual unsigned Wine payload, DXMT install and selected
+compiler/built/generated/shader outputs. Reuse the unchanged
+`pairing_build.construct`, `pairing_check.verify_build` and native-evidence
+reader. Keep `tools/dxmt/verify.py` and every historical producer unchanged,
+since those bytes are part of accepted prerequisite identities.
+
+```sh
+python3 -B tools/dxmt/reproduce.py --artifact .build/task7/stage3-build --reference .build/task7/stage4-build6 --output .build/task7/stage5-reconstruction1 --max-growth-bytes 4294967296 --reserve-free-bytes 4294967296 --require-empty
+python3 -B tools/dxmt/reproduce.py --complete --native-evidence <matching-reference-or-final-candidate-run> --output .build/task7/stage5-reconstruction1 --require-complete
+python3 -B tools/dxmt/reproduce.py --verify --output .build/task7/stage5-reconstruction1 --require-complete
+```
+
+The owned candidate is the sibling `stage5-reconstruction1-candidate`, respecting
+the existing immediate-child output policy. Construction creates immutable
+`construction.json` only after actual fresh source/compiler reconstruction and
+strict raw comparison; this is not completion. Explicit finalization then binds
+matching actual finite native evidence and creates `reproduction.json` once.
+The existing Stage4 evidence may be reused only when complete unsigned payloads
+and all selected source/settings match exactly; this does not transfer signing
+permission. Changed or unexplained bytes refuse and retain both inventories.
+No metadata allowance is preselected. A new same-candidate native run, when
+needed, requires its own current admission and reviewed diagnostics.
+
+The source-only private coordinator/comparator checkpoint passed59 portable
+controls; native gates were explicit doubles and fixtures were ordinary plain
+bytes. Root changed only proposal comments and portable test discovery/temp-root
+selection before repository integration. Actual fresh construction/comparison
+and final native binding remain unperformed at this checkpoint. Existing Stage4
+source/receipt identities and all runtime/game/distribution exclusions remain.
+
+
+The repository-integrated Stage5 tools passed59 targeted portable controls and
+all343 graphics portable regression controls. The actual standalone `--help`
+entrypoint passed. Governance checked22 documents/172 local targets and the diff
+check passed. These are Python/source/refusal checks, with explicit native-gate
+doubles; fresh component construction and native binding remain unperformed.
+The retained final Stage4 build independently replayed under the unchanged
+original checker before selective duplicate-source pruning.
