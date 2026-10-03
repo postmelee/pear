@@ -117,6 +117,17 @@ candidate execution all pass.
 The selected deterministic recipe fixes Windows compilation directories and
 `SOURCE_DATE_EPOCH`, sends the original shader bytes through bounded stdin,
 and binds the actual Metal resource directory and four original recipe options.
+The current candidate also adds `-Wl,-objc_stubs_small` to native C/C++ link
+settings. On October 4, repeated links of identical inputs exposed two raw
+winemetal outputs with the default linker settings; the small-stub option
+produced identical whole bytes in eleven trials. Two fresh full builds and
+native execution of this changed recipe remain unperformed.
+[Apple describes this option](https://developer.apple.com/videos/play/wwdc2022/110363/)
+as a size-oriented alternative with an additional call indirection. Its runtime
+performance impact here is unmeasured; this is a scoped reproducibility
+workaround, not a speed improvement. Windows cross settings and shader inputs
+are unchanged. See the [partial observations](../../mydocs/working/task_m1_7_stage5_reconstruction_observations.json)
+for trial counts and explicit incomplete gates.
 It does not rewrite generated binaries or normalize comparison differences.
 The observer admits only the source-bound Wine locale link and narrowly checked
 transient Metal module-cache lock links. The original process supervisor still

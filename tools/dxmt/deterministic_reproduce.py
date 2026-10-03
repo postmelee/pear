@@ -17,7 +17,7 @@ import sys
 from types import SimpleNamespace
 
 HERE=Path(__file__).resolve().parent
-NATIVE_SOURCE_PIN='d1681b698a4adc25ab99d9628746ff52a2f23c6d27051bd6aa9aaf7bf39cc1e0'
+NATIVE_SOURCE_PIN='3b3c89ebe71b14069280eb0287edf20c3303212dbf3c462bbffb33d0e6ed452d'
 
 
 def capture_native_source(root):
@@ -123,7 +123,7 @@ def source_signature(value,adapter):
          and p['fresh_native_evidence_required']is True,'det_reproduction_recipe')
     # The fixed compilation directory is independently derived by the new reader.
     # This identity compares source/options, never erases product bytes.
-    semantic={key:p[key]for key in ['schema_version','source_date_epoch','stable_wine_objects',
+    semantic={key:p[key]for key in ['schema_version','native_link_options','source_date_epoch','stable_wine_objects',
         'debug_compilation_directory_flag','source_interface','shader_options','shader_inputs','normalization',
         'raw_product_comparison_required','fresh_native_evidence_required']}
     return native.digest(encoded({'predecessor_source_signature':base,'recipe':semantic,

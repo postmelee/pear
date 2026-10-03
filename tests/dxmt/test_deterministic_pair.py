@@ -99,6 +99,26 @@ class Recipe(Temporary):
         self.assertIn(' -- "$@"',raw);self.assertIn('*) exit 64',raw)
 
 
+class NativeLinkOptions(Temporary):
+    def fixture(self):
+        return (b"[binaries]\nc = '/native clang'\n[built-in options]\nc_args = ['-O2']\n"
+                b"c_link_args = ['-arch', 'arm64', '-isysroot', '/SDK with spaces', '-mmacosx-version-min=14.0']\n"
+                b"cpp_link_args = ['-arch', 'arm64', '-isysroot', '/SDK with spaces', '-mmacosx-version-min=14.0']\n")
+    def test_native_link_options_preserve_compiler_and_compile_flags(self):
+        raw=self.fixture();result=pair.native_link_file(raw)
+        self.assertEqual(result.replace(b", '-Wl,-objc_stubs_small'",b''),raw)
+        self.assertEqual(result.count(b'-Wl,-objc_stubs_small'),2)
+    def test_missing_duplicate_or_preconfigured_link_flags_refused(self):
+        raw=self.fixture()
+        for value in (raw.replace(b'cpp_link_args',b'other'),
+                      raw+raw.splitlines(keepends=True)[-1],
+                      pair.native_link_file(raw),raw.replace(b"'arm64'",b"'x86_64'")):
+            with self.subTest(value=value),self.assertRaises(reuse.Error):pair.native_link_file(value)
+    def test_nonliteral_configuration_refused_without_execution(self):
+        raw=self.fixture().replace(b"['-arch', 'arm64', '-isysroot', '/SDK with spaces', '-mmacosx-version-min=14.0']",b"run_untrusted()",1)
+        with self.assertRaises(reuse.Error):pair.native_link_file(raw)
+
+
 @unittest.skipUnless(QUAL is not None,'optional actual Metal controls require PEAR_TEST_QUALIFICATION')
 class MetalControlEnvironment(Temporary):
     def context(self):
@@ -482,7 +502,8 @@ class TemplateInputs(Temporary):
         v=self.template();before=copy.deepcopy(v);metal.materialize(v,self.root);self.assertEqual(v,before)
     def test_relative_root_template_preserves_whole_generated_bytes(self):
         a=self.root/'short';b=self.root/'sixteen-more-characters';a.mkdir();b.mkdir()
-        generated=mock.Mock(return_value={'native.ini':(b'original native configuration',0o644)})
+        native_raw=b"[binaries]\nc = '/clang'\n[built-in options]\nc_args = ['-O2']\nc_link_args = ['-arch', 'arm64', '-isysroot', '/sdk', '-mmacosx-version-min=14.0']\ncpp_link_args = ['-arch', 'arm64', '-isysroot', '/sdk', '-mmacosx-version-min=14.0']\n"
+        generated=mock.Mock(return_value={'native.ini':(native_raw,0o644),'cross.ini':(b'guest-original',0o644)})
         h={'common':object(),'stage3':type('Stage3',(),{'generated_bytes':generated})()}
         cap={'selected':{'metal':{'path':'/actual/metal'},'metallib':{'path':'/actual/metallib'}}}
         record={'native_tools':{'python':{'path':'/actual/python'}}}
@@ -493,6 +514,8 @@ class TemplateInputs(Temporary):
             second=pair.generated_inputs(h,b,{}, {},self.root,record,cap,{},
                 {'PATH':str(b/'bin')+':/native','TMPDIR':str(b/'tmp'),'SOURCE_DATE_EPOCH':'0'}, {'resource_ref':{'path':'/sealed/catalog','sha256':'b'*64}})
         self.assertEqual(first[0],second[0]);self.assertNotEqual(first[1]['root'],second[1]['root'])
+        self.assertEqual(first[0]['cross.ini'],(b'guest-original',0o644))
+        self.assertEqual(generated.return_value['native.ini'],(native_raw,0o644))
         self.assertNotIn(str(a).encode(),first[0]['shader-inputs.json'][0])
         self.assertNotIn(str(b).encode(),second[0]['bin/xcrun'][0])
     def test_wrapper_does_not_embed_owned_root_or_parent_traversal(self):

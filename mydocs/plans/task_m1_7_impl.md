@@ -930,3 +930,63 @@ preserve raw logs and whole output hashes. This diagnostic does not execute a
 library, substitute for a fresh build or authorize final native qualification.
 The archival work started in the requester's side chat uses the same lock;
 its process and retention plan are not modified here. Stage 5 remains open.
+
+
+### 2026-10-04: Bounded Link Trials and Storage Coordination
+
+The complete-inventory comparison was deliberately interrupted after the
+independently established primary raw mismatch. Its original failure record
+retains `KeyboardInterrupt` during `independent_two_product_replay`; no complete
+inventory equality or completed comparator failure diagnosis is claimed. The
+private operator receipt records the reason. Only the verified owned comparator
+was signalled; archive workers were untouched.
+
+The first diagnostic stopped before linker execution because its input collector
+mistook an install-name option for an input file. The corrected diagnostic
+preserves that failure and uses argument arrays, fresh output directories,
+process-group deadlines, bounded logs/output and unchanged disk reserves.
+Thirty-one actual links completed with selected input hashes unchanged:
+
+| Link setting | Attempts | Distinct whole output hashes |
+|---|---:|---:|
+| Original baseline | 3 | 2 |
+| `-reproducible` | 3 | 2 |
+| `-no_deduplicate` | 3 | 2 |
+| Explicit `-lobjc` | 8 | 2 |
+| `-ld_classic` | 3 | 2 |
+| `-objc_stubs_small` | 11 across two diagnostic batches | 1 |
+
+The small-stub output is 47,162,160 bytes, SHA-256
+`8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9`.
+Baseline trials reproduce both original build hashes. The installed classic
+linker emits a deprecation/removal warning and did not solve the difference.
+No linked output was loaded or executed. Private original logs retain deployment
+target warnings. Counts and selected-input identity do not establish universal
+linker determinism, same-source clean compilation or runtime correctness.
+
+Reuse decision: adopt Apple's documented `-objc_stubs_small` as the next
+construction candidate, retaining the current native linker and upstream source.
+[Apple WWDC22, Improve app size and runtime performance](https://developer.apple.com/videos/play/wwdc2022/110363/)
+explains the separate selector/call stubs and their size/performance tradeoff;
+reviewed October 4, 2026. This is a reproducibility workaround, not a performance
+improvement. Its runtime cost is unmeasured. Apply the option only in generated
+native C/C++ linker settings; preserve Windows cross configuration, compilation
+flags, shaders, original prerequisite records and every historical producer.
+Recipe policy advances to version 3 and binds the option into independent source
+comparison. Update the explicit constructor and native source pins. Do not
+reinterpret build5/build6 as products of the changed constructor.
+
+Targeted deterministic suites ran 149 tests: 141 passed, eight optional private
+input tests skipped. Controls cover exact native-option changes, unchanged
+compiler/guest configuration, missing/duplicate/malformed/preconfigured options,
+and link-option changes affecting the source signature. The earlier full
+518-test DXMT and 842-test Wine runs belong to the preceding source checkpoint.
+Current full regression, two fresh constructions, exact final inventories and
+same-candidate native qualification remain pending.
+
+A user-authorized request relayed from the storage side chat prioritizes its
+ongoing iCloud retention work. Finish the already-running targeted tests, then
+start no new build or verification until that cleanup completes. Documentation
+and this source checkpoint may be preserved on GitHub. No archive process is
+interrupted or modified. Stage 5 remains in progress; no guest/game/distribution
+scope changes or qualification claims follow.

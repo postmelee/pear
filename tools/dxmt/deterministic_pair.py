@@ -2,7 +2,7 @@
 """Distinct deterministic graphics construction and independent byte replay.
 
 Historical producers/receipts are immutable prerequisites. This constructor
-changes only exact derived compiler environments and owned shader input.
+changes exact derived compiler environments, native link options and owned shader input.
 """
 from __future__ import annotations
 import argparse
@@ -53,6 +53,7 @@ OWN_FILES={'tools/dxmt/deterministic_pair.py':'deterministic_pair.py',
            'tools/dxmt/deterministic_monitor.py':'deterministic_monitor.py',
            'tools/dxmt/reuse-pins.json':'reuse-pins.json'}
 ADDITIONS=('constructor_sources','recipe_policy','qualification_ref','shader_commands','shader_spec_ref')
+NATIVE_LINK_FLAG='-Wl,-objc_stubs_small'
 STABLE_WINE_OBJECTS='/pear/reconstruction/wine/objects'
 WINE_COMPILATION_DIRECTORY_FLAG='-fdebug-compilation-dir='+STABLE_WINE_OBJECTS
 QUAL_FIELDS={'schema_version','record_kind','scope','original_ref','wine_control_ref','metal_control_ref',
@@ -84,7 +85,7 @@ def environments(old_wine,old_dxmt,physical,invocation):
 
 
 def policy(root,invocation):
-    return {'schema_version':2,'source_date_epoch':'0','stable_wine_objects':STABLE_WINE_OBJECTS,
+    return {'schema_version':3,'native_link_options':[NATIVE_LINK_FLAG],'source_date_epoch':'0','stable_wine_objects':STABLE_WINE_OBJECTS,
         'debug_compilation_directory_flag':WINE_COMPILATION_DIRECTORY_FLAG,'source_interface':'stdin_exact_original_bytes',
         'shader_options':metal.EXTRAS,'shader_inputs':{name:{'sha256':pin[0],'size_bytes':pin[1]}
             for name,pin in metal.SOURCES.items()},'normalization':'none',
@@ -669,6 +670,26 @@ def wrapper(root,python,selected,spec_sha):
       '*) exit 64;;\nesac\n').encode()
 
 
+def native_link_file(raw):
+    """Change only native C/C++ link options; keep guest and shader inputs intact."""
+    need(type(raw)is bytes and len(raw)<=65536,'det_native_link_file_bound')
+    lines=raw.decode('utf-8').splitlines(keepends=True)
+    seen=set()
+    for index,line in enumerate(lines):
+        match=re.match(r'^(c_link_args|cpp_link_args) = (.*)\n$',line)
+        if match is None:continue
+        name,encoded_args=match.groups()
+        need(name not in seen,'det_native_link_duplicate');seen.add(name)
+        try:args=ast.literal_eval(encoded_args)
+        except (ValueError,SyntaxError):raise Error('det_native_link_args')
+        need(type(args)is list and len(args)==5 and args[:3]==['-arch','arm64','-isysroot']
+             and type(args[3])is str and args[3].startswith('/')
+             and args[4]=='-mmacosx-version-min=14.0','det_native_link_args')
+        lines[index]=name+' = '+repr([*args,NATIVE_LINK_FLAG])+'\n'
+    need(seen=={'c_link_args','cpp_link_args'},'det_native_link_fields')
+    return ''.join(lines).encode()
+
+
 def generated_inputs(h,root,inputs,prepared,tools_root,tool_record,cap,roots,env,qualification_value):
     selected=cap['selected'];c=h['common']
     tool=external_fact(selected['metal']['path'],c)
@@ -680,7 +701,10 @@ def generated_inputs(h,root,inputs,prepared,tools_root,tool_record,cap,roots,env
     spec={'schema_version':1,'record_kind':'dxmt_shader_stdin_spec','root':metal.ROOT_TOKEN,
         'metal':tool,'environment':template,'adapter_sha256':digest(adapter),
         'resources_ref':qualification_value['resource_ref']}
-    generated=h['stage3'].generated_bytes(inputs,prepared,tools_root,tool_record,cap,roots)
+    generated=dict(h['stage3'].generated_bytes(inputs,prepared,tools_root,tool_record,cap,roots))
+    native_raw,native_mode=generated['native.ini']
+    need(native_mode==0o644,'det_native_link_file_mode')
+    generated['native.ini']=(native_link_file(native_raw),native_mode)
     generated['bin/xcrun']=(wrapper(root,tool_record['native_tools']['python']['path'],selected,digest(encoded(spec))),0o755)
     generated['bin/metal_stdin.py']=(adapter,0o644)
     generated['shader-inputs.json']=(encoded(spec),0o644)
@@ -960,7 +984,7 @@ def main(argv=None):
                  and args.reserve_free_bytes is not None,'det_construct_arguments');construct(args,repo)
         else:verify_build(args.output,repo)
         print(encoded({'record_kind':KIND,'build_replayed':args.verify,'pair_constructed':True,
-            'recipe':'source_bound_stdin_epoch_fixed_compilation_directory_v2','raw_reproduction_complete':False,
+            'recipe':'source_bound_stdin_epoch_fixed_compilation_directory_small_stubs_v3','raw_reproduction_complete':False,
             'native_engine_execution_performed':False,'gpu_execution_performed':False,'game_qualified':False,
             'runtime_eligible':False}).decode(),end='');return 0
     except Exception as error:

@@ -262,7 +262,7 @@ class CoordinatorRepairs(Temporary):
     def test_source_signature_includes_actual_fixed_flag(self):
         old=SimpleNamespace(source_signature=lambda value:'old')
         adapter=SimpleNamespace(capture=SimpleNamespace(load=lambda path:old))
-        value={'recipe_policy':{'schema_version':2,'source_date_epoch':'0',
+        value={'recipe_policy':{'schema_version':3,'native_link_options':['-Wl,-objc_stubs_small'],'source_date_epoch':'0',
             'stable_wine_objects':'/pear/reconstruction/wine/objects',
             'debug_compilation_directory_flag':'-fdebug-compilation-dir=/pear/reconstruction/wine/objects',
             'source_interface':'stdin_exact_original_bytes','shader_options':{},'shader_inputs':{},
@@ -271,6 +271,9 @@ class CoordinatorRepairs(Temporary):
         first=reproduction.source_signature(value,adapter)
         value['recipe_policy']['debug_compilation_directory_flag']='altered'
         self.assertNotEqual(first,reproduction.source_signature(value,adapter))
+        second=reproduction.source_signature(value,adapter)
+        value['recipe_policy']['native_link_options']=[]
+        self.assertNotEqual(second,reproduction.source_signature(value,adapter))
 
 
 class ReviewContextJSON(unittest.TestCase):
