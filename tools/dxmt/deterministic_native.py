@@ -20,7 +20,7 @@ import sys
 from types import SimpleNamespace
 
 HERE=Path(__file__).resolve().parent
-CONSTRUCTOR_PIN_SHA='1d540d60e03e27a019b24c46b4ecbb282d26093e903b3cd97f8e6e77681b726c'
+CONSTRUCTOR_PIN_SHA='de00f6306e49df551efab363f96751a9cdc897ddc12606e976f398c89eac9e2b'
 PIN_SHA='b0240dff62d8b152ee40650ee3b363f6ed4a35b6a2f9a2176fa9050435e65ff4'
 OWN={'tools/dxmt/deterministic_native.py':'deterministic_native.py',
      'tools/dxmt/native-pins.json':'native-pins.json',

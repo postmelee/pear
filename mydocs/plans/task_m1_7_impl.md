@@ -688,3 +688,66 @@ partial grouping is not a complete required minimum. Fresh storage/reserve
 checks apply to each operation. The new graphics constructor is replaying current input qualification;
 no fresh product has been created at this checkpoint. Complete raw comparison
 and current native qualification remain unperformed. These storage observations do not complete Stage5.
+
+### October 3 Preserved Shader Timeout and Bounded Stdin Repair
+
+The fresh constructor6 attempt completed genuine Wine configure, Wine driver
+build, fixture compilation and DXMT configure. DXMT compilation then failed:
+three selected shaders succeeded and dxmt_command exceeded the original
+600-second bound (600093 ms, exit -9, empty logs). The complete failed product
+is preserved at identity
+`c97567412a4ec2771772c706d22117f4f3df5df76d7decdc5156f2af9189fba9`.
+Its shader failure receipt remains
+`0fec1ec9a935c731902e43af8be1f1055952afc70045ca114b2a2a122279be78`.
+
+Selected Python3.13's communicate retry omits scheduling remaining stdin bytes
+when a timeout is retried with None. Root reproduced that condition with a
+controlled delayed consumer: a 20,732-byte payload stalled at 16,384 bytes with
+stdin still open. The original Metal call's offset was not measured; this is
+separate actual controlled evidence and a likely explanation, not retrospective
+proof of that shader's offset. Its control is
+`4a4cb698f64f90d40e0574a81fdcc792202842176e1ec76dad5a6230d71af9a6`.
+
+The independently reviewed helper now owns a nonblocking write offset and EOF,
+retaining the existing deadline, periodic log bounds and primary/cleanup errors.
+Root's fresh small probe delivered all 20,732 controlled bytes, closed stdin and
+observed exit 0. All four original Metal recipes returned 0 and whole AIR bytes
+matched their original counterparts. The 379 resource facts were identical
+before and after. Probe identity:
+`f8094bf2513fd259659a7d0fab82c8b797690cad5a2a5e1dc1d3d373c4cbe563`.
+This is compiler/transport evidence, not native, GPU, guest or game execution.
+
+The first 489-test regression exposed seven unchanged explicit native-source
+pins after helper promotion; its original failure is preserved. The separately
+reviewed repair updates only the helper manifest member and its two enclosing
+source hash literals, preserving every strict verification guard. The helper
+is now `2e5833192d3d3411fa4cfeac4729451ae05ff861ee85c242d07247fd0a5c969e`.
+The new manifest, native adapter and coordinator identities are respectively
+`de00f6306e49df551efab363f96751a9cdc897ddc12606e976f398c89eac9e2b`,
+`7bec079ee92d95f6b0e19f2774d2689731aac58f86f26d74f7a6bc59388b78db` and
+`4a05a4a7735e0f57eda5465b10d0a42902163e22381cd5eaecc7dc709ce268e7`.
+
+Root's targeted 155-test run passed with eight explicit optional private-input
+skips. The complete 498-test attempt had four errors and one failure because
+actual free space fell below inherited storage reserves, plus eight skips;
+it is not recorded as a full passing run. No reserve was lowered. Two genuinely
+new complete products, strict comparison and fresh final-candidate native
+qualification remain pending. Earlier successful native evidence is not
+transferred to this new helper/source chain. Stage5 remains in progress.
+
+### Latest User-Requested Storage Inventory
+
+Fresh folder allocation observations totaled 156.882 GiB: primary workspace
+4.908 GiB, prior Wine worktree 133.676 GiB, prior source worktree 0.727 GiB,
+current FEX worktree 9.292 GiB, current graphics worktree 6.658 GiB and
+Pear-named temporary entries 1.622 GiB. Inventory identity:
+`94e59a1cbe1bc1702cbc7ce37a4a5aa45479ddc266a1e0752432e217794ee012`.
+This observed retention footprint is not a required minimum. APFS shared
+extents can be counted repeatedly; unique physical allocation was not measured.
+Compared with the earlier 178.078 GiB inventory the folder aggregate is
+21.196 GiB lower, including intervening construction. Another builder is active;
+volume free-space movement cannot be attributed entirely to Pear. Whole-build
+admission floors of 6 GiB for graphics and 8 GiB for FEX are operation policies,
+not a claim that the whole project needs only those amounts. Complete minimum
+storage remains unmeasured; old repeated build retention is the main reduction
+opportunity. Current donors, unique failures and private user state are retained.

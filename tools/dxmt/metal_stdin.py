@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import json
 import os
+import selectors
 from pathlib import Path, PurePosixPath
 import stat
 import subprocess
@@ -169,6 +170,72 @@ def stop(process):
     return observed,errors
 
 
+def pump_stdin(process,raw,handles,start):
+    """Deliver owned bytes once; retain offset across bounded readiness waits."""
+    need(type(raw)is bytes,'shader_stdin_bytes')
+    selector=None;offset=0;closed=False;close_attempted=False;primary=None;cleanup=[]
+    stream=process.stdin
+    def capture(operation,error):
+        row={'operation':operation,'error':getattr(error,'code',type(error).__name__)}
+        if isinstance(error,OSError):row['native_error']={'domain':'posix_errno','code':error.errno}
+        cleanup.append(row)
+    def close_input():
+        nonlocal close_attempted,closed
+        if close_attempted:return
+        close_attempted=True
+        try:stream.close();closed=True
+        except BaseException as error:capture('close_stdin',error);raise
+    def bounds():
+        remaining=TIMEOUT-(time.monotonic()-start)
+        need(remaining>0,'shader_timeout')
+        for handle in handles:need(os.fstat(handle.fileno()).st_size<=MAX_LOG,'shader_output_bound')
+        return min(.1,remaining)
+    try:
+        need(stream is not None and not stream.closed,'shader_stdin_missing')
+        descriptor=stream.fileno();os.set_blocking(descriptor,False)
+        selector=selectors.DefaultSelector()
+        if raw:selector.register(descriptor,selectors.EVENT_WRITE)
+        else:close_input()
+        view=memoryview(raw)
+        while True:
+            interval=bounds();observed=process.poll()
+            if observed is not None:
+                need(type(observed)is int,'shader_compiler_exit_unknown')
+                need(observed==0,'shader_compiler_exit')
+                need(offset==len(raw)and closed,'shader_stdin_incomplete');break
+            if closed:
+                try:process.wait(timeout=interval)
+                except subprocess.TimeoutExpired:continue
+                continue
+            try:ready=selector.select(interval)
+            except InterruptedError:continue
+            bounds()
+            for key,events in ready:
+                need(key.fd==descriptor and events&selectors.EVENT_WRITE,'shader_stdin_event')
+                chunk=view[offset:offset+65536]
+                try:written=os.write(descriptor,chunk)
+                except(InterruptedError,BlockingIOError):continue
+                need(type(written)is int and 0<written<=len(chunk),'shader_stdin_write_count')
+                offset+=written
+                if offset==len(raw):
+                    selector.unregister(descriptor);close_input();break
+    except BaseException as error:primary=error
+    finally:
+        if stream is not None and not close_attempted:
+            try:close_input()
+            except BaseException as error:
+                if primary is None:primary=error
+        if selector is not None:
+            try:selector.close()
+            except BaseException as error:
+                capture('close_stdin_selector',error)
+                if primary is None:primary=error
+    if primary is not None:
+        if cleanup:primary.shader_stdin_cleanup_errors=cleanup
+        raise primary
+    return offset
+
+
 def command(spec,argv):
     root=directory(spec['root']);selected=plan(spec,argv);ident=selected['id']
     directory(root/'objects');directory(root/'shader-evidence');directory(root/'shader-cache')
@@ -193,16 +260,7 @@ def command(spec,argv):
         process=subprocess.Popen(value['argv'],stdin=subprocess.PIPE,stdout=handles[0],stderr=handles[1],
                                  cwd=value['cwd'],env=value['environment'])
         value['process_started']=True
-        input_pending=raw
-        while True:
-            if time.monotonic()-start>TIMEOUT:
-                value['bound_outcome']='timeout';raise Error('shader_timeout')
-            for handle in handles:
-                need(os.fstat(handle.fileno()).st_size<=MAX_LOG,'shader_output_bound')
-            try:
-                process.communicate(input=input_pending,timeout=.1);break
-            except subprocess.TimeoutExpired:
-                input_pending=None
+        need(pump_stdin(process,raw,handles,start)==len(raw),'shader_stdin_incomplete')
         value['exit_code']=process.returncode
         for handle in handles:need(os.fstat(handle.fileno()).st_size<=MAX_LOG,'shader_output_bound')
         need(type(process.returncode)is int and process.returncode==0,'shader_compiler_exit')
@@ -214,10 +272,13 @@ def command(spec,argv):
     except BaseException as error:
         primary=error;value['error']=getattr(error,'code',type(error).__name__)
         if isinstance(error,OSError):value['native_error']={'domain':'posix_errno','code':error.errno}
+        input_cleanup=getattr(error,'shader_stdin_cleanup_errors',[])
+        if input_cleanup:value.setdefault('cleanup_errors',[]).extend(input_cleanup)
         if process is not None:
             value['exit_code'],cleanup=stop(process)
-            if cleanup:value['cleanup_errors']=cleanup
+            if cleanup:value.setdefault('cleanup_errors',[]).extend(cleanup)
         if value['error']=='shader_output_bound':value['bound_outcome']='output_limit'
+        if value['error']=='shader_timeout':value['bound_outcome']='timeout'
     finally:
         for index,handle in enumerate(handles):
             try:handle.close()

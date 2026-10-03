@@ -328,16 +328,16 @@ class FailedCompiler(Temporary):
         self.assertFalse(v['compilation_attempted']);self.assertFalse(v['process_started'])
     def test_nonzero_real_mock_exit_not_relabelled_zero(self):
         _,spec,args=self.fixture();process=mock.Mock(returncode=7);process.poll.return_value=7;process.wait.return_value=7
-        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process):
+        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process),mock.patch.object(metal,'pump_stdin',side_effect=lambda _p,raw,_h,_s:len(raw)):
             with self.assertRaises(metal.Error):metal.command(spec,args)
         v=json.loads((self.root/'shader-evidence/dxmt_command.failed.json').read_bytes())
         self.assertEqual(v['exit_code'],7);self.assertTrue(v['process_started']);self.assertFalse(v['passed'])
     def test_primary_communication_errno_survives_kill_and_wait_failure(self):
         _,spec,args=self.fixture();primary=OSError(13,'original communicate failure')
-        process=mock.Mock();process.communicate.side_effect=primary;process.poll.return_value=None
+        process=mock.Mock();process.poll.return_value=None
         process.kill.side_effect=OSError(22,'secondary kill failure')
         process.wait.side_effect=OSError(10,'secondary wait failure')
-        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process):
+        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process),mock.patch.object(metal,'pump_stdin',side_effect=primary):
             with self.assertRaises(OSError)as caught:metal.command(spec,args)
         self.assertIs(caught.exception,primary)
         v=json.loads((self.root/'shader-evidence/dxmt_command.failed.json').read_bytes())
@@ -359,18 +359,18 @@ class FailedCompiler(Temporary):
         self.assertIsNone(exit_code);self.assertEqual(rows,[{'operation':'wait','error':'TimeoutExpired'}])
     def test_timeout_retains_attempt_argv_and_unknown_post_kill_exit(self):
         _,spec,args=self.fixture();process=mock.Mock();process.poll.return_value=None
-        process.communicate.side_effect=metal.subprocess.TimeoutExpired('metal',.1)
         process.wait.side_effect=metal.subprocess.TimeoutExpired('metal',5)
         ticks=iter([0,0,601,602])
-        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process),mock.patch.object(metal.time,'monotonic',side_effect=lambda:next(ticks)):
+        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process),mock.patch.object(metal.time,'monotonic',side_effect=lambda:next(ticks)),mock.patch.object(metal,'pump_stdin',side_effect=metal.Error('shader_timeout')):
             with self.assertRaises(metal.Error):metal.command(spec,args)
         v=json.loads((self.root/'shader-evidence/dxmt_command.failed.json').read_bytes())
         self.assertEqual(v['bound_outcome'],'timeout');self.assertIsNone(v['exit_code']);self.assertTrue(v['argv'])
     def test_fast_oversized_output_refused_after_exit(self):
         _,spec,args=self.fixture();process=mock.Mock(returncode=0);process.poll.return_value=0;process.wait.return_value=0
-        def communicate(**_):(self.root/'shader-evidence/dxmt_command.stderr').write_bytes(b'x'*(metal.MAX_LOG+1))
-        process.communicate.side_effect=communicate
-        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process):
+        def pump(_p,raw,_h,_s):
+            (self.root/'shader-evidence/dxmt_command.stderr').write_bytes(b'x'*(metal.MAX_LOG+1))
+            return len(raw)
+        with self.cwd(),mock.patch.object(metal.subprocess,'Popen',return_value=process),mock.patch.object(metal,'pump_stdin',side_effect=pump):
             with self.assertRaises(metal.Error):metal.command(spec,args)
         v=json.loads((self.root/'shader-evidence/dxmt_command.failed.json').read_bytes())
         self.assertEqual(v['bound_outcome'],'output_limit');self.assertEqual(v['exit_code'],0);self.assertFalse(v['passed'])
