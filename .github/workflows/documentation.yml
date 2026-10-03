@@ -1,4 +1,4 @@
-name: Documentation
+name: Documentation and portable verifiers
 
 'on':
   pull_request:
@@ -26,3 +26,122 @@ jobs:
         run: python3 tools/check_governance.py
       - name: Test the governance checker
         run: python3 -m unittest discover -s tests/docs -p 'test_*.py' -v
+
+  portable-verifiers:
+    name: Portable verifier (${{ matrix.suite }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: source-inventory
+            directory: tests/sources
+            pattern: test_inventory.py
+          - suite: wine-report
+            directory: tests/wine
+            pattern: test_verification.py
+          - suite: wine-inputs
+            directory: tests/wine
+            pattern: test_inputs.py
+          - suite: unsigned-comparison
+            directory: tests/wine
+            pattern: test_unsigned_compare.py
+          - suite: abi-review
+            directory: tests/wine
+            pattern: test_abi_review.py
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Record execution context
+        run: |
+          git rev-parse HEAD
+          python3 --version
+          git --version
+          uname -sm
+      - name: Run the selected synthetic verifier suite
+        env:
+          TEST_DIRECTORY: ${{ matrix.directory }}
+          TEST_PATTERN: ${{ matrix.pattern }}
+          TMPDIR: ${{ runner.temp }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import json
+          import os
+          import sys
+          import unittest
+          from pathlib import Path
+
+          suite = unittest.TestLoader().discover(
+              os.environ['TEST_DIRECTORY'], pattern=os.environ['TEST_PATTERN'])
+          discovered = suite.countTestCases()
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          summary = dict(suite=os.environ['TEST_PATTERN'], discovered=discovered,
+                         ran=result.testsRun, failures=len(result.failures),
+                         errors=len(result.errors), skipped=len(result.skipped),
+                         expected_failures=len(result.expectedFailures),
+                         unexpected_successes=len(result.unexpectedSuccesses))
+          print(json.dumps(summary, sort_keys=True), flush=True)
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a') as output:
+              output.write('Synthetic verifier results; no runtime qualification.\n\n```json\n'
+                           + json.dumps(summary, sort_keys=True) + '\n```\n')
+          passed = (discovered > 0 and result.testsRun == discovered
+                    and result.wasSuccessful() and not result.skipped
+                    and not result.expectedFailures and not result.unexpectedSuccesses)
+          sys.exit(0 if passed else 1)
+          PYTHON
+      - name: Confirm detection of a simulated false-success defect
+        if: matrix.suite == 'wine-report'
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import json
+          import subprocess
+          import sys
+          import textwrap
+
+          child = textwrap.dedent('''
+              import json
+              import sys
+              import unittest
+              from unittest import mock
+              sys.path.insert(0, 'tests/wine')
+              import test_verification as fixture
+
+              original = fixture.verify.need
+              def omit_command_status(condition, code):
+                  if code != 'command_did_not_pass':
+                      original(condition, code)
+
+              name = 'test_success_label_is_not_required_or_sufficient_evidence'
+              suite = unittest.TestSuite([fixture.ReportAssessmentTests(name)])
+              with mock.patch.object(fixture.verify, 'need', side_effect=omit_command_status):
+                  result = unittest.TextTestRunner(verbosity=2).run(suite)
+              summary = dict(ran=result.testsRun, failures=len(result.failures),
+                             errors=len(result.errors), skipped=len(result.skipped),
+                             expected_failures=len(result.expectedFailures),
+                             unexpected_successes=len(result.unexpectedSuccesses),
+                             missing_rejection=len(result.failures) == 1
+                                 and 'Error not raised' in result.failures[0][1])
+              print(json.dumps(summary), flush=True)
+              sys.exit(0 if result.wasSuccessful() else 1)
+          ''')
+          run = subprocess.run([sys.executable, '-B', '-c', child],
+                               capture_output=True, text=True, timeout=30)
+          print(run.stderr, end='')
+          summary = json.loads(run.stdout)
+          expected = dict(ran=1, failures=1, errors=0, skipped=0,
+                          expected_failures=0, unexpected_successes=0,
+                          missing_rejection=True)
+          if run.returncode != 1 or summary != expected:
+              raise SystemExit('The existing test did not detect the simulated defect as expected')
+          print('PASS: the existing test detected the simulated false-success defect; '
+                'production files were unchanged.')
+          PYTHON
