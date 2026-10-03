@@ -1292,3 +1292,40 @@ code emission, linking, loading and initialization are distinct observations.
 Allocator rounding, full static alignment, phase-bound stack/retention peaks
 and the complete 256 KiB aggregate remain unresolved. Stage 3 remains in
 progress; no initialization proof flag is opened by these source or test results.
+
+### October 3 Verified Archival and Exact Install Retirement
+
+The storage inventory observed 178.078 GiB across the recorded project/worktree
+and temporary roots. This is a historical footprint, not a required working-set
+budget or independently measured APFS usage. A later folder inventory observed
+156.304 GiB, a 21.774 GiB lower aggregate during concurrent construction.
+Folder sums can double-count shared APFS extents; this is not measured unique
+physical reclamation or a permanent working-set reduction. Nine major protected roots
+totaled 14.024 GiB; that partial grouping is not a complete minimum and does not
+authorize removal of other current inputs, controls or unique evidence.
+
+Root completed 26 archival batches: archive, verify, prune and retained-verify
+all returned zero (104 actions). The 24,716 inactive leaves represented
+5,136,652,549 logical bytes and 24,366 distinct payloads; verified compressed
+payloads occupy 1,503,904,568 bytes. Aggregate identity:
+`7489e2b1a9825385056c602d1f83c0b358d54d60a23e5e0724d3ecf9349a1517`.
+Historical replay requires exact rehydration; full native metadata restoration
+and renewed historical qualification are not established by archive verification.
+
+A separate paired-install retirement removed 42,955 exact same-build copies
+(19,746,788,016 logical bytes), preserving 688 unique/signing-altered leaves
+and every original signed donor. Completed receipt:
+`5e22e1142ca6dd8744b24b42755cdcffc92b93742410650894d129493f8b7a4c`.
+Volume free space changed from 11,229,503,488 to 12,785,053,696 bytes. The
+1,555,550,208-byte observed increase includes concurrent builder activity and
+is not attributable APFS reclamation or a continuing admission guarantee.
+
+Source retirement8 separately removed 20,864 exact leaves/120,788,424 logical
+bytes while preserving 27 unique leaves, current source9/source10 and controls.
+Its completed receipt is
+`36a6c974739f7cdd1eb82f96fca7d8728766ec7049c1cc52231a8f8c868316e8`;
+`1ab7611070fcdeb9e36cb5dd357ba81bb9cef871d2051b8446484ea1d07f2891`
+identifies its ledger. The stage6 research candidate remains frozen and unapplied.
+Fresh per-operation storage checks and serialized compilation remain required.
+Source23's three measurement compiles await the shared lock. Stage3 and all
+initialization, complete metadata, runtime and game gates remain open.
