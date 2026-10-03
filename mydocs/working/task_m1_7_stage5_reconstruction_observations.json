@@ -107,7 +107,8 @@
     ],
     "passed": true
   },
-  "candidate_native_execution_performed": true,
+  "candidate_native_execution_performed": false,
+  "candidate_native_execution_scope": "The earlier candidate field refers to the pre-small-stub build; it was not executed. See small_stub_finite_native_run for the current candidate.",
   "complete_inventory_comparison": "interrupted_after_independent_primary_raw_mismatch",
   "complete_inventory_failure": {
     "error": "KeyboardInterrupt",
@@ -772,6 +773,7 @@
     "signing_commands": 199
   },
   "small_stub_finite_native_run": {
+    "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
     "case_elapsed_ms": 11158,
     "case_sha256": "95fdf884fc593916ea4b4d6537f2eebffb43fca46e3d5b40d96b1115f5bf77d1",
     "cleanup_complete": true,
