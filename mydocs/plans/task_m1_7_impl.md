@@ -534,3 +534,36 @@ depfile, source/protocol inputs and every dependency hash before/after. Its
 current result is pending. Actual configure CROSSCFLAGS insertion/quoting,
 two full fresh deterministic builds and final native binding are unperformed.
 No unsigned comparison policy was relaxed. Stage5 remains in progress.
+
+
+### October 3 Bound Wine Compiler Proof and Additive Constructor Review
+
+The strengthened final Wine probe passed four actual compile/link commands and
+four full-M dependency discoveries, with the original complete graphics build
+replayed before/after. Actual full-MD compile dependency sets match their
+precompile records; the overwritten depfile preimage, original source/protocol
+copies, command streams, producer and selected tools are bound and unchanged.
+Control: `9ac5083f6c8f0085b4cfb4cdd7c0b4085e7f5c0caf0b0500a1b33722b8007e6a`.
+The two linked fixture PE files have equal complete bytes and timestamp0. Equal
+intermediate Wine object timestamps happened in the same clock second; this
+still does not establish fixed compiler object timestamps.
+
+The input-qualification sidecar binds this Wine control, the exact original
+shader-recipes control and the current complete379-row Metal resource
+inventory. Sidecar identity:
+`92d1c78c3748641f948407bc4fc6198fdc8fc74b4f520fefc6cf5b34245a9cc3`.
+This admits only the reviewed compiler input/resource evidence, not a complete
+new construction or native/GPU execution. Historical producer bodies, records
+and the26-difference failed reconstruction stay unchanged.
+
+The additive constructor remains a private source candidate. Independent pure
+review found temporary inherited module-alias mutation, secondary shader
+cleanup errors replacing the primary error, and an insufficiently bound Metal
+environment/predecessor. These require explicit source corrections and refusal
+controls before promotion. The second private review attempted69 tests with
+one relative-import error; it is preserved as partial/failed, not69 passes.
+Actual configure CROSSCFLAGS quoting, two fresh complete deterministic builds,
+strict unsigned equality and fresh finite native qualification remain open.
+No comparison normalization or runtime claim was introduced. Stage5 is in
+progress. Only sanitized findings/source are published; private controls, full
+paths, diagnostics and tool/source payloads remain local.
