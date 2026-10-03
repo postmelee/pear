@@ -10,11 +10,12 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 |---|---|---|---|
 | 1 | Preserve reuse evidence and CI readiness | Dated note and minimal rules/templates | Offline document checks and source review |
 | 2 | Qualify and connect a portable subset | Explicit five-suite CI and scoped temp policy | Clean Linux positive/negative execution; approved October 4 |
-| 3 | Complete maintenance and promotion coverage | Proposed patch/qualification CI | #14 prerequisite and candidate evidence; not approved |
+| 3 | Publish the preparatory delivery | Scoped Open PR and delivery reports | Actual PR-event checks and final-head identity; approved October 4 |
+| 4 | Complete maintenance and promotion coverage | Proposed patch/qualification CI | #14 prerequisite and candidate evidence; not approved |
 
 ## Document Location Check
 
-Stage 1 uses exactly the task plan's AGENTS.md, mydocs/tech, mydocs/_templates, plans, orders and working locations. No product document is created or changed. Stage 2/3 location and command details require refinement and approval first.
+Stage 1 uses exactly the task plan's AGENTS.md, mydocs/tech, mydocs/_templates, plans, orders and working locations. No product document is created or changed. Stage 2 locations and commands were approved and executed. Stage 3 adds only the internal stage/delivery reports described in the task plan and updates plans/board. Stage 4 still requires refinement and approval.
 
 ## Stage 1 - Preserve reuse evidence and CI readiness
 
@@ -82,20 +83,44 @@ Review the exact matrix, job permissions, expected-failure control, scoped-rule 
 
 Use Task #14 [Stage 2.N] checkpoints for required remote experiments, then bundle final configuration/report in Task #14 Stage 2: qualify portable verifier CI and temporary-output rules.
 
-## Stage 3 - Maintenance and promotion coverage (proposal)
+## Stage 4 - Maintenance and promotion coverage (proposal)
 
 Refine after the relevant #3/#6/#8/#9/#10/#13 outcomes exist. Bind candidate/source/test revisions and retain patch provenance, rebase conditions and contribution limits. Qualify incompatible promotion rejection without exposing game/account/signing data. Do not close #14 based on portable CI alone.
 
 ## Stage Dependencies, Risks and Approval Boundary
 
-Stage 1 uses the requester's same-thread approval of the concrete prior document proposal. Later stages require a refined plan and explicit continuation after the current stage report. Current #5/#7 owners keep their own scopes and storage ordering. Linux availability and CI results are not checked; all candidate lists remain source-inspection findings.
+Stages 1/2 used their recorded explicit approvals and are complete. Stage 2 superseded its earlier source-inspection-only Linux status with two successful hosted executions. Stage 3 has now been explicitly approved for partial publication; Stage 4 remains proposed. #5/#7 owners keep their own scopes and operating order.
 
-Stage 2 approval supersedes only its former proposed status; Stage 3 continues to require refined scope and explicit approval.
+The Stage 2 approval did not authorize later work. The separate Stage 3 continuation below now authorizes only publication of the completed preparation.
 
 ## Stage 2 first hosted experiment
 
-Run [37149720472](https://github.com/postmelee/pear/actions/runs/37149720472) succeeded on a3fdb7345c0881d4249b5e46ef455bd411f7009c. Ubuntu 24.04 image 20260927.320.1, x86_64, Python 3.12.14, Git 2.55.0. Counts: inventory 77, report 50, inputs 10, unsigned comparison 40, ABI review 19; total 196, no skips/failures/errors. Existing documentation tests: 35. The isolated simulated false-success defect produced exactly the expected test failure and nonzero child exit; the control passed. Production sources/tests were unchanged. New verifier jobs can now use the existing PR trigger as planned; final configuration validation remains required.
+Run [37149720472](https://github.com/postmelee/pear/actions/runs/37149720472) succeeded on a3fdb7345c0881d4249b5e46ef455bd411f7009c. Ubuntu 24.04 image 20260927.320.1, x86_64, Python 3.12.14, Git 2.55.0. Counts: inventory 77, report 50, inputs 10, unsigned comparison 40, ABI review 19; total 196, no skips/failures/errors. Existing documentation tests: 35. The isolated simulated false-success defect produced exactly the expected test failure and nonzero child exit; the control passed. Production sources/tests were unchanged. This first result enabled the PR trigger as planned; final configuration validation subsequently passed in run 37149821735.
 
 Original logs and run metadata: ignored .build/task14/runs/37149720472/. Hosted source/run links remain public; local copies retain transient execution details. Preserve through review, then clean only owned copies after confirming needed evidence is retained.
 
-Stage 2 completed with final hosted run [37149821735](https://github.com/postmelee/pear/actions/runs/37149821735); see the [Stage 2 report](../working/task_m1_14_stage2.md). Stage 3 remains unapproved.
+Stage 2 completed with final hosted run [37149821735](https://github.com/postmelee/pear/actions/runs/37149821735); see the [Stage 2 report](../working/task_m1_14_stage2.md). The original unapproved maintenance/promotion scope is now Stage 4.
+
+## Stage 3 - Publish the preparatory delivery
+
+Approval: requester explicitly continued after the partial-PR and actual PR-event verification proposal. See the task plan's partial-publication exception and report-location judgment. Do not merge, close #14 or start Stage 4.
+
+### Changes
+
+Reconcile stale current-status prose while preserving historical stage reports. Prepare the Open PR using the existing template, without a closing keyword. After its first real pull_request checks pass, write the Stage 3 and preparatory-delivery reports, update the board, commit them together, refresh SHA-pinned PR links, and require successful checks on that final head. Only task documents change in this stage; previously qualified workflow/validator bytes are reused unchanged.
+
+### Verification
+
+```bash
+python3 -B tools/check_governance.py
+git diff --check
+gh pr checks <created-pr-number> --repo postmelee/pear
+```
+
+Additionally inspect actual PR head/base, changed-file scope, workflow event/source versus tested merge ref, all six job results, the five nonempty/no-skip suite counts and mutation control. Use existing link_targets for newly changed work-document links. Compare the workflow, tools and test implementation paths with 8ad879ff8a5f73476b533dce33f3f076705c1251; no implementation changes are expected. Preserve hosted run/log metadata under ignored .build/task14/runs/<id>.
+
+### Reports and commit
+
+Write mydocs/working/task_m1_14_stage3.md and mydocs/report/task_m1_14_report.md, with explicit preparatory-delivery-only status and remaining #14 dependencies. Stage 3 publication is complete only when the Open PR is reviewable and final-head checks pass. The report commit describes the first PR execution; the PR body links final-head CI without requiring a self-referential report commit.
+
+Commit: Task #14 Stage 3: publish the verified preparatory delivery.
