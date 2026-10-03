@@ -2,7 +2,7 @@
 
 GitHub Issue: [#31](https://github.com/postmelee/pear/issues/31)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: task plan prepared; implementation and document-location approval pending.
+Status: task plan and document locations approved; implementation plan prepared for approval.
 Planning date: October 4, 2026 (Asia/Seoul).
 
 ## Purpose
@@ -142,8 +142,9 @@ the missing/revised evidence instead of silently assigning it a new identity.
 | Dated timing analysis and projection | Evidence and analysis | Reviewers and task owners | mydocs/tech/20261004_build_timing_analysis.md and .json | docs/development/build-diagnostics.md | One observed pair of builds is dated evidence, not a permanent performance statement or product contract. |
 | Plans, reports and work status | Task artifacts | Requester and task owners | Existing mydocs/plans, working, report and orders folders | docs/ | Preserve approval and execution history separately from reusable guidance. |
 
-The location judgment is proposed and awaits explicit approval. No official guide,
-index edit or evidence implementation is included in this planning commit.
+The requester approved this location judgment with an explicit continuation in
+the same thread on October 4, 2026. Official-guide, index and evidence changes
+remain assigned to the stages below; this approval update implements none of them.
 
 ## Expected Changed Files
 
@@ -240,6 +241,8 @@ other-thread communication/integration on October 4, 2026. That authorization
 covers Issue registration and this isolated task-plan preparation. It does not
 constitute approval of the newly specified document locations or later stages.
 
-Approve this scope, document-location judgment and three-stage sequence. After
-approval, write task_m1_31_impl.md with concrete stage artifacts and verification
-commands, following the repository's implementation-plan approval procedure.
+The subsequent explicit continuation approved this scope, document-location
+judgment and three-stage sequence. The [implementation plan](task_m1_31_impl.md)
+now specifies artifacts and verification. Implementation-plan approval and
+Stage 1 execution are the next gate under the task workflow; later stage
+transitions still require explicit continuation.
