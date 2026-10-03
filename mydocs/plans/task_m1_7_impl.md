@@ -567,3 +567,50 @@ strict unsigned equality and fresh finite native qualification remain open.
 No comparison normalization or runtime claim was introduced. Stage5 is in
 progress. Only sanitized findings/source are published; private controls, full
 paths, diagnostics and tool/source payloads remain local.
+
+
+### October 3 Additive Constructor Source, Contributor Tests and Configure Refusal
+
+The additive deterministic constructor retains17 captured predecessor bodies
+in isolated module namespaces. Closed native source-language/target recipes,
+raw source products, old14 producer identities and original failed outputs
+remain unchanged. New shader input transport uses exact original source bytes,
+each shader's original flags and bound resource/dependency records. New record
+kinds do not relabel historical builds. Primary tool errors survive separately
+reported cleanup errors; the Metal input environment/predecessor is exactly
+source-bound. Constructor source identity:
+`019033a3210f2241f90a00a86283f750990377d508587a2fd6dd1282ad28c24c`.
+
+The whole current DXMT suite passed423 tests with seven explicit optional
+private-input skips. The selected current-input subset passed80 with zero
+skips. Independent clean-checkout review also passed80 attempted/73 successful/
+7 optional skips with no build directory or actual tool processes. The final
+test-only correction gives the original historical Wine context a finite owned
+temporary directory; it does not require this Mac's retained artifacts.
+Constructor/helper byte identities stay immutable throughout actual operation.
+
+A direct script invocation under Python3.14 refused before output admission
+because the sibling DXMT inspect.py shadowed the standard library inspect
+module. Invoke the same source from the repository as
+`python3 -B -m tools.dxmt.deterministic_pair`; no historical helper is patched
+and no compiler ran in that first invocation.
+
+The first fresh constructor then replayed genuine prerequisites and reached
+actual wine.configure, which returned1 before component make/DXMT construction.
+Failed control:
+`320be8ba6941f87be6ce5b676214b142934a7c6f871a7747d0cb833a9abc9b93`.
+The compiler exists: Autoconf expanded CROSSCFLAGS using shell word splitting,
+retaining literal quoting around a physical debug-prefix path containing a
+space. The three compiler probe errors are preserved; this is not a missing
+LLVM toolchain or game failure. No failed output becomes a successful build.
+
+A separately reviewed no-space fixed-compilation-directory flag is now being
+verified with two actual selected Wine object recipes and genuine configure.
+Those small checks reuse read-only source inputs and precede any new complete
+rebuild. Qualification3/constructor6 must bind that actual result independently
+and preserve all previous source, controls and receipts. The proposed2GiB
+growth ceiling/4GiB reserve is based on the previous675MB observed candidate
+growth, not a measured peak; monitoring still refuses the ceiling/reserve.
+Two fresh complete products, strict raw comparison, current native admission
+and fresh final-candidate39-case verification remain required. Stage5 remains
+in progress and every game/distribution claim remains false.
