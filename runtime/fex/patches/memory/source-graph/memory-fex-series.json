@@ -947,6 +947,25 @@
           "preimage_sha256": null
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/24-0003q-fex-empty-include-order.patch",
+      "git_file": "memory/source-graph/git/24-0003q-fex-empty-include-order.git.patch",
+      "git_sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "empty-include-order",
+      "order": 24,
+      "provenance_manifest": "memory/source-graph/provenance/24-empty-include-order.json",
+      "provenance_sha256": "6aa9ac5a8c1ad2bed4e2a54d108e0d1505ce3adf539d8ac79f4742d0ee261544",
+      "sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+      "sources": [
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9056,
+          "postimage_sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715",
+          "preimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee"
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -970,7 +989,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 23,
+    "layer_count": 24,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }

@@ -291,7 +291,7 @@
     {
       "mode": 420,
       "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
-      "sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee",
+      "sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715",
       "size_bytes": 9056
     },
     {
@@ -327,7 +327,7 @@
   ],
   "general_source_lifetime": "unclosed",
   "git_execution_performed": false,
-  "historical_graph_sha256": "4bb0aa02df700f95f5a1304c90c2b8621424f2b7db669ea0bbf7b477945ee34c",
+  "historical_graph_sha256": "30c42edf02fb3d3aa90dca983d11e51a48e55d9822b2c783839c31481dc9de50",
   "layers": [
     {
       "changes": [
@@ -1470,6 +1470,34 @@
         "sha256": "a5cd8dce450bf4cd3b7cec6cb375413926ba3677d68c4aea3e3832cbbca6a396",
         "size_bytes": 43102
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9056,
+          "postimage_sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715",
+          "preimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/24-0003q-fex-empty-include-order.git.patch",
+        "sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+        "size_bytes": 806
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "empty-include-order",
+      "order": 24,
+      "source_manifest": {
+        "path": "provenance/24-empty-include-order.json",
+        "sha256": "6aa9ac5a8c1ad2bed4e2a54d108e0d1505ce3adf539d8ac79f4742d0ee261544",
+        "size_bytes": 1237
+      },
+      "strict_patch": {
+        "path": "strict/24-0003q-fex-empty-include-order.patch",
+        "sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+        "size_bytes": 806
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -1505,8 +1533,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "d3b315fd8cb30a0791eb8e4a6ea2b6282c82bcd14d3fdec456c4c77f6ed217cc",
-    "size_bytes": 49870
+    "sha256": "a1b532ba88a78e0f6becc779bd968a7a342ac63f91b3359fc07b97451a6fe9e7",
+    "size_bytes": 50898
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",

@@ -1370,3 +1370,85 @@ admission floors of 6 GiB for graphics and 8 GiB for FEX are operation policies,
 not a claim that the whole project needs only those amounts. Complete minimum
 storage remains unmeasured; old repeated build retention is the main reduction
 opportunity. Current donors, unique failures and private user state are retained.
+
+### Requester-Approved Cleanup Before Further Development
+
+Root retired 37,768 frozen exact source/tool/install/object duplicates from the
+inactive Wine Stage6 research workspace (1,886,081,409 logical bytes). Every
+selected leaf and retained donor was rehashed under the shared lock; current
+references and original controls were checked again after retirement. Receipt:
+`3e09fc0a8305f709bfaab64d6dd627fa53eb0c87322ed6d4560f10b89f30c4f4`.
+The journal and unchanged retained donors permit exact byte/mode rehydration;
+unique files, original failure records and current build inputs remain present.
+
+Five inactive synthetic Wine run roots contained 19 original fixture prefixes.
+Root archived only known Wine builtin ARM64 PE system files, verifying case and
+prefix provenance, file identity, ordinary PE format and current non-use. No
+registry, account, game, save or user-directory payload was selected. Exact
+xattrs and observed ACL absence were recorded with original metadata. Of
+12,996 retired copies (19,609,747,456 logical bytes), 3,364 distinct payloads
+occupy 852,661,060 compressed bytes. Every gzip payload was fully decoded and
+hashed before unlink, and the complete retained set was verified again after.
+The restore index and operation producers remain in the private archive.
+Receipt: `361aa52843975250ff9c182341144f8e167524998ef18c3d3627286447bff4c5`.
+Restore index: `d4e5259ed1b393258e52db9f4dd42708bd9c47c731c2cac89fe2976ee95955e2`.
+Historical execution requires exact restoration and new admission; original
+inode/ctime/birthtime identities and execution qualification are not recreated.
+
+The combined folder inventory fell from 156.882 to 137.674 GiB, including new
+archives and the new source projection; project/worktree roots alone total
+136.041 GiB and Pear temporary entries 1.633 GiB. Inventory identity:
+`a78a893d6f01ce9e322b983e86f2bbb000fde47bec623397c314d72b859de1f1`.
+Observed volume free space rose from approximately 2.5 to 10.4 GiB. APFS shared
+extents and another active builder prevent attributing that whole change to
+Pear. These are measured observations, not a complete minimum working-set claim.
+
+### Source24 Projection and Genuine Three-Unit Layout Measurement
+
+The genuine fixture now includes its existing AllocatorHooks header before
+CheckedCRT/Windows headers. Layer24 preserves all preceding layer identities,
+target flags, fixture body and twelve false initialization proof constants.
+The initial root CLI call rejected relative inputs before output creation;
+the corrected absolute-path call applied and checked all 24 patches in 48
+successful Git operations. All 6,973 files/40,537,903 bytes matched the reviewed
+source inventory; the baseline remained unchanged. Projection receipt:
+`7cdd07967988ff34d12862cee58e33bf4a3e699f910b5fc06eb856b1aa4debbf`.
+Materialized-source identity:
+`9833aa29c2bc04778f195ffdffd2ab95038be4270df5f442c8acd45c04670b83`.
+
+Full regression initially exposed four errors because the proposed checker
+retained its old 46-command predicate. Root corrected it to the exact required
+48 operations and added refusal of a missing final check/apply pair. The final
+579-test run passed with one explicit platform-condition skip. Current checker:
+`47ce403764f4a493ff62d434a69faff4a58ae67d80843afc775f31ef7593001b`.
+Earlier failed tests and recipe preparation remain preserved. The private
+compile recipe was rebound to this reader and actual current fixture paths;
+no historical success record or compiler result was relabeled.
+
+Root executed three genuine ordinary ARM64 compile-only units with the selected
+LLVM-MinGW/SDK and original no-exceptions policy. All three returned 0 with empty
+stdout/stderr; their 1,074/1,121/1,112 actual dependency entries were inside the
+verified source/header closure. Fifty-one data constants were extracted from
+the resulting ARM64 COFF objects. All seven independent post-operation gates
+passed. No object was linked or loaded; no FEX initialization or owner call ran.
+Final control: `8a3d70034d4b5f62c6fdf55ac5b91de5e66735238de1fa610da94334b6d6eef6`.
+Recipe: `fa594e46faad817f3f6231d00800e7af2969923d4eccd131e3de89a8f09f14c1`.
+
+| Measured type | Owner enabled, bytes | Baseline, bytes |
+|---|---:|---:|
+| Combined allocate_shared control block | 216 | 56 |
+| CodeBuffer (already inside the combined block) | 200 | 40 |
+| GuestToHostMap | 176 | 176 |
+| Dispatcher | 728 | 544 |
+| Arm64JITCore | 808 | 448 |
+| ContextImpl | 1,904 | 1,328 |
+| InternalThreadState (4,096-byte alignment) | 12,288 | 12,288 |
+| CpuStateFrame (already inside thread storage) | 3,840 | 3,840 |
+
+The finite fixture's State/Storage is 4,464 bytes and already contains the
+4,152-byte CRTPlan and 268-byte Report; these must not be counted twice. Callback
+inspection scratch is 2,048 bytes. These are actual layout observations, not
+complete allocation costs or runtime RSS. The 256 KiB added-metadata gate still
+needs allocation rounding, concurrent/retained object counts, static placement,
+stack peaks and Wine/PMR provider attribution. All initialization, translated
+execution, complete metadata and Stage3 completion claims remain false.

@@ -1,0 +1,29 @@
+{
+  "attribution": "Original Pear finite fixture include-order correction; exact upstream AllocatorHooks/SDK bytes and compiler platform/no-exceptions policy retained.",
+  "compilation_performed": false,
+  "failed_compile_control_sha256": "8909ed109170646117b4d518df24550a1f8f0d38063868aae34b7b8423ea8422",
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 9056,
+      "postimage_sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715",
+      "preimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee"
+    }
+  ],
+  "historical_strict_patch_sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "empty-include-order",
+  "native_runtime_execution": false,
+  "order": 24,
+  "platform_define_changed": false,
+  "proof_flags_changed": false,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "upstream_header_changed": false,
+  "wire_changed": false
+}
