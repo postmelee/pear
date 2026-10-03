@@ -1166,3 +1166,23 @@ source control
 All450 current FEX tests passed with one APFS skip. The fresh full module
 constructor is in progress; metadata/lifetime/initialization/guest/game and
 distribution remain unqualified. No prior full-build result is relabelled.
+
+
+### October 3 Complete Compiler Commands and Strict Artifact Refusal
+
+The fourth actual full constructor completed all nine native configure/build/
+fixture, ARM64EC configure/build/inspect and ordinary ARM64 configure/build/
+inspect commands with exit0. Its final artifact reader then refused
+`fex_memory_owner_macro`; failed control:
+`9bcfe26df0d77e9b7753246ff0419c27258b0af3349a26feae399d2128edbeca`.
+This remains a failed full build record, not a qualified successful module.
+All original commands, raw diagnostics, objects, modules and source are kept.
+
+An initial source/database review found107 of108 C++ units per PE target carry
+the required owner definition. The sole absent unit is the unchanged upstream
+AllocatorHooks.cpp, compiled by a separate allocator target. A narrow reviewed
+source/target/dependency exception may be appropriate; a broad weakened owner
+gate or build success assumption is not. Reuse the exact completed outputs
+for pure assessment once that contract is proven instead of immediately
+repeating the same nine compilation commands. Current lifetime, aggregate
+metadata, initializer and runtime qualification remain open.
