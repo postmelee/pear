@@ -800,9 +800,88 @@
   },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
-    "full_install_comparison": "in_progress",
-    "native_execution": "unperformed",
+    "full_install_comparison": "passed_2878_raw_entries",
+    "native_execution": "performed_original_run_failed_see_small_stub_finite_native_run",
     "raw_equal": true
+  },
+  "small_stub_quiet_diagnostic_batch": {
+    "assessment_interpretation": "The original control passed its separate assessment. Both changed-fixture cases retain pair_launch_changed refusals; normal loader exits are diagnostic observations only.",
+    "batch_sha256": "72d1a062fb6e4c1d3360e5aea7f843aaf71a56a379b5f81d9d23624c4e5d0f1d",
+    "cases": [
+      {
+        "assessment_error": null,
+        "case_sha256": "182c923614b1e19350260d3411e527be76283d868855e5468557e3152a1895d3",
+        "cleanup_complete": true,
+        "distribution_qualified": false,
+        "elapsed_ms": 7143,
+        "fault_observation_emitted": false,
+        "fixture_sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "game_qualified": false,
+        "handler_behavior": "unchanged_original",
+        "loader_exit_code": 0,
+        "native_source_and_signature_changed": false,
+        "owned_supervision_and_bounds_changed": false,
+        "qualification": false,
+        "runtime_eligible": false,
+        "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+        "sentinel_survived": true,
+        "variant": "original",
+        "wine_debug": "-all"
+      },
+      {
+        "assessment_error": {
+          "code": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_sha256": "e838b43cfe55f0bf97e37ee6db38ffa4eadbc1aa160fff073daa701c59ae12fa",
+        "cleanup_complete": true,
+        "distribution_qualified": false,
+        "elapsed_ms": 5065,
+        "fault_observation_emitted": false,
+        "fixture_sha256": "e93db30114649ce40ccad2c7f24f5f39e751082c14f679c4a5f76972ffd9baf4",
+        "game_qualified": false,
+        "handler_behavior": "record_access_violation_then_continue_search",
+        "loader_exit_code": 0,
+        "native_source_and_signature_changed": false,
+        "owned_supervision_and_bounds_changed": false,
+        "qualification": false,
+        "runtime_eligible": false,
+        "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+        "sentinel_survived": true,
+        "variant": "observer1",
+        "wine_debug": "-all"
+      },
+      {
+        "assessment_error": {
+          "code": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_sha256": "e9cef98542438d330f2da7597f4624e0779329aa97f06c41739797ec03c814af",
+        "cleanup_complete": true,
+        "distribution_qualified": false,
+        "elapsed_ms": 5205,
+        "fault_observation_emitted": false,
+        "fixture_sha256": "e93db30114649ce40ccad2c7f24f5f39e751082c14f679c4a5f76972ffd9baf4",
+        "game_qualified": false,
+        "handler_behavior": "record_access_violation_then_continue_search",
+        "loader_exit_code": 0,
+        "native_source_and_signature_changed": false,
+        "owned_supervision_and_bounds_changed": false,
+        "qualification": false,
+        "runtime_eligible": false,
+        "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+        "sentinel_survived": true,
+        "variant": "observer2",
+        "wine_debug": "-all"
+      }
+    ],
+    "fault_observer_effectiveness": "unproven_no_fault_triggered",
+    "native_rows_per_case": 39,
+    "original_failure_resolved": false,
+    "physical_lifetime_balanced_all_cases": true,
+    "qualification": false,
+    "root_cause": "unknown",
+    "statuses_and_facts_match_all_cases": true
   },
   "small_stub_reference": {
     "artifacts": [
@@ -919,7 +998,7 @@
   "small_stub_seh_diagnostic": {
     "actual_case_elapsed_ms": 19376,
     "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
-    "case_assessment_passed": false,
+    "captured_case_passed_field": false,
     "case_sha256": "827721445c38c0cd522f2cb115deb770227e761cec0e614123eb6afd2f10a284",
     "cleanup_complete": true,
     "deallocation_counts": {
@@ -941,6 +1020,7 @@
     "root_cause": "unknown",
     "runtime_eligible": false,
     "sentinel_survived": true,
+    "separate_case_assessment_passed": true,
     "statuses_and_facts_match": true,
     "wine_debug": "-all,+seh"
   },
@@ -951,5 +1031,5 @@
     "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
     "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
   },
-  "work_gate": "original_access_violation_not_reproduced_with_seh_logging_minimal_observer_prepared"
+  "work_gate": "original_access_violation_unresolved_quiet_diagnostic_batch_did_not_reproduce_fault"
 }

@@ -1128,3 +1128,112 @@ mutation between cases, the original per-case time/output/cleanup limits, fresh
 prefixes and at least 6 GiB free before each case. These diagnostic results cannot
 replace the original complete native admission/run/review gate. All attempts
 and the original access violation remain preserved, and Stage 5 stays open.
+
+
+### 2026-10-04: Quiet Diagnostic Batch Completed Without Reproducing the Fault
+
+One unchanged quiet control and two quiet vectored-observer runs returned zero
+and emitted all 39 expected status/facts rows. Each physically balanced three
+views, three layers and one proxy. Owned cleanup completed and unrelated
+sentinels survived. No access-violation observation was emitted; effectiveness
+of the handler on an actual fault remains unproven. The original control passed
+its separate assessment; the two changed-fixture runs correctly retain
+`pair_launch_changed` refusals and are not qualification runs. Raw `case.json`
+records capture `passed=false` before the separate `assessment.json` verdict;
+these fields must not be conflated.
+
+Batch receipt: `72d1a062fb6e4c1d3360e5aea7f843aaf71a56a379b5f81d9d23624c4e5d0f1d`.
+The three case digests and actual durations are in the partial observations.
+The original failure remains immutable and unresolved. At row 33 its layer
+witness had observed one deallocation, versus zero in the four successful
+SEH/control/observer diagnostics. This small correlation does not establish a
+lifetime defect, race, or failing instruction. No source fix or Stage 5
+completion follows from successful retries.
+
+### Proposed Amendment: Isolated LLDB Fault Capture — Approval Pending
+
+**Status:** review only. No additional entitlement, re-signing, debugger attach,
+or diagnostic rendezvous implementation has been performed. This stays within
+Issue #7 Stage 5 diagnosis, but the October 3 approval explicitly reserves
+“new security or shared-scope changes” for a separate gate. App-local debugger
+permission changes the previously approved exact signing claims.
+
+**Purpose and reuse.** Capture the actual native fault PC, registers, image
+identity and thread stacks around detach/window teardown. Reuse the installed
+Xcode LLDB, existing native ARM64 bootstrap, owned Wine supervisor, unchanged
+39-case operations, selected compiler and development identity. Successful
+reruns cannot establish the cause, and the quiet PE exception observer has not
+captured an actual fault. A debugger may also perturb timing; failure to
+reproduce remains inconclusive.
+
+**Concrete scope proposed for approval:**
+
+1. Under the shared native lock, verify the unchanged candidate and materialize
+   a fresh diagnostic-only runtime copy under `.build/task7/`. Use independent
+   files or copy-on-write clones, never hard links for any signed/mutable file.
+   Preserve the original runtime, all failures and source caches. Bind the
+   derivative manifest to runtime receipt
+   `d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd`.
+2. Re-sign only the copied Wine loader bundle using the existing authorized
+   development identity/profile and existing claims plus the Boolean
+   `com.apple.security.get-task-allow=true`. Retain Hardened Runtime, library
+   validation, 4 KiB signing page size, cross-architecture and JIT settings.
+   Helpers and libraries receive no new claims. Verify exact claim delta,
+   current profile/identity, strict signatures, source/payload identities and
+   the unchanged original. Do not forge a normal runtime admission receipt or
+   loosen its exact-claims verifier; this copy has separate diagnostic records.
+3. Add a private diagnostic PE rendezvous immediately before the detach phase
+   (step 9), using a bounded, controller-owned release marker in the empty
+   diagnostic prefix/output. Preserve the actual native case operations and
+   exception semantics. Verify marker containment, unique per-run identity,
+   no symlink substitution and a 30-second rendezvous deadline. Compile with
+   the same selected ARM64 PE toolchain and inspect the output. Record the
+   instrumentation rather than presenting it as the unchanged fixture.
+4. Launch through the existing 4 KiB bootstrap and owned supervisor. At the
+   rendezvous, attach LLDB only to the registered loader PID after checking its
+   executable identity, start identity and private run nonce. Record actual
+   ARM64/translation and process-mode observations; LLDB availability alone
+   does not prove attach or 4 KiB compatibility. Release the rendezvous only
+   after confirmed attachment. If OS authorization is denied or needs user
+   interaction, retain that result and use the normal macOS authorization flow;
+   do not change SIP, global debugger policy or unrelated processes.
+5. Run at most three diagnostic attempts, each bounded by the existing
+   180-second case deadline, with debugger output capped at 16 MiB. On a real
+   bad-access stop, capture PC/LR/SP/FP/x18, fault information, bounded thread
+   backtraces and loaded image UUID/offset mapping. Preserve normal fault
+   delivery after capture where supported; record debugger stop/termination
+   separately from the program outcome. Stop the batch after a useful capture,
+   identity/admission failure, timeout, output limit or cleanup failure.
+   Reuse owned cleanup with debugger detach/termination before process cleanup,
+   reap every owned child and verify unrelated-sentinel survival.
+6. Keep raw captures, signatures, addresses and prefixes private. Publish only
+   sanitized provenance and findings. Debugger success is not native/runtime/
+   game qualification. Any resulting source repair must be separately verified
+   with the unmodified production fixture/signing policy before the ordinary
+   reconstruction gate can pass.
+
+**Storage and validation.** The current runtime uses approximately 1.22 GiB
+and each completed diagnostic output approximately 1.08 GiB of allocated space.
+Use one diagnostic copy, at most three fresh prefixes, a 6 GiB aggregate growth
+ceiling and an 8 GiB free-space reserve, rechecked before each operation. No
+full Wine/DXMT rebuild is proposed for capture. Validate claim-delta refusal,
+wrong/stale PID refusal, rendezvous timeout/containment, debugger output limits
+and owned cleanup before the actual attach. Preserve successful and failed
+capture receipts and record any unperformed check explicitly.
+
+**Permission rationale and primary references.** The inspected loader does not
+currently claim `get-task-allow`. Apple documents debugger access to third-party
+apps with this entitlement in [Debugging tool entitlement](https://developer.apple.com/documentation/BundleResources/Entitlements/com.apple.security.cs.debugger).
+[TN3125](https://developer.apple.com/documentation/technotes/tn3125-inside-code-signing-provisioning-profiles)
+lists macOS `com.apple.security.get-task-allow` as unrestricted, so its absence
+from the existing provisioning profile does not by itself require a new profile.
+Actual cross-architecture/profile and signature authorization still require
+validation. The added claim permits debugging of this development copy and
+must never enter a distributed artifact. Approval requested is only for this
+bounded diagnostic copy and attach procedure; it does not approve a release,
+new system-wide permissions or shared loader/translator source changes.
+
+**Location judgment.** Keep the amendment in this existing implementation plan,
+allowlisted outcomes in the existing partial observations and status in the
+daily board. Private scripts/manifests live in ignored owned task outputs. No
+new product/API/roadmap document location is introduced.
