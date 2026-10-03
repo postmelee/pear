@@ -916,6 +916,34 @@
     "timing_scope": "Same-host wrapper wall time and sum of monitored command elapsed times; not compiler CPU time or a general benchmark.",
     "wall_elapsed_ms": 902376
   },
+  "small_stub_seh_diagnostic": {
+    "actual_case_elapsed_ms": 19376,
+    "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
+    "case_assessment_passed": false,
+    "case_sha256": "827721445c38c0cd522f2cb115deb770227e761cec0e614123eb6afd2f10a284",
+    "cleanup_complete": true,
+    "deallocation_counts": {
+      "created_layers": 3,
+      "created_proxies": 1,
+      "created_views": 3,
+      "deallocated_layers": 3,
+      "deallocated_proxies": 1,
+      "deallocated_views": 3
+    },
+    "diagnostic_sha256": "548c09295a5e44073018a00bdc03d2159a3186defd25978be8041a3099d895b5",
+    "distribution_qualified": false,
+    "formal_diagnostics_review": "unperformed",
+    "game_qualified": false,
+    "loader_exit_code": 0,
+    "native_rows": 39,
+    "original_failure_resolved": false,
+    "qualification": false,
+    "root_cause": "unknown",
+    "runtime_eligible": false,
+    "sentinel_survived": true,
+    "statuses_and_facts_match": true,
+    "wine_debug": "-all,+seh"
+  },
   "small_stub_selected_output_comparison": {
     "count": 56,
     "first_observer_attempt": "The full-stat equality assertion failed; the exact differing stat field was not captured. The corrected observer excludes read access time and binds device/inode/mode/size/mtime/ctime. The first failure is not classified as a product-content mismatch.",
@@ -923,5 +951,5 @@
     "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
     "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
   },
-  "work_gate": "finite_native_access_violation_under_diagnosis"
+  "work_gate": "original_access_violation_not_reproduced_with_seh_logging_minimal_observer_prepared"
 }

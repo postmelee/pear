@@ -1098,3 +1098,33 @@ Read-only section comparison found identical native driver `__TEXT.__text`,
 ordinary driver `.text` and original PE fixture `.text` against Stage 4. This
 does not establish whole-image equivalence or exclude a runtime/link/teardown
 interaction; the native DXMT linker change remains only one hypothesis.
+
+
+### 2026-10-04: SEH Diagnostic Completed; Original Failure Remains Open
+
+The diagnostic-only `-all,+seh` run returned zero and emitted all 39 expected
+status/facts rows. Three views, three layers and one proxy were created and
+physically deallocated; owned cleanup and unrelated-sentinel survival passed.
+This does not explain or supersede the original `-all` access violation. Logging,
+scheduling, process addresses and fresh-prefix state differ; none is established
+as the cause. The diagnostic has no qualifying run/completion/review record.
+
+The next bounded investigation uses one unchanged `-all` control and at most
+two private observer variants, stopping if an actual fault record is obtained.
+A separate ordinary ARM64 PE retains the same 39-case schedule and adds only a
+vectored handler that writes a bounded register/step record for a real access
+violation, then returns EXCEPTION_CONTINUE_SEARCH. It does not manufacture a
+fault, recover an exception, change host permissions or modify the Wine/DXMT
+binaries. The handler is quiet on ordinary execution. The private compile
+reuses the selected compiler/flags, passed -Werror with empty streams, and its
+output was inspected as ordinary ARM64 PE. No observer effectiveness is claimed
+until an actual fault is captured.
+
+The private runner derives the unchanged owned run-case body with one explicit
+fixture-path assignment for observer cases; its inverse AST equals the captured
+original body. Native signatures and runtime remain unchanged. Current live
+admission occurs once before this finite diagnostic batch, with no input
+mutation between cases, the original per-case time/output/cleanup limits, fresh
+prefixes and at least 6 GiB free before each case. These diagnostic results cannot
+replace the original complete native admission/run/review gate. All attempts
+and the original access violation remain preserved, and Stage 5 stays open.
