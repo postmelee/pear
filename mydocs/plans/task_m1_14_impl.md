@@ -91,3 +91,9 @@ Refine after the relevant #3/#6/#8/#9/#10/#13 outcomes exist. Bind candidate/sou
 Stage 1 uses the requester's same-thread approval of the concrete prior document proposal. Later stages require a refined plan and explicit continuation after the current stage report. Current #5/#7 owners keep their own scopes and storage ordering. Linux availability and CI results are not checked; all candidate lists remain source-inspection findings.
 
 Stage 2 approval supersedes only its former proposed status; Stage 3 continues to require refined scope and explicit approval.
+
+## Stage 2 first hosted experiment
+
+Run [37149720472](https://github.com/postmelee/pear/actions/runs/37149720472) succeeded on a3fdb7345c0881d4249b5e46ef455bd411f7009c. Ubuntu 24.04 image 20260927.320.1, x86_64, Python 3.12.14, Git 2.55.0. Counts: inventory 77, report 50, inputs 10, unsigned comparison 40, ABI review 19; total 196, no skips/failures/errors. Existing documentation tests: 35. The isolated simulated false-success defect produced exactly the expected test failure and nonzero child exit; the control passed. Production sources/tests were unchanged. New verifier jobs can now use the existing PR trigger as planned; final configuration validation remains required.
+
+Original logs and run metadata: ignored .build/task14/runs/37149720472/. Hosted source/run links remain public; local copies retain transient execution details. Preserve through review, then clean only owned copies after confirming needed evidence is retained.
