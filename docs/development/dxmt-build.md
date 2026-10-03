@@ -129,6 +129,9 @@ workaround, not a speed improvement. Windows cross settings and shader inputs
 are unchanged. See the [partial observations](../../mydocs/working/task_m1_7_stage5_reconstruction_observations.json)
 for trial counts and explicit incomplete gates.
 It does not rewrite generated binaries or normalize comparison differences.
+Here, unsigned comparison means the payload before Pear development signing.
+Any linker-generated ad hoc CodeDirectory remains part of the exact raw bytes;
+it is not stripped or excluded from the comparison.
 The observer admits only the source-bound Wine locale link and narrowly checked
 transient Metal module-cache lock links. The original process supervisor still
 owns deadlines, logs, process-group cleanup, output growth and free-space limits.

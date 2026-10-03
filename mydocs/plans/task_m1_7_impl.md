@@ -1029,3 +1029,22 @@ retains the previous architecture, dependency/install-name/rpath metadata and
 14,935 external defined symbols. This static interface equality does not replace
 native call/lifetime verification. Complete unsigned inventory comparison is
 now running against these new roots; final native execution remains unperformed.
+
+
+### 2026-10-04: Complete Raw Comparison and Independent Replay Passed
+
+The current comparison command finished with exit zero after independently
+replaying both constructions. All 2,878 unsigned inventory entries match
+(2,785 files, 77 directories and 16 symbolic links), without normalization or
+exclusion of linker-generated ad hoc signatures. Both inventory digests are
+`b7c16fcbeaa9da509a02a381f3ae3bcb9853d8ddb64e7af1a5b89be23a58fe23`.
+Comparison receipt: `fe3ea47e0bb77edbdfebe8c58f6153c238d58864522a655f345a1392f4734007`;
+construction receipt: `edd1aa44435ab01e1a47e3c4b9715143865fe343e1613b0c2640bd2abcdfb1a8`.
+The root observed actual command termination before admitting the next phase;
+receipt creation alone was not accepted as successful completion.
+
+Fresh candidate development admission and the original finite 39-case native
+schedule now follow under the shared lock. Explicit raw-log review and final
+reconstruction replay remain required. Stage 5, translated/game execution and
+ordinary-user distribution are not qualified by this comparison. The immutable
+prior mismatch, interrupted comparison and observer failure remain preserved.

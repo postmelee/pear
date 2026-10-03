@@ -736,7 +736,26 @@
       }
     ],
     "passed": true,
-    "recipe_policy_version": 3
+    "recipe_policy_version": 3,
+    "recorded_command_elapsed_ms_sum": 119568,
+    "timing_scope": "Same-host wrapper wall time and sum of monitored command elapsed times; not compiler CPU time or a general benchmark.",
+    "wall_elapsed_ms": 893511
+  },
+  "small_stub_complete_inventory_comparison": {
+    "both_inventory_digest": "b7c16fcbeaa9da509a02a381f3ae3bcb9853d8ddb64e7af1a5b89be23a58fe23",
+    "comparison_command_exit": 0,
+    "comparison_sha256": "fe3ea47e0bb77edbdfebe8c58f6153c238d58864522a655f345a1392f4734007",
+    "comparison_stdout_sha256": "f219baa0f8cf1c3ddcb4802f9deee7c11a56292ba62b77f4848fe3cdee51a2e6",
+    "construction_sha256": "edd1aa44435ab01e1a47e3c4b9715143865fe343e1613b0c2640bd2abcdfb1a8",
+    "differences": 0,
+    "directories": 77,
+    "entry_count": 2878,
+    "files": 2785,
+    "final_candidate_native_execution": "unperformed",
+    "independent_replay": "passed",
+    "normalization": "none",
+    "raw_equal": true,
+    "symlinks": 16
   },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
@@ -851,7 +870,17 @@
       }
     ],
     "passed": true,
-    "recipe_policy_version": 3
+    "recipe_policy_version": 3,
+    "recorded_command_elapsed_ms_sum": 132326,
+    "timing_scope": "Same-host wrapper wall time and sum of monitored command elapsed times; not compiler CPU time or a general benchmark.",
+    "wall_elapsed_ms": 902376
   },
-  "work_gate": "storage_gate_cleared_two_fresh_builds_started"
+  "small_stub_selected_output_comparison": {
+    "count": 56,
+    "first_observer_attempt": "The full-stat equality assertion failed; the exact differing stat field was not captured. The corrected observer excludes read access time and binds device/inode/mode/size/mtime/ctime. The first failure is not classified as a product-content mismatch.",
+    "raw_bytes_and_modes_equal": true,
+    "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
+    "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
+  },
+  "work_gate": "complete_raw_comparison_passed_fresh_native_preparation_started"
 }
