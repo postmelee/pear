@@ -107,7 +107,7 @@
     ],
     "passed": true
   },
-  "candidate_native_execution_performed": false,
+  "candidate_native_execution_performed": true,
   "complete_inventory_comparison": "interrupted_after_independent_primary_raw_mismatch",
   "complete_inventory_failure": {
     "error": "KeyboardInterrupt",
@@ -751,7 +751,7 @@
     "directories": 77,
     "entry_count": 2878,
     "files": 2785,
-    "final_candidate_native_execution": "unperformed",
+    "final_candidate_native_execution": "performed_failed",
     "independent_replay": "passed",
     "normalization": "none",
     "raw_equal": true,
@@ -770,6 +770,31 @@
     "runtime_eligible": false,
     "runtime_receipt_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
     "signing_commands": 199
+  },
+  "small_stub_finite_native_run": {
+    "case_elapsed_ms": 11158,
+    "case_sha256": "95fdf884fc593916ea4b4d6537f2eebffb43fca46e3d5b40d96b1115f5bf77d1",
+    "cleanup_complete": true,
+    "cleanup_errors": [],
+    "command_exit_code": 1,
+    "distribution_qualified": false,
+    "emitted_case_rows": 33,
+    "emitted_statuses_equal_expected": true,
+    "failed_receipt_sha256": "960e289a0b362c0ce09a42882aa97f917200d8f1965466b552fb202c1c62f951",
+    "formal_diagnostics_review": "unperformed",
+    "game_qualified": false,
+    "graphical_session_available": true,
+    "last_emitted_case": "destroy_acquire",
+    "loader_exit_code": 5,
+    "ordinary_arm64_pe_execution_performed": true,
+    "passed": false,
+    "pe_terminal_record_emitted": false,
+    "recorded_process_exit_status": "0xc0000005",
+    "remaining_case_rows": 6,
+    "root_cause": "unknown",
+    "runtime_eligible": false,
+    "sentinel_survived": true,
+    "wrapper_elapsed_ms": 1272378
   },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
@@ -896,5 +921,5 @@
     "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
     "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
   },
-  "work_gate": "current_development_admission_passed_finite_native_run_started"
+  "work_gate": "finite_native_access_violation_under_diagnosis"
 }

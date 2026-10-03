@@ -1067,3 +1067,34 @@ with process-scoped display/idle prevention and the unchanged Metal validation
 environment. The run, explicit raw-log review and complete final reconstruction
 remain unqualified until their actual completion. Private signatures, profiles,
 certificate information and raw diagnostic streams remain outside Git.
+
+
+### 2026-10-04: Finite Native Run Failed After Case 33
+
+The same candidate passed fresh per-image admission, then the actual ordinary
+ARM64 fixture failed. It emitted the first 33 native rows, each with the expected
+status and facts=1, ending at `destroy_acquire`; the last six rows and PE terminal
+record were not emitted. The loader returned 5 and its owned process-exit event
+recorded `0xc0000005` (access violation). The exact failing instruction and root
+cause remain unknown. The source sequence places the next operation at window
+destruction; this is localization, not proof of a particular component defect.
+
+The case lasted 11,158 ms; the wrapper took 1,272,378 ms including pre-execution
+input/admission replay. The graphical session was available, owned cleanup
+completed without errors, and the unrelated sentinel survived. Case receipt:
+`95fdf884fc593916ea4b4d6537f2eebffb43fca46e3d5b40d96b1115f5bf77d1`;
+failure receipt: `960e289a0b362c0ce09a42882aa97f917200d8f1965466b552fb202c1c62f951`.
+Do not create passing diagnostics or reconstruction-completion records.
+
+A bounded private diagnostic reuses the signed candidate and unchanged original
+39-case body/owned supervisor, with only `WINEDEBUG=-all,+seh` replacing `-all`
+in a separate function-global environment copy. Historical sources and records
+are untouched. It performs current admission before execution and uses a new
+owned output, the existing timeout/output limits and process-scoped caffeinate.
+The altered environment is diagnostic-only and cannot qualify the unchanged
+finite evidence protocol. Retain all diagnostic failures and raw traces privately.
+
+Read-only section comparison found identical native driver `__TEXT.__text`,
+ordinary driver `.text` and original PE fixture `.text` against Stage 4. This
+does not establish whole-image equivalence or exclude a runtime/link/teardown
+interaction; the native DXMT linker change remains only one hypothesis.
