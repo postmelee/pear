@@ -152,5 +152,6 @@ product statement. Other tasks need not change their current inputs or processes
 - [#7 link trial record](https://github.com/postmelee/pear/blob/e41b7bd7daaab707c3609693ff11e14af6f2d085/mydocs/plans/task_m1_7_impl.md).
 
 Sources were inspected as local immutable Git objects on October 4, 2026.
-Remote-link availability is checked in the later documentation stage; local
-existence is not reported as a successful remote fetch.
+Stage 3 subsequently fetched all eight linked Pear files at those exact commits
+and matched their remote Git blob IDs to the inspected local objects. This
+confirms source-link availability, not private-receipt or runtime qualification.

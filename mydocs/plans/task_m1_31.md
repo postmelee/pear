@@ -2,7 +2,7 @@
 
 GitHub Issue: [#31](https://github.com/postmelee/pear/issues/31)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: task and implementation plans approved; Stage 2 complete; Stage 3 awaiting explicit continuation.
+Status: Stages 1-3 complete; final reporting/publication approval pending.
 Planning date: October 4, 2026 (Asia/Seoul).
 
 ## Purpose
@@ -268,3 +268,12 @@ The [Stage 2 report](../working/task_m1_31_stage2.md) records the new official
 guide, one index insertion, six pinned Ninja source reads and passing document,
 link, shell-syntax and scope checks. Ninja commands were not executed.
 Stage 3 awaits explicit continuation; communication/integration remain deferred.
+
+
+## Stage 3 Approval and Result — October 4, 2026
+
+The requester explicitly continued after Stage 2 commit 0d10f6d. The
+[Stage 3 report](../working/task_m1_31_stage3.md) records the complete scope,
+arithmetic, local links, source availability and privacy review. All three
+implementation stages are complete; final reporting/publication awaits approval.
+Merge, Issue closure and other-task communication/integration remain deferred.
