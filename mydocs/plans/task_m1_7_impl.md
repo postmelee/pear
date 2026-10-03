@@ -402,3 +402,23 @@ check passed. These are Python/source/refusal checks, with explicit native-gate
 doubles; fresh component construction and native binding remain unperformed.
 The retained final Stage4 build independently replayed under the unchanged
 original checker before selective duplicate-source pruning.
+
+
+### October 3 Reviewed Duplicate Source Pruning
+
+After independent replay of retained Stage4 build6, a private file-by-file ledger
+was independently rechecked for both original and retained donor hashes, sizes,
+types and modes. The cleanup removed98,254 regular files (2,595,732,533 logical
+bytes) identical to protected donors across17 obsolete source roots: old input
+snapshots, native source reconstructions and Stage4 build1–5 Wine/DXMT sources.
+All unmatched unique files, symlinks, receipts, commands, raw failures and
+producer records remain; current Stage3/4/5 and shared dependency donors were
+excluded. Observed volume free space increased2,876,813,312 bytes (about2.68GiB);
+APFS physical allocation/sharing and unrelated activity make this a volume
+observation, not an exact payload physical-reclaim measurement. Cleanup receipt
+SHA-256:
+`41d21ab7e2ecca705ea2dd85070a11780430b44fe35463d8033d3127ef28d4c1`.
+The complete pruned historical source trees are unavailable for replay until
+exact donor-based rehydration. Inventory receipts do not substitute for bytes.
+The current fresh Stage5 reconstruction remains independent; no raw-difference
+normalization, game execution or distribution qualification is inferred.
