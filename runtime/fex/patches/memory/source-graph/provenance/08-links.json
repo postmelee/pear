@@ -1,0 +1,120 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "postimage_bytes": 11427,
+      "postimage_sha256": "7797766c0ca8a1d298a7bdc0ab23667170118feabe891b5d7d13dd6841fb77f4",
+      "preimage_sha256": "23e43cf665752357b338042e9cc4dbe8f75bd4abd914e872428dc34d93036496"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "postimage_bytes": 23070,
+      "postimage_sha256": "3c066b69b35ecb18b60c3ccca0858797de1e4397b3e5e98b5f6c6874b4a12248",
+      "preimage_sha256": "30e2133b9b42d23a3a960f51b858da673d76dccfc82b022de39ad72ac965d609"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "postimage_bytes": 18043,
+      "postimage_sha256": "68d767c7b549bab399eb7f885fbbe359be78e0ddd6dc5eb08b1b87f13805651b",
+      "preimage_sha256": "df2794c025440f6e2ad56c2fea63dabe22e475111d639f8a59a95b82d5dd2e84"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+      "postimage_bytes": 6875,
+      "postimage_sha256": "48d637a0b2b06d13b44788ad143937b121d022d1025f9948839a8f5c88582b15",
+      "preimage_sha256": "791c9730080173612867546dba51ecd0efb4def025c39660b9ece4444e9b5695"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 78327,
+      "postimage_sha256": "654017a8d41722ec2c04b0db9892e35e2f01b774e2fbea9bc54b621d5da6c191",
+      "preimage_sha256": "631c5950f4e3c3bbed83cfadca04a3938ba68376576b48b80db62e2d9cc3d62f"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 103904,
+      "postimage_sha256": "83de462ad8c4ee6d024a76debf48a6d89387e2aca8a0a1a20c6fead92921415b",
+      "preimage_sha256": "b14cc660e1689108808314734bdb8432162aaa0d3d87c945910cc1f49561e25d"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+      "postimage_bytes": 7920,
+      "postimage_sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f",
+      "preimage_sha256": "ce96a5b000b843236de30bf68755da332baf333bd95bde746d6ad0d0734493ac"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 63915,
+      "postimage_sha256": "0b232f6a9d3e50187c78a38f2839e062c19db425dad2cbc9c63d78a2eac859e0",
+      "preimage_sha256": "86dbdccfc361bd80b37e3e7c3ce5fc667d05c13733cc07d1698e3be05d6c64a7"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "postimage_bytes": 24903,
+      "postimage_sha256": "1026879160ccfb3ce47ec2ff5644982cfb3b8eabd37b4ba89daee594341c0b4e",
+      "preimage_sha256": "16892f066de0db43ef24f86ba57565df62d6b91c0cfe1e6723c42b0e950d1212"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "postimage_bytes": 4785,
+      "postimage_sha256": "4ac2f90094a932f84486eaa16d7cf3a624763589edb4e24592c39f7f4c5647cd",
+      "preimage_sha256": "93338457a4d2cc8701f697af97244f58d94ca614251add174ee98f8c4532d113"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "postimage_bytes": 21320,
+      "postimage_sha256": "f9ee66db321f7e2d8f0f0f0ee23fecdb03dbdcd9d106166b59e352d1a18cf659",
+      "preimage_sha256": "9235aa826bda6d8c0f7655efa5e2cc1a763054c5964108c9a4ec95affe962e54"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITLinkLayout.h",
+      "postimage_bytes": 4412,
+      "postimage_sha256": "6224e0a5256534708f06595f86ad9e6bfb29d9b65771eee9189f59af0e3f0a37",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITLinkTickets.h",
+      "postimage_bytes": 3399,
+      "postimage_sha256": "8b1ad9acb5f8ccda4ebdf4c48658084773e7bc390f7a3f0c80396e07bd684a90",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+      "postimage_bytes": 16601,
+      "postimage_sha256": "8b0b297b90d854eb0dcbc39d9d05a2210b3deca27ffd06e9386066f56c1c0bee",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.h",
+      "postimage_bytes": 3572,
+      "postimage_sha256": "b4e70e8385cfbadf64389b6dd57376bb96629196ca4cb49c857d0c78981d2f81",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "postimage_bytes": 10250,
+      "postimage_sha256": "741a595977f0315cfb64c6aeebe1cb57af5e6d2fcf07acbb6f80254602bb0bcb",
+      "preimage_sha256": "7d93cb333dba79bd18ff9e2719e4fd566498a6b8ed7fe6793c26efb9c1d17e59"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+      "postimage_bytes": 1298,
+      "postimage_sha256": "91021ecd7989e8a3cb8a97f82dd5b7e626fca795e572a5ff92dba10f9dd6f04c",
+      "preimage_sha256": null
+    }
+  ],
+  "historical_source_manifest_sha256": "1c3e9a6d0e88d9db01d0d3269c7dced417f79d089350b3d869de0a73bc637344",
+  "historical_strict_patch_sha256": "f244dd0e4bc76dfdf4994ab360c81a27072ef6e19cbaefcdfbb69f5a9d5b4298",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "links",
+  "native_runtime_execution": false,
+  "order": 8,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

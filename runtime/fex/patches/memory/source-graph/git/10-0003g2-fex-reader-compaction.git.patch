@@ -1,0 +1,35 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -126,7 +126,9 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ struct PearFrameBlockSnapshot {
+   FEXCore::Utils::PearFEXMemory::Allocation Protection;
+-  FEXCore::CPU::CPUBackend::PearManagedWindow Window;
++  // Numeric arithmetic only. The opaque retained target below is the one
++  // actual source lifetime/TokenState reference; this range grants no lease.
++  struct NumericRange { uintptr_t Begin {}; size_t Size {}; size_t Offset {}; } Window;
+   std::optional<FEXCore::Utils::PearFEXMemory::RetainedManagedTarget> Target;
+   CPU::CPUBackend::JITCodeHeader Header {};
+   CPU::CPUBackend::JITCodeTail Tail {};
+@@ -145,11 +147,15 @@
+   if (!Out.BlockBegin) return {PEAR_FEX_UNAVAILABLE, 0, 0};
+   Out.Protection = Context->Dispatcher->GetPearSnapshot();
+   if (!Memory::HasManagedActive(Out.Protection)) return {PEAR_FEX_UNAVAILABLE, 0, 0};
+-  auto Window = Thread->CPUBackend->FindPearManagedWindow(Out.BlockBegin);
+-  Out.Target = Thread->CPUBackend->FindPearRetainedTarget(Out.BlockBegin);
+-  if (!Window || !Out.Target || Window->Offset > Window->Size || sizeof(Out.Header) > Window->Size-Window->Offset)
+-    return {PEAR_FEX_UNAVAILABLE, 0, 0};
+-  Out.Window = std::move(*Window);
++  {
++    auto Window = Thread->CPUBackend->FindPearManagedWindow(Out.BlockBegin);
++    Out.Target = Thread->CPUBackend->FindPearRetainedTarget(Out.BlockBegin);
++    if (!Window || !Out.Target || Window->Offset > Window->Size || sizeof(Out.Header) > Window->Size-Window->Offset)
++      return {PEAR_FEX_UNAVAILABLE, 0, 0};
++    Out.Window = {Window->Begin, Window->Size, Window->Offset};
++    // Release the duplicate metadata/reference before any source-page copy.
++    // Out.Target still retains the exact actual CodeBuffer and TokenState.
++  }
+   auto Read = Memory::CopyManagedRXUnderGlobalLease(Out.Protection, *Out.Target, Thread, Out.Window.Offset,
+     {reinterpret_cast<uint8_t*>(&Out.Header), sizeof(Out.Header)});
+   if (!Read) return Read.Outcome;

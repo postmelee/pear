@@ -1,0 +1,74 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -772,12 +772,16 @@
+   // reserve a shared JIT class, enter managed code or fabricate a ThreadState.
+   PearMemory::Result CoreOutcome {};
+   bool CoreReady {};
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
++#endif
+     CoreReady = CTX->InitPearCore(CoreOutcome);
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   } catch (...) {
+     PearSourceReady.store(false, std::memory_order_release);
+     throw; // Preserve the actual upstream construction exception.
+   }
++#endif
+   if (!CoreReady || !CoreOutcome) {
+     const auto CoreStatus = PearFailureStatus(CoreOutcome);
+     PearCleanupPartialContext(CoreStatus, &CoreOutcome);
+@@ -1219,12 +1223,16 @@
+   PearMemory::Result ThreadOutcome {}, ThreadCleanup {};
+   bool ThreadCleanupAttempted {};
+   FEXCore::Core::InternalThreadState* Thread {};
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
++#endif
+     Thread = CTX->CreatePearThread(nullptr, ThreadOutcome, &ThreadCleanup, &ThreadCleanupAttempted);
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   } catch (...) {
+     PearSourceReady.store(false, std::memory_order_release);
+     throw; // Keep the original exception and native result history unchanged.
+   }
++#endif
+   // Core binds/registers this actual state before InitializeCompiler and
+   // retains/quarantines any source object with unresolved owner registration.
+   if (!Thread || !ThreadOutcome) {
+diff --git a/Source/Windows/WOW64/Module.cpp b/Source/Windows/WOW64/Module.cpp
+--- a/Source/Windows/WOW64/Module.cpp
++++ b/Source/Windows/WOW64/Module.cpp
+@@ -687,12 +687,16 @@
+   // reserve a shared JIT class, enter managed code or fabricate a ThreadState.
+   PearMemory::Result CoreOutcome {};
+   bool CoreReady {};
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
++#endif
+     CoreReady = CTX->InitPearCore(CoreOutcome);
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   } catch (...) {
+     PearSourceReady.store(false, std::memory_order_release);
+     throw; // Preserve the actual upstream construction exception.
+   }
++#endif
+   if (!CoreReady || !CoreOutcome) {
+     const auto CoreStatus = PearFailureStatus(CoreOutcome);
+     PearCleanupPartialContext(CoreStatus, &CoreOutcome);
+@@ -788,12 +792,16 @@
+   PearMemory::Result ThreadOutcome {}, ThreadCleanup {};
+   bool ThreadCleanupAttempted {};
+   FEXCore::Core::InternalThreadState* Thread {};
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
++#endif
+     Thread = CTX->CreatePearThread(nullptr, ThreadOutcome, &ThreadCleanup, &ThreadCleanupAttempted);
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   } catch (...) {
+     PearSourceReady.store(false, std::memory_order_release);
+     throw; // Keep the original exception and native result history unchanged.
+   }
++#endif
+   // Core binds/registers this actual state before InitializeCompiler and
+   // retains/quarantines any source object with unresolved owner registration.
+   if (!Thread || !ThreadOutcome) {

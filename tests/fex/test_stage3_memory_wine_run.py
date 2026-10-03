@@ -30,6 +30,7 @@ def wine_rows():
     shared=0
     for row in calls:
         row['scope']='wine_owner'
+        if row['control']=='atomic_wrong_role':row['status']=row['returned_status']=3
         if row['control']=='reserve_extent':
             row['extent_size']=16777216 if shared<38 else 16384;shared+=1
     terminal=deepcopy(native[-2]);terminal['scope']='wine_owner'
@@ -38,7 +39,7 @@ def wine_rows():
          for control,opcode in [('register_readiness_native_executor',7),('query_readiness_native_owner',6),
                                 ('unregister_readiness_native_executor',12)]]
     finish=dict(version=1,record_kind='pear_fex_memory_wine',event='finish',native_arm64_pe_execution=True,
-        virtual_query_observations=154,checked_ec=False,ec_registration_exercised=False,wine_view_registration=True,
+        virtual_query_observations=156,checked_ec=False,ec_registration_exercised=False,wine_view_registration=True,
         fex_initialization=False,translated_guest_execution=False,game_execution=False,exit_code=0)
     return [native[0],*readiness,*calls,terminal,finish]
 

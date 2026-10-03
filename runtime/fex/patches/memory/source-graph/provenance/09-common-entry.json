@@ -1,0 +1,24 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/PearFEXMemory.cpp",
+      "postimage_bytes": 47143,
+      "postimage_sha256": "9a2cf4030f82357371132fe22d2f878bfe2fe3cba55d06694f005a0cd5487545",
+      "preimage_sha256": "9ea7e3b0188a0fade09bfa276451887b0c3c1df4cc751ed8a6c6e71de5fc8e6c"
+    }
+  ],
+  "historical_source_manifest_sha256": "dd941f22ac346eb204d25cb313dba31342f23762af360be08d35a1c22d635728",
+  "historical_strict_patch_sha256": "5554a427d825aa8122f81ff41eb3ce1f5fb4c68d052f3c99f497df98c2ff83dd",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "common-entry",
+  "native_runtime_execution": false,
+  "order": 9,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

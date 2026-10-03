@@ -1,0 +1,42 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "postimage_bytes": 61453,
+      "postimage_sha256": "a823223199731eb5a94bd5f47c6c37a9332fec75845e57490d1e91e6ebd2d84d",
+      "preimage_sha256": "fc8ec43ff66c4816297142d2e5e72f46195d814d15773cfe5611fb31d68302ef"
+    },
+    {
+      "path": "Source/Windows/WOW64/Module.cpp",
+      "postimage_bytes": 48923,
+      "postimage_sha256": "c37a1e15535d136d9fd989d053d53b92ced664e07443c873bc7001b63e072873",
+      "preimage_sha256": "24c10fed3e902eb440442b4b3bc844fbfcaf1b39819e75aff60b78ed66122547"
+    },
+    {
+      "path": "Source/Windows/Common/DarwinConfigPolicy.h",
+      "postimage_bytes": 2032,
+      "postimage_sha256": "24a09f91b100112da8076fa5099929e80e0ad44e1882e4feb795fb49986904d3",
+      "preimage_sha256": "dd6b8c2ea9d8f8c58d369be68ec87ec9e7d6a36b5f2bdc2943928c5716531a7c"
+    },
+    {
+      "path": "Source/Windows/Common/DarwinConfigPolicy.cpp",
+      "postimage_bytes": 2000,
+      "postimage_sha256": "6a0d801be1f77abe01a2605a9b04a13ae156f85dd4554d30ca48d1af52d26dd3",
+      "preimage_sha256": "e8a419f01e3454245bd1d035fcabe14ff297e06e1934489e63e09bcbecb6b588"
+    }
+  ],
+  "historical_source_manifest_sha256": "16d928a73ef528be17acd33e437d417e71d8071ddf3b5399cf2b0187b75fb787",
+  "historical_strict_patch_sha256": "1e70e4f95090a838f328c8289ff47a1cf09b85f39330ba0c6ea6f5ca68862fb5",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "module",
+  "native_runtime_execution": false,
+  "order": 6,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

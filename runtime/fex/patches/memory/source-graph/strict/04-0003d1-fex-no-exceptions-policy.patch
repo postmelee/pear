@@ -1,0 +1,44 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -573,12 +573,19 @@
+   const auto Slot = AcquirePearConstructionSlot();
+   if (!Slot) { Outcome = {PEAR_FEX_CAPACITY, 0, 0}; return nullptr; }
+   FEXCore::Core::InternalThreadState* Thread {};
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
+     Thread = new FEXCore::Core::InternalThreadState {.CTX = this};
+   } catch (...) {
+     FinishPearConstructionSlot(*Slot, nullptr, false);
+-    throw; // Preserve the upstream NX allocation exception.
+-  }
++    throw; // Preserve the upstream NX allocation exception when supported.
++  }
++#else
++  // The pinned target disables C++ unwinding. Preserve that upstream policy;
++  // typed-return cleanup/normal exits remain checked, allocator termination is
++  // not a recoverable or qualified cleanup path.
++  Thread = new FEXCore::Core::InternalThreadState {.CTX = this};
++#endif
+   struct ConstructionGuard {
+     ContextImpl& Owner;
+     size_t Slot;
+@@ -1107,6 +1114,7 @@
+   if (!Drained) LogMan::Msg::EFmt("Pear detached generation remains pending: status {}, domain {}, code {}",
+                                  Drained.Status, Drained.ErrorDomain, Drained.ErrorCode);
+   uintptr_t HostCode {};
++#if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
+     HostCode = CompilePearBlock(Frame, GuestRIP, MaxInst);
+   } catch (...) {
+@@ -1117,6 +1125,10 @@
+                                     Finished.Status, Finished.ErrorDomain, Finished.ErrorCode);
+     throw;
+   }
++#else
++  // No claim of exception/fatal unwinding on the selected no-exceptions target.
++  HostCode = CompilePearBlock(Frame, GuestRIP, MaxInst);
++#endif
+   const auto Finished = FinishPearDispatcherGate(Gate);
+   LOGMAN_THROW_A_FMT(!!Finished, "Pear dispatcher native resume refused: status {}, domain {}, code {}",
+                     Finished.Status, Finished.ErrorDomain, Finished.ErrorCode);

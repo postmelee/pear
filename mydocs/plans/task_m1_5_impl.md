@@ -840,3 +840,138 @@ header. That failed receipt remains preserved. The next fresh constructor
 combines only the reviewed bitmap boundary fix and ABI2 owner/fixture sources
 against the same qualified #4 baseline; no obsolete build is relabelled.
 Stage3 remains in progress with full metadata/lifetime/source gates open.
+
+
+### October 3 Actual ABI2 Wine and Source Reconstruction Checkpoint
+
+The combined current ABI2 Wine build8 completed four actual build commands
+with exit0. Its receipt SHA-256 is
+`c54cd61b6bf45f6ee76767cdc3d874394d3a6d89aa3802077d60b5cfe4679180`;
+source inventory
+`901637d2e61ce58189e4c33b590602539aa261e597bbea08f0bf8e929b0bd81e`.
+This rebuilds the selected ntdll/ordinary ARM64 fixture slice over the retained
+qualified #4 install; it does not freshly reconstruct all Wine. Runtime7 passed
+current genuine development admission and individual signing for39 native and
+756 PE images. These construction/admission operations did not run an engine.
+
+Actual Wine Run4 exited0 after964 owner calls,153 controlled refusals,40
+publications,83 protection observations and73 finite owned leaf calls. The
+fixture recorded156 VirtualQuery observations. All38 actual bitmap diagnostic
+rows observed set/clear and original source-view, bitmap and PEB restoration,
+with zero diagnostic mask. Owned loader/server/sentinel cleanup was complete,
+without errors or observation gaps. Its original aggregate assessment failed:
+Wine's ordinary PE front door refused the ARM64EC role with UNAVAILABLE3 before
+the Unix call, whereas the old checker expected native-owner STALE6. Original
+case, failure assessment, producers and raw logs remain immutable. Case SHA:
+`0064e898764256e40e5eb79f9050a4eefe2a288628234f80ef43a9026f7a6394`;
+source-failure record
+`cfba9f505658488b1437db91c6a6dc9e39f2f627564a9647e7545bb753e96702`.
+A separate current-reader reassessment is required; do not relabel the original
+failed aggregate or its unqualified completed-count field. This finite ordinary
+ARM64 run performed no EC registration, FEX initialization or translated/game
+execution. The original failed Run3 boundary geometry remains unperformed.
+
+The current transcript reader requires explicit native/Wine scope and its exact
+role refusal, request sizes/offsets/states, actual original continuation and
+16KiB D extent, initial publication, interposed new publication/current epoch,
+and ordered retirement/resume/consumption/exit. It does not accept an arbitrary
+greater epoch or a moved pin-retirement control. The repository's complete FEX
+portable suite passed442 controls with one genuine APFS case-collision skip.
+
+The approved supplemental source graph is now thirteen ordered strict patches
+and exact Git derivatives with sanitized provenance, current ABI2 wire and all
+source gates false. Original11 layers and upstream C++/assembly/license notices
+are preserved. A fresh projection receipt is checked and its actual digest
+bound into each build; another valid receipt cannot replace that saved identity.
+The selected Stage2 baseline receipt remains local and scope-bound; contributor
+portability is not claimed and private receipts are not published as a workaround.
+
+A genuine projection under the tracked task worktree failed the final byte gate
+although all26 Git commands exited0. Every36 affected source path remained the
+original baseline and the12 new files were absent. Git discovered the enclosing
+Pear repository and skipped patch paths outside its current subdirectory. The
+private temporary projection had passed because it had no enclosing Git checkout.
+Retain the failed source1 record and isolate ambient Git discovery explicitly
+before a new projection. Do not admit the unmodified tree or call compilation.
+Full FEX compilation, source lifetime, sealed entry, Core atomic resume, whole
+256KiB metadata admission and genuine empty initialization remain separate open
+gates. Stage3 is incomplete.
+
+
+### October 3 Separate Immutable-Record Reassessment and Payload Cleanup
+
+An independent guarded offline evaluation, then a separate root replay, admitted
+both original native transcripts and the complete original Wine case using the
+current strict native/Wine-scope checkers. The Wine case has964 owner calls and
+seven registered processes observed entering ordinary ARM64 PE; it independently
+counts38 successful shared reservations and38 paired bitmap/restoration records.
+Original launch, event, native-image identity, descendant exit, sentinel and
+cleanup checks passed. A separate source-failure scan was empty without parse
+error. Its diagnostic-prefix completion field remains false; the completed
+count comes from the strict full-case parser, not that partial scan.
+
+All915 bound source/image/record/log/checker files retained exact before/after
+bytes, sizes and modes. No execution/subprocess/signaling/observer/CDLL guard
+was reached. Derivative control SHA-256:
+`16e25f9651ebfeebd150194b3e7457f1c37588e795dbf741772a1967bd6a746b`.
+The original Wine aggregate still records `memory_wine_call_status` and remains
+false. This derivative is neither historical `verify_run` success, a new native
+run, current permission verification, general runtime qualification nor Stage3
+completion. FEX initialization, translated/game execution and distribution
+qualification remain false. The first root replay pre-copied a directory that
+the frozen evaluator creates and stopped with FileExistsError; that preparation
+failure was retained and a new output-only replay passed without source changes.
+
+A second reviewed payload cleanup independently rehashed every selected old
+and retained current file before deletion, then checked the deletion barrier
+and retained unique/control identities. It removed10,836 byte-and-mode-identical
+regular files from old build5/6 install/fixture and runtime5/6 app payloads,
+totaling4,939,589,088 logical bytes. All88 unique payload copies remain, including
+all78 old signed native images and old ABI1 ntdll/owner variants. Sources,
+objects, producer snapshots, signatures/profiles, logs, prefixes and current
+build8/runtime7 donors were excluded. Observed volume free space increased
+2,490,621,952 bytes (about2.32GiB); physical APFS reclaim remains unknown.
+Private completed cleanup receipt SHA-256:
+`bebd7dbac3a9510478b1459cbc1b7153d6d42ab240f7285a2afafad9632520b9`.
+Full pruned historical payload replay requires exact donor-based rehydration;
+records and hashes cannot replace those missing bytes.
+
+
+### October 3 Git-Isolated Tracked Source Projection
+
+The source helper now uses a fixed documented `GIT_CEILING_DIRECTORIES` boundary
+at the new canonical output, above its source cwd. Inherited GIT_DIR/WORK_TREE
+are not forwarded; aliases, non-directory and colon-separated ambiguous paths
+refuse. Existing source hunks, graph, wire, compiler settings and baseline remain
+unchanged. The [Git apply manual](https://git-scm.com/docs/git-apply) documents
+subdirectory exclusion; the [Git environment manual](https://git-scm.com/docs/git)
+documents discovery ceilings. There is no unsafe-path/index/output-repository
+initialization workaround. The exact new helper digest is independently pinned
+and requires a genuinely fresh source receipt.
+
+A real tiny nested-repository regression reproduces the former exit0 skips,
+then applies exact changed/added bytes with the production helper and proves
+ambient Git/baseline/outside-file preservation. Root's137 targeted controls
+passed with one APFS case-collision skip. The three historical first-adapter
+controls remain distinct from the seven new source-driver controls.
+
+The real tracked task output source2 ran26 actual Git check/apply commands with
+exit0, materializing all36 changed paths and12 additions:6963 source files /
+40,437,635 bytes, with the unchanged final source manifest
+`74751c67271521cc86ec14ccc06f98e2019be0be2dae2f742376963c5dde759a`.
+Root's independent current-reader replay admitted the actual new control
+`89f71d323921557ac68ed7ab358c9317127245d091b6435d6b1be7eb707deb3b`.
+The original failed source1 receipt is retained. No compiler, initialization or
+owner operation occurred in projection or its pure replay.
+
+The full selected ARM64EC/WoW64 FEX constructor was then admitted with one job,
+2GiB growth ceiling,2GiB reserve and actual11,209,162,752 free bytes before the
+separate operation. These are operational bounds, not a measured peak. Its
+actual compiler/link/object/import proof remains in progress and modules must
+not load or initialize. The canonical13-layer source still records every open
+lifetime/entry/Core/metadata/initialization/translated/game gate false.
+
+The complete current FEX suite then passed449 controls with one APFS skip;
+governance checked22 documents/172 local targets and the diff check passed.
+These include source-only Git and explicitly labelled portable control scopes;
+there is still no initializer/game qualification.

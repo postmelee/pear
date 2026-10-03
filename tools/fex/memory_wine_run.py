@@ -197,7 +197,7 @@ def suite_contract():
         'continuation_capacity_preserves_old_pins':10,'new_epoch_cannot_release_original_pin':11,
         'duplicate_retirement':5,'shared_capacity_exhausted':1,'fragmented_free_bytes_refused':1,
         'dispatcher_capacity_exhausted':1})
-    atomic_counts, atomic_refusals, atomic_opcodes = atomic_checks.controls()
+    atomic_counts, atomic_refusals, atomic_opcodes = atomic_checks.controls('wine_owner')
     counts.update(atomic_counts); refusals.update(atomic_refusals); opcodes.update(atomic_opcodes)
     return counts,refusals,opcodes
 
@@ -248,7 +248,7 @@ def owner_output(raw,child,helper):
                  'memory_wine_refusal_facts')
         counts[row['control']]+=1
     need(counts==counted,'memory_wine_control_counts')
-    atomic_checks.validate(calls, need)
+    atomic_checks.validate(calls, need, scope='wine_owner')
     terminal={'version':1,'record_kind':'pear_fex_memory_fixture','scope':'wine_owner',
         'sequence':len(calls)+1,'event':'suite_complete','passed':True,'checked_ec':False,
         'owner_calls':len(calls),'refusals':sum(row['status']!=0 for row in calls),'allocations':103,

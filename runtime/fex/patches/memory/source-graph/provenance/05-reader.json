@@ -1,0 +1,30 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 76841,
+      "postimage_sha256": "631c5950f4e3c3bbed83cfadca04a3938ba68376576b48b80db62e2d9cc3d62f",
+      "preimage_sha256": "cff1294b3257867c44d86fb087c3efe629e13f5bc85670583e731eeea68d3d96"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITMetadata.h",
+      "postimage_bytes": 2628,
+      "postimage_sha256": "20431878e7e975bffd6b6060db3678a6623b9b60845208a1cd86d5fb2f5c2ff7",
+      "preimage_sha256": null
+    }
+  ],
+  "historical_source_manifest_sha256": "e2a61ae3cc1a7ad89ef219142f2ac50405b07fde9508616112fc5c9567c40696",
+  "historical_strict_patch_sha256": "d7d91a71c4a3065eec3bc8bdae9e4d46e7e57ff016c1475f04f16d3cfbb35ff3",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "reader",
+  "native_runtime_execution": false,
+  "order": 5,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

@@ -13,12 +13,12 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
     def materialized(self):
         root = ROOT / 'runtime/fex/patches'
         manifest = json.loads((root / 'memory-fex-series.json').read_text())
-        self.assertEqual(manifest['component'], 'fex-memory-adapter')
+        self.assertEqual(manifest['component'], 'fex-memory-source-supplements')
         self.assertIs(manifest['runtime_execution'], False)
         self.assertEqual(manifest['preserved_abi'], {
-            'fex_unixlib_services': 8, 'wire_record_bytes': 128, 'ntdll_unix_index': 10})
+            'fex_unixlib_services': 8, 'wire_record_bytes': 128, 'ntdll_unix_index': 10, 'wire_version': 2})
         self.assertTrue(all(v is False for v in manifest['source_gates'].values()))
-        self.assertEqual(len(manifest['patches']), 1)
+        self.assertEqual(len(manifest['patches']), 13)
         row = manifest['patches'][0]
         raw = (root / row['file']).read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(), row['sha256'])
@@ -61,8 +61,11 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         original = base[:source_list_end]
         after = postimages[path]
         self.assertEqual(after[:len(original)+len(b'  PearFEXMemory.cpp\n')].replace(b'  PearFEXMemory.cpp\n', b''), original)
+        # The first preserved adapter layer selected ABI1; the complete graph
+        # selects ABI2 only after the reviewed layer-13 CMake derivative.
+        self.assertIn(b'2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1', after)
         self.assertEqual(manifest['authoritative_header']['sha256'],
-                         '2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1')
+                         'bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf')
 
 
 if __name__ == '__main__': unittest.main()

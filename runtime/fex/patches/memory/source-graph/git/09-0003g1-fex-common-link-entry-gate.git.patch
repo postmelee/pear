@@ -1,0 +1,24 @@
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -2,6 +2,7 @@
+ // Original Pear adapter; the exact Wine wire header is the ABI authority.
+ #include <FEXCore/Utils/PearFEXMemory.h>
+ #include <FEXCore/Utils/PearFEXRetirement.h>
++#include <FEXCore/Utils/PearFEXLinks.h>
+ #include <FEXCore/Debug/InternalThreadState.h>
+ #include <atomic>
+ #include <cstring>
+@@ -642,6 +643,12 @@
+ Result Enter(const Allocation& A, size_t EntryOffset, uint64_t Continuation) {
+   const auto Admission = NewAdmission();
+   if (!Admission) return Admission;
++  // Source batch/prepared markers only refuse new admission; they grant no
++  // owner quiescence or write authority, and cleanup transitions remain open.
++  if (!Links::EntryAdmissionOpen()) {
++    const auto First=Links::FirstFailureSnapshot();
++    return !First ? First : Refuse();
++  }
+   if (CurrentSnapshot().SourceKind != Binding::Kind::Thread) return Refuse();
+   const auto Limit = Usable(A);
+   if (!A.Base || !A.Token.write_epoch || A.Token.expected_state != PEAR_FEX_PUBLISHED_RX ||

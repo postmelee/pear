@@ -1,0 +1,12 @@
+diff --git a/Source/Windows/Common/CMakeLists.txt b/Source/Windows/Common/CMakeLists.txt
+--- a/Source/Windows/Common/CMakeLists.txt
++++ b/Source/Windows/Common/CMakeLists.txt
+@@ -37,7 +37,7 @@
+   message(FATAL_ERROR "Pear memory ABI include root must contain exactly one selected header")
+ endif()
+ file(SHA256 "${PEAR_FEX_MEMORY_INCLUDE_ROOT}/wine/pear_fex_memory.h" PEAR_MEMORY_HEADER_SHA256)
+-if(NOT PEAR_MEMORY_HEADER_SHA256 STREQUAL "2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1")
++if(NOT PEAR_MEMORY_HEADER_SHA256 STREQUAL "bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf")
+   message(FATAL_ERROR "Pear memory ABI header differs from the selected Wine owner source")
+ endif()
+ target_include_directories(FEXCore_Base PUBLIC "${PEAR_FEX_MEMORY_INCLUDE_ROOT}")

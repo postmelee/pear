@@ -1,0 +1,90 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 57026,
+      "postimage_sha256": "86dbdccfc361bd80b37e3e7c3ce5fc667d05c13733cc07d1698e3be05d6c64a7",
+      "preimage_sha256": "e2426d022d7fcea1d10d078eb01dd289d318119a8786fd5d89cf835b23a95783"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "postimage_bytes": 24735,
+      "postimage_sha256": "16892f066de0db43ef24f86ba57565df62d6b91c0cfe1e6723c42b0e950d1212",
+      "preimage_sha256": "b72eafbb3b8ec87bedb56082c76c0d193da4be79d3110482a77d4e80c2abc183"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 69766,
+      "postimage_sha256": "0d8956fb1d97fab77deb95d8ce237dd0c2d9654c1cd155937da21574a3f63789",
+      "preimage_sha256": "75576f7149e6dcf9aedf95031bc72be97cd8a938554720c6c04884b99b91c63c"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+      "postimage_bytes": 6717,
+      "postimage_sha256": "791c9730080173612867546dba51ecd0efb4def025c39660b9ece4444e9b5695",
+      "preimage_sha256": "6c24f3d6fcce551ad845bf08ad9d9e20566eaa6a4e41664f5a1831355d6f26fb"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "postimage_bytes": 17157,
+      "postimage_sha256": "df2794c025440f6e2ad56c2fea63dabe22e475111d639f8a59a95b82d5dd2e84",
+      "preimage_sha256": "da6f882d069c7b756a716d167ab454f529987fde7bcf4d9328895d48cbb67bc2"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "postimage_bytes": 19914,
+      "postimage_sha256": "9235aa826bda6d8c0f7655efa5e2cc1a763054c5964108c9a4ec95affe962e54",
+      "preimage_sha256": "0c5825c7153e98ae3bb7bee95dac07e7a8253720196813fa0eb68174ef973384"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "postimage_bytes": 22789,
+      "postimage_sha256": "30e2133b9b42d23a3a960f51b858da673d76dccfc82b022de39ad72ac965d609",
+      "preimage_sha256": "38e7d562e071e7868a085dc17246f6a4568cf76ec18bd5fe7938064f930c4940"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "postimage_bytes": 9891,
+      "postimage_sha256": "7d93cb333dba79bd18ff9e2719e4fd566498a6b8ed7fe6793c26efb9c1d17e59",
+      "preimage_sha256": "56d008aea507758c3b82bec5f6ae6856af69e7660fe4263fa610b347b490f0fd"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXRetirement.h",
+      "postimage_bytes": 8506,
+      "postimage_sha256": "1edc6cf02d96adc20be530219f98943a3b89f7acb5d2adfc208f148c56979e11",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/Utils/PearFEXRetirement.cpp",
+      "postimage_bytes": 2039,
+      "postimage_sha256": "f2205f2c45ca06be81fab46936e4639c2bc17a91419db45219b755566bb8c9a5",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "postimage_bytes": 11395,
+      "postimage_sha256": "23e43cf665752357b338042e9cc4dbe8f75bd4abd914e872428dc34d93036496",
+      "preimage_sha256": "16ab4b3165d58b708458816cf2b24c69236925763aec2805e1d76c836f71423e"
+    }
+  ],
+  "historical_source_manifest_sha256": "71a441b7482f4208b0fc3f4b59ddc597b443c9b710f6e7313ff6a9f64eef511e",
+  "historical_strict_patch_sha256": "f80ed90adc8bcb935f386c4091bbfb33da0048ab7a9f2e72318a4e2f7bb2ef32",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "jit",
+  "native_runtime_execution": false,
+  "order": 3,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [
+    {
+      "layer": 3,
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "sha256": "93338457a4d2cc8701f697af97244f58d94ca614251add174ee98f8c4532d113"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

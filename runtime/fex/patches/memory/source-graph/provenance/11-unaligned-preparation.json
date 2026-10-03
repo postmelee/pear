@@ -1,0 +1,48 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+      "postimage_bytes": 80008,
+      "postimage_sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248",
+      "preimage_sha256": "f01e08d434eafb80de62cc2bf5c1d6854be7863559339ab55f5e2a949aa4cd6e"
+    },
+    {
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64InstructionConstants.h",
+      "postimage_bytes": 3789,
+      "postimage_sha256": "7f6a789075544099408e373a98511b796a712912265ac334a92129331e9d9d64",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64Preparation.h",
+      "postimage_bytes": 3573,
+      "postimage_sha256": "db39e4ade63756c134609bc79f12a2bb730f0978f4af9dc82820f37b0bce5566",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Utils/ArchHelpers/Arm64.h",
+      "postimage_bytes": 2321,
+      "postimage_sha256": "0e413f8e9e895bc1ffb048d7f2c4d8a9d78384ed5370606da398e7d43b447380",
+      "preimage_sha256": "86b28757c82ddb7705d27e9b139ab96914905b72646bb2ea2c9f72df1095ad6b"
+    }
+  ],
+  "historical_source_manifest_sha256": "0747715562a149d978fa9d22a51b28419d5bba355158ecbef0fc8e5038179058",
+  "historical_strict_patch_sha256": "37b34c7499438e58e6a265560cfba65a9bb432168f619d2b37e0886f7b61d9bf",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "unaligned-preparation",
+  "native_runtime_execution": false,
+  "order": 11,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [
+    {
+      "layer": 11,
+      "path": "FEXCore/include/FEXCore/Utils/CompilerDefs.h",
+      "sha256": "832362e45a28f5dae45f246b946893417592779bf745308f2fde57a836a1ce58"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

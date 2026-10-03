@@ -42,28 +42,9 @@ def owner_row(control, opcode=6, status=0):
 
 
 def atomic_rows():
-    """Synthetic state/order controls; never an observation of the native owner."""
-    identity=dict(allocation_id=17,generation=19,extent_offset=4096,extent_size=16384,executor_id=23)
-    def good(control,opcode,state,epoch=29,continuation=0,protection=0):
-        row=owner_row(control,opcode);row.update(identity)
-        row.update(executor_state=state,write_epoch=epoch,continuation_id=continuation,
-                   lifecycle=3,protection=protection,requested_state=3,
-                   operation_size=format(4 if opcode in (8,14) or control=='atomic_handoff_dispatcher' else 0,'016x'))
-        return row
-    rows=[good('atomic_enter_dispatcher',8,2,protection=2),
-          good('atomic_handoff_dispatcher',13,3,continuation=31)]
-    for control,status in [('atomic_wrong_size',1),('atomic_wrong_offset',1),
-            ('atomic_wrong_continuation',6),('atomic_missing_continuation',1),
-            ('atomic_stale_current_epoch',6),('atomic_old_wire_version',2),
-            ('atomic_wrong_generation',6),('atomic_wrong_executor',6),('atomic_wrong_role',6)]:
-        rows += [owner_row(control,14,status),
-                 good('atomic_refusal_preserves_original_pin',13,3,continuation=31)]
-    rows += [owner_row('atomic_retirement_preserves_original_pin',5,3),
-             owner_row('atomic_original_epoch_requires_retry',14,6),
-             good('atomic_consume_original_pin_on_current_epoch',14,2,epoch=37,protection=2),
-             owner_row('atomic_consumed_continuation_cannot_repeat',14,6),
-             good('atomic_exit_consumed_continuation',9,1,epoch=37)]
-    return rows
+    """Independent source-realistic scalar example; not native evidence."""
+    from tests.fex.test_memory_atomic_resume import source_rows
+    return source_rows('native_owner')
 
 
 def native_rows():
@@ -71,8 +52,8 @@ def native_rows():
     rows = [helper(), ready(), dict(version=1, record_kind='pear_fex_memory_admission',
         event='initialize', status=0, native_error_domain=0, native_error_code=0,
         checked_ec=False, wine_view_registration=False)]
-    groups = {'register_actual_native_executor': (1, 7), 'reserve_extent': (103, 1),
-        'query_current_token': (103, 6), 'begin_two_page_write': (39, 2), 'publish_two_pages': (39, 3),
+    groups = {'register_actual_native_executor': (1, 7), 'reserve_extent': (102, 1),
+        'query_current_token': (102, 6), 'begin_two_page_write': (37, 2), 'publish_two_pages': (37, 3),
         'enter_owned_leaf': (73, 8), 'exit_to_native_gate': (73, 9), 'begin_cross_page_instruction_pair': (1, 2),
         'publish_cross_page_instruction_pair': (1, 3), 'enter_before_source_continuation': (1, 8),
         'pin_saved_source_resume': (1, 10), 'direct_owned_handoff_to_native': (1, 13),
@@ -95,7 +76,7 @@ def native_rows():
         'duplicate_retirement': (5, 6), 'shared_capacity_exhausted': (1, 4),
         'fragmented_free_bytes_refused': (1, 4), 'dispatcher_capacity_exhausted': (1, 4)}
     rows += [owner_row(c, op, status) for c, (op, status) in failures.items()]
-    rows += [owner_row('mixed_extent_query_unavailable', 6, 3) for _ in range(112)]
+    rows += [owner_row('mixed_extent_query_unavailable', 6, 3) for _ in range(111)]
     rows += atomic_rows()
     for index, row in enumerate(rows[3:], 1): row['sequence'] = index
     calls = len(rows) - 3

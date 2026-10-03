@@ -202,7 +202,7 @@ def validate_result(rows, name):
             'new_epoch_cannot_release_original_pin': 1, 'duplicate_retirement': 6,
             'shared_capacity_exhausted': 4, 'fragmented_free_bytes_refused': 4, 'dispatcher_capacity_exhausted': 4}
         counted.update({control: 1 for control in refusal_status})
-        atomic_counts, atomic_refusals, atomic_opcodes = atomic_checks.controls()
+        atomic_counts, atomic_refusals, atomic_opcodes = atomic_checks.controls('native_owner')
         counted.update(atomic_counts)
         refusal_status.update(atomic_refusals)
         need(controls == counted, 'memory_fixture_control_counts')
@@ -226,7 +226,7 @@ def validate_result(rows, name):
             'shared_capacity_exhausted': 1, 'fragmented_free_bytes_refused': 1,
             'dispatcher_capacity_exhausted': 1})
         opcode_by_control.update(atomic_opcodes)
-        atomic_checks.validate(fixture_calls, need)
+        atomic_checks.validate(fixture_calls, need, scope='native_owner')
         for row in fixture_calls:
             expected_status = 3 if row['control'] == 'mixed_extent_query_unavailable' else refusal_status.get(row['control'], 0)
             need(row['status'] == expected_status and row['opcode'] == opcode_by_control[row['control']],

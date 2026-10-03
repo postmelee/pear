@@ -1,0 +1,60 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "postimage_bytes": 6882,
+      "postimage_sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73",
+      "preimage_sha256": "5992a78d13a679a1c632bde6e98878acd05e1beb0dc7d8539ae4440c16098897"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.h",
+      "postimage_bytes": 6660,
+      "postimage_sha256": "bab545f07e14f1b2aaa841f6d143f0fe1545dff9c70a19fde7de565ef8eb636a",
+      "preimage_sha256": "990075f12f35db0840bdf6c304473f41a1e8e55e068a137d9929b3ed397f2824"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+      "postimage_bytes": 9120,
+      "postimage_sha256": "38ec4888f7fd09005740814950f6956d9d6f1c2602d0763f0b96277ffceadac5",
+      "preimage_sha256": "142f2dc0b875946a3123d3121a055d71815935c000928cef6c4650ce18a7a941"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+      "postimage_bytes": 7853,
+      "postimage_sha256": "ce96a5b000b843236de30bf68755da332baf333bd95bde746d6ad0d0734493ac",
+      "preimage_sha256": "dfb8445edafb67dadc73bb4e6b208b22c8cf4f2d0161a25434f12ea554cd769c"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 103569,
+      "postimage_sha256": "b14cc660e1689108808314734bdb8432162aaa0d3d87c945910cc1f49561e25d",
+      "preimage_sha256": "a90bd75e2e17a4a092f3a2aaba016a411bb91ea850aeab31dde88a3c87ee1764"
+    },
+    {
+      "path": "CodeEmitter/CodeEmitter/Buffer.h",
+      "postimage_bytes": 4334,
+      "postimage_sha256": "ce7df2ad8aac259b7329ca3fec48e973f7a6ccad050f75b4f3bdc66ac5256fe0",
+      "preimage_sha256": "66b1b9bf49079c75e87326b82995e9ddd9f7c44f741e21bd103aff5e5c3f7f2c"
+    },
+    {
+      "path": "CodeEmitter/CodeEmitter/Emitter.h",
+      "postimage_bytes": 28802,
+      "postimage_sha256": "0f3fe362d200a21ab29c5b7f5607965f10a9a78a1ea8e603d630978126282a01",
+      "preimage_sha256": "af66bd18c6b7fe246b8b8f50b47504beb1e7844ab34bc01ed8886bf3ef92e068"
+    }
+  ],
+  "historical_source_manifest_sha256": "5b010eb991d9edfdc4770d818b0995d4e6bb03af4ff21b136ea80e736e77f600",
+  "historical_strict_patch_sha256": "7e44e06f82d728621eb5e764f81b471f6b086476ef1c2e2e739021901ad67abd",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "shared",
+  "native_runtime_execution": false,
+  "order": 2,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}
