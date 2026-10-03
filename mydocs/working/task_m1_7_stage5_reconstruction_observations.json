@@ -115,9 +115,15 @@
     "phase": "independent_two_product_replay",
     "sha256": "972c4b539a930711939520273a2a437d53d63ef2a5d60e6b1a70acf7678d800f"
   },
+  "current_dxmt_regression": {
+    "passed": true,
+    "passed_count": 513,
+    "skipped": 8,
+    "tests": 521
+  },
   "current_native_adapter_sha256": "3b3c89ebe71b14069280eb0287edf20c3303212dbf3c462bbffb33d0e6ed452d",
   "current_targeted_regression": {
-    "full_regression": "pending_after_storage_maintenance",
+    "full_regression": "passed_521_tests_eight_skips",
     "passed": true,
     "skipped": 8,
     "tests": 149
@@ -623,5 +629,5 @@
   },
   "schema_version": 1,
   "selected_native_link_option": "-Wl,-objc_stubs_small",
-  "work_gate": "requester_prioritizes_side_chat_storage_maintenance_before_next_build_or_verification"
+  "work_gate": "storage_gate_cleared_two_fresh_builds_started"
 }

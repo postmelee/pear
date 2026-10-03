@@ -990,3 +990,29 @@ start no new build or verification until that cleanup completes. Documentation
 and this source checkpoint may be preserved on GitHub. No archive process is
 interrupted or modified. Stage 5 remains in progress; no guest/game/distribution
 scope changes or qualification claims follow.
+
+
+### 2026-10-04: Storage Gate Cleared and Current Regression Passed
+
+The storage side chat reported completion of retirement for its 51 approved
+historical Task #4 roots and released the shared compilation lock. Local
+observation confirmed approximately 43 GiB free. Current #5/#7 and protected
+Wine inputs remain selected; pending iCloud synchronization retains its verified
+local backup copies and delta bases. This task does not delete those copies.
+Existing Stage 5 authorization resumes without a new scope or stage transition.
+
+The current small-stub source checkpoint passed the complete DXMT regression:
+521 tests, comprising 513 passed and eight optional private-input skips. Offline
+governance passed 23 documents and 199 local targets; the committed source diff
+passed whitespace checks. Two new component builds use new output roots, the
+unchanged 2 GiB growth allowance and 4 GiB free-space reserve. Full comparison
+and new-candidate native execution remain pending until their actual records.
+The first builder is performing the original source/tool prerequisite replay;
+no historical build is relabeled as a current result.
+
+The parallel #14 owner proposes portable scratch-directory rules without editing
+#7 files. Treat hardcoded test temporary roots as a follow-up portability item,
+not a reason to mutate the active constructor/test checkpoint. Synthetic path
+refusal strings are distinct from actual scratch roots and must not receive a
+blanket replacement. #14's documentation proposal is not automatically inherited
+as a modified approved #7 recipe.
