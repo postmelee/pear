@@ -422,3 +422,28 @@ The complete pruned historical source trees are unavailable for replay until
 exact donor-based rehydration. Inventory receipts do not substitute for bytes.
 The current fresh Stage5 reconstruction remains independent; no raw-difference
 normalization, game execution or distribution qualification is inferred.
+
+
+### October 3 Actual Fresh Reconstruction Refusal
+
+The fresh Stage5 candidate completed all10 actual source/configuration/compiler/
+postprocessing/install commands with exit0 and passed its unchanged independent
+component build replay. Current source/settings signatures match the retained
+Stage4 reference. The complete unsigned comparator refused26 file hash
+differences with `reconstruction_unsigned_difference`; its normalization policy
+remains `none`. These include raw/postprocessed/installed PE files, unsigned
+winemetal.so and AIR/generated shader headers. Identical sizes and modes do not
+explain changed bytes. Do not treat these as timestamps, UUIDs, paths or harmless
+shader differences before independent exact-offset/source/format evidence.
+
+The candidate, both complete inventories, all raw differences and original
+failed operation are retained. Comparison SHA-256:
+`b4e06b72ebec749ebdea2780fb6f2cb71d2cec8691cf318562d7eeb413db42fd`;
+failed operation
+`0aeadcf283eebc415496f2582ab880866d7df034f53a9aa509c415c3eaec0b8c`.
+No construction-complete record, final native binding or Stage5 completion was
+created. Native execution on this candidate is unperformed. Apply the already
+approved independent metadata/path explanation boundary; unexplained code,
+shader or other data changes remain failures. Preserve these bytes instead of
+blindly repeating the same construction. All hybrid/game/distribution gates
+remain false.
