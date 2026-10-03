@@ -1016,3 +1016,16 @@ not a reason to mutate the active constructor/test checkpoint. Synthetic path
 refusal strings are distinct from actual scratch roots and must not receive a
 blanket replacement. #14's documentation proposal is not automatically inherited
 as a modified approved #7 recipe.
+
+
+### 2026-10-04: Two Fresh Small-Stub Constructions Passed
+
+Both new source constructions passed all ten commands and post-build input
+checks. The reference build receipt is
+`fb5648ddb21836b5f0a80a1e546910ee3f46fb9a563a54c1197fe3743cd5dce1`;
+the candidate is `5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d`.
+All eight primary artifacts match byte for byte. The changed native winemetal
+retains the previous architecture, dependency/install-name/rpath metadata and
+14,935 external defined symbols. This static interface equality does not replace
+native call/lifetime verification. Complete unsigned inventory comparison is
+now running against these new roots; final native execution remains unperformed.
