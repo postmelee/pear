@@ -1056,3 +1056,40 @@ Historical complete-prefix replay requires exact donor rehydration. Initial
 read-only audit preparation refused access-time tuple comparison, then an absent
 optional syswow64 directory; no files were removed in those failed attempts.
 This cleanup does not change the current native results or qualify Stage3.
+
+
+### October 3 Reviewed Source Lifetime, Release Guards and Source Deduplication
+
+Reviewed layers16/17 bind the actual source Context/Thread lifetime, sealed entry
+and cleanup participants and enforce mandatory Pear memory predicates when the
+selected Release build disables upstream assertions. Unconditional failure uses
+the pinned source's no-exception LogMan::Throw::MFmt; no global assertion policy
+or original upstream assertion is changed. Failed cleanup retains its source
+tombstone/dependencies. These remain source candidates: fatal behavior, complete
+compiler/link closure, actual lifetime, metadata and initialization qualification
+are unperformed. No guest, full module initialization or engine support is claimed.
+
+The first15 layer descriptors and all historical artifacts are byte-identical.
+Root independently verified the frozen packet and every current preimage before
+applying its13 concrete source/checker/test files. Fresh source7 passed all34
+actual Git check/apply commands and complete final-byte verification:6964 files /
+40,485,352 bytes,39 affected paths and13 additions. Source manifest:
+`c5b5f5f82596d2b63f73c407f5243265a84f4bd23c8a9b16f360c21eb3105e4d`;
+graph `8e00c0a4d2e7af4b570420f7ad5c46f25a61b2973eb5c654c69ed60f3c593d4e`;
+actual source control
+`2b4c4866bc898c77d77f97a4d4315e59f2ab92e4de67635c93712c39299f7bb8`.
+The complete current FEX suite passed450 controls with one APFS skip.
+
+Root separately compared retained build8 source against obsolete build2–6,
+after an independent literal-byte/type/mode/hash audit. Rechecking both identities
+at the deletion barrier removed62,346 exact regular source copies totaling
+2,003,003,364 logical bytes. All19 differing old files,6885 directories, objects,
+inputs,39 selected controls, producers and error/log receipts remain. Current
+build8 complete source/tool/output replay passed before and after cleanup.
+Completed cleanup receipt:
+`f3370aaa6b4ee813ba6b8fedaf8c8c2d09e83ba7e689134c4d033e5ba553e2c1`.
+Observed volume free space increased2,183,397,376 bytes (about2.03GiB); physical
+APFS reclamation is not measured. Historical complete source replay requires
+exact donor rehydration. Current admission dependencies and unique evidence
+remain protected. Source snapshots and local hash receipts are not uploaded
+as proprietary/private binary evidence. Stage3 remains in progress.
