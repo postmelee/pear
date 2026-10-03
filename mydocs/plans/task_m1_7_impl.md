@@ -900,3 +900,33 @@ pass. The selected Metal-validation reference remains Apple's revision
 `4f42344c90be22112f46becc3fb9687f423f2f88`, plugin 1.0.0-beta.1. The planned
 current native run keeps the approved environment before device creation and
 uses a process-scoped awake-display assertion without changing system settings.
+
+
+### 2026-10-04: Second Fresh Build and Native Link Difference
+
+The second current-constructor build completed all ten commands and eight
+required artifacts. Its build receipt is
+`20942faa35582f0990041a98e1dfbf68f22b8cc85105e487d952f3cc9b7aebfe`.
+Seven primary artifacts equal the first current build byte for byte. The
+47,178,688-byte native winemetal differs at 552 byte positions. Preserve both
+whole products and the independent complete-inventory comparison in progress.
+
+Read-only Mach-O inspection attributes those positions to 375 Objective-C stub
+LDR instructions and one generic objc_msgSend stub choosing alternate duplicate
+GOT slots for the same indirect symbol, the 16-byte LC_UUID, and five 32-byte
+CodeDirectory page hashes. The indirect symbol tables and encoded pointers in
+both slots agree; all page hashes were independently recomputed. This is a
+static description, not qualified runtime equivalence or a comparison waiver.
+No product normalization was performed. The private classification receipt is
+`c21853b5a9000261f283541c610351b6d0d3e71d4a50bac17dabfd36f1c45800`.
+
+Reuse decision: test the installed Apple ld documented `-reproducible` option
+with the exact captured native link inputs before changing the constructor.
+A private bounded diagnostic is queued behind the shared compilation lock:
+three unchanged baseline links and three links adding only that option, each
+in a fresh output directory with the same output basename. Retain original
+objects, libraries and products, hash selected inputs before and after, and
+preserve raw logs and whole output hashes. This diagnostic does not execute a
+library, substitute for a fresh build or authorize final native qualification.
+The archival work started in the requester's side chat uses the same lock;
+its process and retention plan are not modified here. Stage 5 remains open.
