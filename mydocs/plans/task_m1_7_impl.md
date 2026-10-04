@@ -1692,3 +1692,67 @@ hashes and results are in the Stage 5 observation sidecar.
 No production correction, complete Stage 5 report, qualification, final PR or
 Issue closure follows. Required unchanged-candidate verification remains failed
 at row 33, and the root cause remains unknown. #5 inputs and work are untouched.
+
+
+### 2026-10-05: Minimum Closure Path and Exit-Only Diagnostic Proposal
+
+The requester asked for decisive progress and only necessary tests. #7's gate
+is component construction and verified native pairing, not translated D3D,
+Steam or Megabonk. Review at clean `5532d57` followed row-33 native return,
+autorelease handling, PE return, DestroyWindow, surface detach and Cocoa handoff.
+No confirmed defect explains the exit. The fixture's directly created surfaces
+differ from upstream GL/Vulkan registered usage, but that alone does not justify
+a speculative fixture change. Repeated debugger success changes scheduling and
+is not proof of the ordinary failure's cause. No new native test was run.
+
+**Next proposal; approval pending:** one diagnostic case using the original PE,
+without debugger, rendezvous, added delay or normal-loop logging. Add bounded
+exit-reason records to a private source-matched ntdll copy at request EPIPE,
+reply EOF/EPIPE, killed-thread wakeup, ARM64 SIGQUIT, abort_thread/abort_process
+and NtTerminateProcess entry. Preserve errno, signal delivery, x18 rules and
+exit behavior; use fixed-size writes without allocation, locks, formatted I/O
+or guest-memory reads. A path record is evidence, not automatically a cause.
+
+The runtime receipt marks ntdll as retained baseline-native; the graphics
+constructor does not rebuild it. This exceeds the previous controller-only
+amendment, which excluded runtime rebuild/re-signing and is exhausted. Reuse
+existing source/configuration and signing authorization in task-owned outputs;
+rebuild only affected ntdll, copy/re-sign the diagnostic bundle with existing
+claims and profile, and verify changed and unchanged inventory. Preserve the
+ordinary candidate and #5 inputs. If minimal source/object provenance cannot
+be established, report that limitation before a whole rebuild. No new identity,
+entitlement, shared patch change or OS setting is proposed.
+
+Before the single case, review signal/errno/no-recursion behavior with focused
+portable controls and perform current signature/input admission. Hold the
+shared native lock using its existing protocol. Cap new build/runtime/prefix
+output at 4 GiB and preserve 8 GiB free. Stop on the first result or operational
+failure, preserve evidence and cleanup, and add no retries. Changed ntdll means
+the diagnostic cannot qualify the ordinary candidate. Normal completion without
+useful exit evidence leaves the root cause unknown.
+
+Closure requires these steps; acceptance predicates remain unchanged:
+
+1. Correct a concrete required-path defect or obtain an explicitly reviewed,
+   evidence-based disposition satisfying actual pairing criteria. Diagnostic
+   passes or moving the incident elsewhere cannot waive the failed gate.
+2. Reuse builds 7/8 and comparison 2 while their source/settings/artifact claims
+   remain valid. Reconstruct/compare only affected final components after a
+   correction; do not rebuild unchanged LLVM, shaders or tools. Preserve required
+   final portable checks and add only defect-focused regression coverage.
+3. Execute the existing required ordinary final verification: all 39 rows,
+   terminal and guest/process exits, physical lifetime, current authorization,
+   complete log review, cleanup and sentinel. Preserve the prior declared
+   two-run successful batch requirement; stop on its first failure. Do not
+   resume the cancelled unchanged run merely to seek a pass.
+4. Bind native evidence to comparison, run reconstruction finalization and
+   independent complete replay, finish the #8 handoff, then complete/commit the
+   Stage 5 report and follow final-report/PR approval. Close #7 only after
+   requester-approved closure or confirmed PR merge.
+
+Location judgment: correct stale construction status only in the already
+approved docs/development/dxmt-build.md; keep the investigation/proposal here.
+No new official location or product requirement is introduced. Documentation
+verification uses governance/link checking and git diff --check, with no native
+execution. A first write request timed out in automatic permission review before
+execution; the permitted one retry applies only to these documentation edits.

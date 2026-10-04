@@ -127,8 +127,12 @@ and binds the actual Metal resource directory and four original recipe options.
 The current candidate also adds `-Wl,-objc_stubs_small` to native C/C++ link
 settings. On October 4, repeated links of identical inputs exposed two raw
 winemetal outputs with the default linker settings; the small-stub option
-produced identical whole bytes in eleven trials. Two fresh full builds and
-native execution of this changed recipe remain unperformed.
+produced identical whole bytes in eleven trials. On October 4, two fresh
+constructions completed and independent comparison found all 2,878 inventory
+entries equal without normalization. Required native execution failed after
+33 of 39 rows with `pair_guest_exit_missing`; altered diagnostic passes do not
+qualify the candidate. See the [incident record](../../mydocs/troubleshootings/task_m1_7_initial_access_violation.md).
+Reconstruction completion remains blocked on the required native evidence.
 [Apple describes this option](https://developer.apple.com/videos/play/wwdc2022/110363/)
 as a size-oriented alternative with an additional call indirection. Its runtime
 performance impact here is unmeasured; this is a scoped reproducibility
