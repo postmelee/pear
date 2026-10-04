@@ -1495,3 +1495,72 @@ allocator reuse cannot establish physical release. Exact selected source
 identities and the current false qualification flags are preserved. Linked
 static/provider proof, complete concurrent/retained counts, stack peaks and
 Wine view/vprot attribution still block the 262,144-byte gate. Stage 3 continues.
+
+### October 4 PMR Lifetime Correction Checkpoint
+
+The requester continued toward Megabonk execution. Resume the approved Stage 3
+lifetime work after preserving #7's independent diagnostic result. Reuse the
+selected Source24 C++ resource implementation and its original hooks. First
+isolate the exact named monotonic resource class in a small ARM64 host harness
+with explicitly substituted allocation hooks and standard-list storage. Compare
+its original destructor behavior with a narrow destructor/release correction;
+measure outstanding provider allocations rather than infer release from sizeof.
+Retain the upstream class bytes and hashes in private inputs. This finite host
+control is not the Windows provider, full FEX initialization, JIT or a 256 KiB
+metadata qualification. No executable memory, new signing or OS setting is used.
+
+If the control confirms retention, preserve an unapplied corrective candidate
+patch in the existing runtime/fex/patches/memory area and the original fixture
+in tests/fex. Review GuestToHostMap's clear/destruction ordering so node lifetime
+ends before resource release and queued link tickets remain copied beforehand.
+Do not silently rebind Source24 or its historical compile receipts. Integrating
+a successor source graph and verifying actual Wine allocation/free errors remain
+required before this candidate can qualify the real FEX path. Record sanitized
+results in the existing Stage 3 observation sidecar. No product document or
+new official-document location is introduced.
+
+The original resource class was extracted byte-for-byte into an ordinary ARM64
+macOS harness with substituted allocation hooks and list storage. After one
+scope it retained one provider buffer; after 32 cycles it retained 96. The
+candidate retained zero in both cases, with a three-buffer peak. The harness
+explicitly freed original retained buffers after observation; this is not a
+production fix or a Wine physical-memory measurement. Repeated release,
+aligned allocation, allocation after release and noncopyable candidate resource
+controls passed. Both variants requested 101 buffers in total. All original
+inputs stayed unchanged.
+
+Preserved failed attempts: the first compile omitted the explicit SDK and could
+not find libc++ headers; the second ran the host controls but its patch check
+used an enclosing Git worktree and failed byte replay. Its provisional AlignUp
+substitute also differed from the real non-power-of-two algorithm. The third
+attempt selected the SDK, used the actual arithmetic and bounded Git discovery;
+source-byte and complete three-file patch replay passed. The committed host
+runner subsequently reproduced the same result independently in fresh output.
+
+The unapplied candidate adds resource destruction/release, forbids copying or
+moving the owning resource, resets its buffer cursor, and destroys the lookup
+map before releasing its storage on clear/destruction. Queued link tickets are
+copied before map retirement. Two actual ordinary ARM64 Windows compile-only
+units (LookupCache and PMR layout) passed with the original no-exceptions policy;
+1,117/1,116 dependencies and all three post-checks passed. Neither object was
+linked or loaded. This candidate is intentionally outside the active source
+graph and does not rebind historical Source24 receipts. Actual provider error
+handling, lookup execution, complete metadata and initialization are still open.
+
+Reproduce the finite host control from the exact materialized Source24 input:
+
+```sh
+python3 -B tests/fex/run_pmr_lifetime.py --source <source24-tree> --output <fresh-output>
+```
+
+The runner refuses changed source preimages and existing output. Its allocation
+hooks are explicitly substitutes. The existing Stage 3 observation sidecar
+records patch, fixture, producer, input and receipt hashes. No runtime permission,
+JIT geometry, product requirement, source cache or completed stage was changed.
+
+Verification after adding the candidate and reproducer: the existing FEX suite
+ran 579 tests with no failures/errors and one explicit conditional skip.
+Governance passed 22 documents/172 targets; whitespace checks passed. New #5
+control outputs total less than 5 MiB, with no whole-runtime rebuild or deletion.
+The candidate remains unapplied pending source-graph and real-provider work;
+none of these checks qualifies translated execution or closes Stage 3.

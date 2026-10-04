@@ -324,6 +324,101 @@
       "unit": 14
     }
   ],
+  "pmr_lifetime_candidate": {
+    "FEX_initialization": false,
+    "actual_lookup_cache_executed": false,
+    "actual_windows_allocator_executed": false,
+    "candidate_patch": "runtime/fex/patches/memory/0003r-fex-pmr-lifetime-candidate.patch",
+    "candidate_patch_sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+    "earlier_attempts": [
+      {
+        "attempt": 1,
+        "control_sha256": "49b12db9b13dde10357b74db77956efab8cc5dc0d67913246aec4d8bce35ee22",
+        "result": "compile_failed_missing_explicit_macOS_SDK"
+      },
+      {
+        "attempt": 2,
+        "control_sha256": "8ec3f1c0ab2081acceaeafe2ce1472a25573978a3b1d6da32239ffe9019b822c",
+        "result": "host_control_ran_but_patch_replay_failed_and_AlignUp_substitute_differed_from_upstream"
+      },
+      {
+        "attempt": 3,
+        "control_sha256": "f10f06608bca1748d9d60e62c75f7ec062dec6e1b036b7f60b47285a38afe120",
+        "result": "corrected_alignment_and_isolated_patch_replay_passed"
+      }
+    ],
+    "fixture_sha256": "893587f5d5fa11f083eed2059e4732cc748018964612f7e2b317e32849ef9840",
+    "host_control_sha256": "aee584368c710ab1aab7b9f3d5bc9980ed2f0afbd3e7fde48dba509b8469f0a8",
+    "host_results": [
+      {
+        "allocated": 101,
+        "baseline": true,
+        "cycle_retained_buffers": 96,
+        "cycles": 32,
+        "freed_after_harness_cleanup": 101,
+        "peak_buffers": 96,
+        "scope": "isolated_host_resource",
+        "scope_retained_buffers": 1,
+        "wine_provider_executed": false
+      },
+      {
+        "allocated": 101,
+        "baseline": false,
+        "cycle_retained_buffers": 0,
+        "cycles": 32,
+        "freed_after_harness_cleanup": 101,
+        "peak_buffers": 3,
+        "scope": "isolated_host_resource",
+        "scope_retained_buffers": 0,
+        "wine_provider_executed": false
+      }
+    ],
+    "host_runner_sha256": "10956159a796f1d4bd8cb2e7c1da6a797ee51c7e015ac341c5e4bc8c474f0994",
+    "metadata_budget_qualified": false,
+    "regression": {
+      "errors": 0,
+      "failures": 0,
+      "scope": "existing_FEX_portable_suite",
+      "skipped": 1,
+      "stderr_sha256": "69aacecf45aea403bd72d04e25939ba9dcf8700b26398842bee0df8ac50ea64a",
+      "tests_run": 579
+    },
+    "remaining": [
+      "integrate candidate in a successor source graph without changing Source24 evidence",
+      "execute actual GuestToHostMap clear/destruction against the Windows provider",
+      "preserve native free failures before claiming physical release",
+      "complete metadata and Stage3 initialization/lifetime gates"
+    ],
+    "scope": "unapplied_source_candidate_and_isolated_host_controls",
+    "source_graph_integrated": false,
+    "source_preimages": {
+      "FEXCore/Source/Interface/Core/LookupCache.cpp": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63",
+      "FEXCore/Source/Interface/Core/LookupCache.h": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95",
+      "FEXCore/include/FEXCore/fextl/memory_resource.h": "075a098eb77a428797a9b6a123fc6273c32bead8cc00273d925d99b6abeacaa6"
+    },
+    "stage3_complete": false,
+    "substitute_allocation_hooks_executed": true,
+    "target_compile_control_sha256": "2c7122b2d644d7d39b883a19c3129839088992c024370632a3c968866d9f67bd",
+    "target_compiles": [
+      {
+        "dependency_count": 1117,
+        "exit_code": 0,
+        "object_sha256": "b1cca1fe46e3767f5e103cb37f76bf2b9d108586cc3a7eb18041bb7d118d311a",
+        "unit": "lookup"
+      },
+      {
+        "dependency_count": 1116,
+        "exit_code": 0,
+        "object_sha256": "6ba3508586e46419b238bc98565f784e9af3a086855fb1661b657d0d1c6876b1",
+        "unit": "layout"
+      }
+    ],
+    "target_post_checks": {
+      "envelopes": true,
+      "references": true,
+      "tools": true
+    }
+  },
   "pmr_post_checks": {
     "envelopes": true,
     "references": true,
@@ -334,7 +429,7 @@
   "record_kind": "fex_stage3_partial_layout_observations",
   "runtime_eligible": false,
   "schema_version": 1,
-  "scope": "compile_only_and_source_arithmetic",
+  "scope": "partial_source_compile_and_isolated_host_controls",
   "selected_one_each_class_delta_bytes": 1232,
   "source_manifest_sha256": "9833aa29c2bc04778f195ffdffd2ab95038be4270df5f442c8acd45c04670b83",
   "stage3_complete": false,
