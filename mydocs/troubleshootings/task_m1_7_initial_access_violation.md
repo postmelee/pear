@@ -253,6 +253,31 @@ normal teardown diagnostics cannot distinguish these paths in the failed run.
 The implementation plan contains a pending one-case first-thread-exit capture
 proposal. No new native execution, rebuild, signing change or deletion occurred.
 
+## Approved First-Thread Capture Result
+
+The single approved follow-up on October 4 resolved `abort_thread` and
+`quit_handler` in the loaded diagnostic ntdll before release. It completed all
+39 native rows and the zero-error PE terminal. The first selected stop was
+`exit_process` from `NtTerminateProcess` with argument zero; no first-thread
+abort, SIGQUIT or bad access was captured. The result again describes normal
+completion, not the failed ordinary candidate. It neither confirms nor excludes
+the source-only thread/IPC hypotheses.
+
+Acknowledged detach, complete Wine/debugger cleanup, sentinel survival and
+before/after original/debugger inventory and current authorization checks passed.
+Independent row/terminal/lifetime and log review passed within this diagnostic
+scope; the unchanged ordinary verifier correctly refused `pair_launch_changed`.
+No new fixture compilation, runtime rebuild or signing occurred. The one-case
+batch is exhausted and will not be repeated to obtain a desired outcome.
+
+Case receipt SHA-256:
+`5071ace00467c872ea8a00ee240882489cdd352b09efa0fdb778a3bdfd93a611`.
+Private review SHA-256:
+`c6f1dbdb8c7cf7ab31c9b01830afa7db270f89d94367f11c9251dcd8c837f701`.
+Evidence remains under `.build/task7/stage5-lldb2/wine-first-thread1` with its
+captured controller and separate review producer. No causal failing stack or
+production fix exists; the required formal verification remains failed.
+
 ## Evidence Retention
 
 Retain the original case/failure receipts, raw captured streams referenced by

@@ -161,6 +161,84 @@
     }
   },
   "distribution_qualified": false,
+  "first_thread_exit_capture": {
+    "acknowledged_detach": true,
+    "attempted_wine_cases": 1,
+    "bad_access_captured": false,
+    "batch_exhausted": true,
+    "before_after_bundle_and_current_admission_passed": true,
+    "breakpoints_sha256": "ceeba1548336a7fd731622d154247a337404d9a20b4c27d2ee5b99e71049d697",
+    "capture_describes_failed_formal_run": false,
+    "capture_sha256": "9cb0d4a9c6f874c5171971c79ac7a8f50858553981c65e9cf5e518fea04db1c7",
+    "captured_caller": "NtTerminateProcess",
+    "captured_function": "exit_process",
+    "case_sha256": "5071ace00467c872ea8a00ee240882489cdd352b09efa0fdb778a3bdfd93a611",
+    "debugger_cleanup_complete": true,
+    "debugger_outcome": "exit_path_captured",
+    "debugger_streams_verified": 4,
+    "diagnostic_log_review": {
+      "counts": {
+        "api": 6,
+        "fallback": 3,
+        "gpu": 6,
+        "rendezvous": 1
+      },
+      "reviewed_no_api_errors": true,
+      "shader_workload_qualified": false,
+      "unclassified_lines": 0
+    },
+    "exit_argument": 0,
+    "first_thread_abort_captured": false,
+    "fixture_rebuilt": false,
+    "free_bytes_after": 19176091648,
+    "full_provenance_replay_performed": false,
+    "log_review_initial_refusal": "review helper expected single path separators; exact comparison with retained known warning corrected before record creation",
+    "offline_api_check_initial_refusal": "hyphenated Python module name; renamed helper before native execution",
+    "ordinary_verifier_refusal": "pair_launch_changed",
+    "physical_lifetime": {
+      "case_count": 39,
+      "created_layers": 3,
+      "created_proxies": 1,
+      "created_views": 3,
+      "deallocated_layers": 3,
+      "deallocated_proxies": 1,
+      "deallocated_views": 3,
+      "final_attachment_count": 0,
+      "final_lease_count": 0,
+      "physical_lifetime": "observed_balanced"
+    },
+    "portable_ownership_tests_passed": 9,
+    "postflight_sha256": "b193d9b3d4e4feaf734e8ab2c01de286c24842812af3ab0a644d1b9a49d335ff",
+    "producer_sha256": {
+      "diagnostic_common.py": "0f62719d85947319b9e0719f32d695d9f70dcc28c22f78a8752e00ce7abd4474",
+      "pear_lldb_capture.py": "085af99b5f26b3aedf06d1b5fe1733a75385f514a251fa758b9e937cc169eadd",
+      "run_capture.py": "9e45290366b6ed2619e6f2d022426c668cb98d195baa1ab2051b75c8614ec27c",
+      "run_controls.py": "b18b7328e46dd1fb91866bd13ff29337d2a4509f9b8556ffda703a6b93ae8b28",
+      "test_controls.py": "54f5e1be2d4b0d4cc13b1f80931c93eb9bdc5bdd07bca2383f91fb78b696fcaf",
+      "test_handoff.py": "e0448b23d64422737a018fcdd8981359e0303ae108b6bb0956c79866b15bae56"
+    },
+    "qualification": false,
+    "raw_case_streams_verified": 20,
+    "record_kind": "pear_task7_first_thread_capture_review",
+    "retained_allocated_bytes": 1165398016,
+    "review_producer_sha256": "dd75036d2f81e95da08b4296770f5a459bb7fb8875affceaf029b4d941179920",
+    "review_sha256": "c6f1dbdb8c7cf7ab31c9b01830afa7db270f89d94367f11c9251dcd8c837f701",
+    "reviewed_on": "2026-10-04",
+    "root_cause": "unknown",
+    "runtime_changed": false,
+    "selected_thread_breakpoints_resolved": {
+      "abort_thread": 1,
+      "quit_handler": 1
+    },
+    "sentinel_survived": true,
+    "terminal": {
+      "cleanup_error": 0,
+      "cleanup_flags": 7,
+      "completed_phases": 6,
+      "primary_error": 0
+    },
+    "wine_cleanup_complete": true
+  },
   "game_qualified": false,
   "linker_reproducibility_probe": {
     "preflight_attempt1": "failed_before_linker_execution_due_to_install_name_parsed_as_file",

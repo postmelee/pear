@@ -1640,3 +1640,55 @@ production patch, global setting, qualification waiver, Stage 5 completion or
 final PR. The diagnostic still fails ordinary qualification with
 `pair_launch_changed`. The existing approved plan/incident/observation locations
 hold this review; no official product-document location changes are proposed.
+
+
+### 2026-10-04: First-Thread Capture Approved
+
+The requester explicitly said to proceed in this dedicated session after the
+one-case proposal above. That authorizes the private controller extension and
+one diagnostic Wine case; all stated bounds and qualification exclusions remain.
+Nine existing portable ownership/detach tests passed with the controller copy.
+Installed LLDB found both selected ntdll symbols in an offline module inspection;
+actual loaded breakpoint resolution remains a pre-release execution gate. The
+first offline helper import refused a hyphenated Python module name; renaming
+that private helper resolved the import before any inferior execution.
+Reuse the byte-verified prior rendezvous PE fixture without recompiling it.
+
+
+### 2026-10-04: One First-Thread Capture Completed Normally
+
+The approved single Wine diagnostic completed 39 rows and its zero-error PE
+terminal. Both `abort_thread` and `quit_handler` resolved in the exact loaded
+ntdll image before release. The first selected stop was instead `exit_process`
+called by `NtTerminateProcess` with exit argument zero. No bad access, SIGQUIT
+or first-thread-abort stop was captured. This observes normal diagnostic
+completion and does not establish the failed formal run's path or exclude an
+intermittent thread/IPC defect. The one-case budget is exhausted; do not repeat
+this diagnostic merely to seek a failing stack or additional passes.
+
+The original and debugger bundle inventories, strict signatures, current
+identity, claims and profile expiry passed before and after. The retained
+rendezvous PE was byte-verified and reused without compilation or re-signing.
+The shared native lock serialized the case. Acknowledged debugger detach,
+Wine/debugger cleanup and sentinel survival passed. The ordinary assessor
+retains `pair_launch_changed`. Independent review verified all 20 case streams
+and four debugger streams, all 39 row predicates, balanced physical lifetime
+and the PE terminal. Captured nonfixture diagnostics were three exact known
+fresh-prefix warnings, six API/six GPU notices attributable to registered
+processes and one expected rendezvous marker, with no API error or unclassified
+line. Shader workload qualification remains unperformed.
+
+A review helper initially refused the known warning because its Python literal
+expected single rather than printed doubled path separators. Exact comparison
+with the retained earlier warning resolved that review-only error. No runtime
+execution or raw record changed. Nine portable ownership controls and installed
+LLDB offline APIs/script loading passed; no additional native lifecycle test
+was run because ownership/detach implementation and retained controls were
+unchanged. New retained output was 1,165,398,016 bytes at postflight and free
+space was 19,176,091,648 bytes. Raw diagnostics and the review producer remain
+private under `.build/task7/stage5-lldb2/wine-first-thread1`; sanitized receipt
+hashes and results are in the Stage 5 observation sidecar.
+
+No production correction, complete Stage 5 report, qualification, final PR or
+Issue closure follows. Required unchanged-candidate verification remains failed
+at row 33, and the root cause remains unknown. #5 inputs and work are untouched.
