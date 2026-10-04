@@ -902,6 +902,121 @@
     "signing_and_verification_commands": 119,
     "transport_and_debugger_cleanup_passed": true
   },
+  "small_stub_lldb_handoff_followup": {
+    "control_executable_sha256": "2ab40225a53ebe7f208eacc10445074c2edb6ecacf41bc8326f12054efc9fd16",
+    "control_macho_cpu_type": 16777228,
+    "controls_receipt_sha256": "7332057b3014de2ac090f8371b820b524be28c2da5fa7db0e09beb5398ff3c46",
+    "current_diagnostic_admission_sha256": "34ffbdee1dc75203be708991805e69b16c1264c65970521f19a67fa30c6f5bd9",
+    "distribution_qualified": false,
+    "fault_captured": false,
+    "game_qualified": false,
+    "historical_cleanup_failure_remains_failed": true,
+    "layer_count_inference": "Both new normal exits observed one deallocated layer at case 33, as in the original failure. That count alone does not explain the failure; timing/lifetime defects are not excluded.",
+    "original_and_diagnostic_bundle_replay": "passed before and after Wine batch",
+    "original_failure_resolved": false,
+    "preserved_setup_failure": "direct Clang invocation omitted SDK root and failed before native execution; corrected using the actual selected Xcode SDK",
+    "qualification": false,
+    "runtime_eligible": false,
+    "small_native_controls": [
+      {
+        "cleanup_complete": true,
+        "debugger_outcome": "requested_detach",
+        "exit_code": 0,
+        "mode": "normal-detach",
+        "parent_handoff_observed": true,
+        "parent_restoration_observed": true,
+        "passed": true,
+        "result_sha256": "c4ac333a127f01a1769dfeeae7b4e4a901e39b785219ee3717991d007c38b9f1"
+      },
+      {
+        "cleanup_complete": true,
+        "debugger_outcome": "controller_cancelled",
+        "exit_code": 0,
+        "mode": "cancel-before-release",
+        "parent_handoff_observed": true,
+        "parent_restoration_observed": true,
+        "passed": true,
+        "result_sha256": "212b1e0cfad7fc4c432a14bf0443405be7e019fbede2429a2d798c20385cbef6"
+      },
+      {
+        "cleanup_complete": true,
+        "debugger_outcome": "inferior_exited",
+        "exit_code": 0,
+        "mode": "exit-while-traced",
+        "parent_handoff_observed": true,
+        "parent_restoration_observed": false,
+        "passed": true,
+        "result_sha256": "ccbb1a0a7c55b900f19381402ece3961c75d2d804dc4e7c845c7ef9336972e72"
+      }
+    ],
+    "wine_batch_sha256": "3a7cd0493d231fa6fe6b6da294e9438d44485e4583a99aa10ec55bb37a0d7059",
+    "wine_cases": [
+      {
+        "actual_case_elapsed_ms": 10639,
+        "all_owned_direct_children_reaped": true,
+        "assessment_error": {
+          "error": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_error": null,
+        "case_sha256": "4c11a32814cc70e81cd2f910d590071c1e4e75e63c4f487e8efa51792f95c8af",
+        "debugger_cleanup_complete": true,
+        "debugger_cleanup_errors": [],
+        "debugger_exit_status": 0,
+        "debugger_result_sha256": "9e3ced0988875f18f522c55bcff9f66d047e96f3f3c79fcebc7c184445e7f3f7",
+        "fault_captured": false,
+        "index": 1,
+        "layers_deallocated_at_case33": 1,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "native_statuses_and_facts_match": true,
+        "physical_lifetime_counts": [
+          3,
+          3,
+          3,
+          3,
+          1,
+          1
+        ],
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-handoff-capture",
+        "wine_cleanup_complete": true
+      },
+      {
+        "actual_case_elapsed_ms": 7624,
+        "all_owned_direct_children_reaped": true,
+        "assessment_error": {
+          "error": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_error": null,
+        "case_sha256": "50dc1359bfc5faffc219404c7ab66584aa2d93dba9cbc5154daa96a0d6535e91",
+        "debugger_cleanup_complete": true,
+        "debugger_cleanup_errors": [],
+        "debugger_exit_status": 0,
+        "debugger_result_sha256": "9e3ced0988875f18f522c55bcff9f66d047e96f3f3c79fcebc7c184445e7f3f7",
+        "fault_captured": false,
+        "index": 2,
+        "layers_deallocated_at_case33": 1,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "native_statuses_and_facts_match": true,
+        "physical_lifetime_counts": [
+          3,
+          3,
+          3,
+          3,
+          1,
+          1
+        ],
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-handoff-capture",
+        "wine_cleanup_complete": true
+      }
+    ]
+  },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
     "full_install_comparison": "passed_2878_raw_entries",
@@ -1135,5 +1250,5 @@
     "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
     "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
   },
-  "work_gate": "original_access_violation_unresolved_debugger_controller_handoff_and_cleanup_require_repair"
+  "work_gate": "debugger_handoff_controls_and_two_wine_cases_completed_original_access_violation_still_unresolved"
 }

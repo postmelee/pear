@@ -1349,3 +1349,60 @@ has already been restored.
 Approval is requested for this corrected ownership/cleanup protocol and its new
 finite native batch. The previous signing authorization remains applicable;
 no additional debugger entitlement or account/profile setup is requested.
+
+
+### 2026-10-04: Tracer Handoff Follow-up Approved
+
+The requester explicitly continued after the concrete tracer handoff and
+acknowledged-detach proposal. This authorizes its three small native controls
+and, only if those pass, up to two Wine capture cases with the stated limits.
+The diagnostic-only parent transition does not relax shared Wine ownership
+checks or qualify the original runtime. The same app-local debugging claim
+applies; no new system setting or additional privilege is requested.
+
+
+### 2026-10-04: Handoff Controls and Two Wine Diagnostics Completed
+
+The three approved native controls passed: normal attach/detach, cancellation
+before release, and target exit/reaping while traced. Each used a source-built
+thin ARM64 executable signed with only the approved app-local debugging claim.
+Actual native/translation observations, PID/start identities, the exact owned
+tracer parent, restored parent where applicable, zero target exit and complete
+owned cleanup were recorded. This establishes the finite diagnostic protocol,
+not general race freedom or a change to the production Wine ownership policy.
+The initial direct Clang command lacked its SDK root and failed before execution;
+that failure is retained. The corrected command selected the actual Xcode SDK.
+
+The LLDB script now accepts a nonce-bound cancellation request while waiting
+for release and during capture, and records acknowledged detach. The controller
+accepts only the exact verified owned tracer as temporary parent while keeping
+the original PID/start identity, registered nonce and executable immutable.
+Normal cleanup requires restored parent identity or the observed target exit.
+Private refusal exceptions retain their specific primary error codes.
+
+Following the successful controls, current diagnostic signature, claims,
+certificate availability, profile expiry and byte identity checks passed.
+Original and diagnostic bundle inventories were replayed before and after the
+finite Wine batch. Two fresh-prefix Wine runs then each returned zero, emitted
+all 39 expected status/facts rows and physically balanced three views, three
+layers and one proxy. Both debug sessions observed target exit zero; all direct
+owned Wine/debugger children were reaped, Wine and debugger cleanup completed,
+and unrelated sentinels survived. Actual case durations were 10,639 and 7,624 ms;
+these instrumented correctness runs are not performance measurements.
+
+The ordinary verifier retains `pair_launch_changed` for both diagnostic
+fixtures. No qualifying run, original-runtime completion or passing formal
+Metal-diagnostics review is substituted. No access violation was captured.
+Both successful runs observed one deallocated layer at case 33, matching the
+original failure's count. That count alone therefore does not explain failure;
+this does not exclude a timing or lifetime defect. The original failure remains
+unresolved and the prior failed cleanup remains failed in historical evidence.
+
+Current diagnostics have exercised the repaired debugger ownership protocol.
+Stage 5 completion still requires resolving the
+original unexplained native failure and completing the ordinary unchanged
+admission/run/review gate. Neither game execution nor distribution is qualified.
+No further native case was started beyond the approved three small controls
+and two Wine cases. Private producers, raw traces and failure records remain
+outside Git; allowlisted outcomes and receipt hashes are in the existing
+partial observations.
