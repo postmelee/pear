@@ -1589,3 +1589,54 @@ current authorization checks passed. Qualification stays refused for modified
 fixtures; root cause is unknown. No third run, production fix or completion
 claim was made. Retained output is approximately 2.17 GiB. Continue separately
 approved #5 Stage 3 work without waiving the #7 gate.
+
+
+### 2026-10-04: Dedicated Session Exit Review and Pending First-Thread Capture
+
+The requester assigned continued #7 ownership to a separate session using the
+existing clean `codex/task7` checkout at `ead92e3`. Live Issue #7 remains open;
+its component-build/pairing scope is unchanged. #5 and its retained compiler/
+runner inputs remain independently owned and untouched. Read-only inspection
+used the retained failed case and build-8 Wine source; see the incident's
+independent exit-path review for findings. Twenty raw streams and 39 captured
+producers matched their recorded digests. Available space was approximately
+23 GiB at review; no heavy operation or lock acquisition occurred.
+
+Reuse decision: retain the source-matched Wine implementation, original runtime,
+existing signed debugger copy, acknowledged detach controller and owned runner.
+Do not invent a replacement supervisor or production exit behavior. Read the
+pinned Apple `using-metal-validation` skill at revision
+`4f42344c90be22112f46becc3fb9687f423f2f88` (plugin reference `1.0.0-beta.1`)
+for preservation of pre-device diagnostic settings; no new Metal configuration
+or validation execution was performed. No other Apple expert is needed for
+this Wine thread/IPC source review.
+
+**Proposal; requester approval pending.** Extend only a new private copy of the
+existing LLDB diagnostic controller to capture the first `abort_thread` or
+ARM64 `quit_handler` stop in the owned loader. Keep the previous normal-exit and
+bad-access stop paths for classification. Require `abort_thread` to resolve in
+the selected ntdll image before releasing the existing rendezvous; resolve and
+record `quit_handler` where available, otherwise explicitly record its absence.
+Capture the breakpoint identity, bounded all-thread stacks, PC/LR/SP/x0-x8/x18,
+and module UUIDs with the existing limits. Do not evaluate inferior expressions,
+read arbitrary guest memory, suppress signals, or resume repeatedly to seek a
+failure. A first thread-exit stop may also be normal teardown; correlate it with
+captured phase rows and caller context, and never label the breakpoint alone a
+cause. If it completes normally, record the evidence gap and stop the batch.
+
+Before the one Wine case, review and run the existing portable ownership/detach
+controls with the controller copy and verify symbol/module resolution. Reuse
+the original and debugger bundle byte inventories and current authorization
+checks before/after; fail closed on mismatch. Keep one fresh task-owned prefix,
+unchanged Metal settings, existing deadlines, acknowledged detach and complete
+owned cleanup/sentinel checks. Hold `/private/tmp/pear-native-compilation.lock`
+using its established protocol; do not contend with active #5 native work or
+steal its lock. Cap additional retained output at 3 GiB and preserve at least
+8 GiB free. Preserve failed evidence and all #5 dependencies.
+
+This proposal permits at most one new diagnostic Wine case only after explicit
+approval. It authorizes no ordinary retry, new fixture, runtime rebuild/re-sign,
+production patch, global setting, qualification waiver, Stage 5 completion or
+final PR. The diagnostic still fails ordinary qualification with
+`pair_launch_changed`. The existing approved plan/incident/observation locations
+hold this review; no official product-document location changes are proposed.

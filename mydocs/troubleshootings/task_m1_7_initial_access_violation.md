@@ -219,6 +219,40 @@ was found. Preserve #7's failed required gate and these bounded discriminators;
 do not repeat them solely to collect more passes. Independent approved #5 FEX
 memory/lifetime work can proceed while this #7 gate remains open.
 
+## Independent Exit-Path Review in the Dedicated Session
+
+On October 4, the dedicated #7 session independently verified the failed formal
+case digest, all 20 captured stream digests/lengths/EOF states and all 39 captured
+producer digests. The loader still has 33 rows and no guest/process exit event.
+Its exit was already recorded in the pre-cleanup snapshot; the only recorded
+supervisor signal was server SIGINT 1,062.885291 ms after that snapshot. This
+rules out that recorded cleanup signal as the initiating event, but does not
+account for signals or IPC actions internal to Wine or from external actors.
+
+The selected build-8 Wine source exposes an earlier observation gap:
+
+- `dlls/ntdll/unix/thread.c:1497` decrements `nb_threads` in `abort_thread`.
+  Only the last thread reaches `abort_process`; other threads close their local
+  request/reply/wait descriptors and call `pthread_exit` through its wrapper.
+  The prior exit diagnostic's four breakpoints do not stop at this earlier path.
+- `dlls/ntdll/unix/server.c:361` handles a zero-cookie server wakeup by calling
+  `abort_thread(reply.signaled)`. This is an additional discriminator alongside
+  reply EOF/request EPIPE and ARM64 `quit_handler`, not an observed failed event.
+- `server/thread.c:1569` can send that wakeup or SIGQUIT and clean up an individual
+  thread while the server process itself remains alive. Server survival therefore
+  cannot exclude per-thread IPC teardown. A server-side kill may itself be a
+  consequence, so its existence would not alone identify the originating defect.
+- The ordinary `NtTerminateProcess` event is emitted only after the server call
+  returns (`dlls/ntdll/unix/process.c:975`). Its absence does not prove that the
+  function was never entered. `get_unix_exit_code` prevents a nonzero status with
+  a zero low byte from becoming zero; status truncation alone is not a supported
+  explanation for the observed OS exit zero through this helper.
+
+These are source findings, not a failing stack or a production defect. Existing
+normal teardown diagnostics cannot distinguish these paths in the failed run.
+The implementation plan contains a pending one-case first-thread-exit capture
+proposal. No new native execution, rebuild, signing change or deletion occurred.
+
 ## Evidence Retention
 
 Retain the original case/failure receipts, raw captured streams referenced by

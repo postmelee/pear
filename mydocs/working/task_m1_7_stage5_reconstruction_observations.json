@@ -129,6 +129,37 @@
     "skipped": 8,
     "tests": 149
   },
+  "dedicated_session_exit_path_review": {
+    "captured_producers_verified": 39,
+    "case_sha256": "25fc223ab323916fe18b88082921ea36d99e5c334591039c4903c2a9a448e7cd",
+    "cleanup_signal_after_pre_cleanup_ns": 1062885291,
+    "first_thread_abort_observed": false,
+    "loader_guest_or_process_exit_events": 0,
+    "native_rows": 33,
+    "new_native_runs": 0,
+    "next_diagnostic_approval": "pending",
+    "production_changed": false,
+    "qualification": false,
+    "raw_streams_verified": 20,
+    "review_kind": "source_and_retained_evidence_only",
+    "reviewed_on": "2026-10-04",
+    "root_cause": "unknown",
+    "server_termination_request_observed": false,
+    "source_findings": [
+      "nonfinal abort_thread bypasses process-exit breakpoints",
+      "server zero-cookie wakeup is another abort_thread entry",
+      "per-thread server teardown does not require server-process exit",
+      "NtTerminateProcess event follows server call completion"
+    ],
+    "source_sha256": {
+      "dlls/ntdll/unix/process.c": "ade5a827d570e305efec238108ff3a178ea8d231592564073dc5d51dec85f050",
+      "dlls/ntdll/unix/server.c": "14b0d54d74a7c992ceebeb57c2fec2b05ca53bfa8b9ef698b126d06d77c76617",
+      "dlls/ntdll/unix/signal_arm64.c": "c3ce004e3bae9e86f49e2613fb14bdf54cf055f7293c3a9d0149107bd6dc788a",
+      "dlls/ntdll/unix/thread.c": "8ad51c83cfab8a30c844a9e90032e3cd89092e1c4b56ca80ed18908709192b24",
+      "server/process.c": "a1c55d2d93beff1cd762174390554ca0c5c1ea1b7e6da289b247136b05e29438",
+      "server/thread.c": "56b3493c9e65fc52af26a910fb207553286888f120452b98148f74b1c1e12fe7"
+    }
+  },
   "distribution_qualified": false,
   "game_qualified": false,
   "linker_reproducibility_probe": {
