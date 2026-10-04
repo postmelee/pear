@@ -266,6 +266,106 @@
   ],
   "fixture_static_member_sum_bytes": 4476,
   "game_qualified": false,
+  "guest_map_component_lifecycle": {
+    "FEX_engine_initialized": false,
+    "actual_guest_to_host_map_executed": true,
+    "build_attempts": [
+      {
+        "control_sha256": "38da1304c5acf143c342907a2838ff963637b4abe7690c953ead6dfb371f8b51",
+        "passed": false
+      },
+      {
+        "control_sha256": "10ad21c968500a058a4ee7b9111d5c966531ed63b69d34f6722b521039be7126",
+        "passed": false
+      },
+      {
+        "control_sha256": "d2608ab9428ae32de6934c03009a68cb69d8cbb60e1d337482e50eba86f53f1c",
+        "passed": true
+      }
+    ],
+    "build_reuse": "unchanged Source26 LookupCache object and every successful new object; missing existing Config/SpinWaitLock/ForcedAssert/FileLoading implementations compiled without substitutes",
+    "case_sha256": "338ada8ff32cdad62d88904eb0fc5a302ab734feef30006be29f9e45b48e1454",
+    "cleanup_complete": true,
+    "compiler_diagnostics": "one selected rpmalloc unused os_map_granularity warning; remaining compile and final linker stderr empty",
+    "custom_FEX_CRT_executed": false,
+    "empty_clear_executed": true,
+    "fixture_pe_bytes": 4501504,
+    "fixture_pe_sha256": "fecdba31ee73a856ad42f5de23a9e815a0d5639c6683362ae2a0409b5b25ec77",
+    "fixture_source": "tests/fex/guest_map_lifetime.cpp",
+    "fixture_source_sha256": "9c46e8cc670092d0c947b905a274fbb7d1def95a704bf7dc71b18706cfe55724",
+    "linked_imports": "ARM64 PE; static C++/fmt/rpmalloc, Windows API-set CRT/kernel32/ntdll/synchronization imports; no ARM64EC dispatch",
+    "loader_exit": 0,
+    "metadata_budget_qualified": false,
+    "original_owner_assessment_refusal": "memory_wine_case_failed",
+    "populated_destructor_executed": true,
+    "prefix_cleanup": {
+      "allocated_bytes_released": 1148252160,
+      "files": 869,
+      "receipt_sha256": "47e78a3b8150f4abea7a90ba3f2071592cf56778c18ffb262959a797e597719f",
+      "reconstruction_performed": false,
+      "removed": true,
+      "retained": "fixture, build objects, raw logs, receipts, signed runtime and failed attempts"
+    },
+    "queue_boundary": "refuses any call; inert tickets have no executable allocation; populated ClearCache and real link retirement unperformed",
+    "real_windows_vm_provider": true,
+    "remaining": [
+      "full-engine source/lifetime integration",
+      "aggregate added-metadata accounting",
+      "genuine empty FEX initialization"
+    ],
+    "result_sha256": "13c9f2216d8161eb7dfdd43a74f6b6279b648d8de1c01c093f285a1c0255aab2",
+    "review": {
+      "full_runtime_qualification": false,
+      "guest_exit_observed": true,
+      "observed_native_image_rows": 14353,
+      "observed_native_image_rows_arm64": true,
+      "process_exit_observed": true,
+      "registered_arm64_and_no_translation": true,
+      "registered_processes": 13,
+      "registered_user_page": 4096,
+      "reviewed_stderr": "three_known_fresh_prefix_working_directory_warnings_only",
+      "unexpected_stdout_rows": 0
+    },
+    "review_sha256": "d867dc5156393a87c81c4d5d46dc76a4f8478c730c1ef021e17eb1f4db608d6c",
+    "rows": [
+      {
+        "all_regions_free": true,
+        "cycle": 0,
+        "empty_clear_executed": false,
+        "engine_initialized": false,
+        "nodes": 128,
+        "page_bytes": 4096,
+        "pmr_regions": 2,
+        "record_kind": "pear_guest_map_lifetime"
+      },
+      {
+        "all_regions_free": true,
+        "cycle": 1,
+        "empty_clear_executed": true,
+        "engine_initialized": false,
+        "nodes": 128,
+        "page_bytes": 4096,
+        "pmr_regions": 2,
+        "record_kind": "pear_guest_map_lifetime"
+      }
+    ],
+    "runtime_binding_sha256": "0fa4773f7b9893c2b4e325b1122a3c5f95a8a569f8ed733d5a3c05edae6f90fa",
+    "runtime_postflight_sha256": "0cd711ebf977cbf71fbe761597992104b3719ff6f8d918e84a21ffff05d33145",
+    "runtime_preflight_sha256": "0cd711ebf977cbf71fbe761597992104b3719ff6f8d918e84a21ffff05d33145",
+    "scope": "actual_source26_map_with_ordinary_windows_CRT",
+    "selected_fex_rpmalloc_executed": true,
+    "sentinel_survived": true,
+    "source_manifest_sha256": "df804fbc430613ce0d90fdee4a1bdf16058aec538b4bb3200994a7bb87e5e639",
+    "stage3_complete": false,
+    "terminal": [
+      {
+        "cycles": 2,
+        "passed": true,
+        "record_kind": "pear_guest_map_terminal"
+      }
+    ],
+    "translated_guest_executed": false
+  },
   "metadata_budget_qualified": false,
   "object_loaded": false,
   "observed_on": "2026-10-04",

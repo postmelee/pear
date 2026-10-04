@@ -1682,3 +1682,66 @@ transition follows from this checkpoint.
 python3 -B tests/fex/run_virtual_free_error.py --source <source26-tree> --output <fresh-output>
 python3 -B -m unittest tests.fex.test_memory_fex_pair.CanonicalGraphControls tests.fex.test_memory_fex_pair.CurrentProjectionControlControls
 ```
+
+### October 4 Actual GuestToHostMap Component Lifecycle
+
+The requester continued the next Stage 3 work. Build a small ordinary ARM64
+Windows fixture around the unchanged selected Source26 LookupCache.cpp and
+allocator/logging sources, using real Windows VM and the selected rpmalloc
+provider. Reuse the pinned compiler, matching fmt/rpmalloc implementation and
+existing signed Wine runtime. The fixture uses ordinary MinGW CRT startup; it
+does not substitute for the custom-CRT full-engine initialization gate.
+
+Observe constructor, an empty-map ClearCache, population of 128 inert map
+entries and destruction in two finite cycles. Record PMR buffer allocations
+through the existing name callback and check real VirtualQuery states before
+and after destruction. The JIT queue boundary explicitly refuses any call;
+empty clearing and populated destruction must not invoke it. This tests no
+real link retirement, code publication, metadata aggregate or translated guest.
+Do not turn inert tickets into admitted executable links. Rebuild only required
+component objects and libraries, then perform one admitted Wine diagnostic if
+link/import inspection passes. Use the existing shared lock, owned supervisor,
+original input/signature checks, a fresh prefix and at least 8 GiB free. Preserve
+failure evidence, no retries for a passing result, and no whole runtime rebuild.
+The approved existing Stage 3 plan/observation/board locations retain results.
+
+The actual component diagnostic passed once in the existing signed Wine runtime.
+Both cycles populated 128 entries in the selected GuestToHostMap. Each used two
+observed PMR regions; VirtualQuery found committed read/write storage before
+destruction and MEM_FREE with no AllocationBase afterward. The second cycle
+also executed the real empty-map ClearCache path before population. No live
+JIT link was minted, queued or retired. Pointer checks after destruction used
+VirtualQuery only; no freed storage was dereferenced. This does not measure RSS
+or rpmalloc pool retention, and does not qualify populated link invalidation.
+
+The actual source26 LookupCache object was reused after byte verification. Ten
+small units were compiled around it. Two linker attempts exposed missing
+existing Config/SpinWaitLock/ForcedAssert and FileLoading definitions; the final
+link added those real sources while reusing every successful object. No fake
+configuration or failure implementation was substituted. The sole compilation
+warning was the selected rpmalloc os_map_granularity variable set but unused;
+other compilation/final link stderr was empty. The 4,501,504-byte result is
+ordinary ARM64 PE with static C++/fmt/rpmalloc and Windows CRT/API imports.
+Build input/dependency/tool checks passed. No whole FEX/Wine rebuild occurred.
+
+Before/after bundle and current signing/profile checks passed. Both expected
+cycle rows and terminal record arrived with loader exit zero, normal guest and
+process exit events, complete owned cleanup and sentinel survival. Thirteen
+registered processes reported ARM64/no translation/4 KiB user pages; all 14,353
+native image observation rows were ARM64 (rows are not unique image counts).
+The only stderr lines were three known fresh-prefix working-directory fallback
+notices. This is a bounded component observation, not the complete runtime
+observer gate. The original owner verifier intentionally retained
+`memory_wine_case_failed` for this different fixture; no owner or full-engine
+qualification receipt was created. Ordinary MinGW CRT startup remains distinct
+from the full FEX custom-CRT/engine initializer.
+
+No full regression suite or repeat Wine run was needed for this fixture-only
+checkpoint. Preserve all build attempts, linked fixture, logs and receipts.
+After successful review and owned-process cleanup, only the fresh synthetic
+prefix was removed: 869 files, 1,148,252,160 allocated bytes. Exact prefix inode
+and absence of referencing processes were checked; signed runtime, failed
+records and #7 inputs were preserved. The removed prefix can be recreated, but
+its reconstruction was not tested. Stage 3 remains incomplete: full-engine
+lifetime integration, aggregate metadata accounting and genuine empty FEX
+initialization are still required.
