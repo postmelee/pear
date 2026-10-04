@@ -1406,3 +1406,128 @@ No further native case was started beyond the approved three small controls
 and two Wine cases. Private producers, raw traces and failure records remain
 outside Git; allowlisted outcomes and receipt hashes are in the existing
 partial observations.
+
+
+### 2026-10-04: Bounded Final-Candidate Verification and Completion Review
+
+The requester continued after the proposal to assess #7 against its original
+component-build and paired-interface scope. This authorizes the following
+verification work; it does not silently accept the original access violation,
+close #7, or change the delivery plan's correctness requirements.
+
+Reuse the existing source-matched deterministic builds 7/8, complete raw
+comparison 2 and signed runtime 2. Do not rebuild or re-sign unchanged inputs.
+Run at most two ordinary `deterministic_native --run` operations, serially,
+with fresh synthetic prefixes and the original fixture, signing, supervisor,
+Metal environment and `WINEDEBUG=-all`. Each operation retains its existing
+live admission before and after execution. Hold the shared native lock, keep
+the graphical session awake, record host and workload observations without
+terminating unrelated work, admit at most 3 GiB of new retained output and keep
+at least 8 GiB free. No debugger, fault-handler PE replacement, extra logging,
+OS setting change, game execution or profiling is authorized by this batch.
+
+Predeclare both runs before starting. Stop the batch at the first operation,
+case, cleanup, identity, storage or diagnostics failure; preserve its evidence.
+Do not add retries merely to obtain success. Each successful run must contain
+all 39 original expected rows, zero guest/loader errors, complete owned cleanup
+and surviving sentinel, current native admission, unchanged inputs and an
+explicit review of every captured diagnostic stream. Unknown warnings or Metal
+API errors fail review. Two passes establish only this finite same-host result,
+not environmental causation, arbitrary schedule safety or cross-Mac stability.
+
+Reuse the existing native/evidence/reconstruction verifiers without changing
+any acceptance predicate. After explicit raw-log review, bind the final run to
+the exact comparison candidate and independently replay the result. A machine
+record for finite reconstruction is distinct from requester acceptance of the
+historical failure and from task completion. Preserve the original failed run,
+all unsuccessful diagnostic attempts and the root-cause uncertainty in public
+sanitized observations and the proposed final report.
+
+The previous journal's unconditional demand to resolve the historical fault
+is an assistant-added completion interpretation, not wording in Issue #7.
+Any proposal to complete #7 with that fault unresolved must explicitly identify
+the risk and obtain requester review; until that decision, Stage 5 and #7 stay
+in progress even if this finite batch passes. A repeated required-path fault
+blocks completion and requires investigation/correction rather than waiver by
+this proposal. No source, product requirement or verification rule is relaxed.
+
+Document locations remain the approved task plan, observation sidecar and daily
+board; no new official-document location is needed. The existing source-pinned
+Apple `using-metal-validation` guidance applies to log review. Existing direct
+owned-process launch and pre-device validation settings remain unchanged;
+no LaunchServices substitution or new graphics subsystem is introduced.
+
+
+### 2026-10-04: Single Incident Handoff and Deferred Investigation
+
+The user-requested side-chat recommendation was delivered during final
+verification. It does not authorize automatic completion, a verification waiver
+or deletion. Apply its evidence/prioritization distinction: keep the historical
+failure unknown and uncorrected, defer additional speculative investigation,
+and reopen on recurrence, useful new fault evidence or a concrete related defect.
+The current predeclared ordinary verification continues; a fresh failure stops
+it. No additional debugger expansion or whole rebuild is introduced.
+
+Location judgment: `mydocs/troubleshootings/task_m1_7_initial_access_violation.md`
+is an Issue-specific incident/recurrence artifact under the existing document
+structure guide and troubleshooting template, not a new product specification.
+It centralizes the original input/receipt identities, reproduction procedure,
+unknown cause, lack of a confirmed fix and retention/reopening rules. The
+already approved DXMT guide links this incident; daily updates need only its
+short reference. Historical plan/JSON observations are preserved, not rewritten
+to imply resolution. #7 completion remains subject to actual required evidence
+and review, rather than automatic approval through the side-chat message.
+
+### 2026-10-04: Required Run Failed; Target the Newly Observed Exit Path
+
+The first ordinary run passed fresh admission but failed `pair_guest_exit_missing`:
+33 rows through `destroy_acquire`, no PE terminal and no loader-role guest/process
+exit event, despite observed OS loader exit zero. This reopens the incident's
+same-boundary incomplete-execution investigation; it does not prove that the
+original access-violation code recurred. The second ordinary run is cancelled.
+All 20 raw stream hashes and all 2,788 signed bundle inventory entries survived
+postflight replay. The new admission's 163 commands passed; cleanup and sentinel
+checks passed. A nine-second loader-only system-log query yielded no confirmed
+cause. No passing formal evidence or reconstruction completion was produced.
+
+The current continuation and incident reopening rule support one narrow
+termination-stack diagnostic using the already authorized debugger copy and
+validated handoff. Reuse its app-local claim, signing, rendezvous fixture and
+owned cleanup; add LLDB breakpoints for `exit`, `_exit`, `abort_process` and
+`exit_process`, requiring at least one resolved location before release. Capture
+bounded thread stacks on a matching exit breakpoint or the existing bad-access
+stop, then acknowledge detach and clean up. Keep the existing nonce/parent/PID,
+deadline and output guards. One Wine diagnostic case is permitted by this
+follow-up; do not run the cancelled ordinary repeat or add a pass-seeking loop.
+
+Original production inputs and verifier predicates remain unchanged. The copy
+and rendezvous are explicitly diagnostic and cannot qualify #7. Keep at least
+8 GiB free and the combined new verification/diagnostic outputs below 3 GiB;
+reuse the existing signed copy and keep all failures. No new build tool, global
+setting, entitlement, whole-runtime reconstruction or game execution is added.
+If no causal stack is captured, record that limit rather than infer a fix.
+
+
+### 2026-10-04: Termination Capture Completed Without a Causal Failing Stack
+
+The one targeted diagnostic completed all 39 rows, balanced physical lifetimes
+and returned zero. LLDB captured `exit_process` with `NtTerminateProcess` as
+caller and a zero exit argument after normal diagnostic completion. Acknowledged
+detach, Wine/debugger cleanup and the unrelated sentinel all passed. Existing
+nine portable ownership controls passed and installed LLDB breakpoint APIs and
+script loading were checked before execution. Original and diagnostic bundle
+byte/signature replay passed before and after. The normal verifier retains
+`pair_launch_changed`; this modified diagnostic cannot qualify the original.
+
+No fault or causally useful failing stack was captured. The ordinary candidate
+failure remains a required-verification blocker, distinct from the historical
+access violation's unconfirmed cause. No second ordinary run or further Wine
+diagnostic was executed. Combined new retained output is approximately 2.17 GiB,
+within the 3 GiB bound; more than 17 GiB remains free. No whole build, new signed
+runtime, security change, game operation or deletion was performed.
+
+The incident document owns the failure signature, retention and reopening
+context. Read-only teardown inspection did not establish a concrete correction;
+no production source was patched. Preserve the incomplete stage and failed
+records. A completed Stage 5/final report, reconstruction completion, PR or
+Issue closure is not warranted by the current evidence.

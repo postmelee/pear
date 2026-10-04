@@ -1,6 +1,6 @@
 # DXMT build and Wine Metal pairing
 
-Status: historical component build and finite native pairing verified on October 3, 2026, [Issue #7](https://github.com/postmelee/pear/issues/7). Final fresh reconstruction and unsigned comparison remain pending. This contributor guide describes the implemented build route and its evidence boundaries; it is not an installation guide for playing Windows games.
+Status: historical component build and finite native pairing verified on October 3, 2026, [Issue #7](https://github.com/postmelee/pear/issues/7). As of October 4, two fresh component builds and their complete unsigned comparison have passed. Final native verification failed again after observation 33; task completion remains pending and the earlier access violation is unresolved. This contributor guide describes the implemented build route and its evidence boundaries; it is not an installation guide for playing Windows games.
 
 Pear retains DXMT's C/C++/Objective-C and Meson implementation, Wine's C/Objective-C driver and callback scheduling, and native LLVM shader conversion. CPU instruction translation is a separate [#5/#6](../delivery-plan.md#core-implementation-backlog) prerequisite. Read the [architecture](../architecture.md), [source qualification](../source-qualification.md), [Wine host guide](wine-host.md) and [contribution procedure](../contributing.md) before changing inputs or running native checks.
 
@@ -14,9 +14,16 @@ Pear retains DXMT's C/C++/Objective-C and Meson implementation, Wine's C/Objecti
 | Typed driver pairing | Rebuilt Wine driver, DXMT bridge and ordinary ARM64 PE fixture; all 39 finite cases passed | No FEX initialization or translated/hybrid guest dispatch |
 | Physical lifetime | Three actual views, three layers and one proxy created and deallocated; zero final leases/attachments | Finite schedule, not arbitrary concurrent race freedom |
 | Metal diagnostics | Explicit captured-log review observed no Metal API validation error | Validation enabled/configured does not qualify shader semantics or performance |
-| Final reconstruction | Pending: fresh final outputs, strict unsigned comparison and independent replay | Earlier builds do not establish this gate or a second-machine result |
+| Fresh component reconstruction | Two fresh builds and all 2,878 unsigned inventory entries matched exactly; no normalization | Final candidate native evidence and completion review remain pending; not a second-machine result |
 
 The [Stage 2](../../mydocs/working/task_m1_7_stage2.md), [Stage 3](../../mydocs/working/task_m1_7_stage3.md) and [Stage 4](../../mydocs/working/task_m1_7_stage4.md) reports identify their exact receipts and limits. Every observed required host image/process in the Stage 4 finite route was native ARM64 without Rosetta. That result does not qualify Windows x64 Direct3D, Steam, Megabonk, power improvements, older macOS, or ordinary-user distribution. Runtime/game/distribution eligibility remains false.
+
+The [initial access-violation record](../../mydocs/troubleshootings/task_m1_7_initial_access_violation.md)
+preserves the original failure and a new incomplete unchanged-candidate run
+at the same observation boundary, with different exit signatures. No common
+cause, fix or environmental cause has been established. Formal verification
+remains failed; diagnostic variants and the historical Stage 4 result cannot
+replace it.
 
 ## Pinned inputs and build roles
 
