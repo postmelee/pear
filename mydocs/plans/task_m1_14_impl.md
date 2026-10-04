@@ -11,7 +11,8 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 | 1 | Preserve reuse evidence and CI readiness | Dated note and minimal rules/templates | Offline document checks and source review |
 | 2 | Qualify and connect a portable subset | Explicit five-suite CI and scoped temp policy | Clean Linux positive/negative execution; approved October 4 |
 | 3 | Publish the preparatory delivery | Scoped Open PR and delivery reports | Actual PR-event checks and final-head identity; approved October 4 |
-| 4 | Complete maintenance and promotion coverage | Proposed patch/qualification CI | #14 prerequisite and candidate evidence; not approved |
+| 4 | Validate isolated DXMT scratch-root portability | Source patch, preserved snapshot and local results | Approved October 5; two files, default/custom roots |
+| 5 | Complete maintenance and promotion coverage | Proposed patch/qualification CI | #14 prerequisite and candidate evidence; not approved |
 
 ## Document Location Check
 
@@ -121,6 +122,15 @@ Write mydocs/working/task_m1_14_stage3.md and mydocs/report/task_m1_14_report.md
 
 Commit: Task #14 Stage 3: publish the verified preparatory delivery.
 
-## Stage 4 - Maintenance and promotion coverage (proposal)
+## Stage 5 - Maintenance and promotion coverage (original Stage 4 proposal)
 
 Refine after the relevant #3/#6/#8/#9/#10/#13 outcomes exist. Bind candidate/source/test revisions and retain patch provenance, rebase conditions and contribution limits. Qualify incompatible promotion rejection without exposing game/account/signing data. Do not close #14 based on portable CI alone.
+
+
+## Stage 4 - Isolated DXMT temporary-root follow-up
+
+Approved October 5 in this thread, superseding earlier current-stage numbering; historical approvals retain their original scope. Follow the task plan's new snapshot/placement boundaries. Preserve all 503 selected #7 files and their original hashes before edits. The source HEAD alone is insufficient because the completion changes are uncommitted.
+
+Implement the two constructor changes in the independent candidate, resolving each newly created owned root with Path.resolve(strict=True) if the platform default contains aliases. Run the existing pair and native unittest files separately, using a fresh process for each of default TMPDIR selection and explicit physical scratch with spaces. Clear PEAR_TEST_* private-source/input overrides for this synthetic pass. Use unittest discovery and retain the exact discovered/run counts, failures/errors, expected/unexpected outcomes and skipped IDs. The known eight optional pair methods remain unperformed; any new skip or count discrepancy needs investigation. Verify created TemporaryDirectory instances actually use the selected root and are removed by suite completion without altering the constructors' arguments or cleanup behavior in the validation harness. Retain logs and failure details in the owned run directory.
+
+Validate that only the four intended helper lines differ between baseline and candidate, run git apply --check against the preserved baseline, parse changed Python and rehash the owner's selected source files. Run python3 -B tools/check_governance.py and git diff --check in codex/task14. Use the existing link_targets parser for new report/plan relative links. Record any failed first attempt and subsequent correction; do not rewrite failures as passes. Package the validated patch and Stage 4 report together in a stage commit; the local snapshot is not committed. No PR publication or remote CI is part of this approval.
