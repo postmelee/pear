@@ -997,6 +997,25 @@
           "preimage_sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63"
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/26-0003s-fex-checked-virtual-free.patch",
+      "git_file": "memory/source-graph/git/26-0003s-fex-checked-virtual-free.git.patch",
+      "git_sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "checked-virtual-free",
+      "order": 26,
+      "provenance_manifest": "memory/source-graph/provenance/26-checked-virtual-free.json",
+      "provenance_sha256": "74b1d056511562582da596d0f44ec48fd5fc380b6be4f2fa28d5f138393514b0",
+      "sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+          "postimage_bytes": 7397,
+          "postimage_sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+          "preimage_sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73"
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -1020,7 +1039,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 25,
+    "layer_count": 26,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }

@@ -177,8 +177,8 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
-      "sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73",
-      "size_bytes": 6882
+      "sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+      "size_bytes": 7397
     },
     {
       "mode": 420,
@@ -333,7 +333,7 @@
   ],
   "general_source_lifetime": "unclosed",
   "git_execution_performed": false,
-  "historical_graph_sha256": "70307da29ebad1554591e4e53d7a628e9c8d426463a628b6f68f59c8aca04f5d",
+  "historical_graph_sha256": "95aa23065519169baaa5c101b5390663eaf7a4cafaf14c95c3f3b21a8be9d69b",
   "layers": [
     {
       "changes": [
@@ -1544,6 +1544,34 @@
         "sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
         "size_bytes": 2756
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+          "postimage_bytes": 7397,
+          "postimage_sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+          "preimage_sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/26-0003s-fex-checked-virtual-free.git.patch",
+        "sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+        "size_bytes": 1048
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-virtual-free",
+      "order": 26,
+      "source_manifest": {
+        "path": "provenance/26-checked-virtual-free.json",
+        "sha256": "74b1d056511562582da596d0f44ec48fd5fc380b6be4f2fa28d5f138393514b0",
+        "size_bytes": 1002
+      },
+      "strict_patch": {
+        "path": "strict/26-0003s-fex-checked-virtual-free.patch",
+        "sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+        "size_bytes": 1048
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -1579,8 +1607,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "5e23cf664605ebb65504cd13e65bf41220885be53de4efb532f1f16541197b3b",
-    "size_bytes": 52538
+    "sha256": "f8bc81dc0d8158ee9c78c7d1bc17c1c364b20d3c029e2c2b027f1a91dc9bf64f",
+    "size_bytes": 53576
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",

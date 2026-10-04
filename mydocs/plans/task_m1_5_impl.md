@@ -1622,3 +1622,63 @@ void VirtualFree wrapper remain unqualified. Do not treat successful provider
 calls as a fix for ignored provider errors. Complete aggregate metadata, retained
 failure state and genuine empty FEX initialization remain the next Stage 3 work;
 #7's separate failure is unchanged. The observation sidecar binds all results.
+
+### October 4 Checked Windows Provider Release
+
+The requester continued Stage 3 and explicitly limited testing to checks needed
+for the execution goal. Reuse the selected FEX Windows allocation wrapper and
+its existing unconditional, non-returning LogMan::Throw::MFmt policy. In Pear's
+owner profile, capture GetLastError immediately when MEM_RELEASE fails and
+report its original unsigned Win32 value, pointer and requested size before
+termination. Do not introduce a new bridge error domain, retry, recoverable
+return, global failure registry or allocation metadata. The resource release
+loop must not clear its records or proceed after that failure. This preserves
+normal fatal-error policy rather than implementing recoverable cleanup.
+
+Integrate one ordered successor layer while preserving Source25. Validate the
+changed wrapper's success/refusal behavior with substituted provider and fatal
+sink (normal fixture exit, no deliberate native crash), and compile the actual
+changed source for ordinary ARM64 Windows and ARM64EC. Run only affected source
+graph/replay controls. Existing Wine provider evidence does not need repetition
+for unchanged Wine code. No full runtime rebuild or game run is implied.
+Results remain in the existing plan, Stage 3 observation and daily-board paths;
+no product documentation location changes. #7 is owned by its separate session.
+
+Source26 now checks the Windows wrapper in the Pear owner profile. It captures
+the unsigned DWORD immediately after a failed API call and invokes the existing
+unconditional non-returning logger before PMR release can clear its records.
+Successful calls retain normal behavior. This is fatal failure preservation,
+not recoverable cleanup or a new quarantine registry; the OS ultimately owns
+process teardown. No new persistent metadata or bridge-domain value was added.
+Upstream non-owner Windows and POSIX branches remain unchanged. Call-site review
+covered PMR, pooled allocators, lookup and guarded bitmap/cache teardown; no
+new automatic retry or null-allocation success was introduced.
+
+The fresh source projection passed all 52 check/apply commands for 6,973 files
+and 40,539,244 bytes, followed by independent replay. The initial invocation
+used relative input arguments and was refused before output creation; the
+correct absolute invocation is retained. Source25 and its checker/graph snapshot
+are preserved. Actual LookupCache.cpp compiles passed for ARM64 Windows and
+ARM64EC with 1,117/1,118 closed dependencies, empty stderr and unchanged input,
+tool and reference checks. Neither object was linked or loaded.
+
+Four finite host cases used the exact selected wrapper/resource fragments, the
+selected fmt implementation and substituted provider/list/fatal sink. The old
+Windows branch ignored error 87, made three release calls and retained one
+buffer. The checked success case released all three buffers. Injected errors
+87 and 0xffffffff stopped at the second call, preserved their unsigned value,
+and kept the failed and not-yet-attempted buffers valid. The sink exited normally
+without a native trap; this does not execute real Wine errors, the production
+fatal trap or the complete GuestToHostMap. The existing unchanged Wine provider
+result was reused rather than rerun.
+
+Only the affected graph/publication and projection refusal suites ran: 40 tests,
+zero failures/errors/skips. No full FEX suite or whole runtime rebuild was
+performed. Actual map lifecycle, complete metadata accounting and genuine empty
+initialization remain Stage 3 work. No translated guest/game claim or Stage 4
+transition follows from this checkpoint.
+
+```sh
+python3 -B tests/fex/run_virtual_free_error.py --source <source26-tree> --output <fresh-output>
+python3 -B -m unittest tests.fex.test_memory_fex_pair.CanonicalGraphControls tests.fex.test_memory_fex_pair.CurrentProjectionControlControls
+```

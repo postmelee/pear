@@ -166,6 +166,98 @@
   ],
   "allocation_provider": "pinned upstream rpmalloc; source arithmetic only",
   "allocator_executed": false,
+  "checked_virtual_free_source26": {
+    "FEX_initialization": false,
+    "actual_fatal_trap_executed": false,
+    "actual_guest_to_host_map_executed": false,
+    "additional_persistent_metadata_bytes": 0,
+    "affected_portable_tests": {
+      "count": 40,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "stderr_sha256": "721eb8173a1b44606620fdc23cd3193203fd9821e84e69f4dee064f429a03714"
+    },
+    "failure_policy": "original unconditional non-returning FEX logger; capture unsigned Win32 error before formatting; no retry or recovery",
+    "git_operations": 52,
+    "graph_sha256": "7a51a4252653926f284033ad478c907c7c178ee0d4fa04c3cf14b1d11206d673",
+    "host_control_sha256": "276ddc1bff4197303598a95a9473fc7a7e61cc8adf70c41e917dcf5b1c67fc61",
+    "host_fixture_sha256": "3d69a1b47ee755cfb866e51385c1e55383987a112ed6140880bb1ff7ecc6d75b",
+    "host_results": [
+      {
+        "error": 87,
+        "error_reads": 0,
+        "failure_intercepted": false,
+        "provider_calls": 3,
+        "retained_buffers": 1,
+        "variant": "baseline"
+      },
+      {
+        "error": 0,
+        "error_reads": 0,
+        "failure_intercepted": false,
+        "provider_calls": 3,
+        "retained_buffers": 0,
+        "variant": "checked"
+      },
+      {
+        "error": 87,
+        "error_reads": 1,
+        "failure_intercepted": true,
+        "provider_calls": 2,
+        "retained_buffers": 2,
+        "variant": "checked"
+      },
+      {
+        "error": 4294967295,
+        "error_reads": 1,
+        "failure_intercepted": true,
+        "provider_calls": 2,
+        "retained_buffers": 2,
+        "variant": "checked"
+      }
+    ],
+    "host_runner_sha256": "abeb4b21c7bd3ea50294969509888a301c0f3853ea14d5ae4218ad0fdd800817",
+    "metadata_budget_qualified": false,
+    "new_wine_run": false,
+    "projection_control_sha256": "0e935fb0aef2027c40f09554aeceba6df547c9dda9064e398f7db51d591d7729",
+    "projection_preflight_refusal": "initial relative arguments refused with projection_input_absolute before materialization; corrected absolute invocation passed",
+    "projection_replay_sha256": "5095f36ad2ac905c5d9bd111cf941a41d14c6c414c264bdcbb4db4352a2744f1",
+    "remaining": [
+      "actual selected GuestToHostMap lifecycle execution",
+      "complete aggregate metadata accounting",
+      "genuine empty FEX initialization"
+    ],
+    "scope": "checked_windows_wrapper_source_and_substituted_host_control",
+    "source_bytes": 40539244,
+    "source_files": 6973,
+    "source_manifest_sha256": "df804fbc430613ce0d90fdee4a1bdf16058aec538b4bb3200994a7bb87e5e639",
+    "stage3_complete": false,
+    "substituted_fatal_sink": true,
+    "substituted_provider": true,
+    "target_compile_control_sha256": "fdb6cfa93f73b2abc5dbb18fdded9ae28fe0e23ca545b9a81bb4a85b12b7131f",
+    "target_compiles": [
+      {
+        "dependencies": 1117,
+        "exit_code": 0,
+        "object_sha256": "a6aa434157cd8ef0152a2b09a2ff2dcd6fd72d9257d761ac7d28fe7e3ea7903a",
+        "stderr_empty": true,
+        "target": "arm64"
+      },
+      {
+        "dependencies": 1118,
+        "exit_code": 0,
+        "object_sha256": "03198706212349c5718227341a6f42119cbc21f4c18111c392fb1660854e17d2",
+        "stderr_empty": true,
+        "target": "arm64ec"
+      }
+    ],
+    "target_post_checks": {
+      "envelopes": true,
+      "references": true,
+      "tools": true
+    }
+  },
   "class_oracle_comparisons": 131072,
   "excluded_embedded_aliases": [
     "CodeBuffer is inside allocate_shared.ControlBlock",

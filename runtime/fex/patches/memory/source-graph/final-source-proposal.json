@@ -1,7 +1,7 @@
 {
   "baseline_manifest_sha256": "d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff",
   "compilation_performed": false,
-  "derivatives_manifest_sha256": "95aa23065519169baaa5c101b5390663eaf7a4cafaf14c95c3f3b21a8be9d69b",
+  "derivatives_manifest_sha256": "7a51a4252653926f284033ad478c907c7c178ee0d4fa04c3cf14b1d11206d673",
   "files": [
     {
       "mode": 420,
@@ -22158,8 +22158,8 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
-      "sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73",
-      "size_bytes": 6882
+      "sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+      "size_bytes": 7397
     },
     {
       "mode": 420,
