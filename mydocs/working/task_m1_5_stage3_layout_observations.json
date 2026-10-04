@@ -764,6 +764,142 @@
   "schema_version": 1,
   "scope": "partial_source_compile_and_isolated_host_controls",
   "selected_one_each_class_delta_bytes": 1232,
+  "source26_finite_initialization_accounting": {
+    "FEX_initialization": false,
+    "PE_input_section_alignment_slack_bytes": 28,
+    "PE_static_payload_bytes": 60258,
+    "bound_preconditions": [
+      "one admitted ordinary ARM64 empty-initialization DLL",
+      "one successful one-shot CAS; never reset after failure",
+      "no other caller creates a Context/thread/code buffer",
+      "no guest dispatch, code compilation, cache growth or callback-driven allocation",
+      "upstream fatal allocator behavior is not recoverable cleanup"
+    ],
+    "class_delta_scope": "reuses prior source-matched object/control-block and rpmalloc class sizes; no RSS or allocator backing-page claim",
+    "compiled_new_units": 3,
+    "compiler_stderr_empty": true,
+    "failures_do_not_allow_another_construction": true,
+    "finite_path_object_bounds": [
+      {
+        "evidence": "one CreatePearContext call after non-resetting Invoked CAS; failure returns to cleanup",
+        "maximum_for_one_shot_path": 1,
+        "object": "ContextImpl"
+      },
+      {
+        "evidence": "InitPearCore rejects existing Dispatcher then calls CreatePear once",
+        "maximum_for_one_shot_path": 1,
+        "object": "Dispatcher"
+      },
+      {
+        "evidence": "one CreatePearThread call with construction slot; no retry after refusal or retained cleanup",
+        "maximum_for_one_shot_path": 1,
+        "object": "InternalThreadState"
+      },
+      {
+        "evidence": "GetPearLatest invoked once in CreatePearThread; fresh Context starts without Latest; JIT receives the same InitialBuffer by move",
+        "maximum_for_one_shot_path": 1,
+        "object": "CodeBuffer shared allocation and control block"
+      },
+      {
+        "evidence": "one CodeBuffer::InitializePear creates its shared map",
+        "maximum_for_one_shot_path": 1,
+        "object": "GuestToHostMap"
+      },
+      {
+        "evidence": "one InitializeCompiler call creates one backend; no guest dispatch/cache growth",
+        "maximum_for_one_shot_path": 1,
+        "object": "Arm64JITCore"
+      }
+    ],
+    "link_registry_extra_pointer_and_guard_bytes": 16,
+    "maximum_selected_allocator_class_delta_bytes": 1232,
+    "metadata_budget_qualified": false,
+    "native_runs": 0,
+    "observed_on": "2026-10-05",
+    "remaining": [
+      "final linked native/PE storage placement and separately bound retained Wine view metadata",
+      "finite synchronous call-chain temporary metadata peak",
+      "allocator backing attribution distinct from object-class deltas",
+      "full-engine lifecycle/initializer admission"
+    ],
+    "scope": "source26_finite_initialization_accounting_checkpoint",
+    "source_manifest_sha256": "df804fbc430613ce0d90fdee4a1bdf16058aec538b4bb3200994a7bb87e5e639",
+    "source_references": [
+      {
+        "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+        "sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715"
+      },
+      {
+        "path": "FEXCore/Source/Interface/Context/Context.cpp",
+        "sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883"
+      },
+      {
+        "path": "FEXCore/Source/Interface/Core/Core.cpp",
+        "sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e"
+      },
+      {
+        "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+        "sha256": "9026a6da593bccbfc3cc568a047abd02d22008fd6c262a65459959c02ca937b3"
+      },
+      {
+        "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+        "sha256": "6c964dab024d98d44a2e5d2096d1ca41ed28f34c7da58138f0a6fb48ec08715c"
+      }
+    ],
+    "stage3_complete": false,
+    "static_object_control_sha256": "ba2d55fdfd9c45a020c9c6ca36d379494a9d6629edce6a5b38a709fc34096917",
+    "static_sections": [
+      {
+        "object_sha256": "2fc0544a20ecf1f27cb78284b3aa357d11edb4bff96213bcc435db5b8c4cf990",
+        "payload_bytes": 20042,
+        "section_padding_upper_bytes": 14,
+        "sections": [
+          {
+            "alignment": 8,
+            "bytes": 19968,
+            "flags": "0xc0400040",
+            "name": ".data"
+          },
+          {
+            "alignment": 8,
+            "bytes": 74,
+            "flags": "0xc0400080",
+            "name": ".bss"
+          }
+        ],
+        "unit": "adapter"
+      },
+      {
+        "object_sha256": "5ced7800ce3660c1b3ef1cc0e2ea627ecb64a96d1f854d7c07d7443fa29e81ae",
+        "payload_bytes": 16480,
+        "section_padding_upper_bytes": 7,
+        "sections": [
+          {
+            "alignment": 8,
+            "bytes": 16480,
+            "flags": "0xc0400080",
+            "name": ".bss"
+          }
+        ],
+        "unit": "links"
+      },
+      {
+        "object_sha256": "49abde3f9400c1dcb6458899563319d295d0302ca8934c7792f096dc944ac371",
+        "payload_bytes": 23736,
+        "section_padding_upper_bytes": 7,
+        "sections": [
+          {
+            "alignment": 8,
+            "bytes": 23736,
+            "flags": "0xc0400040",
+            "name": ".data"
+          }
+        ],
+        "unit": "retirement"
+      }
+    ],
+    "whole_linked_padding_observed": false
+  },
   "source_manifest_sha256": "9833aa29c2bc04778f195ffdffd2ab95038be4270df5f442c8acd45c04670b83",
   "stage3_complete": false,
   "unresolved": [

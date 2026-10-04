@@ -1745,3 +1745,49 @@ records and #7 inputs were preserved. The removed prefix can be recreated, but
 its reconstruction was not tested. Stage 3 remains incomplete: full-engine
 lifetime integration, aggregate metadata accounting and genuine empty FEX
 initialization are still required.
+
+### October 5 Finite Initialization Accounting
+
+The requester continued Stage 3 with necessary-only testing. Review the actual
+Source26 one-shot fixture and construction/cleanup call graph before assigning
+object multiplicities. Reuse prior class-size measurements where the defining
+headers are byte-identical. Measure only the three actual PE static-storage
+units needed to close the registry/pointer/guard omission. No native run,
+whole-runtime rebuild, new product-document location or Stage transition is
+needed for this checkpoint. Results stay in the existing observation sidecar
+and this plan; the daily row moves to the October 5 board.
+
+The checked finite path attempts at most one Context, Dispatcher, Thread,
+shared CodeBuffer/control block, GuestToHostMap and Arm64JITCore. The fixture's
+non-resetting one-shot CAS precedes construction. Each failure returns toward
+cleanup; uncertain cleanup retains the same tree rather than authorizing a
+second attempt. GetPearLatest runs once during thread creation, and the JIT
+constructor receives that InitialBuffer by move instead of allocating another.
+Context/manager/JIT shared references are aliases, not extra CodeBuffers. These
+are conditional source bounds for the isolated one-shot path, not general
+engine concurrency or game limits. No other allocation caller or guest/cache
+growth may be admitted under this finite count.
+
+The existing measured allocator-class deltas therefore contribute a conditional
+1,232 bytes for those selected one-each objects. Defining Context, Dispatcher,
+JIT, shared-buffer and CoreState headers match the retained measured source.
+Allocator backing pages, unrelated upstream payload and temporary call frames
+are separate terms; a block-size delta is not physical RSS or total allocation.
+The completed PMR component diagnostic remains valid in its recorded scope.
+
+Three actual ordinary ARM64 Windows compiles passed with 666/1,116/520 closed
+dependencies and empty stderr. Before/after source, tools and references were
+unchanged. Writable COFF sections are 20,042 bytes for the adapter, 16,480 for
+links and 23,736 for retirement: 60,258 bytes per selected PE copy. The link
+registry includes its eight-byte Address pointer and eight-byte initialization
+guard; llvm-nm independently shows Storage beginning at offset 16. Earlier
+16,464-byte Registry-only observations omitted those 16 bytes. The four emitted
+input sections permit 28 bytes of alignment slack at their declared eight-byte
+alignment, which is not a measurement of final linker/VM page placement.
+
+No object was linked, loaded or run and no complete 256 KiB claim is made.
+Remaining accounting concerns the final native/PE placement, matching Wine view
+metadata, finite synchronous temporary peak and provider backing attribution.
+The original initialization proof selection remains closed. These results
+reduce the current one-shot accounting problem without imposing a general-game
+allocation budget or weakening existing acceptance predicates.
