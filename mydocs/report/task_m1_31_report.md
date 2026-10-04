@@ -124,3 +124,21 @@ Stage 3 report. Publish a non-draft PR from codex/publish-task31 to master using
 this report and immutable document links. Review and merge remain separate
 requester decisions. Do not merge, close #31 or send other-task messages under
 this publication approval.
+
+
+## October 4 publication recovery verification
+
+The requester approved resolving PR #32's integration conflict and checking its
+CI after context recovery. Integrated master f393bd0 using a merge commit so
+existing stage identities remain valid. The only Git conflict was the daily
+board added on both branches; retained the exact #14 row from master and the
+#31 completion time, updating only #31's publication/recovery note. The #14 row
+is an inherited historical status, not a fresh assertion that PR #30 is open.
+
+The existing plan records this bounded approval. The contributor guide, dated
+analysis and JSON projection were byte-compared with publication commit fb45e18
+and are unchanged. Offline governance passed: 23 documents, 176 local targets.
+All 35 documentation tests passed; whitespace checks passed. No native build,
+Ninja diagnostic, private-input qualification or benchmark was run. Hosted CI
+for the recovery commit will be linked in PR #32 after execution; it is not
+claimed by this pre-push record. PR merge and Issue closure remain pending.

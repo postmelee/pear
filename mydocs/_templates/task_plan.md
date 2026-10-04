@@ -78,6 +78,8 @@ Task artifacts:
 
 For each criterion, plan the method, expected result and evidence to retain. Identify required tool/platform versions and settings, observed availability during planning (or `Not checked`), and unverified scope. Actual execution results belong in the stage reports.
 
+For reused work, identify the existing producer/checker, the claim it supports, relevant false-success cases, and changes that invalidate its evidence. Reuse unchanged evidence only within that scope; preserve approved required checks. Use `Not applicable` with a reason when no evidence is reused.
+
 ### Stage Verification
 
 - Stage 1

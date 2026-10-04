@@ -285,3 +285,16 @@ reporting and PR publication. The [final report](../report/task_m1_31_report.md)
 records acceptance results and limitations. Publication uses codex/publish-task31
 against master. Merge, Issue closure, other-task messages and integration advice
 remain outside this approval.
+
+
+## October 4 publication recovery approval
+
+After recovering this task from its Issue, commits, reports and PR #32, the
+requester explicitly continued with the proposed master integration, daily-board
+conflict resolution, documentation checks and PR CI review. Merge master
+`f393bd0216bf918838b33f7b702866469d55624b` into the task branch, preserving all
+stage commits and both #14/#31 board rows. Keep the #14 row unchanged from master
+as its owner's historical record. Record this recovery in the existing plan and
+final report; no new product-documentation destination is introduced. The guide,
+timing projection and historical stage evidence remain unchanged. PR merge,
+Issue closure and other-task communication remain separate decisions.
