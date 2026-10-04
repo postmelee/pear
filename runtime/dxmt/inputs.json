@@ -1,0 +1,441 @@
+{
+  "audit_ref": {
+    "path": "runtime/sources/manifest.json",
+    "sha256": "535cdcb7b2e76d4bc536d63ad7d17d31f562f438b7850a75a0ace1b9c88466b8"
+  },
+  "components": [
+    {
+      "cache_path": "dxmt-upstream/repo.git",
+      "commit": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "id": "dxmt-upstream",
+      "listing": {
+        "cache_path": "dxmt-upstream/tree-listing.z",
+        "size_bytes": 30804,
+        "value": "958103ca0c78ba9817f672c15612dba2d4feff45e125ddd333a8fbcea42a8a01"
+      },
+      "materialize": true,
+      "source_checks": [
+        {
+          "git_blob": "988b59af4ffc8b2084f75bfbbcddcbf2e8ae8d8e",
+          "path": ".gitmodules",
+          "sha256": "f32472d7ca6d26fe5a28af8de9e8d30344ca7f614ba0d5f376fefe8102a46619",
+          "size_bytes": 221
+        },
+        {
+          "git_blob": "e9ac3b47d18fd964af6646dec7db7cb08c3c7471",
+          "path": "build-arm64ec.txt",
+          "sha256": "2feb71f258e3238d23f83334ffb94af9eb3d180b934af8d101e9734424183261",
+          "size_bytes": 432
+        },
+        {
+          "git_blob": "e10c90191f15e4871c7b703f1f9376241f8255a0",
+          "path": "meson.build",
+          "sha256": "285cfd8a34e592d63b2ec7404d8e9108642775a14b7dc39260c7bd64661e888c",
+          "size_bytes": 5620
+        },
+        {
+          "git_blob": "715b17658d4a6c917bd6ec933042b42a0671fea8",
+          "path": "meson.options",
+          "sha256": "2bfe36dfc2e96d065497e44b5ba4a1926ac7387bcf25cdcc24e2bd25a0f207a2",
+          "size_bytes": 644
+        },
+        {
+          "git_blob": "9042b1f177b23c3fc76ec698b25b4d5d12a2d963",
+          "path": ".github/workflows/ci.yml",
+          "sha256": "28621851a498c040fc11b4d9e28c43c66e0b735895c13251134a911f13b609a5",
+          "size_bytes": 23164
+        },
+        {
+          "git_blob": "b3fa530d169e3080a20c6f689703813f5912be8f",
+          "path": "src/winemetal/meson.build",
+          "sha256": "9e684343743008b79b66aaf50c407601e53a1ad9ba74a6c8fb978356ac4cb414",
+          "size_bytes": 2516
+        },
+        {
+          "git_blob": "3f20c2bb02352b31df595fadcaeca91bf601df38",
+          "path": "src/winemetal/unix/meson.build",
+          "sha256": "1e1fd009b809cbb781d9af2dc278ccb530ea8097bcdc5cc95453c148db0b7b4f",
+          "size_bytes": 1499
+        },
+        {
+          "git_blob": "3327b2902a9598d612cfa8b2a776f84f3b669265",
+          "path": "src/winemetal/unix/winemetal_unix.c",
+          "sha256": "784a4ae87ecd2f164bc893cec43452f91de830ec7b5c02bb9c8d568be0dfb769",
+          "size_bytes": 135617
+        },
+        {
+          "git_blob": "8e0c8bedbe5fe672c45ddd83a40868da1b9af11e",
+          "path": "src/airconv/meson.build",
+          "sha256": "42890c18f303e400ee91ae44bffe20945af6b45e9440354f8bb95f9d42b7ad5c",
+          "size_bytes": 3404
+        },
+        {
+          "git_blob": "2843968607ed76a33e0abf895ba328ace4144b90",
+          "path": "src/airconv/darwin/meson.build",
+          "sha256": "c453d3d997d1cc38624ffc38c8925667b7f2b50e274eadd89a4e0762e5349331",
+          "size_bytes": 1867
+        }
+      ],
+      "source_path": "dxmt",
+      "terms": [
+        {
+          "git_blob": "927beb2e391ca7188b15fa7fbd9599e83e84bd7a",
+          "path": "LICENSE",
+          "sha256": "b87c35aef7b2cf14de854118ca55ce5c4b284c85b5f002421fb8d46d868c2d17",
+          "size_bytes": 782
+        },
+        {
+          "git_blob": "732811e4f1faf71870b7350f211b26e00d7bfbe9",
+          "path": "COPYING.LIB",
+          "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+          "size_bytes": 26434
+        },
+        {
+          "git_blob": "cbc7074853a94a0f1bbe34d198af04901f72acd2",
+          "path": "LICENSE.OLD",
+          "sha256": "3422f02eb18f1e598731b586832afab8b322badd61d45a4b95674ceec4b6108d",
+          "size_bytes": 1272
+        },
+        {
+          "git_blob": "daaa35b5c1b566aa1df4bd54ebd6f7a2ee7923a1",
+          "path": "CONTRIBUTING.md",
+          "sha256": "614066a618b5e2680f069e44a10f77923ce5d41a5c3e93e5970229b769be9731",
+          "size_bytes": 1164
+        },
+        {
+          "git_blob": "39a07fcfec74cbb48fd7d7a0e897623e979cfffa",
+          "path": "AGENTS.md",
+          "sha256": "fb10631bd18d75bb61aae8be2e1ba49c101ae677a99ea5a26517ca7a36017d09",
+          "size_bytes": 71
+        },
+        {
+          "git_blob": "c429011dc3c6c4c70a4a5dfc9dcb15b27e495a3d",
+          "path": "libs/DXBCParser/ShaderBinary.h",
+          "sha256": "d841c8b8f9c3922a325cb18b382e641dd287664470278f417ca325eedc658c22",
+          "size_bytes": 50844
+        },
+        {
+          "git_blob": "e6a22c7efca616fb69044f41b8298a9e2ffe2ea3",
+          "path": "libs/DXBCParser/d3d12tokenizedprogramformat.hpp",
+          "sha256": "a4b5a8ff11e48bb1581b7002a7b249c32e3fcff084922267076bd92aea3ccbf2",
+          "size_bytes": 129846
+        }
+      ],
+      "tree": "c273b79a2bfa47e62e8526786559f4d18911625a",
+      "url": "https://github.com/3Shain/dxmt.git"
+    },
+    {
+      "cache_path": "dxmt-directx/repo.git",
+      "commit": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "id": "dxmt-directx",
+      "listing": {
+        "cache_path": "dxmt-directx/tree-listing.z",
+        "size_bytes": 4242,
+        "value": "80623e8570743b5848d707f1ddd207f419b4c2fd93f7bbf2de975c630b8b23f4"
+      },
+      "materialize": true,
+      "source_checks": [],
+      "source_path": "dxmt/include/native/directx",
+      "terms": [
+        {
+          "git_blob": "decbf46bde9d87a0c2250fe33ece1b7e0724ee6e",
+          "path": "COPYING.MinGW-w64.txt",
+          "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+          "size_bytes": 5905
+        },
+        {
+          "git_blob": "b8895c29714aa79a58dacbbc58efea63281c8ea3",
+          "path": "d3d11.h",
+          "sha256": "908d60bf61b313ccf365e0a518dc55b9ce27e4de4b66d62b93f11460d826463a",
+          "size_bytes": 468588
+        },
+        {
+          "git_blob": "54eb96845d02c3947ae9269faf2ce2008cf494eb",
+          "path": "d3dcommon.h",
+          "sha256": "834213f9325af5677f9a7437a49d1be0b0169c5e4cf2008bfc826b60dd723618",
+          "size_bytes": 34413
+        }
+      ],
+      "tree": "66fcb250507a2c45bd9a22f44795d0e4c7b613f5",
+      "url": "https://github.com/misyltoad/mingw-directx-headers"
+    },
+    {
+      "cache_path": "dxmt-nvapi/repo.git",
+      "commit": "d08488fcc82eef313b0464db37d2955709691e94",
+      "id": "dxmt-nvapi",
+      "listing": {
+        "cache_path": "dxmt-nvapi/tree-listing.z",
+        "size_bytes": 2674,
+        "value": "783eff0609e8224f9278d9c412e5ee6bf65970072664e39eec9273b5a96ffeef"
+      },
+      "materialize": false,
+      "source_checks": [],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "1523a830be69c95382ba63c71c050ee2b770fe78",
+          "path": "License.txt",
+          "sha256": "bab44777f0f4d0333479ea0be6e24c084464a8cb64b98f1253fcc3df70f6eccf",
+          "size_bytes": 1217
+        }
+      ],
+      "tree": "5f63f798f0e45a722e25ffdd8696f7f2397c9d75",
+      "url": "https://github.com/NVIDIA/nvapi.git"
+    },
+    {
+      "cache_path": "llvm-dxmt/repo.git",
+      "commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+      "id": "llvm-dxmt",
+      "listing": {
+        "cache_path": "llvm-dxmt/tree-listing.bin",
+        "size_bytes": 12385468,
+        "value": "fe0ed32d04a3f4d57f36a583fa758043df254cfd65c4eb8fd4a50cdf2fb45bb2"
+      },
+      "materialize": false,
+      "source_checks": [],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "fa6ac540007032cbd0ec772a1c72e6cb5527a4fe",
+          "path": "llvm/LICENSE.TXT",
+          "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+          "size_bytes": 15141
+        },
+        {
+          "git_blob": "bbd4502f8db50347fbf18ed785688f0157785888",
+          "path": "CONTRIBUTING.md",
+          "sha256": "552683807529a72305bed94e4fda7d42f0f4d4768103c5bb5913ce77c29c5d41",
+          "size_bytes": 431
+        }
+      ],
+      "tree": "420b581b39531e9ed0e26916e4ba81fc6a9d9f74",
+      "url": "https://github.com/llvm/llvm-project.git"
+    },
+    {
+      "cache_path": "wine-upstream/repo.git",
+      "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "id": "wine-upstream",
+      "listing": {
+        "cache_path": "wine-upstream/tree-listing.z",
+        "size_bytes": 1033137,
+        "value": "c42a658d0e279f651d86627c683f9c902c4f573e2d73a771cb470d6ea5e0f9d7"
+      },
+      "materialize": false,
+      "source_checks": [
+        {
+          "git_blob": "6643cc67709e32ee4f6a9171f955db7069827ff9",
+          "path": "dlls/winemac.drv/macdrv.h",
+          "sha256": "d03c2bbd9c473dac187587cf805492a02527a93dbd25ac3394746951decd6b95",
+          "size_bytes": 16152
+        },
+        {
+          "git_blob": "7d8bf1319edf1b96dcafdebf76b68d2fbaa653e8",
+          "path": "dlls/winemac.drv/window.c",
+          "sha256": "6f4c8879161c7a231e562b26d16852bc1a1048b9a431a018cfbd2b9399fc2533",
+          "size_bytes": 71419
+        },
+        {
+          "git_blob": "943a9b5f7ba958ea117bd97e53063a360ff9d6e6",
+          "path": "dlls/winemac.drv/Makefile.in",
+          "sha256": "8aba97438b685d56e11574d1a84ef7efd6e39bb83a0cbe9f3f5a269a6553712d",
+          "size_bytes": 750
+        }
+      ],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "732811e4f1faf71870b7350f211b26e00d7bfbe9",
+          "path": "COPYING.LIB",
+          "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+          "size_bytes": 26434
+        },
+        {
+          "git_blob": "3909c6e050cd238630e2bb9baa7de3ea199bf61e",
+          "path": "LICENSE",
+          "sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+          "size_bytes": 824
+        },
+        {
+          "git_blob": "cbe96715c0b5a7a0a3f6e5f2251b60523bf924bf",
+          "path": "NOTICES.md",
+          "sha256": "10d1e74a0cf62c3d74e9c30b182b698766254ac9dd43b59987f3caa1a73546cb",
+          "size_bytes": 67272
+        }
+      ],
+      "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892",
+      "url": "https://github.com/wine-mirror/wine.git"
+    },
+    {
+      "cache_path": "wine-dxmt-interface/repo.git",
+      "commit": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+      "id": "wine-dxmt-interface",
+      "listing": {
+        "cache_path": "wine-dxmt-interface/tree-listing.z",
+        "size_bytes": 907465,
+        "value": "1d1189310f74c821d5056cb6961943c42a2c065b65c0456fbb97775727d852ca"
+      },
+      "materialize": false,
+      "source_checks": [],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "732811e4f1faf71870b7350f211b26e00d7bfbe9",
+          "path": "COPYING.LIB",
+          "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+          "size_bytes": 26434
+        },
+        {
+          "git_blob": "3909c6e050cd238630e2bb9baa7de3ea199bf61e",
+          "path": "LICENSE",
+          "sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+          "size_bytes": 824
+        }
+      ],
+      "tree": "56a0344be62c9ca8464ed22f8861798ce4ac717e",
+      "url": "https://github.com/3Shain/wine.git"
+    },
+    {
+      "cache_path": "llvm-mingw-source/repo.git",
+      "commit": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "id": "llvm-mingw-source",
+      "listing": {
+        "cache_path": "llvm-mingw-source/tree-listing.z",
+        "size_bytes": 7141,
+        "value": "2df340b42320ffcf43f3cd98350a95b4b6b1524442b4419e595867122a04b021"
+      },
+      "materialize": false,
+      "source_checks": [
+        {
+          "git_blob": "f11de432cf8858a028a789944fb98acb08e838c8",
+          "path": "build-llvm.sh",
+          "sha256": "0a734bd349222cd25e0d4e33bfd2930b577b50e2c2d91ee2aa1208cff4e2517e",
+          "size_bytes": 14804
+        },
+        {
+          "git_blob": "a661e0c59ef990cb4bb9a4b8515ccc94fa10cb32",
+          "path": "build-mingw-w64.sh",
+          "sha256": "8d5dcd6dab80ff2fec5ad1d86a34666f63135508872af45b9d18b545777c7fa5",
+          "size_bytes": 4691
+        }
+      ],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "fa1b4228555bd14fe7a63c3a22e18c477f1df000",
+          "path": "LICENSE.txt",
+          "sha256": "8e5db0129069005be2a07be3297e198888fd72fad62a13a611504660c6b7e3c7",
+          "size_bytes": 1092
+        }
+      ],
+      "tree": "2db31fcce334eac492da9b4bc587bc80987f3642",
+      "url": "https://github.com/mstorsjo/llvm-mingw.git"
+    },
+    {
+      "cache_path": "llvm-mingw-llvm/repo.git",
+      "commit": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689",
+      "id": "llvm-mingw-llvm",
+      "listing": {
+        "cache_path": "llvm-mingw-llvm/tree-listing.bin",
+        "size_bytes": 19053990,
+        "value": "843136f08548429a2614ee11a3a73089b16466599d121d0f6664cdc0c5432199"
+      },
+      "materialize": false,
+      "source_checks": [],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "fa6ac540007032cbd0ec772a1c72e6cb5527a4fe",
+          "path": "LICENSE.TXT",
+          "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+          "size_bytes": 15141
+        },
+        {
+          "git_blob": "fa6ac540007032cbd0ec772a1c72e6cb5527a4fe",
+          "path": "llvm/LICENSE.TXT",
+          "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+          "size_bytes": 15141
+        }
+      ],
+      "tree": "831b6c2c2df160f87ef6a5e5623ddf477ef67402",
+      "url": "https://github.com/llvm/llvm-project.git"
+    },
+    {
+      "cache_path": "mingw-w64-source/repo.git",
+      "commit": "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a",
+      "id": "mingw-w64-source",
+      "listing": {
+        "cache_path": "mingw-w64-source/tree-listing.z",
+        "size_bytes": 649561,
+        "value": "a41f025ab14c6177a399510273254648d4aaf981217463b718e3983eed2f6486"
+      },
+      "materialize": false,
+      "source_checks": [],
+      "source_path": null,
+      "terms": [
+        {
+          "git_blob": "28fa9514c036c2ae6a545fc9fe75c37baecf596d",
+          "path": "COPYING",
+          "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+          "size_bytes": 2326
+        },
+        {
+          "git_blob": "776d5f1034240f6dae0ce59d592f9c6f4ad29e7d",
+          "path": "COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt",
+          "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+          "size_bytes": 12155
+        },
+        {
+          "git_blob": "decbf46bde9d87a0c2250fe33ece1b7e0724ee6e",
+          "path": "COPYING.MinGW-w64/COPYING.MinGW-w64.txt",
+          "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+          "size_bytes": 5905
+        }
+      ],
+      "tree": "73e43c0d8f2f0624037b9b0f76e3fd4f21724417",
+      "url": "https://github.com/mingw-w64/mingw-w64.git"
+    }
+  ],
+  "gitlinks": [
+    {
+      "commit": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "component": "dxmt-directx",
+      "enabled": true,
+      "parent": "dxmt-upstream",
+      "path": "include/native/directx",
+      "reason": "Required native headers in selected root Meson configuration."
+    },
+    {
+      "commit": "d08488fcc82eef313b0464db37d2955709691e94",
+      "component": "dxmt-nvapi",
+      "enabled": false,
+      "parent": "dxmt-upstream",
+      "path": "external/nvapi",
+      "reason": "enable_nvapi=false in the initial component configuration; source/terms are still inventoried."
+    }
+  ],
+  "limits": {
+    "max_blob_bytes": 33554432,
+    "max_listing_bytes": 33554432,
+    "max_materialized_bytes": 268435456
+  },
+  "record_kind": "dxmt_build_inputs",
+  "schema_version": 1,
+  "scope": "dxmt_component",
+  "wine_baseline": {
+    "build_refs": {
+      "companion": {
+        "installed_manifest_sha256": "2043ecc6a3310ed8044ba93936694330f7d16557407eac626d244fea037462a6",
+        "sha256": "d71d69ab5b5612d33b5fd73997d1e38f09b2a72a9625cd9c954817bbf05c77ad"
+      },
+      "native": {
+        "installed_manifest_sha256": "15f6021af281269baac31437445369d0b28bd3c89e9329989db962b0edb852d9",
+        "sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb"
+      }
+    },
+    "patch_series": {
+      "path": "runtime/wine/patches/series.json",
+      "sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086"
+    },
+    "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7"
+  }
+}

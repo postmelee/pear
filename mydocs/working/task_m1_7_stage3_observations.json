@@ -1,0 +1,1095 @@
+{
+  "artifact_inventory_sha256": "eb4d97c4cdaeb6b24fb9652bcf068da59807471961674946b2d5545791dbc599",
+  "build_record_sha256": "a305ff10161993b0f65ad8c4c2558cefd11d306f6515e69b371da260617e7a5e",
+  "commands": [
+    {
+      "elapsed_ms": 10124,
+      "exit_code": 0,
+      "growth_bytes_observed": 16527360,
+      "id": "dxmt.configure",
+      "logs": {
+        "stderr": {
+          "sha256": "c6543aed678ceecb085cfb48742dfde2384cdbbded99aeaa8b30486ab7527c8c",
+          "size_bytes": 326
+        },
+        "stdout": {
+          "sha256": "58705ee07ca9f2a29ab1dce895926dd578d336f3b43054b696fa4c36092577f5",
+          "size_bytes": 6603
+        }
+      },
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 66792,
+      "exit_code": 0,
+      "growth_bytes_observed": 107798528,
+      "id": "dxmt.compile",
+      "logs": {
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "sha256": "8bf0ffb29fe3997d0f9c3aa2d3702edd59c834eb9f78576b12e0e17f13ab60c1",
+          "size_bytes": 34182
+        }
+      },
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1045,
+      "exit_code": 0,
+      "growth_bytes_observed": 122396672,
+      "id": "builtin.d3d11.dll",
+      "logs": {
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1049,
+      "exit_code": 0,
+      "growth_bytes_observed": 122396672,
+      "id": "builtin.dxgi.dll",
+      "logs": {
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1043,
+      "exit_code": 0,
+      "growth_bytes_observed": 122396672,
+      "id": "builtin.d3d10core.dll",
+      "logs": {
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1044,
+      "exit_code": 0,
+      "growth_bytes_observed": 122396672,
+      "id": "builtin.winemetal.dll",
+      "logs": {
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        }
+      },
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1048,
+      "exit_code": 0,
+      "growth_bytes_observed": 184164352,
+      "id": "dxmt.install",
+      "logs": {
+        "stderr": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        "stdout": {
+          "sha256": "0e7fe6fd201127556daa9e974208b7f1c25ffa11266c4510c31b9ef0ad213d02",
+          "size_bytes": 725
+        }
+      },
+      "stop_reason": null
+    }
+  ],
+  "distribution_qualified": false,
+  "dxmt_built": true,
+  "game_qualification_performed": false,
+  "generated_input_count": 25,
+  "gpu_or_guest_execution_performed": false,
+  "independent_artifact_gate_exit_code": 0,
+  "input_sha256": {
+    "config": "ef266fee827f799a7e71c787ad9f8d5b71af7ccb5c724cef82b465ab32e6d7ed",
+    "inputs": "3fa64451d7ca78b87b9f9e6d7aeb57a409c744c5e72cde23556be8b566ac1bbf",
+    "toolchain": "1812b77d02844b1a190f145a97fc60129d936d4f8aacedca8c2ddb951500d4d8"
+  },
+  "native_bridge": {
+    "architectures": [
+      16777228
+    ],
+    "built": {
+      "mode": 493,
+      "path": "objects/src/winemetal/unix/winemetal.so",
+      "sha256": "6d74a592e5c0afecbdf04ea6d7c0f0f84c42cee29c6b412fc396f9c624869252",
+      "size_bytes": 47161072
+    },
+    "dependency_closure": [
+      {
+        "counterpart_path": "wine-layout/lib/wine/aarch64-unix/winemac.so",
+        "kind": "source_bound_wine_counterpart",
+        "name": "@rpath/winemac.so",
+        "runtime_resolution": "unperformed",
+        "sha256": "abfc36c5652f474d7eae396735d5d3605527678182a2cea2318520ba5e4ba7d8"
+      },
+      {
+        "counterpart_path": "wine-layout/lib/wine/aarch64-unix/ntdll.so",
+        "kind": "source_bound_wine_counterpart",
+        "name": "@rpath/ntdll.so",
+        "runtime_resolution": "unperformed",
+        "sha256": "6edbb17d83e65bd3511c510f88b3208dceb3b7468d53b91b40d1c5fdc59762f9"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/Metal.framework/Versions/A/Metal",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/MetalFX.framework/Versions/A/MetalFX",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libsqlite3.dylib",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libSystem.B.dylib",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libz.1.dylib",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libncurses.5.4.dylib",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libxml2.2.dylib",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libc++.1.dylib",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
+        "runtime_resolution": "unperformed"
+      },
+      {
+        "kind": "macos_system_dependency",
+        "name": "/usr/lib/libobjc.A.dylib",
+        "runtime_resolution": "unperformed"
+      }
+    ],
+    "external_defined_symbol_count": 14932,
+    "install_name": "@rpath/winemetal.so",
+    "installed": {
+      "mode": 493,
+      "path": "install/aarch64-unix/winemetal.so",
+      "sha256": "6d74a592e5c0afecbdf04ea6d7c0f0f84c42cee29c6b412fc396f9c624869252",
+      "size_bytes": 47161072
+    },
+    "rpaths": [
+      "@loader_path/",
+      "@loader_path/../../"
+    ]
+  },
+  "ninja_task_count": 131,
+  "notices": [
+    {
+      "component_id": "dxmt-directx",
+      "mode": 420,
+      "path": "notices/dxmt-directx/COPYING.MinGW-w64.txt",
+      "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+      "size_bytes": 5905,
+      "source_path": "COPYING.MinGW-w64.txt"
+    },
+    {
+      "component_id": "dxmt-directx",
+      "mode": 420,
+      "path": "notices/dxmt-directx/d3d11.h",
+      "sha256": "908d60bf61b313ccf365e0a518dc55b9ce27e4de4b66d62b93f11460d826463a",
+      "size_bytes": 468588,
+      "source_path": "d3d11.h"
+    },
+    {
+      "component_id": "dxmt-directx",
+      "mode": 420,
+      "path": "notices/dxmt-directx/d3dcommon.h",
+      "sha256": "834213f9325af5677f9a7437a49d1be0b0169c5e4cf2008bfc826b60dd723618",
+      "size_bytes": 34413,
+      "source_path": "d3dcommon.h"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/AGENTS.md",
+      "sha256": "fb10631bd18d75bb61aae8be2e1ba49c101ae677a99ea5a26517ca7a36017d09",
+      "size_bytes": 71,
+      "source_path": "AGENTS.md"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/CONTRIBUTING.md",
+      "sha256": "614066a618b5e2680f069e44a10f77923ce5d41a5c3e93e5970229b769be9731",
+      "size_bytes": 1164,
+      "source_path": "CONTRIBUTING.md"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/COPYING.LIB",
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+      "size_bytes": 26434,
+      "source_path": "COPYING.LIB"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/LICENSE",
+      "sha256": "b87c35aef7b2cf14de854118ca55ce5c4b284c85b5f002421fb8d46d868c2d17",
+      "size_bytes": 782,
+      "source_path": "LICENSE"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/LICENSE.OLD",
+      "sha256": "3422f02eb18f1e598731b586832afab8b322badd61d45a4b95674ceec4b6108d",
+      "size_bytes": 1272,
+      "source_path": "LICENSE.OLD"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/libs/DXBCParser/ShaderBinary.h",
+      "sha256": "d841c8b8f9c3922a325cb18b382e641dd287664470278f417ca325eedc658c22",
+      "size_bytes": 50844,
+      "source_path": "libs/DXBCParser/ShaderBinary.h"
+    },
+    {
+      "component_id": "dxmt-upstream",
+      "mode": 420,
+      "path": "notices/dxmt-upstream/libs/DXBCParser/d3d12tokenizedprogramformat.hpp",
+      "sha256": "a4b5a8ff11e48bb1581b7002a7b249c32e3fcff084922267076bd92aea3ccbf2",
+      "size_bytes": 129846,
+      "source_path": "libs/DXBCParser/d3d12tokenizedprogramformat.hpp"
+    },
+    {
+      "component_id": "llvm-dxmt",
+      "mode": 420,
+      "path": "notices/llvm-dxmt/CONTRIBUTING.md",
+      "sha256": "552683807529a72305bed94e4fda7d42f0f4d4768103c5bb5913ce77c29c5d41",
+      "size_bytes": 431,
+      "source_path": "CONTRIBUTING.md"
+    },
+    {
+      "component_id": "llvm-dxmt",
+      "mode": 420,
+      "path": "notices/llvm-dxmt/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "size_bytes": 15141,
+      "source_path": "llvm/LICENSE.TXT"
+    },
+    {
+      "component_id": "llvm-mingw-llvm",
+      "mode": 420,
+      "path": "notices/llvm-mingw-llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "size_bytes": 15141,
+      "source_path": "LICENSE.TXT"
+    },
+    {
+      "component_id": "llvm-mingw-llvm",
+      "mode": 420,
+      "path": "notices/llvm-mingw-llvm/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "size_bytes": 15141,
+      "source_path": "llvm/LICENSE.TXT"
+    },
+    {
+      "component_id": "llvm-mingw-source",
+      "mode": 420,
+      "path": "notices/llvm-mingw-source/LICENSE.txt",
+      "sha256": "8e5db0129069005be2a07be3297e198888fd72fad62a13a611504660c6b7e3c7",
+      "size_bytes": 1092,
+      "source_path": "LICENSE.txt"
+    },
+    {
+      "component_id": "mingw-w64-source",
+      "mode": 420,
+      "path": "notices/mingw-w64-source/COPYING",
+      "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+      "size_bytes": 2326,
+      "source_path": "COPYING"
+    },
+    {
+      "component_id": "mingw-w64-source",
+      "mode": 420,
+      "path": "notices/mingw-w64-source/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt",
+      "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+      "size_bytes": 12155,
+      "source_path": "COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt"
+    },
+    {
+      "component_id": "mingw-w64-source",
+      "mode": 420,
+      "path": "notices/mingw-w64-source/COPYING.MinGW-w64/COPYING.MinGW-w64.txt",
+      "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+      "size_bytes": 5905,
+      "source_path": "COPYING.MinGW-w64/COPYING.MinGW-w64.txt"
+    },
+    {
+      "component_id": "wine-upstream",
+      "mode": 420,
+      "path": "notices/wine-upstream/COPYING.LIB",
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+      "size_bytes": 26434,
+      "source_path": "COPYING.LIB"
+    },
+    {
+      "component_id": "wine-upstream",
+      "mode": 420,
+      "path": "notices/wine-upstream/LICENSE",
+      "sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+      "size_bytes": 824,
+      "source_path": "LICENSE"
+    },
+    {
+      "component_id": "wine-upstream",
+      "mode": 420,
+      "path": "notices/wine-upstream/NOTICES.md",
+      "sha256": "10d1e74a0cf62c3d74e9c30b182b698766254ac9dd43b59987f3caa1a73546cb",
+      "size_bytes": 67272,
+      "source_path": "NOTICES.md"
+    }
+  ],
+  "observation_date": "2026-10-03",
+  "pairing_verified": false,
+  "pe_modules": [
+    {
+      "alternate_view_machine": 34404,
+      "builtin": {
+        "mode": 493,
+        "path": "objects/src/d3d10/d3d10core.dll",
+        "sha256": "cec38dbb2ba6530778affe6e12ec37924a050188541797f9d577047411f291e1",
+        "size_bytes": 2383872
+      },
+      "builtin_marker_offset": 64,
+      "builtin_marker_size": 32,
+      "chpe_version": 1,
+      "code_range_count": 3,
+      "code_range_types": [
+        0,
+        1,
+        2
+      ],
+      "compiler": {
+        "mode": 420,
+        "path": "compiler/d3d10core.dll",
+        "sha256": "568e4f775212eeab9e4782c8396ca680e9f879a58545987623fd2363c3d38ed1",
+        "size_bytes": 2383872
+      },
+      "delay_import_dependencies": [],
+      "dynamic_relocation_version": 1,
+      "export_address_table_slot_count": 2,
+      "export_count": 2,
+      "hybrid_metadata_verified": true,
+      "import_dependencies": [
+        {
+          "kind": "dxmt_component_dependency",
+          "name": "D3D11.DLL",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "KERNEL32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-private-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-string-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-time-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        }
+      ],
+      "installed": {
+        "mode": 493,
+        "path": "install/aarch64-windows/d3d10core.dll",
+        "sha256": "cec38dbb2ba6530778affe6e12ec37924a050188541797f9d577047411f291e1",
+        "size_bytes": 2383872
+      },
+      "machine_fixup_count": 1,
+      "name": "d3d10core.dll",
+      "raw_coff_machine": 43620
+    },
+    {
+      "alternate_view_machine": 34404,
+      "builtin": {
+        "mode": 493,
+        "path": "objects/src/d3d11/d3d11.dll",
+        "sha256": "d28dd00498cfb63abb1bc0e679b47b5b39e9d1e135dad611aaf33d5fee523512",
+        "size_bytes": 9105408
+      },
+      "builtin_marker_offset": 64,
+      "builtin_marker_size": 32,
+      "chpe_version": 1,
+      "code_range_count": 3,
+      "code_range_types": [
+        0,
+        1,
+        2
+      ],
+      "compiler": {
+        "mode": 420,
+        "path": "compiler/d3d11.dll",
+        "sha256": "39bef75eda675ab6f277c58e85d3f65cb1607fe21774dba5e9f2556f44aac0b9",
+        "size_bytes": 9105408
+      },
+      "delay_import_dependencies": [],
+      "dynamic_relocation_version": 1,
+      "export_address_table_slot_count": 7,
+      "export_count": 4,
+      "hybrid_metadata_verified": true,
+      "import_dependencies": [
+        {
+          "kind": "dxmt_component_dependency",
+          "name": "DXGI.DLL",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "dxmt_component_dependency",
+          "name": "winemetal.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "KERNEL32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "USER32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "GDI32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-time-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-private-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-string-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-utility-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        }
+      ],
+      "installed": {
+        "mode": 493,
+        "path": "install/aarch64-windows/d3d11.dll",
+        "sha256": "d28dd00498cfb63abb1bc0e679b47b5b39e9d1e135dad611aaf33d5fee523512",
+        "size_bytes": 9105408
+      },
+      "machine_fixup_count": 1,
+      "name": "d3d11.dll",
+      "raw_coff_machine": 43620
+    },
+    {
+      "alternate_view_machine": 34404,
+      "builtin": {
+        "mode": 493,
+        "path": "objects/src/dxgi/dxgi.dll",
+        "sha256": "5d8c78643b3bac45622e518bab258e0f0eec13ee65d787f6634725bfb5ab1f96",
+        "size_bytes": 2895872
+      },
+      "builtin_marker_offset": 64,
+      "builtin_marker_size": 32,
+      "chpe_version": 1,
+      "code_range_count": 3,
+      "code_range_types": [
+        0,
+        1,
+        2
+      ],
+      "compiler": {
+        "mode": 420,
+        "path": "compiler/dxgi.dll",
+        "sha256": "e4ee38a6c83758909553c094f7cb5b14d1295d34699163133b96614eec78c07b",
+        "size_bytes": 2895872
+      },
+      "delay_import_dependencies": [],
+      "dynamic_relocation_version": 1,
+      "export_address_table_slot_count": 9,
+      "export_count": 5,
+      "hybrid_metadata_verified": true,
+      "import_dependencies": [
+        {
+          "kind": "dxmt_component_dependency",
+          "name": "winemetal.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "KERNEL32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "USER32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "GDI32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "ADVAPI32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-private-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-string-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-time-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        }
+      ],
+      "installed": {
+        "mode": 493,
+        "path": "install/aarch64-windows/dxgi.dll",
+        "sha256": "5d8c78643b3bac45622e518bab258e0f0eec13ee65d787f6634725bfb5ab1f96",
+        "size_bytes": 2895872
+      },
+      "machine_fixup_count": 1,
+      "name": "dxgi.dll",
+      "raw_coff_machine": 43620
+    },
+    {
+      "alternate_view_machine": 34404,
+      "builtin": {
+        "mode": 493,
+        "path": "objects/src/winemetal/winemetal.dll",
+        "sha256": "3b825aa458f176598156f2ffd5f822fabe4ea19e6b953763262284c0f3eba86b",
+        "size_bytes": 212992
+      },
+      "builtin_marker_offset": 64,
+      "builtin_marker_size": 32,
+      "chpe_version": 2,
+      "code_range_count": 3,
+      "code_range_types": [
+        0,
+        1,
+        2
+      ],
+      "compiler": {
+        "mode": 420,
+        "path": "compiler/winemetal.dll",
+        "sha256": "58bd8b9ad3acd9f2b98fb5cca2d52eb10fdb5e49890a0d8c1a5468064b34d97b",
+        "size_bytes": 212992
+      },
+      "delay_import_dependencies": [],
+      "dynamic_relocation_version": 1,
+      "export_address_table_slot_count": 145,
+      "export_count": 145,
+      "hybrid_metadata_verified": true,
+      "import_dependencies": [
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "ntdll.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "KERNEL32.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        },
+        {
+          "kind": "external_windows_api_or_crt_dependency",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "runtime_resolution": "unperformed"
+        }
+      ],
+      "installed": {
+        "mode": 493,
+        "path": "install/aarch64-windows/winemetal.dll",
+        "sha256": "3b825aa458f176598156f2ffd5f822fabe4ea19e6b953763262284c0f3eba86b",
+        "size_bytes": 212992
+      },
+      "machine_fixup_count": 1,
+      "name": "winemetal.dll",
+      "raw_coff_machine": 43620
+    }
+  ],
+  "policy": {
+    "ceiling_is_peak_measurement": false,
+    "check_interval_ms": 1000,
+    "growth_ceiling_bytes": 8589934592,
+    "jobs": 2,
+    "measured_build_peak_bytes": null,
+    "reserve_free_bytes": 4294967296
+  },
+  "portable_tests": {
+    "count": 195,
+    "elapsed_ms": 17771,
+    "exit_code": 0
+  },
+  "prerequisite_receipt_sha256": {
+    "native_ref": "783d7e5d689c32b24a657acd44c14057d92782119682508adbaa1a46e50f78de",
+    "prepared_ref": "02589e42f8560c97cf46aad285a60e7c5785f483038e6bd1e6fdf844bab7cfb4",
+    "tools_ref": "e06b84af836228b10e8379f967dc19c1b951ff47cf0f05f8d3c3c2f794089517"
+  },
+  "producers": {
+    "tools/dxmt/build.py": "283e52d5d2f9a42d403624370537e8bf4ebe1859a75a5436d57a90975e8ef144",
+    "tools/dxmt/build_native.py": "decbf173ec806def181133111fa0536e4d125516cf4ea633bb5c82a080f68765",
+    "tools/dxmt/check.py": "8df6d31ee085c7251d206ce833105e549e593e3538ca484d127c925623836728",
+    "tools/dxmt/common.py": "3593e8e2a80d535143e2baae7e945ce90918520711993848dc33355d9dac0e75",
+    "tools/dxmt/inspect.py": "745af80e22f33c7170788c08d6d8286d1d7f49c1681fcb34b949874862d85a7f",
+    "tools/dxmt/prepare.py": "340e6b23c243419888b88fa05fbb01af8a0d03f9db13f62a3cfa2ac164d5e95f",
+    "tools/dxmt/tools.py": "149a3bae6d88874eba0e91cf2911e48a0c81105d0460a325c6b1244b2b1d1040",
+    "tools/dxmt/verify.py": "31ecb907f1c69ba7ea89b777d06aef55f37b6de555351b0d1d4242ae7da69df0",
+    "tools/sources/validate_inventory.py": "a851ee6978002a4e45934b91e4abdfe0151d73178e862e45b2b0824a4e0b3710",
+    "tools/wine/common.py": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+    "tools/wine/modules.py": "ee109f7934562082a4ed74c7c6f90beec75445adff042e2b8b9e82fef086225c",
+    "tools/wine/toolchain.py": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597"
+  },
+  "public_export_scope": "Allowlisted sizes, digests, relative output paths, format and command facts; excludes PE pointers/RVAs, private roots, raw streams, profiles and credentials.",
+  "record_kind": "dxmt_stage3_observations",
+  "runtime_eligible": false,
+  "runtime_loader_resolution": "unperformed",
+  "schema_version": 1,
+  "scope": "dxmt_component",
+  "shader_outputs": [
+    {
+      "kind": "air",
+      "mode": 420,
+      "path": "objects/src/airconv/darwin/libairconv.a.p/air_msad.air",
+      "sha256": "282a9d41902c5574378a0d7c5d2991a22c36c513429eca065e33c3841ce0c7a4",
+      "size_bytes": 5232
+    },
+    {
+      "kind": "embedded_header",
+      "mode": 420,
+      "path": "objects/src/airconv/darwin/libairconv.a.p/air_msad.h",
+      "payload_sha256": "282a9d41902c5574378a0d7c5d2991a22c36c513429eca065e33c3841ce0c7a4",
+      "sha256": "c29245163e2c2883c9cb9eadde084088261e8255e252011d14d96d45e7d95841",
+      "size_bytes": 32329
+    },
+    {
+      "kind": "air",
+      "mode": 420,
+      "path": "objects/src/airconv/darwin/libairconv.a.p/air_samplepos.air",
+      "sha256": "e0b49d5b75ddd4367a3bb6409771a72269268e19cadd794fc5f2ebfce310fbdc",
+      "size_bytes": 3568
+    },
+    {
+      "kind": "embedded_header",
+      "mode": 420,
+      "path": "objects/src/airconv/darwin/libairconv.a.p/air_samplepos.h",
+      "payload_sha256": "e0b49d5b75ddd4367a3bb6409771a72269268e19cadd794fc5f2ebfce310fbdc",
+      "sha256": "f290a1ecb55b9b4d73df469b9c20938244315d537285d2fc419594267f531377",
+      "size_bytes": 22079
+    },
+    {
+      "kind": "air",
+      "mode": 420,
+      "path": "objects/src/airconv/darwin/libairconv.a.p/air_tessellation.air",
+      "sha256": "1182a440ef4e089e1a47b81ab76b5efd14e6c94dae821115b3cf2c4b34cc4b0a",
+      "size_bytes": 59680
+    },
+    {
+      "kind": "embedded_header",
+      "mode": 420,
+      "path": "objects/src/airconv/darwin/libairconv.a.p/air_tessellation.h",
+      "payload_sha256": "1182a440ef4e089e1a47b81ab76b5efd14e6c94dae821115b3cf2c4b34cc4b0a",
+      "sha256": "1b2fe5a35331030ee68ab6c09c6dbd5d7d00e36a3d329f8bfaa5e76795b4912d",
+      "size_bytes": 368110
+    },
+    {
+      "kind": "air",
+      "mode": 420,
+      "path": "objects/src/dxmt/libdxmt.a.p/dxmt_command.air",
+      "sha256": "a05aa7bbc4eecc93c7d3af2be6320b0bb4a85ea45b8bdf0429f69f5651ff89f1",
+      "size_bytes": 36224
+    },
+    {
+      "kind": "embedded_header",
+      "mode": 420,
+      "path": "objects/src/dxmt/libdxmt.a.p/dxmt_command.h",
+      "payload_sha256": "8590bb723f629aa7d78d3abc39416147d255d8c8d006791fbe6a05ef2bcd65f8",
+      "sha256": "92a90fae500e6830310254d44b4fba84f129182cda4fcbd7b960748b918f412e",
+      "size_bytes": 998175
+    },
+    {
+      "kind": "metallib",
+      "mode": 420,
+      "path": "objects/src/dxmt/libdxmt.a.p/dxmt_command.metallib",
+      "sha256": "8590bb723f629aa7d78d3abc39416147d255d8c8d006791fbe6a05ef2bcd65f8",
+      "size_bytes": 161854
+    }
+  ],
+  "source_bytes": 8082606,
+  "source_file_count": 445,
+  "supplemental_deployment_observations": [
+    {
+      "exit_code": 0,
+      "minos": "14.0",
+      "name": "winemetal.so",
+      "path": "objects/src/winemetal/unix/winemetal.so",
+      "platform": "1",
+      "sdk": "26.5",
+      "sha256": "6d74a592e5c0afecbdf04ea6d7c0f0f84c42cee29c6b412fc396f9c624869252",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "97f9ae85bb215ca53c29b5636d82abe8aab9df72699209366385ffc395764552"
+    },
+    {
+      "exit_code": 0,
+      "minos": "26.5",
+      "name": "ntdll.so",
+      "path": "wine-layout/lib/wine/aarch64-unix/ntdll.so",
+      "platform": "1",
+      "sdk": "26.5",
+      "sha256": "6edbb17d83e65bd3511c510f88b3208dceb3b7468d53b91b40d1c5fdc59762f9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1cf6ee86e834b15908df6f346d22f1886e804b6242355574378f62ba0388c23d"
+    },
+    {
+      "exit_code": 0,
+      "minos": "26.5",
+      "name": "winemac.so",
+      "path": "wine-layout/lib/wine/aarch64-unix/winemac.so",
+      "platform": "1",
+      "sdk": "26.5",
+      "sha256": "abfc36c5652f474d7eae396735d5d3605527678182a2cea2318520ba5e4ba7d8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "5aa5bd6fddd9822e39de4ebd16782d119647c4b3fdb5b4136f3b087fc5d35a0b"
+    },
+    {
+      "exit_code": 0,
+      "minos": "26.5",
+      "name": "win32u.so",
+      "path": "wine-layout/lib/wine/aarch64-unix/win32u.so",
+      "platform": "1",
+      "sdk": "26.5",
+      "sha256": "f476a57026f24284c9e530a20086410b21119abb672773772d6e968f0472ba5d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "43fffeeaf038851a756f8fbbaf4029493fccf4ced1933591798f53e44b68830a"
+    }
+  ],
+  "typed_driver_interface_status": "unimplemented",
+  "version_header": {
+    "mode": 420,
+    "path": "objects/version.h",
+    "sha256": "8e47b9aa8ad552dbc1ee32df38977a512e27973f22d6c8d6c161e439370447ce",
+    "size_bytes": 78
+  },
+  "warnings": {
+    "categories": [
+      "upstream return-path warnings",
+      "upstream potentially uninitialized values",
+      "macOS 15 residency APIs versus deployment target 14.0",
+      "Wine counterpart deployment target 26.5 versus bridge target 14.0"
+    ],
+    "count": 77,
+    "source_semantic_fixes_performed": false
+  },
+  "wine_layout": [
+    {
+      "architectures": [
+        16777228
+      ],
+      "mode": 493,
+      "origin_path": "bin/winebuild",
+      "origin_role": "native",
+      "path": "wine-layout/bin/winebuild",
+      "sha256": "4b64fa073459c009bf821920df3487439091519d9a605c038207b68d4aca67cb",
+      "size_bytes": 218072
+    },
+    {
+      "architectures": [
+        16777228
+      ],
+      "mode": 493,
+      "origin_path": "lib/wine/aarch64-unix/ntdll.so",
+      "origin_role": "native",
+      "path": "wine-layout/lib/wine/aarch64-unix/ntdll.so",
+      "sha256": "6edbb17d83e65bd3511c510f88b3208dceb3b7468d53b91b40d1c5fdc59762f9",
+      "size_bytes": 940152
+    },
+    {
+      "architectures": [
+        16777228
+      ],
+      "mode": 493,
+      "origin_path": "lib/wine/aarch64-unix/win32u.so",
+      "origin_role": "native",
+      "path": "wine-layout/lib/wine/aarch64-unix/win32u.so",
+      "sha256": "f476a57026f24284c9e530a20086410b21119abb672773772d6e968f0472ba5d",
+      "size_bytes": 2592104
+    },
+    {
+      "architectures": [
+        16777228
+      ],
+      "mode": 493,
+      "origin_path": "lib/wine/aarch64-unix/winemac.so",
+      "origin_role": "native",
+      "path": "wine-layout/lib/wine/aarch64-unix/winemac.so",
+      "sha256": "abfc36c5652f474d7eae396735d5d3605527678182a2cea2318520ba5e4ba7d8",
+      "size_bytes": 818200
+    },
+    {
+      "coff_machines": [
+        42561,
+        43620
+      ],
+      "mode": 420,
+      "origin_path": "lib/wine/aarch64-windows/libdbghelp.a",
+      "origin_role": "companion",
+      "path": "wine-layout/lib/wine/aarch64-windows/libdbghelp.a",
+      "sha256": "68d7391d4d5cd20c2ca31a9c4103d5f30856335f7743cf7a88cd9edd9df009b2",
+      "size_bytes": 64508
+    },
+    {
+      "coff_machines": [
+        42561,
+        43620
+      ],
+      "mode": 420,
+      "origin_path": "lib/wine/aarch64-windows/libntdll.a",
+      "origin_role": "companion",
+      "path": "wine-layout/lib/wine/aarch64-windows/libntdll.a",
+      "sha256": "ed6390f440a4de1360e0061da13826caa513298e7fe803513b2b78fce0a0c150",
+      "size_bytes": 508676
+    },
+    {
+      "coff_machines": [
+        42561,
+        43620
+      ],
+      "mode": 420,
+      "origin_path": "lib/wine/aarch64-windows/libwinecrt0.a",
+      "origin_role": "companion",
+      "path": "wine-layout/lib/wine/aarch64-windows/libwinecrt0.a",
+      "sha256": "d60429378fcaf716027f95ad15524736636c5186de9a1b659f4281020c9062f6",
+      "size_bytes": 294618
+    }
+  ],
+  "wine_role_origins": {
+    "companion": {
+      "build_sha256": "d71d69ab5b5612d33b5fd73997d1e38f09b2a72a9625cd9c954817bbf05c77ad",
+      "installed_manifest_sha256": "2043ecc6a3310ed8044ba93936694330f7d16557407eac626d244fea037462a6",
+      "role": "companion",
+      "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "variant": "arm64ec-build"
+    },
+    "native": {
+      "build_sha256": "f7041374d7cdc86ea2991f859c8c102e369ed2247cb69a3647f4b9ddfae2f1eb",
+      "installed_manifest_sha256": "15f6021af281269baac31437445369d0b28bd3c89e9329989db962b0edb852d9",
+      "role": "native",
+      "source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+      "variant": "arm64"
+    }
+  }
+}

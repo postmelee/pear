@@ -1,0 +1,1075 @@
+{
+  "airconv_execution": "unperformed",
+  "distribution_qualified": false,
+  "dxmt_built": false,
+  "evidence_scope": "native-source-build-and-shader-compilation-only",
+  "exporter_sha256": "c7993686767037c678d15d8cb8f4227737e1cd5e898c67d7ab3480a7d7778d1d",
+  "game_qualified": false,
+  "gpu_or_guest_execution_performed": false,
+  "llvm": {
+    "commands": [
+      {
+        "exit_code": 0,
+        "growth_bytes_observed": 8916992,
+        "id": "llvm.configure",
+        "stop_reason": null
+      },
+      {
+        "exit_code": 0,
+        "growth_bytes_observed": 293883904,
+        "id": "llvm.build",
+        "stop_reason": null
+      },
+      {
+        "exit_code": 0,
+        "growth_bytes_observed": 459530240,
+        "id": "llvm.install",
+        "stop_reason": null
+      }
+    ],
+    "installed_file_count": 1904,
+    "libraries": [
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMAggressiveInstCombine.a",
+        "object_count": 2,
+        "sha256": "884cea4c12781b647f68d22e20f5d368a34c5e162148b68fa17bcee923f52508",
+        "size_bytes": 226576,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMAnalysis.a",
+        "object_count": 118,
+        "sha256": "0e2df5003578200821350ba11e631b20f6f5960894039c665d628c9ef63f2da6",
+        "size_bytes": 12064096,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMAsmParser.a",
+        "object_count": 3,
+        "sha256": "aad7ae4665345530e74096d35c7d7247c0fb286c251ce9f49a6de599cccce67e",
+        "size_bytes": 728104,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMAsmPrinter.a",
+        "object_count": 27,
+        "sha256": "08f5578ecd6a7847fbedee52fb412f945416c7f1da8c5a1959a1ee674b58baf9",
+        "size_bytes": 2202160,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMBinaryFormat.a",
+        "object_count": 13,
+        "sha256": "193c22f4631632f5b3e04282866cd3cc4ab746d129263a9794bd2bd3cb6f78db",
+        "size_bytes": 272760,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMBitReader.a",
+        "object_count": 5,
+        "sha256": "295fedf54ac3475ab4746995f052b90d3afd0337e7b48f09ebcf698181fb14a9",
+        "size_bytes": 961272,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMBitWriter.a",
+        "object_count": 4,
+        "sha256": "e6e202f2bdbda31d9703fa447fd3a6138539a683efda53515a5e8ca3ab6bbf91",
+        "size_bytes": 726544,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMBitstreamReader.a",
+        "object_count": 1,
+        "sha256": "618e5c1920878534b3f0d92b6d5a41f3258ad7d574c2c91699d8aaa3618119b4",
+        "size_bytes": 63224,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMCFGuard.a",
+        "object_count": 1,
+        "sha256": "7fb80b796e33743011e6c43fa721e82d852f847f5da7c132c114bdc1301d19fc",
+        "size_bytes": 31560,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMCodeGen.a",
+        "object_count": 209,
+        "sha256": "c7141b270ab7d8fbe57dca479ba744642f5b6d90504078873e93b8ff455792fa",
+        "size_bytes": 19245024,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMCore.a",
+        "object_count": 64,
+        "sha256": "61ca0fca3359c2c852b3cb181d23cfa35795a16090dd8907c65ad3080d74f3bf",
+        "size_bytes": 8417264,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMCoroutines.a",
+        "object_count": 7,
+        "sha256": "3fc3f084da34e3ebc5cc6fe432a0afe6843dc8f2fb08efdfca96066fa13aeda8",
+        "size_bytes": 729864,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMCoverage.a",
+        "object_count": 3,
+        "sha256": "0c4da09fa461cdec3f0cd56175591394c9d76d90734088cfd28983d28f268fa8",
+        "size_bytes": 439928,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDWARFLinker.a",
+        "object_count": 4,
+        "sha256": "706c604aaf1477089f0f7ff75ffd9cdfe712222a2e1d8308f397a732b3435243",
+        "size_bytes": 339552,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDWP.a",
+        "object_count": 2,
+        "sha256": "4660c01aacfc284a9739780b6b3d8fe84ce20d05d3d4fff4edcf9127811b0dc1",
+        "size_bytes": 94040,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDebugInfoCodeView.a",
+        "object_count": 40,
+        "sha256": "0bce63991473afc3d6f01671f33fa3054a6e463cc19a21db43e4371e523cfd12",
+        "size_bytes": 1353200,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDebugInfoDWARF.a",
+        "object_count": 29,
+        "sha256": "6ea443a29b52d1c0cbfe6bd341b5fad0188606dfa166cad17fa6a88231ded761",
+        "size_bytes": 1437816,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDebugInfoGSYM.a",
+        "object_count": 11,
+        "sha256": "f5dd15f591871a9c2e49468ee24fd46e9e6b82c24a1c880fd459de5f226aa529",
+        "size_bytes": 285768,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDebugInfoMSF.a",
+        "object_count": 4,
+        "sha256": "b2a017163815f9ca8cb576e267b1c5cbcdfb41f6043a03e4538a079aee349103",
+        "size_bytes": 119480,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDebugInfoPDB.a",
+        "object_count": 93,
+        "sha256": "ee9c212afd3af6f46a23ccb43475d673170ba103b0230a8d44180861e1f084c7",
+        "size_bytes": 2100504,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDebuginfod.a",
+        "object_count": 4,
+        "sha256": "d74162d473cae4819973a77edbb12dae33e2fd5601f466defc40d8a32d0471f3",
+        "size_bytes": 133976,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDemangle.a",
+        "object_count": 6,
+        "sha256": "1983adff20d0b0e1b8880ed84d0a0a4dc56f1680442f0fe64d3a7621e3386f73",
+        "size_bytes": 469920,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMDlltoolDriver.a",
+        "object_count": 1,
+        "sha256": "17616cb7c21213bb63adba134ac08041de832f44d60e174c6502f8bc35086e41",
+        "size_bytes": 20016,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMExecutionEngine.a",
+        "object_count": 5,
+        "sha256": "8db6dc9b62abad49373f8537075e1775674e11f70c180a9fb5fd7489ac9348cb",
+        "size_bytes": 196144,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMExtensions.a",
+        "object_count": 1,
+        "sha256": "a4d3fa07dc916dfeca9ee932bc7fbc5bad61df068463cf8cbaba2dca7d13f485",
+        "size_bytes": 912,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMFileCheck.a",
+        "object_count": 1,
+        "sha256": "56e30968478e444431f17b24a95938e598f8ae0caec18f547a1682e02eced568",
+        "size_bytes": 248000,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMFrontendOpenACC.a",
+        "object_count": 1,
+        "sha256": "b7d8474bbd31dd4bbf4d7e3640c0698f96d0df719850a77acc3f857a7e0cdbe0",
+        "size_bytes": 14536,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMFrontendOpenMP.a",
+        "object_count": 3,
+        "sha256": "36305d2d571fa5212d31ca2422eb3a6d328399981f263611b68ea73de2161e7e",
+        "size_bytes": 717048,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMFuzzMutate.a",
+        "object_count": 4,
+        "sha256": "7f279cda899d92ca59f36166a1fbe445f7929b83de2826a302236cedde3a4511",
+        "size_bytes": 277792,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMFuzzerCLI.a",
+        "object_count": 1,
+        "sha256": "bbd78b6109bcff39e2bdd0ff3412d20fde2fcd63ab7e882f7a8b911498f9378f",
+        "size_bytes": 20520,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMGlobalISel.a",
+        "object_count": 24,
+        "sha256": "ff357196e4ecfce1f5c922c30e8d9ce40d9c4aa710376d4edfaa1dad77cdb3c9",
+        "size_bytes": 3087504,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMIRReader.a",
+        "object_count": 1,
+        "sha256": "854c53fc52fc137eaa1ffd6dfa8e685e22197a01021543ac08c55976c51b9ec5",
+        "size_bytes": 24696,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMInstCombine.a",
+        "object_count": 15,
+        "sha256": "2afb21baff462631c659e3f42bda187a12ecf3c1a7f52309c3f6d679f0576f91",
+        "size_bytes": 4985096,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMInstrumentation.a",
+        "object_count": 19,
+        "sha256": "66a0071866ce7b58c5db0fb6b834e74075a6d2c52a38ea8383c41037b9eb97a2",
+        "size_bytes": 2721816,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMInterfaceStub.a",
+        "object_count": 3,
+        "sha256": "133a22164815f715215cabb6302608bb1c655f08a024e45473708c929f73db13",
+        "size_bytes": 244032,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMInterpreter.a",
+        "object_count": 3,
+        "sha256": "d3cc9e60a89bb690a7402f3d469b520a48793192427c5ac941388fba593a390b",
+        "size_bytes": 259408,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMJITLink.a",
+        "object_count": 21,
+        "sha256": "ffdfadd051f154a7f4af7ba9bf8b188348c66af0051047f53189ae98a8e3b6a3",
+        "size_bytes": 2062688,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMLTO.a",
+        "object_count": 7,
+        "sha256": "bcfcc34ae263d2b03870e8def19995bd7b24e59749eeff60ae401622d0256159",
+        "size_bytes": 851720,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMLibDriver.a",
+        "object_count": 1,
+        "sha256": "ed85d5752ff082ae5ab73a522828d77375ed14938aa64d0443978485f2b159d0",
+        "size_bytes": 58048,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMLineEditor.a",
+        "object_count": 1,
+        "sha256": "ca923d2c2bd9079670a05416b0b8bb6ddeff801d7c21f9a42576bf8708e38b41",
+        "size_bytes": 9280,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMLinker.a",
+        "object_count": 2,
+        "sha256": "cbfb18b3132e098ea7c829ef7310cb6a8aa2b42f818b50e12b7872c6495d6c09",
+        "size_bytes": 247088,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMMC.a",
+        "object_count": 70,
+        "sha256": "bf63895ffa68a6d2eec6d3bbf85d5977b0220385b263e5f90c23000a03e55578",
+        "size_bytes": 2061240,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMMCA.a",
+        "object_count": 24,
+        "sha256": "f6934ef9d9135a43f6eab60b3a3a3683ea9b996af8ffdce92715c5f657528577",
+        "size_bytes": 378032,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMMCDisassembler.a",
+        "object_count": 5,
+        "sha256": "b51f5d5dbfc2f8bf725c6956cf3c4aec9ead24d03f12e98017ff84d26ef37f05",
+        "size_bytes": 29000,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMMCJIT.a",
+        "object_count": 1,
+        "sha256": "493c201e2b924df9829b3a955196b1b32b67920f427298fbf4501795ba27981d",
+        "size_bytes": 79456,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMMCParser.a",
+        "object_count": 14,
+        "sha256": "bcdd1c32591663f4dd38f4b8a74e3ec1dd6d5e2d9564614aba1c361081bc614a",
+        "size_bytes": 954256,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMMIRParser.a",
+        "object_count": 3,
+        "sha256": "139d126741143a8e3a40f2ee0b0a82aa3acd14bb764ffe7e90598fb8aced770f",
+        "size_bytes": 429760,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMObjCARCOpts.a",
+        "object_count": 9,
+        "sha256": "c84713cd225063ebd7ad666fd80dd1033bf601de4f589fcf7c71b81a391748b0",
+        "size_bytes": 452552,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMObjCopy.a",
+        "object_count": 22,
+        "sha256": "b98aaf14db2439779a86e4888c348ef2b4f8ecb0f234d0f6309c097f46962aeb",
+        "size_bytes": 1199408,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMObject.a",
+        "object_count": 32,
+        "sha256": "b45509c2407a3b6d65139aedb5c003a53fb099100c111ef143651f0e6c2ff36d",
+        "size_bytes": 2937288,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMObjectYAML.a",
+        "object_count": 27,
+        "sha256": "3d602fa516bb68585ce8f08433fc834adce464cc56cf482def73b3512a16b325",
+        "size_bytes": 3012232,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMOption.a",
+        "object_count": 4,
+        "sha256": "be929da3d1adf5b4582bef71f7e01d30b50d3f2f1348d803b5e8cb1d5ed5431f",
+        "size_bytes": 108072,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMOrcJIT.a",
+        "object_count": 39,
+        "sha256": "8a299f631eacdb9f4184259f5f578e5fa58c0eba8d09e63712ea29dcb88a0f04",
+        "size_bytes": 3999864,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMOrcShared.a",
+        "object_count": 4,
+        "sha256": "0be352e5f3ac5aaceeb62c391d3e16ff37c0839418ad9f24fb3c8b1ce917af49",
+        "size_bytes": 50984,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMOrcTargetProcess.a",
+        "object_count": 8,
+        "sha256": "b084bd8c00bf8fe77fafec69b7ca1e57e73eaea43308ad77222427b808c673b3",
+        "size_bytes": 294560,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMPasses.a",
+        "object_count": 6,
+        "sha256": "56da94f5c05331e7c9cefb7c00bc26b216e4f7da2e5204902bed45ef937ad587",
+        "size_bytes": 3994272,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMProfileData.a",
+        "object_count": 11,
+        "sha256": "a87252020824d4271ba82ad1d9c5a74243dfa2bad6f70f3a2d13ba8ccc79c842",
+        "size_bytes": 1242600,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMRemarks.a",
+        "object_count": 11,
+        "sha256": "010956392a37d887fea0b54fd05925e73893dcd540e04f21942267acbc12dfec",
+        "size_bytes": 373184,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMRuntimeDyld.a",
+        "object_count": 8,
+        "sha256": "f84b3558ff3956b73abf2a408f5852dec014cfe2ef90636c5ef55e3a84a95d90",
+        "size_bytes": 1134080,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMScalarOpts.a",
+        "object_count": 79,
+        "sha256": "e9a7bd9e9254e3c5920f56d638db633695a4fc5145a47fa2eaa8816d212b049c",
+        "size_bytes": 10838664,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMSelectionDAG.a",
+        "object_count": 25,
+        "sha256": "22b4fa1e6baca1381c83c7127a072fe7dbdafca023d1ed6eca48d9678250b912",
+        "size_bytes": 7223528,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMSupport.a",
+        "object_count": 156,
+        "sha256": "8d120e10c90a0585de61099e8a15997cfad86db392e13d28229220e81102135d",
+        "size_bytes": 4206976,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMSymbolize.a",
+        "object_count": 6,
+        "sha256": "d4cf33d9662bf574385f24cb6730dc891bf3ac3ad0695051f5596922ecdc3b46",
+        "size_bytes": 349056,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMTableGen.a",
+        "object_count": 12,
+        "sha256": "a1683fc07c544e6a4b1a7809ae89be11a43127d0590c0bec1f7d185ed23627db",
+        "size_bytes": 690416,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMTableGenGlobalISel.a",
+        "object_count": 8,
+        "sha256": "9cf5d461b48db2cdcfcd3613b2fbebeb070e2c9d96cfd1d7d630eded21398a78",
+        "size_bytes": 262208,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMTarget.a",
+        "object_count": 5,
+        "sha256": "cfbb22fab65a495856a83b191d11698284c5f963d2a7216fc22af5303f3dbedf",
+        "size_bytes": 77064,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMTextAPI.a",
+        "object_count": 9,
+        "sha256": "21ea2748ccb95ca9f20db97c6b30506f9e4e0244cd8848f995f745e60c8fb4aa",
+        "size_bytes": 269480,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMTransformUtils.a",
+        "object_count": 81,
+        "sha256": "e5edafb8a0fe2fc1b4362d31ccb2b7db61659c3d3197e457b3fe45ea1593c8c5",
+        "size_bytes": 6831176,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMVectorize.a",
+        "object_count": 12,
+        "sha256": "e3db9fa9cacc5a605fd6ecc9aef17c63cf63381da99b62472ec82a7e31493810",
+        "size_bytes": 3958328,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMWindowsDriver.a",
+        "object_count": 1,
+        "sha256": "2055d9af1a0b690950c7e89f15469d0c0a04c50a0b92ba9e54652db293dfb916",
+        "size_bytes": 21112,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMWindowsManifest.a",
+        "object_count": 1,
+        "sha256": "ea48fae0829e0567c8735f4e94597d7d44f1fb056bf72896bf946a97b5835aff",
+        "size_bytes": 25576,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMXRay.a",
+        "object_count": 14,
+        "sha256": "e6d5653f65b7db275aa46d2a2ab68555d7facfee3dd9390eb2c7a6bb1a7bf551",
+        "size_bytes": 310144,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      },
+      {
+        "architectures": [
+          16777228
+        ],
+        "name": "libLLVMipo.a",
+        "object_count": 44,
+        "sha256": "2b32259842d8d6df5621dcf5e0fcd1601cb84ca3f5c713061e111dd0dbb36463",
+        "size_bytes": 7290896,
+        "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+      }
+    ],
+    "tablegen": {
+      "architectures": [
+        16777228
+      ],
+      "filetype": 2,
+      "selected_cpu": 16777228,
+      "sha256": "d4d778a833ef62d09c5bb89ed4ddc0d9e8fd745a086c87d91ebaa8cb09a79800"
+    },
+    "version": "15.0.7"
+  },
+  "llvm_build_sha256": "d9b4e44415764454dcdace445c88de6b7282a3cbe6bc5ff509dd8b44c623b887",
+  "metal_capabilities": {
+    "commands": [
+      {
+        "exit_code": 0,
+        "id": "metal.resolve"
+      },
+      {
+        "exit_code": 0,
+        "id": "metallib.resolve"
+      },
+      {
+        "exit_code": 0,
+        "id": "metal.version"
+      },
+      {
+        "exit_code": 0,
+        "id": "metallib.version"
+      },
+      {
+        "exit_code": 0,
+        "id": "metal.compile"
+      },
+      {
+        "exit_code": 0,
+        "id": "metallib.link"
+      }
+    ],
+    "outputs": [
+      {
+        "kind": "air",
+        "path": "probe.air",
+        "sha256": "00486355fb1cb3aceb68f9098b84087c7e65b2135164d63d0443ce5d4a0bebe4",
+        "size_bytes": 3552
+      },
+      {
+        "kind": "metallib",
+        "path": "probe.metallib",
+        "sha256": "326633165f88f2bbfc4fcad6d6dfe8f8d4b2254cf3454f1462889f69aba476a5",
+        "size_bytes": 3527
+      }
+    ],
+    "selected": {
+      "metal": {
+        "architectures": [
+          16777223,
+          16777228
+        ],
+        "filetype": 2,
+        "mode": 493,
+        "selected_cpu": 16777228,
+        "sha256": "3457ceed7d7e9cd5ac4e96affa8726df72331e19f3a836ece5c0758e0ba79f54",
+        "size_bytes": 238464
+      },
+      "metallib": {
+        "architectures": [
+          16777223,
+          16777228
+        ],
+        "filetype": 2,
+        "mode": 493,
+        "selected_cpu": 16777228,
+        "sha256": "0f391fad93f257988128848b76eec747ddf6863cff871ee9b9518152a8db68ac",
+        "size_bytes": 238480
+      }
+    },
+    "shader_build_ready": true
+  },
+  "native_commands": [
+    {
+      "exit_code": 0,
+      "growth_bytes_observed": 10035200,
+      "id": "airconv.configure",
+      "stop_reason": null
+    },
+    {
+      "exit_code": 0,
+      "growth_bytes_observed": 68792320,
+      "id": "airconv.compile",
+      "stop_reason": null
+    },
+    {
+      "exit_code": 0,
+      "growth_bytes_observed": 68829184,
+      "id": "builtin.metal",
+      "stop_reason": null
+    },
+    {
+      "exit_code": 0,
+      "growth_bytes_observed": 68993024,
+      "id": "builtin.metallib",
+      "stop_reason": null
+    },
+    {
+      "exit_code": 0,
+      "growth_bytes_observed": 69992448,
+      "id": "builtin.header",
+      "stop_reason": null
+    }
+  ],
+  "native_outputs": {
+    "airconv_executable": {
+      "architectures": [
+        16777228
+      ],
+      "filetype": 2,
+      "selected_cpu": 16777228,
+      "sha256": "f32f1a80ac45c95bf5db45f774c8f2f43e191154b51a08d3cb30095c8ab70e8e"
+    },
+    "airconv_static_library": {
+      "architectures": [
+        16777228
+      ],
+      "object_count": 18,
+      "sha256": "8df1c10120af3340436ea011d6b62a5f53322a2b9a3142a9c0d8c8709f095ad8",
+      "size_bytes": 3587416,
+      "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+    },
+    "dxbc_parser_native_library": {
+      "architectures": [
+        16777228
+      ],
+      "object_count": 3,
+      "sha256": "327a102e8638ee31e30de8e961b7aa3c9bb392259c681390fdd4294629905192",
+      "size_bytes": 53776,
+      "symbol_link_compatibility": "established_only_by_actual_dependent_link"
+    },
+    "shader_outputs": [
+      {
+        "kind": "air",
+        "path": "objects/src/airconv/darwin/airconv.p/air_msad.air",
+        "sha256": "bea5f2e3ae70e565feeb47e08dc87b260fdb68d54a31c031d4d2691e0ad98216",
+        "size_bytes": 5248
+      },
+      {
+        "kind": "embedded_header",
+        "path": "objects/src/airconv/darwin/airconv.p/air_msad.h",
+        "sha256": "efbb692348af0da7bb20ca2358958be7cc2e12be7e8d0ab27384fd03d08a1ab8",
+        "size_bytes": 32429
+      },
+      {
+        "kind": "air",
+        "path": "objects/src/airconv/darwin/libairconv.a.p/air_msad.air",
+        "sha256": "bea5f2e3ae70e565feeb47e08dc87b260fdb68d54a31c031d4d2691e0ad98216",
+        "size_bytes": 5248
+      },
+      {
+        "kind": "embedded_header",
+        "path": "objects/src/airconv/darwin/libairconv.a.p/air_msad.h",
+        "sha256": "efbb692348af0da7bb20ca2358958be7cc2e12be7e8d0ab27384fd03d08a1ab8",
+        "size_bytes": 32429
+      },
+      {
+        "kind": "air",
+        "path": "objects/src/airconv/darwin/airconv.p/air_samplepos.air",
+        "sha256": "fe35c279e33e2cbe87a543eb445186373cdfe74d162bf0a08947a1b71a2e81b9",
+        "size_bytes": 3568
+      },
+      {
+        "kind": "embedded_header",
+        "path": "objects/src/airconv/darwin/airconv.p/air_samplepos.h",
+        "sha256": "12ffcfe31585dc362c91dbe025566914fe6a276b0f97ef194bb01d034964d8d2",
+        "size_bytes": 22079
+      },
+      {
+        "kind": "air",
+        "path": "objects/src/airconv/darwin/libairconv.a.p/air_samplepos.air",
+        "sha256": "fe35c279e33e2cbe87a543eb445186373cdfe74d162bf0a08947a1b71a2e81b9",
+        "size_bytes": 3568
+      },
+      {
+        "kind": "embedded_header",
+        "path": "objects/src/airconv/darwin/libairconv.a.p/air_samplepos.h",
+        "sha256": "12ffcfe31585dc362c91dbe025566914fe6a276b0f97ef194bb01d034964d8d2",
+        "size_bytes": 22079
+      },
+      {
+        "kind": "air",
+        "path": "objects/src/airconv/darwin/airconv.p/air_tessellation.air",
+        "sha256": "060d07f0251cb9c390080068c0bf807b53838a27e6a07e5b890cd809c32777c2",
+        "size_bytes": 59680
+      },
+      {
+        "kind": "embedded_header",
+        "path": "objects/src/airconv/darwin/airconv.p/air_tessellation.h",
+        "sha256": "a8dbe1ca7f91a09c4b7db30ca0305d9aaa52fd261da23c03578d3167ca9bfd47",
+        "size_bytes": 368110
+      },
+      {
+        "kind": "air",
+        "path": "objects/src/airconv/darwin/libairconv.a.p/air_tessellation.air",
+        "sha256": "060d07f0251cb9c390080068c0bf807b53838a27e6a07e5b890cd809c32777c2",
+        "size_bytes": 59680
+      },
+      {
+        "kind": "embedded_header",
+        "path": "objects/src/airconv/darwin/libairconv.a.p/air_tessellation.h",
+        "sha256": "a8dbe1ca7f91a09c4b7db30ca0305d9aaa52fd261da23c03578d3167ca9bfd47",
+        "size_bytes": 368110
+      },
+      {
+        "kind": "air",
+        "path": "shaders/dxmt_command.air",
+        "sha256": "c458d22dc6b7725f2a3cb84551aec8ee0e60656b59eb02fb5287cc89bd40df20",
+        "size_bytes": 36400
+      },
+      {
+        "kind": "metallib",
+        "path": "shaders/dxmt_command.metallib",
+        "sha256": "8590bb723f629aa7d78d3abc39416147d255d8c8d006791fbe6a05ef2bcd65f8",
+        "size_bytes": 161854
+      },
+      {
+        "kind": "embedded_header",
+        "path": "shaders/dxmt_command.h",
+        "sha256": "92a90fae500e6830310254d44b4fba84f129182cda4fcbd7b960748b918f412e",
+        "size_bytes": 998175
+      }
+    ]
+  },
+  "native_shader_build_sha256": "783d7e5d689c32b24a657acd44c14057d92782119682508adbaa1a46e50f78de",
+  "pairing_verified": false,
+  "record_kind": "dxmt_stage2_observations",
+  "runtime_eligible": false,
+  "schema_version": 1,
+  "scope": "dxmt_component",
+  "shader_capabilities_sha256": "ee7e97b84e1314b1d3ab60061bcc885056188a9bcbdf7feeb9a96b19a9460b65",
+  "shader_compilation_performed": true,
+  "source_components": [
+    {
+      "commit": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+      "id": "dxmt-upstream",
+      "tree": "c273b79a2bfa47e62e8526786559f4d18911625a"
+    },
+    {
+      "commit": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+      "id": "dxmt-directx",
+      "tree": "66fcb250507a2c45bd9a22f44795d0e4c7b613f5"
+    },
+    {
+      "commit": "d08488fcc82eef313b0464db37d2955709691e94",
+      "id": "dxmt-nvapi",
+      "tree": "5f63f798f0e45a722e25ffdd8696f7f2397c9d75"
+    },
+    {
+      "commit": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+      "id": "llvm-dxmt",
+      "tree": "420b581b39531e9ed0e26916e4ba81fc6a9d9f74"
+    },
+    {
+      "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "id": "wine-upstream",
+      "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892"
+    },
+    {
+      "commit": "87ba10bb3aa8ea636dff5c2030b376da1627910a",
+      "id": "wine-dxmt-interface",
+      "tree": "56a0344be62c9ca8464ed22f8861798ce4ac717e"
+    },
+    {
+      "commit": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+      "id": "llvm-mingw-source",
+      "tree": "2db31fcce334eac492da9b4bc587bc80987f3642"
+    },
+    {
+      "commit": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689",
+      "id": "llvm-mingw-llvm",
+      "tree": "831b6c2c2df160f87ef6a5e5623ddf477ef67402"
+    },
+    {
+      "commit": "9f55f4a2d3b9783dab76d9808be3d6279b99ec2a",
+      "id": "mingw-w64-source",
+      "tree": "73e43c0d8f2f0624037b9b0f76e3fd4f21724417"
+    }
+  ],
+  "stage2_complete": true,
+  "tools": {
+    "commands": [
+      {
+        "exit_code": 0,
+        "id": "cmake.version"
+      },
+      {
+        "exit_code": 0,
+        "id": "ninja.version"
+      },
+      {
+        "exit_code": 0,
+        "id": "meson.version"
+      },
+      {
+        "exit_code": 0,
+        "id": "sdk.path"
+      },
+      {
+        "exit_code": 0,
+        "id": "sdk.version"
+      }
+    ],
+    "ninja_source_build_status": "reused_source_build_not_reproduced_in_task7"
+  },
+  "tools_sha256": "e06b84af836228b10e8379f967dc19c1b951ff47cf0f05f8d3c3c2f794089517"
+}
