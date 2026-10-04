@@ -1237,3 +1237,115 @@ new system-wide permissions or shared loader/translator source changes.
 allowlisted outcomes in the existing partial observations and status in the
 daily board. Private scripts/manifests live in ignored owned task outputs. No
 new product/API/roadmap document location is introduced.
+
+
+### 2026-10-04: Isolated LLDB Amendment Approved
+
+The requester explicitly continued in the same thread after reviewing the
+concrete isolated LLDB amendment. This authorizes its diagnostic-only copied
+loader entitlement, signing, bounded rendezvous and owned-process debugger
+attachment. The original runtime and production admission rules stay unchanged.
+Implementation and actual permission/attach results remain to be recorded;
+approval does not establish successful authorization or fault capture.
+
+
+### 2026-10-04: Diagnostic Signing and Attach Observed; Controller Gate Failed
+
+Original current admission passed in 1,273,951 ms. The independent diagnostic
+copy passed 119 signing/verification commands across 39 native images. Only
+`Contents/MacOS/wine` changed in the bundle; the original bundle inventory
+remained identical. Preparation receipt:
+`4bb478cf28c9c70d3c70c1d137199a0857b218b4daac93aeb2bc05e84210e665`.
+Five pure refusal/boundary tests, inverse runner-AST comparison and cleanup-error
+retention passed. A private socket pair connected directly owned LLDB and
+Apple debugserver without a listening network port; their transport and cleanup
+checks passed. Existing Wine supervisor sources and exact admission validators
+were not modified.
+
+All three allowed Wine diagnostic attempts are preserved:
+
+1. The rendezvous timeout control emitted 27 rows and exited with code 96 after
+   approximately 30 seconds without release. Its whole case lasted 37,356 ms;
+   Wine cleanup and sentinel survival passed. The normal success assessor
+   correctly refused this deliberate negative control.
+2. Actual attach succeeded, but an unavailable Python binding method
+   (`SetShouldPass`) stopped the diagnostic before release. LLDB acknowledged
+   detach; debugger and Wine cleanup passed, sentinel survived. The installed
+   API was then inspected and corrected to `SetShouldSuppress(signal, false)`.
+3. Actual attach acknowledged an ARM64 target, but the controller failed before
+   the release marker. Debugger children were reaped; Wine cleanup failed with
+   `owned_identity_unavailable` and `registered_exit_barrier_timeout`. The root
+   loader was not reaped by the supervisor. A subsequent read-only audit of all
+   recorded PIDs found no live process and one exited zombie parented to init.
+   Its exit status and eventual system reaping are unknown. Do not recategorize
+   this as successful cleanup, detach, normal execution or an observed game fault.
+
+The third initiating exception was collapsed into `pair_run_operation_failed`
+because the private refusal exception lacked a `code` attribute. This evidence
+loss is recorded explicitly; later cleanup errors do not identify the initiating
+error. Raw streams and all failed producers remain private and immutable.
+Additional setup refusals are preserved: system Python AST descriptor mismatch,
+a large local PE buffer introducing `__chkstk` under the no-CRT fixture link,
+and an immediate state assertion before LLDB's asynchronous connected event.
+The buffer was moved to static storage; the corrected PE compiled with the
+selected toolchain. None of these setup failures establishes a Wine/DXMT defect.
+
+No fault PC was captured and no original access violation was resolved. The
+maximum three Wine attempts has been reached; no further native fixture is
+started under this batch. The diagnostic tree occupies about 4.46 GiB, under
+its 6 GiB growth ceiling; observed disk free space was about 23 GiB. Current
+failure records and the diagnostic copy remain needed for investigation.
+
+### Proposed Follow-up: Explicit Tracer Handoff and Acknowledged Detach
+
+**Status:** review pending for the next bounded native batch. Four pure controls
+for the proposed identity transition and primary-error retention pass; actual
+handoff, cancellation, exit/reap and fault-capture execution remain unperformed.
+The private proposal does not change general Wine process ownership policy.
+
+**Reason.** The prior plan reused a constant-parent process identity throughout
+attach. Apple's [XNU source](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/mach_process.c#L285)
+explicitly saves the original parent, reparents to the tracer on attach, and
+restores that parent on detach. This source review is not proof of the precise
+initiating error in the failed run, whose detailed exception was lost. It does
+identify a missing diagnostic ownership state. Also, killing the debugger
+while its script awaits the release marker provides no acknowledged detach;
+normal Wine cleanup cannot assume that the original parent/reaping relationship
+has already been restored.
+
+**Concrete proposed change and verification:**
+
+- Keep the original PID/start timestamp, registered nonce and executable identity
+  immutable. Before attach, require the original parent. During the explicitly
+  observed attach state only, accept the exact directly owned debugserver as
+  parent after checking that tracer's own PID/start identity and executable.
+  Refuse another parent, reused PID, changed start timestamp or changed image.
+  Never relax the shared `tools/wine/` identity checks or rewrite old receipts.
+- Add an exclusive nonce-bound cancel marker understood by the LLDB script while
+  waiting for release and during capture. Preserve the primary exception code
+  and detailed phase. Request detach, await its explicit success receipt, and
+  verify the original parent relationship before normal owned cleanup. Preserve
+  missing acknowledgment, failed restoration and unreaped exits as failures.
+  Emergency termination remains a failed fallback, never proof of detach.
+- First use at most three small, explicitly owned native diagnostic children to
+  verify normal attach/detach, cancellation before release and target exit/reap
+  behavior. Bind their actual signing and source identities before execution;
+  use the same approved app-local debugging claim, no new system permission.
+  Each control has a 30-second execution bound plus bounded owned cleanup, and
+  must leave no unreaped owned process or observation gap before Wine retries.
+- Only after those controls pass, permit at most two fresh Wine capture cases,
+  each with the existing 180-second deadline and 16 MiB debugger-output ceiling.
+  Stop on a fault capture, failed identity/permission check or incomplete cleanup.
+  Capture a real bad-access PC/registers/stacks with normal exception delivery
+  where supported; a successful or instrumented retry cannot clear the original
+  unexplained access violation.
+- Reuse the signed diagnostic copy after fresh identity/claim/signature checks.
+  Allow at most 3 GiB additional diagnostic growth, require an 8 GiB free-space
+  reserve before each case, preserve all existing failures and publish only
+  sanitized results. No full rebuild, game run or production-policy change is
+  included. Keep this work in the existing plan/partial observations/board and
+  private ignored diagnostic outputs; no new official documentation location.
+
+Approval is requested for this corrected ownership/cleanup protocol and its new
+finite native batch. The previous signing authorization remains applicable;
+no additional debugger entitlement or account/profile setup is requested.

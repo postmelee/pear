@@ -798,6 +798,110 @@
     "sentinel_survived": true,
     "wrapper_elapsed_ms": 1272378
   },
+  "small_stub_lldb_diagnostic": {
+    "actual_loader_attach_observed": true,
+    "added_claim": "com.apple.security.get-task-allow",
+    "attach_receipt_sha256": "9b21a36662ca121dd633da5ce7773fe5c93b83f2bc828ac197d5189d0c40c1c1",
+    "attached_triple": "arm64-apple-macosx26.5.0",
+    "cases": [
+      {
+        "actual_case_elapsed_ms": 37356,
+        "assessment_error": {
+          "error": "pair_run_failed",
+          "type": "Error"
+        },
+        "case_error": null,
+        "case_sha256": "7765acfdd10697efffb2efdab2329ea5bae61936c74b3e6903048bb2489614ab",
+        "debugger_cleanup_errors": [],
+        "expected_rendezvous_timeout": true,
+        "fault_captured": false,
+        "index": 1,
+        "loader_exit_code": 96,
+        "native_rows": 27,
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "rendezvous-timeout-control",
+        "wine_cleanup_complete": true
+      },
+      {
+        "actual_case_elapsed_ms": 11910,
+        "assessment_error": {
+          "error": "pair_run_operation_failed",
+          "type": "Error"
+        },
+        "case_error": "pair_run_operation_failed",
+        "case_sha256": "4d4addb8d329a65faa43f12fb6bb0545dc2a3eeba24494e2a0fcfdc32c328027",
+        "debugger_cleanup_errors": [],
+        "fault_captured": false,
+        "index": 2,
+        "loader_exit_code": -15,
+        "native_rows": 27,
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-capture",
+        "wine_cleanup_complete": true
+      },
+      {
+        "actual_case_elapsed_ms": 22498,
+        "assessment_error": {
+          "error": "pair_run_operation_failed",
+          "type": "Error"
+        },
+        "case_error": "pair_run_operation_failed",
+        "case_sha256": "a5de5d1614ede2067eaf78383ac7b129cbb7d8e8d9e5dfe375265a8f61910ee3",
+        "debugger_cleanup_errors": [],
+        "fault_captured": false,
+        "index": 3,
+        "loader_exit_code": null,
+        "native_rows": 27,
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-capture",
+        "wine_cleanup_complete": false
+      }
+    ],
+    "changed_bundle_paths": [
+      "Contents/MacOS/wine"
+    ],
+    "distribution_qualified": false,
+    "fault_captured": false,
+    "game_qualified": false,
+    "independent_copy": true,
+    "kernel_source_review": {
+      "commit": "f6217f891ac0bb64f3d375211650a4c1ff8ca1ea",
+      "limitation": "source review, not exact running-kernel identity or direct observation of the initiating controller error",
+      "observation": "ptrace attach reparents the target; detach restores the saved parent",
+      "sha256": "3e9808305a454ade2f7a9eaba70e0f163e7c46f98f9655349063b3d13fc6519d"
+    },
+    "last_controller_failure_detail": "generic pair_run_operation_failed; initiating exception detail was not retained; later cleanup records owned_identity_unavailable and registered_exit_barrier_timeout",
+    "last_wine_cleanup_complete": false,
+    "native_images_verified": 39,
+    "original_current_admission_elapsed_ms": 1273951,
+    "original_failure_resolved": false,
+    "original_unchanged": true,
+    "post_run_registered_pid_audit": {
+      "exit_status_known": false,
+      "exited_zombies_observed": 1,
+      "live_processes_observed": 0,
+      "receipt_sha256": "0e0eb2c7f599e72156c055e9a7a4599f44b825907f4f30fed093c79d27cafbcf",
+      "system_reaping_observed": false
+    },
+    "preparation_passed": true,
+    "preparation_sha256": "4bb478cf28c9c70d3c70c1d137199a0857b218b4daac93aeb2bc05e84210e665",
+    "preserved_preflight_failures": [
+      "system Python AST descriptor mismatch before signing",
+      "diagnostic PE local buffer introduced unavailable __chkstk",
+      "immediate LLDB connection-state assertion before asynchronous connected event",
+      "installed SBUnixSignals has SetShouldSuppress rather than SetShouldPass"
+    ],
+    "proposed_handoff_native_execution": "unperformed",
+    "proposed_handoff_pure_tests_passed": 4,
+    "pure_controls_passed": 5,
+    "qualification": false,
+    "runtime_eligible": false,
+    "signing_and_verification_commands": 119,
+    "transport_and_debugger_cleanup_passed": true
+  },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
     "full_install_comparison": "passed_2878_raw_entries",
@@ -1031,5 +1135,5 @@
     "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
     "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
   },
-  "work_gate": "original_access_violation_unresolved_quiet_diagnostic_batch_did_not_reproduce_fault"
+  "work_gate": "original_access_violation_unresolved_debugger_controller_handoff_and_cleanup_require_repair"
 }
