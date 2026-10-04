@@ -1578,3 +1578,14 @@ locations hold sanitized outcomes; no product-documentation location changes.
 Two successful diagnostic controls would narrow the tested conditions only,
 not repair or waive the unchanged-candidate failure. Further production changes
 require a concrete defect or a separately scoped implementation decision.
+
+Both declared diagnostics completed: window-only returned from destruction
+callbacks, and full Metal emitted all 39 rows. Normal terminal/guest/process
+exit evidence, cleanup and sentinel checks passed. Raw-log review initially
+refused notices because its helper considered only direct children; attribution
+to the existing source-registered descendants fixed that review error. The
+review then found no unclassified lines or API errors. Before/after byte and
+current authorization checks passed. Qualification stays refused for modified
+fixtures; root cause is unknown. No third run, production fix or completion
+claim was made. Retained output is approximately 2.17 GiB. Continue separately
+approved #5 Stage 3 work without waiving the #7 gate.

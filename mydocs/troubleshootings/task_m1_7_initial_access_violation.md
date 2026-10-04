@@ -189,6 +189,36 @@ and the private review receipt hash. No production change, rebuild, extra
 native run, network-setting change or power-setting change was performed.
 The required verification remains failed and its root cause remains unknown.
 
+## Separate Window and Metal Teardown Controls
+
+On October 4, two distinct PE-side boundary-marker diagnostics completed once
+each against the unchanged signed candidate: a Win32 window sequence bypassing
+pairing calls, then the full pairing sequence. The first produced zero native
+pairing rows as intended; the second produced all 39 expected rows. Both
+recorded return from WM_DESTROY, WM_NCDESTROY and DestroyWindow, terminal primary
+and cleanup errors zero, cleanup flags 7 and normal guest/process exit events.
+Owned cleanup and unrelated-sentinel survival passed. All captured nonfixture
+lines were reviewed: each case had three known fresh-prefix working-directory
+fallback warnings and six API/six GPU validation notices attributable to its
+source-registered processes, with no unclassified line or API error. No shader
+workload qualification follows. An initial review helper considered only direct
+children and refused descendant notices; using the existing registered process
+identities resolved that review error without changing any raw evidence.
+
+This reused the original signed runtime without a debugger, exception handler,
+Wine rebuild or re-signing. Bundle inventory and current signature/identity/
+profile checks passed before and after; this was limited diagnostic admission,
+not the full qualification replay. The unchanged verifier correctly refused
+both changed fixtures with `pair_launch_changed`. Private evidence is retained
+under `.build/task7/stage5-teardown-controls1` (approximately 2.17 GiB).
+
+The observed window paths completed under these instrumented conditions. The
+markers can change scheduling, and neither diagnostic repairs the original
+failure or demonstrates general race freedom. No concrete production correction
+was found. Preserve #7's failed required gate and these bounded discriminators;
+do not repeat them solely to collect more passes. Independent approved #5 FEX
+memory/lifetime work can proceed while this #7 gate remains open.
+
 ## Evidence Retention
 
 Retain the original case/failure receipts, raw captured streams referenced by
