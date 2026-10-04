@@ -2399,3 +2399,15 @@ passed the affected pair/native suites (125 passed, 8 known optional skips per
 mode). All 42 final runtime producers still match the accepted reconstruction;
 no native rebuild/run is selected. See the final report for checkpoint commits
 and retained log location.
+
+
+### Publication and cleanup completed
+
+PR #33 merged after all six CI jobs passed; #7 is CLOSED. Primary master was
+updated and merged work/publication branches deleted. Verified archival of twelve
+completed diagnostic prefixes recovered 10.60 GiB while preserving final receipt
+hashes, source/tool inputs, logs and restoration manifests. The original-path
+evidence checkout remains detached and locked for #5 and evidence dependencies.
+The final report records actual merge identity, storage measurements and the
+private cleanup receipt; the daily board now reflects closure and cleanup.
+A documentation-only follow-up records these post-merge outcomes on master.

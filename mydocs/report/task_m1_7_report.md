@@ -90,8 +90,10 @@ was intentionally left uncommitted and unpublished. On October 5 the requester
 subsequently authorized publication, merge, Issue closure and storage cleanup.
 The publication workflow preserves Stage commits and verifies CI on the integrated
 head. Final source/runtime evidence is retained at its original path for #5/#8;
-only completed diagnostic scratch is selected for verified archival. Actual
-remote and cleanup outcomes are recorded after those operations finish.
+only completed diagnostic scratch was selected for verified archival.
+[PR #33](https://github.com/postmelee/pear/pull/33) merged at 07:45 KST on
+October 5 as `d2d5f0a4ba0956acdb9eba73fbf64361396b49dc`; #7 is CLOSED.
+The merged work/publication branches were deleted and primary master updated.
 
 
 ## Publication Integration Verification — October 5
@@ -115,5 +117,37 @@ are retained under `.build/task7/publication1/`. These are synthetic test
 results; the earlier final native evidence retains its original scope.
 
 Offline governance passed for 24 documents / 211 local targets; diff checks
-passed. Hosted CI remains a separate pre-merge gate. The existing historical
-Stage 5 report and observations preserve the original 530-test checkpoint.
+passed. All six hosted CI jobs passed on publication head
+`ea6c018565217b852b8e116d692773214cec1c20`: Documentation checks and the five
+portable source-inventory, wine-report, wine-inputs, unsigned-comparison and
+abi-review suites. See the [CI run](https://github.com/postmelee/pear/actions/runs/37241135873).
+The existing historical Stage 5 report and observations preserve the original
+530-test checkpoint. Hosted CI does not execute the native graphics qualification.
+
+
+## Post-merge Storage Cleanup — October 5
+
+At 07:49 KST, twelve completed diagnostic synthetic Wine prefixes had been
+compressed and checked against every original file byte, mode, owner and
+symlink target before their regular-file contents were truncated. The archive,
+entry manifest and restoration instructions remain beside each prefix. Original
+inodes, metadata and links remain; raw diagnostics and failure history are
+retained. Historical prefix-content inspection requires in-place content
+restoration and manifest verification.
+
+Allocated storage decreased by **11,382,284,288 bytes (10.60 GiB)**, including
+archive/manifest overhead. Filesystem free space immediately afterward was
+39,557,636,096 bytes (36.84 GiB); unrelated processes may change it. The private
+cleanup receipt is `.build/task7/cleanup-after-merge1/result.json`, SHA-256
+`6bea01a75f11b6fad64194d96c3376dd6379149e774d0db4fc348238e584c97f`.
+All eleven selected final build/runtime/run/review receipt hashes were unchanged.
+The exact path list and per-prefix byte accounting are retained in that receipt.
+
+The #7 evidence checkout is retained, detached at `ea6c018` and locked, because
+#5 signing-reuse tests and source-bound records still refer to its original
+absolute path. Final successful prefixes, Stage 4 prerequisite, current loader,
+graphics builds, runtime and compiler/shader/source inputs remain intact. See
+the local `.build/task7/RETENTION.md` for retention and restoration obligations.
+This is a required dependency checkout, not an unfinished task branch. Other
+worktrees and primary untracked analysis/research files were untouched. No
+compiler rebuild or native/game execution was repeated for publication or cleanup.
