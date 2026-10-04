@@ -1550,3 +1550,31 @@ not a diagnosis. Keep the existing incident and sanitized observations as the
 approved Issue-specific evidence locations; retain raw logs privately. No
 source or public product-documentation change is needed. Stage 5 remains
 incomplete, with no new execution, rebuild or deletion in this review.
+
+### 2026-10-04: Separate Window Teardown from Metal Teardown
+
+The requester explicitly continued toward Megabonk execution after the network
+review. Within the reopened #7 incident, run two distinct diagnostic controls:
+one original Win32 window sequence with pairing calls bypassed, then one full
+pairing sequence with small PE-side boundary markers. Each runs once in a fresh
+synthetic prefix against the unchanged signed runtime. Mark before/after native
+control, DestroyWindow, WM_DESTROY/WM_NCDESTROY, and terminal cleanup. Preserve
+GetLastError around diagnostic writes. Do not install exception handlers, attach
+a debugger, rebuild Wine, replace signatures, or change verifier predicates.
+Reuse the pinned original fixture/compiler, local owned supervisor, signed
+bundle inventory and Apple Metal-validation settings. Source/producer hashes,
+compile output and raw execution receipts remain private and immutable.
+
+Replay original bundle bytes/modes/links and current signature/profile/identity
+before and after diagnostics. This limited diagnostic admission is explicitly
+not a fresh full component provenance/qualification replay. Keep actual 4 KiB
+and native-process observations through the existing runner. The ordinary
+verifier must refuse the changed fixture; no qualifying run receipt is created.
+Inspect all diagnostic streams and assess phase markers separately. Abort the
+batch on operational/cleanup failure or a useful new incomplete-execution
+signature; no retry seeks a pass. Limit new output to 3 GiB and retain at least
+8 GiB free. Do not delete existing evidence. The existing incident/observation
+locations hold sanitized outcomes; no product-documentation location changes.
+Two successful diagnostic controls would narrow the tested conditions only,
+not repair or waive the unchanged-candidate failure. Further production changes
+require a concrete defect or a separately scoped implementation decision.
