@@ -3,7 +3,7 @@
 GitHub Issue: [#14](https://github.com/postmelee/pear/issues/14)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-Current state: Stages 1–3 are complete and preparation PR #30 was merged with requester approval. Stage 4 is the approved isolated DXMT temporary-root follow-up. The original maintenance/promotion proposal is retained as Stage 5 and remains unapproved. Full #14 remains open.
+Current state: Stages 1–4 are complete; PR #30 is merged and the Stage 4 test-root patch was integrated by #7 in ea6c018 / PR #33. Stage 5 Linux DXMT qualification and CI connection is approved. The original maintenance/promotion proposal is retained as Stage 6 and remains unapproved. Full #14 remains open.
 
 ## Purpose
 
@@ -107,3 +107,12 @@ Use a local snapshot of #7 tracked working files plus its five named public comp
 Placement: existing task/implementation plans and the October 5 daily board record authorization and ownership; mydocs/working/task_m1_14_stage4.md records results. Store the small reviewable source delta as mydocs/working/task_m1_14_stage4.patch because its #7 target files are not yet integrated in master. Private/local detailed manifests and logs stay ignored. These are internal task evidence locations, not official product documentation. The patch is an integration artifact, not a claim that master or the #7 worktree has changed. Recheck target hashes after #7 publication before applying it to tracked tests; do not import the entire uncommitted #7 implementation into this branch.
 
 The original proposed Stage 4 maintenance/promotion work remains intact as Stage 5. Hosted Linux qualification and no-skip CI selection remain follow-up work. Local conditional skips are explicit unperformed observations. Existing native #7 success is referenced only as its original scope and never relabeled as a new #14 result.
+
+
+## October 5 Stage 5 approval: qualify DXMT suites on Linux
+
+After confirming #7 CLOSED and PRs #33/#34 merged, the requester explicitly said to proceed with updating #14 integration records, Linux qualification and CI connection. This approves the native suite first and then separation/qualification of the pair suite's public tests. Preserve eight optional actual-input tests, with unchanged bodies and selection conditions, in a separate test file. Retain tempfile fixes already integrated by #7; do not reapply the patch or rerun native qualification.
+
+Use the existing pinned Ubuntu 24.04/Python 3.12 workflow, runner and no-skip contract. Add the native suite as manual-only until its hosted run passes; then add the public pair suite as manual-only and qualify the combined workflow before enabling new PR jobs. Existing five suites and documentation remain enabled. Use the publication branch for explicit workflow_dispatch experiments; a source commit is required for each remote experiment. Actual PR creation/merge and full #14 closure remain separate checkpoints. No production runtime/verifier code, private input, toolchain pin or security setting changes.
+
+Locations: existing workflow, tests/dxmt/test_deterministic_pair.py and new tests/dxmt/test_deterministic_pair_optional.py, existing plans/board, and mydocs/working/task_m1_14_stage5.md. These are test/automation implementation and internal task evidence, not new official product documentation. Preserve the historical Stage 4 report and append the integration outcome. Record immutable source/run identities and limitations; original raw logs stay ignored in task/run-owned output. The original maintenance/promotion scope is Stage 6 rather than discarded.

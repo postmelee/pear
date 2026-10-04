@@ -79,3 +79,8 @@ Hand the patch and exact target hashes to the #7 owner. Once its completion sour
 ## Approval Request
 
 The approved isolated patch/test delivery is complete. Review this artifact before a subsequent integration/hosted-CI stage; the current authorization does not expand to that stage.
+
+
+## October 5 integration follow-up
+
+The #7 owner integrated the exact verified after-bytes in ea6c018565217b852b8e116d692773214cec1c20 (PR #33). Both target SHA-256 values matched this report on merged master 7ba7aa9. PRs #33/#34 are merged and #7 is CLOSED; its retained worktree/evidence remains owned by #5/#7. The pending-integration statements above describe this report's original checkpoint; source integration is now complete. Stage 5 handles separate Linux/CI qualification.

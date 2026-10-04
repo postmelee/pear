@@ -12,11 +12,12 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 | 2 | Qualify and connect a portable subset | Explicit five-suite CI and scoped temp policy | Clean Linux positive/negative execution; approved October 4 |
 | 3 | Publish the preparatory delivery | Scoped Open PR and delivery reports | Actual PR-event checks and final-head identity; approved October 4 |
 | 4 | Validate isolated DXMT scratch-root portability | Source patch, preserved snapshot and local results | Approved October 5; two files, default/custom roots |
-| 5 | Complete maintenance and promotion coverage | Proposed patch/qualification CI | #14 prerequisite and candidate evidence; not approved |
+| 5 | Qualify and connect public DXMT suites | Explicit native/pair CI entries and optional-input separation | Approved October 5; native-first hosted qualification |
+| 6 | Complete maintenance and promotion coverage | Proposed patch/qualification CI | #14 prerequisite and candidate evidence; not approved |
 
 ## Document Location Check
 
-Stage 1 uses exactly the task plan's AGENTS.md, mydocs/tech, mydocs/_templates, plans, orders and working locations. No product document is created or changed. Stage 2 locations and commands were approved and executed. Stage 3 adds only the internal stage/delivery reports described in the task plan and updates plans/board. Stage 4 still requires refinement and approval.
+Stage 1 uses exactly the task plan's AGENTS.md, mydocs/tech, mydocs/_templates, plans, orders and working locations. No product document is created or changed. Stage 2 locations and commands were approved and executed. Stage 3 adds only the internal stage/delivery reports described in the task plan and updates plans/board. Stages 4/5 use the later explicit approvals below; full maintenance/promotion remains Stage 6.
 
 ## Stage 1 - Preserve reuse evidence and CI readiness
 
@@ -122,7 +123,7 @@ Write mydocs/working/task_m1_14_stage3.md and mydocs/report/task_m1_14_report.md
 
 Commit: Task #14 Stage 3: publish the verified preparatory delivery.
 
-## Stage 5 - Maintenance and promotion coverage (original Stage 4 proposal)
+## Stage 6 - Maintenance and promotion coverage (original Stage 4 proposal)
 
 Refine after the relevant #3/#6/#8/#9/#10/#13 outcomes exist. Bind candidate/source/test revisions and retain patch provenance, rebase conditions and contribution limits. Qualify incompatible promotion rejection without exposing game/account/signing data. Do not close #14 based on portable CI alone.
 
@@ -134,3 +135,16 @@ Approved October 5 in this thread, superseding earlier current-stage numbering; 
 Implement the two constructor changes in the independent candidate, resolving each newly created owned root with Path.resolve(strict=True) if the platform default contains aliases. Run the existing pair and native unittest files separately, using a fresh process for each of default TMPDIR selection and explicit physical scratch with spaces. Clear PEAR_TEST_* private-source/input overrides for this synthetic pass. Use unittest discovery and retain the exact discovered/run counts, failures/errors, expected/unexpected outcomes and skipped IDs. The known eight optional pair methods remain unperformed; any new skip or count discrepancy needs investigation. Verify created TemporaryDirectory instances actually use the selected root and are removed by suite completion without altering the constructors' arguments or cleanup behavior in the validation harness. Retain logs and failure details in the owned run directory.
 
 Validate that only the four intended helper lines differ between baseline and candidate, run git apply --check against the preserved baseline, parse changed Python and rehash the owner's selected source files. Run python3 -B tools/check_governance.py and git diff --check in codex/task14. Use the existing link_targets parser for new report/plan relative links. Record any failed first attempt and subsequent correction; do not rewrite failures as passes. Package the validated patch and Stage 4 report together in a stage commit; the local snapshot is not committed. No PR publication or remote CI is part of this approval.
+
+
+## Stage 5 - Linux qualification and CI connection
+
+October 5 approval and locations are recorded in the task plan. Integrate master 7ba7aa9, preserve both daily board rows, and confirm the two test files match the previously qualified patch's after hashes. Append Stage 4 integration evidence rather than altering its historical execution report.
+
+First add native as a new matrix entry guarded to workflow_dispatch at the suite steps; remote-qualify the untouched 37-test file. Next move the two optional classes and one optional Reuse method from the pair file into test_deterministic_pair_optional.py. Retain each test method AST/decorators and class helper bodies; import the existing portable helper rather than duplicate it. Move optional input parsing into the optional file so public CI does not require private inputs. Confirm total discovery is conserved (pair 88 + optional 8 + native 37); eight optional methods remain skipped without private inputs, not silently discarded. Compare before/after ASTs and discover IDs, and run the two public suites separately with no skips. Run full DXMT discovery once after the split to detect import-order/alias regressions; private controls remain explicitly unperformed.
+
+Test malformed supplied qualification input: public pair discovery must be independent; optional discovery must fail instead of treating supplied bad input as absent. This is a bounded existing-module import control, no new framework. All logs use ignored task/run paths.
+
+Add pair as manual-only and run the complete existing workflow on Ubuntu 24.04/Python 3.12. Require native 37 and pair 88, positive test counts, no skips/expected failures, existing mutation control and all prior checks. Keep original failure records if anything fails and fix only in scope. After successful qualification, remove the new-suite manual-only restrictions, repeat the final configuration hosted check, and record source SHA, run IDs, image/Python/Git and per-suite counts. Preserve contents:read and pinned actions. No private optional controls are in the public matrix.
+
+Local checks: python3 -B tools/check_governance.py, python3 -B -m unittest discover -s tests/docs -p 'test_*.py', git diff --check, and existing link_targets for changed task artifacts. Bundle final implementation and Stage 5 report in one stage completion commit after hosted verification, retaining necessary intermediate remote experiment checkpoints. Full #14 remains open; PR publication and Stage 6 need their subsequent approval.
