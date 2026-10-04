@@ -1,7 +1,7 @@
 {
   "baseline_manifest_sha256": "d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff",
   "compilation_performed": false,
-  "derivatives_manifest_sha256": "70307da29ebad1554591e4e53d7a628e9c8d426463a628b6f68f59c8aca04f5d",
+  "derivatives_manifest_sha256": "95aa23065519169baaa5c101b5390663eaf7a4cafaf14c95c3f3b21a8be9d69b",
   "files": [
     {
       "mode": 420,
@@ -21492,14 +21492,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
-      "sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63",
-      "size_bytes": 4767
+      "sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
+      "size_bytes": 5076
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/LookupCache.h",
-      "sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95",
-      "size_bytes": 21296
+      "sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
+      "size_bytes": 21317
     },
     {
       "mode": 420,
@@ -22398,8 +22398,8 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
-      "sha256": "075a098eb77a428797a9b6a123fc6273c32bead8cc00273d925d99b6abeacaa6",
-      "size_bytes": 5229
+      "sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+      "size_bytes": 5725
     },
     {
       "mode": 420,

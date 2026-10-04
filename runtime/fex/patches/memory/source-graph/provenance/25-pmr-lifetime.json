@@ -1,0 +1,38 @@
+{
+  "attribution": "Original Pear resource and map lifetime correction on pinned FEX C++; upstream languages and MIT notices retained.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+      "postimage_bytes": 5725,
+      "postimage_sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+      "preimage_sha256": "075a098eb77a428797a9b6a123fc6273c32bead8cc00273d925d99b6abeacaa6"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "postimage_bytes": 21317,
+      "postimage_sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
+      "preimage_sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "postimage_bytes": 5076,
+      "postimage_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
+      "preimage_sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63"
+    }
+  ],
+  "historical_strict_patch_sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+  "host_candidate_control_sha256": "aee584368c710ab1aab7b9f3d5bc9980ed2f0afbd3e7fde48dba509b8469f0a8",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "pmr-lifetime",
+  "native_runtime_execution": false,
+  "order": 25,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

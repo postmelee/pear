@@ -1,0 +1,59 @@
+diff --git a/FEXCore/include/FEXCore/fextl/memory_resource.h b/FEXCore/include/FEXCore/fextl/memory_resource.h
+--- a/FEXCore/include/FEXCore/fextl/memory_resource.h
++++ b/FEXCore/include/FEXCore/fextl/memory_resource.h
+@@ -38,12 +38,19 @@
+     explicit named_monotonic_page_buffer_resource(const char* Name)
+       : Name {Name} {}
+ 
++    ~named_monotonic_page_buffer_resource() override { release(); }
++    named_monotonic_page_buffer_resource(const named_monotonic_page_buffer_resource&) = delete;
++    named_monotonic_page_buffer_resource& operator=(const named_monotonic_page_buffer_resource&) = delete;
++    named_monotonic_page_buffer_resource(named_monotonic_page_buffer_resource&&) = delete;
++    named_monotonic_page_buffer_resource& operator=(named_monotonic_page_buffer_resource&&) = delete;
++
+     void release() noexcept {
+       for (auto& Iter : Buffers) {
+         FEXCore::Allocator::VirtualFree(Iter.Buffer, Iter.BufferSize);
+       }
+       Buffers.clear();
+ 
++      CurrentBuffer = nullptr;
+       CurrentBufferRemaining = 0;
+       CurrentAllocationSize = FEXCore::Utils::FEX_PAGE_SIZE;
+     }
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.h b/FEXCore/Source/Interface/Core/LookupCache.h
+--- a/FEXCore/Source/Interface/Core/LookupCache.h
++++ b/FEXCore/Source/Interface/Core/LookupCache.h
+@@ -100,6 +100,7 @@
+   fextl::map<uint64_t, fextl::vector<uint64_t>> CodePages;
+ 
+   GuestToHostMap();
++  ~GuestToHostMap();
+ 
+   // Adds to Guest -> Host code mapping
+   const BlockEntry& AddBlockMapping(uint64_t Address, std::span<const uint64_t> CodePages, void* HostCode, const LookupCacheWriteLockToken&) {
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.cpp b/FEXCore/Source/Interface/Core/LookupCache.cpp
+--- a/FEXCore/Source/Interface/Core/LookupCache.cpp
++++ b/FEXCore/Source/Interface/Core/LookupCache.cpp
+@@ -20,6 +20,11 @@
+   BlockLinks_pma = fextl::make_unique<std::pmr::polymorphic_allocator<std::byte>>(&BlockLinks_mbr);
+   // Setup our PMR map.
+   BlockLinks = BlockLinks_pma->new_object<BlockLinksMapType>();
++}
++
++GuestToHostMap::~GuestToHostMap() {
++  // Destroy map nodes before the resource releases their backing pages.
++  BlockLinks_pma->delete_object(BlockLinks);
+ }
+ 
+ LookupCache::LookupCache(FEXCore::Context::ContextImpl* CTX)
+@@ -111,6 +116,9 @@
+     PEAR_FEX_REQUIRE_RESULT(!!Queued, "Pear cache-clear link queue refused: status {}, domain {}, code {}", Queued);
+   }
+ #endif
++  // Link tickets above are values copied before their map storage is retired.
++  BlockLinks_pma->delete_object(BlockLinks);
++  BlockLinks_mbr.release();
+   // Allocate a new pointer from the BlockLinks pma again.
+   BlockLinks = BlockLinks_pma->new_object<BlockLinksMapType>();
+   // All code is gone, clear the block list

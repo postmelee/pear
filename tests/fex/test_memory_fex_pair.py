@@ -548,7 +548,7 @@ class CanonicalGraphControls(OwnedFixture):
         root=_repository/'runtime/fex/patches/memory/source-graph'
         graph=json.loads((root/'derivatives.json').read_text())
         series=evidence.publication_series_gate(root,graph)
-        self.assertEqual(len(series['patches']),24)
+        self.assertEqual(len(series['patches']),25)
         self.assertEqual(series['authoritative_header']['sha256'],evidence.WIRE_SHA)
         self.assertEqual((root/'memory-fex-series.json').read_bytes(),
                          (_repository/'runtime/fex/patches/memory-fex-series.json').read_bytes())
@@ -610,13 +610,13 @@ class CurrentProjectionControlControls(OwnedFixture):
         self.helper=self.file('helper.py',b'projection helper data only\n')
         self.stack.enter_context(patch.object(evidence,'SOURCE_HELPER_SHA',H(self.helper.read_bytes())))
         self.stack.enter_context(patch.object(evidence,'PROJECTION_MANIFEST_SHA',H(self.manifest)))
-        self.derived={'scope':'source_only','source_files':self.rows,'layer_count':24}
+        self.derived={'scope':'source_only','source_files':self.rows,'layer_count':25}
         self.stack.enter_context(patch.object(evidence,'selected_projection',return_value=self.derived))
         self.git,_=evidence.regular_bytes(Path('/usr/bin'),'git',32*1024**2,system_git=True)
         self.derivatives=self.root/'graph'
         norm=b'normalizer data only\n';self.file('graph/normalization.py',norm)
         self.graph={'normalization_helper':{'path':'normalization.py','sha256':H(norm),'size_bytes':len(norm)},
-                    'layers':[{'order':i,'git_derivative':{'path':f'git/{i:02d}.patch'}} for i in range(1,25)]}
+                    'layers':[{'order':i,'git_derivative':{'path':f'git/{i:02d}.patch'}} for i in range(1,26)]}
         raw=evidence.encoded(self.graph);self.file('graph/derivatives.json',raw)
         self.stack.enter_context(patch.object(evidence,'GRAPH_SHA',H(raw)))
         self.proposal=evidence.encoded({'schema_version':1,'record_kind':'fex_memory_source_proposal','scope':'source_only',
@@ -630,7 +630,7 @@ class CurrentProjectionControlControls(OwnedFixture):
         self.file(name+'/source/fixture.cpp',self.source)
         self.file(name+'/materialized-source.json',self.manifest)
         commands=[]
-        for order in range(1,25):
+        for order in range(1,26):
             for action in ('check','apply'):
                 row={'action':action,'layer':order,'argv':['/usr/bin/git','apply',*(['--check'] if action=='check' else []),
                      str(self.derivatives/f'git/{order:02d}.patch')],'cwd':str(root/'source'),
@@ -643,7 +643,7 @@ class CurrentProjectionControlControls(OwnedFixture):
         value={'schema_version':1,'record_kind':'fex_source_git_application_control','scope':'source_only','passed':True,
             'git_execution_performed':True,'compilation_performed':False,'module_initialization_performed':False,
             'owner_execution_performed':False,'guest_execution_performed':False,'stage3_complete':False,
-            'layers':24,'changed_paths':52,'new_files':22,'inputs':{'baseline_manifest_sha256':evidence.BASE_SOURCE_SHA,
+            'layers':25,'changed_paths':53,'new_files':22,'inputs':{'baseline_manifest_sha256':evidence.BASE_SOURCE_SHA,
                 'derivatives_sha256':evidence.GRAPH_SHA,'expected_manifest_sha256':H(self.proposal),
                 'source_helper_sha256':evidence.SOURCE_HELPER_SHA},
             'git':{'path':'/usr/bin/git','sha256':H(self.git),'size_bytes':len(self.git)},'commands':commands,

@@ -966,6 +966,37 @@
           "preimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee"
         }
       ]
+    },
+    {
+      "file": "memory/source-graph/strict/25-0003r-fex-pmr-lifetime.patch",
+      "git_file": "memory/source-graph/git/25-0003r-fex-pmr-lifetime.git.patch",
+      "git_sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+      "license": "MIT (FEX source and original Pear additions); existing notices retained",
+      "name": "pmr-lifetime",
+      "order": 25,
+      "provenance_manifest": "memory/source-graph/provenance/25-pmr-lifetime.json",
+      "provenance_sha256": "fc121c325d4363d7856e3750d8c879309c497a0fa06afd437de71e3d0f0c5800",
+      "sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+          "postimage_bytes": 5725,
+          "postimage_sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+          "preimage_sha256": "075a098eb77a428797a9b6a123fc6273c32bead8cc00273d925d99b6abeacaa6"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 21317,
+          "postimage_sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
+          "preimage_sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 5076,
+          "postimage_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
+          "preimage_sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63"
+        }
+      ]
     }
   ],
   "preserved_abi": {
@@ -989,7 +1020,7 @@
   },
   "source_graph": {
     "file": "memory/source-graph/derivatives.json",
-    "layer_count": 24,
+    "layer_count": 25,
     "reference_scope": "derivatives_root_relative_v1"
   }
 }

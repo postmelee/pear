@@ -1564,3 +1564,61 @@ Governance passed 22 documents/172 targets; whitespace checks passed. New #5
 control outputs total less than 5 MiB, with no whole-runtime rebuild or deletion.
 The candidate remains unapplied pending source-graph and real-provider work;
 none of these checks qualifies translated execution or closes Stage 3.
+
+### October 4 Source25 PMR Integration and Provider Verification
+
+The requester explicitly continued after review of the PMR candidate. Integrate
+its exact three-file correction as layer 25 of the existing source graph,
+retaining layers 1-24 and their historical evidence. Preserve the predecessor
+reader/manifests privately, pin the successor graph/complete source identity,
+and extend exact command/count refusal controls to the new layer. Materialize
+from the unchanged Stage 2 baseline into a fresh output and independently replay
+all patches and final bytes. Recompile affected source against that actual tree.
+The existing candidate file remains an immutable historical comparison input.
+
+Then inspect and exercise the actual Wine ordinary allocation/free provider in
+a small original ARM64 PE fixture, reusing an already authorized development
+runtime and owned supervisor. This is distinct from complete FEX initialization
+and the final metadata gate. Preserve actual VirtualFree error and VirtualQuery
+results; do not infer successful physical reclamation from a void wrapper or
+from RSS. No JIT permission, geometry, exception policy or global setting change.
+Use fresh bounded outputs, the shared lock, an 8 GiB free-space reserve, and no
+whole Wine rebuild without a concrete need. Record results in existing Stage 3
+plan/observation locations; no product-documentation location changes.
+
+Source25 integration completed as a source/compile checkpoint: all 25 unchanged
+predecessor-plus-PMR layers passed 50 real Git check/apply operations in a fresh
+projection. Independent replay matched all 6,973 files / 40,538,729 bytes and
+preserved the Stage 2 baseline. Source24's graph/reader snapshot and all old
+receipts remain intact. The active graph and reader now require the exact new
+identity, 53 changed paths, 22 new files and all 50 operations. Initial portable
+controls exposed four errors because two synthetic receipt loops still emitted
+48 commands; their corrected ranges passed, including missing-final-pair refusal.
+The final full FEX suite ran 579 tests with no failures/errors and one skip.
+
+Two actual ordinary ARM64 Windows objects were compiled from the new complete
+source tree, with 1,117/1,116 closed dependencies and all post-checks passing.
+Read-only COFF extraction confirms the resource remains 64 bytes and the selected
+map/node/allocator layouts remain unchanged. This is neither linking nor FEX
+initialization, and it does not complete the 256 KiB metadata accounting.
+
+A single new original ordinary ARM64 PE provider diagnostic ran 32 cycles under
+the existing authorized #5 Wine runtime. It alternated 4 KiB/16 KiB RW regions,
+verified committed state and byte access, submitted an invalid nonzero-size
+MEM_RELEASE request, observed error 87 and the still-intact allocation, then
+released with size zero and observed MEM_FREE. All cycles, normal guest/process
+exit, owned cleanup and sentinel survival passed. Source-registered processes
+reported ARM64, no translation and 4 KiB user pages. Bundle bytes and current
+signature/identity/profile checks passed before/after; no new signing or full
+provenance replay was performed. The original owner verifier correctly refused
+this different fixture (`memory_wine_case_failed`); no qualifying owner/run
+receipt was produced. Raw stderr contained only the three known fresh-prefix
+working-directory fallback warnings. Native code, loader policy and JIT geometry
+were unchanged. API free state is not a physical RSS-reclamation measurement.
+
+This closes the narrow source integration and provider-behavior questions.
+Actual Source25 GuestToHostMap execution and failure propagation through FEX's
+void VirtualFree wrapper remain unqualified. Do not treat successful provider
+calls as a fix for ignored provider errors. Complete aggregate metadata, retained
+failure state and genuine empty FEX initialization remain the next Stage 3 work;
+#7's separate failure is unchanged. The observation sidecar binds all results.

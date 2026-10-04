@@ -87,14 +87,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
-      "sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63",
-      "size_bytes": 4767
+      "sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
+      "size_bytes": 5076
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/LookupCache.h",
-      "sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95",
-      "size_bytes": 21296
+      "sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
+      "size_bytes": 21317
     },
     {
       "mode": 420,
@@ -209,6 +209,12 @@
       "path": "FEXCore/include/FEXCore/Utils/PearSourceGuard.h",
       "sha256": "f39c5b7957091b0ba2cf49a492eec3ac6259501a511147614bc30276468fd674",
       "size_bytes": 2331
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+      "sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+      "size_bytes": 5725
     },
     {
       "mode": 420,
@@ -327,7 +333,7 @@
   ],
   "general_source_lifetime": "unclosed",
   "git_execution_performed": false,
-  "historical_graph_sha256": "30c42edf02fb3d3aa90dca983d11e51a48e55d9822b2c783839c31481dc9de50",
+  "historical_graph_sha256": "70307da29ebad1554591e4e53d7a628e9c8d426463a628b6f68f59c8aca04f5d",
   "layers": [
     {
       "changes": [
@@ -1498,6 +1504,46 @@
         "sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
         "size_bytes": 806
       }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+          "postimage_bytes": 5725,
+          "postimage_sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+          "preimage_sha256": "075a098eb77a428797a9b6a123fc6273c32bead8cc00273d925d99b6abeacaa6"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 21317,
+          "postimage_sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
+          "preimage_sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 5076,
+          "postimage_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
+          "preimage_sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/25-0003r-fex-pmr-lifetime.git.patch",
+        "sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+        "size_bytes": 2756
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "pmr-lifetime",
+      "order": 25,
+      "source_manifest": {
+        "path": "provenance/25-pmr-lifetime.json",
+        "sha256": "fc121c325d4363d7856e3750d8c879309c497a0fa06afd437de71e3d0f0c5800",
+        "size_bytes": 1685
+      },
+      "strict_patch": {
+        "path": "strict/25-0003r-fex-pmr-lifetime.patch",
+        "sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+        "size_bytes": 2756
+      }
     }
   ],
   "module_initialization_performed": false,
@@ -1533,8 +1579,8 @@
   "owner_execution_performed": false,
   "publication_series": {
     "path": "memory-fex-series.json",
-    "sha256": "a1b532ba88a78e0f6becc779bd968a7a342ac63f91b3359fc07b97451a6fe9e7",
-    "size_bytes": 50898
+    "sha256": "5e23cf664605ebb65504cd13e65bf41220885be53de4efb532f1f16541197b3b",
+    "size_bytes": 52538
   },
   "record_kind": "fex_memory_git_derivative_proposal",
   "reference_scope": "derivatives_root_relative_v1",
