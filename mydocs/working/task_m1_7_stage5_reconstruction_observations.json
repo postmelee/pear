@@ -1058,6 +1058,39 @@
       }
     ]
   },
+  "small_stub_network_sleep_review": {
+    "case_sha256": "25fc223ab323916fe18b88082921ea36d99e5c334591039c4903c2a9a448e7cd",
+    "control_transport": "local_AF_UNIX",
+    "environmental_cause_established": false,
+    "exact_lid_close_time": "unknown",
+    "exit_leads_observed_in_failed_case": false,
+    "idle_sleep_and_display_assertion_release": "2026-10-04T14:36:53+09:00",
+    "internet_outage_time": "unknown",
+    "native_case_wall_clock_window": [
+      "2026-10-04T14:36:45+09:00",
+      "2026-10-04T14:36:52+09:00"
+    ],
+    "new_builds": 0,
+    "new_native_runs": 0,
+    "observed_on": "2026-10-04",
+    "pmset_log_sha256": "8b9f431d9b9c86b2cf758fbe7aeabce6d76541cb8d45e2f8a23f1754055aa037",
+    "private_review_sha256": "671bf706d0de42cc00d32c3042f47a846c14c70c50620ac56aaed9aab16f1c8d",
+    "reconstruction_complete": false,
+    "record_kind": "pear_task7_network_and_sleep_evidence_review",
+    "recorded_display_off_after_case": "2026-10-04T14:43:57+09:00",
+    "recorded_display_on_after_case": "2026-10-04T14:58:56+09:00",
+    "recorded_display_on_before_case": "2026-10-04T14:05:20+09:00",
+    "root_cause": "unknown",
+    "screenshot_observation": "Codex name-resolution failure and reconnect attempts; no native fault evidence",
+    "sleep_wake_or_display_transition_during_case": "not_found_in_retained_pmset_log",
+    "source_only_exit_leads": [
+      "local_server_reply_EOF_or_EPIPE_can_call_abort_thread_0",
+      "SIGQUIT_handler_can_call_abort_thread_0"
+    ],
+    "steam_or_download_operation_in_pairing_fixture": false,
+    "supervisor_outcome": "exited_not_interrupted",
+    "timezone": "Asia/Seoul"
+  },
   "small_stub_primary_artifact_comparison": {
     "count": 8,
     "full_install_comparison": "passed_2878_raw_entries",

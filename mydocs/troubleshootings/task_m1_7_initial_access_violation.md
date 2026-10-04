@@ -151,6 +151,44 @@ explicitly controlled conditions; further work must target that evidence gap.
 A same observation boundary does not by itself prove a shared cause with the
 original access violation; preserve their different exit signatures.
 
+## Network and Lid-Closure Evidence Review on October 4, 2026
+
+The requester reported losing internet connectivity and then closing the lid,
+with no recalled time. The supplied screenshot shows Codex name-resolution and
+reconnection errors. It establishes a communication problem in the app, not a
+fault location or interruption of the native Wine case.
+
+Read-only `pmset -g log` completed successfully. In local KST time, the failed
+native case ran approximately 14:36:45–14:36:52. The retained power log records
+display-on at 14:05:20, display-off at 14:43:57 and display-on at 14:58:56; no
+sleep, wake or display transition was found during the case. The test wrapper's
+idle-system-sleep and idle-display-sleep assertions were released at 14:36:53,
+after the recorded case interval. The later display-off event cannot explain
+an earlier failure. This does not identify the physical lid-close time, prove
+complete logging of every environmental change or explain the original
+historical access violation.
+
+The finite pairing fixture performs local window/Metal operations, without a
+Steam login or download. Pear's control channel and Wine's server connection
+use `AF_UNIX` local IPC. The case receipt records `exited`, no stream error and
+completed owned cleanup; it does not record a supervisor interruption. There
+is therefore no observed direct causal link from the internet outage to this
+failure. The outage's exact time remains unknown.
+
+Source review identified separate, unconfirmed zero-exit paths: Wine can call
+`abort_thread(0)` after local server-reply EOF/EPIPE or through its ARM64 SIGQUIT
+handler, and the last thread can reach `_exit(0)` through `abort_process`.
+These paths need not emit the normal `NtTerminateProcess` guest-exit event.
+They are candidate discriminators, not observed events in the failed run;
+local IPC closure is not the same as loss of internet connectivity. The owned
+cleanup's recorded server signal follows the loader's observed exit and does
+not establish that it caused that exit.
+
+Raw power logs remain private. The sanitized observations include their hash
+and the private review receipt hash. No production change, rebuild, extra
+native run, network-setting change or power-setting change was performed.
+The required verification remains failed and its root cause remains unknown.
+
 ## Evidence Retention
 
 Retain the original case/failure receipts, raw captured streams referenced by

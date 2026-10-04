@@ -1531,3 +1531,22 @@ context. Read-only teardown inspection did not establish a concrete correction;
 no production source was patched. Preserve the incomplete stage and failed
 records. A completed Stage 5/final report, reconstruction completion, PR or
 Issue closure is not warranted by the current evidence.
+
+
+### 2026-10-04: Read-Only Network and Power Timeline Review
+
+The requester reported an internet outage followed by lid closure and supplied
+an app-reconnection screenshot. Continue the approved incident investigation
+with existing source/receipt inspection and a read-only power-log query. Reuse
+`pmset` and existing Wine/Pear source; do not alter network, power or security
+settings or run another native test solely to check this hypothesis.
+
+The power log places the next display-off at 14:43:57 KST, after the failed
+14:36:45–14:36:52 case, with no sleep/wake/display transition found during that
+case. The test uses local IPC; no direct internet dependency or supervisor
+interruption was observed. Exact outage and physical lid-close times remain
+unknown. Local EOF/EPIPE and SIGQUIT zero-exit paths are source-only leads,
+not a diagnosis. Keep the existing incident and sanitized observations as the
+approved Issue-specific evidence locations; retain raw logs privately. No
+source or public product-documentation change is needed. Stage 5 remains
+incomplete, with no new execution, rebuild or deletion in this review.
