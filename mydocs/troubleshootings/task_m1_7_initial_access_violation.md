@@ -1,7 +1,7 @@
 # Task #7 — Initial native pairing access violation
 
 Issue: [#7](https://github.com/postmelee/pear/issues/7).
-Last reviewed: October 4, 2026.
+Last reviewed: October 5, 2026.
 
 ## Status
 
@@ -277,6 +277,31 @@ Private review SHA-256:
 Evidence remains under `.build/task7/stage5-lldb2/wine-first-thread1` with its
 captured controller and separate review producer. No causal failing stack or
 production fix exists; the required formal verification remains failed.
+
+## Exit-Only Diagnostic Result
+
+On October 5, one original-PE case ran without debugger, rendezvous, delay or
+new entitlement, using an isolated source-matched ntdll with fixed-size exit
+records. Its original link and four affected objects reproduced byte-for-byte
+before instrumentation. All 39 rows, physical lifetime, terminal, guest/process
+exit, cleanup and sentinel checks completed. Original and diagnostic inventory,
+current signature, certificate and profile authorization passed before/after.
+
+The fixture loader recorded two NtTerminateProcess entries and exit_process,
+all status zero. Two killed-thread replies and abort_thread entries belonged to
+an owned descendant. No SIGQUIT, IPC EOF/EPIPE or fault-handler record appeared.
+All 20 streams were reviewed; no unclassified diagnostic or API error appeared.
+These observations describe this normal case and do not exclude those paths
+from the historical failure. The ordinary assessor refused the changed ntdll
+with unbound_loaded_image; diagnostic success does not qualify the candidate.
+
+The single-case budget is exhausted. No failure reproduced, no causal correction
+was established, and the required ordinary verification remains failed. Retained
+preparation failures do not count as Wine runs. Private evidence is under
+.build/task7/stage5-exit-reasons3. Case SHA-256:
+`dd7e39ab2891fbb9e60a767d66e656e97a9ac668d9011affdf6f4a1b75299b5e`.
+Review SHA-256:
+`08adf041ea4c29586efb91ab87292eac7870e8a1f56bbd7eb9fca83a9558849d`.
 
 ## Evidence Retention
 

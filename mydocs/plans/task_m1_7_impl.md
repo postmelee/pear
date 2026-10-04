@@ -1756,3 +1756,80 @@ No new official location or product requirement is introduced. Documentation
 verification uses governance/link checking and git diff --check, with no native
 execution. A first write request timed out in automatic permission review before
 execution; the permitted one retry applies only to these documentation edits.
+
+
+### 2026-10-05: Continued Stage 5 Work Authorized
+
+The requester explicitly authorized continuing through Stage 5 completion and
+reporting whether #7's criteria are satisfied. Continue necessary bounded
+diagnosis, concrete corrections and affected verification without repeatedly
+requesting permission for the already described work. This does not waive
+required gates or authorize changing #5's checkout/inputs or merging/closing.
+The exit-only diagnostic proposal above is now approved. Include a failure-side
+SIGBUS/SIGSEGV record of signal, fault address and PC to distinguish the earlier
+access-violation signature; no new signal handler or hot-path logging is added.
+
+Read-only admission confirmed retained #4 ntdll source units match build 8 and
+the original native ntdll hash matches #7's recorded origin. First reproduce its
+link and four affected objects in owned output, then compile only instrumented
+units using the retained recipe. The private recorder uses one fixed 83-byte
+write, preserves errno and does not allocate or retry. Focused encoding/error/
+short-write controls and real SIGUSR1 handler delivery passed on native ARM64.
+An initial standalone control compile omitted the explicit SDK and failed before
+execution; adding the recorded SDK path corrected that setup omission. No Wine
+case has run under this amendment yet. All construction/native operations use
+the existing shared lock and existing output/reserve bounds.
+
+### 2026-10-05: Exit-Only Diagnostic Result
+
+The approved single case used the original PE and unchanged Metal settings,
+without LLDB, rendezvous, delay or new entitlement. The isolated ntdll added
+fixed-size records only to the selected termination/exception paths. The raw
+original link and all four original source objects reproduced exactly before
+instrumentation. All baseline link inputs remained unchanged. Existing C and
+Wine exit/signal dispatch were retained; no upstream replacement was introduced.
+
+Preparation failures are preserved: the first recipe parser mishandled Makefile
+continuations; the second link omitted the recorded SDKROOT environment and
+failed to find libSystem. The corrected invocation restored the existing SDK
+and deployment target. A lock refusal preceded the actual build; the builder
+waited for the other task's lock without interrupting it. These were preparation
+failures, not additional Wine cases. The diagnostic signal unit emitted one
+C-before-C99 declaration-order warning under the recorded C23 compiler, with no
+other compiler diagnostics. No whole Wine, LLVM, shader or DXMT rebuild occurred.
+
+The independent bundle changed only ntdll, the loader signature and CodeResources.
+Before and after the case, complete original/diagnostic inventories and current
+profile/device/identity, certificate, signature and entitlement admission passed
+for all 39 native images and the app. No permission claim changed. Complete
+source-constructor replay was not repeated for this nonqualifying diagnostic.
+
+The case completed all 39 native rows, balanced physical lifetimes, the zero-error
+PE terminal and both loader guest/process exit events. Twenty raw streams passed
+integrity/EOF review; cleanup and sentinel survival passed. The 25 exit records
+contained 14 NtTerminateProcess entries, seven exit_process entries, two killed-
+thread replies and two abort_thread entries. The last two categories belonged
+to an owned descendant, not the fixture loader. The fixture loader recorded
+NtTerminateProcess twice followed by exit_process, all status zero. There were
+no IPC EOF/EPIPE, SIGQUIT, abort_process or SIGBUS/SIGSEGV records. Known three
+working-directory fallbacks and six API/six GPU validation notices were the only
+other diagnostics; no API error or unclassified line was observed.
+
+The unchanged ordinary assessor refused unbound_loaded_image because the
+instrumented ntdll is outside the ordinary receipt. This is expected isolation,
+not a fixed formal gate. The case hash is
+`dd7e39ab2891fbb9e60a767d66e656e97a9ac668d9011affdf6f4a1b75299b5e`;
+review hash is
+`08adf041ea4c29586efb91ab87292eac7870e8a1f56bbd7eb9fca83a9558849d`.
+Evidence and producers are retained under .build/task7/stage5-exit-reasons3,
+with earlier setup failures in their own directories. New retained allocation
+was 2,472,206,336 bytes; free space after the case was 15,603,232,768 bytes.
+
+The one-case diagnostic is exhausted. It did not reproduce the failed boundary
+and cannot attribute or exclude the historical cause. No production correction
+is justified by it. Stage 5 and #7 remain incomplete: the required ordinary
+verification, reconstruction finalization/replay and final handoff/report remain
+open. Neither another unchanged pass-seeking run nor replacing the original
+receipt with this diagnostic is authorized by this result. Further corrective
+work needs a concrete related defect or useful evidence of the incomplete exit;
+the user's continuing authorization does not relax the acceptance predicates.

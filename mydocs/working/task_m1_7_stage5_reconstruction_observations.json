@@ -161,6 +161,72 @@
     }
   },
   "distribution_qualified": false,
+  "exit_only_diagnostic": {
+    "batch_exhausted": true,
+    "build_sha256": "3d6bd40d66841874909a88e84cb70eea4d3153ccdca6fd38f2c2339ad27bff93",
+    "case_sha256": "dd7e39ab2891fbb9e60a767d66e656e97a9ac668d9011affdf6f4a1b75299b5e",
+    "cleanup_complete": true,
+    "current_input_signature_authorization_before_after": true,
+    "diagnostic_only_changed_paths": [
+      "Contents/MacOS/wine",
+      "Contents/Resources/runtime/lib/wine/aarch64-unix/ntdll.so",
+      "Contents/_CodeSignature/CodeResources"
+    ],
+    "failure_reproduced": false,
+    "free_bytes": 15603232768,
+    "guest_and_process_exit_observed": true,
+    "loader_exit_reasons": [
+      9,
+      9,
+      10
+    ],
+    "loader_exit_status": 0,
+    "log_review": {
+      "api_error_observed": false,
+      "counts": {
+        "api": 6,
+        "fallback": 3,
+        "gpu": 6
+      },
+      "exit_reason_counts": {
+        "10": 7,
+        "3": 2,
+        "7": 2,
+        "9": 14
+      },
+      "fault_or_sigquit_records": 0,
+      "unclassified": 0
+    },
+    "native_cases": 1,
+    "ordinary_verifier_refusal": "unbound_loaded_image",
+    "original_link_and_four_objects_raw_equal": true,
+    "physical_lifetime": {
+      "case_count": 39,
+      "created_layers": 3,
+      "created_proxies": 1,
+      "created_views": 3,
+      "deallocated_layers": 3,
+      "deallocated_proxies": 1,
+      "deallocated_views": 3,
+      "final_attachment_count": 0,
+      "final_lease_count": 0,
+      "physical_lifetime": "observed_balanced"
+    },
+    "qualification": false,
+    "record_kind": "pear_private_exit_reason_review",
+    "retained_bytes": 2472206336,
+    "review_sha256": "08adf041ea4c29586efb91ab87292eac7870e8a1f56bbd7eb9fca83a9558849d",
+    "reviewed_on": "2026-10-05",
+    "root_cause": "unknown",
+    "sentinel_survived": true,
+    "streams_verified": 20,
+    "terminal": {
+      "cleanup_error": 0,
+      "cleanup_flags": 7,
+      "completed_phases": 6,
+      "primary_error": 0
+    }
+  },
   "first_thread_exit_capture": {
     "acknowledged_detach": true,
     "attempted_wine_cases": 1,
