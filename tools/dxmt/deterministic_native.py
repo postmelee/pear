@@ -24,7 +24,9 @@ CONSTRUCTOR_PIN_SHA='7e3601ed8e39471d604a2d61d694cbc795515d6039c81b959182273ab78
 PIN_SHA='b0240dff62d8b152ee40650ee3b363f6ed4a35b6a2f9a2176fa9050435e65ff4'
 OWN={'tools/dxmt/deterministic_native.py':'deterministic_native.py',
      'tools/dxmt/native-pins.json':'native-pins.json',
-     'tools/dxmt/constructor-pins.json':'constructor-pins.json'}
+     'tools/dxmt/constructor-pins.json':'constructor-pins.json',
+     'tools/dxmt/loader_reservation.py':'loader_reservation.py',
+     'runtime/wine/patches/0004-arm64-native-heap-reservation.patch':'0004-arm64-native-heap-reservation.patch'}
 KIND_MAP={key:'dxmt_deterministic_'+key[len('dxmt_'):] for key in (
  'dxmt_pairing_authorization','dxmt_pairing_materialization','dxmt_pairing_signed_runtime',
  'dxmt_pairing_runtime','dxmt_pairing_runtime_failure','dxmt_pairing_admission',
@@ -111,21 +113,23 @@ def bounded_source(root,leaf):
     finally:os.close(directory)
 
 
-def read_own():
+def read_own(repo=None):
     result={}
     for logical,leaf in OWN.items():
-        raw=bounded_source(HERE,leaf)
-        result[logical]={'path':str(HERE/leaf),'sha256':digest(raw),'raw':raw}
+        source_root=HERE if logical.startswith('tools/dxmt/')else (Path(repo)if repo is not None else HERE.parents[1])/'runtime/wine/patches'
+        raw=bounded_source(source_root,leaf)
+        result[logical]={'path':str(source_root/leaf),'sha256':digest(raw),'raw':raw}
     return result
 
 
 class Adapter:
-    def __init__(self,repo,constructor_root,executed_native_sha=None):
+    def __init__(self,repo,constructor_root,executed_native_sha=None,loader_reservation=None):
         captured=bounded_source(HERE,'deterministic_native.py')
         self.executed_native_sha=digest(captured) if executed_native_sha is None else executed_native_sha
         need(type(self.executed_native_sha)is str and len(self.executed_native_sha)==64
              and digest(captured)==self.executed_native_sha,'native_executed_source_changed')
         self.repo=Path(repo).resolve(strict=True);self.constructor_root=Path(constructor_root).resolve(strict=True)
+        self.loader_root=Path(loader_reservation).resolve(strict=True)if loader_reservation is not None else None
         # Admit all exact constructor sources before any source execution.
         pin_raw=bounded_source(HERE,'constructor-pins.json')
         need(digest(pin_raw)==CONSTRUCTOR_PIN_SHA,'native_constructor_pins_changed')
@@ -169,7 +173,7 @@ class Adapter:
                 value=self.pair.reuse.read_file(self.repo,path)
                 need(digest(value)==pin,'native_predecessor_changed')
                 self.capture.raw[path]=value;self.capture.pins[path]=pin
-            self.own=read_own()
+            self.own=read_own(self.repo)
             need(self.own['tools/dxmt/deterministic_native.py']['sha256']==self.executed_native_sha,
                  'native_executed_source_changed')
             self.constructor_sources=self.pair.own_sources()
@@ -181,6 +185,8 @@ class Adapter:
             self.runtime,self.runtime_proof,_=self.derive('tools/dxmt/pairing_runtime.py')
             self.runner,self.runner_proof,self.runner_raw=self.derive('tools/dxmt/run_pairing.py')
             self.evidence,self.evidence_proof,_=self.derive('tools/dxmt/pairing_evidence.py')
+            self.loader_module=SimpleNamespace(__name__='_pear_loader_reservation',__file__=str(HERE/'loader_reservation.py'))
+            exec(compile(self.own['tools/dxmt/loader_reservation.py']['raw'],str(HERE/'loader_reservation.py'),'exec'),vars(self.loader_module))
             self.gates()
         except BaseException:
             self.capture.close();raise
@@ -196,7 +202,7 @@ class Adapter:
     def source_read(self,root,path,limit=8*1024**2):
         if Path(root)==self.repo:
             if path in self.own:
-                current=read_own()[path];same({key:current[key]for key in ('path','sha256')},
+                current=read_own(self.repo)[path];same({key:current[key]for key in ('path','sha256')},
                     {key:self.own[path][key]for key in ('path','sha256')},'native_own_source_changed')
                 need(len(current['raw'])<=limit,'native_source_bound');return current['raw']
             if path in self.constructor_sources:
@@ -224,9 +230,39 @@ class Adapter:
             'constructor_sources':self.constructor_sources,
             'constructor_loading':{'source_sha256':self.constructor_pins['deterministic_pair.py'],
                 'local_loader':'closed_preverified_helper_bytes','record_kind_changed':False},
+            'loader_reservation':self.loader_reference(),
             'adapter_sources':{path:{key:row[key]for key in ('path','sha256')}for path,row in self.own.items()},
             'native_loading':{'source_sha256':self.executed_native_sha,'current_source_match_required':True},
             'producers':self.producers(),'runtime_eligible':False,'game_qualified':False,'distribution_qualified':False}
+    def loader_reference(self):
+        if self.loader_root is None:return None
+        self.loader_module.verify(self.loader_root,self)
+        return {'path':str(self.loader_root),'sha256':digest(self.common.read_relative(self.loader_root,'loader.json'))}
+    def loader_gates(self):
+        if self.loader_root is None:return
+        module=self.runtime;old_ledger=module.source_ledger;old_origin=module.origin_file
+        def ledger(build_root,baseline_root,baseline,install,manifest,reader):
+            rows=old_ledger(build_root,baseline_root,baseline,install,manifest,reader)
+            proof=self.loader_module.verify(self.loader_root,self,baseline_root)
+            matches=[row for row in rows if row['path']==module.LOADER]
+            need(len(matches)==1 and matches[0]['runtime_path']==module.MAIN,'native_loader_origin_scope')
+            row=matches[0];facts=proof['outputs']['second/wine']
+            need(row['sha256']==proof['inputs']['install/lib/wine/aarch64-unix/wine']['sha256'],
+                 'native_loader_replacement_baseline')
+            row.update(facts)
+            row['origin']={'role':self.loader_module.ORIGIN,'path':'second/wine','sha256':facts['sha256']}
+            return rows
+        def origin(row,install,build_root):
+            if row['origin']['role']!=self.loader_module.ORIGIN:return old_origin(row,install,build_root)
+            need(row['path']==module.LOADER and row['runtime_path']==module.MAIN and
+                 row['origin']['path']=='second/wine','native_loader_origin_scope')
+            proof=self.loader_module.verify(self.loader_root,self,install.parent)
+            raw=self.common.read_relative(self.loader_root,'second/wine')
+            need(digest(raw)==row['sha256']==row['origin']['sha256']==proof['outputs']['second/wine']['sha256']
+                 and len(raw)==row['size_bytes'],'native_loader_origin_changed')
+            return self.loader_root/'second/wine',raw
+        module.namespace.update(source_ledger=ledger,origin_file=origin)
+        module.source_ledger=ledger;module.origin_file=origin
     def descriptor_check(self,root,operation):
         value=self.common.decode_json(self.common.read_relative(root,'adapter.json'))
         same(value,self.descriptor(operation),'native_adapter_changed')
@@ -281,6 +317,7 @@ class Adapter:
             return pure_body(root,repo,runner,runtime,raw_run)
         set_values(self.evidence,REPO=self.repo,read_relative=self.source_read,adapters=adapters,
             producer_hashes=lambda repo,runner,runtime:self.producers(repo),pure_replay=pure)
+        self.loader_gates()
     def prepare(self,build,profile,output):
         return self.runtime.prepare(build,profile,output,repo=self.repo)
     def structural(self,root):return self.runtime.verify_structural(root,repo=self.repo)
@@ -295,8 +332,8 @@ class Adapter:
 
 
 @contextmanager
-def adapter(repo,constructor_root,executed_native_sha=None):
-    value=Adapter(repo,constructor_root,executed_native_sha)
+def adapter(repo,constructor_root,executed_native_sha=None,loader_reservation=None):
+    value=Adapter(repo,constructor_root,executed_native_sha,loader_reservation)
     try:yield value
     finally:value.close()
 
@@ -308,9 +345,9 @@ def main(argv=None):
     for action in ('prepare','structural','admit','run','verify-run','review-context','evidence'):
         choice.add_argument('--'+action,action='store_true')
     parser.add_argument('--build');parser.add_argument('--profile');parser.add_argument('--runtime')
-    parser.add_argument('--output');parser.add_argument('--run-root');args=parser.parse_args(argv)
+    parser.add_argument('--output');parser.add_argument('--run-root');parser.add_argument('--loader-reservation');args=parser.parse_args(argv)
     try:
-        with adapter(args.repo,args.constructor_root)as value:
+        with adapter(args.repo,args.constructor_root,loader_reservation=args.loader_reservation)as value:
             if args.prepare:
                 need(args.build and args.profile and args.output,'native_prepare_arguments')
                 result=value.prepare(args.build,args.profile,args.output)

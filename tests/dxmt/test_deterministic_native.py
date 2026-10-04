@@ -201,7 +201,7 @@ class NativeBinding(Temporary):
 class CoordinatorRepairs(Temporary):
     def copied_coordinator(self):
         path=self.root/'helper';path.mkdir()
-        for leaf in ['deterministic_native.py','deterministic_reproduce.py','native-pins.json','constructor-pins.json']:
+        for leaf in ['deterministic_native.py','deterministic_reproduce.py','native-pins.json','constructor-pins.json','loader_reservation.py']:
             shutil.copyfile(IMPLEMENTATION/leaf,path/leaf)
         def load():
             spec=importlib.util.spec_from_file_location('_copied_native_coordinator',path/'deterministic_reproduce.py')
@@ -294,7 +294,7 @@ class ReviewContextJSON(unittest.TestCase):
     def test_cli_outputs_actual_context_shape(self):
         context={'notice_pids':{'loader':{32,8}},'run_ref':{'sha256':'b'*64}}
         @contextmanager
-        def fake_adapter(*args):yield SimpleNamespace(review_context=lambda root:(context,{}))
+        def fake_adapter(*args,**kwargs):yield SimpleNamespace(review_context=lambda root:(context,{}))
         output=io.StringIO()
         with mock.patch.object(native,'adapter',fake_adapter),mock.patch('sys.stdout',output):
             status=native.main(['--repo',str(REPO),'--constructor-root',str(CONSTRUCTOR),

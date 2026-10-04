@@ -5,11 +5,14 @@ Last reviewed: October 5, 2026.
 
 ## Status
 
-**Reopened after incomplete execution recurred in unchanged-candidate formal
-verification; root cause unknown.** The new run again ended after observation
-33, but its loader exited zero and did not record `0xc0000005`. The original
-access-violation code has not been reproduced; a common cause is unproven.
-This incident is neither fixed nor attributed to the Mac environment.
+**Corrected for the selected Stage 5 finite route, October 5.** The low-address
+Foundation failure class has an independent reproduction and a source-built
+ARM64 loader reservation correction. Two final ordinary runs passed all 39
+cases, physical deallocation, guest/host termination, current authorization,
+raw-log review and owned cleanup. The [Stage 5 report](../working/task_m1_7_stage5.md)
+binds the exact final source, loader and graphics receipts. Historical failures
+and unsuccessful diagnostics remain preserved; a common cause for every older
+fault, arbitrary schedule safety and other OS/runtime combinations are not claimed.
 
 This is the single incident handoff. Preserve the linked observation records
 rather than copying the diagnostic chronology into each daily update. Deferring
@@ -303,6 +306,38 @@ preparation failures do not count as Wine runs. Private evidence is under
 Review SHA-256:
 `08adf041ea4c29586efb91ab87292eac7870e8a1f56bbd7eb9fca83a9558849d`.
 
+## System-Thread Exception Identified
+
+Further server-only diagnostics reproduced the same 33-row boundary twice with
+unchanged client ntdll, PE and graphics images. The server received a system
+thread's terminate_process request with STATUS_ACCESS_VIOLATION and killed the
+fixture guest thread; the observed loader OS exit remained zero. With err+seh,
+Wine also reported the access violation in a system thread. The silent zero exit
+therefore does not imply successful fixture completion.
+
+A third reproduction with live sampling captured the failed process's image map.
+The exception address lies at offset 0xbca0 in libswiftCore.dylib, UUID
+7669D858-D332-36C7-9C6C-4564FFBEA8D2. Local symbolization against that same UUID
+resolves _swift_release_dealloc + 48. The call graph was empty because the
+process exited before stack samples were collected. The caller and invalid
+object are still unknown; this does not establish a Pear, Wine or Apple defect.
+Raw addresses from a different process cannot be reused without its image slide.
+
+Case receipts, respectively:
+
+- 48efc971aee815b4190f663126346006fa36da18d00c516fd4407cba7b4dd0e6
+- 25634ec0d00940d77414ed871e46542d4700ea9cde75a2d94c99a0b820947637
+- 15c2ec41b6bf5ea7a8e5cf3e3f9864d378652df421bc2d47dc459a276420da31
+
+The private roots are stage5-server-exit1/execution1, execution2 and
+stage5-live-sample1 under .build/task7. Current inventory/signature/profile
+admission, all captured streams and owned cleanup/sentinel checks passed.
+Diagnostic images remain outside ordinary qualification. Post-fault server-hold
+variants, a fixed three-case batch, a combined live/held sample and the embedded
+hold-server case did not reproduce the exception. Their normal completion does
+not erase the failures or clear the formal gate. The implementation plan records
+the continued bounded investigation and prefix archival/restoration requirements.
+
 ## Evidence Retention
 
 Retain the original case/failure receipts, raw captured streams referenced by
@@ -322,3 +357,62 @@ restore requirements before any deletion; this incident record authorizes none.
 - [Implementation plan](../plans/task_m1_7_impl.md)
 - [Sanitized Stage 5 observations](../working/task_m1_7_stage5_reconstruction_observations.json)
 - [DXMT build and pairing guide](../../docs/development/dxmt-build.md)
+
+
+## Captured failing stack, October 5
+
+The server-only hold case reproduced the 33-row termination with unchanged
+client ntdll, PE and graphics images. PEAR_EXIT_CAPTURE_RELEASE was supplied only
+to the diagnostic server; earlier hold controls also changed the loader's
+environment. Do not treat their successful completion as a correction.
+
+The captured main-thread chain is AppKit window layout -> SwiftUICore image
+value/environment comparison -> Foundation Locale.== -> outlined destroy of
+LocalePreferences -> swift_cvw_destroyImpl -> Swift reference-count release ->
+Wine signal gateway -> system-thread termination. The guest thread is waiting
+for OnMainThread while executing NtUserDestroyWindow and macdrv_WindowPosChanged.
+This narrows the failing path but does not identify the corrupt object or prove
+an OS/framework defect. Apple documents automatic main-thread deallocation of
+NSResponder descendants since macOS 10.15, so an off-main final release alone
+is not sufficient grounds for a speculative window-deallocation patch.
+
+Private case: .build/task7/stage5-server-only-hold1.
+Case SHA-256: 06c1fdfc974250fb9140025c82d32fa525e57d26d947e78c3dfbff3429cce2fc.
+Sample SHA-256: 1cacb166ab5894a372ea48607e2bd16207ab00a10d819d2afbe76734175714a6.
+The sample has 92 observations of the blocked failing stack. Current admission,
+20 stream integrity checks, cleanup and sentinel survival passed. This remains
+a changed-server diagnostic, not final-candidate qualification.
+
+
+## Independent low-address Foundation reproduction, October 5
+
+The captured allocation history now identifies the failed pointer as a freed
+Swift array allocated during Foundation locale prewarming. The later fatal
+release refers to the same address with no intervening allocation. A minimal
+Foundation-only executable, using the same user locale and Wine-like low-address
+link layout, fails its first Locale equality comparison without Wine, Metal,
+AppKit or guest execution. With identical source and 4KB execution, moving the
+native allocation boundary above 4GB completes 100 comparisons and exits zero.
+Swift's Darwin ARM64 ABI reserves pointer representations below 4GB as extra
+inhabitants. This identifies a reproducible native-heap layout incompatibility
+in the captured path; it does not prove a common cause for every historical fault.
+
+An ASLR-preserving zero-fill reservation candidate also passes that minimal
+reproduction. The private Wine loader candidate still awaits actual ordinary
+pairing and source-bound integration. No failure has been waived and Stage 5
+remains incomplete. Allocation-history and paired-control hashes and failed
+layout candidates are retained in the implementation plan; raw memory and user
+locale diagnostics remain private.
+
+
+## Final correction and disposition
+
+The final patch retains Wine's existing zero-fill reservation mechanism, adapted
+to ARM64's shared-cache layout and Swift heap-pointer boundary. It preserves PIE
+and low guest mappings; startup fails if reservation remapping fails. The
+original x86_64 reservation path remains separate. The unchanged original runner,
+PE and environment passed twice on the final source-bound candidate without a
+debugger, diagnostic ntdll, server hold or altered locale. This clears #7's finite
+required pairing gate. See the final reconstruction observations for both run
+and review hashes. Reopen investigation for an actual recurrence or newly changed
+integration inputs; do not discard the original failure evidence.

@@ -1,6 +1,6 @@
 # DXMT build and Wine Metal pairing
 
-Status: historical component build and finite native pairing verified on October 3, 2026, [Issue #7](https://github.com/postmelee/pear/issues/7). As of October 4, two fresh component builds and their complete unsigned comparison have passed. Final native verification failed again after observation 33; task completion remains pending and the earlier access violation is unresolved. This contributor guide describes the implemented build route and its evidence boundaries; it is not an installation guide for playing Windows games.
+Status: [Issue #7](https://github.com/postmelee/pear/issues/7) Stage 5 completed on October 5, 2026. Two fresh graphics builds and two source-built loader outputs match exactly; the complete 2,878-entry unsigned payload comparison and two final 39-case native runs passed. The [Stage 5 report](../../mydocs/working/task_m1_7_stage5.md) records the loader correction, current source-bound evidence and limitations. This is a development-component guide, not an installation guide for playing Windows games.
 
 Pear retains DXMT's C/C++/Objective-C and Meson implementation, Wine's C/Objective-C driver and callback scheduling, and native LLVM shader conversion. CPU instruction translation is a separate [#5/#6](../delivery-plan.md#core-implementation-backlog) prerequisite. Read the [architecture](../architecture.md), [source qualification](../source-qualification.md), [Wine host guide](wine-host.md) and [contribution procedure](../contributing.md) before changing inputs or running native checks.
 
@@ -14,16 +14,18 @@ Pear retains DXMT's C/C++/Objective-C and Meson implementation, Wine's C/Objecti
 | Typed driver pairing | Rebuilt Wine driver, DXMT bridge and ordinary ARM64 PE fixture; all 39 finite cases passed | No FEX initialization or translated/hybrid guest dispatch |
 | Physical lifetime | Three actual views, three layers and one proxy created and deallocated; zero final leases/attachments | Finite schedule, not arbitrary concurrent race freedom |
 | Metal diagnostics | Explicit captured-log review observed no Metal API validation error | Validation enabled/configured does not qualify shader semantics or performance |
-| Fresh component reconstruction | Two fresh builds and all 2,878 unsigned inventory entries matched exactly; no normalization | Final candidate native evidence and completion review remain pending; not a second-machine result |
+| Fresh component reconstruction | Two fresh builds and all 2,878 unsigned inventory entries matched exactly; no normalization | Final loader correction and two current 39-case runs verified; not a second-machine result |
 
 The [Stage 2](../../mydocs/working/task_m1_7_stage2.md), [Stage 3](../../mydocs/working/task_m1_7_stage3.md) and [Stage 4](../../mydocs/working/task_m1_7_stage4.md) reports identify their exact receipts and limits. Every observed required host image/process in the Stage 4 finite route was native ARM64 without Rosetta. That result does not qualify Windows x64 Direct3D, Steam, Megabonk, power improvements, older macOS, or ordinary-user distribution. Runtime/game/distribution eligibility remains false.
 
 The [initial access-violation record](../../mydocs/troubleshootings/task_m1_7_initial_access_violation.md)
-preserves the original failure and a new incomplete unchanged-candidate run
-at the same observation boundary, with different exit signatures. No common
-cause, fix or environmental cause has been established. Formal verification
-remains failed; diagnostic variants and the historical Stage 4 result cannot
-replace it.
+preserves every prior failure. The captured failure involves a low-address Swift
+array during Foundation Locale comparison; an independent Foundation-only
+control reproduced it. The final loader reserves low native heap addresses
+before framework initialization while preserving guest mappings and PIE.
+Two ordinary final runs passed after this correction. These observations do not
+prove that every historical fault had the same cause or qualify arbitrary
+schedules, other OS versions or translated rendering.
 
 ## Pinned inputs and build roles
 
@@ -117,9 +119,9 @@ The [deterministic constructor](../../tools/dxmt/deterministic_pair.py),
 [coordinator](../../tools/dxmt/deterministic_reproduce.py) preserve historical
 producers through an exact captured-source namespace. The current constructor
 has a distinct record kind and source-pin closure. It cannot reuse an older
-recipe's success flag or native execution record. Final completion remains
-pending until the two current constructions, raw comparison and fresh final
-candidate execution all pass.
+recipe's success flag or native execution record. Final completion requires two
+current constructions, the complete raw comparison and fresh final-candidate
+execution; the October 5 result passed those gates.
 
 The selected deterministic recipe fixes Windows compilation directories and
 `SOURCE_DATE_EPOCH`, sends the original shader bytes through bounded stdin,
@@ -132,13 +134,14 @@ constructions completed and independent comparison found all 2,878 inventory
 entries equal without normalization. Required native execution failed after
 33 of 39 rows with `pair_guest_exit_missing`; altered diagnostic passes do not
 qualify the candidate. See the [incident record](../../mydocs/troubleshootings/task_m1_7_initial_access_violation.md).
-Reconstruction completion remains blocked on the required native evidence.
+The October 5 source-bound loader correction below subsequently cleared that
+required native gate; the original failure remains retained.
 [Apple describes this option](https://developer.apple.com/videos/play/wwdc2022/110363/)
 as a size-oriented alternative with an additional call indirection. Its runtime
 performance impact here is unmeasured; this is a scoped reproducibility
 workaround, not a speed improvement. Windows cross settings and shader inputs
-are unchanged. See the [partial observations](../../mydocs/working/task_m1_7_stage5_reconstruction_observations.json)
-for trial counts and explicit incomplete gates.
+are unchanged. See the [dated observations](../../mydocs/working/task_m1_7_stage5_reconstruction_observations.json)
+for historical trial counts, failed attempts and final completion evidence.
 It does not rewrite generated binaries or normalize comparison differences.
 Here, unsigned comparison means the payload before Pear development signing.
 Any linker-generated ad hoc CodeDirectory remains part of the exact raw bytes;
@@ -157,8 +160,29 @@ these private historical receipts; moving to another host or replacing input
 identities requires new qualification. No Steam/game/account data is needed
 for this finite component workflow.
 
+The final native host also requires the separate
+[ARM64 loader reservation patch](../../runtime/wine/patches/0004-arm64-native-heap-reservation.patch).
+It derives from pinned Wine `loader/main.c` under LGPL-2.1-or-later; the original
+source notice is retained. It is outside #4's historical series and the graphics
+supplement series. The [narrow builder](../../tools/dxmt/loader_reservation.py)
+reproduces the original object/link, then compiles the patched loader into two
+fresh outputs and requires exact equality. It retains the original layout flags
+and adds `-Wl,-no_huge,-no_fixup_chains`. No allocator or signing claim is added.
+
+The naturally ordered zero-fill region reserves 4GB minus 64KB after native
+data; Wine receives its actual slid address. PIE and the 64KB PAGEZERO remain.
+A failed ARM64 PROT_NONE remap stops startup. The x86_64 8GB/top-down layout is
+not copied onto ARM64 because it overlaps that architecture's shared cache.
+A 4GB PAGEZERO diagnostic is also unsuitable for guest execution because it
+raises the process's minimum usable address. These choices follow the captured
+fault, independent controls, Wine's existing reservation mechanism and the
+[Swift ABI](https://github.com/swiftlang/swift/blob/74aa30e19573bed00d196cad64ffda2730c51b0c/stdlib/public/SwiftShims/swift/shims/System.h)
+and [XNU PAGEZERO implementation](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/mach_loader.c),
+reviewed October 5. They do not assert source identity for every installed OS.
+
 Define `pear_repo` as the absolute checkout path and `pear_wine_profile` as the
-private currently authorized loader development profile. The names below are
+private currently authorized loader development profile. Set `pear_wine_native`
+to the exact retained native Wine root selected by the verified graphics roles. The names below are
 examples of fresh owned outputs. Existing destinations are rejected. Serialize
 compilation, signing, native execution and cleanup; the recorded runs use a
 shared host lock and two build jobs.
@@ -166,7 +190,9 @@ shared host lock and two build jobs.
 ```sh
 python3 -B -m tools.dxmt.deterministic_pair --repo "$pear_repo" --construct --artifact .build/task7/stage3-build --qualification "$pear_dxmt_qualification" --output .build/task7/deterministic-reference --max-growth-bytes 2147483648 --reserve-free-bytes 4294967296 --require-empty
 python3 -B -m tools.dxmt.deterministic_pair --repo "$pear_repo" --construct --artifact .build/task7/stage3-build --qualification "$pear_dxmt_qualification" --output .build/task7/deterministic-candidate --max-growth-bytes 2147483648 --reserve-free-bytes 4294967296 --require-empty
-python3 -B -m tools.dxmt.deterministic_reproduce --repo "$pear_repo" --constructor-root tools/dxmt --compare --reference .build/task7/deterministic-reference --candidate .build/task7/deterministic-candidate --output .build/task7/deterministic-comparison --require-empty
+python3 -B -m tools.dxmt.loader_reservation --repo "$pear_repo" --constructor-root tools/dxmt --baseline "$pear_wine_native" --output .build/task7/loader-reservation
+python3 -B -m tools.dxmt.loader_reservation --repo "$pear_repo" --constructor-root tools/dxmt --verify --output .build/task7/loader-reservation
+python3 -B -m tools.dxmt.deterministic_reproduce --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --compare --reference .build/task7/deterministic-reference --candidate .build/task7/deterministic-candidate --output .build/task7/deterministic-comparison --require-empty
 ```
 
 Each construction reprojects sources and recompiles the affected Wine driver,
@@ -176,7 +202,7 @@ This is same-host component reconstruction, not an independent compiler build,
 second-machine result or reconstruction of the entire runtime.
 
 The comparison inventories the complete conceptual unsigned Wine payload with
-its exact graphics overlays, the complete DXMT install and selected compiler,
+its exact graphics overlays and the first/second loader outputs, the complete DXMT install and selected compiler,
 generated, shader and notice products. It checks path sets, bytes, sizes, modes
 and contained aliases. Normalization is `none`; any difference fails with both
 inventories and detailed comparison retained. Linker-generated ad-hoc Mach-O
@@ -184,16 +210,24 @@ signatures remain part of the unsigned bytes. An explanation of a difference
 does not make it pass. `construction.json` records native pairing as unperformed
 and overall reconstruction as incomplete even after a passing raw comparison.
 
-Use the exact second candidate for current development signing and execution:
+Use the exact second graphics and loader candidates for current development
+signing and execution. The approved final check uses two fresh prefixes. Stop
+after a failed run; review the first before starting the second. The commands
+below use distinct outputs and bind completion to the second reviewed run:
 
 ```sh
-python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --prepare --build .build/task7/deterministic-candidate --profile "$pear_wine_profile" --output .build/task7/deterministic-runtime
-python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --run --runtime .build/task7/deterministic-runtime --output .build/task7/deterministic-pairing
-python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --review-context --run-root .build/task7/deterministic-pairing
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --prepare --build .build/task7/deterministic-candidate --profile "$pear_wine_profile" --output .build/task7/deterministic-runtime
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --run --runtime .build/task7/deterministic-runtime --output .build/task7/deterministic-pairing
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --review-context --run-root .build/task7/deterministic-pairing
 # Explicitly review all raw streams and write the bound immutable private review.
-python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --evidence --run-root .build/task7/deterministic-pairing
-python3 -B -m tools.dxmt.deterministic_reproduce --repo "$pear_repo" --constructor-root tools/dxmt --complete --output .build/task7/deterministic-comparison --native-evidence .build/task7/deterministic-pairing --require-complete
-python3 -B -m tools.dxmt.deterministic_reproduce --repo "$pear_repo" --constructor-root tools/dxmt --verify --output .build/task7/deterministic-comparison --require-complete
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --evidence --run-root .build/task7/deterministic-pairing
+
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --run --runtime .build/task7/deterministic-runtime --output .build/task7/deterministic-pairing2
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --review-context --run-root .build/task7/deterministic-pairing2
+# Explicitly review this second run and write its separate immutable review.
+python3 -B -m tools.dxmt.deterministic_native --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --evidence --run-root .build/task7/deterministic-pairing2
+python3 -B -m tools.dxmt.deterministic_reproduce --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --complete --output .build/task7/deterministic-comparison --native-evidence .build/task7/deterministic-pairing2 --require-complete
+python3 -B -m tools.dxmt.deterministic_reproduce --repo "$pear_repo" --constructor-root tools/dxmt --loader-reservation .build/task7/loader-reservation --verify --output .build/task7/deterministic-comparison --require-complete
 ```
 
 The native adapter preserves the original 39-case protocol, per-image live
@@ -201,6 +235,9 @@ permission checks, exact runtime bytes and required private diagnostics review.
 The raw review-context API preserves process-ID sets for validation-notice
 attribution; the CLI exports those validated identities as sorted JSON lists
 for private inspection. This serialization does not grant diagnostics approval.
+The separate loader receipt is bound in the native descriptor and complete
+unsigned origins. Its candidate is used by every loader process; the original
+server, ntdll and all unrelated payload bytes retain their original origins.
 The historical Stage 4 result cannot satisfy the current finalizer: fresh
 execution must bind to this exact candidate and current constructor source.
 No ARM64X renderer DLL, FEX initialization or translated x64 guest is executed
@@ -229,3 +266,24 @@ git diff --check
 Portable tests validate only their selected reader/refusal/lifecycle contracts; conditional skips remain unperformed. The recorded Stage 4 counts are 284 DXMT tests and 842 Wine tests with ten conditional skips. Preserve native warnings, actual OS errors, failed attempts, unknown observations and deadlines separately from test counts. A missing required record or failed requested gate cannot be promoted by a producer-supplied `passed` flag.
 
 [#8](https://github.com/postmelee/pear/issues/8) must qualify actual x64 Direct3D 11 through the matching #5/#6 translation path: device/resource/shader/compute/depth/blend/readback, swapchain/resize/present, callbacks, actual module selection and rendering results. #10 owns complete process/module observation; #11/#12 own Steam and Megabonk; #13 and ordinary-user work own assembled release authorization, notices, packaging and clean-user installation. This build and finite native guide does not close those gates or promise a performance advantage.
+
+
+## October 5 loader handoff to #5 and #8
+
+Integrate the standalone loader patch after #4's unchanged 23-patch Wine base
+(commit `4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf`, prepared source manifest
+`2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7`).
+The graphics supplement touches different files; preserve both ordered source
+identities and the exact loader link flags above. The Stage 5 observations bind
+the patch, two unsigned loader outputs, graphics payload and signed execution.
+The old native baseline alone lacks this repair. #5's worktree was not modified.
+
+#5 must recheck affected low guest mappings, MAP_JIT arena and vprot/file_view
+metadata assumptions on the combined candidate. The reservation changes address
+placement; the 1MiB metadata allocation units and #5's own 256KiB admission must
+not be assumed unchanged or waived. Reuse only still-valid compiler/graphics
+and fixture evidence. #7 has not executed FEX or qualified #5's memory budget.
+#8 inherits the corrected native pairing and still needs actual translated
+Direct3D/device/resource/shader/swapchain/rendering qualification. No additional
+native matrix is required merely to copy this handoff; test actual integration
+changes and newly observed failures.

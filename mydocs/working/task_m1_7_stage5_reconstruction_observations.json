@@ -108,7 +108,7 @@
     "passed": true
   },
   "candidate_native_execution_performed": false,
-  "candidate_native_execution_scope": "The earlier candidate field refers to the pre-small-stub build; it was not executed. See small_stub_finite_native_run for the current candidate.",
+  "candidate_native_execution_scope": "The retained candidate/reference fields describe the historical pre-small-stub builds, which were not executed. The small_stub observations are also historical. See final_loader_corrected_reconstruction for the final source-bound candidate and both reviewed executions.",
   "complete_inventory_comparison": "interrupted_after_independent_primary_raw_mismatch",
   "complete_inventory_failure": {
     "error": "KeyboardInterrupt",
@@ -118,13 +118,16 @@
   },
   "current_dxmt_regression": {
     "passed": true,
-    "passed_count": 513,
+    "passed_count": 522,
+    "record_sha256": "90008c12ab6d93473fa89c97addec1e8a209c5a17b2a05bffb836b63ce2e75bf",
     "skipped": 8,
-    "tests": 521
+    "tests": 530
   },
-  "current_native_adapter_sha256": "3b3c89ebe71b14069280eb0287edf20c3303212dbf3c462bbffb33d0e6ed452d",
+  "current_native_adapter_sha256": "4a32002cb9fdb7750c8cc8e7412e22038a8e03c64566f9496638dd892e5fcb44",
   "current_targeted_regression": {
     "full_regression": "passed_521_tests_eight_skips",
+    "historical": true,
+    "observed_on": "2026-10-04",
     "passed": true,
     "skipped": 8,
     "tests": 149
@@ -227,6 +230,64 @@
       "primary_error": 0
     }
   },
+  "final_loader_corrected_reconstruction": {
+    "comparison_sha256": "4826b4f957187cc51b740fb7652247b2387e3dcab2f08a207840761a808ed4e8",
+    "compiler_rebuild": "unperformed",
+    "complete_unsigned_entries": 2878,
+    "completed_on": "2026-10-05",
+    "construction_sha256": "0a70442b761bbd2292467b71d4042e90d1b4d4ea2ecf4aedaa88feb0ee6ba8e7",
+    "distribution_qualified": false,
+    "dxmt_tests": {
+      "conditional_skips": 8,
+      "passed": 522,
+      "tests": 530
+    },
+    "fex_execution": "unperformed",
+    "game_qualified": false,
+    "loader_build_sha256": "ac845ea04a80096be20e2057efa38339d5dd3576a3b78d23d39c949fa29f95e6",
+    "loader_patch_sha256": "8ab5deb0cf144e8c50f02fe2353613ec33123e558525904476dfa9f10264541f",
+    "loader_two_fresh_outputs_equal": true,
+    "loader_unsigned_sha256": "06113536af8b594fe19aa84c33d783b323ba53265d346d438c362f0bc29def79",
+    "native_images": 39,
+    "normalization": "none",
+    "original_loader_object_and_link_reproduced": true,
+    "reconstruction_complete": true,
+    "reproduction_sha256": "be94089919d2314e08ae4482db292d150632a40cdb8f8dffebb122ea1ac2c556",
+    "runs": [
+      {
+        "captured_streams": 20,
+        "case_sha256": "486d6d95562c13458b92b0f22ae13da638de905ecb30d6f35d08c3b38deb57a8",
+        "diagnostics_review_sha256": "0c75a1c51d61a6ec61780a6db709657b0f28f88dd8de3f51394a116d17bbedda",
+        "evidence_sha256": "48439a8decc0b4dae1a4252574f030a11c8da24c4020c03a09c383c76662a959",
+        "index": 1,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "owned_cleanup_complete": true,
+        "physical_lifetime_balanced": true,
+        "run_sha256": "8f0dde9e0edc97b5732c1359ebdb47c209e8158a3f59268cd11ce2cca6630436",
+        "sentinel_survived": true,
+        "server_exit_code": 0
+      },
+      {
+        "captured_streams": 20,
+        "case_sha256": "0ff34b628c3720ef768067c8d3a20d06ce08083fdec525cba13d27130a34ca01",
+        "diagnostics_review_sha256": "b3f27a7d08090051d9c59d54e7470bf708327d084f298907e52827e539a58963",
+        "evidence_sha256": "48439a8decc0b4dae1a4252574f030a11c8da24c4020c03a09c383c76662a959",
+        "index": 2,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "owned_cleanup_complete": true,
+        "physical_lifetime_balanced": true,
+        "run_sha256": "c1a19033a79fb95c4f54d9e323b06d91146b5f78bd90f008b5ec1d353081ee21",
+        "sentinel_survived": true,
+        "server_exit_code": 0
+      }
+    ],
+    "runtime_eligible": false,
+    "runtime_sha256": "df705e39476503bdab716332c84965c836b3ea4c2d64a0190b9bdec7b5c4bd81",
+    "second_machine": "unperformed",
+    "translated_d3d": "unperformed"
+  },
   "first_thread_exit_capture": {
     "acknowledged_detach": true,
     "attempted_wine_cases": 1,
@@ -306,6 +367,22 @@
     "wine_cleanup_complete": true
   },
   "game_qualified": false,
+  "historical_native_adapter_sha256": "3b3c89ebe71b14069280eb0287edf20c3303212dbf3c462bbffb33d0e6ed452d",
+  "historical_pre_loader_regressions": {
+    "dxmt": {
+      "passed": true,
+      "passed_count": 513,
+      "skipped": 8,
+      "tests": 521
+    },
+    "observed_on": "2026-10-04",
+    "targeted": {
+      "full_regression": "passed_521_tests_eight_skips",
+      "passed": true,
+      "skipped": 8,
+      "tests": 149
+    }
+  },
   "linker_reproducibility_probe": {
     "preflight_attempt1": "failed_before_linker_execution_due_to_install_name_parsed_as_file",
     "qualification": false,
@@ -665,7 +742,7 @@
     ]
   },
   "new_recipe_full_build": "two_fresh_builds_passed",
-  "observed_on": "2026-10-04",
+  "observed_on": "2026-10-05",
   "pre_link_option_dxmt_regression": {
     "passed": true,
     "skipped": 8,
@@ -693,7 +770,7 @@
     "unequal_bytes": 552,
     "uuid_bytes": 16
   },
-  "reconstruction_complete": false,
+  "reconstruction_complete": true,
   "record_kind": "dxmt_current_reconstruction_checkpoint",
   "reference": {
     "artifacts": [
@@ -803,6 +880,7 @@
     ],
     "passed": true
   },
+  "retained_history_scope": "Earlier candidate/reference, comparison, small_stub and diagnostic records remain unchanged historical observations; final_loader_corrected_reconstruction is the current completion result.",
   "schema_version": 1,
   "selected_native_link_option": "-Wl,-objc_stubs_small",
   "small_stub_candidate": {
@@ -1694,5 +1772,5 @@
     "termination_capture_sha256": "bcb97235a73e3fe3b3df69ba0ee7a70c59b017df42545b87f40f870d87e0299e",
     "wine_cleanup_complete": true
   },
-  "work_gate": "required_native_verification_failed_after_case33_exit_capture_observed_only_normal_completion_root_cause_unknown"
+  "work_gate": "stage5_complete_final_loader_corrected_two_ordinary_runs_reviewed_and_replayed"
 }

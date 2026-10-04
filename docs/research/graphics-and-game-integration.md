@@ -225,3 +225,15 @@ AIR bytes; that compiler result is not a shader workload or renderer result.
 Two current complete builds, strict unsigned comparison and fresh native
 execution on their final candidate remain required. Historical execution cannot
 be transferred to changed runtime bytes or signing identities.
+
+
+## October 5, 2026: Final component reconstruction
+
+The [Stage 5 report](../../mydocs/working/task_m1_7_stage5.md) records a complete
+2,878-entry exact unsigned comparison, a separately reconstructed ARM64 loader
+reservation correction and two source-bound 39-case ordinary native runs with
+reviewed diagnostics and physical cleanup. The loader correction resolves the
+captured low-address Foundation failure class for this selected route. It does
+not turn the compiled ARM64X DLLs into executed translated Direct3D evidence.
+#5/#6 and #8 retain their CPU and graphics execution qualifications; Steam,
+Megabonk, performance and ordinary-user distribution remain unqualified.

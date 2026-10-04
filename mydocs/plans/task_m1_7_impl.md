@@ -3,7 +3,7 @@
 Task plan: [`task_m1_7.md`](task_m1_7.md)
 GitHub Issue: [#7](https://github.com/postmelee/pear/issues/7)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stages 1–3 are implemented; actual results are in their stage reports. The requester explicitly approved Stage 4 on October 3, 2026; its typed-driver implementation and finite native verification are complete and recorded in the Stage 4 report. The requester explicitly approved Stage 5 continuation on October 3, 2026; reconstruction and its required verification remain in progress.
+Prepared October 2, 2026. The requester approved the task plan. The requester approved this implementation plan and Stage 1 on October 2, 2026. Stages 1–3 are implemented; actual results are in their stage reports. The requester explicitly approved Stage 4 on October 3, 2026; its typed-driver implementation and finite native verification are complete and recorded in the Stage 4 report. The requester explicitly approved Stage 5 continuation on October 3, 2026. Stage 5 reconstruction and its required verification completed on October 5, 2026; see the Stage 5 and final technical reports.
 
 ## Applicable Context and Reuse
 
@@ -1833,3 +1833,557 @@ open. Neither another unchanged pass-seeking run nor replacing the original
 receipt with this diagnostic is authorized by this result. Further corrective
 work needs a concrete related defect or useful evidence of the incomplete exit;
 the user's continuing authorization does not relax the acceptance predicates.
+
+### 2026-10-05: Continued Investigation Without Publication Stops
+
+The requester explicitly directed continued work until completion and stated
+that committing/pushing results is unnecessary. This supersedes stopping after
+one inconclusive diagnostic; it does not change the acceptance predicates.
+Proceed with evidence-driven diagnostics and corrections, preserving each
+failed or inconclusive experiment instead of repeating tests to obtain a pass.
+
+The next diagnostic moves exit-only observation to the Wine server so that
+loader, ntdll, PE fixture and graphics images remain byte-identical to the
+ordinary candidate. Reuse the existing bounded errno-preserving recorder and
+retained native build recipe; reproduce the server link and two source objects
+before adding records at kill_thread, kill_process, terminate_process and its
+request handler. Include target/client identifiers and caller-relative addresses
+to distinguish server-requested termination from connection loss. No hot request
+trace, debugger, rendezvous, delay, security setting or new entitlement is added.
+One case per preparation; preserve first failure and inspect its cause before
+choosing another experiment. Existing native lock, four-GiB output cap, eight-
+GiB free reserve, current signature/profile admission and owned cleanup apply.
+This is private Wine-source diagnostic reuse, not a #5 integration change.
+
+### 2026-10-05: System-Thread Fault Attribution and Bounded Stack Capture
+
+Server-only exit instrumentation reproduced the 33-row destroy_acquire failure
+with the original ntdll, PE fixture and graphics bytes. The exact original
+server link and two affected source objects reproduced before instrumentation.
+The server received terminate_process with STATUS_ACCESS_VIOLATION from a
+system thread (no Unix guest-thread identity), then terminated the fixture's
+registered guest thread. The loader's OS exit code was zero despite the fatal
+request. A second case with err+seh enabled reproduced this sequence and emitted
+send_debug_event's system-thread access-violation message. This establishes a
+fatal system-thread exception behind the silent exit; it does not identify an
+invalid object's owner or justify a production correction.
+
+Case receipts: 48efc971aee815b4190f663126346006fa36da18d00c516fd4407cba7b4dd0e6
+and 25634ec0d00940d77414ed871e46542d4700ea9cde75a2d94c99a0b820947637.
+Private evidence: .build/task7/stage5-server-exit1/execution1 and execution2.
+Original/diagnostic inventories and current signature/profile/identity admission
+passed before and after each case; all 20 streams and owned cleanup/sentinel
+checks passed. These changed-server cases are nonqualifying.
+
+A live sample reproduced the same failure and captured the failed process's
+binary-image map, but no call graph before exit. Matching the fault address to
+that map and the locally loaded image's LC_UUID identifies
+libswiftCore.dylib, UUID 7669D858-D332-36C7-9C6C-4564FFBEA8D2, image offset 0xbca0,
+as _swift_release_dealloc + 48. Cross-process raw shared-cache addresses have
+different slides and cannot be used directly. No caller or invalid-object
+identity was captured. Case: 15c2ec41b6bf5ea7a8e5cf3e3f9864d378652df421bc2d47dc459a276420da31,
+under .build/task7/stage5-live-sample1. An NSZombieEnabled diagnostic completed
+normally and does not exclude an object-lifetime defect.
+
+A separate server variant preserves errno and waits at most 30 seconds only
+after the matching fatal request, allowing an owned sample/debugger to capture
+stacks before termination. It adds no pre-fault wait and no new client byte
+changes. Three initial variants and a subsequent fixed three-case batch using
+the standalone server all completed 39 rows without a fatal request. A combined
+live/post-fault sample also completed normally. None qualify the ordinary gate.
+The next single diagnostic embeds the same hold server in an independent
+original-layout bundle, removing the standalone-server path difference. All
+client native images except the bundle signature remain original; signing uses
+the existing claims and no new entitlement. No #5 source or checkout is changed.
+
+Storage refused stage5-fault-sample-batch1 before execution. It remains preserved.
+Space subsequently recovered externally; stage5-fault-sample-batch2 ran with its
+fixed maximum of three and stopped at exhaustion. A first archival script failed
+before changing evidence because Python lacked os.listxattr. The corrected
+archiver stored the three completed stage5-server-hold2 execution prefixes in
+per-case prefix-archive.tar.gz files, validating every regular-file hash, size,
+mode, ownership and symlink target against the original before reclaiming file
+contents. Original file/directory inodes, links, permissions and xattrs remain;
+per-case prefix-archive.json records original identities and restoration.
+Restore file contents in place and recorded timestamps before any prefix-based
+inspection. No formal/runtime/build/comparison evidence or raw logs were removed.
+
+Continue causal diagnosis within the requester's existing authorization. Stage 5
+and #7 remain incomplete until the required ordinary verification, reconstruction
+finalization/replay and handoff are actually satisfied. Committing or pushing is
+not a prerequisite to continuing this work under the requester's instruction.
+
+### 2026-10-05: Closure-Focused Reassessment
+
+The requester asked to reassess the purpose and shortest completion path. #7
+owns source-derived graphics artifacts and verified Wine/Metal pairing, not
+Megabonk, general Wine stability or a general-purpose debugger. Fresh builds 7/8
+and the 2,878-entry exact comparison already satisfy the construction evidence;
+retain them while their inputs remain valid. Stage 4's 39-case success remains
+historical evidence, but does not substitute for changed final linker artifacts.
+The repeated incomplete final-candidate path is a real remaining pairing blocker.
+
+The immediate discriminator is the caller of the captured Swift release fault.
+Window-only and Metal boundary controls already completed without reproducing;
+do not repeat those or add broad debugger infrastructure. One private fatal-only
+ntdll thread-object diagnostic records saved registers, at most 32 guarded frame
+reads and best-effort symbolization after raw records. Raw capture has bounded
+output, no heap allocation and no unsafe direct frame dereference; symbolization
+may acquire dyld locks and remains best-effort under the existing finite runner
+timeout. It adds no wait/log on the normal execution path. The original thread
+object and ntdll link reproduce exactly before adding this diagnostic. Controls
+verify mapped/unmapped frames, fixed records and errno preservation; preparation
+compile refusals are retained. This is diagnostic evidence only, never a passing
+final-candidate substitute. The existing signature claims remain unchanged.
+
+After a concrete correction, rebuild only affected components, revalidate exact
+comparison and run the declared two-case ordinary verification, stopping at its
+first failure. Then finalize/replay reconstruction, complete the scoped #8
+handoff and Stage 5 report. Unchanged LLVM/shader/tool builds, game tests and
+commit/push work are not needed to make progress. A proposal to change required
+pairing scope needs evidence and requester review; relocating the incident or
+counting diagnostic passes cannot waive the current failure. Do not extend the
+completion target to arbitrary scheduler safety or all historical Wine defects.
+
+The single fatal-context diagnostic completed all 39 rows without triggering
+the exception recorder. Before/after current admission and all 20 raw streams,
+cleanup and sentinel checks passed. The ordinary assessor correctly refused
+unbound_loaded_image. No failing stack or production correction resulted.
+Case SHA-256: 76f044c4bf305be18e32629f89bb4f78edc1edf17a289a69f1d4d254f77ceed8.
+Retain .build/task7/stage5-fault-context1; this case does not qualify Stage 5.
+The closure reassessment must not count another instrumented pass as progress
+on the failed ordinary gate.
+
+
+### 2026-10-05: Captured Failing Main-Thread Stack
+
+One changed-server diagnostic reproduced the original 33-row failure after
+restricting PEAR_EXIT_CAPTURE_RELEASE to the server environment. Earlier hold
+controls had also passed this diagnostic variable to the loader and therefore
+did not preserve that part of the failed launch. This single observation does
+not establish why the environment difference changes reproduction.
+
+The original client ntdll, PE fixture and graphics bytes remained unchanged.
+A fatal-only server hold allowed an owned /usr/bin/sample capture. The main
+thread was inside AppKit window layout, SwiftUI image environment comparison,
+Foundation Locale equality, destruction of LocalePreferences and Swift reference
+release. The Wine guest thread was inside NtUserDestroyWindow/WindowPosChanged,
+waiting for OnMainThread. This identifies a caller chain; it does not establish
+an Apple defect, exclude prior corruption or prove that Metal is unrelated.
+
+Case SHA-256: 06c1fdfc974250fb9140025c82d32fa525e57d26d947e78c3dfbff3429cce2fc.
+Sample SHA-256: 1cacb166ab5894a372ea48607e2bd16207ab00a10d819d2afbe76734175714a6.
+Private evidence: .build/task7/stage5-server-only-hold1. Current admission before
+and after, all 20 raw streams, owned cleanup and sentinel survival passed.
+The changed-server launch remains nonqualifying.
+
+Reuse decision: the next discriminator is a small private Swift/Foundation
+Locale equality probe, using Foundation's native public language interface and
+the existing api-launch 4KB exec helper. No Wine or Metal code is present in the
+probe. Run the same signed executable once at its default page size and once
+in 4KB mode, with current per-executable provisioning/signature verification,
+finite output/time and owned cleanup. This is diagnostic isolation only; it
+cannot replace the ordinary 39-observation pairing gate. The first preparation
+attempt was refused by the signing command allowlist before compilation or
+execution; retain it and use a dedicated bounded compiler invocation.
+
+
+### 2026-10-05: Foundation and Window Isolation Results
+
+The private Foundation probe emitted all comparison/terminal markers at native
+16KB and 4KB user-page modes, with successful translation queries returning zero.
+Its result serializer sampled exit_code before the supervisor reaped the child,
+so both recorded exit codes are null. Preserve that limitation; do not reconstruct
+an unrecorded code or repeat only to obtain a pass. Cleanup/reaping and complete
+streams were recorded. Result: d11448b93f4a23fcf409d742d9ca5d51c784e098b487f1a5c3f8d16e422679ac
+under .build/task7/stage5-locale2. The initial preparation refusal remains in
+stage5-locale1.
+
+A separate minimal Foundation/AppKit probe created, resized, laid out and closed
+a titled window in both native page modes. Both captured post-reap exit zero,
+terminal markers, complete streams and cleanup. Current exact executable and
+helper signature/profile/device/identity admission passed before and after.
+Result: cd553d86d6a1abd59c0d38a988644581090d747b23c4065872b0f340b703794d
+under .build/task7/stage5-appkit1. These probes use isolated HOME directories and
+public Foundation/AppKit APIs, not the Wine loader environment or full pairing.
+They do not prove framework correctness under all pairing inputs.
+
+The private Wine window-only PE then bypassed every Metal pairing call and
+processed messages for a bounded ten 50ms waits after creation and resize.
+It completed creation, resize, destruction, guest terminal and OS exit zero;
+all 20 streams, current admission, owned cleanup and sentinel checks passed.
+Case: e74a1e24c2c175413c57a1d2ebb5accda1d59aaef8588de769420af610524a4d
+under .build/task7/stage5-window-layout1. Its PE and server differ from the
+ordinary gate; absence of failure cannot exclude a layout/timing-sensitive bug.
+
+The next single private case combines the already built fatal-context recorder
+with the server-only post-fault hold, retaining original full pairing calls.
+It seeks the saved invalid-object registers; it is not an ordinary qualification
+retry. No new entitlement or production change is introduced.
+
+Verified archival reclaimed completed diagnostic prefix contents from all three
+stage5-fault-sample-batch2 attempts, stage5-fault-context1/execution1 and
+stage5-window-layout1. Each per-case tar and index passed every regular-file
+hash/size, mode, owner and link check before truncation; original inodes and
+attributes remain. Restore contents in place before prefix-dependent inspection.
+The final candidate, complete-build evidence and raw logs remain unchanged.
+
+
+### 2026-10-05: Fault Registers and Locale Value Storage
+
+The combined context/server-only hold case reproduced 33 rows and the captured
+Foundation/SwiftUI failure. Saved x0 identified the object passed to Swift
+release; x16 was a small invalid metadata address. Both the saved fault address
+and the UUID-bound instruction agree with the metadata-relative read. This
+records invalid metadata, not yet the writer or a proven use-after-free.
+Case: 9f5e7dc8d9767b060edd8d686d930055f42dba023f29d989e774c0e9f197c121
+under .build/task7/stage5-context-hold1.
+
+A private extension uses bounded mach_vm_read_overwrite calls only on that
+fatal path to capture the object and selected saved value buffers. The next
+single case reproduced the same failure. The LocalePreferences buffer contains
+the invalid object's pointer at offset 8; the following words encode its locale
+and region. Current upstream Swift Foundation declares the optional languages
+array at that position; this is a source-informed field attribution, not an
+assertion that current upstream source exactly matches the installed framework.
+The object's leading word is a small invalid value and its later words are zero.
+A freed allocation is a hypothesis requiring allocation/free history.
+Case: b01e1c41298f3311711149bfa7e3da689db58b4246b170ad341cef828014eb16
+under .build/task7/stage5-fault-memory1/execution1. Both cases passed current
+before/after admission, all 20 streams, owned cleanup and sentinel checks;
+both remain nonqualifying. Raw memory is private and must never be committed.
+
+Reuse the installed malloc(3)/malloc_history(1) documented
+MallocStackLoggingNoCompact facility only in the owned loader process. A single
+fatal-triggered query targets the captured address, with bounded execution and
+output and no new entitlement. Keep stack logs in the private case directory.
+An initial attempt was refused by the storage preflight before output creation
+or execution. Archive only completed diagnostic prefixes with verified exact
+restoration before retrying preparation; do not weaken the free-space reserve.
+
+
+### 2026-10-05: Independent Foundation Reproduction and Proposed Loader Repair
+
+The single allocation-history diagnostic reproduced the failure. Its address-
+filtered malloc_history shows a 64-byte Swift array buffer allocated by
+LocalePreferences.apply during AppKit's locale prewarming, then freed by
+Locale.== / LocalePreferences destruction, with the captured fatal release
+subsequently referencing that same freed address. No intervening allocation at
+that address appears after this array's free. This establishes a use-after-free
+in the captured path; malloc history alone does not identify the missing retain.
+Case: e74bfcf46908ca532c818e985db0273c7afc37f1b4ec9d14b62111dae87f524a.
+History: e4fd6e3e26f26eeb5d5fc8d42b0b1ade44def56a309abed47867c7b52a5adcdf.
+Private root: .build/task7/stage5-malloc-history1.
+
+Swift's published ARM64 Darwin ABI defines the least valid heap pointer as
+0x100000000, reserving lower pointer representations for extra inhabitants.
+The failed buffer is below that boundary. Pinned Wine's ARM64 loader uses a
+64KB PAGEZERO with layout emulation and omits the existing x86_64 early zero-fill
+reservation path, allowing framework allocations below 4GB before Wine's later
+virtual_init reservation. This is a concrete host-layout incompatibility
+candidate, not a Metal ownership correction.
+
+Independent native reproduction uses Foundation only, no Wine, Metal or guest
+code. With Wine-like link layout, actual 4KB mode and the same user HOME as the
+failed loader, the first Locale.current equality comparison terminated with
+SIGSEGV (-11), after reporting two preferred languages and a sub-4GB allocation.
+With identical Swift source, user locale and 4KB mode, default native link layout
+completed 100 comparisons and terminal/OS exit zero, with malloc above 4GB.
+Source SHA-256: 20891b6ca51ea68ca22004ea05090a83111fe675eaa5ccbe057b23b2a9841658.
+Low-layout result: f8055285e60430e8149c752f87cc2fdd330321a31e5e15a155eb8a1016a5ed88.
+Default-layout result: 7a0f03de688e09c05e7760469263552ab282915fce50322caca66a58002d6b7c.
+Both have current per-executable admission and owned cleanup. The default-layout
+control removes the three layout flags together; a prepared narrower control
+keeps emulation and segment alignment and changes PAGEZERO alone to 4GB.
+Earlier isolated-HOME probes passed and did not read this same locale input.
+The first low-layout attempt's 16KB direct launch failed observation setup;
+its child was reaped but observation gap/cleanup failure is preserved. It is
+neither the successful control nor the SIGSEGV reproduction above.
+
+Reuse proposal: adapt pinned Wine loader/main.c's existing zero-fill reserved
+regions to ARM64, retaining the 64KB null guard, moving native loader text above
+the low 8GB region and handing that exact reserved range to Wine virtual_init.
+This preserves low guest addresses while preventing early native heap objects
+there. A private loader-only candidate will first verify original object/link
+reproduction, exact non-PIE segment layout and current signed native execution.
+This does not rewrite or substitute the allocator and adds no signing claims.
+
+Integration boundary: runtime/dxmt/AGENTS.md assigns graphics supplements to #7
+and loader/memory integration to #5. No tracked loader source has changed.
+Read-only inspection found #5's active changes in its FEX construction work;
+its loader baseline still has the same missing ARM64 reservation. Do not modify
+its worktree or immutable #4 series. The concrete shared-loader fix and delivery
+owner need requester review before tracked cross-task integration. Meanwhile,
+prepare and verify the isolated diagnostic candidate under the existing #7
+failure-investigation authorization. The shared lock was occupied by #5's
+source38 build; preserve that work and wait rather than running concurrently.
+
+Primary source: https://github.com/swiftlang/swift/blob/main/stdlib/public/SwiftShims/swift/shims/System.h
+(ARM64 Darwin least-valid-pointer constant; current upstream reference, not an
+identity claim for every installed runtime byte).
+
+
+### 2026-10-05: ASLR-preserving ARM64 reservation candidate
+
+The requester explicitly continued the loader repair investigation. The narrower
+Foundation control retained layout emulation and 4KB alignment, changing only
+PAGEZERO to 4GB; it completed all 100 comparisons and exited zero. A 4GB PAGEZERO
+is a diagnostic control, not a deliverable fix: XNU raises the VM map minimum to
+that boundary, making required low guest addresses unavailable.
+
+The first private Wine-style 8GB reservation candidate built, but Apple ld ignored
+-no_pie on ARM64; its layout was not executed. A PIE Foundation variant using
+explicit low segment placement was rejected by dyld for segment VM order. A
+naturally ordered 8GB variant then failed dyld shared-cache mapping. Preserve all
+three failures; x86_64 layout constants cannot be copied unchanged onto ARM64.
+
+The next candidate preserves PIE, the existing 64KB PAGEZERO, 4KB alignment and
+emulation layout. Its naturally ordered zero-fill segment follows native data
+and reserves 4GB minus 64KB. This stays below the ARM64 shared cache while moving
+early native heap allocations above 4GB. XNU extends PAGEZERO by the image slide,
+so PIE does not leave an early-allocation hole before the image. Reuse Wine's
+existing reservation handoff and PROT_NONE remapping, with actual slid addresses;
+retain x86_64's original separate top-down region only on x86_64. No ASLR disabling,
+allocator interposition, framework modification or new entitlement is involved.
+
+The Foundation candidate completed the same 100 current-locale comparisons,
+fixed-locale comparison and terminal with exit zero. Actual execution was native
+ARM64, 4KB user pages and 16KB kernel pages; its observed malloc address was above
+4GB. Current executable/helper/profile admission before and after and owned
+cleanup passed. Result: 96e3931c76f614c758578bdb9e4b792e710b7185f0568fda63084cfa7e8aaab6,
+private root .build/task7/stage5-locale-reserve3. This is mechanism validation,
+not ordinary pairing or game qualification.
+
+A loader-only candidate under .build/task7/stage5-loader-reserve2 reproduces the
+original main.o and loader link exactly before applying the isolated source
+change. Candidate inspection confirms ARM64, MH_PIE, the 64KB null guard, ordered
+nonoverlapping segments and a zero-file-byte 4GB-minus-64KB reservation. Keep
+-no_huge and -no_fixup_chains explicit in this diagnostic. The next operation
+copies only this loader into an independent original-runtime bundle, signs under
+the same existing claims, revalidates all 39 native images before and after, and
+runs the unchanged ordinary pairing runner and original PE. No hold server,
+debugger, diagnostic ntdll or loader environment change is selected. This private
+candidate still needs source-bound production integration and final evidence;
+it cannot substitute for the final reconstruction receipt.
+
+The shared native lock was occupied when bundle preparation was attempted;
+those refusals occurred before output creation. Preserve #5's work and serialize.
+No tracked loader source or #5 worktree was changed.
+
+Primary references: Apple's XNU bsd/kern/mach_loader.c PAGEZERO handling and
+installed ld(1) layout options; pinned Wine loader/main.c reservation implementation.
+https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/mach_loader.c
+
+
+### 2026-10-05: Loader-only repair passed the original pairing protocol
+
+The isolated runtime changed only Contents/MacOS/wine. All original PE, server,
+ntdll, graphics, helper and other native bytes were retained. With the ordinary
+runner, original environment and fresh synthetic prefix, all 39 native rows,
+physical lifetime counts, PE terminal, loader/server exit zero, 20 complete
+streams, owned cleanup and sentinel survival passed. Current grant and all 39
+native-image checks passed before and after. Private case SHA-256:
+e140139707aa2652ef3c767fb1bd876b196a88cad3b07b8de88496fcd925a0c1.
+This is a concrete repair validation, still not a final source-bound receipt.
+
+Continue within the requester's standing authorization to finish Stage 5 and
+its plan's explicit allowance for necessary shared Wine changes. Root owns this
+isolated dependency correction and handoff; #5's active translator worktree and
+historical #4 patch series remain untouched. Store the standalone ARM64 loader
+patch under runtime/wine/patches/ and a narrow source-bound build adapter under
+tools/dxmt/. Do not append it to the immutable historical series or relabel it as
+a graphics patch. #5 must integrate this shared loader dependency on the agreed
+Wine baseline; its unrelated FEX/native execution remains separately unqualified.
+
+Reuse the existing exact-context Wine patch reader, bounded command runner,
+source/configuration readers, signing/profile/image admission and full ordinary
+pairing/evidence readers. Build only the changed loader in two fresh small
+outputs, require exact unsigned equality and inspect PIE/null guard/segment
+coverage. Retain original object and linker reproduction as controls. Extend
+native materialization by one explicitly source-bound loader origin; preserve
+all existing runtime predicates and graphics build identities. Create fresh
+native/runtime/comparison records for changed producer identities, retaining old
+records and snapshots. Reuse graphics builds 7/8 without recompiling unchanged
+shader/LLVM/Metal inputs. Run the already approved two ordinary final cases on
+these source-bound bytes, stopping on failure. Review every stream and replay
+construction and native evidence independently before the Stage 5 report.
+
+Only the affected loader/source-binding tests and required final DXMT suite,
+governance/link checks and diff check are selected. Native pairing includes the
+actual low shared-user-data mapping, null guard, native processes, PE publication,
+window lifecycle and physical deallocation regressions. Additional Wine checks
+are needed only if this integration changes wider Wine behavior. Product-document
+edits use the already approved dxmt-build.md and wine-host.md locations; task
+records stay in existing mydocs locations. Commits, pushes, PR publication and
+Issue closure remain outside this completion request.
+
+
+### 2026-10-05: Final source-bound loader construction and verification
+
+The production patch adds fail-closed handling if the ARM64 PROT_NONE remap
+fails; x86_64 behavior stays in its existing branch. The original loader object
+and linker output reproduce exactly. Two fresh source-built loader outputs also
+match exactly, including linker-generated signature bytes. The selected unsigned
+loader SHA-256 is 06113536af8b594fe19aa84c33d783b323ba53265d346d438c362f0bc29def79.
+The independent loader record is .build/task7/stage5-loader-final3/loader.json.
+Two preceding preparations failed before compilation: the generated Makefile
+exceeded a default reader limit, then its separate dependency-only target row
+was mistaken for a second recipe. Both failures are preserved; the reader now
+uses the explicit size bound and selects the unique recipe-bearing target.
+
+The native materializer replaces only the source-bound loader origin and retains
+all original image/profile/permission/code-origin checks. The complete unsigned
+comparison also replaces the loader in each entire Wine payload with the actual
+first and second new outputs respectively, binding the separate loader proof.
+An earlier comparison was deliberately interrupted before completing when this
+missing final-payload coverage was noticed; it remains a failed, unselected
+record. No graphics output was recompiled or difference normalized.
+
+The final portable DXMT suite completed 530 tests with 8 conditional skips;
+522 tests passed. A preceding full-suite attempt exposed only an import-alias
+collision in the added test; isolated source loading corrected the test and the
+full suite passed. Logs and exact selected source hashes are retained under
+.build/task7/stage5-loader-portable-final. These are portable results, not native
+qualification. The final runtime has 39 signed native images and awaits its
+mandatory live admission and two ordinary executions.
+
+Four completed diagnostic prefixes (malloc-history1, loader-reserve2/execution1,
+server-only-hold1 and combined-sample1) were archived with exact byte/mode/owner/
+symlink verification before reclaiming regular-file contents. Original inodes,
+xattrs, metadata and raw logs remain; restore in place before prefix-dependent
+inspection. Existing final runtime/build/failure records and other tasks were
+not removed. This preserves the stricter 8GiB free reserve for the final batch.
+
+
+### 2026-10-05: Final runtime admission and pre-execution failure
+
+The final loader-corrected runtime prepared successfully, including 39 current
+native image admission checks. Runtime receipt SHA-256:
+df705e39476503bdab716332c84965c836b3ea4c2d64a0190b9bdec7b5c4bd81.
+The first batch stopped before creating a pairing output or launching Wine:
+its unchanged preflight raised POSIX EBADF (9). Preserve the failure under
+.build/task7/stage5-reserved-verification1; result SHA-256:
+31f55d62304489f25ed324d6d6bb70d4ed3c2c786b97c08542de3f79748270a2. This is not a native pairing observation or success.
+
+A separate structural-only replay, with no source/input change or native
+launch, subsequently passed. Result SHA-256: 98d9a779d47b579a9e4b9c8bf54a905d0b7330a42d81217c3a0f90c8e3d7629e.
+The EBADF origin remains unknown because the first CLI retained only its public
+error code. A new batch preserves exception tracebacks while invoking the exact
+same native adapter and runner; all predicates, current admission, original
+39-case protocol and storage bounds remain unchanged. The first batch executed
+zero native cases, and the new batch still permits at most two ordinary cases,
+with first-run review before the second and stop on failure. Shared lock
+contention with #5's active source43 build is respected; no owner is interrupted.
+
+
+Primary-source citation closure, reviewed October 5: Swift System.h at
+74aa30e19573bed00d196cad64ffda2730c51b0c, content SHA-256
+f76c7851e2e687abca2310b000b7bf37ce1ca5fb7444052a3bd1ed4fbaf21078,
+lines 140–143 defines the Darwin ARM64 4GB least-valid-pointer boundary.
+XNU mach_loader.c at f6217f891ac0bb64f3d375211650a4c1ff8ca1ea,
+content SHA-256 91d94460c47479afcbf76f2c36265fde3a0bdfc39f37cf77f528cbec4cd327e3,
+lines 2377–2414 extends PAGEZERO for PIE and raises the map minimum. The final
+guide uses these exact revisions. They support the source-level mechanism;
+the installed framework/kernel identity is established only by this host's
+recorded observations, not inferred from an upstream main branch.
+
+
+### 2026-10-05: First final ordinary run and explicit raw review
+
+The source-bound first run completed all 39 observations, PE terminal, loader
+and server exit zero, physical 3-view/3-layer/1-proxy deallocation, all 20 stream
+EOF/hash checks and owned cleanup/sentinel survival. Current admission passed
+before and after execution. Case SHA-256:
+486d6d95562c13458b92b0f22ae13da638de905ecb30d6f35d08c3b38deb57a8.
+Root read the full native rows and nonfixture stdout/stderr, with all event
+streams checked by the original protocol assessor. Three expected Wine working-
+directory notices and twelve source-attributed Metal validation-enabled notices
+were accepted; no error or unknown warning was observed. Immutable review SHA:
+0c75a1c51d61a6ec61780a6db709657b0f28f88dd8de3f51394a116d17bbedda.
+
+The separate review is authored from those exact receipts and logs; the existing
+complete evidence reader independently replays every original predicate. A
+redundant preliminary review-context export is unnecessary. After explicit raw
+review, that pure replay can run alongside the second ordinary run's preflight:
+only the second owns the native lock, neither changes the first evidence or
+runtime bytes, and both independent evidence results remain mandatory before
+finalization. This changes scheduling only, not required checks or acceptance.
+
+
+Handoff freshness check, October 5: read-only inspection of #5's current
+Source47 plan and worktree preserves its active local changes. Its ABI3 owner
+metadata observation ran, but all twelve initializer proofs, the complete
+256-KiB aggregate and actual FEX initialization remain open. Its observed zero
+additional 1-MiB protection leaves and available view slots belong to that
+process and do not qualify the loader-corrected combined candidate. The #7
+handoff therefore retains explicit low-map/MAP_JIT/vprot/file_view revalidation,
+without changing #5's budget or worktree. #5's next signing operation waits on
+the shared lock; #7 releases it after the second run's required post-admission.
+
+
+Final Issue read, October 5: #7 remains the P07 reproducible ARM64EC DXMT/native
+Metal component task, with three unchanged acceptance criteria: a clean complete
+versioned artifact set and architecture/dependency reports; documented and
+verified Wine driver exports/winemetal pairing; and no compatibility claim based
+only on compilation or upstream artifacts. Its relevant #1/#4 prerequisite
+receipts are replayed by the selected construction/runtime verification chain.
+The observed GitHub state is OPEN, and its checkboxes have not been edited.
+Technical completion is being verified locally without GitHub mutation.
+
+
+### 2026-10-05: Both final ordinary runs and evidence replays passed
+
+The second fresh-prefix run also passed every original 39-case check, PE
+terminal, loader/server exit zero, physical lifetime, 20 complete streams,
+owned cleanup and sentinel survival, with current admission before and after.
+Case SHA-256: 0ff34b628c3720ef768067c8d3a20d06ce08083fdec525cba13d27130a34ca01.
+Root explicitly reviewed its complete native rows and nonfixture diagnostics:
+three expected Wine path notices and twelve registered validation-enabled notices,
+with no validation error or unknown warning. Immutable review SHA-256:
+b3f27a7d08090051d9c59d54e7470bf708327d084f298907e52827e539a58963.
+
+Both independent evidence invocations returned finite_native_scope_complete=true
+and metal_api_validation=reviewed_no_errors. Their identical finite summary
+bytes have SHA-256 48439a8decc0b4dae1a4252574f030a11c8da24c4020c03a09c383c76662a959;
+each invocation's separate receipt binds its own distinct review/run/case data.
+The shared native lock is released and no further native cases are selected.
+Final construction/native binding and independent reconstruction replay are
+still running/pending; this checkpoint alone does not claim Stage 5 completion.
+
+
+### 2026-10-05: Stage 5 completion
+
+The source-bound final loader/runtime passed both predeclared ordinary runs,
+all 39 native cases, actual physical lifetime, terminal and cleanup requirements.
+Every captured stream was explicitly reviewed into immutable private records.
+The complete unsigned comparison includes the real first/second corrected
+loader and all 2,878 entries match; the final reconstruction passed independent
+complete replay. The Stage 5 report and final technical report map all three
+Issue acceptance criteria to these exact observations. The daily board is Done.
+Existing source, failed outputs and diagnostic archives remain retained.
+No commit, push, PR, merge or Issue closure was performed. FEX, translated D3D,
+Steam, Megabonk, performance and ordinary-user distribution remain unqualified.
+
+
+### 2026-10-05: Publication, Issue closure and storage cleanup authorized
+
+After reviewing the completed result, the requester explicitly instructed the
+next steps through Issue closure and storage recovery. This supersedes the
+earlier commit/push hold. Preserve Stage history, publish codex/publish-task7
+to master, inspect required CI and merge before closing #7. Integrate current
+master while retaining other tasks' documents. The approved #14 four-line
+temporary-root handoff may be integrated after checking its exact before hashes;
+only the affected synthetic tests need revalidation because runtime producer
+bytes and native artifacts remain unchanged. Record integration separately.
+
+Cleanup is limited to this task's completed diagnostic scratch. Reuse the
+existing exact-content tar verification and inode-preserving archival procedure,
+with explicit candidate paths, completed cleanup, no live users and the shared
+nonblocking native lock. Preserve raw logs, manifests, profiles, original failures,
+all current source/build/runtime/run evidence, and reusable compiler/shader
+inputs. Keep the retained #7 checkout at its original path: #5 signing-reuse
+tests directly refer to its source and receipts bind absolute paths. After merge,
+detach this evidence checkout, delete merged work/publication branches, and
+update the primary master without touching its unrelated untracked files.
+Document actual savings and restoration obligations in the existing report and
+a private cleanup receipt. No new official documentation location is required.

@@ -336,3 +336,18 @@ is not a new build of every Wine module. #5/#6 still own FEX, translated context
 CHPE loading and x64 execution, and #8 owns the eventual translated D3D11 tests.
 No game, general rendering or ordinary-user distribution result follows from
 these component observations.
+
+
+## October 5, 2026: ARM64 native heap reservation dependency
+
+Task #7 isolated a Foundation/Swift low-address lifetime failure and completed
+its final native pairing with a source-built loader correction. The independent
+[loader patch](../../runtime/wine/patches/0004-arm64-native-heap-reservation.patch)
+reuses Wine's zero-fill reservation before framework initialization, preserving
+PIE, the 64KiB null guard and guest-address availability. It remains separate
+from #4's historical 23-patch series. See the [DXMT contributor handoff](dxmt-build.md#october-5-loader-handoff-to-5-and-8)
+for its common baseline, required link flags, source/output hashes and exact
+finite verification. #5 must integrate and revalidate affected low mappings,
+MAP_JIT and metadata admission on its combined candidate; #7 does not qualify
+FEX, translated context or its allocation budget. Earlier #4 observations remain
+historical and are not retroactively expanded by this correction.

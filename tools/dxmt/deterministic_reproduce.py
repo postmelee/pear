@@ -17,7 +17,7 @@ import sys
 from types import SimpleNamespace
 
 HERE=Path(__file__).resolve().parent
-NATIVE_SOURCE_PIN='3b3c89ebe71b14069280eb0287edf20c3303212dbf3c462bbffb33d0e6ed452d'
+NATIVE_SOURCE_PIN='4a32002cb9fdb7750c8cc8e7412e22038a8e03c64566f9496638dd892e5fcb44'
 
 
 def capture_native_source(root):
@@ -67,9 +67,9 @@ COMPLETE_FIELDS={'schema_version','record_kind','scope','construction_ref','prod
                  'reconstruction_complete','normalization','runtime_eligible','game_qualified','distribution_qualified',*UNPERFORMED}
 
 
-def native_adapter(repo,constructor_root):
+def native_adapter(repo,constructor_root,loader_reservation=None):
     need(native.bounded_source(HERE,'deterministic_native.py')==NATIVE_SOURCE,'native_executed_source_changed')
-    return native.adapter(repo,constructor_root,executed_native_sha=NATIVE_SOURCE_PIN)
+    return native.adapter(repo,constructor_root,executed_native_sha=NATIVE_SOURCE_PIN,loader_reservation=loader_reservation)
 
 
 def encoded(value):return native.encoded(value)
@@ -129,6 +129,23 @@ def source_signature(value,adapter):
     return native.digest(encoded({'predecessor_source_signature':base,'recipe':semantic,
         'qualification_ref':value['qualification_ref'],'constructor_sources':value['constructor_sources']}))
 
+def loader_inventory_views(adapter,before,after,origins):
+    if adapter.loader_root is None:return before,after,origins
+    proof=adapter.loader_module.verify(adapter.loader_root,adapter,Path(origins['baseline_root']))
+    result=[];name='wine/lib/wine/aarch64-unix/wine'
+    for entries,side in [(before,'first'),(after,'second')]:
+        rows=[dict(row)for row in entries];matches=[row for row in rows if row['path']==name]
+        need(len(matches)==1 and matches[0]['kind']=='file'and
+             matches[0]['sha256']==proof['inputs']['install/lib/wine/aarch64-unix/wine']['sha256'],
+             'det_reproduction_loader_baseline')
+        matches[0].update(proof['outputs'][side+'/wine']);result.append(rows)
+    origin=dict(origins,loader_reservation={'build_ref':adapter.loader_reference(),
+        'reference_output':'first/wine','candidate_output':'second/wine',
+        'replaced_path':name,'license':'LGPL-2.1-or-later',
+        'reuse':'pinned Wine loader/main.c zero-fill reservation'})
+    return result[0],result[1],origin
+
+
 def views(adapter,left_root,right_root):
     left=adapter.pair.verify_build(left_root,repo=adapter.repo)
     right=adapter.pair.verify_build(right_root,repo=adapter.repo)
@@ -141,6 +158,9 @@ def views(adapter,left_root,right_root):
     before,origin_before=inventory(left_root,left,repo=adapter.repo)
     after,origin_after=inventory(right_root,right,repo=adapter.repo)
     same(origin_before,origin_after,'det_reproduction_origins_changed')
+    before,after,origin_before=loader_inventory_views(adapter,before,after,origin_before)
+    if adapter.loader_root is not None:
+        signature=native.digest(encoded({'graphics_signature':signature,'loader':adapter.loader_reference()}))
     compare=adapter.capture.load('tools/dxmt/compare.py')
     comparison=compare.compare_entries(before,after)
     return left,right,before,after,origin_before,comparison,signature
@@ -299,14 +319,14 @@ def main(argv=None):
     parser.add_argument('--repo',required=True);parser.add_argument('--constructor-root',required=True)
     choices=parser.add_mutually_exclusive_group(required=True)
     for name in ('construct','compare','verify-construction','complete','verify'):choices.add_argument('--'+name,action='store_true')
-    parser.add_argument('--artifact');parser.add_argument('--qualification');parser.add_argument('--reference')
+    parser.add_argument('--artifact');parser.add_argument('--qualification');parser.add_argument('--reference');parser.add_argument('--loader-reservation')
     parser.add_argument('--candidate');parser.add_argument('--output',required=True);parser.add_argument('--native-evidence')
     parser.add_argument('--max-growth-bytes',type=int,default=2*1024**3)
     parser.add_argument('--reserve-free-bytes',type=int,default=4*1024**3)
     parser.add_argument('--require-empty',action='store_true');parser.add_argument('--require-complete',action='store_true')
     args=parser.parse_args(argv)
     try:
-        with native_adapter(args.repo,args.constructor_root)as adapter:
+        with native_adapter(args.repo,args.constructor_root,args.loader_reservation)as adapter:
             if args.construct or args.compare:
                 need(args.reference and args.candidate and args.require_empty,'det_reproduction_compare_arguments')
                 result=constructor(args,adapter)
