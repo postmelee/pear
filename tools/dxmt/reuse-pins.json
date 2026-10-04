@@ -1,0 +1,23 @@
+{
+  "files": {
+    "tools/dxmt/build.py": "283e52d5d2f9a42d403624370537e8bf4ebe1859a75a5436d57a90975e8ef144",
+    "tools/dxmt/build_native.py": "decbf173ec806def181133111fa0536e4d125516cf4ea633bb5c82a080f68765",
+    "tools/dxmt/check.py": "8df6d31ee085c7251d206ce833105e549e593e3538ca484d127c925623836728",
+    "tools/dxmt/common.py": "3593e8e2a80d535143e2baae7e945ce90918520711993848dc33355d9dac0e75",
+    "tools/dxmt/inspect.py": "745af80e22f33c7170788c08d6d8286d1d7f49c1681fcb34b949874862d85a7f",
+    "tools/dxmt/pairing_build.py": "e01e6a7eca5616c708ce182a64f97134217439c95a417cbd6a40214cd2fd3689",
+    "tools/dxmt/pairing_check.py": "52b941a49b02833202d255fccbe3028d7429c5f1d56a2430a722d55d1a664d6d",
+    "tools/dxmt/pairing_monitor.py": "78751b39e38b9323c39e36df1ba64d6f5a17b2ea07090b3c8a58306c54753a52",
+    "tools/dxmt/pairing_reuse.py": "8f8204e739a9e2698d08147465474b842c9601d86a926f96b3f2cbb1c5375746",
+    "tools/dxmt/pairing_source.py": "390cc6028608d27e143f2b001ecd1737eaf5aa316d7e7877bcc0b16a8ec9f30d",
+    "tools/dxmt/prepare.py": "340e6b23c243419888b88fa05fbb01af8a0d03f9db13f62a3cfa2ac164d5e95f",
+    "tools/dxmt/tools.py": "149a3bae6d88874eba0e91cf2911e48a0c81105d0460a325c6b1244b2b1d1040",
+    "tools/dxmt/verify.py": "31ecb907f1c69ba7ea89b777d06aef55f37b6de555351b0d1d4242ae7da69df0",
+    "tools/sources/validate_inventory.py": "a851ee6978002a4e45934b91e4abdfe0151d73178e862e45b2b0824a4e0b3710",
+    "tools/wine/common.py": "5c2789ca3392f70f93c5ae0656e803c0f8a01d4cc1c1d2622e8af0014690e171",
+    "tools/wine/prepare.py": "d01f104cbf49b373eeec2799d79b975523fba2960d0b92d723e5e37cdc11de50",
+    "tools/wine/toolchain.py": "760e701e79337635c6c8ae77fc607d4ee550932cd04c419540e44f5a9e2cb597"
+  },
+  "record_kind": "dxmt_deterministic_predecessor_pins",
+  "schema_version": 1
+}

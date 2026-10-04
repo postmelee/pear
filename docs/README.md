@@ -12,6 +12,7 @@
 - [Source qualification](source-qualification.md): reproduced public-source pins, the complete blocked audit, contributor verification commands and remaining Wine/FEX/DXMT port/build gates.
 - [Host capability diagnostics](host-capabilities.md): reproduce native host probes and understand their declared development-configuration evidence and limits.
 - [Wine host development](development/wine-host.md): exact component build, development authorization and finite native fixture reproduction; FEX, game and distribution gates remain open.
+- [DXMT build and Wine Metal pairing](development/dxmt-build.md): pinned graphics construction, deterministic reconstruction commands and finite native evidence boundaries.
 - [Build diagnostics](development/build-diagnostics.md): attribute build time, investigate selected Ninja targets and preserve final verification requirements.
 - [Apple technical guidance](development/apple-tooling.md): select relevant pinned Metal expertise, check tool availability and preserve evidence boundaries.
 

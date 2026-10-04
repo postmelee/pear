@@ -1,0 +1,1776 @@
+{
+  "candidate": {
+    "artifacts": [
+      {
+        "path": "wine/objects/dlls/winemac.drv/winemac.so",
+        "sha256": "f007b17d438511ec2780979dec47c244cb457c0dca930b77574d29b44ec55f4a",
+        "size_bytes": 857080
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/unix/winemetal.so",
+        "sha256": "32a92976caad05ce287ab82ce0821325acc00929d3d91b0ae19c03f7c03f6c33",
+        "size_bytes": 47178688
+      },
+      {
+        "path": "wine/objects/dlls/winemac.drv/aarch64-windows/winemac.drv",
+        "sha256": "a8d319a89c609af6dd55e0e2f5007f476964f73c033ca71414c01cace085ccf6",
+        "size_bytes": 917504
+      },
+      {
+        "path": "dxmt/objects/src/d3d11/d3d11.dll",
+        "sha256": "964b7b930c8e9996814677a54802941bbc7b16d452857cf2b50b06fd44ebb059",
+        "size_bytes": 9105408
+      },
+      {
+        "path": "dxmt/objects/src/dxgi/dxgi.dll",
+        "sha256": "29d200f35b64f45a8b77794c13bf5f95682afc143c96a1607e3c2a2ed08ec445",
+        "size_bytes": 2895872
+      },
+      {
+        "path": "dxmt/objects/src/d3d10/d3d10core.dll",
+        "sha256": "05058e9e1f5144a62e87f652d0856ee6619b737a3d223879a083491cc42f06df",
+        "size_bytes": 2383872
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/winemetal.dll",
+        "sha256": "9f4c198f33b936c9079c73152b1621a720b272e5c57036e3b0513c45f9889714",
+        "size_bytes": 212992
+      },
+      {
+        "path": "fixtures/pear-metal-pairing-arm64.exe",
+        "sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "size_bytes": 7680
+      }
+    ],
+    "build_record_sha256": "20942faa35582f0990041a98e1dfbf68f22b8cc85105e487d952f3cc9b7aebfe",
+    "commands": [
+      {
+        "elapsed_ms": 16337,
+        "exit_code": 0,
+        "id": "wine.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 16188,
+        "exit_code": 0,
+        "id": "wine.driver",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1621,
+        "exit_code": 0,
+        "id": "fixture.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 8853,
+        "exit_code": 0,
+        "id": "dxmt.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 71065,
+        "exit_code": 0,
+        "id": "dxmt.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1634,
+        "exit_code": 0,
+        "id": "builtin.d3d11.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1630,
+        "exit_code": 0,
+        "id": "builtin.dxgi.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1665,
+        "exit_code": 0,
+        "id": "builtin.d3d10core.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1638,
+        "exit_code": 0,
+        "id": "builtin.winemetal.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1555,
+        "exit_code": 0,
+        "id": "dxmt.install",
+        "stop_reason": null
+      }
+    ],
+    "passed": true
+  },
+  "candidate_native_execution_performed": false,
+  "candidate_native_execution_scope": "The retained candidate/reference fields describe the historical pre-small-stub builds, which were not executed. The small_stub observations are also historical. See final_loader_corrected_reconstruction for the final source-bound candidate and both reviewed executions.",
+  "complete_inventory_comparison": "interrupted_after_independent_primary_raw_mismatch",
+  "complete_inventory_failure": {
+    "error": "KeyboardInterrupt",
+    "operator_reason": "Avoid remaining expensive replay after independently established raw artifact inequality; prioritize bounded link diagnosis.",
+    "phase": "independent_two_product_replay",
+    "sha256": "972c4b539a930711939520273a2a437d53d63ef2a5d60e6b1a70acf7678d800f"
+  },
+  "current_dxmt_regression": {
+    "passed": true,
+    "passed_count": 522,
+    "record_sha256": "90008c12ab6d93473fa89c97addec1e8a209c5a17b2a05bffb836b63ce2e75bf",
+    "skipped": 8,
+    "tests": 530
+  },
+  "current_native_adapter_sha256": "4a32002cb9fdb7750c8cc8e7412e22038a8e03c64566f9496638dd892e5fcb44",
+  "current_targeted_regression": {
+    "full_regression": "passed_521_tests_eight_skips",
+    "historical": true,
+    "observed_on": "2026-10-04",
+    "passed": true,
+    "skipped": 8,
+    "tests": 149
+  },
+  "dedicated_session_exit_path_review": {
+    "captured_producers_verified": 39,
+    "case_sha256": "25fc223ab323916fe18b88082921ea36d99e5c334591039c4903c2a9a448e7cd",
+    "cleanup_signal_after_pre_cleanup_ns": 1062885291,
+    "first_thread_abort_observed": false,
+    "loader_guest_or_process_exit_events": 0,
+    "native_rows": 33,
+    "new_native_runs": 0,
+    "next_diagnostic_approval": "pending",
+    "production_changed": false,
+    "qualification": false,
+    "raw_streams_verified": 20,
+    "review_kind": "source_and_retained_evidence_only",
+    "reviewed_on": "2026-10-04",
+    "root_cause": "unknown",
+    "server_termination_request_observed": false,
+    "source_findings": [
+      "nonfinal abort_thread bypasses process-exit breakpoints",
+      "server zero-cookie wakeup is another abort_thread entry",
+      "per-thread server teardown does not require server-process exit",
+      "NtTerminateProcess event follows server call completion"
+    ],
+    "source_sha256": {
+      "dlls/ntdll/unix/process.c": "ade5a827d570e305efec238108ff3a178ea8d231592564073dc5d51dec85f050",
+      "dlls/ntdll/unix/server.c": "14b0d54d74a7c992ceebeb57c2fec2b05ca53bfa8b9ef698b126d06d77c76617",
+      "dlls/ntdll/unix/signal_arm64.c": "c3ce004e3bae9e86f49e2613fb14bdf54cf055f7293c3a9d0149107bd6dc788a",
+      "dlls/ntdll/unix/thread.c": "8ad51c83cfab8a30c844a9e90032e3cd89092e1c4b56ca80ed18908709192b24",
+      "server/process.c": "a1c55d2d93beff1cd762174390554ca0c5c1ea1b7e6da289b247136b05e29438",
+      "server/thread.c": "56b3493c9e65fc52af26a910fb207553286888f120452b98148f74b1c1e12fe7"
+    }
+  },
+  "distribution_qualified": false,
+  "exit_only_diagnostic": {
+    "batch_exhausted": true,
+    "build_sha256": "3d6bd40d66841874909a88e84cb70eea4d3153ccdca6fd38f2c2339ad27bff93",
+    "case_sha256": "dd7e39ab2891fbb9e60a767d66e656e97a9ac668d9011affdf6f4a1b75299b5e",
+    "cleanup_complete": true,
+    "current_input_signature_authorization_before_after": true,
+    "diagnostic_only_changed_paths": [
+      "Contents/MacOS/wine",
+      "Contents/Resources/runtime/lib/wine/aarch64-unix/ntdll.so",
+      "Contents/_CodeSignature/CodeResources"
+    ],
+    "failure_reproduced": false,
+    "free_bytes": 15603232768,
+    "guest_and_process_exit_observed": true,
+    "loader_exit_reasons": [
+      9,
+      9,
+      10
+    ],
+    "loader_exit_status": 0,
+    "log_review": {
+      "api_error_observed": false,
+      "counts": {
+        "api": 6,
+        "fallback": 3,
+        "gpu": 6
+      },
+      "exit_reason_counts": {
+        "10": 7,
+        "3": 2,
+        "7": 2,
+        "9": 14
+      },
+      "fault_or_sigquit_records": 0,
+      "unclassified": 0
+    },
+    "native_cases": 1,
+    "ordinary_verifier_refusal": "unbound_loaded_image",
+    "original_link_and_four_objects_raw_equal": true,
+    "physical_lifetime": {
+      "case_count": 39,
+      "created_layers": 3,
+      "created_proxies": 1,
+      "created_views": 3,
+      "deallocated_layers": 3,
+      "deallocated_proxies": 1,
+      "deallocated_views": 3,
+      "final_attachment_count": 0,
+      "final_lease_count": 0,
+      "physical_lifetime": "observed_balanced"
+    },
+    "qualification": false,
+    "record_kind": "pear_private_exit_reason_review",
+    "retained_bytes": 2472206336,
+    "review_sha256": "08adf041ea4c29586efb91ab87292eac7870e8a1f56bbd7eb9fca83a9558849d",
+    "reviewed_on": "2026-10-05",
+    "root_cause": "unknown",
+    "sentinel_survived": true,
+    "streams_verified": 20,
+    "terminal": {
+      "cleanup_error": 0,
+      "cleanup_flags": 7,
+      "completed_phases": 6,
+      "primary_error": 0
+    }
+  },
+  "final_loader_corrected_reconstruction": {
+    "comparison_sha256": "4826b4f957187cc51b740fb7652247b2387e3dcab2f08a207840761a808ed4e8",
+    "compiler_rebuild": "unperformed",
+    "complete_unsigned_entries": 2878,
+    "completed_on": "2026-10-05",
+    "construction_sha256": "0a70442b761bbd2292467b71d4042e90d1b4d4ea2ecf4aedaa88feb0ee6ba8e7",
+    "distribution_qualified": false,
+    "dxmt_tests": {
+      "conditional_skips": 8,
+      "passed": 522,
+      "tests": 530
+    },
+    "fex_execution": "unperformed",
+    "game_qualified": false,
+    "loader_build_sha256": "ac845ea04a80096be20e2057efa38339d5dd3576a3b78d23d39c949fa29f95e6",
+    "loader_patch_sha256": "8ab5deb0cf144e8c50f02fe2353613ec33123e558525904476dfa9f10264541f",
+    "loader_two_fresh_outputs_equal": true,
+    "loader_unsigned_sha256": "06113536af8b594fe19aa84c33d783b323ba53265d346d438c362f0bc29def79",
+    "native_images": 39,
+    "normalization": "none",
+    "original_loader_object_and_link_reproduced": true,
+    "reconstruction_complete": true,
+    "reproduction_sha256": "be94089919d2314e08ae4482db292d150632a40cdb8f8dffebb122ea1ac2c556",
+    "runs": [
+      {
+        "captured_streams": 20,
+        "case_sha256": "486d6d95562c13458b92b0f22ae13da638de905ecb30d6f35d08c3b38deb57a8",
+        "diagnostics_review_sha256": "0c75a1c51d61a6ec61780a6db709657b0f28f88dd8de3f51394a116d17bbedda",
+        "evidence_sha256": "48439a8decc0b4dae1a4252574f030a11c8da24c4020c03a09c383c76662a959",
+        "index": 1,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "owned_cleanup_complete": true,
+        "physical_lifetime_balanced": true,
+        "run_sha256": "8f0dde9e0edc97b5732c1359ebdb47c209e8158a3f59268cd11ce2cca6630436",
+        "sentinel_survived": true,
+        "server_exit_code": 0
+      },
+      {
+        "captured_streams": 20,
+        "case_sha256": "0ff34b628c3720ef768067c8d3a20d06ce08083fdec525cba13d27130a34ca01",
+        "diagnostics_review_sha256": "b3f27a7d08090051d9c59d54e7470bf708327d084f298907e52827e539a58963",
+        "evidence_sha256": "48439a8decc0b4dae1a4252574f030a11c8da24c4020c03a09c383c76662a959",
+        "index": 2,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "owned_cleanup_complete": true,
+        "physical_lifetime_balanced": true,
+        "run_sha256": "c1a19033a79fb95c4f54d9e323b06d91146b5f78bd90f008b5ec1d353081ee21",
+        "sentinel_survived": true,
+        "server_exit_code": 0
+      }
+    ],
+    "runtime_eligible": false,
+    "runtime_sha256": "df705e39476503bdab716332c84965c836b3ea4c2d64a0190b9bdec7b5c4bd81",
+    "second_machine": "unperformed",
+    "translated_d3d": "unperformed"
+  },
+  "first_thread_exit_capture": {
+    "acknowledged_detach": true,
+    "attempted_wine_cases": 1,
+    "bad_access_captured": false,
+    "batch_exhausted": true,
+    "before_after_bundle_and_current_admission_passed": true,
+    "breakpoints_sha256": "ceeba1548336a7fd731622d154247a337404d9a20b4c27d2ee5b99e71049d697",
+    "capture_describes_failed_formal_run": false,
+    "capture_sha256": "9cb0d4a9c6f874c5171971c79ac7a8f50858553981c65e9cf5e518fea04db1c7",
+    "captured_caller": "NtTerminateProcess",
+    "captured_function": "exit_process",
+    "case_sha256": "5071ace00467c872ea8a00ee240882489cdd352b09efa0fdb778a3bdfd93a611",
+    "debugger_cleanup_complete": true,
+    "debugger_outcome": "exit_path_captured",
+    "debugger_streams_verified": 4,
+    "diagnostic_log_review": {
+      "counts": {
+        "api": 6,
+        "fallback": 3,
+        "gpu": 6,
+        "rendezvous": 1
+      },
+      "reviewed_no_api_errors": true,
+      "shader_workload_qualified": false,
+      "unclassified_lines": 0
+    },
+    "exit_argument": 0,
+    "first_thread_abort_captured": false,
+    "fixture_rebuilt": false,
+    "free_bytes_after": 19176091648,
+    "full_provenance_replay_performed": false,
+    "log_review_initial_refusal": "review helper expected single path separators; exact comparison with retained known warning corrected before record creation",
+    "offline_api_check_initial_refusal": "hyphenated Python module name; renamed helper before native execution",
+    "ordinary_verifier_refusal": "pair_launch_changed",
+    "physical_lifetime": {
+      "case_count": 39,
+      "created_layers": 3,
+      "created_proxies": 1,
+      "created_views": 3,
+      "deallocated_layers": 3,
+      "deallocated_proxies": 1,
+      "deallocated_views": 3,
+      "final_attachment_count": 0,
+      "final_lease_count": 0,
+      "physical_lifetime": "observed_balanced"
+    },
+    "portable_ownership_tests_passed": 9,
+    "postflight_sha256": "b193d9b3d4e4feaf734e8ab2c01de286c24842812af3ab0a644d1b9a49d335ff",
+    "producer_sha256": {
+      "diagnostic_common.py": "0f62719d85947319b9e0719f32d695d9f70dcc28c22f78a8752e00ce7abd4474",
+      "pear_lldb_capture.py": "085af99b5f26b3aedf06d1b5fe1733a75385f514a251fa758b9e937cc169eadd",
+      "run_capture.py": "9e45290366b6ed2619e6f2d022426c668cb98d195baa1ab2051b75c8614ec27c",
+      "run_controls.py": "b18b7328e46dd1fb91866bd13ff29337d2a4509f9b8556ffda703a6b93ae8b28",
+      "test_controls.py": "54f5e1be2d4b0d4cc13b1f80931c93eb9bdc5bdd07bca2383f91fb78b696fcaf",
+      "test_handoff.py": "e0448b23d64422737a018fcdd8981359e0303ae108b6bb0956c79866b15bae56"
+    },
+    "qualification": false,
+    "raw_case_streams_verified": 20,
+    "record_kind": "pear_task7_first_thread_capture_review",
+    "retained_allocated_bytes": 1165398016,
+    "review_producer_sha256": "dd75036d2f81e95da08b4296770f5a459bb7fb8875affceaf029b4d941179920",
+    "review_sha256": "c6f1dbdb8c7cf7ab31c9b01830afa7db270f89d94367f11c9251dcd8c837f701",
+    "reviewed_on": "2026-10-04",
+    "root_cause": "unknown",
+    "runtime_changed": false,
+    "selected_thread_breakpoints_resolved": {
+      "abort_thread": 1,
+      "quit_handler": 1
+    },
+    "sentinel_survived": true,
+    "terminal": {
+      "cleanup_error": 0,
+      "cleanup_flags": 7,
+      "completed_phases": 6,
+      "primary_error": 0
+    },
+    "wine_cleanup_complete": true
+  },
+  "game_qualified": false,
+  "historical_native_adapter_sha256": "3b3c89ebe71b14069280eb0287edf20c3303212dbf3c462bbffb33d0e6ed452d",
+  "historical_pre_loader_regressions": {
+    "dxmt": {
+      "passed": true,
+      "passed_count": 513,
+      "skipped": 8,
+      "tests": 521
+    },
+    "observed_on": "2026-10-04",
+    "targeted": {
+      "full_regression": "passed_521_tests_eight_skips",
+      "passed": true,
+      "skipped": 8,
+      "tests": 149
+    }
+  },
+  "linker_reproducibility_probe": {
+    "preflight_attempt1": "failed_before_linker_execution_due_to_install_name_parsed_as_file",
+    "qualification": false,
+    "runtime_execution": false,
+    "selected_inputs_unchanged": true,
+    "trials": [
+      {
+        "inputs_after_sha256": "0dfcc6cff6985e616c50d6e107bd042f4e44e244553ad3b2834e2e409c72af05",
+        "inputs_before_sha256": "0dfcc6cff6985e616c50d6e107bd042f4e44e244553ad3b2834e2e409c72af05",
+        "inputs_unchanged": true,
+        "producer_sha256": "17b7a601c283c7eae1c83b11599841ed29c0af94a8fa67bd4bf3e31c9e4a4433",
+        "result_sha256": "094e23b78d9185e78ea633e6459cadb5a40ee7d9b01e48cffca16a6236ed1c72",
+        "results": [
+          {
+            "attempt": 1,
+            "elapsed_ms": 318,
+            "exit_code": 0,
+            "mode": "baseline",
+            "output_bytes": 47178688,
+            "output_sha256": "63ff47337db698dcabe33c2bb0ccab639e3e3944e2b892477ddf7606a58bbaa0",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 206,
+            "exit_code": 0,
+            "mode": "baseline",
+            "output_bytes": 47178688,
+            "output_sha256": "32a92976caad05ce287ab82ce0821325acc00929d3d91b0ae19c03f7c03f6c33",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 210,
+            "exit_code": 0,
+            "mode": "baseline",
+            "output_bytes": 47178688,
+            "output_sha256": "32a92976caad05ce287ab82ce0821325acc00929d3d91b0ae19c03f7c03f6c33",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 1,
+            "elapsed_ms": 210,
+            "exit_code": 0,
+            "mode": "reproducible",
+            "output_bytes": 47178688,
+            "output_sha256": "63ff47337db698dcabe33c2bb0ccab639e3e3944e2b892477ddf7606a58bbaa0",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 210,
+            "exit_code": 0,
+            "mode": "reproducible",
+            "output_bytes": 47178688,
+            "output_sha256": "63ff47337db698dcabe33c2bb0ccab639e3e3944e2b892477ddf7606a58bbaa0",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 212,
+            "exit_code": 0,
+            "mode": "reproducible",
+            "output_bytes": 47178688,
+            "output_sha256": "32a92976caad05ce287ab82ce0821325acc00929d3d91b0ae19c03f7c03f6c33",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          }
+        ],
+        "unique_hash_counts": {
+          "baseline": 2,
+          "reproducible": 2
+        }
+      },
+      {
+        "inputs_after_sha256": "f6cd19d2a5127788403474b843ad5bcc062eb4a619573a822c1223641205f0dc",
+        "inputs_before_sha256": "f6cd19d2a5127788403474b843ad5bcc062eb4a619573a822c1223641205f0dc",
+        "inputs_unchanged": true,
+        "producer_sha256": "801dffa146eaf55141817a62ffa94adfc9818ac8b7e14a9d5a39bdeecdd4dbd4",
+        "result_sha256": "b58bb55bb878ae39e9b0a4312de926f1ebe93ad09d7c52514a6ecdfb2c9112d0",
+        "results": [
+          {
+            "attempt": 1,
+            "elapsed_ms": 316,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 208,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 230,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 1,
+            "elapsed_ms": 213,
+            "exit_code": 0,
+            "mode": "no_deduplicate",
+            "output_bytes": 47178688,
+            "output_sha256": "32a92976caad05ce287ab82ce0821325acc00929d3d91b0ae19c03f7c03f6c33",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 212,
+            "exit_code": 0,
+            "mode": "no_deduplicate",
+            "output_bytes": 47178688,
+            "output_sha256": "63ff47337db698dcabe33c2bb0ccab639e3e3944e2b892477ddf7606a58bbaa0",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 202,
+            "exit_code": 0,
+            "mode": "no_deduplicate",
+            "output_bytes": 47178688,
+            "output_sha256": "32a92976caad05ce287ab82ce0821325acc00929d3d91b0ae19c03f7c03f6c33",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 1,
+            "elapsed_ms": 419,
+            "exit_code": 0,
+            "mode": "classic",
+            "output_bytes": 44563408,
+            "output_sha256": "ececb3fceaa1b78073db7b9f025ab79e1830fd53542486102027b156a16e1862",
+            "stderr_sha256": "1cd75518981192f3dd227588819c0d0bfc67abb64d7f742fece74ef321f3efd7",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 523,
+            "exit_code": 0,
+            "mode": "classic",
+            "output_bytes": 44563408,
+            "output_sha256": "caeabf0af9c0755b274c96bfa6f1d0c0cad51d81a5de21133c3324e31a037fd1",
+            "stderr_sha256": "7746b22d350cebc2e8e6873eb9ca3eed733f88ab8a68376a1bafc63af397b76e",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 547,
+            "exit_code": 0,
+            "mode": "classic",
+            "output_bytes": 44563408,
+            "output_sha256": "caeabf0af9c0755b274c96bfa6f1d0c0cad51d81a5de21133c3324e31a037fd1",
+            "stderr_sha256": "1cd75518981192f3dd227588819c0d0bfc67abb64d7f742fece74ef321f3efd7",
+            "stop_reason": null
+          }
+        ],
+        "unique_hash_counts": {
+          "classic": 2,
+          "no_deduplicate": 2,
+          "small_stubs": 1
+        }
+      },
+      {
+        "inputs_after_sha256": "0dfcc6cff6985e616c50d6e107bd042f4e44e244553ad3b2834e2e409c72af05",
+        "inputs_before_sha256": "0dfcc6cff6985e616c50d6e107bd042f4e44e244553ad3b2834e2e409c72af05",
+        "inputs_unchanged": true,
+        "producer_sha256": "4615ecb197d0e02e27754b3bc4ea6bf7cf7fd6c30cde3e5f654f4f048d7a2ccb",
+        "result_sha256": "e2df2bee837086c6b9bfe9b439659cdf18fec9f791fef66299faa794f074ce3a",
+        "results": [
+          {
+            "attempt": 1,
+            "elapsed_ms": 419,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "91759d6e1a3d0bb176db59baf373644b197c4cf973c643c161c462b9c245b89c",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 314,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "11477d1a227622aa3a3cf42cbec94fa0d76c8c536c75b628f629ae70d269effd",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 318,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "11477d1a227622aa3a3cf42cbec94fa0d76c8c536c75b628f629ae70d269effd",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 4,
+            "elapsed_ms": 319,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "91759d6e1a3d0bb176db59baf373644b197c4cf973c643c161c462b9c245b89c",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 5,
+            "elapsed_ms": 317,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "11477d1a227622aa3a3cf42cbec94fa0d76c8c536c75b628f629ae70d269effd",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 6,
+            "elapsed_ms": 424,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "11477d1a227622aa3a3cf42cbec94fa0d76c8c536c75b628f629ae70d269effd",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 7,
+            "elapsed_ms": 437,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "91759d6e1a3d0bb176db59baf373644b197c4cf973c643c161c462b9c245b89c",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 8,
+            "elapsed_ms": 419,
+            "exit_code": 0,
+            "mode": "explicit_objc",
+            "output_bytes": 47178688,
+            "output_sha256": "91759d6e1a3d0bb176db59baf373644b197c4cf973c643c161c462b9c245b89c",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 1,
+            "elapsed_ms": 414,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 2,
+            "elapsed_ms": 418,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 3,
+            "elapsed_ms": 315,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 4,
+            "elapsed_ms": 207,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 5,
+            "elapsed_ms": 425,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 6,
+            "elapsed_ms": 315,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 7,
+            "elapsed_ms": 207,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          },
+          {
+            "attempt": 8,
+            "elapsed_ms": 314,
+            "exit_code": 0,
+            "mode": "small_stubs",
+            "output_bytes": 47162160,
+            "output_sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+            "stderr_sha256": "ac89c5e746261783714a9a1cfb59122d8558c08510466be5e80fc08aeb48bc6a",
+            "stop_reason": null
+          }
+        ],
+        "unique_hash_counts": {
+          "explicit_objc": 2,
+          "small_stubs": 1
+        }
+      }
+    ]
+  },
+  "new_recipe_full_build": "two_fresh_builds_passed",
+  "observed_on": "2026-10-05",
+  "pre_link_option_dxmt_regression": {
+    "passed": true,
+    "skipped": 8,
+    "tests": 518
+  },
+  "pre_link_option_wine_regression": {
+    "passed": true,
+    "skipped": 10,
+    "tests": 842
+  },
+  "primary_artifact_comparison": {
+    "all_differing_bytes_statically_attributed": true,
+    "analysis_sha256": "3b318fff609fb0b293a11b77f0efa555f5a36ee606888ea77bdf9d984f724f93",
+    "changed_code_directory_slots": 5,
+    "classification_sha256": "c21853b5a9000261f283541c610351b6d0d3e71d4a50bac17dabfd36f1c45800",
+    "compared": 8,
+    "different_path": "dxmt/objects/src/winemetal/unix/winemetal.so",
+    "equal": 7,
+    "generic_objc_msgSend_stub_instructions": 1,
+    "normalization_performed": false,
+    "objc_stub_instructions": 375,
+    "raw_equal": false,
+    "runtime_equivalence_qualified": false,
+    "signature_page_hashes_recomputed": true,
+    "unequal_bytes": 552,
+    "uuid_bytes": 16
+  },
+  "reconstruction_complete": true,
+  "record_kind": "dxmt_current_reconstruction_checkpoint",
+  "reference": {
+    "artifacts": [
+      {
+        "path": "wine/objects/dlls/winemac.drv/winemac.so",
+        "sha256": "f007b17d438511ec2780979dec47c244cb457c0dca930b77574d29b44ec55f4a",
+        "size_bytes": 857080
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/unix/winemetal.so",
+        "sha256": "63ff47337db698dcabe33c2bb0ccab639e3e3944e2b892477ddf7606a58bbaa0",
+        "size_bytes": 47178688
+      },
+      {
+        "path": "wine/objects/dlls/winemac.drv/aarch64-windows/winemac.drv",
+        "sha256": "a8d319a89c609af6dd55e0e2f5007f476964f73c033ca71414c01cace085ccf6",
+        "size_bytes": 917504
+      },
+      {
+        "path": "dxmt/objects/src/d3d11/d3d11.dll",
+        "sha256": "964b7b930c8e9996814677a54802941bbc7b16d452857cf2b50b06fd44ebb059",
+        "size_bytes": 9105408
+      },
+      {
+        "path": "dxmt/objects/src/dxgi/dxgi.dll",
+        "sha256": "29d200f35b64f45a8b77794c13bf5f95682afc143c96a1607e3c2a2ed08ec445",
+        "size_bytes": 2895872
+      },
+      {
+        "path": "dxmt/objects/src/d3d10/d3d10core.dll",
+        "sha256": "05058e9e1f5144a62e87f652d0856ee6619b737a3d223879a083491cc42f06df",
+        "size_bytes": 2383872
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/winemetal.dll",
+        "sha256": "9f4c198f33b936c9079c73152b1621a720b272e5c57036e3b0513c45f9889714",
+        "size_bytes": 212992
+      },
+      {
+        "path": "fixtures/pear-metal-pairing-arm64.exe",
+        "sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "size_bytes": 7680
+      }
+    ],
+    "build_record_sha256": "8298d615a47464b93defa223503abd2d1f9a6808bb47d4b34747883ec031bf01",
+    "commands": [
+      {
+        "elapsed_ms": 17382,
+        "exit_code": 0,
+        "id": "wine.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 16186,
+        "exit_code": 0,
+        "id": "wine.driver",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1674,
+        "exit_code": 0,
+        "id": "fixture.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 11409,
+        "exit_code": 0,
+        "id": "dxmt.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 77091,
+        "exit_code": 0,
+        "id": "dxmt.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1678,
+        "exit_code": 0,
+        "id": "builtin.d3d11.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1719,
+        "exit_code": 0,
+        "id": "builtin.dxgi.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1680,
+        "exit_code": 0,
+        "id": "builtin.d3d10core.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1698,
+        "exit_code": 0,
+        "id": "builtin.winemetal.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 2832,
+        "exit_code": 0,
+        "id": "dxmt.install",
+        "stop_reason": null
+      }
+    ],
+    "passed": true
+  },
+  "retained_history_scope": "Earlier candidate/reference, comparison, small_stub and diagnostic records remain unchanged historical observations; final_loader_corrected_reconstruction is the current completion result.",
+  "schema_version": 1,
+  "selected_native_link_option": "-Wl,-objc_stubs_small",
+  "small_stub_candidate": {
+    "artifacts": [
+      {
+        "path": "wine/objects/dlls/winemac.drv/winemac.so",
+        "sha256": "f007b17d438511ec2780979dec47c244cb457c0dca930b77574d29b44ec55f4a",
+        "size_bytes": 857080
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/unix/winemetal.so",
+        "sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+        "size_bytes": 47162160
+      },
+      {
+        "path": "wine/objects/dlls/winemac.drv/aarch64-windows/winemac.drv",
+        "sha256": "a8d319a89c609af6dd55e0e2f5007f476964f73c033ca71414c01cace085ccf6",
+        "size_bytes": 917504
+      },
+      {
+        "path": "dxmt/objects/src/d3d11/d3d11.dll",
+        "sha256": "964b7b930c8e9996814677a54802941bbc7b16d452857cf2b50b06fd44ebb059",
+        "size_bytes": 9105408
+      },
+      {
+        "path": "dxmt/objects/src/dxgi/dxgi.dll",
+        "sha256": "29d200f35b64f45a8b77794c13bf5f95682afc143c96a1607e3c2a2ed08ec445",
+        "size_bytes": 2895872
+      },
+      {
+        "path": "dxmt/objects/src/d3d10/d3d10core.dll",
+        "sha256": "05058e9e1f5144a62e87f652d0856ee6619b737a3d223879a083491cc42f06df",
+        "size_bytes": 2383872
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/winemetal.dll",
+        "sha256": "9f4c198f33b936c9079c73152b1621a720b272e5c57036e3b0513c45f9889714",
+        "size_bytes": 212992
+      },
+      {
+        "path": "fixtures/pear-metal-pairing-arm64.exe",
+        "sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "size_bytes": 7680
+      }
+    ],
+    "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
+    "commands": [
+      {
+        "elapsed_ms": 15879,
+        "exit_code": 0,
+        "id": "wine.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 15779,
+        "exit_code": 0,
+        "id": "wine.driver",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1528,
+        "exit_code": 0,
+        "id": "fixture.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 8661,
+        "exit_code": 0,
+        "id": "dxmt.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 70049,
+        "exit_code": 0,
+        "id": "dxmt.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1524,
+        "exit_code": 0,
+        "id": "builtin.d3d11.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1534,
+        "exit_code": 0,
+        "id": "builtin.dxgi.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1536,
+        "exit_code": 0,
+        "id": "builtin.d3d10core.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1533,
+        "exit_code": 0,
+        "id": "builtin.winemetal.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1545,
+        "exit_code": 0,
+        "id": "dxmt.install",
+        "stop_reason": null
+      }
+    ],
+    "passed": true,
+    "recipe_policy_version": 3,
+    "recorded_command_elapsed_ms_sum": 119568,
+    "timing_scope": "Same-host wrapper wall time and sum of monitored command elapsed times; not compiler CPU time or a general benchmark.",
+    "wall_elapsed_ms": 893511
+  },
+  "small_stub_complete_inventory_comparison": {
+    "both_inventory_digest": "b7c16fcbeaa9da509a02a381f3ae3bcb9853d8ddb64e7af1a5b89be23a58fe23",
+    "comparison_command_exit": 0,
+    "comparison_sha256": "fe3ea47e0bb77edbdfebe8c58f6153c238d58864522a655f345a1392f4734007",
+    "comparison_stdout_sha256": "f219baa0f8cf1c3ddcb4802f9deee7c11a56292ba62b77f4848fe3cdee51a2e6",
+    "construction_sha256": "edd1aa44435ab01e1a47e3c4b9715143865fe343e1613b0c2640bd2abcdfb1a8",
+    "differences": 0,
+    "directories": 77,
+    "entry_count": 2878,
+    "files": 2785,
+    "final_candidate_native_execution": "performed_failed",
+    "independent_replay": "passed",
+    "normalization": "none",
+    "raw_equal": true,
+    "symlinks": 16
+  },
+  "small_stub_current_native_preparation": {
+    "admission_receipt_sha256": "96b077716e18839eddf827987d5aaefb638ab0e6d63c865b2c25d0a2315fc76a",
+    "command_exit_code": 0,
+    "current_admission_commands": 163,
+    "distribution_qualified": false,
+    "elapsed_ms": 2255876,
+    "execution_performed": false,
+    "native_images": 39,
+    "passed": true,
+    "pe_images": 756,
+    "runtime_eligible": false,
+    "runtime_receipt_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+    "signing_commands": 199
+  },
+  "small_stub_final_verification": {
+    "all_emitted_statuses_and_facts_match": true,
+    "assessment_error": "pair_guest_exit_missing",
+    "assessment_sha256": "c1d6048ed2ba238132ec29403043c153efbed899fbbcadab8206c902a75183aa",
+    "attempted_ordinary_runs": 1,
+    "batch_stopped_on_first_failure": true,
+    "bundle_inventory_entries_unchanged": 2788,
+    "case_elapsed_ms": 6382,
+    "case_sha256": "25fc223ab323916fe18b88082921ea36d99e5c334591039c4903c2a9a448e7cd",
+    "cleanup_complete": true,
+    "current_admission_commands": 163,
+    "current_admission_passed": true,
+    "current_admission_sha256": "b7cdb0260c525fe6727cccdedf2d428ed356c572a95e76a65f6de12ea003224e",
+    "distribution_qualified": false,
+    "emitted_case_rows": 33,
+    "failed_receipt_sha256": "81596053d30f70759b3a022a03add5fb3baf86f38de377923a31893855beeb7b",
+    "formal_diagnostics_review": "unperformed_failed_case",
+    "game_qualified": false,
+    "incident_reference": "mydocs/troubleshootings/task_m1_7_initial_access_violation.md",
+    "last_emitted_case": "destroy_acquire",
+    "loader_exit_code": 0,
+    "loader_guest_exit_event_observed": false,
+    "loader_process_exit_event_observed": false,
+    "native_command_elapsed_ms": 1115783,
+    "native_command_exit_code": 1,
+    "original_access_violation_code_recurred": "not_observed",
+    "pe_terminal_record_emitted": false,
+    "planned_maximum_ordinary_runs": 2,
+    "postflight_receipt_sha256": "5bdac4cbd244198735cdd54b7b905a909f302ec0fa835d0e94c2dbe02d47f511",
+    "raw_stream_hashes_verified": 20,
+    "reconstruction_complete": false,
+    "record_kind": "pear_bounded_final_candidate_verification_observation",
+    "root_cause": "unknown",
+    "runtime_eligible": false,
+    "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+    "same_incomplete_observation_boundary_recurred": true,
+    "second_ordinary_run_performed": false,
+    "sentinel_survived": true,
+    "system_log_query_sha256": "643979c92c2f3814bc21e1ead18a6e26e86b1178e4d5000886c48596333e5eaa",
+    "system_log_root_cause_established": false
+  },
+  "small_stub_finite_native_run": {
+    "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
+    "case_elapsed_ms": 11158,
+    "case_sha256": "95fdf884fc593916ea4b4d6537f2eebffb43fca46e3d5b40d96b1115f5bf77d1",
+    "cleanup_complete": true,
+    "cleanup_errors": [],
+    "command_exit_code": 1,
+    "distribution_qualified": false,
+    "emitted_case_rows": 33,
+    "emitted_statuses_equal_expected": true,
+    "failed_receipt_sha256": "960e289a0b362c0ce09a42882aa97f917200d8f1965466b552fb202c1c62f951",
+    "formal_diagnostics_review": "unperformed",
+    "game_qualified": false,
+    "graphical_session_available": true,
+    "last_emitted_case": "destroy_acquire",
+    "loader_exit_code": 5,
+    "ordinary_arm64_pe_execution_performed": true,
+    "passed": false,
+    "pe_terminal_record_emitted": false,
+    "recorded_process_exit_status": "0xc0000005",
+    "remaining_case_rows": 6,
+    "root_cause": "unknown",
+    "runtime_eligible": false,
+    "sentinel_survived": true,
+    "wrapper_elapsed_ms": 1272378
+  },
+  "small_stub_lldb_diagnostic": {
+    "actual_loader_attach_observed": true,
+    "added_claim": "com.apple.security.get-task-allow",
+    "attach_receipt_sha256": "9b21a36662ca121dd633da5ce7773fe5c93b83f2bc828ac197d5189d0c40c1c1",
+    "attached_triple": "arm64-apple-macosx26.5.0",
+    "cases": [
+      {
+        "actual_case_elapsed_ms": 37356,
+        "assessment_error": {
+          "error": "pair_run_failed",
+          "type": "Error"
+        },
+        "case_error": null,
+        "case_sha256": "7765acfdd10697efffb2efdab2329ea5bae61936c74b3e6903048bb2489614ab",
+        "debugger_cleanup_errors": [],
+        "expected_rendezvous_timeout": true,
+        "fault_captured": false,
+        "index": 1,
+        "loader_exit_code": 96,
+        "native_rows": 27,
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "rendezvous-timeout-control",
+        "wine_cleanup_complete": true
+      },
+      {
+        "actual_case_elapsed_ms": 11910,
+        "assessment_error": {
+          "error": "pair_run_operation_failed",
+          "type": "Error"
+        },
+        "case_error": "pair_run_operation_failed",
+        "case_sha256": "4d4addb8d329a65faa43f12fb6bb0545dc2a3eeba24494e2a0fcfdc32c328027",
+        "debugger_cleanup_errors": [],
+        "fault_captured": false,
+        "index": 2,
+        "loader_exit_code": -15,
+        "native_rows": 27,
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-capture",
+        "wine_cleanup_complete": true
+      },
+      {
+        "actual_case_elapsed_ms": 22498,
+        "assessment_error": {
+          "error": "pair_run_operation_failed",
+          "type": "Error"
+        },
+        "case_error": "pair_run_operation_failed",
+        "case_sha256": "a5de5d1614ede2067eaf78383ac7b129cbb7d8e8d9e5dfe375265a8f61910ee3",
+        "debugger_cleanup_errors": [],
+        "fault_captured": false,
+        "index": 3,
+        "loader_exit_code": null,
+        "native_rows": 27,
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-capture",
+        "wine_cleanup_complete": false
+      }
+    ],
+    "changed_bundle_paths": [
+      "Contents/MacOS/wine"
+    ],
+    "distribution_qualified": false,
+    "fault_captured": false,
+    "game_qualified": false,
+    "independent_copy": true,
+    "kernel_source_review": {
+      "commit": "f6217f891ac0bb64f3d375211650a4c1ff8ca1ea",
+      "limitation": "source review, not exact running-kernel identity or direct observation of the initiating controller error",
+      "observation": "ptrace attach reparents the target; detach restores the saved parent",
+      "sha256": "3e9808305a454ade2f7a9eaba70e0f163e7c46f98f9655349063b3d13fc6519d"
+    },
+    "last_controller_failure_detail": "generic pair_run_operation_failed; initiating exception detail was not retained; later cleanup records owned_identity_unavailable and registered_exit_barrier_timeout",
+    "last_wine_cleanup_complete": false,
+    "native_images_verified": 39,
+    "original_current_admission_elapsed_ms": 1273951,
+    "original_failure_resolved": false,
+    "original_unchanged": true,
+    "post_run_registered_pid_audit": {
+      "exit_status_known": false,
+      "exited_zombies_observed": 1,
+      "live_processes_observed": 0,
+      "receipt_sha256": "0e0eb2c7f599e72156c055e9a7a4599f44b825907f4f30fed093c79d27cafbcf",
+      "system_reaping_observed": false
+    },
+    "preparation_passed": true,
+    "preparation_sha256": "4bb478cf28c9c70d3c70c1d137199a0857b218b4daac93aeb2bc05e84210e665",
+    "preserved_preflight_failures": [
+      "system Python AST descriptor mismatch before signing",
+      "diagnostic PE local buffer introduced unavailable __chkstk",
+      "immediate LLDB connection-state assertion before asynchronous connected event",
+      "installed SBUnixSignals has SetShouldSuppress rather than SetShouldPass"
+    ],
+    "proposed_handoff_native_execution": "unperformed",
+    "proposed_handoff_pure_tests_passed": 4,
+    "pure_controls_passed": 5,
+    "qualification": false,
+    "runtime_eligible": false,
+    "signing_and_verification_commands": 119,
+    "transport_and_debugger_cleanup_passed": true
+  },
+  "small_stub_lldb_handoff_followup": {
+    "control_executable_sha256": "2ab40225a53ebe7f208eacc10445074c2edb6ecacf41bc8326f12054efc9fd16",
+    "control_macho_cpu_type": 16777228,
+    "controls_receipt_sha256": "7332057b3014de2ac090f8371b820b524be28c2da5fa7db0e09beb5398ff3c46",
+    "current_diagnostic_admission_sha256": "34ffbdee1dc75203be708991805e69b16c1264c65970521f19a67fa30c6f5bd9",
+    "distribution_qualified": false,
+    "fault_captured": false,
+    "game_qualified": false,
+    "historical_cleanup_failure_remains_failed": true,
+    "layer_count_inference": "Both new normal exits observed one deallocated layer at case 33, as in the original failure. That count alone does not explain the failure; timing/lifetime defects are not excluded.",
+    "original_and_diagnostic_bundle_replay": "passed before and after Wine batch",
+    "original_failure_resolved": false,
+    "preserved_setup_failure": "direct Clang invocation omitted SDK root and failed before native execution; corrected using the actual selected Xcode SDK",
+    "qualification": false,
+    "runtime_eligible": false,
+    "small_native_controls": [
+      {
+        "cleanup_complete": true,
+        "debugger_outcome": "requested_detach",
+        "exit_code": 0,
+        "mode": "normal-detach",
+        "parent_handoff_observed": true,
+        "parent_restoration_observed": true,
+        "passed": true,
+        "result_sha256": "c4ac333a127f01a1769dfeeae7b4e4a901e39b785219ee3717991d007c38b9f1"
+      },
+      {
+        "cleanup_complete": true,
+        "debugger_outcome": "controller_cancelled",
+        "exit_code": 0,
+        "mode": "cancel-before-release",
+        "parent_handoff_observed": true,
+        "parent_restoration_observed": true,
+        "passed": true,
+        "result_sha256": "212b1e0cfad7fc4c432a14bf0443405be7e019fbede2429a2d798c20385cbef6"
+      },
+      {
+        "cleanup_complete": true,
+        "debugger_outcome": "inferior_exited",
+        "exit_code": 0,
+        "mode": "exit-while-traced",
+        "parent_handoff_observed": true,
+        "parent_restoration_observed": false,
+        "passed": true,
+        "result_sha256": "ccbb1a0a7c55b900f19381402ece3961c75d2d804dc4e7c845c7ef9336972e72"
+      }
+    ],
+    "wine_batch_sha256": "3a7cd0493d231fa6fe6b6da294e9438d44485e4583a99aa10ec55bb37a0d7059",
+    "wine_cases": [
+      {
+        "actual_case_elapsed_ms": 10639,
+        "all_owned_direct_children_reaped": true,
+        "assessment_error": {
+          "error": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_error": null,
+        "case_sha256": "4c11a32814cc70e81cd2f910d590071c1e4e75e63c4f487e8efa51792f95c8af",
+        "debugger_cleanup_complete": true,
+        "debugger_cleanup_errors": [],
+        "debugger_exit_status": 0,
+        "debugger_result_sha256": "9e3ced0988875f18f522c55bcff9f66d047e96f3f3c79fcebc7c184445e7f3f7",
+        "fault_captured": false,
+        "index": 1,
+        "layers_deallocated_at_case33": 1,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "native_statuses_and_facts_match": true,
+        "physical_lifetime_counts": [
+          3,
+          3,
+          3,
+          3,
+          1,
+          1
+        ],
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-handoff-capture",
+        "wine_cleanup_complete": true
+      },
+      {
+        "actual_case_elapsed_ms": 7624,
+        "all_owned_direct_children_reaped": true,
+        "assessment_error": {
+          "error": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_error": null,
+        "case_sha256": "50dc1359bfc5faffc219404c7ab66584aa2d93dba9cbc5154daa96a0d6535e91",
+        "debugger_cleanup_complete": true,
+        "debugger_cleanup_errors": [],
+        "debugger_exit_status": 0,
+        "debugger_result_sha256": "9e3ced0988875f18f522c55bcff9f66d047e96f3f3c79fcebc7c184445e7f3f7",
+        "fault_captured": false,
+        "index": 2,
+        "layers_deallocated_at_case33": 1,
+        "loader_exit_code": 0,
+        "native_rows": 39,
+        "native_statuses_and_facts_match": true,
+        "physical_lifetime_counts": [
+          3,
+          3,
+          3,
+          3,
+          1,
+          1
+        ],
+        "qualification": false,
+        "sentinel_survived": true,
+        "variant": "lldb-handoff-capture",
+        "wine_cleanup_complete": true
+      }
+    ]
+  },
+  "small_stub_network_sleep_review": {
+    "case_sha256": "25fc223ab323916fe18b88082921ea36d99e5c334591039c4903c2a9a448e7cd",
+    "control_transport": "local_AF_UNIX",
+    "environmental_cause_established": false,
+    "exact_lid_close_time": "unknown",
+    "exit_leads_observed_in_failed_case": false,
+    "idle_sleep_and_display_assertion_release": "2026-10-04T14:36:53+09:00",
+    "internet_outage_time": "unknown",
+    "native_case_wall_clock_window": [
+      "2026-10-04T14:36:45+09:00",
+      "2026-10-04T14:36:52+09:00"
+    ],
+    "new_builds": 0,
+    "new_native_runs": 0,
+    "observed_on": "2026-10-04",
+    "pmset_log_sha256": "8b9f431d9b9c86b2cf758fbe7aeabce6d76541cb8d45e2f8a23f1754055aa037",
+    "private_review_sha256": "671bf706d0de42cc00d32c3042f47a846c14c70c50620ac56aaed9aab16f1c8d",
+    "reconstruction_complete": false,
+    "record_kind": "pear_task7_network_and_sleep_evidence_review",
+    "recorded_display_off_after_case": "2026-10-04T14:43:57+09:00",
+    "recorded_display_on_after_case": "2026-10-04T14:58:56+09:00",
+    "recorded_display_on_before_case": "2026-10-04T14:05:20+09:00",
+    "root_cause": "unknown",
+    "screenshot_observation": "Codex name-resolution failure and reconnect attempts; no native fault evidence",
+    "sleep_wake_or_display_transition_during_case": "not_found_in_retained_pmset_log",
+    "source_only_exit_leads": [
+      "local_server_reply_EOF_or_EPIPE_can_call_abort_thread_0",
+      "SIGQUIT_handler_can_call_abort_thread_0"
+    ],
+    "steam_or_download_operation_in_pairing_fixture": false,
+    "supervisor_outcome": "exited_not_interrupted",
+    "timezone": "Asia/Seoul"
+  },
+  "small_stub_primary_artifact_comparison": {
+    "count": 8,
+    "full_install_comparison": "passed_2878_raw_entries",
+    "native_execution": "performed_original_run_failed_see_small_stub_finite_native_run",
+    "raw_equal": true
+  },
+  "small_stub_quiet_diagnostic_batch": {
+    "assessment_interpretation": "The original control passed its separate assessment. Both changed-fixture cases retain pair_launch_changed refusals; normal loader exits are diagnostic observations only.",
+    "batch_sha256": "72d1a062fb6e4c1d3360e5aea7f843aaf71a56a379b5f81d9d23624c4e5d0f1d",
+    "cases": [
+      {
+        "assessment_error": null,
+        "case_sha256": "182c923614b1e19350260d3411e527be76283d868855e5468557e3152a1895d3",
+        "cleanup_complete": true,
+        "distribution_qualified": false,
+        "elapsed_ms": 7143,
+        "fault_observation_emitted": false,
+        "fixture_sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "game_qualified": false,
+        "handler_behavior": "unchanged_original",
+        "loader_exit_code": 0,
+        "native_source_and_signature_changed": false,
+        "owned_supervision_and_bounds_changed": false,
+        "qualification": false,
+        "runtime_eligible": false,
+        "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+        "sentinel_survived": true,
+        "variant": "original",
+        "wine_debug": "-all"
+      },
+      {
+        "assessment_error": {
+          "code": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_sha256": "e838b43cfe55f0bf97e37ee6db38ffa4eadbc1aa160fff073daa701c59ae12fa",
+        "cleanup_complete": true,
+        "distribution_qualified": false,
+        "elapsed_ms": 5065,
+        "fault_observation_emitted": false,
+        "fixture_sha256": "e93db30114649ce40ccad2c7f24f5f39e751082c14f679c4a5f76972ffd9baf4",
+        "game_qualified": false,
+        "handler_behavior": "record_access_violation_then_continue_search",
+        "loader_exit_code": 0,
+        "native_source_and_signature_changed": false,
+        "owned_supervision_and_bounds_changed": false,
+        "qualification": false,
+        "runtime_eligible": false,
+        "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+        "sentinel_survived": true,
+        "variant": "observer1",
+        "wine_debug": "-all"
+      },
+      {
+        "assessment_error": {
+          "code": "pair_launch_changed",
+          "type": "Error"
+        },
+        "case_sha256": "e9cef98542438d330f2da7597f4624e0779329aa97f06c41739797ec03c814af",
+        "cleanup_complete": true,
+        "distribution_qualified": false,
+        "elapsed_ms": 5205,
+        "fault_observation_emitted": false,
+        "fixture_sha256": "e93db30114649ce40ccad2c7f24f5f39e751082c14f679c4a5f76972ffd9baf4",
+        "game_qualified": false,
+        "handler_behavior": "record_access_violation_then_continue_search",
+        "loader_exit_code": 0,
+        "native_source_and_signature_changed": false,
+        "owned_supervision_and_bounds_changed": false,
+        "qualification": false,
+        "runtime_eligible": false,
+        "runtime_sha256": "d278123d23993a527e632411eba7e0eaa166251a7746366d67b4a670006ac6dd",
+        "sentinel_survived": true,
+        "variant": "observer2",
+        "wine_debug": "-all"
+      }
+    ],
+    "fault_observer_effectiveness": "unproven_no_fault_triggered",
+    "native_rows_per_case": 39,
+    "original_failure_resolved": false,
+    "physical_lifetime_balanced_all_cases": true,
+    "qualification": false,
+    "root_cause": "unknown",
+    "statuses_and_facts_match_all_cases": true
+  },
+  "small_stub_reference": {
+    "artifacts": [
+      {
+        "path": "wine/objects/dlls/winemac.drv/winemac.so",
+        "sha256": "f007b17d438511ec2780979dec47c244cb457c0dca930b77574d29b44ec55f4a",
+        "size_bytes": 857080
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/unix/winemetal.so",
+        "sha256": "8516cf860d674b09634e77edc94a494dd33d94da729a06e12b3480fcd67569c9",
+        "size_bytes": 47162160
+      },
+      {
+        "path": "wine/objects/dlls/winemac.drv/aarch64-windows/winemac.drv",
+        "sha256": "a8d319a89c609af6dd55e0e2f5007f476964f73c033ca71414c01cace085ccf6",
+        "size_bytes": 917504
+      },
+      {
+        "path": "dxmt/objects/src/d3d11/d3d11.dll",
+        "sha256": "964b7b930c8e9996814677a54802941bbc7b16d452857cf2b50b06fd44ebb059",
+        "size_bytes": 9105408
+      },
+      {
+        "path": "dxmt/objects/src/dxgi/dxgi.dll",
+        "sha256": "29d200f35b64f45a8b77794c13bf5f95682afc143c96a1607e3c2a2ed08ec445",
+        "size_bytes": 2895872
+      },
+      {
+        "path": "dxmt/objects/src/d3d10/d3d10core.dll",
+        "sha256": "05058e9e1f5144a62e87f652d0856ee6619b737a3d223879a083491cc42f06df",
+        "size_bytes": 2383872
+      },
+      {
+        "path": "dxmt/objects/src/winemetal/winemetal.dll",
+        "sha256": "9f4c198f33b936c9079c73152b1621a720b272e5c57036e3b0513c45f9889714",
+        "size_bytes": 212992
+      },
+      {
+        "path": "fixtures/pear-metal-pairing-arm64.exe",
+        "sha256": "525be80925f96013e705fd4825574d75a93d22165ecf53bb7271d58055a616d3",
+        "size_bytes": 7680
+      }
+    ],
+    "build_record_sha256": "fb5648ddb21836b5f0a80a1e546910ee3f46fb9a563a54c1197fe3743cd5dce1",
+    "commands": [
+      {
+        "elapsed_ms": 15851,
+        "exit_code": 0,
+        "id": "wine.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 15702,
+        "exit_code": 0,
+        "id": "wine.driver",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1501,
+        "exit_code": 0,
+        "id": "fixture.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 8614,
+        "exit_code": 0,
+        "id": "dxmt.configure",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 82978,
+        "exit_code": 0,
+        "id": "dxmt.compile",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1509,
+        "exit_code": 0,
+        "id": "builtin.d3d11.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1558,
+        "exit_code": 0,
+        "id": "builtin.dxgi.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1549,
+        "exit_code": 0,
+        "id": "builtin.d3d10core.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1535,
+        "exit_code": 0,
+        "id": "builtin.winemetal.dll",
+        "stop_reason": null
+      },
+      {
+        "elapsed_ms": 1529,
+        "exit_code": 0,
+        "id": "dxmt.install",
+        "stop_reason": null
+      }
+    ],
+    "passed": true,
+    "recipe_policy_version": 3,
+    "recorded_command_elapsed_ms_sum": 132326,
+    "timing_scope": "Same-host wrapper wall time and sum of monitored command elapsed times; not compiler CPU time or a general benchmark.",
+    "wall_elapsed_ms": 902376
+  },
+  "small_stub_seh_diagnostic": {
+    "actual_case_elapsed_ms": 19376,
+    "build_record_sha256": "5eb2a22a1e6132043ba3be3985683573e23f81893f91b9729b55ef00fb57a31d",
+    "captured_case_passed_field": false,
+    "case_sha256": "827721445c38c0cd522f2cb115deb770227e761cec0e614123eb6afd2f10a284",
+    "cleanup_complete": true,
+    "deallocation_counts": {
+      "created_layers": 3,
+      "created_proxies": 1,
+      "created_views": 3,
+      "deallocated_layers": 3,
+      "deallocated_proxies": 1,
+      "deallocated_views": 3
+    },
+    "diagnostic_sha256": "548c09295a5e44073018a00bdc03d2159a3186defd25978be8041a3099d895b5",
+    "distribution_qualified": false,
+    "formal_diagnostics_review": "unperformed",
+    "game_qualified": false,
+    "loader_exit_code": 0,
+    "native_rows": 39,
+    "original_failure_resolved": false,
+    "qualification": false,
+    "root_cause": "unknown",
+    "runtime_eligible": false,
+    "sentinel_survived": true,
+    "separate_case_assessment_passed": true,
+    "statuses_and_facts_match": true,
+    "wine_debug": "-all,+seh"
+  },
+  "small_stub_selected_output_comparison": {
+    "count": 56,
+    "first_observer_attempt": "The full-stat equality assertion failed; the exact differing stat field was not captured. The corrected observer excludes read access time and binds device/inode/mode/size/mtime/ctime. The first failure is not classified as a product-content mismatch.",
+    "raw_bytes_and_modes_equal": true,
+    "record_sha256": "ec1e4a0e496c197f628b21b0cf444c4bd31fa92c418740c88c1cf35789b731ef",
+    "scope": "Selected actual artifacts, DXMT install, compiler DLLs, generated inputs, shader outputs and version header; not complete provenance replay."
+  },
+  "small_stub_teardown_discriminators": {
+    "after_replay_sha256": "c179a55fd3e2053f93cd34b4b8c2ef10b838c9c116677cad6eb1ab400ecc8c90",
+    "batch_sha256": "347adf351927375ab83c7242bd34be4903cc09975f467160fdc8249a17799a5e",
+    "before_replay_sha256": "c179a55fd3e2053f93cd34b4b8c2ef10b838c9c116677cad6eb1ab400ecc8c90",
+    "cases": [
+      {
+        "assessment_error": "pair_launch_changed",
+        "case_error": null,
+        "case_sha256": "59b1137ebfc501b2b8bdf476261d29f60055c7d8178f59c824c76e5eaaf78db4",
+        "cleanup_complete": true,
+        "diagnostic_log_review": {
+          "notices": {
+            "api": 6,
+            "fallback": 3,
+            "gpu": 6
+          },
+          "reviewed_no_api_errors": true,
+          "shader_workload_qualified": false,
+          "unclassified_lines": 0
+        },
+        "diagnostic_sequence_completed": true,
+        "elapsed_ms": 5516,
+        "fixture_sha256": "14059ce4592e3e29892d3eb2f423b2eda8e6268da62621b89861e7d06036b190",
+        "loader_exit_code": 0,
+        "loader_guest_exit_event": true,
+        "loader_process_exit_event": true,
+        "markers": [
+          "pear-phase:step_2",
+          "pear-phase:step_3",
+          "pear-phase:step_4",
+          "pear-phase:step_5",
+          "pear-phase:control_bypassed",
+          "pear-phase:step_6",
+          "pear-phase:control_bypassed",
+          "pear-phase:step_7",
+          "pear-phase:step_8",
+          "pear-phase:control_bypassed",
+          "pear-phase:step_9",
+          "pear-phase:control_bypassed",
+          "pear-phase:step_10",
+          "pear-phase:destroy_enter",
+          "pear-phase:wm_destroy_enter",
+          "pear-phase:wm_destroy_return",
+          "pear-phase:wm_ncdestroy_enter",
+          "pear-phase:wm_ncdestroy_return",
+          "pear-phase:destroy_return",
+          "pear-phase:step_11",
+          "pear-phase:control_bypassed",
+          "pear-phase:step_12",
+          "pear-phase:control_bypassed",
+          "pear-phase:cleanup_enter",
+          "pear-phase:cleanup_return",
+          "pear-phase:exit_enter"
+        ],
+        "native_rows": 0,
+        "outcome": "exited",
+        "qualification": false,
+        "sentinel_survived": true,
+        "stream_error": null,
+        "terminal": [
+          {
+            "bridge_status": 0,
+            "cleanup_error": 0,
+            "cleanup_flags": 7,
+            "completed_phases": 6,
+            "control_status": 0,
+            "primary_error": 0,
+            "primary_step": 0,
+            "record_kind": "pear_metal_pairing_pe",
+            "version": 1
+          }
+        ],
+        "variant": "window-only"
+      },
+      {
+        "assessment_error": "pair_launch_changed",
+        "case_error": null,
+        "case_sha256": "bda3c7d33cfbb31de6ef66a6fd10cb7c7f5f03747c1182e238e3d754c12637ff",
+        "cleanup_complete": true,
+        "diagnostic_log_review": {
+          "notices": {
+            "api": 6,
+            "fallback": 3,
+            "gpu": 6
+          },
+          "reviewed_no_api_errors": true,
+          "shader_workload_qualified": false,
+          "unclassified_lines": 0
+        },
+        "diagnostic_sequence_completed": true,
+        "elapsed_ms": 5076,
+        "fixture_sha256": "828f6da9246c967237fb904fe4d934fa96e6651dc01825685d4b9fe5ab117161",
+        "loader_exit_code": 0,
+        "loader_guest_exit_event": true,
+        "loader_process_exit_event": true,
+        "markers": [
+          "pear-phase:step_2",
+          "pear-phase:step_3",
+          "pear-phase:step_4",
+          "pear-phase:step_5",
+          "pear-phase:control_enter",
+          "pear-phase:control_return",
+          "pear-phase:step_6",
+          "pear-phase:control_enter",
+          "pear-phase:control_return",
+          "pear-phase:step_7",
+          "pear-phase:step_8",
+          "pear-phase:control_enter",
+          "pear-phase:control_return",
+          "pear-phase:step_9",
+          "pear-phase:control_enter",
+          "pear-phase:control_return",
+          "pear-phase:step_10",
+          "pear-phase:destroy_enter",
+          "pear-phase:wm_destroy_enter",
+          "pear-phase:wm_destroy_return",
+          "pear-phase:wm_ncdestroy_enter",
+          "pear-phase:wm_ncdestroy_return",
+          "pear-phase:destroy_return",
+          "pear-phase:step_11",
+          "pear-phase:control_enter",
+          "pear-phase:control_return",
+          "pear-phase:step_12",
+          "pear-phase:control_enter",
+          "pear-phase:control_return",
+          "pear-phase:cleanup_enter",
+          "pear-phase:cleanup_return",
+          "pear-phase:exit_enter"
+        ],
+        "native_rows": 39,
+        "outcome": "exited",
+        "qualification": false,
+        "sentinel_survived": true,
+        "stream_error": null,
+        "terminal": [
+          {
+            "bridge_status": 0,
+            "cleanup_error": 0,
+            "cleanup_flags": 7,
+            "completed_phases": 6,
+            "control_status": 0,
+            "primary_error": 0,
+            "primary_step": 0,
+            "record_kind": "pear_metal_pairing_pe",
+            "version": 1
+          }
+        ],
+        "variant": "metal-boundaries"
+      }
+    ],
+    "full_provenance_replay_performed": false,
+    "log_review_initial_error": "notice attribution used direct children only; corrected to existing source-registered descendant identities",
+    "native_runtime_changed": false,
+    "producer_sha256": "41a86cc1896e9093392b213991db9e1aa5f1cf93a49309ec4e93f2de9315d76b",
+    "qualified_original_run": false,
+    "record_kind": "pear_task7_teardown_discriminator_observation",
+    "retained_allocated_bytes": 2328621056,
+    "root_cause": "unknown"
+  },
+  "small_stub_termination_diagnostic": {
+    "acknowledged_detach": true,
+    "all_statuses_and_facts_match": true,
+    "attempted_wine_cases": 1,
+    "capture_describes_failed_formal_run": false,
+    "captured_caller_function": "NtTerminateProcess",
+    "captured_exit_argument": 0,
+    "captured_stop_function": "exit_process",
+    "case_sha256": "4743fef6b0dcfe72959cbbec390ee49b372b94fa36810e44a5bd0a11e98c09d1",
+    "combined_new_retained_bytes": 2331807744,
+    "current_original_and_diagnostic_bundle_replay_passed": true,
+    "debugger_cleanup_complete": true,
+    "debugger_outcome": "exit_path_captured",
+    "debugger_result_sha256": "d6f44b1c2f1f0aaea9db26f4d08f9ba960d0c3159fb9de162d1cb4604e1fd423",
+    "distribution_qualified": false,
+    "emitted_case_rows": 39,
+    "fault_captured": false,
+    "free_bytes_after": 18468175872,
+    "game_qualified": false,
+    "installed_lldb_apis_checked": true,
+    "loader_exit_code": 0,
+    "normal_verifier_refusal": "pair_launch_changed",
+    "physical_lifetime_balanced": true,
+    "portable_ownership_tests_passed": 9,
+    "private_producer_sha256": {
+      "diagnostic_common.py": "0f62719d85947319b9e0719f32d695d9f70dcc28c22f78a8752e00ce7abd4474",
+      "pear_lldb_capture.py": "9bb87f015ef9439c50103eb11db24092ddb5936e1fd836106389dddbcde2576f",
+      "run_capture.py": "ea67be11794141aee3af002bf60f7b39ce14f82b1a66ead3234460aee4e42e7d"
+    },
+    "qualification": false,
+    "root_cause": "unknown",
+    "runtime_eligible": false,
+    "sentinel_survived": true,
+    "termination_capture_sha256": "bcb97235a73e3fe3b3df69ba0ee7a70c59b017df42545b87f40f870d87e0299e",
+    "wine_cleanup_complete": true
+  },
+  "work_gate": "stage5_complete_final_loader_corrected_two_ordinary_runs_reviewed_and_replayed"
+}

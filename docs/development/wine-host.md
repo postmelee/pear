@@ -317,3 +317,37 @@ The commands use 0 for a passed requested gate, 1 for preparation/operation fail
 Raw local records can include paths and diagnostic details and remain under ignored `.build/`; the owned temporary path aliases described above also remain local. Publish only reviewed allowlisted evidence tied to exact sources/tools/configuration/fixtures/output bytes. No profiles, credentials, account state, saves or game files belong in this workflow.
 
 The native loader/page bootstrap, original ARM64 PE/API, guest x18 callbacks, Windows child processes and Stage 4 thread/memory/exception cases are verified only for the recorded finite scope. General thread/exception and dynamic-code semantics remain unqualified. The finite Mac-driver boundary passed Stage 5 and the final Stage 6 reconstruction; these remain development-component observations. FEX execution is #5/#6, graphics pairing #7/#8, full process observation #10, and release/distribution evidence #13 and the separately proposed ordinary-user work. Both observed configure variants reported unavailable EGL development files; EGL remains unqualified. The original combined source decision remains blocked until its owning tasks close their actual inputs and ports.
+
+
+## October 4, 2026: Graphics supplement follow-up
+
+The earlier ABI-mismatch analysis and #4 fixture results above remain dated
+Wine evidence. Task #7 adds a separately maintained, typed Wine/DXMT supplement;
+it does not alter #4's historical patch series or reinterpret a window-only
+fixture as a graphics test. See [DXMT build and Wine Metal pairing](dxmt-build.md)
+for the exact supplement, rebuild, authorization and native evidence procedure.
+
+The historical #7 Stage 4 candidate passed 39 ordinary ARM64/native boundary
+cases, including actual view/layer lifetime and diagnostics checks. Current
+deterministic reconstruction requires two freshly compiled graphics pairs,
+strict byte comparison and new finite native execution on the final candidate.
+The full retained Wine payload is reused with explicit graphics overlays; this
+is not a new build of every Wine module. #5/#6 still own FEX, translated context,
+CHPE loading and x64 execution, and #8 owns the eventual translated D3D11 tests.
+No game, general rendering or ordinary-user distribution result follows from
+these component observations.
+
+
+## October 5, 2026: ARM64 native heap reservation dependency
+
+Task #7 isolated a Foundation/Swift low-address lifetime failure and completed
+its final native pairing with a source-built loader correction. The independent
+[loader patch](../../runtime/wine/patches/0004-arm64-native-heap-reservation.patch)
+reuses Wine's zero-fill reservation before framework initialization, preserving
+PIE, the 64KiB null guard and guest-address availability. It remains separate
+from #4's historical 23-patch series. See the [DXMT contributor handoff](dxmt-build.md#october-5-loader-handoff-to-5-and-8)
+for its common baseline, required link flags, source/output hashes and exact
+finite verification. #5 must integrate and revalidate affected low mappings,
+MAP_JIT and metadata admission on its combined candidate; #7 does not qualify
+FEX, translated context or its allocation budget. Earlier #4 observations remain
+historical and are not retroactively expanded by this correction.

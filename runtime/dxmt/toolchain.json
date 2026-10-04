@@ -1,0 +1,65 @@
+{
+  "cache_manifest_sha256": "27cda7876cac4527f6c2ee866e3d0958963863ad4d127713b3e331950acfac9e",
+  "cache_prepared_sha256": "9512935ff92fe3600e8aa51539ed82be712e023d8a557dcaa1f7aa945a68f1d6",
+  "candidates": [
+    {
+      "archive_sha256": "d1449f969c54d5c00886d5b643340d493dfb3c81cb39ee29b35453395c11ebf7",
+      "checksum_origin": "https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-SHA-256.txt",
+      "checksum_sha256": "8d08ce0586bf40ff6b80e46fffe2db8855bab5b030db8b3782f11f68b6274ad8",
+      "id": "cmake",
+      "origin": "https://github.com/Kitware/CMake/releases/download/v3.31.8/cmake-3.31.8-macos-universal.tar.gz",
+      "status": "proposed_unacquired",
+      "version": "3.31.8"
+    },
+    {
+      "commit": "415917b7c0d4759f73d0fe6564cbdda7fbf1eb9a",
+      "id": "meson",
+      "origin": "https://github.com/mesonbuild/meson.git",
+      "status": "proposed_unacquired",
+      "version": "1.10.0"
+    },
+    {
+      "commit": "79feac0f3e3bc9da9effc586cd5fea41e7550051",
+      "id": "ninja",
+      "origin": "https://github.com/ninja-build/ninja.git",
+      "status": "proposed_unacquired",
+      "version": "1.13.1"
+    }
+  ],
+  "cross_tools": [
+    "arm64ec-w64-mingw32-gcc",
+    "arm64ec-w64-mingw32-g++",
+    "arm64ec-w64-mingw32-ar",
+    "arm64ec-w64-mingw32-strip",
+    "arm64ec-w64-mingw32-windres",
+    "clang-23"
+  ],
+  "installation_performed": false,
+  "llvm_mingw_archive": {
+    "sha256": "d1dc5d1ecf3a3ced5ed5544c72f1acd0c8e84eb3024d520ecc6b143eec62a149",
+    "size_bytes": 124244100,
+    "url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260908/llvm-mingw-20260908-ucrt-macos-universal.tar.xz"
+  },
+  "metal_toolchain": {
+    "reason": "metal lookup alone does not establish functional compiler/metallib, platform compatibility or an acquired Metal toolchain.",
+    "status": "unresolved",
+    "version": null
+  },
+  "native_tool_paths": {
+    "git": "/usr/bin/git",
+    "python": "/opt/anaconda3/bin/python3.13",
+    "xcrun": "/usr/bin/xcrun",
+    "xxd": "/usr/bin/xxd"
+  },
+  "record_kind": "dxmt_toolchain_candidates",
+  "reused_wine_lock": {
+    "path": "runtime/wine/toolchain.json",
+    "sha256": "e21d40d90b5a3b74710b19f23640fc1e4db000e030c04c26d89cc889f3533acc"
+  },
+  "schema_version": 1,
+  "scope": "dxmt_component",
+  "sdk": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+    "version": "26.5"
+  }
+}
