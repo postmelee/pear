@@ -28,8 +28,8 @@ METAL_ROOT=Path(QUAL['metal_control_ref']['path']).parent if QUAL is not None el
 
 class Temporary(unittest.TestCase):
     def setUp(self):
-        self.temporary=tempfile.TemporaryDirectory(prefix='pear-det-controls-',dir='/private/tmp')
-        self.root=Path(self.temporary.name)
+        self.temporary=tempfile.TemporaryDirectory(prefix='pear-det-controls-')
+        self.root=Path(self.temporary.name).resolve(strict=True)
     def tearDown(self):self.temporary.cleanup()
     def write(self,name,raw,mode=0o644):
         p=self.root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw);p.chmod(mode);return p

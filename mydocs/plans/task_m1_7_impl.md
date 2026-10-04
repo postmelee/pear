@@ -2387,3 +2387,15 @@ detach this evidence checkout, delete merged work/publication branches, and
 update the primary master without touching its unrelated untracked files.
 Document actual savings and restoration obligations in the existing report and
 a private cleanup receipt. No new official documentation location is required.
+
+
+### Publication integration outcome
+
+Preserved both new links in the existing official docs/README.md index and all
+four October 4 task rows during the master merge; no new official location or
+product claim was introduced. Applied exactly #14's four test-helper lines after
+before/patch/after hash checks. Both default and space-containing temp modes
+passed the affected pair/native suites (125 passed, 8 known optional skips per
+mode). All 42 final runtime producers still match the accepted reconstruction;
+no native rebuild/run is selected. See the final report for checkpoint commits
+and retained log location.

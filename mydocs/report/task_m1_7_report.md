@@ -92,3 +92,28 @@ The publication workflow preserves Stage commits and verifies CI on the integrat
 head. Final source/runtime evidence is retained at its original path for #5/#8;
 only completed diagnostic scratch is selected for verified archival. Actual
 remote and cleanup outcomes are recorded after those operations finish.
+
+
+## Publication Integration Verification — October 5
+
+The completed Stage 5 source/report checkpoint is commit `24e1afa`; the
+`330f86f` merge integrates master `abaabc2`. The two conflicts were document
+index links and the October 4 board; both tasks' links and all four existing
+Issue rows were preserved. No runtime producer changed: all 42 final
+reconstruction producer hashes and both successful finalization receipts still
+match. No repeated graphics/compiler build or native run was required.
+
+The #14 Stage 4 handoff patch, SHA-256
+`7087e30de2b0e7819d7d1004576df6ffa7b7738171e06ea212848d14c8228a5a`,
+was applied only after both target before-hashes matched. Its four test-helper
+lines use platform TemporaryDirectory selection and resolve the newly allocated
+root, preserving strict alias-refusal tests. On the integrated checkout, both
+platform-default temp and a physical TMPDIR containing spaces passed: pair
+96 run / 88 passed / 8 known optional skips, native 37 run / 37 passed. The
+custom scratch directory was empty afterward. Private logs and exit receipts
+are retained under `.build/task7/publication1/`. These are synthetic test
+results; the earlier final native evidence retains its original scope.
+
+Offline governance passed for 24 documents / 211 local targets; diff checks
+passed. Hosted CI remains a separate pre-merge gate. The existing historical
+Stage 5 report and observations preserve the original 530-test checkpoint.
