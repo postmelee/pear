@@ -53,11 +53,9 @@ jobs:
           - suite: dxmt-native
             directory: tests/dxmt
             pattern: test_deterministic_native.py
-            qualifying: true
           - suite: dxmt-pair
             directory: tests/dxmt
             pattern: test_deterministic_pair.py
-            qualifying: true
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -74,7 +72,6 @@ jobs:
           git --version
           uname -sm
       - name: Run the selected synthetic verifier suite
-        if: github.event_name == 'workflow_dispatch' || !matrix.qualifying
         env:
           TEST_DIRECTORY: ${{ matrix.directory }}
           TEST_PATTERN: ${{ matrix.pattern }}
