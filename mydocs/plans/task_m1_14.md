@@ -3,7 +3,7 @@
 GitHub Issue: [#14](https://github.com/postmelee/pear/issues/14)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-Current state: Stages 1–4 are complete; PR #30 is merged and the Stage 4 test-root patch was integrated by #7 in ea6c018 / PR #33. Stage 5 Linux DXMT qualification and CI connection is approved. The original maintenance/promotion proposal is retained as Stage 6 and remains unapproved. Full #14 remains open.
+Current state: Stages 1–4 are complete; PR #30 is merged and the Stage 4 test-root patch was integrated by #7 in ea6c018 / PR #33. Stage 5 Linux DXMT qualification and CI configuration is complete on codex/task14; PR-event execution and integration of this follow-up remain pending. The original maintenance/promotion proposal is retained as Stage 6 and remains unapproved. Full #14 remains open.
 
 ## Purpose
 
