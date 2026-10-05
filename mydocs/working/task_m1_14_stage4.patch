@@ -1,0 +1,18 @@
+--- a/tests/dxmt/test_deterministic_pair.py
++++ b/tests/dxmt/test_deterministic_pair.py
+@@ -30,4 +30,4 @@
+     def setUp(self):
+-        self.temporary=tempfile.TemporaryDirectory(prefix='pear-det-controls-',dir='/private/tmp')
+-        self.root=Path(self.temporary.name)
++        self.temporary=tempfile.TemporaryDirectory(prefix='pear-det-controls-')
++        self.root=Path(self.temporary.name).resolve(strict=True)
+     def tearDown(self):self.temporary.cleanup()
+--- a/tests/dxmt/test_deterministic_native.py
++++ b/tests/dxmt/test_deterministic_native.py
+@@ -28,4 +28,4 @@
+     def setUp(self):
+-        self.temporary=tempfile.TemporaryDirectory(prefix='pear-native-adapter-controls-',dir='/private/tmp')
+-        self.root=Path(self.temporary.name)
++        self.temporary=tempfile.TemporaryDirectory(prefix='pear-native-adapter-controls-')
++        self.root=Path(self.temporary.name).resolve(strict=True)
+     def tearDown(self):self.temporary.cleanup()

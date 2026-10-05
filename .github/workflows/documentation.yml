@@ -50,6 +50,12 @@ jobs:
           - suite: abi-review
             directory: tests/wine
             pattern: test_abi_review.py
+          - suite: dxmt-native
+            directory: tests/dxmt
+            pattern: test_deterministic_native.py
+          - suite: dxmt-pair
+            directory: tests/dxmt
+            pattern: test_deterministic_pair.py
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

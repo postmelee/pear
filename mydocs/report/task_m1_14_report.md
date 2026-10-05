@@ -1,9 +1,11 @@
-# Task #14 preparatory-delivery report
+# Task #14 partial-delivery reports
 
 GitHub Issue: [#14](https://github.com/postmelee/pear/issues/14)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 PR: [#30](https://github.com/postmelee/pear/pull/30)
 Status: preparation-only delivery; **not full #14 completion**. Preserve this record when later reporting full acceptance.
+
+The following original delivery sections retain the PR #30 checkpoint. The October 5 DXMT CI follow-up is recorded separately at the end of this document.
 
 ## Work Summary
 
@@ -69,3 +71,52 @@ No duplicate Issue is proposed. Continue the retained Stage 4 scope under #14 wh
 ## Requester Review Boundary
 
 Review the preparatory PR and its final-head CI. Merging is a separate decision, and #14 must remain open after any partial merge. Do not start Stage 4 or close the Issue based on this report.
+
+
+## October 5 delivery — Public DXMT Verifier CI
+
+### Work Summary
+
+This second partial delivery covers completed Stages 4/5: isolated scratch-root verification (subsequently integrated by #7) and clean Linux qualification of the existing native/pair synthetic controls. The requester approved this follow-up PR and actual PR-event validation. It does not complete the original maintenance/promotion acceptance criteria or close #14. Stage 6 retains that remaining scope.
+
+### Changed Files and Impact Area
+
+- `.github/workflows/documentation.yml`: two explicit matrix additions under the unchanged nonempty/no-skip contract.
+- `tests/dxmt/test_deterministic_pair.py` and `test_deterministic_pair_optional.py`: move optional-input parsing and eight methods into their own discovered module; retain 88 public methods and all original assertions/conditions.
+- Existing #14 plans, board, this delivery record and Stage 4/5 artifacts: source-bound evidence and remaining integration/acceptance limits.
+
+The native test file and all runtime/host/validator source are unchanged from merged master. The retained Stage 4 patch documents the fix already integrated by #7; do not apply it again.
+
+### Document Location Verification
+
+All changes follow the approved existing task locations. No official product, contributor, architecture or roadmap document changes. The original preparatory report is preserved above; this appendix is the second delivery, not a replacement full-Issue acceptance report.
+
+### Quantitative Before/After Comparison
+
+| Metric | Before this follow-up | After |
+|---|---:|---:|
+| Public verifier matrix suites | 5 | 7 |
+| Hosted synthetic verifier tests | 196 | 321 |
+| Documentation tests | 35 | 35 |
+| DXMT pair methods / optional methods | 96 in one file, 8 conditional | 88 public + 8 optional, unchanged total |
+| Full local DXMT discovery | 530 | 530 (522 passed, 8 optional skips) |
+
+### Verification Results
+
+| Delivery criterion | Result |
+|---|---|
+| Reuse already integrated scratch fix | Both after-hashes matched Stage 4 and merged #7; no duplicate implementation |
+| Preserve test coverage while separating private controls | All 96 method ASTs/decorators preserved; full local discovery count unchanged |
+| Refuse supplied malformed optional input | Optional module fails with JSONDecodeError; public module remains independent |
+| Qualify public DXMT controls on Linux | Native 37 + pair 88 passed without unit skips on Ubuntu 24.04/Python 3.12 |
+| Preserve prior verifier checks and negative control | All seven suites passed; existing simulated false-success defect detected |
+
+[Stage 4 report](../working/task_m1_14_stage4.md) records the initial alias failure, corrected default/custom-root results and exact target hashes. [Stage 5 report](../working/task_m1_14_stage5.md) records AST preservation, local execution and three hosted qualification runs. Final workflow/test bytes are verified at `357f2265ceef360503768aae2f3d4437ee926987` in [run 37245916919](https://github.com/postmelee/pear/actions/runs/37245916919). Only task documentation changes afterward. Actual follow-up PR-event results must pass before handoff and are recorded in the PR body/checks with their final source and tested merge identities.
+
+### Residual Risks and Follow-up Work
+
+The eight private-input controls remain unperformed in this work and stay in full discovery. Their explicit module IDs now use test_deterministic_pair_optional. Synthetic Linux/macOS success does not qualify native graphics, translated D3D, Steam, Megabonk or distribution. The original #3/#6/#8/#9/#10/#13 acceptance dependencies and maintained patch/promotion work remain. No new Issue is necessary for this follow-up.
+
+### Publication and Review Boundary
+
+The requester authorized this Open PR and its actual PR-event checks. Review its exact final head before a separate merge decision. Keep #14 open and the daily row In progress; no full-Issue completion, release or branch-protection change is authorized by this delivery.
