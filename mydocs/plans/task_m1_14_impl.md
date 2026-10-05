@@ -153,3 +153,8 @@ Local checks: python3 -B tools/check_governance.py, python3 -B -m unittest disco
 ### Stage 5 completion
 
 Native-first hosted run 37245670780 passed at eb55fc930afed3b1e1e5d045ed73507616efad0f. Combined qualification run 37245822370 passed at 6831af6f97ce5ab4dadf7a3e4e74697135a74c6d. Final PR-enabled configuration run 37245916919 passed at 357f2265ceef360503768aae2f3d4437ee926987: 321 synthetic verifier tests, 35 documentation tests and the existing deliberate-defect control; no unit skips. Local complete DXMT discovery retained 530 tests (522 passed, eight optional-input skips). See the Stage 5 report for actual commands, preservation checks and limitations. Only task documents change after the final hosted source checkpoint; actual follow-up PR-event execution is not claimed.
+
+
+### Stage 5 publication continuation
+
+Approved explicitly after the Stage 5 report. Append this bounded delivery to mydocs/report/task_m1_14_report.md and retain prior evidence. Publish an Open follow-up PR to master without closing #14. Before handoff, inspect actual pull_request CI, match the tested merge ref parents to the PR base/head, and require eight successful jobs with 321 verifier tests, 35 documentation tests, zero unit skips and the existing controlled-defect detection. Download final run/log metadata under ignored .build/task14/runs/<id>. The PR body records final-head evidence; no merge is authorized.
