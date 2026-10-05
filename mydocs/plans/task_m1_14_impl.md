@@ -158,3 +158,8 @@ Native-first hosted run 37245670780 passed at eb55fc930afed3b1e1e5d045ed73507616
 ### Stage 5 publication continuation
 
 Approved explicitly after the Stage 5 report. Append this bounded delivery to mydocs/report/task_m1_14_report.md and retain prior evidence. Publish an Open follow-up PR to master without closing #14. Before handoff, inspect actual pull_request CI, match the tested merge ref parents to the PR base/head, and require eight successful jobs with 321 verifier tests, 35 documentation tests, zero unit skips and the existing controlled-defect detection. Download final run/log metadata under ignored .build/task14/runs/<id>. The PR body records final-head evidence; no merge is authorized.
+
+
+### Publication and merge outcome
+
+PR #35 source 901cd7dc2cd71b595df067601d79161478cbcd23 passed actual pull_request run 37246686071. Its synthetic merge 493ed3de5c27349eafe1f87018e548989e7f11db had the exact source/base parents recorded in the PR body; all eight jobs, 321 verifier tests, 35 documentation tests and the existing negative control passed. Following requester-authorized review, PR #35 merged as 9fe70d39089c41ac2b4cb81163dbd772226ca9c8. This supersedes earlier pending-publication statements for Stages 4/5. Stage 6 stays unapproved. The task plan records evidence retention and bounded cleanup.
