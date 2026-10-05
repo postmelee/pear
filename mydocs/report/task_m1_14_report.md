@@ -120,3 +120,18 @@ The eight private-input controls remain unperformed in this work and stay in ful
 ### Publication and Review Boundary
 
 The requester authorized this Open PR and its actual PR-event checks. Review its exact final head before a separate merge decision. Keep #14 open and the daily row In progress; no full-Issue completion, release or branch-protection change is authorized by this delivery.
+
+
+## October 5 merge and retained evidence
+
+Requester-authorized review found no actionable issue in PR #35. Test method/decorator conservation, optional-input behavior, unchanged production boundaries and final-head CI were checked. No source change was needed during review.
+
+- PR source: `901cd7dc2cd71b595df067601d79161478cbcd23`.
+- Actual PR CI: [run 37246686071](https://github.com/postmelee/pear/actions/runs/37246686071), eight successful jobs, 321 verifier + 35 documentation tests, no unit skips and successful deliberate-defect detection.
+- Tested synthetic merge: `493ed3de5c27349eafe1f87018e548989e7f11db`, with exact PR source/base parents verified through GitHub.
+- Actual merge: [PR #35](https://github.com/postmelee/pear/pull/35), commit `9fe70d39089c41ac2b4cb81163dbd772226ca9c8`, October 5 at 09:29 KST.
+- #14 remains Open/In progress. Earlier statements that this follow-up was pending publication/merge are historical checkpoints; full maintenance/promotion remains outstanding.
+
+Before retiring the managed #14 checkout, all 36 ignored evidence files (2,766,626 bytes) from its .build tree were independently copied into the main workspace under `.build/task14/retained/20261005-pr35/build/`. The sibling `manifest.json` records source/destination and SHA-256 per regular file; both source reread and destination matched. Earlier Stage 4 snapshots already in the main workspace are retained. This is local retention, not public artifact availability. #7's original runtime evidence and #5 dependencies were not moved or deleted.
+
+Post-merge cleanup is limited to the merged #14 work/publication branches and managed checkout after this status update is reviewed, checked and merged. The app archive preserves a recoverable source snapshot; the independently retained ignored logs remain available outside it. Other worktrees, untracked research/analysis and credentials are untouched. The cleanup PR metadata and final handoff record its own merge and actual cleanup outcome; no recursive report commit is needed. Stage 6 begins only under its own approval and prerequisite evidence.

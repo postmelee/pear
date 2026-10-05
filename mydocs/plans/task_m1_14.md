@@ -3,7 +3,7 @@
 GitHub Issue: [#14](https://github.com/postmelee/pear/issues/14)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-Current state: Stages 1–4 are complete; PR #30 is merged and the Stage 4 test-root patch was integrated by #7 in ea6c018 / PR #33. Stage 5 Linux DXMT qualification and CI configuration is complete on codex/task14; PR-event execution and integration of this follow-up remain pending. The original maintenance/promotion proposal is retained as Stage 6 and remains unapproved. Full #14 remains open.
+Current state: Stages 1–5 are complete. PR #30 and the DXMT follow-up PR #35 are merged; #7 already integrated the Stage 4 scratch-root fix. Actual PR #35 CI passed on its final head. The original maintenance/promotion proposal remains Stage 6 and is unapproved. Full #14 remains open.
 
 ## Purpose
 
@@ -123,3 +123,10 @@ Locations: existing workflow, tests/dxmt/test_deterministic_pair.py and new test
 The requester explicitly continued after the completed Stage 5 delivery and the proposal to create a follow-up PR and verify actual pull_request-event CI. This approves publication of Stages 4/5 and their internal delivery record only. Preserve the earlier PR #30 report and append this second partial delivery to the existing report path. The final-report procedure is adapted to this authorized partial scope: #14 remains In progress/Open, with no closing keyword, merge, branch-protection change or Stage 6 implementation.
 
 Use the existing template and SHA-pinned work-document links. Before publication, verify source/test/workflow bytes still match the qualified checkpoint, check new task links/governance/whitespace and commit the delivery documents. The actual PR-event source head, tested synthetic merge commit, all eight checks, nonempty/no-skip counts and deliberate-defect detection must be confirmed before handoff. Record those final source/run identities in the PR body/checks, avoiding a self-referential report commit. A new report-head source change would require renewed relevant checks. No official product document is changed.
+
+
+## October 5 review, merge and cleanup authorization
+
+The requester authorized review and, absent issues, merge plus follow-up cleanup. Review found no actionable defect: all 96 pair method/decorator ASTs were preserved, repository callers did not reference moved optional IDs, and final-head PR CI passed. PR #35 merged as 9fe70d39089c41ac2b4cb81163dbd772226ca9c8 at 09:29 KST. Keep #14 Open/In progress; this partial merge does not satisfy Stage 6.
+
+Apply post-merge cleanup only to this completed delivery's branches/checkouts. Before archival, copy and hash-verify ignored Task #14 logs into the main workspace's .build/task14/retained/20261005-pr35/build/ (36 files, 2,766,626 bytes); its sibling manifest.json records each hash. Existing main-workspace Stage 4 snapshots remain unchanged. Preserve #5/#7 worktrees and all other workers' inputs. Publish these status/retention updates as a documentation-only cleanup PR, then archive the managed #14 worktree and remove merged work/publication branches after confirming master contains the cleanup commit. No Stage 6 implementation, Issue closure or private evidence deletion is authorized by this cleanup.
