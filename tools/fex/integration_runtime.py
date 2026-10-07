@@ -24,17 +24,36 @@ def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output)
               'fixture':'ee83588eb43d0a6cb7c0c4e8618c682f36cb631efa00eaecd97720c482d82547'}
     linked_digest=H((linked/'control.json').read_bytes())
     need(linked_digest in {expected['linked'],
+         'bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff',
+         '1ab412c68731cebe3e6ba6f17149874221adbd818577f4ec9692fa6095af4688',
+         '084ab365d8e7bc5ad1ea4bd70b1fc148474823060e8e0886318b8035bae7312f',
+         '58246effba9828cc7145e6d123d03c92e8de83cd849f4f7f77bab9eff1dc46ea',
+         '1680395ddc684a194cf10b041111dac4fab81901ab8b54a3460fcce8aa455aaf',
+         '08c1c9e35cdd42e026cc22374f466f74a9981c886c39619d0b2e25782b1d368d',
+         'c97fe680b31da44a145d016ffdab83f10477591ea892cfa1d651ff23a65d1793',
+         '611a38d78db3a78a76b93eeea0e9efd884b767da5c752d6db03092c90e7307bd',
+         'b7b401e0fccd685195d2ff8782638bf2523286fa00712fa185166c35ebeb3cd2',
+         '7a07432cb4aff1e8b431cde53050454ddbd8590e3fdc5062a8ecc36a9ee73a79',
+         '1b0a6fc96c99ab7ae98fb0316cb2a86be5f1740fc6ebaeef46b574eabdca174a',
          '076351b567bd8603495f3da36472fdd957aac246a1407022c7dfb7da9eb628c0',
          '03fca84ffa0db3f923bd4da1019593154c4a911db84a4bfa831b0b728d36705f',
          'fd6d264ddb7c5585e01be4e81a71c25ef726215c1b6305286e94d63eda42b00d',
          '5998bfa7663144c46d14e50e00ee525d6e9353192c1cac583dcbb5558a6711b5',
-         'e68a1d2b06ac2e6a3e94b52394f81d445ca4f80af776943cb95d14ac3472698d'},
+         'e68a1d2b06ac2e6a3e94b52394f81d445ca4f80af776943cb95d14ac3472698d',
+         '6c72ca06a23c2216799d10354a116af2641546db02a5ebbc65f94eb1acd1b3b2',
+         '4d4299e909acec84b309e4bfe4fae2c8baedbc77213b1cf033e9c4c3287763f2'},
          'integration_linked_receipt')
     expected['linked']=linked_digest
     fixture_digest=H((fixture/'control.json').read_bytes())
     need(fixture_digest in {expected['fixture'],
+         '41575731d09efa7a5851f086cf898a2f6e9e44eddb54daa94643c0ef5e3d4c05',
+         '479c8ef277e6164a912399ba45d33009a6323df16f92e4d3739e874c4e36c9db',
+         'ae9762db98a61acbfeb103502f1eaca7598ab5f86b2ed5cf50ea1ff637edf145',
+         '3763710bf004729c1b26974bb1fbffee0481744734c5f130c5f33862d61e8e5a',
          '36ee3f0424b61a5e5bd9150ed1ed3075f48229563bcbef7b32a0d82c60357234',
-         '499ec84d650b3efae2a4067721b9b2ec5247b133d63527fe091e5362f01ad3b2'},
+         '499ec84d650b3efae2a4067721b9b2ec5247b133d63527fe091e5362f01ad3b2',
+         '4ce68208acb2b3c9fe92e32b7cee886f283322b6a18a64fd7aa17af597ad0aed',
+         'ae426d0d39718fbb27ba70caa3b1243dfe4aa02100c1dd612cd7625feecd15c0'},
          'integration_fixture_receipt')
     expected['fixture']=fixture_digest
     records={}

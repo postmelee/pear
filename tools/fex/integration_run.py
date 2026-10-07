@@ -125,6 +125,9 @@ def run(runtime,output,reuse,prefix_template=None):
                 match=re.search(rb'Pear FEX init (?:ECGate\.(?:enter|fill|exit)|GuestSyscall\.exit): status=(?!00000000)[0-9a-fA-F]{8} domain=\d+ code=-?\d+',
                                 bytes(stream.get('data',b''))[-65536:])
                 if match: refusal=match.group().decode('ascii')
+                if not match:
+                    guard=re.search(rb'[^\n]*(?:Pear source guard refused|Pear FEX assertion:)[^\n]*',bytes(stream.get('data',b''))[-65536:])
+                    if guard: refusal=guard.group().decode('utf-8',errors='replace')
                 return loader.exited or refusal is not None
             completed=session.wait_for(finished,remaining(180))
             outcome='owner_refused' if refusal else 'exited' if completed else 'timeout'

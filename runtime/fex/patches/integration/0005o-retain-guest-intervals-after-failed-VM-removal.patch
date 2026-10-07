@@ -1,0 +1,40 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -149,6 +149,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   std::optional<FEXCore::Utils::PearFEXMemory::SourceLifetime> MemoryNotificationLife;
+   unsigned MemoryNotificationKind {};
++  uint64_t MemoryNotificationStart {}, MemoryNotificationSize {};
+ #endif
+ };
+ 
+@@ -1178,8 +1179,9 @@
+     Frontend->MemoryNotificationLife.emplace(std::move(Life));
+     Frontend->MemoryNotificationKind=Kind;
+     if (Kind==PearUnmap || (Kind==PearFree && (Argument & MEM_RELEASE))) {
+-      auto [Start,Bytes]=InvalidationTracker->InvalidateContainingSection(reinterpret_cast<uint64_t>(Address),true);
+-      if (Kind==PearUnmap && Bytes) HandleImageUnmap(Start,Bytes);
++      auto [Start,Bytes]=InvalidationTracker->InvalidateContainingSection(reinterpret_cast<uint64_t>(Address),false);
++      Frontend->MemoryNotificationStart=Start;
++      Frontend->MemoryNotificationSize=Bytes;
+     }
+     return;
+   }
+@@ -1192,8 +1194,16 @@
+       InvalidationTracker->HandleMemoryProtectionNotification(reinterpret_cast<uint64_t>(Address),Size,Prot);
+     else if (Kind==PearFree && !(Argument & MEM_RELEASE))
+       InvalidationTracker->InvalidateAlignedInterval(reinterpret_cast<uint64_t>(Address),Size,true);
++    else if ((Kind==PearUnmap || Kind==PearFree) && Frontend->MemoryNotificationSize) {
++      // Before invalidated cached translations, but a failed VM operation must
++      // retain the live guest permissions and image tracker. Remove only after
++      // observed success while the original owner batch remains admitted.
++      InvalidationTracker->InvalidateAlignedInterval(Frontend->MemoryNotificationStart,Frontend->MemoryNotificationSize,true);
++      if (Kind==PearUnmap) HandleImageUnmap(Frontend->MemoryNotificationStart,Frontend->MemoryNotificationSize);
++    }
+   }
+   Frontend->MemoryNotificationKind=0;
++  Frontend->MemoryNotificationStart=Frontend->MemoryNotificationSize=0;
+   ThreadCreationMutex.unlock();
+   const auto Finished=CTX->FinishPearLinkInvalidation(Thread);
+   const auto Released=Frontend->MemoryNotificationLife->Release();

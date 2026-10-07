@@ -204,3 +204,38 @@ UNPIN and source-hold release, retirement succeeds and stale entry is rejected.
 The old native four-worker and Source85 link/cache/cleanup evidence remains scoped
 to its unchanged owner/source algorithms. The finite EC workers park after their
 test and are reaped at process exit; ordinary ThreadTerm is explicitly Stage 5.
+
+## Stage 5 source progress and delivered contexts
+
+Actual translated concurrency exposed a missing progress mechanism. Source
+compilation, linking and invalidation now share a bounded private mutation turn,
+identified by the real registered executor. Pinned contenders use the existing
+owner Poll and finite NT wait; metadata and source coordination locks are absent
+across those waits. Native entry and atomic resume hold the same turn through
+admission, eliminating the scan/entry race. This is source serialization, not a
+new owner permission, wire ABI or per-block execution-lease transfer.
+
+A writer requests the existing FEX SuspendDoorbell on actual active EC peers.
+The short source registry prevents lifetime sealing during that bounded frame
+metadata access; no owner/VM/callback call occurs under it. Existing block-entry
+and unconditional-backedge checks are reused, with the missing conditional
+backedge added using the same flag-preserving emitter. At the delivered trap,
+original FEX reconstruction packs the actual guest state, the real D lease is
+released, and all source holds/callback guards end before Wine continuation.
+The guest re-enters only after the writer releases its source turn. The same
+reconstruction supports Windows suspend/context edits and handled guest faults.
+
+A published current source buffer is a valid real invalidation barrier even
+when no direct-link descriptor exists. Direct linking remains optional: a full
+finite ticket table or transient entry seal keeps the already supported indirect
+branch. Closed/failed source admission still refuses; no live ticket is evicted.
+Failed free/unmap notifications preserve live guest intervals and image metadata;
+cached translations are invalidated before the VM attempt, and mapping metadata
+is removed only after observed VM success.
+
+These changes preserve the owner's quiescence, write epoch, W^X, continuation and
+retirement checks. The final mutable PE page coverage remains 102,400 bytes,
+within the existing 128-KiB allowance. Ordinary engine allocations/RSS and broad
+concurrency stress remain outside that finite bookkeeping claim. The Stage 5
+report owns executed cases; Stage 6 must freshly reconstruct the final pair and
+revalidate affected native/integrated checks on those bytes.

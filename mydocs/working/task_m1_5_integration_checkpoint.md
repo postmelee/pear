@@ -252,3 +252,114 @@ in run21/run22, both exit42 with complete cleanup and current authorization.
 Stage 5 implementation is explicitly approved. Preserve original FEX C++/assembly
 and connect ordinary lifecycles to the owner; do not remove unsupported guards
 without that connection. Stage 6 reconstruction and game execution remain later.
+
+
+## Stage 5 implementation checkpoint — October 7
+
+Stages 3 and 4 are locally committed as `91fc9b3` and `1a29f18`.
+Stage 5 is in progress, not completed. No GitHub write has occurred.
+
+- Original MIT FEX self-thread teardown is connected to actual source closure,
+  owner unregistration, checked call-ret/emulator-stack frees and CRT cleanup.
+  Shared Context/code-buffer descriptors do not impersonate ThreadState holds;
+  actual thread entry/batch references still block teardown. Cross-thread forced
+  termination remains unsupported pending cooperative context integration.
+- Run23's original x64 worker/TLS fixture exited 42 on normal FEX link20. It
+  checked distinct worker identity, isolated TLS values, normal worker return,
+  worker exit42, unchanged main TLS and owned handle cleanup. The runtime log
+  records `ThreadTerm.complete` with status/domain/code zero. Current signing
+  authorization, 21 native ARM64 process observations, 4,566 ARM64 image events,
+  full owned cleanup and sentinel survival passed. This is finite fixture
+  evidence, not complete late-load coverage or Megabonk qualification.
+- Receipt identities: link20
+  `6c72ca06a23c2216799d10354a116af2641546db02a5ebbc65f94eb1acd1b3b2`;
+  case23 `a896e1239a679e3767bc9636eb34520126c4c57a279bd96f1b7639a7ef469d7e`.
+- Ordered patches 0005b/0005c reuse FEX interval/cache and Wine before/after
+  notifications. A bounded foreign-thread registry hold protects real targets;
+  owner write admission precedes source locks and finishes after unlocking.
+  No wait is retained across blocking file reads; their existing post-read
+  behavior is reused. No wire ABI, native guest execute permission, or Rust
+  rewrite is introduced. Link22 compiled and linked successfully, receipt
+  `4d4299e909acec84b309e4bfe4fae2c8baedbc77213b1cf033e9c4c3287763f2`.
+- `tests/fex/guest_invalidation.c` builds a two-thread 41-to-42 code-mutation
+  fixture. Its execution remains unperformed at this checkpoint. Stage 5 also
+  retains context/suspend, supported ordinary exceptions/guards and explicit
+  i386 helper scope. The old unsupported branches are not passing evidence.
+
+Storage exhaustion prevented the first attempt to save the invalidation fixture;
+no runtime test started. Saving/building succeeded after owned cleanup. Completed
+run20–23 disposable prefixes were removed after process checks; exact logs,
+receipts, runtimes and initialized templates remain. Historical module PE trees
+were losslessly compressed, with each archived file/link/mode verified before
+removal. Their inventories and restore-required notices remain in private
+`historical-pe-archive-oct7` receipts. Current module14 inputs are untouched.
+
+
+The reuse comparison also inspected the pinned Madeira/FEX fork and
+`buberlo/madeira-anyps5` input snapshots. Their thread-exit ordering and iOS
+exception adaptations informed boundary review; no GPL fork code was imported.
+The implementation reuses the original MIT FEX cleanup, cache, interval and CRT
+mechanisms in C++/assembly. iOS-specific VM/SMC changes are not assumed valid on
+macOS. Pinned source URLs and hashes remain in the private reuse inventory.
+
+At the end of this implementation checkpoint, free space is approximately
+1.8 GiB after archival. This is below the existing 2.5-GiB runtime-preparation
+guard. The invalidation runtime was not prepared or executed, and no guard was
+lowered. The requester was asked to pause other disk-heavy work or make at least
+5 GiB available. The next operation is the recorded link22/guest-invalidation1
+signed pairing followed by its one meaningful two-thread mutation test. Then
+continue the still-required exception/context/suspend integration. Stage 5
+remains open; there is no Stage 5 completion report or completion commit.
+
+## Stage 5 continuation after storage recovery — October 7
+
+Storage is no longer the immediate blocker (approximately 40 GiB free at the
+latest check). The earlier storage-wait paragraph is historical. Stage 5 remains
+in progress; no GitHub publication or completion claim has been made.
+
+- Actual invalidation runs exposed two source-concurrency bugs: a peer's short
+  metadata lock was treated as self-reentry, and concurrent compiler threads
+  attempted owner writes without serializing source publication. Ordered patches
+  0005d–0005h preserve bounded upstream error diagnostics, distinguish actual TEB
+  reentry, and serialize source compilation/link/invalidation using real lifetime
+  bindings, existing pinned-owner polling and finite NT waits. Owner admission,
+  W^X and wire ABI remain unchanged. Failed runs24–30 and build28 remain retained.
+- Run31 passed the original two-thread code-mutation fixture: both threads see
+  41 before mutation and 42 after logical protection changes and cache
+  invalidation. Patch0005i supplies a real current published-buffer barrier when
+  no direct-link descriptor exists. Build29 receipt:
+  `08c1c9e35cdd42e026cc22374f466f74a9981c886c39619d0b2e25782b1d368d`.
+  Case31: `89566596ce71bd6b213a8ddf2421ce9ed90d015baa59f13f8bd52fb3731b8690`.
+- Patches0005j/0005k reuse original MIT FEX register/flags reconstruction,
+  ARM64EC packing, exception mapping and suspend doorbell behavior. Exact source
+  instruction reads require the actual retained thread and execution owner.
+  Source holds and callback guards end before nonlocal NT guest delivery.
+- Run32 passed handled guest UD2 with guest RIP/RAX edits, resumption, an ordinary
+  data guard fault, one-shot guard behavior and cleanup. Actual delivered codes
+  were `c000001d` and `80000001`; exit42. Build31 receipt:
+  `1680395ddc684a194cf10b041111dac4fab81901ab8b54a3460fcce8aa455aaf`.
+  Case32: `e3614b669f5da040fad178e47a58bab8573cfff1ff6864419c195705e61e84a0`.
+- Each passing run above passed before/after authorization, owned cleanup,
+  unrelated-sentinel survival, 21 native ARM64 process observations and 4,566
+  ARM64 image events. These are finite test observations; full late-load coverage,
+  broad instruction support, game execution and distribution remain unqualified.
+- The next actual fixture suspends a translated computation loop, verifies and
+  edits R12 through Windows context APIs, resumes it and verifies the result.
+  Same-candidate affected lifecycle checks and final Stage 5 assessment remain.
+  Native guard-page compiler recovery, forced foreign-thread termination and
+  broader SMC/unaligned routes are not inferred from the ordinary guest tests.
+
+## Stage 5 completion checkpoint
+
+The same final link35 passed run37–41: worker/TLS, two-thread invalidation with
+failed-removal preservation, guest exceptions/guard/nested native call, hot-loop
+suspend/context editing, and API/callback. Each exited42 and passed authorization,
+ARM64 observations and owned cleanup. The Stage 5 report and sanitized sidecar
+own exact hashes and limits. Earlier in-progress notes above remain historical.
+The conditional-backedge poll and source writer/entry serialization fix the
+observed hot-loop quiescence failure; no owner admission was weakened.
+
+All 24 integration patches independently replay over 15 files. Eight completed
+synthetic prefixes were removed after process checks; receipts/logs/runtime
+inputs/templates and failures remain. Stage 5 is complete locally; Stage 6 fresh
+reconstruction still requires continuation. No GitHub write or Issue closure.

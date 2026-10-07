@@ -1,0 +1,166 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+@@ -97,6 +97,26 @@
+ // A null expected identity selects only the opaque current actual binding.
+ // This does not admit an identity from a caller Frame or dereference it.
+ SourceLifetime AcquireCurrentSourceLifetime(const FEXCore::Context::Context* ExpectedContext = nullptr);
++// An actual registry hold for a foreign thread during owner-admitted cache
++// invalidation. It grants no execution authority and cannot be used as the
++// current thread's SourceLifetime. Only ContextImpl can acquire it.
++class SourceInvalidationHold {
++public:
++  SourceInvalidationHold() = default;
++  SourceInvalidationHold(const SourceInvalidationHold&) = delete;
++  SourceInvalidationHold& operator=(const SourceInvalidationHold&) = delete;
++  SourceInvalidationHold(SourceInvalidationHold&&) noexcept;
++  ~SourceInvalidationHold();
++  explicit operator bool() const { return Held; }
++  Result Release();
++private:
++  friend class FEXCore::Context::ContextImpl;
++  static SourceInvalidationHold Acquire(const SourceLifetime&, const FEXCore::Core::InternalThreadState*);
++  uint64_t ContextSerial {}, BindingSerial {};
++  uint32_t BindingIndex {};
++  bool Held {};
++};
++static_assert(sizeof(SourceInvalidationHold) <= 32, "Bounded foreign source hold");
+ // Actual allocation/deletion owners alone admit Context identities. These are
+ // NX source lifecycle transitions, never Wine permissions or wire operations.
+ class SourceContextHold {
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -623,6 +623,48 @@
+   RegistryGuard Guard;
+   return Held && LifetimeMatch(BindingIndex,BindingSerial,ContextSerial,false) ? Bindings[BindingIndex].Executor : 0;
+ }
++SourceInvalidationHold SourceInvalidationHold::Acquire(const SourceLifetime& Actor,
++    const FEXCore::Core::InternalThreadState* Target) {
++  SourceInvalidationHold Out;
++  if (!Actor || !Actor.Validate() || !Target) return Out;
++  const auto* Context=Actor.ActualContext();
++  // Existing batch admission belongs to this exact native executor. Never
++  // acquire the source registry lock while checking the link registry.
++  if (!Context || !Links::MutationAdmitted(Context)) return Out;
++  RegistryGuard Guard;
++  auto* Current=CurrentBinding(); auto* C=ContextRecord(Context);
++  if (!Current || Current->SourceContext!=Context || Current->LifetimeSerial!=Actor.Identity() ||
++      !Current->LifetimeHolds || !C || C->Closing || C->Retained || C->DeleteSealed || C->Holds==UINT32_MAX) return Out;
++  for (auto& B:Bindings) if (B.SourceContext==Context && B.SourceKind==Binding::Kind::Thread && B.SourceState==Target) {
++    if (!B.Executor || B.Unresolved || B.LifetimeClosing || B.LifetimeDeleteSealed || B.LifetimeHolds==UINT32_MAX) return Out;
++    ++B.LifetimeHolds; ++C->Holds;
++    Out.BindingIndex=static_cast<uint32_t>(&B-Bindings); Out.BindingSerial=B.LifetimeSerial;
++    Out.ContextSerial=C->Serial; Out.Held=true; break;
++  }
++  return Out;
++}
++SourceInvalidationHold::SourceInvalidationHold(SourceInvalidationHold&& Other) noexcept {
++  ContextSerial=Other.ContextSerial; BindingSerial=Other.BindingSerial; BindingIndex=Other.BindingIndex;
++  Held=std::exchange(Other.Held,false);
++}
++SourceInvalidationHold::~SourceInvalidationHold() { Release(); }
++Result SourceInvalidationHold::Release() {
++  if (!Held) return Refuse(PEAR_FEX_OK);
++  bool Valid {};
++  { RegistryGuard Guard;
++    if (BindingIndex<PEAR_FEX_MEMORY_MAX_EXECUTORS) {
++      auto& B=Bindings[BindingIndex]; auto* C=ContextRecord(B.SourceContext);
++      Valid=BindingSerial && B.LifetimeSerial==BindingSerial && B.LifetimeHolds && !B.LifetimeDeleteSealed &&
++        C && ContextSerial && C->Serial==ContextSerial && C->Holds && !C->DeleteSealed;
++      if (Valid) { --B.LifetimeHolds; --C->Holds; Held=false; }
++      else if (C) { C->Closing=true; C->Retained=true; }
++    }
++  }
++  const auto Outcome=Refuse(Valid ? PEAR_FEX_OK : PEAR_FEX_STALE_IDENTITY);
++  if (!Valid) Retirement::PoisonSourceAdmission(Outcome);
++  return Outcome;
++}
++
+ Result WaitSourceEntryChange(const std::atomic<uint32_t>& Word, uint32_t Expected, uint32_t Milliseconds) {
+   if (!Milliseconds || Milliseconds > 50) return Refuse(PEAR_FEX_INVALID_REQUEST);
+   static_assert(sizeof(Word)==sizeof(uint32_t));
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -2092,7 +2092,9 @@
+ 
+ void ContextImpl::InvalidateThreadCachedCodeRange(FEXCore::Core::InternalThreadState* Thread, uint64_t Start, uint64_t Length) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  auto PearSourceHold=RequirePearSourceThread(this,Thread);
++  auto PearActor=FEXCore::Utils::PearFEXMemory::AcquireCurrentSourceLifetime(this);
++  auto PearSourceHold=FEXCore::Utils::PearFEXMemory::SourceInvalidationHold::Acquire(PearActor,Thread);
++  PEAR_FEX_REQUIRE(!!PearSourceHold,"Pear invalidation target lifetime is unavailable");
+ #endif
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1208,10 +1208,32 @@
+   }
+ }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++static void PearInvalidateGuestRange(const void* Address, SIZE_T Size) {
++  if (!CTX || !InvalidationTracker || !PearSourceReady.load(std::memory_order_acquire)) return;
++  auto* Thread=GetCPUArea().ThreadState();
++  if (!Thread) return;
++  auto Life=PearMemory::AcquireCurrentSourceLifetime(CTX.get());
++  PearMemory::Result Outcome {PEAR_FEX_STALE_IDENTITY,0,0};
++  if (Life && Life.ActualThread()==Thread && (!Address || reinterpret_cast<uintptr_t>(Address)<=UINTPTR_MAX-Size)) {
++    Outcome=CTX->BeginPearLinkInvalidation(Thread);
++    if (Outcome) {
++      {
++        ScopedCallbackDisable Guard;
++        std::scoped_lock Lock(ThreadCreationMutex);
++        InvalidationTracker->InvalidateAlignedInterval(reinterpret_cast<uint64_t>(Address),Size,false);
++      }
++      Outcome=CTX->FinishPearLinkInvalidation(Thread);
++    }
++  }
++  if (!Outcome) { PearRecordPrimary(Outcome); PearSourceReady.store(false,std::memory_order_release); }
++  PearInitCheckpoint("GuestInvalidate.complete",Outcome.Status,Outcome.ErrorDomain,Outcome.ErrorCode);
++}
++#endif
++
+ void FlushInstructionCacheHeavy(const void* Address, SIZE_T Size) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearInvalidateGuestRange(Address,Size);
+   return;
+ #endif
+ 
+@@ -1225,8 +1247,7 @@
+ 
+ void BTCpu64FlushInstructionCache(const void* Address, SIZE_T Size) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearInvalidateGuestRange(Address,Size);
+   return;
+ #endif
+ 
+@@ -1240,8 +1261,7 @@
+ 
+ void BTCpu64NotifyMemoryDirty(void* Address, SIZE_T Size) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearInvalidateGuestRange(Address,Size);
+   return;
+ #endif
+ 
+@@ -1255,8 +1275,9 @@
+ 
+ void BTCpu64NotifyReadFile(HANDLE Handle, void* Address, SIZE_T Size, BOOL After, NTSTATUS Status) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  // Reuse upstream post-read invalidation. Never retain a global writer across
++  // blocking I/O; asynchronous completion remains explicitly outside this path.
++  if (After && Status==STATUS_SUCCESS) PearInvalidateGuestRange(Address,Size);
+   return;
+ #endif
+ 

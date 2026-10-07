@@ -1,0 +1,169 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+@@ -97,6 +97,25 @@
+ // A null expected identity selects only the opaque current actual binding.
+ // This does not admit an identity from a caller Frame or dereference it.
+ SourceLifetime AcquireCurrentSourceLifetime(const FEXCore::Context::Context* ExpectedContext = nullptr);
++// Source mutations serialize before taking source locks or capturing write
++// epochs. Waiting pinned executors cooperate through the existing owner poll.
++// Callers retain their actual SourceLifetime until this turn is released.
++class SourceMutationTurn {
++public:
++  explicit SourceMutationTurn(const SourceLifetime&);
++  SourceMutationTurn(const SourceMutationTurn&)=delete;
++  SourceMutationTurn& operator=(const SourceMutationTurn&)=delete;
++  SourceMutationTurn(SourceMutationTurn&&) noexcept;
++  ~SourceMutationTurn();
++  explicit operator bool() const { return !!Outcome; }
++  Result Status() const { return Outcome; }
++  bool Contended() const { return Waited; }
++  void Release();
++private:
++  Result Outcome {};
++  uint64_t Executor {};
++  bool Owned {}, Waited {};
++};
+ // An actual registry hold for a foreign thread during owner-admitted cache
+ // invalidation. It grants no execution authority and cannot be used as the
+ // current thread's SourceLifetime. Only ContextImpl can acquire it.
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -81,7 +81,9 @@
+   return nullptr;
+ }
+ static std::atomic<uintptr_t> Registry {0};
+-static_assert(sizeof(Bindings) + sizeof(ContextLifetimes) + sizeof(NextLifetimeSerial) + sizeof(Registry) + sizeof(BridgeDirect) + sizeof(OwnerPID) + sizeof(Configured) <= 24576,
++static std::atomic<uint64_t> MutationExecutor {0};
++static std::atomic<uint32_t> MutationSequence {0};
++static_assert(sizeof(Bindings) + sizeof(ContextLifetimes) + sizeof(NextLifetimeSerial) + sizeof(Registry) + sizeof(MutationExecutor) + sizeof(MutationSequence) + sizeof(BridgeDirect) + sizeof(OwnerPID) + sizeof(Configured) <= 24576,
+               "Bounded source adapter NX metadata, typed bindings and retained registration failures");
+ // This local bound is part of, not a substitute for, the compiled aggregate
+ // 256-KiB owner/adapter/holder/descriptor metadata accounting.
+@@ -694,6 +696,50 @@
+   RtlWakeAddressAll(const_cast<std::atomic<uint32_t>*>(&Word));
+ }
+ 
++SourceMutationTurn::SourceMutationTurn(const SourceLifetime& Life) {
++  Outcome=Life.Validate();
++  if (!Outcome) return;
++  Executor=Life.Executor();
++  for (unsigned Attempt=0;Attempt<1000;++Attempt) {
++    const auto B=CurrentSnapshot();
++    if (!Executor || B.Executor!=Executor || B.SourceContext!=Life.ActualContext() ||
++        B.SourceState!=Life.ActualThread() ||
++        (B.Active.Kind!=LeaseKind::None && B.Active.Kind!=LeaseKind::Pinned)) {
++      Outcome=Refuse(PEAR_FEX_STALE_IDENTITY); return;
++    }
++    const auto Sequence=MutationSequence.load(std::memory_order_acquire);
++    uint64_t Empty=0;
++    if (MutationExecutor.compare_exchange_strong(Empty,Executor,std::memory_order_acquire,std::memory_order_relaxed)) {
++      Owned=true; Outcome=Refuse(PEAR_FEX_OK); return;
++    }
++    // The linker synchronously invokes compilation on the same actual native
++    // thread. The outer turn spans that nested work; no second release occurs.
++    if (Empty==Executor) { Outcome=Refuse(PEAR_FEX_OK); return; }
++    Waited=true;
++    if (B.Active.Kind==LeaseKind::Pinned) {
++      Outcome=Poll(B.Active.Target,B.Active.EntryOffset,B.Active.Continuation,B.Active.Target.Token.write_epoch);
++      if (!Outcome) return;
++    }
++    Outcome=WaitSourceEntryChange(MutationSequence,Sequence,5);
++    if (!Outcome && Outcome.Status!=PEAR_FEX_QUIESCENCE_TIMEOUT) return;
++    Outcome=Life.Validate(); if (!Outcome) return;
++  }
++  Outcome=Refuse(PEAR_FEX_QUIESCENCE_TIMEOUT);
++}
++SourceMutationTurn::SourceMutationTurn(SourceMutationTurn&& Other) noexcept
++ : Outcome(Other.Outcome),Executor(Other.Executor),Owned(Other.Owned),Waited(Other.Waited) { Other.Owned=false; }
++SourceMutationTurn::~SourceMutationTurn() { Release(); }
++void SourceMutationTurn::Release() {
++  if (!Owned) return;
++  auto Expected=Executor;
++  if (!MutationExecutor.compare_exchange_strong(Expected,0,std::memory_order_release,std::memory_order_relaxed)) {
++    Retirement::PoisonSourceAdmission(Refuse(PEAR_FEX_STALE_IDENTITY)); return;
++  }
++  Owned=false;
++  MutationSequence.fetch_add(1,std::memory_order_release);
++  NotifySourceEntryChange(MutationSequence);
++}
++
+ Result AssessMetadataBudget(const pear_fex_memory_metadata& M, uint64_t ExpectedPID,
+                             uint64_t RequiredViews, uint64_t OtherBytes, uint64_t& Total) {
+   Total=0;
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1777,6 +1777,12 @@
+       DiskCache.IsReadingDiskCache() || DiskCache.IsWritingDiskCache() || DiskCache.IsValidating()) {
+     LogMan::Msg::EFmt("Pear source thread, publication policy or native admission is unavailable"); { LogMan::Msg::EFmt("Pear compilation refusal step 1 guest {:X}",GuestRIP); return 0; }
+   }
++  FEXCore::Utils::PearFEXMemory::SourceMutationTurn Mutation {Life};
++  if (!Mutation) {
++    const auto E=Mutation.Status();
++    LogMan::Msg::EFmt("Pear source mutation turn refused: status {}, domain {}, code {}",E.Status,E.ErrorDomain,E.ErrorCode);
++    return 0;
++  }
+   SyscallHandler->PreCompile();
+   CompileCodeResult Prepared {};
+   fextl::vector<uint64_t> CodePages;
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -718,12 +718,17 @@
+   FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
+   const auto Handed=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);
+   PEAR_FEX_REQUIRE_RESULT(!!Handed, "Pear linker native handoff refused: status {}, domain {}, code {}", Handed);
++  Memory::SourceMutationTurn Mutation {Life};
++  const auto Turn=Mutation.Status();
++  PEAR_FEX_REQUIRE_RESULT(!!Turn, "Pear linker mutation turn refused: status {}, domain {}, code {}",Turn);
++  const bool Changed=Revision!=C->GetPearInvalidationRevision();
++  if (Changed) Host=0; // Never reuse the lookup captured before a peer invalidation.
+   if (!Host) Host=C->CompilePearBlock(Frame,Copy.GuestRIP,0);
+   PEAR_FEX_REQUIRE(Host && !(Host&3),"Pear linker compiled no admitted target");
+   auto TargetWindow=Thread->CPUBackend->FindPearManagedWindow(Host);
+   const bool SameMap=TargetWindow && TargetWindow->Owner==Window->Owner &&
+     Thread->LookupCache->Shared==Window->Owner->LookupCache.get();
+-  if (SameMap) {
++  if (SameMap && !Changed && !Mutation.Contended()) {
+     uint32_t Marker {}; std::memcpy(&Marker,Caller.data(),sizeof(Marker));
+     const auto Encoded=PearJITLinkLayout::Encode(Window->Begin,Layout,Host,Marker);
+     PEAR_FEX_REQUIRE(PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller),
+@@ -746,6 +751,7 @@
+       PEAR_FEX_REQUIRE_RESULT(!!Committed, "Pear source link ticket publication refused: status {}, domain {}, code {}", Committed);
+     }
+   }
++  Mutation.Release();
+   const auto Resumed=C->FinishPearDispatcherGate(Gate);
+   PEAR_FEX_REQUIRE_RESULT(!!Resumed, "Pear linker native resume refused: status {}, domain {}, code {}", Resumed);
+   // The source target is revalidated under renewed genuine D protection before
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -13,6 +13,7 @@
+ struct Registry {
+   struct Slot { std::optional<SourceDescriptor> Source; };
+   struct BatchWrite {
++    std::optional<Memory::SourceMutationTurn> Mutation;
+     Ticket First {};
+     Memory::Allocation Before {}, Transaction {};
+     // Guard and its referenced transaction have one stable registry lifetime.
+@@ -215,6 +216,8 @@
+   auto Life=Memory::AcquireCurrentSourceLifetime(C);
+   if (!Life || Life.ActualThread()!=Thread || !Registry::ThreadMatches(C,Thread)) return {PEAR_FEX_STALE_IDENTITY,0,0};
+   const auto Bound=Memory::BindSourceThread(Thread); if (!Bound) return Bound;
++  Memory::SourceMutationTurn Mutation {Life};
++  if (!Mutation) return Mutation.Status();
+   std::optional<SourceDescriptor> First;
+   auto Reserved=Registry::ReservedSource(Thread);
+   Ticket T {};
+@@ -230,7 +233,7 @@
+   // Admission is closed before constructing the guard. Keep its referenced
+   // Transaction at this stable address through publish/abort and destruction.
+   Registry::BatchWrite* Work;
+-  { std::lock_guard L {R.Mutex}; R.Held.emplace(); Work=&*R.Held; Work->First=T; }
++  { std::lock_guard L {R.Mutex}; R.Held.emplace(); Work=&*R.Held; Work->First=T; Work->Mutation.emplace(std::move(Mutation)); }
+   if (First) {
+     Work->Before=First->Owner->GetPearSnapshot(); Work->Transaction=Work->Before;
+     if (!Registry::Identity(*First,Work->Before)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});

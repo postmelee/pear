@@ -3,7 +3,7 @@
 Issue: [#5](https://github.com/postmelee/pear/issues/5)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Task scope: [task plan](task_m1_5.md)
-Updated: October 7, 2026. State: Stages 3/4 completed; Stage 5 translated lifecycle implementation approved and in progress.
+Updated: October 7, 2026. State: Stages 3/4/5 completed locally; Stage 6 fresh reconstruction awaits continuation.
 
 ## Authority and approved direction
 
@@ -129,6 +129,26 @@ state and source ownership; no newly invented fatal native fixture. Explicitly
 scope i386/WoW64 based on actual required helpers; an optional unsupported route
 is documented, while a required failure blocks completion. #6 owns broader
 instruction differential coverage and stress, not fixes for known #5 failures.
+
+Stage 5 implementation starts with actual self-thread cleanup and then source
+notifications/context paths. Reuse the original MIT ThreadTerm frontend, GDT,
+call-ret stack and CRT ownership. Remove the target from the original thread
+registry under its mutex, then close source/owner references outside that mutex.
+Never free a currently executing emulator stack. Persistent shared code links
+hold Context/buffer references, so thread teardown checks actual per-thread
+entry/batch references while Context teardown retains its stronger global check.
+Cross-thread termination remains explicitly unsupported until cooperative
+context ownership is implemented and tested; do not silently mark it complete.
+The final candidate passed five actual x64 cases: worker/TLS/self-thread exit,
+two-thread code invalidation with failed-removal preservation, handled guest
+exceptions/data guard/nested native call, running-loop suspend/context edits,
+and the existing file/time/event/native callback case. The [Stage 5 report](../working/task_m1_5_stage5.md)
+and [sanitized observations](../working/task_m1_5_stage5_observations.json) own
+exact inputs and scope. The source turn and existing FEX SuspendDoorbell provide
+writer progress, including conditional backedges; native security/owner checks
+remain unchanged. Forced foreign termination and broader JIT-guard/SMC coverage
+remain unqualified. i386 is not required by these x64 fixtures; actual Steam
+helper architectures and execution remain later explicit dependencies.
 
 ### Stage 6 — reconstruction and handoff
 

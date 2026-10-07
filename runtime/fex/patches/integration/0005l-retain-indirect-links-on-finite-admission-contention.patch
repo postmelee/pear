@@ -1,0 +1,38 @@
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -149,6 +149,10 @@
+   auto& R=StateRegistry();
+   std::lock_guard L {R.Mutex};
+   if (!D) return std::nullopt;
++  // Direct linking is optional. Keep the proven indirect branch when the
++  // bounded table is full or a peer is sealing entry. Do not close the ledger
++  // merely because an optimization has no available slot.
++  if (R.Ledger.HasSealedEntries() || R.Ledger.Occupied()==CAPACITY) return std::nullopt;
+   const auto T=R.Ledger.Prepare();
+   if (!T) return std::nullopt;
+   R.Slots[T->Index].Source.emplace(std::move(D));
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -736,7 +736,7 @@
+     const auto Facts=Window->Owner->GetPearSnapshot();
+     const auto Ticket=PearJITLinks::Prepare(PearJITLinks::SourceDescriptor {Window->Owner,C,Facts,Layout,Encoded,
+                                                                                      Thunk,Caller,Copy.GuestRIP,Host});
+-    PEAR_FEX_REQUIRE(Ticket.has_value(),"Pear finite source link admission refused");
++    if (Ticket) {
+     // Compile may append into A, but any real guest invalidation since the
+     // original snapshot invalidates this source transaction before any store.
+     const auto Patched=PearJITLinks::PatchPrepared(*Ticket,Thread,Revision);
+@@ -749,6 +749,11 @@
+       Thread->LookupCache->AddPearBlockLink(Copy.GuestRIP,Record,*Ticket,Lookup);
+       const auto Committed=PearJITLinks::Commit(*Ticket);
+       PEAR_FEX_REQUIRE_RESULT(!!Committed, "Pear source link ticket publication refused: status {}, domain {}, code {}", Committed);
++    }
++    } else {
++      const auto Healthy=Memory::Links::FirstFailureSnapshot();
++      PEAR_FEX_REQUIRE(!!Healthy && Memory::Links::EntryAdmissionOpen(),
++                       "Pear source link admission closed, not an optional capacity/entry-seal miss");
+     }
+   }
+   Mutation.Release();

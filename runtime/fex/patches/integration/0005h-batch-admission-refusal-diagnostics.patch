@@ -1,0 +1,27 @@
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -227,7 +227,8 @@
+     // Its real guard/Abort remains distinct from published/callable code.
+     for (size_t I=0;I<CAPACITY;++I) if (R.Ledger.GetState(I)==State::Linked && R.Slots[I].Source &&
+       R.Slots[I].Source->SourceContext==C) { First=R.Slots[I].Source; T={I,R.Ledger.GetTicket(I)}; break; }
+-    if ((!First && !Reserved) || !R.Ledger.BeginBatch()) return {PEAR_FEX_UNAVAILABLE,0,0};
++    if (!First && !Reserved) { LogMan::Msg::EFmt("Pear batch has neither linked nor reserved source target"); return {PEAR_FEX_UNAVAILABLE,0,0}; }
++    if (!R.Ledger.BeginBatch()) { LogMan::Msg::EFmt("Pear batch ledger refused: sealed {}, occupied {}, entry-open {}",R.Ledger.HasSealedEntries(),R.Ledger.Occupied(),R.Ledger.EntryAdmissionOpen()); return {PEAR_FEX_UNAVAILABLE,0,0}; }
+     R.BatchContext=C; R.BatchThread=Thread; R.BatchExecutor=Memory::CurrentExecutor();
+   }
+   // Admission is closed before constructing the guard. Keep its referenced
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1096,8 +1096,9 @@
+   auto* Thread=GetCPUArea().ThreadState();
+   if (!Thread) return;
+   auto* Frontend=GetFrontendThreadData(Thread);
+-  auto Refused=[](PearMemory::Result Result) {
++  auto Refused=[=](PearMemory::Result Result) {
+     PearRecordPrimary(Result); PearSourceReady.store(false,std::memory_order_release);
++    LogMan::Msg::EFmt("Pear memory notification kind {} after {} refused",static_cast<unsigned>(Kind),!!After);
+     PearInitCheckpoint("MemoryNotification.refused",Result.Status,Result.ErrorDomain,Result.ErrorCode);
+   };
+   if (!After) {

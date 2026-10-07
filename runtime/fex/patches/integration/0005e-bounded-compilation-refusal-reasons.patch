@@ -1,0 +1,82 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -777,6 +777,11 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   // Retain upstream fatal behavior but make its first bounded source reason
+   // observable even when the default general logging policy is silent.
++  LogMan::Msg::InstallHandler([](LogMan::DebugLevels Level,const char* Message) {
++    if (Level!=LogMan::ERROR) return;
++    const auto Output=reinterpret_cast<int (*)(const char*)>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"),"__wine_dbg_output"));
++    if (Output) { char Text[768]; snprintf(Text,sizeof(Text),"Pear FEX error: %.640s\n",Message); Output(Text); }
++  });
+   LogMan::Throw::InstallHandler([](const char* Message) {
+     const auto Output=reinterpret_cast<int (*)(const char*)>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"),"__wine_dbg_output"));
+     if (Output) { char Text[768]; snprintf(Text,sizeof(Text),"Pear FEX assertion: %.640s\n",Message); Output(Text); }
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1775,7 +1775,7 @@
+       CodeCache.IsGeneratingCache || FEXCore::Config::Get_ENABLECODECACHINGWIP() ||
+       FEXCore::Config::Get_ENABLELAZYCODECACHINGWIP() || FEXCore::Config::Get_ENABLECODECACHEVALIDATION() ||
+       DiskCache.IsReadingDiskCache() || DiskCache.IsWritingDiskCache() || DiskCache.IsValidating()) {
+-    LogMan::Msg::EFmt("Pear source thread, publication policy or native admission is unavailable"); return 0;
++    LogMan::Msg::EFmt("Pear source thread, publication policy or native admission is unavailable"); { LogMan::Msg::EFmt("Pear compilation refusal step 1 guest {:X}",GuestRIP); return 0; }
+   }
+   SyscallHandler->PreCompile();
+   CompileCodeResult Prepared {};
+@@ -1784,43 +1784,45 @@
+   {
+     auto Guard = GuardSignalDeferringSection<std::shared_lock>(CodeInvalidationMutex, Thread);
+     Revision = GetPearInvalidationRevision();
+-    if (!Revision || Revision == UINT64_MAX) return 0;
++    if (!Revision || Revision == UINT64_MAX) { LogMan::Msg::EFmt("Pear compilation refusal step 2 guest {:X}",GuestRIP); return 0; }
+     if (MaxInst != 1) if (const auto Found = Thread->LookupCache->FindBlock(Thread, GuestRIP)) {
+-      return Thread->CPUBackend->FindPearManagedWindow(Found) ? Found : 0;
++      if (Thread->CPUBackend->FindPearManagedWindow(Found)) return Found;
++      LogMan::Msg::EFmt("Pear compilation refusal step 3 guest {:X}",GuestRIP); return 0;
+     }
+     Thread->FrontendDecoder->SetupDecodeInstructionsAtEntry(Thread, GuestRIP, MaxInst);
+     Prepared = CompileCode(Thread, GuestRIP, MaxInst);
+     const auto Entry = Prepared.CompiledCode.EntryPoints.find(GuestRIP);
+     if (Entry == Prepared.CompiledCode.EntryPoints.end() || !Entry->second) {
+-      Thread->CPUBackend->DiscardPreparedPublication(); return 0;
++      Thread->CPUBackend->DiscardPreparedPublication(); { LogMan::Msg::EFmt("Pear compilation refusal step 4 guest {:X}",GuestRIP); return 0; }
+     }
+     if (!Prepared.DebugData) {
+       const auto Found = reinterpret_cast<uintptr_t>(Entry->second);
+-      return Thread->CPUBackend->FindPearManagedWindow(Found) ? Found : 0;
++      if (Thread->CPUBackend->FindPearManagedWindow(Found)) return Found;
++      LogMan::Msg::EFmt("Pear compilation refusal step 5 guest {:X}",GuestRIP); return 0;
+     }
+     if (!Prepared.CompiledCode.PearPendingEmission || Prepared.CompiledCode.PearOwnerPublished) {
+-      Thread->CPUBackend->DiscardPreparedPublication(); return 0;
++      Thread->CPUBackend->DiscardPreparedPublication(); { LogMan::Msg::EFmt("Pear compilation refusal step 6 guest {:X}",GuestRIP); return 0; }
+     }
+     if (Prepared.NeedsAddGuestCodeRanges) {
+       const auto* Info = Thread->FrontendDecoder->GetDecodedBlockInfo();
+       if (Info->CodePages.size() > 4096) {
+-        Thread->CPUBackend->DiscardPreparedPublication(); return 0;
++        Thread->CPUBackend->DiscardPreparedPublication(); { LogMan::Msg::EFmt("Pear compilation refusal step 7 guest {:X}",GuestRIP); return 0; }
+       }
+       CodePages.assign(Info->CodePages.begin(), Info->CodePages.end());
+     }
+   }
+   // No invalidation, list, lookup or thread-creation lock is held while the
+   // exact owner request closes its gate and waits for actual native park ack.
+-  if (!Thread->CPUBackend->BeginPreparedPublication(Prepared.CompiledCode)) return 0;
++  if (!Thread->CPUBackend->BeginPreparedPublication(Prepared.CompiledCode)) { LogMan::Msg::EFmt("Pear compilation refusal step 8 guest {:X}",GuestRIP); return 0; }
+   {
+     auto Guard = GuardSignalDeferringSection<std::shared_lock>(CodeInvalidationMutex, Thread);
+     const bool Valid = Revision == GetPearInvalidationRevision() && Frame->Thread == Thread &&
+       Thread->CTX == this && Frame == Thread->CurrentFrame &&
+       Executor == FEXCore::Utils::PearFEXMemory::CurrentExecutor();
+-    if (!Thread->CPUBackend->FinishPreparedPublication(Prepared.CompiledCode, Valid)) return 0;
++    if (!Thread->CPUBackend->FinishPreparedPublication(Prepared.CompiledCode, Valid)) { LogMan::Msg::EFmt("Pear compilation refusal step 9 guest {:X}",GuestRIP); return 0; }
+     auto& Compiled = Prepared.CompiledCode;
+     const auto Entry = Compiled.EntryPoints.find(GuestRIP);
+-    if (!Compiled.PearOwnerPublished || Compiled.PearPendingEmission || Entry == Compiled.EntryPoints.end() || !Entry->second) return 0;
++    if (!Compiled.PearOwnerPublished || Compiled.PearPendingEmission || Entry == Compiled.EntryPoints.end() || !Entry->second) { LogMan::Msg::EFmt("Pear compilation refusal step 10 guest {:X}",GuestRIP); return 0; }
+     // Preserve existing cache metadata semantics only after real publication
+     // and local token compare/update. Disk-cache/signature profiling stays off.
+     if (Prepared.NeedsAddGuestCodeRanges) {

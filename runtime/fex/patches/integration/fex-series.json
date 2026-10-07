@@ -155,6 +155,315 @@
         }
       ],
       "reuse": "Existing read-only metadata opcode; admit the actual compiled role through the existing selected-module and backend role checks. No ABI, allocation or permission change."
+    },
+    {
+      "file": "0005a-fex-owned-self-thread-termination.patch",
+      "sha256": "5ca8bbe0bbb37bf9c903af551c0e201f3f0bf471f7b8d04ac405519fe792a96d",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "ae7ba72fcd6e2c486e44a286930a6ae5649c7888c420fc9d4b0d25c7cc1ab3b5",
+          "postimage_sha256": "c60f117fb7e4773320de90bae9a2de84b09536acfb366d14689754d0b22b042e",
+          "postimage_bytes": 72202
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+          "preimage_sha256": "34abee87abed0b4f4d2c309c33a1f128f5a4d2f242f022151475c1328e181515",
+          "postimage_sha256": "1cba741536eef82fd7fdee4e1ecad8c85883ea67297c6b968dcd881bb2cd3b26",
+          "postimage_bytes": 2500
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "preimage_sha256": "ebb44cd2f8007d0c1cb333dcb2e807fda3d94a2491d388fd68cc10fc91589fee",
+          "postimage_sha256": "9c97378c9ba3860dc1427f66eeed9dc2734b3f922141f64271cfb6e2992c9b2b",
+          "postimage_bytes": 21860
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "3ba4ac51c1b4045d56471f4fc6bbda11f58ba973d52765ef281650599bdda464",
+          "postimage_sha256": "8485f4eb3805c2f14fc609e18086489bd959969ee0901575e9be62b60a25b99f",
+          "postimage_bytes": 108426
+        }
+      ],
+      "reuse": "Original MIT FEX ThreadTerm frontend/GDT/call-ret/CRT cleanup, connected to existing Pear checked source closure. Preserve cross-thread termination refusal pending cooperative context integration."
+    },
+    {
+      "file": "0005b-owned-cross-thread-cache-invalidation.patch",
+      "sha256": "770aa3c25a601b93bbc03d2aa5e52d2b62d3eadbcf135a3c6ffe4901ac81d7bf",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "preimage_sha256": "55baf05f090c17655989899704a280963ff3c2b8e44a83c96b4d228fb0e93819",
+          "postimage_sha256": "66b373628179d27f41dc150ebd2d1115a00bfc9ec1ff901c88e0aa1d705bb617",
+          "postimage_bytes": 15190
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": "656a10e3c57c8480ca274f4572d673270ad19d20a078bedc418cb69da64801bf",
+          "postimage_sha256": "3eec1e7c40ea93013f99b2eb34ae86b3e356c8850d7a8e0db9fe24ec1954b217",
+          "postimage_bytes": 80867
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "8485f4eb3805c2f14fc609e18086489bd959969ee0901575e9be62b60a25b99f",
+          "postimage_sha256": "8c59434e14c72f7c92ef466f75f922eeef41cbe9c41815220d95e48ae2f5c6ce",
+          "postimage_bytes": 108643
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "c60f117fb7e4773320de90bae9a2de84b09536acfb366d14689754d0b22b042e",
+          "postimage_sha256": "f881193c3d4bf572f5042b3a499cd472affd29681592ae818466c9c3bb4d22ba",
+          "postimage_bytes": 73032
+        }
+      ],
+      "reuse": "Original MIT FEX interval/cache invalidation and post-read behavior; existing owner batch plus actual foreign source lifetime holds. No wire ABI or execution permission change."
+    },
+    {
+      "file": "0005c-owned-memory-notification-pairs.patch",
+      "sha256": "f6309b1501cb97093346aaef630e43c84a5acdb24dd643ffe89bc763254a25d1",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "f881193c3d4bf572f5042b3a499cd472affd29681592ae818466c9c3bb4d22ba",
+          "postimage_sha256": "d093998d78c94f6818131f97da5bd3477ba044ac7b628522a983cdb1763929d9",
+          "postimage_bytes": 75721
+        }
+      ],
+      "reuse": "Original MIT FEX before/after virtual-memory notifications and interval tracking, retaining owner admission outside ThreadCreationMutex. Guest PE native NX protection remains the existing Wine role-aware path."
+    },
+    {
+      "file": "0005d-bounded-upstream-assertion-diagnostics.patch",
+      "sha256": "926a9a9f291a594a38771b589b675fc99f995eab55866def50025f90fbd2b533",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "d093998d78c94f6818131f97da5bd3477ba044ac7b628522a983cdb1763929d9",
+          "postimage_sha256": "cd54ab88d7a5ba24c67fccf73952a8438bbdba7d54eaa13a3f373b909b8b6919",
+          "postimage_bytes": 76218
+        }
+      ],
+      "reuse": "Existing FEX assertion handler and Wine debug output; preserve fatal policy, bound diagnostic bytes, do not enable unrelated general config logging."
+    },
+    {
+      "file": "0005e-bounded-compilation-refusal-reasons.patch",
+      "sha256": "5def4387b53081b254d822f010d3c45252ce995a3c115afcef28d106e04f53f1",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "cd54ab88d7a5ba24c67fccf73952a8438bbdba7d54eaa13a3f373b909b8b6919",
+          "postimage_sha256": "726556011d599eda601239545ec113dd6bab51ab56f4cc132264b05cee4aa45e",
+          "postimage_bytes": 76588
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "8c59434e14c72f7c92ef466f75f922eeef41cbe9c41815220d95e48ae2f5c6ce",
+          "postimage_sha256": "6bf958d840112e7ea6bd808e5bbd76dd8f6019b379b0dd98148af537e11a34b0",
+          "postimage_bytes": 109446
+        }
+      ],
+      "reuse": "Existing FEX error logger; identify actual unpublished compilation refusal without changing admission or cleanup."
+    },
+    {
+      "file": "0005f-distinguish-registry-contention-from-reentry.patch",
+      "sha256": "82b95ba871dc390bcf34d276ac5d975a33493002dbf61da9b0949be3186d8e82",
+      "sources": [
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": "3eec1e7c40ea93013f99b2eb34ae86b3e356c8850d7a8e0db9fe24ec1954b217",
+          "postimage_sha256": "205b41a0e7c51855316a419f89e9ddb839b1cca71720dc4376f21836ca21523d",
+          "postimage_bytes": 81632
+        }
+      ],
+      "reuse": "Retain the existing short NX registry and same-thread reentry refusal; atomic actual TEB ownership distinguishes finite peer contention. No owner wire or permission change."
+    },
+    {
+      "file": "0005g-cooperative-source-mutation-turn.patch",
+      "sha256": "b4310c1d80e41e5de27a8b4bcbecc52148715823dd1d3bd5a466ede739137f53",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "preimage_sha256": "66b373628179d27f41dc150ebd2d1115a00bfc9ec1ff901c88e0aa1d705bb617",
+          "postimage_sha256": "d683a77c7ea4dadb7959cff07ee926cdd340849b666719eae6dac1ca183e782f",
+          "postimage_bytes": 15956
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": "205b41a0e7c51855316a419f89e9ddb839b1cca71720dc4376f21836ca21523d",
+          "postimage_sha256": "09c3b94d42b66de5545307ec87f2141c6078fbf9debbe47725d173f977780206",
+          "postimage_bytes": 83901
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "6bf958d840112e7ea6bd808e5bbd76dd8f6019b379b0dd98148af537e11a34b0",
+          "postimage_sha256": "91427611fdfc534f4780f3d8bf8787d4641c24e3dcac2c913d9dac2990495194",
+          "postimage_bytes": 109714
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "preimage_sha256": "892e980f8f0149560e9d7ae41ea0c813ce55694431962471a6d6684796f0f02e",
+          "postimage_sha256": "311afeeba3c4d19de9dd574891e34c5710516a9b4eeea93227376a2ec429e8be",
+          "postimage_bytes": 81731
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "preimage_sha256": "9c97378c9ba3860dc1427f66eeed9dc2734b3f922141f64271cfb6e2992c9b2b",
+          "postimage_sha256": "3c7070e9bf339af07044565ee10274fa1892ac13d60fc0f0a66235ac3549f364",
+          "postimage_bytes": 22050
+        }
+      ],
+      "reuse": "Reuse actual SourceLifetime, owner pin/Poll and RtlWaitOnAddress for serialized source compilation/link/invalidation. Preserve owner ABI, admission and upstream compilation."
+    },
+    {
+      "file": "0005h-batch-admission-refusal-diagnostics.patch",
+      "sha256": "4716aadf9d099d6efa0665fdb65a94a7c0e7b219565674ca14dd09e81f66ce47",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "preimage_sha256": "3c7070e9bf339af07044565ee10274fa1892ac13d60fc0f0a66235ac3549f364",
+          "postimage_sha256": "142776de80b9074dbcbfb87fafa16e17f14fee3dca95cfab6edd9d7fcd4fef0c",
+          "postimage_bytes": 22341
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "726556011d599eda601239545ec113dd6bab51ab56f4cc132264b05cee4aa45e",
+          "postimage_sha256": "1afff01e10b4784cf3271be4d4ea2c9ea29987d28008cbdd6217b39413677e51",
+          "postimage_bytes": 76701
+        }
+      ],
+      "reuse": "Bounded error-only diagnostics on existing source invalidation admission; no changed decision."
+    },
+    {
+      "file": "0005i-owned-published-buffer-invalidation-barrier.patch",
+      "sha256": "6a524c9ef493514ca40722a99e79d657b84b8c173cdda14e4b72c082dc6be84e",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+          "preimage_sha256": "e0d94f250946b10dd0169b9a4e93bb9870b0f30ffb3f000da9e6427df01db9b1",
+          "postimage_sha256": "f29a11861d88df3e5e99ed4cdd1bc782c2adfd35c016cf11f5291015728cb59e",
+          "postimage_bytes": 7255
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "preimage_sha256": "0d90b82ce1e43f59015da6845ced194d7a0cb88b5dde85f2a0a06c34d74cee32",
+          "postimage_sha256": "8697d9be23026e780e1593b938e5338d9e83610188434a8bfd772ab4c2ea84d2",
+          "postimage_bytes": 22248
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "preimage_sha256": "142776de80b9074dbcbfb87fafa16e17f14fee3dca95cfab6edd9d7fcd4fef0c",
+          "postimage_sha256": "57f4f6d8e557e97e5d6f5cf6ad84631cb757366aa7b94b135abb0bdeb5d38742",
+          "postimage_bytes": 23559
+        }
+      ],
+      "reuse": "Reuse actual CPUBackend current buffer and WriteGuard quiescence/publication when source code exists without direct-link descriptors. No fabricated token, bytes or permission."
+    },
+    {
+      "file": "0005j-owned-guest-exception-and-suspend-delivery.patch",
+      "sha256": "14d8d59de0b7c55ae3bdda7e28ed2610670d56a84cfa548a8d2897e92cac02ab",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "preimage_sha256": "29fc8290a6828020e780d8b49257b459da9359db8cd5de1bed74e23534407d8c",
+          "postimage_sha256": "a6b2f09f52c3319d3a34db4a02d397e487e92dbac2eea99245ba593e0f4fbaa9",
+          "postimage_bytes": 11822
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "91427611fdfc534f4780f3d8bf8787d4641c24e3dcac2c913d9dac2990495194",
+          "postimage_sha256": "e245b300e42b39c27fcfccfbba21a3111931ece2676fc2755983954b952e8151",
+          "postimage_bytes": 110812
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "1afff01e10b4784cf3271be4d4ea2c9ea29987d28008cbdd6217b39413677e51",
+          "postimage_sha256": "f52db7bfe3843bbc2a1f5f2178370e4333f2f19e4a6e873702642c730a901536",
+          "postimage_bytes": 80030
+        }
+      ],
+      "reuse": "Reuse upstream MIT FEX register/flags reconstruction, ARM64EC context packing, CallRetStack recovery, suspend doorbell and HandleGuestException. End real execution lease and RAII holds before nonlocal Wine exception delivery."
+    },
+    {
+      "file": "0005k-bind-exception-read-to-actual-thread.patch",
+      "sha256": "b3535eef44123461ad3b76aebf032b117c7966d0dc9ce4903a8be251d7e0718e",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "e245b300e42b39c27fcfccfbba21a3111931ece2676fc2755983954b952e8151",
+          "postimage_sha256": "9fdc23a5cd84bd4e566e4a6bf73c1a6986653b09fc76400ac5ae176b380375f0",
+          "postimage_bytes": 110819
+        }
+      ],
+      "reuse": "Use existing bounded read signature with the actual retained source thread."
+    },
+    {
+      "file": "0005l-retain-indirect-links-on-finite-admission-contention.patch",
+      "sha256": "cf59e292d3b5f5927d998293f28ae959623f257162a4f0daca1c060ce36513a7",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "preimage_sha256": "57f4f6d8e557e97e5d6f5cf6ad84631cb757366aa7b94b135abb0bdeb5d38742",
+          "postimage_sha256": "5ba8c1451a95927c79e8d29fc825f0aba03df4f329e308999139416cd5447bbd",
+          "postimage_bytes": 23860
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "preimage_sha256": "311afeeba3c4d19de9dd574891e34c5710516a9b4eeea93227376a2ec429e8be",
+          "postimage_sha256": "c72725e02cccef4196b1803eda1c774f98ed21cbf3b2959a8bac77edcc7a0685",
+          "postimage_bytes": 81922
+        }
+      ],
+      "reuse": "Retain original compiled indirect branch when optional direct linking lacks a finite slot or encounters an entry seal. Preserve closed/failed source admission refusals and all ticket/owner checks."
+    },
+    {
+      "file": "0005m-cooperative-EC-writer-progress-through-upstream-doorbell.patch",
+      "sha256": "9d6c694b2fcc7324f6b561705bb86875e71189b1ed093ea82dac1ad2c62cd226",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "preimage_sha256": "d683a77c7ea4dadb7959cff07ee926cdd340849b666719eae6dac1ca183e782f",
+          "postimage_sha256": "50f95624adb9760254e80e1ac14a0d8f00503327ccaff32831cf5e9db91d219c",
+          "postimage_bytes": 15975
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": "09c3b94d42b66de5545307ec87f2141c6078fbf9debbe47725d173f977780206",
+          "postimage_sha256": "580c5e28943557f7982fd5a6c8f31b1073a0e2a54b73f49ba7bb1cf936051f28",
+          "postimage_bytes": 85196
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "9fdc23a5cd84bd4e566e4a6bf73c1a6986653b09fc76400ac5ae176b380375f0",
+          "postimage_sha256": "525e5d72904f37e3794b7c1d49c27801b0d40509653eb96dc4dba1a4f455b21d",
+          "postimage_bytes": 111019
+        }
+      ],
+      "reuse": "Reuse upstream per-block SuspendDoorbell and owned guest-context continuation to quiesce active EC peers. Serialize actual entry/resume with source writers. Preserve owner gate, native authorization and protection checks."
+    },
+    {
+      "file": "0005n-poll-upstream-suspend-doorbell-on-conditional-backedges.patch",
+      "sha256": "3f0aafe9821d762419f5d01f97a139a68fccfeb4de798b62b4c9f11ad759e8e4",
+      "sources": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/BranchOps.cpp",
+          "preimage_sha256": "de1ae8de26e112c36f1fef4cd5799e9b4b2d11cfda847fbb72935eeb28529330",
+          "postimage_sha256": "bb21dec457093e43ce3c17f75bb3545f366bb81c6a203c903176ea0a7b58fad4",
+          "postimage_bytes": 16938
+        }
+      ],
+      "reuse": "Reuse EmitSuspendInterruptCheck on the missing conditional backedge as already used at entry and unconditional backedges. Preserve branch condition flags and guest instruction behavior."
+    },
+    {
+      "file": "0005o-retain-guest-intervals-after-failed-VM-removal.patch",
+      "sha256": "0b148707d3986b6a60c355875a9d1f3d423bc0b336202ec3b44a050e08d174fe",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "f52db7bfe3843bbc2a1f5f2178370e4333f2f19e4a6e873702642c730a901536",
+          "postimage_sha256": "a7d57e1d3d7eb60981ae28c1960cb4a5ed82f1fa91a2fd4f1577d4ae099f8162",
+          "postimage_bytes": 80764
+        }
+      ],
+      "reuse": "Preserve original interval/image state on failed VM removal, using existing before/after notifications and retained batch; invalidate cached code before mutation and remove logical mappings only on success."
     }
   ],
   "runtime_qualified": false

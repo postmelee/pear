@@ -1,0 +1,108 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -146,6 +146,10 @@
+ 
+ struct FrontendThreadData {
+   bool InLockedRWXRead {};
++#ifdef PEAR_FEX_MEMORY_OWNER
++  std::optional<FEXCore::Utils::PearFEXMemory::SourceLifetime> MemoryNotificationLife;
++  unsigned MemoryNotificationKind {};
++#endif
+ };
+ 
+ namespace {
+@@ -1071,10 +1075,61 @@
+   return STATUS_SUCCESS;
+ }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++enum PearNotificationKind : unsigned { PearAlloc=1, PearFree, PearProtect, PearUnmap };
++static void PearMemoryNotification(PearNotificationKind Kind, void* Address, SIZE_T Size,
++                                   ULONG Argument, ULONG Prot, BOOL After, NTSTATUS Status) {
++  if (!CTX || !InvalidationTracker) return;
++  auto* Thread=GetCPUArea().ThreadState();
++  if (!Thread) return;
++  auto* Frontend=GetFrontendThreadData(Thread);
++  auto Refused=[](PearMemory::Result Result) {
++    PearRecordPrimary(Result); PearSourceReady.store(false,std::memory_order_release);
++    PearInitCheckpoint("MemoryNotification.refused",Result.Status,Result.ErrorDomain,Result.ErrorCode);
++  };
++  if (!After) {
++    if (!PearSourceReady.load(std::memory_order_acquire)) return;
++    if (Frontend->MemoryNotificationKind || Frontend->MemoryNotificationLife) {
++      Refused({PEAR_FEX_STALE_IDENTITY,0,0}); return;
++    }
++    auto Life=PearMemory::AcquireCurrentSourceLifetime(CTX.get());
++    if (!Life || Life.ActualThread()!=Thread) { Refused({PEAR_FEX_STALE_IDENTITY,0,0}); return; }
++    auto Result=CTX->BeginPearLinkInvalidation(Thread);
++    if (!Result) { Refused(Result); return; }
++    // Reuse the upstream before/after serialization. Quiescence admission is
++    // acquired before this mutex, and completion waits occur after unlocking.
++    ThreadCreationMutex.lock();
++    Frontend->MemoryNotificationLife.emplace(std::move(Life));
++    Frontend->MemoryNotificationKind=Kind;
++    if (Kind==PearUnmap || (Kind==PearFree && (Argument & MEM_RELEASE))) {
++      auto [Start,Bytes]=InvalidationTracker->InvalidateContainingSection(reinterpret_cast<uint64_t>(Address),true);
++      if (Kind==PearUnmap && Bytes) HandleImageUnmap(Start,Bytes);
++    }
++    return;
++  }
++  // A refused before-callback creates no lock/record. Preserve its failure.
++  if (!Frontend->MemoryNotificationKind && !Frontend->MemoryNotificationLife) return;
++  if (Frontend->MemoryNotificationKind!=Kind || !Frontend->MemoryNotificationLife ||
++      !Frontend->MemoryNotificationLife->Validate()) { Refused({PEAR_FEX_STALE_IDENTITY,0,0}); return; }
++  if (!Status) {
++    if (Kind==PearProtect || (Kind==PearAlloc && !(Argument & (MEM_RESET|MEM_RESET_UNDO))))
++      InvalidationTracker->HandleMemoryProtectionNotification(reinterpret_cast<uint64_t>(Address),Size,Prot);
++    else if (Kind==PearFree && !(Argument & MEM_RELEASE))
++      InvalidationTracker->InvalidateAlignedInterval(reinterpret_cast<uint64_t>(Address),Size,true);
++  }
++  Frontend->MemoryNotificationKind=0;
++  ThreadCreationMutex.unlock();
++  const auto Finished=CTX->FinishPearLinkInvalidation(Thread);
++  const auto Released=Frontend->MemoryNotificationLife->Release();
++  if (Released) Frontend->MemoryNotificationLife.reset();
++  if (!Finished) Refused(Finished);
++  else if (!Released) Refused(Released);
++}
++#endif
++
+ void NotifyMemoryAlloc(void* Address, SIZE_T Size, ULONG Type, ULONG Prot, BOOL After, NTSTATUS Status) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearMemoryNotification(PearAlloc,Address,Size,Type,Prot,After,Status);
+   return;
+ #endif
+ 
+@@ -1095,8 +1150,7 @@
+ 
+ void NotifyMemoryFree(void* Address, SIZE_T Size, ULONG FreeType, BOOL After, NTSTATUS Status) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearMemoryNotification(PearFree,Address,Size,FreeType,0,After,Status);
+   return;
+ #endif
+ 
+@@ -1116,8 +1170,7 @@
+ 
+ void NotifyMemoryProtect(void* Address, SIZE_T Size, ULONG NewProt, BOOL After, NTSTATUS Status) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearMemoryNotification(PearProtect,Address,Size,0,NewProt,After,Status);
+   return;
+ #endif
+ 
+@@ -1188,8 +1241,7 @@
+ 
+ void NotifyUnmapViewOfSection(void* Address, BOOL After, NTSTATUS Status) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
++  PearMemoryNotification(PearUnmap,Address,0,0,0,After,Status);
+   return;
+ #endif
+ 

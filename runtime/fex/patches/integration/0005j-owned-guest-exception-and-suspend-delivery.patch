@@ -1,0 +1,124 @@
+diff --git a/FEXCore/include/FEXCore/Core/Context.h b/FEXCore/include/FEXCore/Core/Context.h
+--- a/FEXCore/include/FEXCore/Core/Context.h
++++ b/FEXCore/include/FEXCore/Core/Context.h
+@@ -88,6 +88,7 @@
+   // Nonvirtual entry adapters preserve the existing Context layout/vtable.
+   FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result EnterPearEC(Core::InternalThreadState*, bool FillState);
+   FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result ExitPearEC(Core::InternalThreadState*, bool Required);
++  FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result ObservePearInstruction(Core::InternalThreadState*, uintptr_t PC, uint32_t& Word);
+   // Private paired-source construction outcomes, not a stable runtime ABI.
+   virtual bool InitPearCore(FEXCore::Utils::PearFEXMemory::Result&) = 0;
+   virtual bool PreparePearConstructionCleanup(FEXCore::Utils::PearFEXMemory::Result&) = 0;
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -127,6 +127,24 @@
+   if (!Active) return {PEAR_FEX_UNAVAILABLE, 0, 0};
+   return M::Exit(Facts);
+ }
++FEXCore::Utils::PearFEXMemory::Result Context::ObservePearInstruction(Core::InternalThreadState* Thread, uintptr_t PC, uint32_t& Word) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  auto Life=M::AcquireCurrentSourceLifetime(this);
++  auto* Impl=static_cast<ContextImpl*>(this);
++  if (!Life || Life.ActualThread()!=Thread || !Thread || !Thread->CPUBackend || !Impl->Dispatcher || (PC&3))
++    return {PEAR_FEX_STALE_IDENTITY,0,0};
++  const auto D=Impl->Dispatcher->GetPearSnapshot();
++  if (!M::HasManagedActive(D)) return {PEAR_FEX_UNAVAILABLE,0,0};
++  std::span<uint8_t> Bytes {reinterpret_cast<uint8_t*>(&Word),sizeof(Word)};
++  const auto Base=reinterpret_cast<uintptr_t>(D.Base);
++  if (Base && PC>=Base && PC-Base<D.Token.extent_size && sizeof(Word)<=D.Token.extent_size-(PC-Base))
++    return M::CopyManagedRX(D,PC-Base,Bytes).Outcome;
++  const auto W=Thread->CPUBackend->FindPearManagedWindow(PC);
++  const auto T=Thread->CPUBackend->FindPearRetainedTarget(PC);
++  if (!W || !T) return {PEAR_FEX_STALE_IDENTITY,0,0};
++  return M::CopyManagedRXUnderGlobalLease(D,*T,Thread,W->Offset,Bytes).Outcome;
++}
++
+ #endif
+ 
+ ContextImpl::ContextImpl(const FEXCore::HostFeatures& Features)
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1028,6 +1028,70 @@
+     return false;
+   }
+ }
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++// Reuse upstream state reconstruction, ARM64EC packing and exception mapping.
++// All source holds and callback guards end before a nonlocal NT continuation.
++static NTSTATUS PearResetOwnedException(EXCEPTION_RECORD* Record, ARM64_NT_CONTEXT* Native) {
++  const auto CPUArea=GetCPUArea();
++  auto* Thread=CPUArea.ThreadState();
++  if (!Thread || !CTX) return STATUS_SUCCESS;
++  enum class Action { NativeResume, GuestResume, GuestRaise };
++  Action Next=Action::GuestRaise;
++  ARM64_NT_CONTEXT Packed {};
++  EXCEPTION_RECORD GuestRecord {};
++  BOOL FirstChance=TRUE;
++  {
++    ScopedCallbackDisable Callback;
++    auto Life=PearMemory::AcquireCurrentSourceLifetime(CTX.get());
++    if (!Life || Life.ActualThread()!=Thread || !Life.Validate()) return STATUS_NOT_SUPPORTED;
++    if (Native->Pc==reinterpret_cast<uintptr_t>(&ExitFunctionSuspendPoint)) {
++      const auto Idle=CTX->ExitPearEC(Thread,false);
++      if (!Idle) { PearRecordPrimary(Idle); return STATUS_NOT_SUPPORTED; }
++      Native->Pc=reinterpret_cast<uintptr_t>(&ExitFunctionSuspendResumePoint);
++      *CPUArea.Area->SuspendDoorbell=0;
++      Next=Action::NativeResume;
++    } else {
++      const bool IsJIT=CTX->IsAddressInCodeBuffer(Thread,Native->Pc);
++      const bool IsDispatcher=IsDispatcherAddress(Native->Pc);
++      if (!IsJIT && !IsDispatcher) return STATUS_SUCCESS;
++      uint32_t Instruction {};
++      const auto Observed=CTX->ObservePearInstruction(Thread,Native->Pc,Instruction);
++      if (!Observed) { PearRecordPrimary(Observed); return STATUS_NOT_SUPPORTED; }
++      if (Record->ExceptionCode==EXCEPTION_ACCESS_VIOLATION && Record->NumberParameters>=2 &&
++          FEX::Windows::CallRetStack::HandleAccessViolation(Thread,Record->ExceptionInformation[1],Native->X17)) {
++        Next=Action::NativeResume;
++      } else {
++        const bool Suspend=Record->ExceptionCode==EXCEPTION_ILLEGAL_INSTRUCTION && Instruction==0xD4395FC0;
++        if (!IsDispatcher) Exception::ReconstructThreadState(Thread,*Native);
++        Packed=Exception::StoreStateToPackedECContext(Thread,Native->Fpcr,Native->Fpsr);
++        if (Suspend) {
++          Next=Action::GuestResume;
++          *CPUArea.Area->SuspendDoorbell=0;
++        } else {
++          auto Flags=CTX->ReconstructCompactedEFLAGS(Thread,false,nullptr,0);
++          Flags &= ~(1U<<FEXCore::X86State::RFLAG_TF_RAW_LOC);
++          CTX->SetFlagsFromCompactedEFLAGS(Thread,Flags);
++          GuestRecord=FEX::Windows::HandleGuestException(Thread->CurrentFrame->SynchronousFaultData,*Record,
++                                                        Packed.Pc,Packed.X8,Packed.X0,FirstChance);
++          if (GuestRecord.ExceptionCode==EXCEPTION_SINGLE_STEP) Packed.Cpsr &= ~(1U<<21);
++          else if (GuestRecord.ExceptionCode==EXCEPTION_BREAKPOINT) --Packed.Pc;
++        }
++        const auto Exited=CTX->ExitPearEC(Thread,true);
++        if (!Exited) { PearRecordPrimary(Exited); return STATUS_NOT_SUPPORTED; }
++        CPUArea.Area->InSimulation=false;
++      }
++    }
++    const auto Released=Life.Release();
++    if (!Released) { PearRecordPrimary(Released); return STATUS_NOT_SUPPORTED; }
++  }
++  if (Next==Action::NativeResume) return NtContinueNative(Native,false);
++  CPUArea.Area->InSyscallCallback=false;
++  if (Next==Action::GuestResume) return NtContinueNative(&Packed,false);
++  PearInitCheckpoint("GuestException.delivered",GuestRecord.ExceptionCode);
++  return NtRaiseExceptionNative(&GuestRecord,&Packed,FirstChance);
++}
++#endif
+ 
+ NTSTATUS ResetToConsistentState(EXCEPTION_RECORD* Exception, CONTEXT* GuestContext, ARM64_NT_CONTEXT* NativeContext) {
+   bool Cont {};
+@@ -1064,9 +1128,7 @@
+   }
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
+-  return STATUS_NOT_SUPPORTED;
++  return PearResetOwnedException(Exception,NativeContext);
+ #endif
+ 
+   const auto CPUArea = GetCPUArea();

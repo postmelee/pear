@@ -1,0 +1,18 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -774,6 +774,14 @@
+   }
+ #endif
+   FEX::Windows::Logging::Init();
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Retain upstream fatal behavior but make its first bounded source reason
++  // observable even when the default general logging policy is silent.
++  LogMan::Throw::InstallHandler([](const char* Message) {
++    const auto Output=reinterpret_cast<int (*)(const char*)>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"),"__wine_dbg_output"));
++    if (Output) { char Text[768]; snprintf(Text,sizeof(Text),"Pear FEX assertion: %.640s\n",Message); Output(Text); }
++  });
++#endif
+   FEXCore::Config::Set(FEXCore::Config::CONFIG_APP_FILENAME, ExecutablePath);
+   FEXCore::Config::Set(FEXCore::Config::CONFIG_APP_CONFIG_NAME, AppConfigName);
+ 
