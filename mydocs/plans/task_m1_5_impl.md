@@ -3,7 +3,7 @@
 Issue: [#5](https://github.com/postmelee/pear/issues/5)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Task scope: [task plan](task_m1_5.md)
-Updated: October 7, 2026. State: Stage 3 finite memory acceptance passed; Stage 4 general API/callback closure in progress.
+Updated: October 7, 2026. State: Stages 3/4 completed; Stage 5 translated lifecycle implementation approved and in progress.
 
 ## Authority and approved direction
 
@@ -121,7 +121,7 @@ The Stage 3 report records its acceptance map and retained Stage 5/6 limits.
    introduce risk. Complete the Stage 3 safety matrix and Stage 4 dispatch result
    on the coherent candidate; no unverified required edge is a passing claim.
 
-### Stage 5 — required translated lifecycle
+### Stage 5 — required translated lifecycle (approved)
 
 Exercise representative translated worker/TLS/native callback, code invalidation,
 context/suspend and supported ordinary exception/guard behavior. Preserve guest

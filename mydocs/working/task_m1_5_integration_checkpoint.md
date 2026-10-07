@@ -243,3 +243,12 @@ accounted and 3.5 MiB headroom, with actual object layouts, writable PE coverage
 and Wine component observations. Physical peak/RSS and ordinary upstream engine
 allocations are not measured. Stage 4 file/time/event/native callback completion
 and Stage 5 ordinary lifecycle remain separate. No GitHub publication occurred.
+
+## Stage 4 closure — October 7
+
+[Stage 4 report](task_m1_5_stage4.md): normal link18 (no finite test injection)
+passed the NT state roundtrip and file/time/event/native-to-x64 callback fixtures
+in run21/run22, both exit42 with complete cleanup and current authorization.
+Stage 5 implementation is explicitly approved. Preserve original FEX C++/assembly
+and connect ordinary lifecycles to the owner; do not remove unsupported guards
+without that connection. Stage 6 reconstruction and game execution remain later.

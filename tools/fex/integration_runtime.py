@@ -33,7 +33,8 @@ def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output)
     expected['linked']=linked_digest
     fixture_digest=H((fixture/'control.json').read_bytes())
     need(fixture_digest in {expected['fixture'],
-         '36ee3f0424b61a5e5bd9150ed1ed3075f48229563bcbef7b32a0d82c60357234'},
+         '36ee3f0424b61a5e5bd9150ed1ed3075f48229563bcbef7b32a0d82c60357234',
+         '499ec84d650b3efae2a4067721b9b2ec5247b133d63527fe091e5362f01ad3b2'},
          'integration_fixture_receipt')
     expected['fixture']=fixture_digest
     records={}
