@@ -1,0 +1,13 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1688,6 +1688,9 @@
+   if (!*Output) return;
+   *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFinitePublication(Frame,ResumePC);
+   if (!*Output) return;
++  // Earlier snapshots have completed their reads. Release their actual strong
++  // references before testing last-reference retirement of the old backend.
++  Fresh.reset(); Window.reset(); Snapshot.Target.reset();
+   *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFiniteBufferGrowth(Frame,ResumePC);
+   if (!*Output) return;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();

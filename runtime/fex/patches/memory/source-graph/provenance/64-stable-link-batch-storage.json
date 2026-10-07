@@ -1,0 +1,37 @@
+{
+  "attribution": "Original Pear fixes batch WriteGuard reference lifetime by constructing its transaction and optional guard in stable existing registry storage, without heap allocation or moving a live guard. Adds finite reserved-source batch closure/abort validation. All initializer selections remain closed pending metadata and final image review.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+      "postimage_bytes": 21519,
+      "postimage_sha256": "ebb44cd2f8007d0c1cb333dcb2e807fda3d94a2491d388fd68cc10fc91589fee",
+      "preimage_sha256": "4709e3803973c52ce017aec4aa9e6d257509e4243aea63048ebdc059def91892"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 12417,
+      "postimage_sha256": "a564d8821d5ec0ba92eca440fab1d3aa2c7e4d5efda0af1d7f89e0daf2bbaf21",
+      "preimage_sha256": "aed7cf60039863f76f20b6caecb1d02ceaef86b5f4531e388cdd001e05d4239f"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "8be2bb46a9bb17f2b16f1a0d494b0b2f1b0de2ea4d6f0273addd87e81e61049a",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "stable-link-batch-storage",
+  "native_runtime_execution": false,
+  "order": 64,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

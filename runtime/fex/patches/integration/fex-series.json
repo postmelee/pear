@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "scope": "fex_component",
+  "base_source_manifest_sha256": "83fd15dc88b0cfe6fc6a1964ad7ddad2488c43b78f85be26ccc92f2bf6d8830d",
+  "patches": [
+    {
+      "file": "0004f-fex-native-owner-bridge.patch",
+      "sha256": "004c7bd1943b46fe28f0f8693d7fbca63e7c9fab00b5fb9a283f570624f0e583",
+      "sources": [
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": "329dafa9becf8505d0e5ca11d1fe19fec318db42de138a99cf2921dd1defafa4",
+          "postimage_sha256": "ca770b66b342deb2eb868198c0d8dfa614d15bb7843bd56ba44438cdfed2699a",
+          "postimage_bytes": 78530
+        }
+      ],
+      "reuse": "FEX ARM64EC Module InitSyscalls/FillNtDllLUTs; retain upstream CHPE redirection and raw register-call mechanism."
+    },
+    {
+      "file": "0004i-initial-guest-interval-snapshot.patch",
+      "sha256": "5634442f0c8f8bc9694bef632c51bcc0ec8123c7ef44f1520a395f484065f102",
+      "sources": [
+        {
+          "path": "Source/Windows/Common/InvalidationTracker.h",
+          "preimage_sha256": "fd505046ab295706376ca91d919579a9bff1639969324d7664073fdd944c5428",
+          "postimage_sha256": "bddbd92cbee13eb5709fd84e1bd47e29de665192c3ed05fd9e3ecf2ef23298ba",
+          "postimage_bytes": 3454
+        },
+        {
+          "path": "Source/Windows/Common/InvalidationTracker.cpp",
+          "preimage_sha256": "a1ed5939fbaa007153ed71a3e26f8c5a6523b9ea891c4d95ed64e763069f2dbe",
+          "postimage_sha256": "2f6c3c801da432fe3a8a1529df013690f1a261cb87f1c5b3d6ca013aa84a001c",
+          "postimage_bytes": 15176
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "c2651bf0052003380125cdd754deb610cd35093ad954f7fe5121571940dec9e3",
+          "postimage_sha256": "2c9b1a0da21223f5248b077b14f723219eb906f6c762788fa90197eba974bf59",
+          "postimage_bytes": 62127
+        }
+      ],
+      "reuse": "Reuse upstream interval insertion for the initial pre-thread snapshot; retain post-initialization invalidation and existing owner guards. Seed the NX guest return byte before thread creation."
+    },
+    {
+      "file": "0004j-bounded-initialization-checkpoints.patch",
+      "sha256": "10d128686e2f484f3ec9c9e8b65fa5ace40fdcb23aabf937ff0701a9ba12823f",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "2c9b1a0da21223f5248b077b14f723219eb906f6c762788fa90197eba974bf59",
+          "postimage_sha256": "3e6c2734bbde9b493cc5a89363e1df8decc5cb2d697c2ee8c40586a7b49b621f",
+          "postimage_bytes": 63207
+        }
+      ],
+      "reuse": "Use Wine existing debug output for bounded development initialization results without new event ABI or changing failure behavior."
+    },
+    {
+      "file": "0004l-owned-image-map-notification.patch",
+      "sha256": "563eeda7a635e82874e8ab507aa7a9a1cf42abc8f4f280b0348526c5c73dbc9c",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "3e6c2734bbde9b493cc5a89363e1df8decc5cb2d697c2ee8c40586a7b49b621f",
+          "postimage_sha256": "0c40389608256ef52c7e25c6caf870043d70ddb7d1eb4f71f053da34fdae562d",
+          "postimage_bytes": 64754
+        }
+      ],
+      "reuse": "Use real Core invalidation batch/lifetime admission ahead of existing Windows interval and image tracking; finish outside source locks; preserve actual failures."
+    },
+    {
+      "file": "0004m-arm64ec-execution-boundary.patch",
+      "sha256": "223da161f8249c9c97526a88b7226edbff5aef356fa3838c9b1268b859385572",
+      "sources": [
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "preimage_sha256": "49fdcc378509bfb59e8a56826b37d2913b0f571a8a071d7d100c35ff370c47d2",
+          "postimage_sha256": "29fc8290a6828020e780d8b49257b459da9359db8cd5de1bed74e23534407d8c",
+          "postimage_bytes": 11677
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "preimage_sha256": "634d1288107e8c8b7718146e74771c2d83ad5222cc0f1fc20d2b68536e2b71f7",
+          "postimage_sha256": "3ba4ac51c1b4045d56471f4fc6bbda11f58ba973d52765ef281650599bdda464",
+          "postimage_bytes": 108419
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "0c40389608256ef52c7e25c6caf870043d70ddb7d1eb4f71f053da34fdae562d",
+          "postimage_sha256": "91511adf6c4430fdd96e472212251064a1e1aaabb337d71094da655b345e3ebf",
+          "postimage_bytes": 66483
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.S",
+          "preimage_sha256": "3d9aa27520c934b1b54dc7afb308abb1109c9628cca4f399a3ffdffd8362ed62",
+          "postimage_sha256": "ecf58cfaebfb7214ce4ec6a41364827225de4da4bc4371c05b59eb94f70bc11d",
+          "postimage_bytes": 8037
+        }
+      ],
+      "reuse": "Retain pinned MIT FEX ARM64EC entry/return assembly, context merge and call-ret invalidation; connect existing global owner execution lease with compiled native gates. No Madeira fork code imported."
+    },
+    {
+      "file": "0004n-checked-data-overcommit-resume.patch",
+      "sha256": "ea3465c62a5d2d6010083fb01c4f8ee7332634c5f20a6b978609e5933c47befe",
+      "sources": [
+        {
+          "path": "Source/Windows/Common/OvercommitTracker.h",
+          "preimage_sha256": "446f0c1ab57d3a65fb6840eea8327a82583c2dab1e04b8347f04f56c0a7b6b23",
+          "postimage_sha256": "cb0d569bd1f9189160da36fd3f74af510e6a4016072bc0c76859923ae45bfea7",
+          "postimage_bytes": 3223
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "91511adf6c4430fdd96e472212251064a1e1aaabb337d71094da655b345e3ebf",
+          "postimage_sha256": "7dcff9ee65cbeb69ec9464e403c2cf8a536801686e43667b16dd236d17319ed1",
+          "postimage_bytes": 67052
+        }
+      ],
+      "reuse": "Reuse original MIT FEX OvercommitTracker and full native NtContinue path for actual reserved ordinary data faults. Check NT query/allocation results and interval ownership; leave unrelated exception paths unsupported."
+    },
+    {
+      "file": "0004o-native-resume-observation.patch",
+      "sha256": "d4fae7fc187d15a5d24861095bf3695c8a7177f65044fe8a3ed7f564995d4440",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "7dcff9ee65cbeb69ec9464e403c2cf8a536801686e43667b16dd236d17319ed1",
+          "postimage_sha256": "43d81dd0529a10c4da8bfa763054ce9917b1fe8d18a0a83a2726082551334e48",
+          "postimage_bytes": 67701
+        }
+      ],
+      "reuse": "Use existing bounded private Wine checkpoints to distinguish a native-context resume from a guest reentry; no changed admission or exception policy."
+    },
+    {
+      "file": "0004q-owned-guest-syscall-transfer.patch",
+      "sha256": "dec0223979fe4e8043bd4aef3df3a6644d0589b44bdd114c62ddf86f90510e2c",
+      "sources": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "preimage_sha256": "43d81dd0529a10c4da8bfa763054ce9917b1fe8d18a0a83a2726082551334e48",
+          "postimage_sha256": "ae7ba72fcd6e2c486e44a286930a6ae5649c7888c420fc9d4b0d25c7cc1ab3b5",
+          "postimage_bytes": 68442
+        }
+      ],
+      "reuse": "Retain upstream Windows syscall state packing, exception dispatcher and BeginSimulation. Pair its nonlocal native transfer with the existing owner exit and fresh checked EC entry."
+    },
+    {
+      "file": "0004s-ec-readonly-metadata.patch",
+      "sha256": "7ce9523398ac711caaa54fdcfc08b747ad4a19bc4a7343ec9a215594a4023c60",
+      "sources": [
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "preimage_sha256": "ca770b66b342deb2eb868198c0d8dfa614d15bb7843bd56ba44438cdfed2699a",
+          "postimage_sha256": "656a10e3c57c8480ca274f4572d673270ad19d20a078bedc418cb69da64801bf",
+          "postimage_bytes": 78579
+        }
+      ],
+      "reuse": "Existing read-only metadata opcode; admit the actual compiled role through the existing selected-module and backend role checks. No ABI, allocation or permission change."
+    }
+  ],
+  "runtime_qualified": false
+}

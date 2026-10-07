@@ -1,0 +1,72 @@
+diff --git a/Source/Windows/PearEmptyInit/Fixture.cpp b/Source/Windows/PearEmptyInit/Fixture.cpp
+--- a/Source/Windows/PearEmptyInit/Fixture.cpp
++++ b/Source/Windows/PearEmptyInit/Fixture.cpp
+@@ -25,6 +25,7 @@
+ #if !defined(_WIN32) || !defined(ARCHITECTURE_arm64) || defined(ARCHITECTURE_arm64ec) || !defined(PEAR_FEX_MEMORY_OWNER)
+ #error The finite source-init fixture requires the selected ordinary ARM64 owner target.
+ #endif
++extern "C" uint32_t PearFiniteCheckpoint;
+ namespace FEX::Windows::PearEmptyInit {
+ namespace {
+ namespace Memory=FEXCore::Utils::PearFEXMemory;
+@@ -157,6 +158,24 @@
+     const auto Transfer=Actual->Dispatcher->ExecutePearFiniteTransfer(S.Thread->CurrentFrame);
+     S.Thread->CurrentFrame->State.InlineJITBlockHeader=0;
+     if (!Transfer) return Source(Phase::Thread,Transfer);
++    // Terminal source closure is irreversible: test only after the last resume.
++    // A genuine retained lifetime must block deletion without detaching backing.
++    PearFiniteCheckpoint=32;
++    auto Held=Memory::AcquireCurrentSourceLifetime(Actual);
++    if (!Held) return Refused(Phase::Thread);
++    auto* Backend=S.Thread->CPUBackend.get();
++    auto* Lookup=S.Thread->LookupCache.get();
++    Memory::Result Refusal;
++    const bool Ready=Actual->PreparePearThreadCleanup(S.Thread,Refusal);
++    if (Ready || Refusal.Status!=PEAR_FEX_UNAVAILABLE || Refusal.ErrorDomain || Refusal.ErrorCode ||
++        S.Thread->CPUBackend.get()!=Backend || S.Thread->LookupCache.get()!=Lookup ||
++        !Held.Validate(false) || Held.Validate(true) || Memory::AcquireCurrentSourceLifetime(Actual))
++      return Source(Phase::Thread,{PEAR_FEX_STALE_IDENTITY,0,0});
++    const auto Released=Held.Release();
++    if (!Released) return Source(Phase::Thread,Released);
++    PearFiniteCheckpoint=33;
++    // The ordinary checked cleanup below must now drain and delete this tree.
++
+   }
+   // No CompileRIP, guest dispatch, delivered handler or guest invocation.
+   return Good(Phase::Thread);
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

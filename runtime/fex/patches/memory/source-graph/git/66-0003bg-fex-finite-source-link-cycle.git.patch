@@ -1,0 +1,196 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JITClass.h b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+--- a/FEXCore/Source/Interface/Core/JIT/JITClass.h
++++ b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+@@ -62,6 +62,9 @@
+   CPUBackend::CompiledCode LoadCachedCode(std::span<const uint8_t> HostBytes) override;
+ 
+   void ClearCache() override;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  static FEXCore::Utils::PearFEXMemory::Result ExecutePearFiniteLinks(FEXCore::Core::CpuStateFrame*,uintptr_t);
++#endif
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   bool BeginPreparedPublication(CompiledCode&) override;
+   bool FinishPreparedPublication(CompiledCode&, bool SourceStillValid) override;
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -761,6 +761,100 @@
+ }
+ #endif
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++extern "C" uint32_t PearFiniteCheckpoint;
++FEXCore::Utils::PearFEXMemory::Result Arm64JITCore::ExecutePearFiniteLinks(
++    FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  auto Life=M::AcquireCurrentSourceLifetime();
++  auto* Thread=Life ? Life.ActualThread() : nullptr;
++  auto* C=Life ? const_cast<FEXCore::Context::ContextImpl*>(
++    static_cast<const FEXCore::Context::ContextImpl*>(Life.ActualContext())) : nullptr;
++  if (!Thread || !C || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !C->Dispatcher ||
++      !Thread->CPUBackend || !Thread->LookupCache || !M::HasManagedActive(C->Dispatcher->GetPearSnapshot()))
++    return {PEAR_FEX_UNAVAILABLE,0,0};
++  for (uint32_t I=0;I<2;++I) {
++    PearFiniteCheckpoint=64+I*16;
++    auto Window=Thread->CPUBackend->FindPearManagedWindow(Frame->State.InlineJITBlockHeader);
++    if (!Window || Thread->LookupCache->Shared!=Window->Owner->LookupCache.get()) return {PEAR_FEX_UNAVAILABLE,0,0};
++    const size_t RecordOffset=528+128*I;
++    auto* Record=reinterpret_cast<FEXCore::Context::ExitFunctionLinkData*>(Window->Begin+RecordOffset);
++    auto Target=Thread->CPUBackend->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Record));
++    if (!Target) return {PEAR_FEX_UNAVAILABLE,0,0};
++    const auto Protection=C->Dispatcher->GetPearSnapshot();
++    FEXCore::Context::ExitFunctionLinkData Copy {};
++    auto Read=M::CopyManagedRXUnderGlobalLease(Protection,*Target,Thread,RecordOffset,
++      {reinterpret_cast<uint8_t*>(&Copy),sizeof(Copy)});
++    if (!Read) return Read.Outcome;
++    PearJITLinkLayout::Layout Layout;
++    std::array<uint8_t,PearJITLinkLayout::THUNK_BYTES> Thunk {};
++    std::array<uint8_t,PearJITLinkLayout::CALLER_BYTES> Caller {};
++    if (Copy.GuestRIP!=0x2000+4*I || !PearJITLinkLayout::Build(Window->Begin,Window->Size,
++        reinterpret_cast<uintptr_t>(Record),Copy,Layout)) return {PEAR_FEX_INVALID_REQUEST,0,0};
++    Read=M::CopyManagedRXUnderGlobalLease(Protection,*Target,Thread,Layout.ThunkOffset,Thunk);
++    if (!Read) return Read.Outcome;
++    Read=M::CopyManagedRXUnderGlobalLease(Protection,*Target,Thread,Layout.MarkerOffset,Caller);
++    if (!Read) return Read.Outcome;
++    uint32_t Marker {};std::memcpy(&Marker,Caller.data(),4);
++    const auto Encoded=PearJITLinkLayout::Encode(Window->Begin,Layout,Window->Begin,Marker);
++    if (!Encoded.Direct || Encoded.Call!=(I!=0) ||
++        !PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller))
++      return {PEAR_FEX_INVALID_REQUEST,0,0};
++    // Reuse the genuine source map and node allocator. No guest cache or code
++    // is executed; this original finite target is already owned and published.
++    {
++      auto Lock=Thread->LookupCache->AcquireWriteLock();
++      auto* Map=Thread->LookupCache->Shared;
++      if (!Map->BlockList.empty() || !Map->BlockLinks->empty()) return {PEAR_FEX_UNAVAILABLE,0,0};
++      Map->AddBlockMapping(Copy.GuestRIP,{},reinterpret_cast<void*>(Window->Begin),Lock);
++    }
++    FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
++    auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);
++    if (!Outcome) return Outcome;
++    PearFiniteCheckpoint=65+I*16;
++    const auto Revision=C->GetPearInvalidationRevision();
++    const auto Facts=Window->Owner->GetPearSnapshot();
++    const auto Ticket=PearJITLinks::Prepare(PearJITLinks::SourceDescriptor{Window->Owner,C,Facts,Layout,Encoded,
++      Thunk,Caller,Copy.GuestRIP,Window->Begin});
++    if (!Ticket) return {PEAR_FEX_UNAVAILABLE,0,0};
++    Outcome=PearJITLinks::PatchPrepared(*Ticket,Thread,Revision);if (!Outcome) return Outcome;
++    {
++      auto Lock=Thread->LookupCache->AcquireWriteLock();
++      Thread->LookupCache->AddPearBlockLink(Copy.GuestRIP,Record,*Ticket,Lock);
++      Outcome=PearJITLinks::Commit(*Ticket);
++    }
++    if (!Outcome) return Outcome;
++    Outcome=C->FinishPearDispatcherGate(Gate);if (!Outcome) return Outcome;
++    PearFiniteCheckpoint=66+I*16;
++    auto Fresh=Thread->CPUBackend->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Record));
++    if (!Fresh) return {PEAR_FEX_UNAVAILABLE,0,0};
++    uint32_t Word {};
++    Read=M::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Fresh,Thread,Layout.CallerOffset,
++      {reinterpret_cast<uint8_t*>(&Word),sizeof(Word)});
++    if (!Read) return Read.Outcome;
++    if (Word!=Encoded.PatchedWord) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    FEXCore::Context::ContextImpl::PearDispatcherGate DelinkGate {};
++    Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,DelinkGate);if (!Outcome) return Outcome;
++    Outcome=PearJITLinks::BeginBatch(C,Thread);if (!Outcome) return Outcome;
++    PearFiniteCheckpoint=67+I*16;
++    {
++      auto Lock=Thread->LookupCache->AcquireWriteLock();
++      if (!Thread->LookupCache->Shared->Erase(Copy.GuestRIP,Lock)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    }
++    Outcome=PearJITLinks::FinishBatch(C,Thread);if (!Outcome) return Outcome;
++    Outcome=C->FinishPearDispatcherGate(DelinkGate);if (!Outcome) return Outcome;
++    auto Final=Thread->CPUBackend->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Record));
++    if (!Final) return {PEAR_FEX_UNAVAILABLE,0,0};
++    std::array<uint8_t,PearJITLinkLayout::CALLER_BYTES> Restored {};
++    Read=M::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Final,Thread,Layout.MarkerOffset,Restored);
++    if (!Read) return Read.Outcome;
++    if (Restored!=Caller || M::Links::HasOutstanding(C)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    PearFiniteCheckpoint=68+I*16;
++  }
++  return {PEAR_FEX_OK,0,0};
++}
++#endif
++
+ void Arm64JITCore::Op_NoOp(const IR::IROp_Header* IROp, IR::Ref Node) {}
+ 
+ Arm64JITCore::Arm64JITCore(FEXCore::Context::ContextImpl* ctx, FEXCore::Core::InternalThreadState* Thread
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -11,6 +11,7 @@
+ 
+ #include <cstdint>
+ #include <FEXCore/Debug/InternalThreadState.h>
++#include "Interface/Core/ArchHelpers/Arm64Emitter.h"
+ 
+ namespace FEXCore {
+ namespace CPU {
+@@ -371,6 +372,19 @@
+     std::memcpy(Write.Data()+256,&Tail,sizeof(Tail));
+     // Zero encodes the upstream compact pair (host delta 4, guest delta 1).
+     Write.Data()[256+sizeof(Tail)]=0;
++    // Two original finite pending-thunk shapes exercise jump and call tickets.
++    for (uint32_t I=0;I<2;++I) {
++      const size_t Marker=480+128*I,Thunk=512+128*I;
++      ARMEmitter::Emitter Caller{Write.Data()+Marker,12};
++      if (I) Caller.adr(TMP1,0xc); else Caller.nop();
++      Caller.nop();
++      if (I) Caller.bl(6); else Caller.b(6);
++      ARMEmitter::Emitter Stub{Write.Data()+Thunk,16};
++      Stub.b(2);Stub.br(TMP1);Stub.ldr(TMP1,8);Stub.blr(TMP1);
++      const FEXCore::Context::ExitFunctionLinkData Record{
++        ThreadState->CurrentFrame->Pointers.ExitFunctionLink,0x2000+4*I,-24};
++      std::memcpy(Write.Data()+Thunk+16,&Record,sizeof(Record));
++    }
+     const auto Published=Write.Publish();
+     if (!Published) {
+       const auto Aborted=Write.Abort();
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1549,6 +1549,8 @@
+     *Output={PEAR_FEX_INVALID_REQUEST,0,0};return;
+   }
+   PearFiniteCheckpoint=16;
++  *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFiniteLinks(Frame,ResumePC);
++  if (!*Output) return;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
+   if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
+   if (*Output) PearFiniteCheckpoint=17;
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

@@ -1,0 +1,89 @@
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -72,16 +72,6 @@
+     return Original;
+   }
+   SetBuffer(Emission.Data(), MAX_DISPATCHER_CODE_SIZE);
+-  EmitDispatcher();
+-  if (PearLabelFailure) {
+-    const Memory::Result Original {PEAR_FEX_UNAVAILABLE,0,0};
+-    const auto BeforeAbort=PearToken.Snapshot();
+-    const auto Aborted=Emission.Abort();
+-    if (!PearToken.CompareUpdate(BeforeAbort,Allocation))
+-      Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
+-    if (!Aborted) Memory::Retirement::PoisonSourceAdmission(Aborted);
+-    return Original;
+-  }
+   // Original finite ARM64 tail-transfer site, separate from guest dispatch.
+   // x0 is the actual Frame; x2 is this source's fixed native target. x1 is
+   // caller-saved. SP, LR, x18, callee-saved GPRs and all SIMD state are untouched.
+@@ -91,10 +81,14 @@
+   ARMEmitter::ForwardLabel FiniteResume;
+   adr(ARMEmitter::XReg::x1,&FiniteResume);
+   br(ARMEmitter::XReg::x2);
++  // Reuse the already admitted finite owner offsets 0 and 4096 exactly.
++  // Zero padding is never invoked; actual guest dispatcher emission follows.
++  while (GetCursorAddress<uintptr_t>()-PearFiniteEntryPC<4096) dc32(0);
+   Bind(&FiniteResume);
+   PearFiniteResumePC=GetCursorAddress<uintptr_t>();
+   mov(ARMEmitter::WReg::w0,42);
+   ret();
++  EmitDispatcher();
+   if (PearLabelFailure) {
+     const Memory::Result Original {PEAR_FEX_UNAVAILABLE,0,0};
+     const auto BeforeAbort=PearToken.Snapshot();
+@@ -144,7 +138,7 @@
+   const auto Base=reinterpret_cast<uintptr_t>(Facts.Base);
+   if (!Facts || Facts.Token.expected_state!=PEAR_FEX_PUBLISHED_RX || !Base || PearFiniteEntryPC<Base ||
+       PearFiniteEntryPC-Base>Facts.Token.extent_size || 16>Facts.Token.extent_size-(PearFiniteEntryPC-Base) ||
+-      PearFiniteResumePC!=PearFiniteEntryPC+8) return {PEAR_FEX_UNAVAILABLE,0,0};
++      PearFiniteEntryPC!=Base || PearFiniteResumePC!=Base+4096) return {PEAR_FEX_UNAVAILABLE,0,0};
+   const auto Entered=M::Enter(Facts,PearFiniteEntryPC-Base);
+   if (!Entered) return Entered;
+   using Native=void (*)(FEXCore::Core::CpuStateFrame*,uintptr_t,uintptr_t,M::Result*);
+@@ -154,7 +148,7 @@
+   // Only an actual remaining ACTIVE lease can be exited. A failed transition
+   // retains its genuine pin/source state for checked outer cleanup.
+   if (M::HasManagedActive(Facts)) {
+-    const auto Exit=M::Exit(Facts); if (!Exit) return Exit;
++    const auto Exit=M::Exit(Facts); if (!Exit) return Outcome ? Exit : Outcome;
+   }
+   return Outcome;
+ }
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

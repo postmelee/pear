@@ -1,0 +1,27 @@
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.cpp b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.cpp
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+@@ -355,7 +355,22 @@
+ 
+ Outcome InspectBeforeInitialization(CRTPlan& P,Report& R) {
+   if (!Proof::Ready()) return Refused(Phase::Proof);
+-  return InspectPrerequisites(P,R);
++  const auto Observed=InspectPrerequisites(P,R);
++  if (!Observed) return Observed;
++  // Private finite-image bounds. Root admission must match the linked image,
++  // compiler stack ledger, native provider and current signing before this
++  // closed source selection can be opened. Never reuse another process's facts.
++  constexpr uint64_t LinkedPEMetadata=22*4096;
++  constexpr uint64_t ConcurrentMetadata=12*4096;
++  constexpr uint64_t RequiredAdditionalViews=4; // Two splits, at most two each.
++  uint64_t Total {};
++  const auto Budget=FEXCore::Utils::PearFEXMemory::AssessMetadataBudget(
++    P.Metadata,P.NativeOwnerPID,RequiredAdditionalViews,
++    LinkedPEMetadata+ConcurrentMetadata,Total);
++  if (!Budget) return {Status::OwnerFailure,Phase::Owner,Domain::OwnerWire,
++                       Budget.ErrorCode,Budget.Status,Budget.ErrorDomain};
++  if (!Total || Total>PEAR_FEX_MEMORY_METADATA_BYTES) return Refused(Phase::Proof);
++  return Observed;
+ }
+ Outcome InspectPrerequisites(CRTPlan& P,Report& R) {
+   Image I;auto O=InspectImage(I);if (!O) return O;

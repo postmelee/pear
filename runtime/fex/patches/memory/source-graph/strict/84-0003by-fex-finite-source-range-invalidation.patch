@@ -1,0 +1,104 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -773,7 +773,7 @@
+   if (!Thread || !C || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !C->Dispatcher ||
+       !Thread->CPUBackend || !Thread->LookupCache || !M::HasManagedActive(C->Dispatcher->GetPearSnapshot()))
+     return {PEAR_FEX_UNAVAILABLE,0,0};
+-  for (uint32_t I=0;I<4;++I) {
++  for (uint32_t I=0;I<6;++I) {
+     PearFiniteCheckpoint=64+I*16;
+     auto Window=Thread->CPUBackend->FindPearManagedWindow(Frame->State.InlineJITBlockHeader);
+     if (!Window || Thread->LookupCache->Shared!=Window->Owner->LookupCache.get()) return {PEAR_FEX_UNAVAILABLE,0,0};
+@@ -807,6 +807,10 @@
+       auto* Map=Thread->LookupCache->Shared;
+       if (!Map->BlockList.empty() || !Map->BlockLinks->empty()) return {PEAR_FEX_UNAVAILABLE,0,0};
+       Map->AddBlockMapping(Copy.GuestRIP,{},reinterpret_cast<void*>(Window->Begin),Lock);
++      if (I>=4) {
++        const std::array<uint64_t,1> Addresses{Copy.GuestRIP};
++        if (!Map->AddBlockExecutableRange(Addresses,Copy.GuestRIP,4,Lock)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++      }
+     }
+     FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
+     auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);
+@@ -846,9 +850,19 @@
+     if (Word!=Encoded.PatchedWord) return {PEAR_FEX_STALE_IDENTITY,0,0};
+     FEXCore::Context::ContextImpl::PearDispatcherGate DelinkGate {};
+     Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,DelinkGate);if (!Outcome) return Outcome;
+-    Outcome=PearJITLinks::BeginBatch(C,Thread);if (!Outcome) return Outcome;
++    Outcome=C->BeginPearLinkInvalidation(Thread);if (!Outcome) return Outcome;
+     PearFiniteCheckpoint=67+I*16;
+-    {
++    if (I>=4) {
++      const auto BeforeRevision=C->GetPearInvalidationRevision();
++      {
++        auto Invalidation=GuardSignalDeferringSection<std::unique_lock>(C->CodeInvalidationMutex,Thread);
++        C->InvalidateCodeBuffersCodeRange(Copy.GuestRIP,4);
++      }
++      if (C->GetPearInvalidationRevision()!=BeforeRevision+1 ||
++          !Thread->LookupCache->Shared->CodePages.empty() ||
++          !Thread->LookupCache->Shared->BlockList.empty() || !Thread->LookupCache->Shared->BlockLinks->empty())
++        return {PEAR_FEX_STALE_IDENTITY,0,0};
++    } else {
+       auto Lock=Thread->LookupCache->AcquireWriteLock();
+       if (I<2) {
+         if (!Thread->LookupCache->Shared->Erase(Copy.GuestRIP,Lock)) return {PEAR_FEX_STALE_IDENTITY,0,0};
+@@ -858,7 +872,7 @@
+           return {PEAR_FEX_STALE_IDENTITY,0,0};
+       }
+     }
+-    Outcome=PearJITLinks::FinishBatch(C,Thread);if (!Outcome) return Outcome;
++    Outcome=C->FinishPearLinkInvalidation(Thread);if (!Outcome) return Outcome;
+     Outcome=C->FinishPearDispatcherGate(DelinkGate);if (!Outcome) return Outcome;
+     auto Final=Thread->CPUBackend->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Record));
+     if (!Final) return {PEAR_FEX_UNAVAILABLE,0,0};
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -372,8 +372,8 @@
+     std::memcpy(Write.Data()+256,&Tail,sizeof(Tail));
+     // Zero encodes the upstream compact pair (host delta 4, guest delta 1).
+     Write.Data()[256+sizeof(Tail)]=0;
+-    // Four original shapes cover jump/call erase and whole-map clear.
+-    for (uint32_t I=0;I<4;++I) {
++    // Six original shapes cover jump/call erase, whole-map clear and range invalidation.
++    for (uint32_t I=0;I<6;++I) {
+       const size_t Marker=480+128*I,Thunk=512+128*I;
+       ARMEmitter::Emitter Caller{Write.Data()+Marker,12};
+       if (I&1) Caller.adr(TMP1,0xc); else Caller.nop();
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

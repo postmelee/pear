@@ -1,0 +1,118 @@
+diff --git a/Source/Windows/Common/OvercommitTracker.h b/Source/Windows/Common/OvercommitTracker.h
+--- a/Source/Windows/Common/OvercommitTracker.h
++++ b/Source/Windows/Common/OvercommitTracker.h
+@@ -2,6 +2,8 @@
+ #pragma once
+ 
+ #include <FEXCore/Utils/IntervalList.h>
++#include <ntstatus.h>
++#include <winternl.h>
+ #include <thread>
+ #include <shared_mutex>
+ 
+@@ -30,20 +32,43 @@
+     OvercommitIntervals.Remove({Start, Start + Length});
+   }
+ 
+-  bool HandleAccessViolation(uint64_t FaultAddress) {
++  bool HandleAccessViolation(uint64_t FaultAddress, NTSTATUS* Failure = nullptr) {
++    if (Failure) *Failure = 0;
+     std::shared_lock Lock {OvercommitIntervalsMutex};
+     auto Query = OvercommitIntervals.Query(FaultAddress);
+ 
+     if (Query.Enclosed) {
+       if (IsWine) {
+-        MEMORY_BASIC_INFORMATION Info;
+-        NtQueryVirtualMemory(NtCurrentProcess(), reinterpret_cast<void*>(FaultAddress), MemoryBasicInformation, &Info, sizeof(Info), nullptr);
+-        const auto CommitSize = reinterpret_cast<SIZE_T>(Info.BaseAddress) + Info.RegionSize - reinterpret_cast<SIZE_T>(Info.AllocationBase);
+-        VirtualAlloc(reinterpret_cast<void*>(Info.AllocationBase), CommitSize, MEM_COMMIT, PAGE_READWRITE);
++        MEMORY_BASIC_INFORMATION Info {};
++        SIZE_T Returned {};
++        auto Status = NtQueryVirtualMemory(NtCurrentProcess(), reinterpret_cast<void*>(FaultAddress),
++                                          MemoryBasicInformation, &Info, sizeof(Info), &Returned);
++        if (Status) { if (Failure) *Failure = Status; return false; }
++        const auto Base = reinterpret_cast<uint64_t>(Info.BaseAddress);
++        const auto Allocation = reinterpret_cast<uint64_t>(Info.AllocationBase);
++        // Retain upstream Wine's allocation-prefix commit, but only inside the
++        // registered ordinary RW data interval. Never turn an arbitrary access
++        // violation, executable page or failed allocation into handled success.
++        if (Returned != sizeof(Info) || Info.Type != MEM_PRIVATE || Info.State != MEM_RESERVE ||
++            Info.AllocationProtect != PAGE_READWRITE || Allocation < Query.Interval.Offset ||
++            Base < Allocation || Base > FaultAddress || Base >= Query.Interval.End ||
++            !Info.RegionSize || Info.RegionSize > Query.Interval.End - Base || FaultAddress - Base >= Info.RegionSize) {
++          if (Failure) *Failure = STATUS_INVALID_PARAMETER;
++          return false;
++        }
++        SIZE_T Size = Base - Allocation + Info.RegionSize;
++        const auto ExpectedSize = Size;
++        void* Address = Info.AllocationBase;
++        Status = NtAllocateVirtualMemory(NtCurrentProcess(), &Address, 0, &Size, MEM_COMMIT, PAGE_READWRITE);
++        if (Status) { if (Failure) *Failure = Status; return false; }
++        if (Address != Info.AllocationBase || Size != ExpectedSize) {
++          if (Failure) *Failure = STATUS_INVALID_PARAMETER;
++          return false;
++        }
+       } else {
+         static constexpr size_t MaxFaultCommitSize = 1024 * 64;
+         const auto AlignedFaultAddress = reinterpret_cast<void*>(FaultAddress & FEXCore::Utils::FEX_PAGE_MASK);
+-        VirtualAlloc(AlignedFaultAddress, std::min(Query.Size, MaxFaultCommitSize), MEM_COMMIT, PAGE_READWRITE);
++        VirtualAlloc(AlignedFaultAddress, std::min<size_t>(Query.Size, MaxFaultCommitSize), MEM_COMMIT, PAGE_READWRITE);
+       }
+       return true;
+     }
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1002,26 +1002,37 @@
+ }
+ 
+ NTSTATUS ResetToConsistentState(EXCEPTION_RECORD* Exception, CONTEXT* GuestContext, ARM64_NT_CONTEXT* NativeContext) {
++  bool Cont {};
++  if (Exception->ExceptionCode == EXCEPTION_ACCESS_VIOLATION && Exception->NumberParameters >= 2 &&
++      Exception->ExceptionInformation[0] < 2) {
++    const auto FaultAddress = static_cast<uint64_t>(Exception->ExceptionInformation[1]);
++
++    if (OvercommitTracker) {
++      NTSTATUS Failure {};
++      {
++        ScopedCallbackDisable guard;
++        Cont = OvercommitTracker->HandleAccessViolation(FaultAddress, &Failure);
++      }
++      if (Failure) {
++        PearInitCheckpoint("Overcommit.refused", Failure);
++        return Failure;
++      }
++      if (Cont) {
++        static std::atomic<unsigned> Observations {};
++        if (Observations.fetch_add(1, std::memory_order_relaxed) < 8)
++          PearInitCheckpoint("Overcommit.committed", STATUS_SUCCESS);
++        const auto Status = NtContinueNative(NativeContext, false);
++        PearInitCheckpoint("Overcommit.continue-returned", Status);
++        return Status ? Status : STATUS_UNSUCCESSFUL;
++      }
++    }
++  }
++
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   // Delivered/source notification behavior is unqualified in this profile.
+   PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
+   return STATUS_NOT_SUPPORTED;
+ #endif
+-
+-  bool Cont {};
+-  if (Exception->ExceptionCode == EXCEPTION_ACCESS_VIOLATION) {
+-    const auto FaultAddress = static_cast<uint64_t>(Exception->ExceptionInformation[1]);
+-
+-    if (OvercommitTracker) {
+-      {
+-        ScopedCallbackDisable guard;
+-        Cont = OvercommitTracker->HandleAccessViolation(FaultAddress);
+-      }
+-      if (Cont) {
+-        NtContinueNative(NativeContext, false);
+-      }
+-    }
+-  }
+ 
+   const auto CPUArea = GetCPUArea();
+   if (!CPUArea.ThreadState()) {

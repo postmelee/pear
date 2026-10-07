@@ -1,0 +1,145 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1440,12 +1440,15 @@
+   return {PEAR_FEX_OK,0,0};
+ }
+ 
++extern "C" { uint32_t PearFiniteCheckpoint {}; }
++
+ void ContextImpl::PearFiniteNativeTransfer(FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC,
+                                           uintptr_t NativeTarget, FEXCore::Utils::PearFEXMemory::Result* Output) {
+   namespace M=FEXCore::Utils::PearFEXMemory;
+   // Only the fixed source wrapper calls this private experiment. Its x3 output
+   // points into that still-live native frame; x2 retains the actual target.
+   if (NativeTarget!=reinterpret_cast<uintptr_t>(&PearFiniteNativeTransfer)) return;
++  PearFiniteCheckpoint=1;
+   auto Life=M::AcquireCurrentSourceLifetime();
+   auto* Thread=Life ? Life.ActualThread() : nullptr;
+   if (!Thread || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !Thread->CTX) return;
+@@ -1453,8 +1456,10 @@
+   // Capture real header/tail and bounded instruction bytes under the actual
+   // dispatcher ACTIVE lease. The retained target is minted by this backend.
+   PearFrameBlockSnapshot Snapshot;
++  PearFiniteCheckpoint=2;
+   *Output=GetPearFrameBlockInfo(CTX,Thread,Snapshot);
+   if (!*Output) return;
++  PearFiniteCheckpoint=3;
+   if (Snapshot.Tail.RIP!=0x1000 || Snapshot.Tail.GuestSize!=4 || !Snapshot.Tail.SingleInst ||
+       CTX->GetGuestBlockEntry(Thread)!=0x1000 || !CTX->IsCurrentBlockSingleInst(Thread) ||
+       !CTX->IsAddressInCurrentBlock(Thread,0x1000,1) ||
+@@ -1462,10 +1467,12 @@
+     *Output={PEAR_FEX_STALE_IDENTITY,0,0};return;
+   }
+   std::array<uint32_t,13> Instructions {};
++  PearFiniteCheckpoint=4;
+   auto Read=M::CopyManagedRXUnderGlobalLease(Snapshot.Protection,*Snapshot.Target,Thread,128,
+     {reinterpret_cast<uint8_t*>(Instructions.data()),sizeof(Instructions)});
+   if (!Read) { *Output=Read.Outcome;return; }
+   namespace A=FEXCore::ArchHelpers::Arm64;
++  PearFiniteCheckpoint=5;
+   const auto Prepared=A::PrepareUnalignedPatchSnapshot(A::UnalignedHandlerType::HalfBarrier,Instructions);
+   if (Prepared.Kind!=A::UnalignedPatchKind::Candidate || Prepared.StoreCount!=2 ||
+       Prepared.StoreOrder[0]!=2 || Prepared.StoreOrder[1]!=1 || Prepared.ResumeDelta!=0 ||
+@@ -1475,6 +1482,7 @@
+   auto Window=Thread->CPUBackend->FindPearManagedWindow(Snapshot.BlockBegin);
+   if (!Window) { *Output={PEAR_FEX_UNAVAILABLE,0,0};return; }
+   PearDispatcherGate Gate {};
++  PearFiniteCheckpoint=6;
+   *Output=CTX->BeginPearDispatcherGate(Frame,ResumePC,Gate);
+   if (!*Output) return;
+   // The actual original pin must block retirement. A deletion attempt closes
+@@ -1484,6 +1492,7 @@
+   if (Refusal.Status!=PEAR_FEX_UNAVAILABLE || Refusal.ErrorDomain || Refusal.ErrorCode) {
+     *Output=Refusal ? M::Result{PEAR_FEX_STALE_IDENTITY,0,0} : Refusal; return;
+   }
++  PearFiniteCheckpoint=8;
+   *Output=M::Poll(Gate.Facts,Gate.ResumeOffset,Gate.Continuation,Gate.OriginalPinEpoch);
+   if (!*Output) return;
+   // No managed read occurs while pinned. Validate the copied expected bytes
+@@ -1491,10 +1500,12 @@
+   auto Patched=Window->Owner->GetPearSnapshot();
+   const auto BeforePatch=Patched;
+   {
++  PearFiniteCheckpoint=9;
+     M::WriteGuard Write{Patched,128,sizeof(Instructions)};
+     if (!Write) { *Output=Write.Status();return; }
+     const auto Expected=std::span<const uint8_t>{reinterpret_cast<const uint8_t*>(Prepared.Expected.data()),sizeof(Prepared.Expected)};
+     const std::array<uint8_t,4> Wrong{};
++  PearFiniteCheckpoint=10;
+     if (Write.Matches(4,Wrong) || !Write.Matches(0,Expected)) {
+       *Output={PEAR_FEX_STALE_IDENTITY,0,0};
+       const auto Aborted=Write.Abort();
+@@ -1506,6 +1517,7 @@
+       const auto Index=Prepared.StoreOrder[I];
+       std::atomic_ref<uint32_t>(*reinterpret_cast<uint32_t*>(Write.Data()+4*Index)).store(Prepared.Next[Index],std::memory_order_release);
+     }
++  PearFiniteCheckpoint=11;
+     *Output=Write.Publish();
+     if (!*Output) {
+       const auto Aborted=Write.Abort();
+@@ -1517,22 +1529,28 @@
+       *Output=M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});return;
+     }
+   }
++  PearFiniteCheckpoint=12;
+   *Output=CTX->FinishPearDispatcherGate(Gate);
+   if (!*Output) return;
+   // Only the fixed original resume leaf is called, after atomic pin consumption
+   // and the source's original expected-byte revalidation. No guest instruction.
++  PearFiniteCheckpoint=13;
+   auto Fresh=Thread->CPUBackend->FindPearRetainedTarget(Snapshot.BlockBegin);
+   if (!Fresh) { *Output={PEAR_FEX_UNAVAILABLE,0,0};return; }
+   Read=M::CopyManagedRXUnderGlobalLease(CTX->Dispatcher->GetPearSnapshot(),*Fresh,Thread,128,
+     {reinterpret_cast<uint8_t*>(Instructions.data()),sizeof(Instructions)});
+   if (!Read) { *Output=Read.Outcome;return; }
++  PearFiniteCheckpoint=14;
+   if (Instructions!=Prepared.Next) { *Output={PEAR_FEX_STALE_IDENTITY,0,0};return; }
++  PearFiniteCheckpoint=15;
+   const auto Again=A::PrepareUnalignedPatchSnapshot(A::UnalignedHandlerType::HalfBarrier,Instructions);
+   if (Again.Kind!=A::UnalignedPatchKind::AlreadyPatched || Again.ResumeDelta!=0) {
+     *Output={PEAR_FEX_INVALID_REQUEST,0,0};return;
+   }
++  PearFiniteCheckpoint=16;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
+   if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
++  if (*Output) PearFiniteCheckpoint=17;
+ }
+ 
+ uintptr_t ContextImpl::CompilePearFromDispatcher(FEXCore::Core::CpuStateFrame* Frame, uint64_t GuestRIP,
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

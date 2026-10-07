@@ -1,0 +1,54 @@
+diff --git a/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -8017,6 +8017,16 @@
+ 
+ /* A compile-selected source diagnostic toggles only an exact newly owned NONE
+  * view. It does not grant an EC caller role or qualify hybrid call dispatch. */
++/* This diagnostic is an explicit finite-suite operation, not an ordinary
++ * native shared-buffer allocation cost or an ARM64EC admission switch. */
++static int pear_fex_bitmap_diagnostics_selected(void)
++{
++    const char *value = getenv("PEAR_FEX_BITMAP_DIAGNOSTICS");
++    if (!value || !strcmp(value, "0")) return 0;
++    if (!strcmp(value, "1")) return 1;
++    return -1;
++}
++
+ static int pear_fex_memory_bitmap_self_test(struct file_view *view,
+                                             struct pear_fex_memory_error *error)
+ {
+@@ -8159,6 +8169,9 @@
+     NTSTATUS status;
+     unsigned int i;
+     int result = 1;
++#if defined(__APPLE__) && defined(__aarch64__) && defined(PEAR_FEX_MEMORY_FINITE_FIXTURE)
++    int bitmap_diagnostics = 0;
++#endif
+     memset(error, 0, sizeof(*error));
+     server_enter_uninterrupted_section(&virtual_mutex, &sigset);
+     backing = pear_fex_wine_backing;
+@@ -8167,6 +8180,13 @@
+     if (!id || !generation || !size || role != PEAR_FEX_ROLE_NATIVE ||
+         !pear_fex_fixture_enabled() || (allocation_class != PEAR_FEX_CLASS_SHARED &&
+         allocation_class != PEAR_FEX_CLASS_DISPATCHER)) goto done;
++#if defined(__APPLE__) && defined(__aarch64__) && defined(PEAR_FEX_MEMORY_FINITE_FIXTURE)
++    if (reserve && allocation_class == PEAR_FEX_CLASS_SHARED)
++    {
++        bitmap_diagnostics = pear_fex_bitmap_diagnostics_selected();
++        if (bitmap_diagnostics < 0) goto done;
++    }
++#endif
+     if (reserve)
+     {
+         for (i = 0; i < PEAR_FEX_MEMORY_MAX_EXTENTS; ++i) if (!pear_fex_views[i].id) break;
+@@ -8177,7 +8197,8 @@
+         view->pear_owned = 4; view->pear_generation = generation; view->protect = 0;
+         set_page_vprot(base, size, 0);
+ #if defined(__APPLE__) && defined(__aarch64__) && defined(PEAR_FEX_MEMORY_FINITE_FIXTURE)
+-        if (allocation_class == PEAR_FEX_CLASS_SHARED && pear_fex_memory_bitmap_self_test(view, error))
++        if (allocation_class == PEAR_FEX_CLASS_SHARED && bitmap_diagnostics &&
++            pear_fex_memory_bitmap_self_test(view, error))
+         {
+             if (!atomic_load_explicit(&pear_fex_wine_quarantined, memory_order_acquire)) { pear_release_owned_view(view); memset(record, 0, sizeof(*record)); }
+             goto done;

@@ -1,0 +1,87 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -1630,14 +1630,14 @@
+       Code.BlockBegin != PearPendingTemp || Code.Size != PearPendingSize || !Code.Size ||
+       !FEXCore::Utils::PearFEXMemory::CurrentExecutor()) {
+     LogMan::Msg::EFmt("Pear prepared source generation changed before publication");
+-    DiscardPreparedPublication(); return false;
++    CancelUnchangedPreparedPublication(); return false;
+   }
+   const auto Source = reinterpret_cast<uintptr_t>(PearPendingTemp);
+   for (const auto& Entry : Code.EntryPoints) {
+     const auto Address = reinterpret_cast<uintptr_t>(Entry.second);
+     if (Address < Source || Address-Source >= Code.Size || (Address & 3)) {
+       LogMan::Msg::EFmt("Pear pending entrypoint is outside private NX emission");
+-      DiscardPreparedPublication(); return false;
++      CancelUnchangedPreparedPublication(); return false;
+     }
+   }
+   memcpy(PearWriter->Data(), PearPendingTemp, Code.Size);
+@@ -1663,6 +1663,19 @@
+                         reinterpret_cast<uintptr_t>(PearPreparedBuffer->GetBufferBase());
+   Code.PearPendingEmission = false; Code.PearOwnerPublished = true;
+   DiscardPreparedPublication(); return true;
++}
++void Arm64JITCore::CancelUnchangedPreparedPublication() {
++  // Called only before the first copy into the admitted write window. Existing
++  // published bytes are unchanged: restore RX with checked cache maintenance,
++  // but publish no candidate entrypoint. Abort is valid only for virgin NONE.
++  if (PearWriter && *PearWriter && PearPreparedBuffer &&
++      PearBefore.Token.expected_state==PEAR_FEX_PUBLISHED_RX) {
++    const auto Restored=PearWriter->Publish();
++    const bool Updated=Restored && PearPreparedBuffer->ComparePearUpdate(PearBefore,PearTransaction);
++    if (!Restored) FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Restored);
++    else if (!Updated) FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++  }
++  DiscardPreparedPublication();
+ }
+ void Arm64JITCore::DiscardPreparedPublication() {
+   if (PearWriter && *PearWriter) {
+diff --git a/FEXCore/Source/Interface/Core/JIT/JITClass.h b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+--- a/FEXCore/Source/Interface/Core/JIT/JITClass.h
++++ b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+@@ -70,6 +70,7 @@
+   bool BeginPreparedPublication(CompiledCode&) override;
+   bool FinishPreparedPublication(CompiledCode&, bool SourceStillValid) override;
+   void DiscardPreparedPublication() override;
++  void CancelUnchangedPreparedPublication();
+ #endif
+ 
+   void ClearRelocations() override {
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

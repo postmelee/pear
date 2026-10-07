@@ -12,7 +12,7 @@ from tools.fex.common import Error
 
 
 class WineMemorySourceTests(unittest.TestCase):
-    def test_closed_two_patch_identity(self):
+    def test_closed_ordered_patch_identity(self):
         value = build.load_json(build.REPO / build.RECORDS[4])
         self.assertIs(build.checked_series(value), value)
         for mutate in (

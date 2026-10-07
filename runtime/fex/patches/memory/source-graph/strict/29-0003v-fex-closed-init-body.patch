@@ -1,0 +1,20 @@
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -15,10 +15,14 @@
+ inline constexpr bool SelectedDeletionReceipt = false;
+ inline constexpr bool CheckedSourceDependencyAllocations = false;
+ inline constexpr bool SelectedGlobalConstructorContracts = false;
+-constexpr bool Ready() {
+-  return SelectedSourceGraph && CheckedCRTLinkClosure && CompiledWholeMetadata &&
++inline bool Ready() {
++  // A volatile local keeps the refused initializer body available for compile,
++  // link and stack inspection. All selections remain immutable false literals;
++  // no caller, environment or build flag can grant initialization.
++  const volatile bool Selected = SelectedSourceGraph && CheckedCRTLinkClosure && CompiledWholeMetadata &&
+     SourceLifetimeAndEntry && ExactCallerImageAdmission && CurrentHostPermission && BoundedTiming &&
+     CheckedEnvironmentConstructor && CheckedContextAllocation && SelectedDeletionReceipt &&
+     CheckedSourceDependencyAllocations && SelectedGlobalConstructorContracts;
++  return Selected;
+ }
+ } // namespace FEX::Windows::PearEmptyInit::Proof

@@ -1,0 +1,49 @@
+{
+  "attribution": "Original Pear adds a closed finite actual-source link and delink control using the real retained backend, source maps, original instruction builders and private JIT-minted descriptors. Both jump and call records use existing owned fixture storage. No guest dispatch or cache population is enabled; metadata and call-graph review precede any selection.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "postimage_bytes": 25051,
+      "postimage_sha256": "b93ddabc0afec2ebbe3a8f9d293e51421dd671328c14ef92b0db782c943704f3",
+      "preimage_sha256": "1026879160ccfb3ce47ec2ff5644982cfb3b8eabd37b4ba89daee594341c0b4e"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 69352,
+      "postimage_sha256": "487196b8abd4ce0f298e54850156a7839f6cf3b194d7b9d20662796bf3668f34",
+      "preimage_sha256": "cb338bead3e47c906972ec6752f6ea3f419e2d4e085b93d98e34ec531a33bdae"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "postimage_bytes": 21310,
+      "postimage_sha256": "efc7a8408cd462542e1153aa58cf2867a7850dad2c1079ca64a20c81d54e5ab9",
+      "preimage_sha256": "4089547f80c5f0fd0f3e555eed64e299676c8ad7fdbc92f2a2bb0481f3b1e74a"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 97807,
+      "postimage_sha256": "3f0c056cab47992ab4794b049ead9f1248f45eb9026542bda785d40498f21678",
+      "preimage_sha256": "c4197e8d5595807dfbf2934597abe99ea7db619feaf0f684d69af3a61674bf08"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "089873866944466c2e433034094e830ec4147fdcb1bab66c6f1e6e6abe218ee4",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-source-link-cycle",
+  "native_runtime_execution": false,
+  "order": 66,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

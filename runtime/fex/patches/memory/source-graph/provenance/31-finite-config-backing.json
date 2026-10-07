@@ -1,0 +1,43 @@
+{
+  "attribution": "Original Pear bounded backing for the actual FEX MetaLayer and selected libc++ container in the closed ordinary ARM64 empty-source initializer; normal loaded profiles retain FEX allocation.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Config/PearConfigAllocator.h",
+      "postimage_bytes": 2886,
+      "postimage_sha256": "fe9b0d5fdca9c198738fcec9f86cb09a50a60257d2ce2bb1a88f83bc8d50ad77",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/include/FEXCore/Config/Config.h",
+      "postimage_bytes": 12042,
+      "postimage_sha256": "db67ac76ef6146bb587d7df7c69457681ec83de8b3fb6bcf1a39a1282d9ccbf4",
+      "preimage_sha256": "7242a4d253e2cb5bf765b6791e420b3c26f47c639b669cf8a3326242e834b1be"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Config/Config.cpp",
+      "postimage_bytes": 23567,
+      "postimage_sha256": "3dfaf99dbdc0165ab8c6dead751bf5c0ba17a7dc566fe1663b7e3684d588acf4",
+      "preimage_sha256": "f0075e95475bf4e969b353f1941db8f34868dedbdf841ebb6da90f6d5f08f251"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 9196,
+      "postimage_sha256": "ecb7a9f4bb1120cfe2781b2992a14d9e6f5b92db0f4bc0c91537ba976649db68",
+      "preimage_sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715"
+    }
+  ],
+  "historical_strict_patch_sha256": "93c804d2a042655e9a4cd6065819c5844116130805d6a9f3e125109f25105092",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-config-backing",
+  "native_runtime_execution": false,
+  "order": 31,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

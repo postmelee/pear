@@ -1,0 +1,111 @@
+diff --git a/FEXCore/Source/Interface/Core/CPUID.h b/FEXCore/Source/Interface/Core/CPUID.h
+--- a/FEXCore/Source/Interface/Core/CPUID.h
++++ b/FEXCore/Source/Interface/Core/CPUID.h
+@@ -59,11 +59,11 @@
+ 
+   FEXCore::CPUID::FunctionResults RunFunctionName(uint32_t Function, uint32_t Leaf, uint32_t CPU) const {
+     if (Function == 0x8000'0002U) {
+-      return Function_8000_0002h(Leaf, CPU % PerCPUData.size());
++      return Function_8000_0002h(Leaf, CPU % Cores);
+     } else if (Function == 0x8000'0003U) {
+-      return Function_8000_0003h(Leaf, CPU % PerCPUData.size());
++      return Function_8000_0003h(Leaf, CPU % Cores);
+     } else {
+-      return Function_8000_0004h(Leaf, CPU % PerCPUData.size());
++      return Function_8000_0004h(Leaf, CPU % Cores);
+     }
+   }
+ 
+@@ -165,6 +165,7 @@
+     bool IsBig {};
+   };
+   fextl::vector<CPUData> PerCPUData {};
++  const CPUData& DataForCPU(uint32_t CPU) const;
+ 
+   // Functions
+   FEXCore::CPUID::FunctionResults Function_0h(uint32_t Leaf) const;
+diff --git a/FEXCore/Source/Interface/Core/CPUID.cpp b/FEXCore/Source/Interface/Core/CPUID.cpp
+--- a/FEXCore/Source/Interface/Core/CPUID.cpp
++++ b/FEXCore/Source/Interface/Core/CPUID.cpp
+@@ -156,15 +156,15 @@
+ 
+ void CPUIDEmu::SetupHostHybridFlag() {
+   FEX_CONFIG_OPT(HideHybrid, HIDEHYBRID);
+-  PerCPUData.resize(Cores);
+ #ifdef PEAR_FEX_DARWIN
+   if (CTX->HostFeatures.CPUMIDRs.empty()) {
+-    // Retain unknown product IDs internally; no hardware MIDR is synthesized.
+-    for (auto& Data : PerCPUData) Data.ProductName = ProductNames::ARM_UNKNOWN;
++    // Every observed core has the same unavailable product metadata. Reuse a
++    // constant unknown row without allocating a redundant per-core vector.
+     Hybrid = false;
+     return;
+   }
+ #endif
++  PerCPUData.resize(Cores);
+ 
+   uint64_t MIDR {};
+   for (size_t i = 0; i < Cores; ++i) {
+@@ -943,7 +943,7 @@
+   FEXCore::CPUID::FunctionResults Res {};
+   if (Hybrid) {
+     uint32_t CPU = GetCPUID();
+-    auto& Data = PerCPUData[CPU];
++    const auto& Data = DataForCPU(CPU);
+     // 0x40 is a big CPU
+     // 0x20 is a little CPU
+     Res.eax |= (Data.IsBig ? 0x40 : 0x20) << 24;
+@@ -1139,27 +1139,32 @@
+   return Function_8000_0004h(Leaf, GetCPUID());
+ }
+ 
+-FEXCore::CPUID::FunctionResults CPUIDEmu::Function_8000_0002h(uint32_t Leaf, uint32_t CPU) const {
+-  FEXCore::CPUID::FunctionResults Res {};
+-  auto& Data = PerCPUData[CPU];
+-  memcpy(&Res, Data.ProductName, std::min(strlen(Data.ProductName), sizeof(FEXCore::CPUID::FunctionResults)));
+-  return Res;
+-}
+-
+-FEXCore::CPUID::FunctionResults CPUIDEmu::Function_8000_0003h(uint32_t Leaf, uint32_t CPU) const {
+-  FEXCore::CPUID::FunctionResults Res {};
+-  auto& Data = PerCPUData[CPU];
+-  const auto RemainingStringSize = std::max<ssize_t>(0, strlen(Data.ProductName) - 16);
+-  memcpy(&Res, Data.ProductName + 16, std::min<size_t>(RemainingStringSize, sizeof(FEXCore::CPUID::FunctionResults)));
+-  return Res;
+-}
+-
+-FEXCore::CPUID::FunctionResults CPUIDEmu::Function_8000_0004h(uint32_t Leaf, uint32_t CPU) const {
+-  FEXCore::CPUID::FunctionResults Res {};
+-  auto& Data = PerCPUData[CPU];
+-  const auto RemainingStringSize = std::max<ssize_t>(0, strlen(Data.ProductName) - 32);
+-  memcpy(&Res, Data.ProductName + 32, std::min<size_t>(RemainingStringSize, sizeof(FEXCore::CPUID::FunctionResults)));
+-  return Res;
++const CPUIDEmu::CPUData& CPUIDEmu::DataForCPU(uint32_t CPU) const {
++#ifdef PEAR_FEX_DARWIN
++  if (PerCPUData.empty()) {
++    static constexpr CPUData Unknown {.ProductName=ProductNames::ARM_UNKNOWN};
++    return Unknown;
++  }
++#endif
++  return PerCPUData[CPU];
++}
++namespace {
++FEXCore::CPUID::FunctionResults CopyCPUBrandChunk(const char* Name,size_t Offset) {
++  FEXCore::CPUID::FunctionResults Result {};
++  const size_t Length=strlen(Name);
++  // Do not even form an out-of-bounds pointer for a short unknown CPU name.
++  if (Offset<Length) memcpy(&Result,Name+Offset,std::min(Length-Offset,sizeof(Result)));
++  return Result;
++}
++} // namespace
++FEXCore::CPUID::FunctionResults CPUIDEmu::Function_8000_0002h(uint32_t Leaf,uint32_t CPU) const {
++  return CopyCPUBrandChunk(DataForCPU(CPU).ProductName,0);
++}
++FEXCore::CPUID::FunctionResults CPUIDEmu::Function_8000_0003h(uint32_t Leaf,uint32_t CPU) const {
++  return CopyCPUBrandChunk(DataForCPU(CPU).ProductName,16);
++}
++FEXCore::CPUID::FunctionResults CPUIDEmu::Function_8000_0004h(uint32_t Leaf,uint32_t CPU) const {
++  return CopyCPUBrandChunk(DataForCPU(CPU).ProductName,32);
+ }
+ 
+ // L1 Cache and TLB identifiers

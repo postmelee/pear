@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear places the finite tail entry and resume at existing Wine fixture offsets 0 and 4096 before original dispatcher emission. The original Source53 invalid-request run and checked cleanup are retained. Owner policy, page capacity, wire and security remain unchanged. Primary transfer failure survives a secondary exit failure. Selections close for new image and emission review.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 107278,
+      "postimage_sha256": "10914dec18d3d18c11a6787ac8fc709eb8b1fb4f5a96f89e93515e6a8f011c2e",
+      "preimage_sha256": "addf94e06b68b1a60d129e191c448396e3c84168e50e05c6722ffb4bef04b179"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "318774fee0522b2d91d047c96a541f295dec6419465f39fbea843a1da392bd57",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-transfer-owner-offsets",
+  "native_runtime_execution": false,
+  "order": 54,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

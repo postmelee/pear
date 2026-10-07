@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear compatibility repair for pinned MinGW declaration; paired Wine read-only Unicode-size provider inspected. FEX C++ and MIT notices retained.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/CRT/Misc.cpp",
+      "postimage_bytes": 7519,
+      "postimage_sha256": "41946004123dc79da6c2d8d365f56ec1366b38e5cea12a12481bd14b0c7109e0",
+      "preimage_sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea"
+    }
+  ],
+  "historical_strict_patch_sha256": "5cfd7656dbf07518094acdfa96ed057c65e290a0b32d0bf97b76035e9b89bd76",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "environment-const-compat",
+  "native_runtime_execution": false,
+  "order": 27,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

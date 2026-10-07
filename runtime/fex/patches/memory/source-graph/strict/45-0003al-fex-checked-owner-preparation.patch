@@ -1,0 +1,102 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+@@ -60,6 +60,11 @@
+ };
+ // Read-only owner snapshot, separate from allocation/publication responses.
+ Result ObserveMetadata(pear_fex_memory_metadata& Output);
++// One finite pre-engine preparation. Register an idle native executor, observe
++// read-only metadata and unregister it before returning. This creates no source
++// lifetime and grants no executable extent. Preserve primary and cleanup errors.
++Result PrepareOwnerMetadata(pear_fex_memory_metadata& Output, Result& Cleanup, bool& CleanupAttempted);
++
+ // OtherBytes is the source-selected PE storage and simultaneous transient bound.
+ // It never grants permission and is not a caller-selectable initialization gate.
+ Result AssessMetadataBudget(const pear_fex_memory_metadata& Facts, uint64_t ExpectedPID,
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -675,6 +675,37 @@
+     return Refuse(PEAR_FEX_VERSION_MISMATCH);
+   Output=M;return Refuse(PEAR_FEX_OK);
+ }
++Result PrepareOwnerMetadata(pear_fex_memory_metadata& Output, Result& Cleanup, bool& CleanupAttempted) {
++  Output={};Cleanup={};CleanupAttempted=false;
++  if (!Configured.load(std::memory_order_acquire) || !BridgeDirect || !OwnerPID ||
++      CompiledSourceRole()!=PEAR_FEX_ROLE_NATIVE) return Refuse();
++  {
++    RegistryGuard Guard;
++    // The one-shot initializer calls this before constructing any source object.
++    // Never borrow or impersonate a live Context/Thread executor.
++    for (const auto& C:ContextLifetimes) if (C.Object) return Refuse();
++    for (const auto& B:Bindings) if (B.TEB) return Refuse();
++  }
++  auto Q=Request(PEAR_FEX_EXECUTOR_REGISTER);Q.ec_role=PEAR_FEX_ROLE_NATIVE;
++  pear_fex_memory_response R {};InvocationFacts Facts;
++  auto Primary=Invoke(Q,R,&Facts);
++  if (Primary && (!R.executor_id || R.flags!=PEAR_FEX_NATIVE_IDLE || !NoTargetFacts(R)))
++    Primary=ResponseShapeFailure(Q.opcode);
++  if (!Primary && Facts.BridgeCalled && !Facts.ValidatedRefusal)
++    Retirement::PoisonSourceAdmission(Primary);
++  pear_fex_memory_metadata Observed {};
++  if (Primary) Primary=ObserveMetadata(Observed);
++  // The validated success identity is retained even if observation fails. For
++  // malformed registration, only the existing checked cleanup candidate may be
++  // used; never fabricate an ID or replace the original error with cleanup.
++  if (Facts.CleanupCandidate) {
++    CleanupAttempted=true;Cleanup=CheckedUnregister(Facts.CleanupCandidate);
++    if (!Cleanup) Retirement::PoisonSourceAdmission(Cleanup);
++  }
++  if (Primary && (!CleanupAttempted || !Cleanup)) return Primary;
++  if (Primary) Output=Observed;
++  return Primary;
++}
+ Result Init(void* NtDll, uint64_t UnixOwnerPid) {
+   if (!NtDll || !UnixOwnerPid) return Refuse(PEAR_FEX_INVALID_REQUEST);
+   const auto Resolved = reinterpret_cast<BridgeType>(GetProcAddress(static_cast<HMODULE>(NtDll), "__wine_pear_fex_memory"));
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.h b/Source/Windows/PearEmptyInit/CheckedCRT.h
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.h
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.h
+@@ -5,6 +5,7 @@
+ #include <cstdint>
+ #include <windef.h>
+ #include "Report.h"
++#include "wine/pear_fex_memory.h"
+ 
+ namespace FEX::Windows::PearEmptyInit {
+ // The plan contains NX callback pointers only and is retained lexically until
+@@ -17,6 +18,7 @@
+   size_t Count {};
+   HMODULE CurrentImage {}, NtDll {};
+   uint64_t NativeOwnerPID {};
++  pear_fex_memory_metadata Metadata {};
+   const wchar_t* Environment {};
+   size_t EnvironmentCharacters {};
+   bool ProcessReturned {}, ThreadReturned {};
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.cpp b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.cpp
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+@@ -266,6 +266,23 @@
+   R.UnixPIDObserved=1;return Good(Phase::UnixPID);
+ }
+ Outcome Owner(CRTPlan& P,Report& R) {
++  namespace Memory=FEXCore::Utils::PearFEXMemory;
++  auto Convert=[](Memory::Result V,Phase At) -> Outcome {
++    return V ? Good(At) : Outcome {Status::OwnerFailure,At,Domain::OwnerWire,V.ErrorCode,V.Status,V.ErrorDomain};
++  };
++  const auto Initialized=Memory::Init(P.NtDll,P.NativeOwnerPID);
++  if (!Initialized) return Convert(Initialized,Phase::Owner);
++  Memory::Result Released;bool Attempted {};
++  const auto Prepared=Memory::PrepareOwnerMetadata(P.Metadata,Released,Attempted);
++  // This is pre-construction owner cleanup. The same record also preserves a
++  // later failed Thread construction cleanup; both happen before final cleanup.
++  if (Attempted) {
++    R.ConstructionCleanupAttempted=1;
++    R.ConstructionCleanup=Convert(Released,Phase::Cleanup);
++    R.Cleanup=R.ConstructionCleanup;
++  }
++  if (!Prepared) return Convert(Prepared,Phase::Owner);
++  if (!Attempted || !Released) return Attempted ? Convert(Released,Phase::Cleanup) : Refused(Phase::Cleanup);
+   STRING Name=InitAnsiString("__wine_pear_fex_memory");void* Symbol {};
+   const auto S=LdrGetProcedureAddress(P.NtDll,&Name,0,&Symbol);if (S) return NTFailure(Phase::Owner,S);
+   if (!Symbol) return Refused(Phase::Owner);

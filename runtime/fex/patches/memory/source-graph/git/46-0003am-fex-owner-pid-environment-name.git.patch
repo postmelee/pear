@@ -1,0 +1,12 @@
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.cpp b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.cpp
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+@@ -195,7 +195,7 @@
+   const auto Params=reinterpret_cast<const RTL_USER_PROCESS_PARAMETERS64*>(PEB->ProcessParameters);
+   R=Observe(reinterpret_cast<uintptr_t>(Params),sizeof(*Params),Phase::Environment);if (!R) return R;
+   const auto Env=reinterpret_cast<const wchar_t*>(Params->Environment);if (!Env) return Bad(Phase::Environment);
+-  constexpr wchar_t PIDName[]=L"PEAR_FEX_OWNER_HOST_PID=";
++  constexpr wchar_t PIDName[]=L"PEAR_FEX_MEMORY_OWNER_PID=";
+   bool Found {};size_t Cursor {},Lines {},ObservedRegions {};uintptr_t ObservedEnd {};
+   while (Cursor<MAX_ENVIRONMENT_WCHARS) {
+     const auto Begin=Cursor;

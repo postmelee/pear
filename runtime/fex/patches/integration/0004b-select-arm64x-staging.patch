@@ -1,0 +1,195 @@
+diff --git a/dlls/ntdll/unix/pear_pe_arena.c b/dlls/ntdll/unix/pear_pe_arena.c
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -397,6 +397,149 @@
+ /* Original Pear role validation around Wine's IMAGE_ARM64EC_METADATA layout.
+  * The loader retains relocation/import/dispatch ownership. No allocation or
+  * executable publication occurs while validating this staged image. */
++/* Reuses Wine's ARM64X zero/value/delta relocation semantics on NX staging.
++ * Validate the entire selected stream before mutation; no native code executes. */
++static BOOL hybrid_header_write(const struct pear_pe_plan *plan, SIZE_T at, SIZE_T size)
++{
++    SIZE_T nt = plan->nt_offset, opt = nt + offsetof(IMAGE_NT_HEADERS64, OptionalHeader);
++    SIZE_T machine = nt + offsetof(IMAGE_NT_HEADERS64, FileHeader.Machine);
++    SIZE_T entry = opt + offsetof(IMAGE_OPTIONAL_HEADER64, AddressOfEntryPoint);
++    SIZE_T dirs = opt + offsetof(IMAGE_OPTIONAL_HEADER64, DataDirectory);
++    if (at >= plan->header_bytes) return TRUE;
++    return (at >= machine && extent(at - machine, size, sizeof(USHORT))) ||
++           (at >= entry && extent(at - entry, size, sizeof(ULONG))) ||
++           (at >= dirs && extent(at - dirs, size, sizeof(IMAGE_DATA_DIRECTORY) * IMAGE_NUMBEROF_DIRECTORY_ENTRIES));
++}
++
++static NTSTATUS arm64x_fixups(struct pear_pe_plan *plan, SIZE_T begin, SIZE_T bytes,
++                             SIZE_T table_begin, SIZE_T table_bytes, BOOL apply)
++{
++    SIZE_T cursor = begin, end = begin + bytes;
++    while (cursor < end)
++    {
++        IMAGE_BASE_RELOCATION block;
++        SIZE_T stop, item;
++        if (!extent(cursor, sizeof(block), end)) return STATUS_INVALID_IMAGE_FORMAT;
++        memcpy(&block, plan->staging + cursor, sizeof(block));
++        if (block.SizeOfBlock < sizeof(block) || (block.SizeOfBlock & 1) ||
++            !extent(cursor, block.SizeOfBlock, end) || (block.VirtualAddress & (PAGE - 1)))
++            return STATUS_INVALID_IMAGE_FORMAT;
++        stop = cursor + block.SizeOfBlock; item = cursor + sizeof(block);
++        while (item < stop)
++        {
++            USHORT word;
++            unsigned int type, arg;
++            SIZE_T offset, width;
++            memcpy(&word, plan->staging + item, sizeof(word)); item += sizeof(word);
++            if (!word)
++            {
++                /* Only zero padding may follow the terminator. */
++                while (item < stop)
++                {
++                    memcpy(&word, plan->staging + item, sizeof(word)); item += sizeof(word);
++                    if (word) return STATUS_INVALID_IMAGE_FORMAT;
++                }
++                break;
++            }
++            type = (word >> 12) & 3; arg = word >> 14;
++            offset = (SIZE_T)block.VirtualAddress + (word & 0xfff);
++            width = type == IMAGE_DVRT_ARM64X_FIXUP_TYPE_DELTA ? sizeof(ULONG) : (SIZE_T)1 << arg;
++            if (type > IMAGE_DVRT_ARM64X_FIXUP_TYPE_DELTA ||
++                !used_range(plan, offset, width, FALSE) || !hybrid_header_write(plan, offset, width) ||
++                (offset < table_begin + table_bytes && table_begin < offset + width))
++                return STATUS_INVALID_IMAGE_FORMAT;
++            switch (type)
++            {
++            case IMAGE_DVRT_ARM64X_FIXUP_TYPE_ZEROFILL:
++                if (apply) memset(plan->staging + offset, 0, width);
++                break;
++            case IMAGE_DVRT_ARM64X_FIXUP_TYPE_VALUE:
++                if (width < sizeof(USHORT) || !extent(item, width, stop)) return STATUS_INVALID_IMAGE_FORMAT;
++                if (apply) memcpy(plan->staging + offset, plan->staging + item, width);
++                item += width;
++                break;
++            case IMAGE_DVRT_ARM64X_FIXUP_TYPE_DELTA:
++                if (!extent(item, sizeof(USHORT), stop)) return STATUS_INVALID_IMAGE_FORMAT;
++                if (apply)
++                {
++                    USHORT encoded;
++                    ULONG value, delta;
++                    memcpy(&encoded, plan->staging + item, sizeof(encoded));
++                    memcpy(&value, plan->staging + offset, sizeof(value));
++                    delta = (ULONG)encoded * ((arg & 2) ? 8 : 4);
++                    value = (arg & 1) ? value - delta : value + delta;
++                    memcpy(plan->staging + offset, &value, sizeof(value));
++                }
++                item += sizeof(USHORT);
++                break;
++            }
++        }
++        cursor = stop;
++    }
++    return STATUS_SUCCESS;
++}
++
++static NTSTATUS select_arm64x(struct pear_pe_plan *plan, IMAGE_NT_HEADERS64 *nt,
++                              const IMAGE_SECTION_HEADER *sections, const IMAGE_DATA_DIRECTORY *cfg)
++{
++    ULONG length, offset;
++    USHORT section;
++    IMAGE_DYNAMIC_RELOCATION_TABLE table;
++    SIZE_T start, cursor, end, selected = 0, selected_size = 0;
++    SIZE_T offset_field = offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, DynamicValueRelocTableOffset);
++    SIZE_T section_field = offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, DynamicValueRelocTableSection);
++    NTSTATUS status;
++    if (!cfg || cfg->Size < sizeof(length)) return STATUS_NOT_SUPPORTED;
++    memcpy(&length, plan->staging + cfg->VirtualAddress, sizeof(length));
++    if (length > cfg->Size || !extent(section_field, sizeof(section), length)) return STATUS_INVALID_IMAGE_FORMAT;
++    memcpy(&offset, plan->staging + cfg->VirtualAddress + offset_field, sizeof(offset));
++    memcpy(&section, plan->staging + cfg->VirtualAddress + section_field, sizeof(section));
++    if (!section || section > nt->FileHeader.NumberOfSections) return STATUS_NOT_SUPPORTED;
++    if (!extent(offset, sizeof(table), sections[section - 1].Misc.VirtualSize)) return STATUS_INVALID_IMAGE_FORMAT;
++    start = (SIZE_T)sections[section - 1].VirtualAddress + offset;
++    if (!used_range(plan, start, sizeof(table), FALSE)) return STATUS_INVALID_IMAGE_FORMAT;
++    memcpy(&table, plan->staging + start, sizeof(table));
++    if (table.Version != 1 && table.Version != 2) return STATUS_NOT_SUPPORTED;
++    cursor = start + sizeof(table);
++    if (!used_range(plan, cursor, table.Size, FALSE) ||
++        !extent(offset + sizeof(table), table.Size, sections[section - 1].Misc.VirtualSize))
++        return STATUS_INVALID_IMAGE_FORMAT;
++    end = cursor + table.Size;
++    while (cursor < end)
++    {
++        ULONGLONG symbol;
++        SIZE_T header_size, fixup_size;
++        if (table.Version == 1)
++        {
++            IMAGE_DYNAMIC_RELOCATION64 entry;
++            if (!extent(cursor, sizeof(entry), end)) return STATUS_INVALID_IMAGE_FORMAT;
++            memcpy(&entry, plan->staging + cursor, sizeof(entry));
++            symbol = entry.Symbol; header_size = sizeof(entry); fixup_size = entry.BaseRelocSize;
++        }
++        else
++        {
++            IMAGE_DYNAMIC_RELOCATION64_V2 entry;
++            if (!extent(cursor, sizeof(entry), end)) return STATUS_INVALID_IMAGE_FORMAT;
++            memcpy(&entry, plan->staging + cursor, sizeof(entry));
++            if (entry.HeaderSize < sizeof(entry)) return STATUS_INVALID_IMAGE_FORMAT;
++            symbol = entry.Symbol; header_size = entry.HeaderSize; fixup_size = entry.FixupInfoSize;
++        }
++        if (!extent(cursor, header_size, end) || !extent(cursor + header_size, fixup_size, end))
++            return STATUS_INVALID_IMAGE_FORMAT;
++        if (symbol == IMAGE_DYNAMIC_RELOCATION_ARM64X)
++        {
++            if (selected || !fixup_size) return STATUS_INVALID_IMAGE_FORMAT;
++            selected = cursor + header_size; selected_size = fixup_size;
++        }
++        cursor += header_size + fixup_size;
++    }
++    if (!selected) return STATUS_NOT_SUPPORTED;
++    status = arm64x_fixups(plan, selected, selected_size, start, end - start, FALSE);
++    if (!status) status = arm64x_fixups(plan, selected, selected_size, start, end - start, TRUE);
++    if (!status && nt->FileHeader.Machine != IMAGE_FILE_MACHINE_AMD64) status = STATUS_INVALID_IMAGE_FORMAT;
++    return status;
++}
++
+ static BOOL executable_range(const struct pear_pe_plan *plan, ULONG rva, SIZE_T size)
+ {
+     SIZE_T page;
+@@ -470,7 +613,7 @@
+         ULONG start, kind;
+         memcpy(&range, plan->staging + metadata.CodeMap + i * sizeof(range), sizeof(range));
+         start = range.StartOffset & ~3u; kind = range.StartOffset & 3;
+-        if ((kind != 1 && kind != 2) || start < previous_end ||
++        if ((kind > 2) || start < previous_end ||
+             !executable_range(plan, start, range.Length) ||
+             (kind == 1 && (range.Length & 3))) return STATUS_INVALID_IMAGE_FORMAT;
+         previous_end = start + range.Length;
+@@ -636,6 +779,21 @@
+     if (!directory(nt, IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG, plan->size, &cfg) ||
+         !directory(nt, IMAGE_DIRECTORY_ENTRY_BASERELOC, plan->size, &relocs))
+     { status = STATUS_INVALID_IMAGE_FORMAT; goto done; }
++    if (header.FileHeader.Machine == IMAGE_FILE_MACHINE_ARM64 && target == IMAGE_FILE_MACHINE_AMD64)
++    {
++        if ((status = select_arm64x(plan, nt, sections, cfg))) goto done;
++        /* Wine selects the x64 view before base relocations and EC registration.
++         * Re-read changed data directories; geometry/section headers were not writable. */
++        for (i = 0; i < nt->OptionalHeader.NumberOfRvaAndSizes; ++i)
++        {
++            if (i == IMAGE_DIRECTORY_ENTRY_SECURITY) continue;
++            if (!directory(nt, i, plan->size, &dir) || (dir && !used_range(plan, dir->VirtualAddress, dir->Size, FALSE)))
++            { status = STATUS_INVALID_IMAGE_FORMAT; goto done; }
++        }
++        if (!directory(nt, IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG, plan->size, &cfg) ||
++            !directory(nt, IMAGE_DIRECTORY_ENTRY_BASERELOC, plan->size, &relocs))
++        { status = STATUS_INVALID_IMAGE_FORMAT; goto done; }
++    }
+     if (cfg)
+     {
+         SIZE_T field = offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, CHPEMetadataPointer);
+@@ -652,8 +810,8 @@
+     if ((status = check_loader_data(plan, nt)) || (status = parse_relocations(plan, relocs))) goto done;
+     image->size = plan->size;
+     image->original_base = plan->original_base;
+-    image->entry_rva = header.OptionalHeader.AddressOfEntryPoint;
+-    image->machine = header.FileHeader.Machine;
++    image->entry_rva = nt->OptionalHeader.AddressOfEntryPoint;
++    image->machine = nt->FileHeader.Machine;
+     *ret = plan;
+     return STATUS_SUCCESS;
+ done:

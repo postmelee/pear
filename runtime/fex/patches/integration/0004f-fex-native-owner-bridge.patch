@@ -1,0 +1,39 @@
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -14,6 +14,16 @@
+ #include <winternl.h>
+ #include <libloaderapi.h>
+ #include "Priv.h"
++
++#ifdef ARCHITECTURE_arm64ec
++// Reuse the actual ntdll CHPE table populated by Module::InitSyscalls before
++// owner initialization. Exports point to x64 fast-forward stubs, not raw ARM64.
++extern "C" {
++extern uintptr_t NtDllBase;
++extern uint32_t* NtDllRedirectionLUT;
++extern uint32_t NtDllRedirectionLUTSize;
++}
++#endif
+ 
+ namespace FEXCore::Utils::PearFEXMemory {
+ namespace {
+@@ -708,8 +718,17 @@
+ }
+ Result Init(void* NtDll, uint64_t UnixOwnerPid) {
+   if (!NtDll || !UnixOwnerPid) return Refuse(PEAR_FEX_INVALID_REQUEST);
+-  const auto Resolved = reinterpret_cast<BridgeType>(GetProcAddress(static_cast<HMODULE>(NtDll), "__wine_pear_fex_memory"));
++  auto Resolved = reinterpret_cast<BridgeType>(GetProcAddress(static_cast<HMODULE>(NtDll), "__wine_pear_fex_memory"));
+   if (!Resolved) return Refuse();
++#ifdef ARCHITECTURE_arm64ec
++  const auto ExportAddress = reinterpret_cast<uintptr_t>(Resolved);
++  if (NtDllBase != reinterpret_cast<uintptr_t>(NtDll) || !NtDllRedirectionLUT ||
++      ExportAddress < NtDllBase || ExportAddress-NtDllBase >= NtDllRedirectionLUTSize)
++    return Refuse();
++  const auto NativeRVA = NtDllRedirectionLUT[ExportAddress-NtDllBase];
++  if (!NativeRVA || NtDllBase > std::numeric_limits<uintptr_t>::max()-NativeRVA) return Refuse();
++  Resolved = reinterpret_cast<BridgeType>(NtDllBase+NativeRVA);
++#endif
+   RegistryGuard Guard;
+   if (BridgeDirect) return BridgeDirect == Resolved && OwnerPID == UnixOwnerPid ? Refuse(PEAR_FEX_OK) : Refuse(PEAR_FEX_STALE_IDENTITY);
+   BridgeDirect = Resolved; OwnerPID = UnixOwnerPid; Configured.store(true, std::memory_order_release);

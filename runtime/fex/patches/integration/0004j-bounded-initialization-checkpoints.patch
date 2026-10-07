@@ -1,0 +1,67 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -694,6 +694,16 @@
+ }
+ #endif
+ 
++// Bounded development checkpoints use Wine's existing output path. No guest
++// memory, account data, register dump or new runtime ABI is recorded here.
++static void PearInitCheckpoint(const char* Phase, uint32_t Status, uint32_t Domain = 0, int32_t Code = 0) {
++  const auto Output = reinterpret_cast<int (*)(const char*)>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "__wine_dbg_output"));
++  if (!Output) return;
++  char Text[192];
++  snprintf(Text, sizeof(Text), "Pear FEX init %s: status=%08x domain=%u code=%d\n", Phase, Status, Domain, Code);
++  Output(Text);
++}
++
+ NTSTATUS ProcessInit() {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   if (CTX || PearSourceReady.load(std::memory_order_acquire)) {
+@@ -844,6 +854,7 @@
+   }
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
++  PearInitCheckpoint("ProcessInit.complete", STATUS_SUCCESS);
+   PearSourceStatus.store(STATUS_SUCCESS, std::memory_order_release);
+   PearSourceReady.store(true, std::memory_order_release);
+ #endif
+@@ -1213,12 +1224,14 @@
+ 
+ NTSTATUS ThreadInit() {
+ #ifdef PEAR_FEX_MEMORY_OWNER
++  PearInitCheckpoint("ThreadInit.enter", PearSourceReady.load(std::memory_order_acquire) ? STATUS_SUCCESS : STATUS_NOT_SUPPORTED);
+ 
+   if (!PearSourceReady.load(std::memory_order_acquire) || !CTX) {
+     PearSourceReady.store(false, std::memory_order_release); PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release); return STATUS_NOT_SUPPORTED;
+   }
+   PearThreadPreparation Preparation;
+   if (!Preparation) {
++    PearInitCheckpoint("ThreadInit.preparation", Preparation.Status());
+     PearSourceReady.store(false, std::memory_order_release); PearSourceStatus.store(Preparation.Status(), std::memory_order_release); return Preparation.Status();
+   }
+ 
+@@ -1230,6 +1243,7 @@
+     reinterpret_cast<uint64_t>(::VirtualAlloc(nullptr, EmulatorStackSize, MEM_COMMIT | MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE));
+   if (!EmulatorStack) { PearSourceReady.store(false, std::memory_order_release); PearSourceStatus.store(STATUS_NO_MEMORY, std::memory_order_release); return STATUS_NO_MEMORY; }
+   if (!CPUArea.Area || CPUArea.ThreadState()) {
++    PearInitCheckpoint("ThreadInit.cpu-area", STATUS_NOT_SUPPORTED);
+     ::VirtualFree(reinterpret_cast<void*>(EmulatorStack), 0, MEM_RELEASE);
+     PearSourceReady.store(false, std::memory_order_release); PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release); return STATUS_NOT_SUPPORTED;
+   }
+@@ -1250,6 +1264,7 @@
+   // Core binds/registers this actual state before InitializeCompiler and
+   // retains/quarantines any source object with unresolved owner registration.
+   if (!Thread || !ThreadOutcome) {
++    PearInitCheckpoint("ThreadInit.create", ThreadOutcome.Status, ThreadOutcome.ErrorDomain, ThreadOutcome.ErrorCode);
+     PearRecordPrimary(ThreadOutcome);
+     // An explicit cleanup failure may itself return UNAVAILABLE. Preserve the
+     // actual Core attempted flag even after a clean binding was released.
+@@ -1327,6 +1342,7 @@
+     return STATUS_NOT_SUPPORTED;
+   }
+   Preparation.Commit();
++  PearInitCheckpoint("ThreadInit.complete", STATUS_SUCCESS);
+   return STATUS_SUCCESS;
+ #else
+ 

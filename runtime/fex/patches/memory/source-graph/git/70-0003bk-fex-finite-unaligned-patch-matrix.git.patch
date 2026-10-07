@@ -1,0 +1,147 @@
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -385,6 +385,14 @@
+         ThreadState->CurrentFrame->Pointers.ExitFunctionLink,0x2000+4*I,-24};
+       std::memcpy(Write.Data()+Thunk+16,&Record,sizeof(Record));
+     }
++    constexpr uint32_t Inputs[]={0x08dffc00,0x38bfc000,0x089ffc00,0x19400000,0x19000000};
++    for (uint32_t I=0;I<40;++I) {
++      const uint32_t Kind=(I/4)%5,Width=I%4,Addr=I%29+1,Data=(I*3)%31;
++      std::array<uint32_t,13> Words;Words.fill(0xd503201f);
++      const uint32_t Immediate=Kind>=3 ? ((I&1) ? 0x1ff : 0xff)<<12 : 0;
++      Words[1]=Inputs[Kind]|(Width<<30)|(Addr<<5)|Data|Immediate;
++      std::memcpy(Write.Data()+1536+64*I,Words.data(),sizeof(Words));
++    }
+     const auto Published=Write.Publish();
+     if (!Published) {
+       const auto Aborted=Write.Abort();
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1442,6 +1442,80 @@
+ 
+ extern "C" { uint32_t PearFiniteCheckpoint {}; }
+ 
++static FEXCore::Utils::PearFEXMemory::Result ExecutePearFinitePatchMatrix(
++    FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  namespace A=FEXCore::ArchHelpers::Arm64;
++  auto Life=M::AcquireCurrentSourceLifetime();
++  auto* Thread=Life ? Life.ActualThread() : nullptr;
++  auto* C=Life ? const_cast<ContextImpl*>(static_cast<const ContextImpl*>(Life.ActualContext())) : nullptr;
++  if (!Thread || !C || !Thread->CPUBackend || !C->Dispatcher || Frame!=Thread->CurrentFrame ||
++      Frame->Thread!=Thread || !M::HasManagedActive(C->Dispatcher->GetPearSnapshot())) return {PEAR_FEX_UNAVAILABLE,0,0};
++  // Five selected source opcode families, four widths, both finite preparation
++  // policies. The instruction words are data; no unaligned access is executed.
++  constexpr uint32_t ExpectedBase[]={0x387f6800,0x387f6800,0x383f6800,0x38400000,0x38000000};
++  for (uint32_t I=0;I<40;++I) {
++    PearFiniteCheckpoint=256+I;
++    const uint32_t Kind=(I/4)%5,Width=I%4,Addr=I%29+1,Data=(I*3)%31;
++    const bool Half=I<20,Store=Kind==2 || Kind==4;
++    const auto Mode=Half ? A::UnalignedHandlerType::HalfBarrier : A::UnalignedHandlerType::NonAtomic;
++    const size_t Offset=1536+64*I;
++    auto Window=Thread->CPUBackend->FindPearManagedWindow(Frame->State.InlineJITBlockHeader);
++    if (!Window) return {PEAR_FEX_UNAVAILABLE,0,0};
++    auto Target=Thread->CPUBackend->FindPearRetainedTarget(Window->Begin+Offset);
++    if (!Target) return {PEAR_FEX_UNAVAILABLE,0,0};
++    std::array<uint32_t,13> Words {};
++    auto Read=M::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Target,Thread,Offset,
++      {reinterpret_cast<uint8_t*>(Words.data()),sizeof(Words)});
++    if (!Read) return Read.Outcome;
++    const auto Prepared=A::PrepareUnalignedPatchSnapshot(Mode,Words);
++    const uint32_t Immediate=Kind>=3 ? ((I&1) ? 0x1ff : 0xff)<<12 : 0;
++    const uint32_t Expected=ExpectedBase[Kind]|(Width<<30)|(Addr<<5)|Data|Immediate;
++    if (Prepared.Kind!=A::UnalignedPatchKind::Candidate || Prepared.StoreCount!=(Half ? 2 : 1) ||
++        Prepared.StoreOrder[Prepared.StoreCount-1]!=1 || Prepared.Next[1]!=Expected ||
++        Prepared.ResumeDelta!=(Store ? -4 : 0) ||
++        (Half && (Prepared.StoreOrder[0]!=(Store ? 0 : 2) ||
++          Prepared.Next[Store ? 0 : 2]!=(Store ? 0xd5033bbf : 0xd5033dbf))))
++      return {PEAR_FEX_INVALID_REQUEST,0,0};
++    ContextImpl::PearDispatcherGate Gate {};
++    auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);if (!Outcome) return Outcome;
++    auto Transaction=Window->Owner->GetPearSnapshot();const auto Before=Transaction;
++    {
++      M::WriteGuard Write{Transaction,Offset,sizeof(Words)};
++      if (!Write) return Write.Status();
++      const auto ExpectedBytes=std::span<const uint8_t>{reinterpret_cast<const uint8_t*>(Words.data()),sizeof(Words)};
++      if (!Write.Matches(0,ExpectedBytes)) {
++        const auto Aborted=Write.Abort();
++        if (!Window->Owner->ComparePearUpdate(Before,Transaction) || !Aborted)
++          return M::Retirement::PoisonSourceAdmission(!Aborted ? Aborted : M::Result{PEAR_FEX_STALE_IDENTITY,0,0});
++        return {PEAR_FEX_STALE_IDENTITY,0,0};
++      }
++      for (uint32_t N=0;N<Prepared.StoreCount;++N) {
++        const auto Index=Prepared.StoreOrder[N];
++        std::atomic_ref<uint32_t>(*reinterpret_cast<uint32_t*>(Write.Data()+4*Index)).store(Prepared.Next[Index],std::memory_order_release);
++      }
++      Outcome=Write.Publish();
++      if (!Outcome) {
++        const auto Aborted=Write.Abort();
++        if (!Window->Owner->ComparePearUpdate(Before,Transaction) || !Aborted)
++          M::Retirement::PoisonSourceAdmission(!Aborted ? Aborted : M::Result{PEAR_FEX_STALE_IDENTITY,0,0});
++        return Outcome;
++      }
++      if (!Window->Owner->ComparePearUpdate(Before,Transaction)) return M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++    }
++    Outcome=C->FinishPearDispatcherGate(Gate);if (!Outcome) return Outcome;
++    auto Fresh=Thread->CPUBackend->FindPearRetainedTarget(Window->Begin+Offset);
++    if (!Fresh) return {PEAR_FEX_UNAVAILABLE,0,0};
++    Read=M::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Fresh,Thread,Offset,
++      {reinterpret_cast<uint8_t*>(Words.data()),sizeof(Words)});
++    if (!Read) return Read.Outcome;
++    const auto Again=A::PrepareUnalignedPatchSnapshot(Mode,Words);
++    if (Words!=Prepared.Next || Again.Kind!=A::UnalignedPatchKind::AlreadyPatched ||
++        Again.ResumeDelta!=(Half && Store ? -4 : 0)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++  }
++  return {PEAR_FEX_OK,0,0};
++}
++
+ void ContextImpl::PearFiniteNativeTransfer(FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC,
+                                           uintptr_t NativeTarget, FEXCore::Utils::PearFEXMemory::Result* Output) {
+   namespace M=FEXCore::Utils::PearFEXMemory;
+@@ -1551,6 +1625,8 @@
+   PearFiniteCheckpoint=16;
+   *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFiniteLinks(Frame,ResumePC);
+   if (!*Output) return;
++  *Output=ExecutePearFinitePatchMatrix(Frame,ResumePC);
++  if (!*Output) return;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
+   if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
+   if (*Output) PearFiniteCheckpoint=17;
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

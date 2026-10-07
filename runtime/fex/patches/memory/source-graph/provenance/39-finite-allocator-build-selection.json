@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear target-local compilation and existing fmt dependency selection for the actual allocator library containing finite object backing. No global compilation macro or runtime gate is changed.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "postimage_bytes": 11592,
+      "postimage_sha256": "1e362e8a7ee9e89d5d62308979d30ab73d2e658b1d00f612cca59373c0da415f",
+      "preimage_sha256": "7797766c0ca8a1d298a7bdc0ab23667170118feabe891b5d7d13dd6841fb77f4"
+    }
+  ],
+  "historical_strict_patch_sha256": "7d7293488e59ff7c8f768fbd6a7181562d61383e442ffe6840f26ad5a3d61af4",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-allocator-build-selection",
+  "native_runtime_execution": false,
+  "order": 39,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

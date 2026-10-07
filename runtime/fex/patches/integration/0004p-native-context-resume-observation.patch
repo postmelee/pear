@@ -1,0 +1,36 @@
+diff --git a/dlls/ntdll/unix/signal_arm64.c b/dlls/ntdll/unix/signal_arm64.c
+--- a/dlls/ntdll/unix/signal_arm64.c
++++ b/dlls/ntdll/unix/signal_arm64.c
+@@ -25,6 +25,7 @@
+ #ifdef __aarch64__
+ 
+ #include "config.h"
++#include <errno.h>
+ 
+ #include <assert.h>
+ #ifdef __APPLE__
+@@ -460,6 +461,7 @@
+         frame->sp    = context->Sp;
+         frame->pc    = context->Pc;
+         frame->cpsr  = context->Cpsr;
++        TRACE_(seh)("Pear continue pc=%p flags=%08x emulated=%u\n", (void *)frame->pc, context->ContextFlags, is_emulated_code(frame->pc));
+         if (is_emulated_code( frame->pc )) flags |= RESTORE_FLAGS_EMULATION;
+         else frame->restore_flags &= ~RESTORE_FLAGS_EMULATION;
+     }
+@@ -1741,6 +1743,16 @@
+     if (!is_inside_syscall( data, SP_sig(sigcontext) )) return;
+     if (!frame) return;
+ 
++    /* write is async-signal-safe; do not add an allocating logger here. */
++    if (is_arm64ec())
++    {
++        static const char native[] = "Pear SIGUSR2 resume native\n";
++        static const char guest[] = "Pear SIGUSR2 resume guest\n";
++        int saved_errno = errno;
++        if (is_emulated_code(frame->pc)) write(2, guest, sizeof(guest)-1);
++        else write(2, native, sizeof(native)-1);
++        errno = saved_errno;
++    }
+     if (is_emulated_code( frame->pc ))
+     {
+         CONTEXT *user_context = (CONTEXT *)((frame->sp - sizeof(CONTEXT)) & ~15);

@@ -119,7 +119,7 @@ def loader_environment(base,endpoint,server_pid,nonce):
          and integer(server_pid,2,2**31-1),'memory_wine_control_scope')
     return {**base,'PEAR_STAGE3_CONTROL':endpoint,'PEAR_WINE_ABI_FIXTURE':'1',
         'PEAR_BOOTSTRAP_SERVER_PID':str(server_pid),'WINEDLLOVERRIDES':'mscoree=',
-        'PEAR_FEX_MEMORY_FIXTURE_NONCE':nonce}
+        'PEAR_FEX_MEMORY_FIXTURE_NONCE':nonce,'PEAR_FEX_BITMAP_DIAGNOSTICS':'1'}
 
 
 def assessment_packet(value):
@@ -189,7 +189,7 @@ def suite_contract():
         'publish_cross_page_instruction_pair':3,'enter_before_source_continuation':8,'pin_saved_source_resume':10,
         'direct_owned_handoff_to_native':13,'poll_existing_owned_handoff':13,'admit_finite_saved_resume':10,
         'discard_owned_saved_resume':11,'release_original_pin_epoch':11,'begin_unpublished_abort_control':2,
-        'abort_unpublished_window':4,'retire_extent':5,'unregister_actual_native_executor':12,'unknown_opcode':15,
+        'abort_unpublished_window':4,'retire_extent':5,'unregister_actual_native_executor':12,'unknown_opcode':16,
         'native_fixture_cannot_select_arm64ec_role':7,'wrapped_write_range':2,'source_guard_write':2,'empty_write':2,
         'ordinary_exit_cannot_drop_saved_resume':9,'nested_handoff_refused':13,'poll_requires_original_pin_epoch':13,
         'poll_requires_exact_resume_offset':13,'poll_requires_existing_continuation':13,

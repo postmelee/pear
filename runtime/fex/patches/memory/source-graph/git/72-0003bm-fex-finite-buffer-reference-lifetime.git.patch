@@ -1,0 +1,112 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1516,6 +1516,63 @@
+   return {PEAR_FEX_OK,0,0};
+ }
+ 
++static FEXCore::Utils::PearFEXMemory::Result ExecutePearFiniteBufferLifetimes(
++    FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  auto Life=M::AcquireCurrentSourceLifetime();
++  auto* Thread=Life ? Life.ActualThread() : nullptr;
++  auto* C=Life ? const_cast<ContextImpl*>(static_cast<const ContextImpl*>(Life.ActualContext())) : nullptr;
++  if (!Thread || !C || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !C->Dispatcher ||
++      !M::HasManagedActive(C->Dispatcher->GetPearSnapshot())) return {PEAR_FEX_UNAVAILABLE,0,0};
++  ContextImpl::PearDispatcherGate Gate {};
++  auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);if (!Outcome) return Outcome;
++  M::Allocation Previous {};
++  for (uint32_t I=0;I<4;++I) {
++    PearFiniteCheckpoint=320+I;
++    const size_t Size=size_t(16*1024*1024)<<I;
++    auto Buffer=FEXCore::CPU::CodeBuffer::CreatePear(Size,false,Outcome);
++    if (!Buffer || !Outcome) return Outcome ? M::Result{PEAR_FEX_UNAVAILABLE,0,0} : Outcome;
++    auto Facts=Buffer->GetPearSnapshot();
++    if (!Facts || Facts.Token.extent_size!=Size || Facts.Token.expected_state!=PEAR_FEX_RESERVED_NONE ||
++        Facts.Base || Buffer->UsableSize()!=Size-4096 || !Buffer->LookupCache)
++      return {PEAR_FEX_STALE_IDENTITY,0,0};
++    if (Previous.Token.allocation_id) {
++      const auto Stale=M::Retire(Previous);
++      if (Stale.Status!=PEAR_FEX_STALE_IDENTITY || Stale.ErrorDomain || Stale.ErrorCode ||
++          (Facts.Token.allocation_id==Previous.Token.allocation_id && Facts.Token.generation==Previous.Token.generation))
++        return {PEAR_FEX_STALE_IDENTITY,0,0};
++    }
++    // The final strong reference, not a weak reference or elapsed time,
++    // controls original CodeBuffer destruction and retirement enqueue.
++    std::weak_ptr<FEXCore::CPU::CodeBuffer> Weak=Buffer;
++    auto Held=Buffer;Buffer.reset();
++    if (Weak.expired()) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Outcome=M::Retirement::DrainAtNativeGate();if (!Outcome) return Outcome;
++    const auto Before=Held->GetPearSnapshot();auto Transaction=Before;
++    {
++      M::WriteGuard Probe{Transaction,0,16};
++      if (!Probe) return Probe.Status();
++      // No code or metadata is written. Observe native admission, then restore
++      // the actual reserved state through the existing source abort path.
++      Outcome=Probe.Abort();
++      if (!Outcome) return Outcome;
++      if (!Held->ComparePearUpdate(Before,Transaction) || Transaction.Base ||
++          Transaction.Token.expected_state!=PEAR_FEX_RESERVED_NONE)
++        return M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++    }
++    Facts=Held->GetPearSnapshot();
++    Held.reset();
++    if (!Weak.expired()) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Outcome=M::Retirement::DrainAtNativeGate();if (!Outcome) return Outcome;
++    Previous=Facts;
++    const auto Retired=M::Retire(Facts);
++    if (Retired.Status!=PEAR_FEX_STALE_IDENTITY || Retired.ErrorDomain || Retired.ErrorCode)
++      return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Weak.reset();
++  }
++  return C->FinishPearDispatcherGate(Gate);
++}
++
+ void ContextImpl::PearFiniteNativeTransfer(FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC,
+                                           uintptr_t NativeTarget, FEXCore::Utils::PearFEXMemory::Result* Output) {
+   namespace M=FEXCore::Utils::PearFEXMemory;
+@@ -1627,6 +1684,8 @@
+   if (!*Output) return;
+   *Output=ExecutePearFinitePatchMatrix(Frame,ResumePC);
+   if (!*Output) return;
++  *Output=ExecutePearFiniteBufferLifetimes(Frame,ResumePC);
++  if (!*Output) return;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
+   if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
+   if (*Output) PearFiniteCheckpoint=17;
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

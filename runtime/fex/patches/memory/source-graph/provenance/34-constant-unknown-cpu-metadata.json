@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear reuse of the existing unknown-CPU metadata row without per-core allocation on the selected Darwin path, with bounded zero-padded CPU brand chunks. Observed CPU count and known-MIDR paths are preserved.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUID.h",
+      "postimage_bytes": 23083,
+      "postimage_sha256": "ef46a547b04aa5428b03a5417ec35250a2fd4aff00e12b6e6033502551234613",
+      "preimage_sha256": "dcea9986b72d5c68cb1eb364423c3ce4d031ae7bc4dc4804554fd4316ca875c8"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUID.cpp",
+      "postimage_bytes": 59753,
+      "postimage_sha256": "7b3d3d9f381a4ba49a7e4c23ccb923e8cdcc188f748b4712a4eae08a53c2dba5",
+      "preimage_sha256": "917b8a07a670cd4e5f18f113ba885af0810583ec5d1bebee2592489adff1370d"
+    }
+  ],
+  "historical_strict_patch_sha256": "6a8da056321127f66a708bb34b71ec427f2044ed7a93f94f255c515b03afa07f",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "constant-unknown-cpu-metadata",
+  "native_runtime_execution": false,
+  "order": 34,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

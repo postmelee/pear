@@ -1,0 +1,77 @@
+diff --git a/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -7705,12 +7705,35 @@
+     return result;
+ }
+ /* Lower-bound available capacity, saturated before any new allocation. */
++/* Caller holds virtual_mutex. Reuse the bounded observer at the allocation
++ * boundary so a stale earlier snapshot cannot cause a new 1-MiB view block. */
++static int pear_fex_available_views(uint64_t *count)
++{
++    uint64_t available;
++    struct file_view *cursor, *slow, *fast;
++    *count = 0;
++    if (!view_block_start || !view_block_end || view_block_end < view_block_start ||
++        (uint64_t)(view_block_end - view_block_start) > view_block_size / sizeof(struct file_view)) return 1;
++    available = view_block_end - view_block_start;
++    cursor = slow = fast = next_free_view;
++    while (available < PEAR_FEX_MEMORY_OBSERVATION_SLOTS && cursor)
++    {
++        ++available;
++        cursor = *(struct file_view **)cursor;
++        slow = slow ? *(struct file_view **)slow : NULL;
++        fast = fast ? *(struct file_view **)fast : NULL;
++        fast = fast ? *(struct file_view **)fast : NULL;
++        if (slow && slow == fast) return 1;
++    }
++    *count = min(available, PEAR_FEX_MEMORY_OBSERVATION_SLOTS);
++    return 0;
++}
++
+ static int pear_fex_wine_metadata(struct pear_fex_memory_metadata *out,
+                                   struct pear_fex_memory_error *error)
+ {
+     sigset_t sigset;
+-    uint64_t base, first, old_last, last, i, available;
+-    struct file_view *cursor, *slow, *fast;
++    uint64_t base, first, old_last, last, i;
+     int result = 1;
+     server_enter_uninterrupted_section(&virtual_mutex, &sigset);
+     if (atomic_load_explicit(&pear_fex_wine_quarantined, memory_order_acquire) ||
+@@ -7728,20 +7751,7 @@
+     out->baseline_leaves = old_last - first + 1;
+     /* Charge all extension-only leaves even if some predated the reservation. */
+     out->additional_leaves = last - old_last;
+-    if (!view_block_start || !view_block_end || view_block_end < view_block_start ||
+-        (uint64_t)(view_block_end - view_block_start) > view_block_size / sizeof(struct file_view)) goto invalid;
+-    available = view_block_end - view_block_start;
+-    cursor = slow = fast = next_free_view;
+-    while (available < PEAR_FEX_MEMORY_OBSERVATION_SLOTS && cursor)
+-    {
+-        ++available;
+-        cursor = *(struct file_view **)cursor;
+-        slow = slow ? *(struct file_view **)slow : NULL;
+-        fast = fast ? *(struct file_view **)fast : NULL;
+-        fast = fast ? *(struct file_view **)fast : NULL;
+-        if (slow && slow == fast) goto invalid;
+-    }
+-    out->available_view_slots = min(available, PEAR_FEX_MEMORY_OBSERVATION_SLOTS);
++    if (pear_fex_available_views(&out->available_view_slots)) goto invalid;
+     out->view_block_bytes = view_block_size;
+     out->view_record_bytes = sizeof(struct file_view);
+     out->fixed_native_bytes = sizeof(pear_fex_views) + sizeof(pear_fex_wine_backing) + sizeof(pear_fex_wine_quarantined);
+@@ -8189,6 +8199,13 @@
+ #endif
+     if (reserve)
+     {
++        uint64_t available;
++        /* Splitting an existing owned view needs at most two spare records.
++         * Keep observation and both allocations under this same mutex. */
++        if (pear_fex_available_views(&available))
++        { pear_fex_nt_error(error, STATUS_INVALID_PARAMETER); goto done; }
++        if (available < 2)
++        { pear_fex_nt_error(error, STATUS_NO_MEMORY); goto done; }
+         for (i = 0; i < PEAR_FEX_MEMORY_MAX_EXTENTS; ++i) if (!pear_fex_views[i].id) break;
+         if (i == PEAR_FEX_MEMORY_MAX_EXTENTS || pear_fex_view_at(base, size)) goto done;
+         if ((status = pear_create_owned_view(&view, base, size))) { pear_fex_nt_error(error, status); goto done; }

@@ -1,112 +1,175 @@
 {
-  "schema_version": 1,
-  "component": "wine-fex-memory",
-  "runtime_execution": false,
   "baseline": {
-    "wine_revision": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "qualified_source_files_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
     "wine_patch_series_sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086",
-    "qualified_source_files_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7"
+    "wine_revision": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf"
   },
+  "component": "wine-fex-memory",
   "patches": [
     {
       "file": "memory/0003a-wine-owner-core.patch",
-      "sha256": "70bf01c6bdf5b6b3ad7d36b369db77d4668243daf9cc8270fae460631573ba07",
       "license": "MIT (original Pear additions); baseline Wine LGPL-2.1-or-later files retain their notices",
+      "sha256": "70bf01c6bdf5b6b3ad7d36b369db77d4668243daf9cc8270fae460631573ba07",
       "sources": [
         {
           "path": "include/wine/pear_fex_memory.h",
-          "preimage_sha256": null,
+          "postimage_bytes": 6905,
           "postimage_sha256": "bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf",
-          "postimage_bytes": 6905
+          "preimage_sha256": null
         },
         {
           "path": "dlls/ntdll/unix/pear_fex_memory_private.h",
-          "preimage_sha256": null,
+          "postimage_bytes": 2739,
           "postimage_sha256": "fc30e4644ac76554413697006cb36780ceceea32a5531f91ce2726fb4be3cdd3",
-          "postimage_bytes": 2739
+          "preimage_sha256": null
         },
         {
           "path": "dlls/ntdll/unix/pear_fex_memory.c",
-          "preimage_sha256": null,
+          "postimage_bytes": 40520,
           "postimage_sha256": "8999a814e9e85c0526602d13d9d8bea67a612b5f12c21cf1dbd6ca21a6bcd82d",
-          "postimage_bytes": 40520
+          "preimage_sha256": null
         },
         {
           "path": "dlls/ntdll/unix/pear_pe_arena.h",
-          "preimage_sha256": "5a62ac6debf9752387321776da0b31e2fdf1266c4f93eb154029179d800d8eba",
+          "postimage_bytes": 3566,
           "postimage_sha256": "e6fc8f13b71cdfa4a72cbdf175e1aa6d26c4fcb0eb83356e1cc545d848899572",
-          "postimage_bytes": 3566
+          "preimage_sha256": "5a62ac6debf9752387321776da0b31e2fdf1266c4f93eb154029179d800d8eba"
         },
         {
           "path": "dlls/ntdll/unix/pear_pe_arena.c",
-          "preimage_sha256": "e3e70366af63da6d9fa3c0f87485c8ab58d3561fcbcdefd4f56fb41c2858a9d7",
+          "postimage_bytes": 51946,
           "postimage_sha256": "53fc470a5e0117324cacbbb58f493d420a0d3fa23fdc5e5a9cd7d715e618c6ce",
-          "postimage_bytes": 51946
+          "preimage_sha256": "e3e70366af63da6d9fa3c0f87485c8ab58d3561fcbcdefd4f56fb41c2858a9d7"
         }
       ]
     },
     {
       "file": "memory/0003b-wine-owner-bridge.patch",
-      "sha256": "20b04404e365cda100f9829cfbad38ae822d54b927cf6d9719c9933d863b2fbe",
       "license": "MIT (original Pear additions); baseline Wine LGPL-2.1-or-later files retain their notices",
+      "sha256": "20b04404e365cda100f9829cfbad38ae822d54b927cf6d9719c9933d863b2fbe",
       "sources": [
         {
           "path": "dlls/ntdll/unix/virtual.c",
-          "preimage_sha256": "121787b1485c3c424c32e660a184ab0bee3206a9ed9486f99d247d80bfa9896b",
+          "postimage_bytes": 295323,
           "postimage_sha256": "d75164516a1ff8eb6ab5e7c53a20be41388ce7f6986c3536fcf79b793427ec6b",
-          "postimage_bytes": 295323
+          "preimage_sha256": "121787b1485c3c424c32e660a184ab0bee3206a9ed9486f99d247d80bfa9896b"
         },
         {
           "path": "dlls/ntdll/Makefile.in",
-          "preimage_sha256": "dca23fdb80cec1ac569a7ccc6899676100db23953df5b1fae9f092bd774e5434",
+          "postimage_bytes": 1818,
           "postimage_sha256": "31cc3f52a7d258e88d19b42a014bdbb4fd102ff057e5d8d5424d6fa7281ca139",
-          "postimage_bytes": 1818
+          "preimage_sha256": "dca23fdb80cec1ac569a7ccc6899676100db23953df5b1fae9f092bd774e5434"
         },
         {
           "path": "dlls/ntdll/unixlib.h",
-          "preimage_sha256": "b80d8d2ad7e68516627b3611020c093555176ff585dfcb88cb0244e32ca0ade3",
+          "postimage_bytes": 2153,
           "postimage_sha256": "2815e818d5fa34a5de251fec58899048da6440caef9b12a939dd6d35c82a25ff",
-          "postimage_bytes": 2153
+          "preimage_sha256": "b80d8d2ad7e68516627b3611020c093555176ff585dfcb88cb0244e32ca0ade3"
         },
         {
           "path": "dlls/ntdll/unix/loader.c",
-          "preimage_sha256": "67b07af46a939203418309d2e278d1d135d1a8caaa92b6c7bbb3eb704c2b7434",
+          "postimage_bytes": 81036,
           "postimage_sha256": "cec2d1a1e00131a02750046bea52a7931a5ee3bf8e470a7b22dea763e72172cc",
-          "postimage_bytes": 81036
+          "preimage_sha256": "67b07af46a939203418309d2e278d1d135d1a8caaa92b6c7bbb3eb704c2b7434"
         },
         {
           "path": "dlls/ntdll/ntdll.spec",
-          "preimage_sha256": "63f7958120f7c51514422ca768b37fe7bb3452de88e2ce988e1fac757cc7da54",
+          "postimage_bytes": 88245,
           "postimage_sha256": "0bfef154483bfd48a20f3ff9f7822bc8cef769ee24e65affd6dede87c80fab81",
-          "postimage_bytes": 88245
+          "preimage_sha256": "63f7958120f7c51514422ca768b37fe7bb3452de88e2ce988e1fac757cc7da54"
         },
         {
           "path": "dlls/ntdll/pear_fex_memory.c",
-          "preimage_sha256": null,
+          "postimage_bytes": 4776,
           "postimage_sha256": "857baee07e2f0c3e3dd05da2a2a3eb96c5aa9b3d40b242aa511d9b09d83b349d",
-          "postimage_bytes": 4776
+          "preimage_sha256": null
         },
         {
           "path": "include/Makefile.in",
-          "preimage_sha256": "f89c7d5c47ed20f37dbb4d2fcc41f2a9ba650ad2eaa59f27cbd1973cb68eacc0",
+          "postimage_bytes": 22138,
           "postimage_sha256": "7b0dd9c2957aacb944185e7ac039c990b25bd4fbf6718e4ab01e7b1051724b53",
-          "postimage_bytes": 22138
+          "preimage_sha256": "f89c7d5c47ed20f37dbb4d2fcc41f2a9ba650ad2eaa59f27cbd1973cb68eacc0"
+        }
+      ]
+    },
+    {
+      "file": "memory/0003ah-wine-metadata-observation.patch",
+      "license": "Original Pear additions, MIT; existing Wine LGPL notices retained",
+      "sha256": "c9e834880401f7db2135e9aff7097399c207ce7691c2686ff797a7ca1fdf9246",
+      "sources": [
+        {
+          "path": "include/wine/pear_fex_memory.h",
+          "postimage_bytes": 8507,
+          "postimage_sha256": "a089b475fe6d6f2401977319eb4f0702e85c0753063f5748093131088f9f8b55",
+          "preimage_sha256": "bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_fex_memory_private.h",
+          "postimage_bytes": 2979,
+          "postimage_sha256": "6deec3f8deecfffe6d39f418fead96706483abaafda60d37405b262fa102e1c3",
+          "preimage_sha256": "fc30e4644ac76554413697006cb36780ceceea32a5531f91ce2726fb4be3cdd3"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_fex_memory.c",
+          "postimage_bytes": 41414,
+          "postimage_sha256": "bd8f4af4af3b63c9062a83984b38ec9192548b8d44f60553d956a989b2d8d66b",
+          "preimage_sha256": "8999a814e9e85c0526602d13d9d8bea67a612b5f12c21cf1dbd6ca21a6bcd82d"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "postimage_bytes": 52585,
+          "postimage_sha256": "e05deb652ea7cf4a9fb23d8ee5fe29b07ac3caf760ae81a26cf80d59f1a29777",
+          "preimage_sha256": "53fc470a5e0117324cacbbb58f493d420a0d3fa23fdc5e5a9cd7d715e618c6ce"
+        },
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "postimage_bytes": 297920,
+          "postimage_sha256": "119835040ab6333c577936237818b05c0b189b506795975123559cec25c8dd70",
+          "preimage_sha256": "d75164516a1ff8eb6ab5e7c53a20be41388ce7f6986c3536fcf79b793427ec6b"
+        }
+      ]
+    },
+    {
+      "file": "memory/0003ai-wine-bitmap-diagnostic-selection.patch",
+      "license": "MIT (original Pear diagnostic selection); Wine LGPL-2.1-or-later file retains its notice",
+      "sha256": "715c03917c163539e089f67e7c2d529e46dcd9d77c7c3dc8a2688eabb4616785",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "postimage_bytes": 298744,
+          "postimage_sha256": "d5ac1cc512bfba2de1f6fd868fab2b3098c9a3603a7ba71ff7b1c142e950060f",
+          "preimage_sha256": "119835040ab6333c577936237818b05c0b189b506795975123559cec25c8dd70"
+        }
+      ]
+    },
+    {
+      "file": "memory/0003aj-wine-view-backing-admission.patch",
+      "license": "MIT (original Pear bounded admission); Wine LGPL-2.1-or-later file retains its notice",
+      "sha256": "29a2b3413880b87fb0440be854ca9a2348e936f9afaaa3dc88f0cba7d88ce2dc",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "postimage_bytes": 299449,
+          "postimage_sha256": "4c488745dfd30e31cde2980da31e46848414e8b877dd83bd93e5123ed22e7954",
+          "preimage_sha256": "d5ac1cc512bfba2de1f6fd868fab2b3098c9a3603a7ba71ff7b1c142e950060f"
         }
       ]
     }
   ],
   "preserved_baseline": {
-    "pe_interior_bytes": 1050345472,
+    "alignment_bytes": 65536,
     "dynamic_bytes": 524288,
     "dynamic_slots": 8,
-    "alignment_bytes": 65536
+    "pe_interior_bytes": 1050345472
   },
   "prototype": {
-    "mapping_bytes": 1588985856,
-    "shared_bytes": 536870912,
     "dispatcher_bytes": 1048576,
+    "mapping_bytes": 1588985856,
     "metadata_limit_bytes": 262144,
-    "wire_record_bytes": 128,
-    "unix_index": 10
-  }
+    "shared_bytes": 536870912,
+    "unix_index": 10,
+    "wire_record_bytes": 128
+  },
+  "runtime_execution": false,
+  "schema_version": 1
 }

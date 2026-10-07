@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear corrects the finite fixture expectation to the pinned upstream compact pair: encoded zero means host delta 4 and guest delta 1. The original decoder and safety checks remain unchanged. Final image and metadata revalidation remain mandatory before invocation.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 97705,
+      "postimage_sha256": "c4197e8d5595807dfbf2934597abe99ea7db619feaf0f684d69af3a61674bf08",
+      "preimage_sha256": "d597c1be986be23465312eacb4a07be2becc2ac6ed8a02b7585aebb42da6cd8c"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "postimage_bytes": 20588,
+      "postimage_sha256": "4089547f80c5f0fd0f3e555eed64e299676c8ad7fdbc92f2a2bb0481f3b1e74a",
+      "preimage_sha256": "278a598b5412e4a962a60c3e7d553548e9aa40ea2e94a1974d461d52a33f56c9"
+    }
+  ],
+  "historical_strict_patch_sha256": "9d9ead323a9a18d9b8bb04c58ae4b723999612ffddfdbb7ef4a78fd4db3d534e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-rip-pair-expectation",
+  "native_runtime_execution": false,
+  "order": 61,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

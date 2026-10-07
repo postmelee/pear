@@ -47,13 +47,21 @@ PRODUCERS = ('tools/fex/memory_wine_build.py', 'tools/fex/common.py', 'tools/fex
              'tools/wine/toolchain.py', 'tools/wine/build.py')
 FIXTURES = ('tests/fex/memory/owner_launch.c', 'tests/fex/memory/wine_owner.c',
             'tests/fex/memory/fixture_suite.c', 'tests/fex/memory/fixture_suite.h')
-PATCH_NAMES = ('memory/0003a-wine-owner-core.patch', 'memory/0003b-wine-owner-bridge.patch')
+PATCH_NAMES = ('memory/0003a-wine-owner-core.patch', 'memory/0003b-wine-owner-bridge.patch',
+               'memory/0003ah-wine-metadata-observation.patch',
+               'memory/0003ai-wine-bitmap-diagnostic-selection.patch',
+               'memory/0003aj-wine-view-backing-admission.patch')
 PATCH_PATHS = (
     frozenset(('include/wine/pear_fex_memory.h', 'dlls/ntdll/unix/pear_fex_memory_private.h',
                'dlls/ntdll/unix/pear_fex_memory.c', 'dlls/ntdll/unix/pear_pe_arena.h',
                'dlls/ntdll/unix/pear_pe_arena.c')),
     frozenset(('dlls/ntdll/unix/virtual.c', 'dlls/ntdll/Makefile.in', 'dlls/ntdll/unixlib.h',
-               'dlls/ntdll/unix/loader.c', 'dlls/ntdll/ntdll.spec', 'dlls/ntdll/pear_fex_memory.c', 'include/Makefile.in')))
+               'dlls/ntdll/unix/loader.c', 'dlls/ntdll/ntdll.spec', 'dlls/ntdll/pear_fex_memory.c', 'include/Makefile.in')),
+    frozenset(('include/wine/pear_fex_memory.h', 'dlls/ntdll/unix/pear_fex_memory_private.h',
+               'dlls/ntdll/unix/pear_fex_memory.c', 'dlls/ntdll/unix/pear_pe_arena.c',
+               'dlls/ntdll/unix/virtual.c')),
+    frozenset(('dlls/ntdll/unix/virtual.c',)),
+    frozenset(('dlls/ntdll/unix/virtual.c',)))
 TARGETS = ('dlls/ntdll/ntdll.so', 'dlls/ntdll/aarch64-windows/ntdll.dll')
 REPLACEMENTS = dict(zip(TARGETS, ('lib/wine/aarch64-unix/ntdll.so', 'lib/wine/aarch64-windows/ntdll.dll')))
 MACRO = '-DPEAR_FEX_MEMORY_FINITE_FIXTURE=1'
@@ -145,7 +153,7 @@ def checked_series(value):
          'mapping_bytes': 1588985856, 'shared_bytes': 536870912, 'dispatcher_bytes': 1048576,
          'metadata_limit_bytes': 262144, 'wire_record_bytes': 128, 'unix_index': 10},
          'memory_wine_series_geometry')
-    need(type(value['patches']) is list and len(value['patches']) == 2, 'memory_wine_patch_count')
+    need(type(value['patches']) is list and len(value['patches']) == 5, 'memory_wine_patch_count')
     for index, row in enumerate(value['patches']):
         need(set(row) == {'file', 'sha256', 'license', 'sources'} and row['file'] == PATCH_NAMES[index]
              and type(row['license']) is str and row['license'], 'memory_wine_patch_shape')

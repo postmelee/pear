@@ -208,7 +208,11 @@ static int malformed_controls(struct fixture *fixture, const struct token *token
     if (refusal(fixture, "version_mismatch", value)) return -1;
     value = request(fixture, PEAR_FEX_QUERY); value.size = 127;
     if (refusal(fixture, "record_size_mismatch", value)) return -1;
+#if PEAR_FEX_MEMORY_VERSION >= 3
+    value = request(fixture, 16);
+#else
     value = request(fixture, 15);
+#endif
     if (refusal(fixture, "unknown_opcode", value)) return -1;
     value = request(fixture, PEAR_FEX_QUERY); value.flags = 1;
     if (refusal(fixture, "unknown_flags", value)) return -1;

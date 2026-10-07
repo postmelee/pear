@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear typed observation of the pinned FEX InitBasicInfo provider; preserve original callback and exact-address substitution in the closed finite initializer.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+      "postimage_bytes": 6570,
+      "postimage_sha256": "731269adedb45b84713c68e903d12428201dcd3fdb6b07e2bf13861c123f3a6e",
+      "preimage_sha256": "1a6b257c09b32b7640908820e02e1808153003a0bd0e4d1e9de98cd2f64b5df4"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "postimage_bytes": 23106,
+      "postimage_sha256": "482b2cdad7991e6a50f1be1d4d71311f79713c2389bd0295b32a2f02b15759f4",
+      "preimage_sha256": "59c36c73f5a370e6c21548f9b1afbd924d5a9933b447691464c5169900f0f711"
+    }
+  ],
+  "historical_strict_patch_sha256": "48e55f8fe4bf37ad81432f12b702ca8fed167ad6b83005c5eec9878fc5c1c42e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "checked-basic-information",
+  "native_runtime_execution": false,
+  "order": 30,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

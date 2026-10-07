@@ -16,9 +16,9 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         self.assertEqual(manifest['component'], 'fex-memory-source-supplements')
         self.assertIs(manifest['runtime_execution'], False)
         self.assertEqual(manifest['preserved_abi'], {
-            'fex_unixlib_services': 8, 'wire_record_bytes': 128, 'ntdll_unix_index': 10, 'wire_version': 2})
+            'fex_unixlib_services': 8, 'wire_record_bytes': 128, 'ntdll_unix_index': 10, 'wire_version': 3})
         self.assertTrue(all(v is False for v in manifest['source_gates'].values()))
-        self.assertEqual(len(manifest['patches']), 26)
+        self.assertEqual(len(manifest['patches']), 85)
         row = manifest['patches'][0]
         raw = (root / row['file']).read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(), row['sha256'])
@@ -53,7 +53,7 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         observed = current.selected_projection(baseline, graph)
         proposal = json.loads((graph / 'final-source-proposal.json').read_bytes())
         self.assertEqual(observed['source_files'], proposal['files'])
-        self.assertEqual(observed['layer_count'], 26)
+        self.assertEqual(observed['layer_count'], 85)
 
     def test_closed_additive_layer_reproduces_every_postimage(self):
         self.materialized()
@@ -76,7 +76,7 @@ class FEXMemorySourceClosureTests(unittest.TestCase):
         # selects ABI2 only after the reviewed layer-13 CMake derivative.
         self.assertIn(b'2957188b00a74a46196341aa1237cf1cf44b375e5253c8bd9457bfc0d6b2aee1', after)
         self.assertEqual(manifest['authoritative_header']['sha256'],
-                         'bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf')
+                         'a089b475fe6d6f2401977319eb4f0702e85c0753063f5748093131088f9f8b55')
 
 
 if __name__ == '__main__': unittest.main()

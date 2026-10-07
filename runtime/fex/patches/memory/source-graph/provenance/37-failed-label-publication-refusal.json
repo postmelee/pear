@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear sticky emitter-label failure also refuses prepared JIT publication before an owner write window. This source safety condition does not admit guest compilation or execution.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 63749,
+      "postimage_sha256": "9b8f5833da351ef55ff4ac56b50a084609c0f9e9e20d4c18ce1cf4af39c27bd0",
+      "preimage_sha256": "1a2bb54337732a79294b0e0f91fae6c77d0619b855d89bfb0d03c7ac29b82514"
+    }
+  ],
+  "historical_strict_patch_sha256": "315f6395664a2d00609404c396525c5c67ed4f91300c898e932b136e3f91079f",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "failed-label-publication-refusal",
+  "native_runtime_execution": false,
+  "order": 37,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

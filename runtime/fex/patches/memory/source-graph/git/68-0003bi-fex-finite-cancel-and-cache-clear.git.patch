@@ -1,0 +1,111 @@
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -372,13 +372,13 @@
+     std::memcpy(Write.Data()+256,&Tail,sizeof(Tail));
+     // Zero encodes the upstream compact pair (host delta 4, guest delta 1).
+     Write.Data()[256+sizeof(Tail)]=0;
+-    // Two original finite pending-thunk shapes exercise jump and call tickets.
+-    for (uint32_t I=0;I<2;++I) {
++    // Four original shapes cover jump/call erase and whole-map clear.
++    for (uint32_t I=0;I<4;++I) {
+       const size_t Marker=480+128*I,Thunk=512+128*I;
+       ARMEmitter::Emitter Caller{Write.Data()+Marker,12};
+-      if (I) Caller.adr(TMP1,0xc); else Caller.nop();
++      if (I&1) Caller.adr(TMP1,0xc); else Caller.nop();
+       Caller.nop();
+-      if (I) Caller.bl(6); else Caller.b(6);
++      if (I&1) Caller.bl(6); else Caller.b(6);
+       ARMEmitter::Emitter Stub{Write.Data()+Thunk,16};
+       Stub.b(2);Stub.br(TMP1);Stub.ldr(TMP1,8);Stub.blr(TMP1);
+       const FEXCore::Context::ExitFunctionLinkData Record{
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -773,7 +773,7 @@
+   if (!Thread || !C || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !C->Dispatcher ||
+       !Thread->CPUBackend || !Thread->LookupCache || !M::HasManagedActive(C->Dispatcher->GetPearSnapshot()))
+     return {PEAR_FEX_UNAVAILABLE,0,0};
+-  for (uint32_t I=0;I<2;++I) {
++  for (uint32_t I=0;I<4;++I) {
+     PearFiniteCheckpoint=64+I*16;
+     auto Window=Thread->CPUBackend->FindPearManagedWindow(Frame->State.InlineJITBlockHeader);
+     if (!Window || Thread->LookupCache->Shared!=Window->Owner->LookupCache.get()) return {PEAR_FEX_UNAVAILABLE,0,0};
+@@ -797,7 +797,7 @@
+     if (!Read) return Read.Outcome;
+     uint32_t Marker {};std::memcpy(&Marker,Caller.data(),4);
+     const auto Encoded=PearJITLinkLayout::Encode(Window->Begin,Layout,Window->Begin,Marker);
+-    if (!Encoded.Direct || Encoded.Call!=(I!=0) ||
++    if (!Encoded.Direct || Encoded.Call!=((I&1)!=0) ||
+         !PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller))
+       return {PEAR_FEX_INVALID_REQUEST,0,0};
+     // Reuse the genuine source map and node allocator. No guest cache or code
+@@ -814,6 +814,17 @@
+     PearFiniteCheckpoint=65+I*16;
+     const auto Revision=C->GetPearInvalidationRevision();
+     const auto Facts=Window->Owner->GetPearSnapshot();
++    // A real prepared ticket closes entry; cancellation releases it without
++    // touching managed bytes or leaving a stale strong source reference.
++    const auto Cancelled=PearJITLinks::Prepare(PearJITLinks::SourceDescriptor{Window->Owner,C,Facts,Layout,Encoded,
++      Thunk,Caller,Copy.GuestRIP,Window->Begin});
++    if (!Cancelled) return {PEAR_FEX_UNAVAILABLE,0,0};
++    M::Links::SealedEntry RefusedEntry;
++    const auto EntryResult=M::Links::TrySealEntry(Life,RefusedEntry);
++    if (EntryResult.Status!=PEAR_FEX_UNAVAILABLE || EntryResult.ErrorDomain || EntryResult.ErrorCode)
++      return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Outcome=PearJITLinks::CancelPrepared(*Cancelled);if (!Outcome) return Outcome;
++    if (M::Links::HasOutstanding(C)) return {PEAR_FEX_STALE_IDENTITY,0,0};
+     const auto Ticket=PearJITLinks::Prepare(PearJITLinks::SourceDescriptor{Window->Owner,C,Facts,Layout,Encoded,
+       Thunk,Caller,Copy.GuestRIP,Window->Begin});
+     if (!Ticket) return {PEAR_FEX_UNAVAILABLE,0,0};
+@@ -839,7 +850,13 @@
+     PearFiniteCheckpoint=67+I*16;
+     {
+       auto Lock=Thread->LookupCache->AcquireWriteLock();
+-      if (!Thread->LookupCache->Shared->Erase(Copy.GuestRIP,Lock)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++      if (I<2) {
++        if (!Thread->LookupCache->Shared->Erase(Copy.GuestRIP,Lock)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++      } else {
++        Thread->LookupCache->Shared->ClearCache(Lock);
++        if (!Thread->LookupCache->Shared->BlockList.empty() || !Thread->LookupCache->Shared->BlockLinks->empty())
++          return {PEAR_FEX_STALE_IDENTITY,0,0};
++      }
+     }
+     Outcome=PearJITLinks::FinishBatch(C,Thread);if (!Outcome) return Outcome;
+     Outcome=C->FinishPearDispatcherGate(DelinkGate);if (!Outcome) return Outcome;
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

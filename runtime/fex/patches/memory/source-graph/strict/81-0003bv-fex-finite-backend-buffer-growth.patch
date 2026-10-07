@@ -1,0 +1,121 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -961,6 +961,58 @@
+   }
+   return {PEAR_FEX_OK,0,0};
+ }
++FEXCore::Utils::PearFEXMemory::Result Arm64JITCore::ExecutePearFiniteBufferGrowth(
++    FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  auto Life=M::AcquireCurrentSourceLifetime();
++  auto* Thread=Life ? Life.ActualThread() : nullptr;
++  auto* C=Life ? const_cast<FEXCore::Context::ContextImpl*>(
++    static_cast<const FEXCore::Context::ContextImpl*>(Life.ActualContext())) : nullptr;
++  if (!Thread || !C || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !Thread->CPUBackend ||
++      !C->Dispatcher || Frame->SignalHandlerRefCounter || !M::HasManagedActive(C->Dispatcher->GetPearSnapshot()))
++    return {PEAR_FEX_UNAVAILABLE,0,0};
++  auto* JIT=static_cast<Arm64JITCore*>(Thread->CPUBackend.get());
++  FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
++  auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);if (!Outcome) return Outcome;
++  for (uint32_t I=0;I<4;++I) {
++    PearFiniteCheckpoint=0x200+I;
++    auto Held=JIT->CurrentCodeBuffer;
++    if (!Held || JIT->PearWriter || JIT->PearPendingTemp ||
++        Thread->LookupCache->Shared!=Held->LookupCache.get()) return {PEAR_FEX_UNAVAILABLE,0,0};
++    auto Facts=Held->GetPearSnapshot();
++    const auto Size=std::min<size_t>(Held->TotalAllocationSize()*2,128ULL*1024*1024);
++    std::weak_ptr<CodeBuffer> Weak=Held;
++    // Invoke actual upstream manager growth, backend replacement and lookup
++    // switching. The fixture supplies no guest address or signal context.
++    JIT->ClearCache();
++    if (!Life.Validate() || !JIT->CurrentCodeBuffer || JIT->CurrentCodeBuffer==Held ||
++        JIT->CurrentCodeBuffer!=JIT->SharedCodeBuffers.GetLatest() ||
++        JIT->CurrentCodeBuffer->TotalAllocationSize()!=Size || JIT->CurrentCodeBuffer->AllocatedSpaceUsed() ||
++        Thread->LookupCache->Shared!=JIT->CurrentCodeBuffer->LookupCache.get() || Weak.expired())
++      return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Outcome=M::Retirement::DrainAtNativeGate();if (!Outcome) return Outcome;
++    // A held old source generation must still own its native extent. Restore
++    // unchanged RX bytes for the first buffer; later virgin buffers use Abort.
++    const auto Before=Held->GetPearSnapshot();auto Transaction=Before;
++    {
++      M::WriteGuard Probe{Transaction,0,16};if (!Probe) return Probe.Status();
++      Outcome=Before.Token.expected_state==PEAR_FEX_PUBLISHED_RX ? Probe.Publish() : Probe.Abort();
++      if (!Outcome) return Outcome;
++      if (!Held->ComparePearUpdate(Before,Transaction))
++        return M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++    }
++    Facts=Held->GetPearSnapshot();
++    if (!I) Frame->State.InlineJITBlockHeader=0;
++    Held.reset();
++    if (!Weak.expired()) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Outcome=M::Retirement::DrainAtNativeGate();if (!Outcome) return Outcome;
++    const auto Stale=M::Retire(Facts);
++    if (Stale.Status!=PEAR_FEX_STALE_IDENTITY || Stale.ErrorDomain || Stale.ErrorCode)
++      return {PEAR_FEX_STALE_IDENTITY,0,0};
++  }
++  return C->FinishPearDispatcherGate(Gate);
++}
++
+ #endif
+ 
+ void Arm64JITCore::Op_NoOp(const IR::IROp_Header* IROp, IR::Ref Node) {}
+diff --git a/FEXCore/Source/Interface/Core/JIT/JITClass.h b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+--- a/FEXCore/Source/Interface/Core/JIT/JITClass.h
++++ b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+@@ -71,6 +71,7 @@
+   bool FinishPreparedPublication(CompiledCode&, bool SourceStillValid) override;
+   void DiscardPreparedPublication() override;
+   void CancelUnchangedPreparedPublication();
++  static FEXCore::Utils::PearFEXMemory::Result ExecutePearFiniteBufferGrowth(FEXCore::Core::CpuStateFrame*, uintptr_t);
+ #endif
+ 
+   void ClearRelocations() override {
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1688,6 +1688,8 @@
+   if (!*Output) return;
+   *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFinitePublication(Frame,ResumePC);
+   if (!*Output) return;
++  *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFiniteBufferGrowth(Frame,ResumePC);
++  if (!*Output) return;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
+   if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
+   if (*Output) PearFiniteCheckpoint=17;
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

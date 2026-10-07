@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear fails closed on a published owner-token mismatch and observes actual NX temporary-buffer and guard protections before the finite original-code publication control. No source proof is opened; existing capacities and ABI remain unchanged.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 76035,
+      "postimage_sha256": "1d7d865da81c240e42ec7f5e2cd235b42cdd7995b1f2431298f7066f084e392a",
+      "preimage_sha256": "ca6ab572cd7758eb6d30f97c61b992f9516ccaeb46179c89769c983fbc581865"
+    }
+  ],
+  "historical_strict_patch_sha256": "6a772e34842ba6b6000f360f166b3f5ca7f824f7c742919519ae33c780b1491b",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-publication-guard-observation",
+  "native_runtime_execution": false,
+  "order": 75,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

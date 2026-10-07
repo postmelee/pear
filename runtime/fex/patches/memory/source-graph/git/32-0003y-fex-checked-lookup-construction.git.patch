@@ -1,0 +1,324 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearDataMemory.h b/FEXCore/include/FEXCore/Utils/PearDataMemory.h
+new file mode 100644
+--- /dev/null
++++ b/FEXCore/include/FEXCore/Utils/PearDataMemory.h
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: MIT
++// Checked ordinary data memory; never executable memory or an owner-wire extension.
++#pragma once
++#include <FEXCore/Utils/PearFEXMemory.h>
++#include <FEXCore/fextl/memory.h>
++namespace FEXCore::Allocator {
++FEXCore::Utils::PearFEXMemory::Result ReservePearData(size_t Size, bool Commit, void*& Address);
++FEXCore::Utils::PearFEXMemory::Result ReleasePearData(void* Address);
++// A checked outer allocation does not qualify allocations inside T's constructor.
++template<class T, class... Args>
++fextl::unique_ptr<T> TryMakePearObject(Args&&... Arguments) {
++  void* Storage=aligned_alloc(alignof(T),sizeof(T));
++  if (!Storage) return {};
++  return fextl::unique_ptr<T> {::new (Storage) T(std::forward<Args>(Arguments)...)};
++}
++} // namespace FEXCore::Allocator
+diff --git a/Source/Windows/Common/WinAPI/Alloc.cpp b/Source/Windows/Common/WinAPI/Alloc.cpp
+--- a/Source/Windows/Common/WinAPI/Alloc.cpp
++++ b/Source/Windows/Common/WinAPI/Alloc.cpp
+@@ -12,6 +12,9 @@
+ #include <windows.h>
+ #include <processenv.h>
+ #include "../Priv.h"
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ 
+ #ifndef _M_ARM64EC
+ namespace {
+@@ -51,7 +54,8 @@
+ } // namespace FEX::Windows::PearCRT
+ #endif
+ 
+-DLLEXPORT_FUNC(void*, VirtualAlloc, (void* lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)) {
++namespace {
++NTSTATUS AllocateVirtualChecked(void*& lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect) {
+   NTSTATUS Status;
+ #ifndef _M_ARM64EC
+   if (!lpAddress) {
+@@ -69,12 +73,34 @@
+ #ifndef _M_ARM64EC
+   }
+ #endif
+-  if (Status) {
+-    SetLastError(RtlNtStatusToDosError(Status));
+-    return nullptr;
+-  }
++  return Status;
++}
++} // namespace
++DLLEXPORT_FUNC(void*, VirtualAlloc, (void* lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)) {
++  const auto Status=AllocateVirtualChecked(lpAddress,dwSize,flAllocationType,flProtect);
++  if (Status) { SetLastError(RtlNtStatusToDosError(Status)); return nullptr; }
+   return lpAddress;
+ }
++#ifdef PEAR_FEX_MEMORY_OWNER
++namespace FEXCore::Allocator {
++FEXCore::Utils::PearFEXMemory::Result ReservePearData(size_t Size,bool Commit,void*& Address) {
++  Address=nullptr;
++  if (!Size) return {PEAR_FEX_INVALID_REQUEST,0,0};
++  void* Candidate=nullptr;
++  const auto Status=AllocateVirtualChecked(Candidate,Size,MEM_RESERVE|MEM_TOP_DOWN|(Commit ? MEM_COMMIT : 0),PAGE_READWRITE);
++  if (Status) return {PEAR_FEX_UNAVAILABLE,PEAR_FEX_ERROR_NTSTATUS,static_cast<int32_t>(Status)};
++  Address=Candidate;
++  return {PEAR_FEX_OK,0,0};
++}
++FEXCore::Utils::PearFEXMemory::Result ReleasePearData(void* Address) {
++  if (!Address) return {PEAR_FEX_INVALID_REQUEST,0,0};
++  SIZE_T Size=0;
++  const auto Status=NtFreeVirtualMemory(NtCurrentProcess(),&Address,&Size,MEM_RELEASE);
++  if (Status) return {PEAR_FEX_UNAVAILABLE,PEAR_FEX_ERROR_NTSTATUS,static_cast<int32_t>(Status)};
++  return {PEAR_FEX_OK,0,0};
++}
++} // namespace FEXCore::Allocator
++#endif
+ 
+ DLLEXPORT_FUNC(SIZE_T, VirtualQuery, (LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength)) {
+   SIZE_T WrittenSize;
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.h b/FEXCore/Source/Interface/Core/LookupCache.h
+--- a/FEXCore/Source/Interface/Core/LookupCache.h
++++ b/FEXCore/Source/Interface/Core/LookupCache.h
+@@ -198,6 +198,10 @@
+ 
+   LookupCache(FEXCore::Context::ContextImpl* CTX);
+   ~LookupCache();
++#ifdef PEAR_FEX_MEMORY_OWNER
++  static fextl::unique_ptr<LookupCache> CreatePear(FEXCore::Context::ContextImpl*,FEXCore::Utils::PearFEXMemory::Result&);
++  FEXCore::Utils::PearFEXMemory::Result ReleasePearBacking();
++#endif
+ 
+   // Swaps out the underlying GuestToHostMap and clears all associated caches.
+   // This interface requires the previous CodeBuffer to be provided despite not using it. This ensures the shared write lock is still valid.
+@@ -512,7 +516,10 @@
+   // Maps from a page index to all blocks in the page that have at some point been fetched into L1/L2
+   fextl::map<uint64_t, fextl::robin_set<uint64_t>> CachedCodePages;
+ 
+-  uintptr_t PagePointer;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result PearCreation {};
++#endif
++  uintptr_t PagePointer {};
+   uintptr_t PageMemory;
+   uintptr_t L1Pointer;
+   uintptr_t L1PointerMask;
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.cpp b/FEXCore/Source/Interface/Core/LookupCache.cpp
+--- a/FEXCore/Source/Interface/Core/LookupCache.cpp
++++ b/FEXCore/Source/Interface/Core/LookupCache.cpp
+@@ -13,6 +13,9 @@
+ 
+ #include "Interface/Context/Context.h"
+ #include "Interface/Core/LookupCache.h"
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ 
+ namespace FEXCore {
+ GuestToHostMap::GuestToHostMap()
+@@ -44,8 +47,15 @@
+   // Allocate a region of memory that we can use to back our block pointers
+   // We need one pointer per page of virtual memory
+   // At 64GB of virtual memory this will allocate 128MB of virtual memory space
++#ifdef PEAR_FEX_MEMORY_OWNER
++  void* Backing=nullptr;
++  PearCreation=FEXCore::Allocator::ReservePearData(TotalCacheSize,false,Backing);
++  if (!PearCreation) return;
++  PagePointer=reinterpret_cast<uintptr_t>(Backing);
++#else
+   PagePointer = reinterpret_cast<uintptr_t>(FEXCore::Allocator::VirtualAlloc(TotalCacheSize, false, false));
+   PEAR_FEX_REQUIRE(PagePointer != -1ULL, "Failed to allocate PagePointer");
++#endif
+ 
+   // Disable THP on the Lookup cache.
+   FEXCore::Allocator::VirtualTHPControl(reinterpret_cast<const void*>(PagePointer), TotalCacheSize, FEXCore::Allocator::THPControl::Disable);
+@@ -76,9 +86,30 @@
+   }
+ }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<LookupCache> LookupCache::CreatePear(FEXCore::Context::ContextImpl* CTX,FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  auto Actual=FEXCore::Allocator::TryMakePearObject<LookupCache>(CTX);
++  if (!Actual) { Outcome={PEAR_FEX_UNAVAILABLE,0,0}; return {}; }
++  Outcome=Actual->PearCreation;
++  return Outcome ? std::move(Actual) : fextl::unique_ptr<LookupCache> {};
++}
++FEXCore::Utils::PearFEXMemory::Result LookupCache::ReleasePearBacking() {
++  if (!PagePointer) return {PEAR_FEX_OK,0,0};
++  const auto Result=FEXCore::Allocator::ReleasePearData(reinterpret_cast<void*>(PagePointer));
++  if (!Result) return Result; // Keep the exact still-owned pointer for quarantine.
++  ctx->SyscallHandler->UnmarkOvercommitRange(PagePointer,TotalCacheSize);
++  PagePointer=0;
++  return Result;
++}
++#endif
+ LookupCache::~LookupCache() {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Native cleanup owns release. A failed constructor never published backing.
++  PEAR_FEX_REQUIRE(!PagePointer,"Lookup backing must be released before destruction");
++#else
+   FEXCore::Allocator::VirtualFree(reinterpret_cast<void*>(PagePointer), TotalCacheSize);
+   ctx->SyscallHandler->UnmarkOvercommitRange(PagePointer, TotalCacheSize);
++#endif
+ 
+   // No need to free BlockLinks map.
+   // These will get freed when their memory allocators are deallocated.
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -72,6 +72,9 @@
+ #include <chrono>
+ #include <condition_variable>
+ #include <fcntl.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ #include <functional>
+ #include <mutex>
+ #include <queue>
+@@ -608,6 +611,10 @@
+   // No source locks or lifetime readers remain. Detach every actual backend
+   // and lookup holder before the native retirement drain/unregister.
+   Thread->CPUBackend.ResetAtPearNativeGate();
++  if (Thread->LookupCache) {
++    Outcome=Thread->LookupCache->ReleasePearBacking();
++    if (!Outcome) return false;
++  }
+   Thread->LookupCache.ResetAtPearNativeGate();
+   Outcome=Memory::DrainPendingRetirements(); if (!Outcome) return false;
+   Outcome=Memory::UnregisterExecutor(); if (!Outcome) return false;
+@@ -638,7 +645,12 @@
+   // TODO: This doesn't make sense when the parent thread doesn't outlive its children
+ }
+ 
+-void ContextImpl::InitializeCompiler(FEXCore::Core::InternalThreadState* Thread
++#ifdef PEAR_FEX_MEMORY_OWNER
++FEXCore::Utils::PearFEXMemory::Result
++#else
++void
++#endif
++ContextImpl::InitializeCompiler(FEXCore::Core::InternalThreadState* Thread
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   , fextl::shared_ptr<FEXCore::CPU::CodeBuffer> InitialBuffer
+ #endif
+@@ -647,11 +659,25 @@
+   auto PearSourceHold=RequirePearSourceThread(this,Thread);
+ #endif
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  namespace Memory=FEXCore::Utils::PearFEXMemory;
++  Thread->OpDispatcher=FEXCore::Allocator::TryMakePearObject<FEXCore::IR::OpDispatchBuilder>(this,Thread);
++  if (!Thread->OpDispatcher) return {PEAR_FEX_UNAVAILABLE,0,0};
++  Thread->OpDispatcher->SetMultiblock(Config.Multiblock);
++  Memory::Result Outcome;
++  Thread->LookupCache=FEXCore::LookupCache::CreatePear(this,Outcome);
++  if (!Thread->LookupCache) return Outcome;
++  Thread->FrontendDecoder=FEXCore::Allocator::TryMakePearObject<FEXCore::Frontend::Decoder>(Thread);
++  if (!Thread->FrontendDecoder) return {PEAR_FEX_UNAVAILABLE,0,0};
++  Thread->PassManager=FEXCore::Allocator::TryMakePearObject<FEXCore::IR::PassManager>(this);
++  if (!Thread->PassManager) return {PEAR_FEX_UNAVAILABLE,0,0};
++#else
+   Thread->OpDispatcher = fextl::make_unique<FEXCore::IR::OpDispatchBuilder>(this, Thread);
+   Thread->OpDispatcher->SetMultiblock(Config.Multiblock);
+   Thread->LookupCache = fextl::make_unique<FEXCore::LookupCache>(this);
+   Thread->FrontendDecoder = fextl::make_unique<FEXCore::Frontend::Decoder>(Thread);
+   Thread->PassManager = fextl::make_unique<FEXCore::IR::PassManager>(this);
++#endif
+ 
+   Thread->CurrentFrame->State.L1Pointer = Thread->LookupCache->GetL1Pointer();
+   Thread->CurrentFrame->State.L1Mask = Thread->LookupCache->GetScaledL1PointerMask();
+@@ -663,6 +689,7 @@
+   // Create CPU backend
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   Thread->CPUBackend = FEXCore::CPU::CreatePearArm64JITCore(this, Thread, std::move(InitialBuffer));
++  if (!Thread->CPUBackend) return {PEAR_FEX_UNAVAILABLE,0,0};
+ #else
+   Thread->CPUBackend = FEXCore::CPU::CreateArm64JITCore(this, Thread);
+ #endif
+@@ -670,6 +697,9 @@
+   // We finalize *after* the CPU backend is initialized, as the CPU backend will
+   // provide necessary register information to the register allocation pass.
+   Thread->PassManager->Finalize();
++#ifdef PEAR_FEX_MEMORY_OWNER
++  return {PEAR_FEX_OK,0,0};
++#endif
+ }
+ 
+ FEXCore::Core::InternalThreadState* ContextImpl::CreateThread(const FEXCore::Core::CPUState* NewThreadState) {
+@@ -825,7 +855,34 @@
+     auto* Failed = FailPearThreadConstruction(*Slot, Thread, Outcome, Cleanup, CleanupAttempted);
+     Guard.Released = true; return Failed;
+   }
+-  InitializeCompiler(Thread, std::move(InitialBuffer));
++  Outcome=InitializeCompiler(Thread,std::move(InitialBuffer));
++  if (!Outcome) {
++    // The compiler can now be partially constructed. Retain the entire actual
++    // Thread/Context tree on refusal; never use the pre-compiler deletion path.
++    Memory::Result Released;
++    const bool Prepared=PreparePearThreadCleanup(Thread,Released);
++    if (CleanupAttempted) *CleanupAttempted=true;
++    if (Cleanup) *Cleanup=Released;
++    if (Prepared) {
++      const auto Sealed=Memory::SourceLifecycle::SealThreadDelete(Thread);
++      if (Sealed && Memory::SourceBindingCanRelease(Thread)) {
++        std::destroy_at(Thread);
++        const auto Deleted=Memory::SourceLifecycle::DeletedThread(Thread);
++        if (Deleted) {
++          FEXCore::Allocator::aligned_free(Thread);
++          FinishPearConstructionSlot(*Slot,nullptr,false);
++        } else {
++          FinishPearConstructionSlot(*Slot,Thread,false,true);
++          if (Cleanup) *Cleanup=Deleted;
++        }
++      } else {
++        FinishPearConstructionSlot(*Slot,Thread,false);
++        if (Cleanup) *Cleanup=Sealed ? Memory::Result{PEAR_FEX_UNAVAILABLE,0,0} : Sealed;
++      }
++    } else FinishPearConstructionSlot(*Slot,Thread,false);
++    Memory::Retirement::PoisonSourceAdmission(Outcome);
++    Guard.Released=true;return nullptr;
++  }
+   Thread->CurrentFrame->State.DeferredSignalRefCount.Store(0);
+   if (Config.BlockJITNaming() || Config.GlobalJITNaming() || Config.LibraryJITNaming())
+     Thread->SymbolBuffer = JITSymbols::AllocateBuffer();
+diff --git a/FEXCore/Source/Interface/Context/Context.h b/FEXCore/Source/Interface/Context/Context.h
+--- a/FEXCore/Source/Interface/Context/Context.h
++++ b/FEXCore/Source/Interface/Context/Context.h
+@@ -573,7 +573,12 @@
+    *
+    * InitializeCompiler is called inside of CreateThread, so you likely don't need this
+    */
+-  void InitializeCompiler(FEXCore::Core::InternalThreadState* Thread
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result
++#else
++  void
++#endif
++  InitializeCompiler(FEXCore::Core::InternalThreadState* Thread
+ #ifdef PEAR_FEX_MEMORY_OWNER
+     , fextl::shared_ptr<FEXCore::CPU::CodeBuffer> InitialBuffer
+ #endif
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -1,4 +1,7 @@
+ // SPDX-License-Identifier: MIT
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ /*
+ $info$
+ glossary: Splatter ~ a code generator backend that concatenates configurable macros instead of doing isel
+@@ -1521,7 +1524,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ fextl::unique_ptr<CPUBackend> CreatePearArm64JITCore(FEXCore::Context::ContextImpl* CTX,
+     FEXCore::Core::InternalThreadState* Thread, fextl::shared_ptr<CodeBuffer> InitialBuffer) {
+-  return fextl::make_unique<Arm64JITCore>(CTX, Thread, std::move(InitialBuffer));
++  return FEXCore::Allocator::TryMakePearObject<Arm64JITCore>(CTX, Thread, std::move(InitialBuffer));
+ }
+ #endif
+ 

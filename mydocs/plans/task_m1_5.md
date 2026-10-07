@@ -108,7 +108,7 @@ Modified only as needed after reading current contents:
 
 Task artifacts: `mydocs/plans/task_m1_5.md`, later `task_m1_5_impl.md`, `mydocs/working/task_m1_5_stage{N}.md` and sanitized observation sidecars, `mydocs/report/task_m1_5_report.md`, and active-date boards. Create scoped rules together with real implementation, not empty placeholder directories.
 
-## Tentative Stages
+## Stage Structure (October 7 execution-order update)
 
 1. **Stage 1 — Source and target-build contract:** enabled pinned sources/terms, compiler/static-runtime capability checks, target/module/table/TEB inventory and isolated materialization. Record missing prerequisites and actual configuration; no translated execution.
 2. **Stage 2 — Darwin services and module construction:** native UnixLib/PE module builds, truthful service errors, Darwin CPU feature and per-thread ordering integration, structure/ownership and bounded capability checks under actual permission gates.
@@ -116,6 +116,8 @@ Task artifacts: `mydocs/plans/task_m1_5.md`, later `task_m1_5_impl.md`, `mydocs/
 4. **Stage 4 — ARM64EC loader and first x64 dispatch:** implement source-matched hybrid/native/guest mapping and emulator selection; execute deterministic original x64 PE/API programs through real FEX, with actual native identities, entry/exit and cleanup evidence. Keep missing/wrong translator and native-only refusals explicit.
 5. **Stage 5 — Bounded lifecycle/context and conditional WoW64:** translated thread/TLS/nested callbacks, memory-change/invalidation, suspend/context and allowed exception paths; required i386 route or explicit helper-support gap. Reuse appropriate original finite fixtures; no new native fatal-route test or broad CPU correctness claim.
 6. **Stage 6 — Fresh reconstruction and handoff:** rebuild the final selected Wine/FEX configuration, preserve native baseline regressions, independently verify source/build/signature/suite bindings and documented reproduction; hand off to #6/#10 with unsupported and unperformed cases visible.
+
+The requester approved integrated development of the remaining Stage 3 memory/EC work and Stage 4 first-dispatch path on October 7, 2026. Their outcomes remain separate and incomplete until demonstrated. The current implementation plan supersedes the earlier strictly separated execution order.
 
 Every stage is verified, reported and committed before explicit continuation. Stage 3/4 memory/loader coupling can require an amended reviewed design; the detailed plan will define executable artifacts, commands and commit messages after this task plan is approved.
 

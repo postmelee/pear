@@ -369,6 +369,908 @@
   "metadata_budget_qualified": false,
   "object_loaded": false,
   "observed_on": "2026-10-04",
+  "october5_actual_buffer_reference_retirement": {
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "guest_execution": false,
+    "held_reference_native_admission": true,
+    "passed": true,
+    "references": {
+      ".build/task5/stage3-buffer-lifetime-final-binding1/control.json": "9c027665146cc8ad2a106a97c89084752f4b99ef7e39c6cd41bb28a6798ecfcb",
+      ".build/task5/stage3-buffer-lifetime-native-run1/control.json": "5d3b219a7276452191b77969acf888b818524c53588f64841599d4d9f3a5f164"
+    },
+    "scope": "actual source CodeBuffer factory, final shared-reference destruction and deferred native retirement",
+    "sizes_MiB": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "source_layer": 73,
+    "source_manifest_sha256": "881ccc7b13a6e584f4282a2ff366a9dd7cdaf182d54ceec92d2ff14b9f654211",
+    "stage3_complete": false,
+    "stale_token_refused_after_retirement_and_later_reserve": true
+  },
+  "october5_actual_cancel_and_cache_clear": {
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "checked_cleanup": true,
+    "current_authorization_replayed_before_after": true,
+    "four_link_cases": true,
+    "guest_execution": false,
+    "passed": true,
+    "references": {
+      ".build/task5/stage3-links-final-binding2/control.json": "951746e35643322c5b1def6bd63c254eeda78cd103d27d8c34cd534d62ecee56",
+      ".build/task5/stage3-links-native-run2/control.json": "223d57cbb62a360b9dc6b1abf35b50b429e1daf80fdff3edc56a11cd51cc28f5"
+    },
+    "scope": "actual prepared-ticket cancellation, entry refusal and populated source map clear",
+    "source_layer": 69,
+    "source_manifest_sha256": "af9f2598afa629e376a9bd824bebb84b19c634042b065bcac981785f11c9d7a8",
+    "stage3_complete": false
+  },
+  "october5_actual_empty_initialization": {
+    "CRT_callbacks_attempted_and_returned": 8,
+    "Context_Core_Thread_created": true,
+    "actual_FEX_initialization": true,
+    "before_after_current_runtime_replay_passed": true,
+    "checked_Thread_Context_allocator_cleanup": true,
+    "guest_execution": false,
+    "loader_exit": 0,
+    "not_total_runtime_memory": true,
+    "owned_cleanup_complete": true,
+    "references": {
+      "stage3-empty-final-binding1": "f20f7876cfc937067fb87afec4e4829bf20def1c4fce293443883ae45468a6d2",
+      "stage3-empty-native-run1": "3cf019045878d7133aa9072265ca2eb3690c82353b11ead622f72cf513541a27",
+      "stage3-owner-wine11-run1": "d17e3a64ca45eea71c44f6d5cfd167148270f6909860082170436a790884d33a"
+    },
+    "reviewed_added_metadata_bound_bytes": 262144,
+    "scope": "ordinary_ARM64_empty_source_initializer",
+    "source_layer_count": 50,
+    "source_transfer_controls": "not_yet_executed",
+    "stage3_complete": false,
+    "unrelated_sentinel_survived": true,
+    "wine11_full_owner_suite_passed": true
+  },
+  "october5_actual_owned_jit_patch": {
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "checkpoint_hex": "11",
+    "full_source_edge_coverage": false,
+    "guest_execution": false,
+    "initial_failures_preserved": "Source58 and Source60 returned STALE_IDENTITY because the fixture expected compact byte zero to decode as (0,0); upstream decodes (4,1). Source61 corrects the fixture and tests both sides of that boundary. Original decoder unchanged.",
+    "passed": true,
+    "references": {
+      ".build/task5/stage3-snapshot-final-binding3/control.json": "baead87c14585fd78593fff9f05c82a0984e2a41ffdf21f0ec7cb2ae755a4c98",
+      ".build/task5/stage3-snapshot-native-run1/control.json": "7debffe15864bfdac1b297cd4572306e1407be8f2d71ab9dd6346e303a49f918",
+      ".build/task5/stage3-snapshot-native-run2/control.json": "28ca8a5db10cf38084a195eb287526488ca00b4bf70be3899ddc9469dfd884f0",
+      ".build/task5/stage3-snapshot-native-run3/control.json": "f861e484104ab0d6abbe5127c76cae8943822878e42fb3d2d7da7bdfe06b0b5c"
+    },
+    "scope": "actual ordinary ARM64 finite JIT metadata snapshot, half-barrier patch, source resume and checked cleanup",
+    "source_layer": 61,
+    "source_manifest_sha256": "33577bf8c6791a81e03d0885c90f12b7a85445fcda933dc652573751f7e990fb",
+    "stage3_complete": false
+  },
+  "october5_actual_reserved_batch": {
+    "PE_mutable_backing_bytes": 90112,
+    "actual_sequence": [
+      "reserved batch begin",
+      "entry refusal while batch open",
+      "original abort and finish",
+      "owned JIT metadata snapshot and patch",
+      "atomic source resume",
+      "held-lifetime deletion refusal",
+      "complete checked teardown"
+    ],
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "fixed_reference_lifetime": "WriteGuard and its Allocation live in the same stable Registry BatchWrite; no live move or extra heap allocation",
+    "guest_execution": false,
+    "passed": true,
+    "references": {
+      ".build/task5/stage3-batch-final-binding1/control.json": "9e9f9e1c7e05a96a87506b9ff6f121b8d63917e75737f4d04262f313dccccaf8",
+      ".build/task5/stage3-batch-native-run1/control.json": "dffffcf2e82ce1183d6cc05309094950225d08534625a1531fba8ded928007ec",
+      ".build/task5/stage3-source-tests65/control.json": "243768b7e891441ed2dd266da7b06cb298ab7f09f2b6a457e4bea80a79b63f60",
+      ".build/task5/stage3-success-prefix-retirement1/control.json": "ad317c53ea8bc13151e7fd058ab14e3bd3b27f7adefc1a6b0cba95143bcb0b15",
+      ".build/task5/stage3-success-prefix-retirement2/control.json": "b188a2dec573d3a92a9701ce469f0987a9055aacdb1f0aca72734e3cdec7aa0e"
+    },
+    "selected_PE_payload_bytes": 77914,
+    "source_layer": 65,
+    "source_manifest_sha256": "fcafccbbd4aa675d2b4d24e402f5c7129fdf82bc44136afc5989e6fb2c8c5aa3",
+    "stage3_complete": false,
+    "ticket_bearing_link_delink_qualified": false
+  },
+  "october5_actual_source_link_cycle": {
+    "actual_sequence": [
+      "source-minted retained descriptor",
+      "direct jump patch and ticket commit",
+      "actual source map Erase and queued delink",
+      "fresh retained RX branch restoration",
+      "direct call patch/commit/Erase/restoration",
+      "terminal lifetime refusal and complete checked cleanup"
+    ],
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "concrete_vtable_slots": 98,
+    "guest_execution": false,
+    "passed": true,
+    "references": {
+      ".build/task5/stage3-links-final-binding1/control.json": "57a098bb4f2798a8646642e76847ef51228265146da54e8880dfbb2acbd67efa",
+      ".build/task5/stage3-links-native-run1/control.json": "414a4f198976c5dca0517dbb144d87fd462085f36d48f067687b1b6c411166fe"
+    },
+    "remaining": "Prepared-ticket cancellation, populated whole-map clear, additional mandatory writers/readers/retirement and source schedules remain unqualified.",
+    "scope": "actual ordinary ARM64 source direct jump/call link and delink",
+    "source_layer": 67,
+    "source_manifest_sha256": "18c9c08a64044ced3abf2a531fbf940a64d93fd07f9a2395edb904d0cc9e729d",
+    "stage3_complete": false
+  },
+  "october5_actual_source_transfer": {
+    "JIT_snapshot_patch_execution": false,
+    "actual_generated_ARM64_entry_and_resume": true,
+    "current_runtime_before_after_replay_passed": true,
+    "guest_execution": false,
+    "new_snapshot_patch_candidate": "source57_closed_compile_review_in_progress",
+    "original_pin_poll_and_atomic_resume": true,
+    "references": {
+      "stage3-transfer-final-binding2": "3fb5db6c029f60ddb0585cdc18d16cc1aeb563cb246386e3ed44a050935a7200",
+      "stage3-transfer-native-run1": "dbc3b8ca9e74230526d17aa9f8e936dc5fe373ab01e1085bdfebfe344aedab01",
+      "stage3-transfer-native-run2": "19b4c7f7b060ff6742da3bb490035f61ddcd903a4638bc7b60542190d1710451"
+    },
+    "retirement_refusal_while_original_pin_retained": true,
+    "scope": "ordinary_ARM64_real_Context_Thread_Dispatcher_tail_transfer",
+    "source53_first_run": "failed_INVALID_REQUEST_original_owner_leaf_offset_allowlist",
+    "source55_corrected_run": "passed_existing_offsets_0_and_4096",
+    "source_managed_resume_word_copy": true,
+    "stage3_complete": false,
+    "typed_cleanup_and_loader_exit_zero": true
+  },
+  "october5_actual_terminal_lifetime": {
+    "checked_cleanup_after_release": true,
+    "current_runtime_replay_before_after": true,
+    "guest_execution": false,
+    "new_admission_closed": true,
+    "passed": true,
+    "references": {
+      ".build/task5/stage3-lifetime-final-binding1/control.json": "194ea25ba1267088fd452dc6de86d6ff2f5d8a83413a24a846c70156d8ca504a",
+      ".build/task5/stage3-lifetime-native-run1/control.json": "fae1bda3402eaac30980132f93150a5b0fac1f38c72282901d078de9c9097ae0",
+      ".build/task5/stage3-source-tests63/control.json": "243768b7e891441ed2dd266da7b06cb298ab7f09f2b6a457e4bea80a79b63f60"
+    },
+    "retained_lifetime_blocks_cleanup": true,
+    "source_layer": 63,
+    "stage3_complete": false
+  },
+  "october5_actual_unaligned_patch_matrix": {
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "cases": 40,
+    "delivered_exception": false,
+    "families": [
+      "LDAR",
+      "LDAPR",
+      "STLR",
+      "LDAPUR",
+      "STLUR"
+    ],
+    "guest_execution": false,
+    "passed": true,
+    "policies": [
+      "HalfBarrier",
+      "NonAtomic"
+    ],
+    "references": {
+      ".build/task5/stage3-patch-matrix-final-binding1/control.json": "24d1014250cd6f1117fbd369af5f00765ffd54acfa9731fa676108c3c8c8745c",
+      ".build/task5/stage3-patch-matrix-native-run1/control.json": "6722e39cadbe952ae031090d070d049b66c3b850d0e03ab0cb6f2b65a50afcbc",
+      ".build/task5/stage3-source-tests71/control.json": "243768b7e891441ed2dd266da7b06cb298ab7f09f2b6a457e4bea80a79b63f60"
+    },
+    "scope": "direct finite source patch preparation and owned write/resume; no delivered exception",
+    "source_layer": 71,
+    "source_manifest_sha256": "19ea05af51361ec21d60609025de0ec00ecaeebaf666282d62a32b6b6e6272f7",
+    "stage3_complete": false,
+    "widths_bits": [
+      8,
+      16,
+      32,
+      64
+    ]
+  },
+  "october5_approved_metadata_observation": {
+    "FEX_initialization": false,
+    "actual_observation": {
+      "FEX_initialization": false,
+      "additional_leaves": 0,
+      "available_view_slots": 1024,
+      "baseline_leaves": 1,
+      "baseline_mapping_bytes": 1050935296,
+      "cleanup_status": 0,
+      "fixed_native_bytes": 108564,
+      "leaf_backing_bytes": 1048576,
+      "leaf_coverage_bytes": 4294967296,
+      "mapping_bytes": 1588985856,
+      "native_error_code": 0,
+      "native_error_domain": 0,
+      "page_bytes": 4096,
+      "passed": true,
+      "record_kind": "pear_metadata_observation",
+      "status": 0,
+      "view_block_bytes": 1048576,
+      "view_record_bytes": 80,
+      "wire_version": 3
+    },
+    "approved": true,
+    "budget_limit_bytes": 262144,
+    "latest_native_compile": "queued_on_shared_native_lock",
+    "native_component_control_sha256": "b84249a79c491c358946367243e8e0d95161fb9b70199d7b798f868edcab3aab",
+    "native_component_tests": "passed",
+    "native_observation_performed": true,
+    "native_observation_result_sha256": "ed4039f663a6333b00ed8da342cd14aa8a561af2110a5593709210ee87db9cf3",
+    "next_required": "validate changed native/PE units, close complete budget, same-process metadata admission, genuine empty initialization/cleanup, mandatory source handoff/retirement and affected Wine controls",
+    "opcode": 15,
+    "portable_source_pair_checks": {
+      "failures": 0,
+      "run": 165,
+      "skipped": 1
+    },
+    "portable_wine_builder_runner_checks": {
+      "failures": 0,
+      "run": 64,
+      "skipped": 0
+    },
+    "prelude_corrections": [
+      "Source44 reuses the existing Windows thread ID and validates genuine absence of PE static TLS; the previous linked image had TLS data but no TLS directory.",
+      "Source45 prepares the owner through checked idle registration, read-only observation and checked unregister before source construction; primary and cleanup outcomes stay distinct.",
+      "Source46 matches the environment key set by the existing native owner launcher; independent UnixLib PID comparison remains required."
+    ],
+    "record_bytes": 128,
+    "source43_build_failure_predecessor": {
+      "output": "stage3-fex-modules11",
+      "reason": "CMake exact wire-header pin still selected ABI2; Source43 pairs it to the authoritative ABI3 header without weakening the check"
+    },
+    "source43_module_build": "passed",
+    "source43_module_build_sha256": "f59663de7a8557668b13ef03ce46aa7586c6f137d35c52334634a70e59e094c7",
+    "source_graph_sha256": "74266e72f07a589325b3bb92f3428b8bdc08f8a51249048ba6ab78260371ee16",
+    "source_layer_count": 46,
+    "source_projection_passed": true,
+    "stage3_complete": false,
+    "storage_request": "requester supplied space; later observed approximately 37 GiB free",
+    "whole_budget_qualified": false,
+    "wine_build_sha256": "4e6f3122859644f4a05e120c531bf5fe319be234037953cee1afaecc0bf398e7",
+    "wine_rebuild": "passed_build9",
+    "wire_version": 3
+  },
+  "october5_approved_metadata_observation_initial_checkpoint": {
+    "FEX_initialization": false,
+    "approved": true,
+    "budget_limit_bytes": 262144,
+    "native_component_tests": "unperformed_shared_lock",
+    "native_observation_performed": false,
+    "next_required": "actual candidate observation, full finite budget, checked empty initialization/cleanup and mandatory source handoff/retirement controls",
+    "opcode": 15,
+    "portable_source_pair_checks": {
+      "failures": 0,
+      "run": 165,
+      "skipped": 1
+    },
+    "portable_wine_builder_runner_checks": {
+      "failures": 0,
+      "run": 64,
+      "skipped": 0
+    },
+    "record_bytes": 128,
+    "source_graph_sha256": "078344d9093ed2d57a3f082016d0c03a81239420de28f08f792e0b02415c9081",
+    "source_layer_count": 42,
+    "source_projection_passed": true,
+    "stage3_complete": false,
+    "storage_request": "12 GiB free requested; latest observation approximately 3.3 GiB",
+    "wine_rebuild": "unperformed_storage_and_shared_lock",
+    "wire_version": 3
+  },
+  "october5_duplicate_source_cleanup": {
+    "donor_must_be_preserved": true,
+    "physical_reclaim_measured": false,
+    "removed_allocated_file_bytes": 1083027456,
+    "removed_files": 125069,
+    "removed_payload_bytes": 719370244,
+    "restoration_exercised": false,
+    "restore_index_sha256": "2e5152f5dfa3f394fa1593fe8dc97cc3d28727177743fa3f6b9c20be0b2c8e04",
+    "retained_donor": "Source40 complete materialization (source27)",
+    "unique_failures_removed": false
+  },
+  "october5_finite_configuration_and_linked_placement": {
+    "FEX_initialization": false,
+    "cleanup": {
+      "all_failed_prefixes_and_unique_records_retained": true,
+      "allocated_bytes_in_removed_files": 3444756480,
+      "completed_synthetic_prefixes_removed": 3,
+      "reconstruction_tested": false,
+      "volume_delta_attribution": false
+    },
+    "configuration": {
+      "actual_ordinary_run_passed": true,
+      "actual_policy_settings": 14,
+      "allocator_failure_guard_deliberately_triggered": false,
+      "arena_bytes": 4096,
+      "cleanup_complete": true,
+      "compiled_storage_payload_bytes": 4202,
+      "consumed_storage_reuse_refused": true,
+      "current_signature_and_profile_checks_before_after": true,
+      "custom_crt_execution": false,
+      "duplicate_init_and_shutdown_refused": true,
+      "incomplete_seal_refused": true,
+      "ordinary_and_arm64ec_compilation_passed": true,
+      "original_configuration_path_observed": true,
+      "original_owner_assessment": "memory_wine_case_failed",
+      "sentinel_survived": true,
+      "separate_component_assessment": true
+    },
+    "evidence": [
+      {
+        "artifact": "stage3-fex-source18/control.json",
+        "scope": "Source31 genuine Git application and independent byte replay",
+        "sha256": "64918083efd3f5d6158d96262e5ec11256ff1fc0f5e1bd3fe5fadcf76defbfbb"
+      },
+      {
+        "artifact": "stage3-config-compile1/control.json",
+        "scope": "Actual Config.cpp in ordinary ARM64 and ARM64EC; actual ordinary fixture",
+        "sha256": "62d4cc1e6a2258574e7efea110c23a921cf119dd02e76139bf920003bec985e9"
+      },
+      {
+        "artifact": "stage3-config-build1/control.json",
+        "scope": "Actual selected configuration, Darwin policy and rpmalloc; ordinary MinGW CRT",
+        "sha256": "db890ed8089fee1519b249db20e6479986e2ed910d4cfc43bcab831a2b32a1bc"
+      },
+      {
+        "artifact": "stage3-config-run1/result.json",
+        "scope": "Actual ordinary ARM64 configuration lifetime, not FEX initialization",
+        "sha256": "34a68464e75a7acfa43c705b7f2e5fc58239041d45e81dbe0a1bed29f6265cf3"
+      },
+      {
+        "artifact": "stage3-fex-modules7/build.json",
+        "scope": "Current Source31 native, ARM64EC and ordinary PE modules built and independently verified; not loaded",
+        "sha256": "1cb6ecb02fb6673d767ce5a5f9e914231038a9ec12e662e347c64cc5a90b3885"
+      },
+      {
+        "artifact": "stage3-init-compile5/control.json",
+        "scope": "Current closed initializer and CheckedCRT compilation",
+        "sha256": "3aee38dc6e73903e9ab126b97a6e84cb452b440715216232f3548e13d6408c94"
+      },
+      {
+        "artifact": "stage3-init-link2/control.json",
+        "scope": "Current closed initializer DLL link only",
+        "sha256": "61a84bb0e27da34f115cdc87040a184a45e531fe9bb156c955750208f76a1891"
+      },
+      {
+        "artifact": "stage3-empty-link6/control.json",
+        "scope": "Current closed initializer main image link only",
+        "sha256": "69ed4861f281dcefbe0fb91365c921075973992395eaeb3b073624bb6763ff87"
+      },
+      {
+        "artifact": "stage3-linked-metadata2/control.json",
+        "scope": "Selected writable PE section placement; not total resident backing",
+        "sha256": "8ebfb300cfddec8b6ecb46cca24d12f1df46c0ec59c39c2e3f8da0ed84b3198b"
+      },
+      {
+        "artifact": "storage-cleanup-config-20261005/control.json",
+        "scope": "Two completed synthetic prefixes removed; failed prefixes retained",
+        "sha256": "6538a174279f869b663ca31aa5e6c248550e5d34375554cd6fab1a3d9dd721a6"
+      },
+      {
+        "artifact": "storage-cleanup-config-complete-20261005/control.json",
+        "scope": "Completed configuration prefix removed; records and binaries retained",
+        "sha256": "86cabcf739b5b3bd4cd94f51f60362041233ece6764f2ef16a14aebbeaf47c35"
+      }
+    ],
+    "game_execution": false,
+    "github_write_performed": false,
+    "linked_metadata": {
+      "configuration_actual_writable_payload_bytes": 4432,
+      "constructor_slot_in_actual_readonly_PE_section": true,
+      "covered_bytes": 77824,
+      "fixture_actual_writable_payload_bytes": 4468,
+      "global_constructor_slot_bytes": 8,
+      "physical_resident_peak_measured": false,
+      "selected_PE_payload_bytes": 69158,
+      "unique_4KiB_pages": 19,
+      "whole_metadata_qualified": false
+    },
+    "module_build": {
+      "artifacts": 32,
+      "commands": 9,
+      "qualification": false,
+      "regular_output_payload_bytes": 359766231
+    },
+    "necessary_checks": {
+      "repeat_full_regression_performed": false,
+      "source_graph_controls_failed": 0,
+      "source_graph_controls_passed": 44,
+      "source_graph_controls_skipped": 0
+    },
+    "no_repeat_needed_without_changes": [
+      "successful finite configuration sequence",
+      "full module build for the unchanged Source31 graph"
+    ],
+    "projection_independent_replay_passed": true,
+    "remaining_conditions": [
+      "Prove aggregate added owner metadata including native and PE placement, allocator backing and simultaneous temporary peak under 262144 bytes.",
+      "Close selected nested allocation failures in actual Context/Thread construction; the successful bounded Config lifetime does not cover these.",
+      "Use a derivative runtime containing the current native UnixLib with actual current signatures and profile checks before genuine empty initialization.",
+      "Run actual empty Context/Core/Thread initialization and checked cleanup only after admission, then mandatory retained-source handoff/retirement controls and affected Wine regressions."
+    ],
+    "retained_nonpassing_attempts": [
+      "Shared lock refused before configuration run output creation; no overlapping run launched.",
+      "Metadata reader import failed before output creation.",
+      "First linked-metadata scan could not map the constructor input section as writable; original producer retained. Corrected scan located the exact pointer in read-only PE output."
+    ],
+    "source_failure_audit": [
+      {
+        "boundary": "context_constructor_cpu_vector",
+        "source_path": "FEXCore/Source/Interface/Core/CPUID.cpp",
+        "source_sha256": "917b8a07a670cd4e5f18f113ba885af0810583ec5d1bebee2592489adff1370d"
+      },
+      {
+        "boundary": "compiler_and_partial_cleanup",
+        "source_path": "FEXCore/Source/Interface/Core/Core.cpp",
+        "source_sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e"
+      },
+      {
+        "boundary": "shared_control_block",
+        "source_path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+        "source_sha256": "9026a6da593bccbfc3cc568a047abd02d22008fd6c262a65459959c02ca937b3"
+      },
+      {
+        "boundary": "guest_map_and_lookup_constructor",
+        "source_path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+        "source_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35"
+      },
+      {
+        "boundary": "pass_objects_and_containers",
+        "source_path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+        "source_sha256": "192561361e2923da90c5bb3a6a82da4cfc60d020ce1443e8c2500bbe3dfd0ac1"
+      },
+      {
+        "boundary": "jit_factory",
+        "source_path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+        "source_sha256": "6c964dab024d98d44a2e5d2096d1ca41ed28f34c7da58138f0a6fb48ec08715c"
+      }
+    ],
+    "source_graph_sha256": "b58f197c42216894a64600dc940c6be413d03618b2f61710da87306725c38dc3",
+    "source_layers": 31,
+    "source_manifest_sha256": "00231e901e1f3497e2ddc3f2f27bbdd2c939cdb8a074c330a19c1d5cf16fcb1a",
+    "stage3_complete": false
+  },
+  "october5_finite_construction_source40": {
+    "FEX_initialization": false,
+    "build_passed": true,
+    "build_receipt_sha256": "06e5c4bf727780e70f6936749630c0d04d0d87908ab6168f4f00cf5bd25bf66f",
+    "constructor_audit_sha256": "ec3eeddae088a5578a10592c8fdbbc146abff8bbc328214135919d1625d42427",
+    "finite_object_storage_struct_bytes": 12288,
+    "full_metadata_qualified": false,
+    "graph_sha256": "156bd9ba6ad9654d5bd88ee3c3164c747346d064fa9d30018b18930c9b74a531",
+    "initialization_program_link_passed": true,
+    "linked_PE_placement_is_not_RSS": true,
+    "linked_PE_static_payload_bytes": 81455,
+    "linked_PE_unique_4k_page_bytes": 98304,
+    "native_component_controls": {
+      "empty_object_storage": "fbd659ed7101734811ac80ff0c2dc8ca92897861042628e7c928950663d563cb",
+      "finite_construction": "5494872ab574f5347ff35e42fd052740db6df84b9276260435a6342cccac4d6b"
+    },
+    "preserved_failed_builds": [
+      "Source38 missing selected allocator definition",
+      "Source39 allocator include-policy refusal after successful compilation/link"
+    ],
+    "scope": "source_build_link_and_native_components_only",
+    "source_manifest_sha256": "ced8b2100bd14b2d42bbe068af6012101bac6e7659f6d86779d0ab317d717afe",
+    "stage3_complete": false
+  },
+  "october5_local_only_execution_review": {
+    "admission_blockers": [
+      "complete added metadata/backing/padding and finite peak remain unqualified under 262144-byte ceiling",
+      "Config::Initialize uses unchecked make_unique placement construction and std-container allocation; typed allocation-failure closure remains incomplete",
+      "source-bound initialization/deletion and finite retained-thread handoff/retirement observations remain unperformed"
+    ],
+    "allocation_review": {
+      "conditional_block_class_delta_bytes": 1232,
+      "finding": "Actual finite Construct calls Config::Initialize before Context creation. make_unique does placement construction without a null check, and ConfigLayers.emplace uses the selected allocator. A checked Context factory does not establish typed failure propagation for this prelude.",
+      "physical_incremental_backing_bytes": "unknown; neither the block delta nor four independent-page upper estimates establish the actual finite peak",
+      "rpmalloc_small_page_bytes": 65536,
+      "scope": "source observation; no allocation failure was provoked",
+      "source_path": "FEXCore/Source/Interface/Config/Config.cpp:254 -> FEXCore/include/FEXCore/fextl/memory.h:33 and allocator.h:21"
+    },
+    "changed_paths": 54,
+    "closed_entry_observation": {
+      "before_after_signature_and_profile_checks": true,
+      "cleanup_complete": true,
+      "engine_initialized": false,
+      "loader_exit": 1,
+      "original_owner_verifier": "memory_wine_case_failed",
+      "phase": "Proof",
+      "report_size_bytes": 268,
+      "sentinel_survived": true,
+      "separate_closed_gate_observed": true
+    },
+    "compile_stack_observations": {
+      "limitations": [
+        "PE subset selection is not a whole call graph",
+        "native compilation recorded dependencies but is not a full sealed tool/SDK replay",
+        "summing function frames is not runtime stack peak"
+      ],
+      "native_owner_all_function_frame_sum": 832,
+      "native_view_named_pear_fex_frame_sum": 1952,
+      "pe_selected_function_frame_sum": 27584,
+      "whole_synchronous_or_concurrent_peak_qualified": false
+    },
+    "debug_section_removal": {
+      "defined_native_section_payloads_rvas_flags_unchanged": true,
+      "new_image_bytes": 4063232,
+      "old_image_bytes": 42827776,
+      "original_debug_binary_and_map_retained": true,
+      "text_file_padding": "zero changed to 0xcc only after VirtualSize",
+      "wine_image_cap_bytes": 38993920
+    },
+    "evidence": [
+      {
+        "artifact": "stage3-fex-modules6/build.json",
+        "scope": "Source28 full module build; not relabelled as Source30",
+        "sha256": "096b43074b62e05aeda6e9511e5f5d72813a4a455955bef23746b967700a7a83"
+      },
+      {
+        "artifact": "stage3-fex-source17/control.json",
+        "scope": "Source30 genuine application and independent replay",
+        "sha256": "dc2149a8c03fcbb7a05a7f9da60161e441c986ccc82c0f293ac3675dac98d2c5"
+      },
+      {
+        "artifact": "stage3-init-compile4/control.json",
+        "scope": "Source30 CheckedCRT and ordinary/EC WinAPI compile",
+        "sha256": "8349e00a07a11dc057f1065a14649601dbb622e82f7a43f3f59f0c5df953469d"
+      },
+      {
+        "artifact": "stage3-empty-link5/control.json",
+        "scope": "closed Source30 initializer main-image link; no load",
+        "sha256": "2c324c22a682768ae196449b8db83a1bc423b644c96e24f204a47e31e6111d31"
+      },
+      {
+        "artifact": "stage3-basic-info-control3/control.json",
+        "scope": "nine source-body controls with substituted provider",
+        "sha256": "6361151ebeed0e379996414b46af6c857ba7888d1840ede8a52bee49be8c5cc7"
+      },
+      {
+        "artifact": "stage3-owner-stack1/control.json",
+        "scope": "eight PE translation units; not whole-call-chain bound",
+        "sha256": "19213a724016a73aa1a9deff1bd157dfda0bc3825765bd5748bb4650383fb514"
+      },
+      {
+        "artifact": "stage3-native-stack1/control.json",
+        "scope": "two native units; not whole-call-chain bound",
+        "sha256": "ce33a4d26bf817db97ed35aaac8fd879a544c9e380e74362b00d7278478ccd06"
+      },
+      {
+        "artifact": "stage3-empty-closed-run2/result.json",
+        "scope": "Source29 closed proof-gate entry only",
+        "sha256": "52ca26a32fd770b7172696ef8fe5fccbe399597f0aae3595e3dfe407bd9c2b91"
+      }
+    ],
+    "fex_initialization": false,
+    "game_execution": false,
+    "github_write_performed": false,
+    "linked_callback_inventory": {
+      "FEX": [
+        "InitEnv",
+        "InitBasicInfo"
+      ],
+      "GNU": [
+        "JIT.cpp",
+        "SpinWaitLock.cpp",
+        "Config.cpp",
+        "Allocator.cpp",
+        "IO.cpp",
+        "libc++ chrono.cpp (_GLOBAL__I_000100)"
+      ],
+      "XI_XC_XL_nonnull_callbacks": 0,
+      "callback_execution_performed": false,
+      "derived_from": "Source29 actual PE pointer tables and exact link-map addresses"
+    },
+    "necessary_checks": {
+      "basic_information_provider_cases": {
+        "passed": 9,
+        "provider": "substituted",
+        "real_windows_provider_execution": false
+      },
+      "diff_check_passed": true,
+      "governance_passed": true,
+      "source_and_projection_tests": {
+        "failed": 0,
+        "passed": 44,
+        "skipped": 0
+      }
+    },
+    "new_files": 22,
+    "next_required": "Close finite allocation and aggregate memory proofs before enabling the immutable source selections; then execute actual empty initialization/cleanup and required handoff/lifecycle controls.",
+    "projection_independent_replay_passed": true,
+    "requester_direction": "Continue Stage3 without GitHub publication; do not relax the approved pre-execution gates.",
+    "retained_failures": [
+      "Source26 whole build: RtlUnicodeToMultiByteSize const declaration mismatch",
+      "first CheckedCRT compile: declaration and const-qualification errors",
+      "initial custom entry compile: wrong process-parameter output member",
+      "first closed entry: debug sections exceeded existing PE image cap",
+      "first strip inspection compared file padding as executable bytes",
+      "first source-body control omitted SDK path",
+      "first Source30 link duplicated old/new WinAPI object",
+      "archive inspection initially missed COFF NUL names and duplicate Alloc.cpp.obj members"
+    ],
+    "source_graph_sha256": "332a161983cc9f6f49109fa34560fbe3e6ae73c49b27766228171285a1ccfce4",
+    "source_layers": 30,
+    "source_manifest_sha256": "5ba164dacb62c83849a4402d0bb84108438e059098d6eca185f636924bfb0dea",
+    "stage3_complete": false
+  },
+  "october5_native_prerequisites_and_bounded_metadata_progress": {
+    "FEX_initialization": false,
+    "actual_prerequisites": {
+      "TLS_attribution_correction": "Original template: FEX DummyHandlers 8 bytes plus libc++abi 16 bytes; zero-payload boundaries retain 24 bytes. No allocator saving inferred.",
+      "current_signing_before_and_after": true,
+      "engine_initialization": false,
+      "loader_exit_zero": true,
+      "owned_cleanup_complete": true,
+      "source47_TLS24": true,
+      "source47_TLS32": true,
+      "source48_TLS24": true,
+      "unrelated_sentinel_survived": true
+    },
+    "artifacts": {
+      "stage3-bitmap-selection-run1": {
+        "path": ".build/task5/stage3-bitmap-selection-run1/control.json",
+        "sha256": "c0f0211e5db7fbf8c07f8a005b2de308ea5b070c40c52f6bd17a04ab9417100c"
+      },
+      "stage3-callback-inspection1": {
+        "path": ".build/task5/stage3-callback-inspection1/control.json",
+        "sha256": "01229c59d41ee402a2ef7ee62f64192065255663f3be4c0161d089bffdc6d7f3"
+      },
+      "stage3-empty-link10": {
+        "path": ".build/task5/stage3-empty-link10/control.json",
+        "sha256": "2050fabd8c214bb4936d80a979920fbb3a0292e1f33ce7f5d788eeef21b8eb05"
+      },
+      "stage3-fex-source35": {
+        "path": ".build/task5/stage3-fex-source35/control.json",
+        "sha256": "5a14bb58fdffe1e0c992c08af66f60c7b52673f33e569c9910367d0bcff9faf3"
+      },
+      "stage3-init-compile11": {
+        "path": ".build/task5/stage3-init-compile11/control.json",
+        "sha256": "10ce4368e6631a54836c23f29cb1913453cf739136853ef62483c24947401327"
+      },
+      "stage3-linked-metadata6": {
+        "path": ".build/task5/stage3-linked-metadata6/control.json",
+        "sha256": "344312a6c4c338e8ba5e8ad82fc1b8aa0ecea238807a194745e62b2aad0554e7"
+      },
+      "stage3-native-stack3": {
+        "path": ".build/task5/stage3-native-stack3/control.json",
+        "sha256": "802a00ef1b6c98f6e8ad1a92b148ca2e034c71532a18535c2db2703ef3897a09"
+      },
+      "stage3-native-stack4": {
+        "path": ".build/task5/stage3-native-stack4/control.json",
+        "sha256": "d922cc87df533cf53092f3963f79bf6e010f9d84420c816a9f71aaafffc10b4e"
+      },
+      "stage3-native-stack5": {
+        "path": ".build/task5/stage3-native-stack5/control.json",
+        "sha256": "26ff15aaa9cb791754e10c8d8dd32092d1dd06f22cac8701915a89ce6caae930"
+      },
+      "stage3-owner-wine10-run2": {
+        "path": ".build/task5/stage3-owner-wine10-run2/run.json",
+        "sha256": "da88654984b6a4fd54943bd8d1d9fa95b284a17b928414fdf3ca0ddb3d666396"
+      },
+      "stage3-phase-stack-candidate3": {
+        "path": ".build/task5/stage3-phase-stack-candidate3/control.json",
+        "sha256": "49801732be26ddd5fc2e76f464561bd2913d9b80b9e7b0b1169f6c1ff78e6a29"
+      },
+      "stage3-prerequisite-run1": {
+        "path": ".build/task5/stage3-prerequisite-run1/result.json",
+        "sha256": "8813ba9101e2b14640ca513929477adea87e674b1ae65fc79e12ea788278652f"
+      },
+      "stage3-prerequisite-run2": {
+        "path": ".build/task5/stage3-prerequisite-run2/result.json",
+        "sha256": "9bec5c7f8a3e60d14aa75915715200ec57791d2533345dd644c4c45ef3910db0"
+      },
+      "stage3-prerequisite-run3": {
+        "path": ".build/task5/stage3-prerequisite-run3/result.json",
+        "sha256": "fae7cdc3b049fcae468364babf637316cc1e908bba80c46980614fcff8e79a1e"
+      },
+      "stage3-stack4": {
+        "path": ".build/task5/stage3-stack4/control.json",
+        "sha256": "094ddaa85f13d77f0f01f294a8ecf6905a9e760618275cd7a574394d64ca5028"
+      },
+      "stage3-stack5": {
+        "path": ".build/task5/stage3-stack5/control.json",
+        "sha256": "aa1398b5a68ba8208d3c7dfcf08980803bfdc3263bf0826b145d4f59152016e1"
+      },
+      "stage3-view-capacity-control1": {
+        "path": ".build/task5/stage3-view-capacity-control1/control.json",
+        "sha256": "b7f83a78ef6967beb91d6e15e66be8fbd29179f905360798fb2577c1a2b39e0b"
+      },
+      "stage3-wine-build10": {
+        "path": ".build/task5/stage3-wine-build10/build.json",
+        "sha256": "6a98ac01962cc05b74c9d291b220139c3f46bd2e7a605127918bd6ab71d5637c"
+      },
+      "stage3-wine-build11": {
+        "path": ".build/task5/stage3-wine-build11/build.json",
+        "sha256": "16e0c48694d51a1c378de823e54797a0169f44bff1a52cbd21182496b02d7110"
+      },
+      "stage3-wine-pe-stack1": {
+        "path": ".build/task5/stage3-wine-pe-stack1/control.json",
+        "sha256": "a01dabc76f47729d897245e052916282f039e46d47400e5f96cc9e6bb2b85138"
+      }
+    },
+    "candidate_phase_stack": {
+      "construction_and_cleanup_bytes": 39568,
+      "dispatcher_emission_bytes": 39472,
+      "prerequisite_and_configuration_bytes": 34832,
+      "qualification": false,
+      "reason": "Arithmetic candidate only; complete indirect-call/provider and final-input attribution still required."
+    },
+    "github_publication": false,
+    "remaining": [
+      "Complete compiled/provider/lifetime metadata admission and bind the final current image.",
+      "Genuine empty Context/Core/Thread construction and checked cleanup.",
+      "Mandatory source handoff/retirement controls and affected Wine regressions.",
+      "Completed stage report, verification and local stage commit."
+    ],
+    "retained_failures": [
+      "runtime9 copy-command refusal before execution",
+      "first owner-suite preparer inspected a nonexistent base control receipt before any runtime execution",
+      "source projection first refused relative CLI input paths before creating output"
+    ],
+    "scope": "local_stage3_progress_not_completion",
+    "source48_callback_bound": {
+      "PE_metadata_4KiB_pages": 22,
+      "PE_metadata_covered_bytes": 90112,
+      "PE_metadata_payload_bytes": 77742,
+      "new_bound": 16,
+      "observed_original_callbacks": 8,
+      "old_bound": 256,
+      "order_and_targets_preserved": true,
+      "prerequisite_frame_bytes_after": 400,
+      "prerequisite_frame_bytes_before": 2304,
+      "source_layers": 48,
+      "source_pair_tests": {
+        "failed": 0,
+        "ran": 132,
+        "skipped": 1
+      },
+      "source_replay_commands": 96
+    },
+    "source49_budget_preflight": "Being prepared behind all twelve false source selections; not evidence of admitted initialization.",
+    "stage3_complete": false,
+    "wine10_diagnostic_selection": {
+      "allocations": 103,
+      "disabled_reserve_and_retire_passed": true,
+      "full_owner_suite_and_final_replay_passed": true,
+      "malformed_selection_refused_before_allocation": true,
+      "owned_code_calls": 73,
+      "owner_calls": 964,
+      "publications": 40,
+      "retirements": 103,
+      "source48_prerequisite_run_uses_disabled_selection": true
+    },
+    "wine11_view_admission": {
+      "affected_builder_runner_tests": {
+        "failed": 0,
+        "ran": 64,
+        "skipped": 0
+      },
+      "build_and_verifier_passed": true,
+      "extracted_counter_controls_passed": true,
+      "maximum_split_spare_demand": 2,
+      "native_execution": "pending current signed candidate",
+      "new_view_block_for_this_split_refused": true,
+      "same_mutex_spare_check_before_owned_split": true
+    }
+  },
+  "october5_scoped_prefix_cleanup": {
+    "interrupted_compile": {
+      "exit_code": -9,
+      "observation": "Compiler terminated during severe disk pressure (124 MiB free); the signal cause is not independently established. Separate compile3 passed after scoped cleanup.",
+      "path": ".build/task5/stage3-batch-compile2/control.json"
+    },
+    "removed_completed_prefixes": 9,
+    "scope": "unauthenticated generated fixture prefixes only",
+    "selected_allocated_bytes": 10334269440,
+    "unique_failures_and_logs_preserved": true
+  },
+  "october5_source47_prerequisite_preparation": {
+    "FEX_initialization": false,
+    "PE_TLS_raw_template_bytes": 32,
+    "PE_TLS_template_origin": "24 unchanged static libc++/libc++abi bytes plus pointer-aligned data boundary; actual provider backing remains unqualified",
+    "PE_selected_writable_bytes": 94208,
+    "PE_selected_writable_pages": 23,
+    "all_twelve_initializer_proofs_false": true,
+    "artifacts": [
+      {
+        "artifact": "stage3-init-compile7/control.json",
+        "passed": true,
+        "sha256": "606f80c6dacb66290aa046c9be208fd410c48b37cd12c5f5847a4f1fa6ae385c"
+      },
+      {
+        "artifact": "stage3-init-compile8/control.json",
+        "passed": true,
+        "sha256": "a19327ef14390d143cf9197570fe3f8f0eaa811b5c16dbddd08e862b8fc8bf13"
+      },
+      {
+        "artifact": "stage3-init-compile9/control.json",
+        "passed": true,
+        "sha256": "5322a901e4e6bd25456ee71edc4e2d4b60439473efe0278ddc818eb9fbfa96d7"
+      },
+      {
+        "artifact": "stage3-owner-preparation-control1/control.json",
+        "passed": true,
+        "sha256": "6f06a2297e3a06d647e2ef26e442a5a2195d6c075c2b92fd9ef99c1a5a9d7ae2"
+      },
+      {
+        "artifact": "stage3-object-backing-control3/control.json",
+        "passed": true,
+        "sha256": "52d0f6f574c470c4a20bff0c182ca25cac1285002e66c6a267e29aaef81f8467"
+      },
+      {
+        "artifact": "stage3-empty-link8/control.json",
+        "passed": true,
+        "sha256": "e317ade234346f5ac07b40434a68f277a5974e3d31b20f15a169ee999cd4a40d"
+      },
+      {
+        "artifact": "stage3-empty-link9/control.json",
+        "passed": true,
+        "sha256": "3bef872490604e2258dda67514c49334d957798c6cbdb8744a7b23b86bcce8d2"
+      },
+      {
+        "artifact": "stage3-linked-metadata5/control.json",
+        "passed": true,
+        "sha256": "f97ed7fbbf326a177284041263234476d8889e1e2da442bc9fb00905d41d3342"
+      },
+      {
+        "artifact": "stage3-stack2/control.json",
+        "passed": true,
+        "sha256": "fc6c6a7467de6d1bdf35781f5bd7b5d2049a042561274d88b98c88693ed8d5e8"
+      },
+      {
+        "artifact": "stage3-prerequisite-link1/control.json",
+        "passed": true,
+        "sha256": "671be3e7a8945d213ced9909828a3d5667448317f0ebe61d9a4904b8ebd7d2c9"
+      },
+      {
+        "artifact": "stage3-prerequisite-stripped1/control.json",
+        "passed": true,
+        "sha256": "1bca194ce81b473ea50194c02f5244113403e91ed2f81856defa5a3942f94968"
+      },
+      {
+        "artifact": "stage3-fex-source34/control.json",
+        "passed": true,
+        "sha256": "a6a16be08bb40440ac5454fe0a1c659b6af1aa057e101c2ac3a06ee095f47e9b"
+      },
+      {
+        "artifact": "stage3-stack3/control.json",
+        "passed": true,
+        "sha256": "5a1def151b3c938aa840f1b3a67d832cc3dce13c2106920f8ffe0b555697bcf2"
+      },
+      {
+        "artifact": "stage3-native-stack2/control.json",
+        "passed": true,
+        "sha256": "05cf9d42504eec4cfab944379e1d84afb07dabe1be70ff0450855fecde574e82"
+      }
+    ],
+    "current_native_wait": "Runtime9 signing preparation waits for the shared native lock; Task7 was not interrupted.",
+    "direct_branch_observation": {
+      "dispatcher_frame_bytes": 5104,
+      "known_nested_frames_sum_bytes": 12864,
+      "nested_atan_frame_bytes": 7760,
+      "scope": "two frames only; not a complete call-chain maximum"
+    },
+    "github_write_performed": false,
+    "graph_sha256": "c8a7a202031dfdfe6e23b2ffff3b2af1fe5d28811b1b5263b78a5046ac77ae2c",
+    "native_stack_code_match_units": 2,
+    "prerequisite_execution_queue": "Wait for verified runtime9 preparation, acquire shared native lock, then current admission and supervised single run; no engine initialization.",
+    "prerequisite_native_execution": false,
+    "prior_native_stack1_limitation": "The earlier O2 compile is not a bound for the selected Wine build. Exact build9 command replay matched current executable code sections; retain the earlier compile as historical evidence only.",
+    "scope": "local_source_compile_link_and_portable_logic",
+    "scope_refinement": "Only isolated single-process compilation/link inspection and portable substituted-provider controls proceeded outside the heavy-build/signing/runtime lock.",
+    "source_layers": 47,
+    "source_manifest_sha256": "c14b82cf5e64061f3bd93523fdefc826b7c4a46d525a67eb41550e491d075521",
+    "source_pair_tests": {
+      "failed": 0,
+      "ran": 132,
+      "skipped": 1
+    },
+    "stack_code_match_units": 15,
+    "stage3_complete": false,
+    "whole_metadata_qualified": false,
+    "whole_stack_peak_qualified": false
+  },
   "pmr_buffer_request_scope": "one empty map; source calculation, not observed allocation",
   "pmr_compiles": [
     {
@@ -908,5 +1810,125 @@
     "whole call-stack peak",
     "Wine view/vprot allocation attribution",
     "PMR physical release and failure retention"
-  ]
+  ],
+  "october5_prepared_publication_failure": {
+    "source": 76,
+    "passed": false,
+    "case_sha256": "fd830ece9047bd8950671b920b706531031d6bbedd880be4d9a03464f03b317f",
+    "loader_exit": 1,
+    "native_process_cleanup": true,
+    "sentinel_survived": true,
+    "source_object_cleanup": false,
+    "runtime_authorization_replay": true,
+    "checkpoint_low_byte": "80",
+    "diagnostic_truncation_corrected": true,
+    "source78_execution": "unperformed",
+    "source79_pre_copy_cancellation": "implemented_unverified",
+    "stage3_complete": false
+  },
+  "october5_actual_prepared_publication": {
+    "source": 80,
+    "passed": true,
+    "case_sha256": "91214a6701c3329adcf51955eb25f39431464e67565a121df5f37a232e2ca121",
+    "scope": "real private NX emitter, unchanged-byte cancellation, token update, retry, relocated literal/RET and source cleanup",
+    "source_object_cleanup": true,
+    "native_process_cleanup": true,
+    "runtime_authorization_replay": true,
+    "sentinel_survived": true,
+    "temporary_emission_bytes": 8192,
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "concrete_vtables": 10,
+    "function_slots": 102,
+    "guest_execution": false,
+    "stage3_complete": false
+  },
+  "october5_actual_backend_growth": {
+    "source": 83,
+    "passed": true,
+    "case_sha256": "a33339577129133403a5042bbe68059945e3b3490ab2effe653b7cfadccc8951",
+    "new_extents_MiB": [
+      32,
+      64,
+      128,
+      128
+    ],
+    "scope": "actual shared manager, backend ClearCache and lookup replacement; held old reference and native retirement",
+    "source_object_cleanup": true,
+    "process_cleanup": true,
+    "authorization_replay": true,
+    "sentinel_survived": true,
+    "frame_bound_bytes": 36848,
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "guest_cache_population": "unperformed",
+    "stage3_complete": false
+  },
+  "october5_actual_context_range_invalidation": {
+    "source": 85,
+    "passed": true,
+    "case_sha256": "1ea8e36051c5bd7ff870baacc7119e7bc270d03caaf9b2618eb010b198ace979",
+    "scope": "actual Context range invalidation, original map erase and queued jump/call delink; numeric fixture guest keys only",
+    "source_object_cleanup": true,
+    "process_cleanup": true,
+    "authorization_replay": true,
+    "sentinel_survived": true,
+    "checkpoint": "00000021",
+    "aggregate_added_metadata_bound_bytes": 262144,
+    "guest_execution": false,
+    "stage3_complete": false
+  },
+  "october5_source85_portable_checks": {
+    "tests": 469,
+    "skips": 1,
+    "failures": 0,
+    "errors": 0,
+    "passed": true,
+    "scope": "affected memory and Stage 3 portable suites",
+    "log_sha256": "d9c3656d3826077d37390afdd96b59f2e039e9f35548468604e9fda659dbab8f",
+    "producer_result_serialization": "failed; separate completed-log assessment preserved; no rerun",
+    "stage3_complete": false
+  },
+  "october5_snapshot_inventory_correction": {
+    "previous_bound": 512,
+    "current_bound": 1024,
+    "aggregate_bytes_bound": 134217728,
+    "per_file_bytes_bound": 8388608,
+    "reason": "85 layers retain three provenance inputs and four operation logs each, plus fixed inputs",
+    "previous_build": "refused_before_compilation",
+    "pair_tests": 128,
+    "pair_skips": 1,
+    "pair_failures": 0,
+    "controls": [
+      "retain all logs above former cap",
+      "refuse excessive inventory",
+      "refuse traversal"
+    ],
+    "stage3_complete": false
+  },
+  "october5_source85_final_full_build": {
+    "passed": true,
+    "independent_replay_passed": true,
+    "source": 85,
+    "build_sha256": "9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304",
+    "commands": 9,
+    "artifacts": 32,
+    "input_snapshots": 642,
+    "scope": "native host and ARM64EC/ARM64 PE module compilation, linkage and byte verification",
+    "module_loading": false,
+    "arm64ec_role_qualified": false,
+    "stage3_complete": false
+  },
+  "october5_stage3_acceptance_checkpoint": {
+    "stage3_complete": false,
+    "github_write": false,
+    "stage4_started": false,
+    "ordinary_arm64_source_lifecycle": "passed in the finite Source85 fixture",
+    "full_selected_module_build": "passed with independent replay",
+    "ec_bitmap_diagnostic": "38 successful controls; not EC owner lifecycle qualification",
+    "ec_owner_lifecycle": "unqualified: current front door and role callback reject EC, backend ec_register is NULL",
+    "ec_metadata_budget": "unqualified; ordinary source budget does not include retained EC bitmap backing",
+    "remaining_source_edge_acceptance": "requires final role-specific review after EC integration",
+    "proposal": "Stage 3 Amendment D in the existing implementation plan; pending requester review",
+    "governance": "22 documents and 172 local targets passed",
+    "diff_check": "passed"
+  }
 }

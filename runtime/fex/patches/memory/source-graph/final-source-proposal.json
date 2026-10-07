@@ -1,7 +1,7 @@
 {
   "baseline_manifest_sha256": "d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff",
   "compilation_performed": false,
-  "derivatives_manifest_sha256": "7a51a4252653926f284033ad478c907c7c178ee0d4fa04c3cf14b1d11206d673",
+  "derivatives_manifest_sha256": "a3765a567b41a6e186bd7fbcf82f86413065f0e720bd688346af18059e928d39",
   "files": [
     {
       "mode": 420,
@@ -180,8 +180,8 @@
     {
       "mode": 420,
       "path": "CodeEmitter/CodeEmitter/Emitter.h",
-      "sha256": "39391a6be5d4e6335c4f8af313eb1baf2bc6f1bc7d9dedc719a43e693026964a",
-      "size_bytes": 29041
+      "sha256": "42795591aeda8ba80b6f9eafbddd5393b0e2f9c571c94acc2ca1b2f0c7fe5f13",
+      "size_bytes": 29785
     },
     {
       "mode": 420,
@@ -21210,8 +21210,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/CMakeLists.txt",
-      "sha256": "7797766c0ca8a1d298a7bdc0ab23667170118feabe891b5d7d13dd6841fb77f4",
-      "size_bytes": 11427
+      "sha256": "dfcd2cb0d1406122ae875ac1d0e48bcee35658ae4ca8b2e14a28ca2ed824ce8c",
+      "size_bytes": 11494
     },
     {
       "mode": 420,
@@ -21252,8 +21252,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Config/Config.cpp",
-      "sha256": "f0075e95475bf4e969b353f1941db8f34868dedbdf841ebb6da90f6d5f08f251",
-      "size_bytes": 20402
+      "sha256": "3dfaf99dbdc0165ab8c6dead751bf5c0ba17a7dc566fe1663b7e3684d588acf4",
+      "size_bytes": 23567
     },
     {
       "mode": 420,
@@ -21264,14 +21264,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.cpp",
-      "sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883",
-      "size_bytes": 8011
+      "sha256": "a64c770f4d41e38bfe912b0afda878996d35d7bd260e03e4db8ab6b0432cf187",
+      "size_bytes": 8113
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Context/Context.h",
-      "sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba",
-      "size_bytes": 24177
+      "sha256": "dd0d6dfb9fcfc82048616bbc00c16bcd711482511395dd2da5a90680adebdb3b",
+      "size_bytes": 24603
     },
     {
       "mode": 420,
@@ -21300,26 +21300,26 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
-      "sha256": "68d767c7b549bab399eb7f885fbbe359be78e0ddd6dc5eb08b1b87f13805651b",
-      "size_bytes": 18043
+      "sha256": "0d90b82ce1e43f59015da6845ced194d7a0cb88b5dde85f2a0a06c34d74cee32",
+      "size_bytes": 21794
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
-      "sha256": "48d637a0b2b06d13b44788ad143937b121d022d1025f9948839a8f5c88582b15",
-      "size_bytes": 6875
+      "sha256": "e0d94f250946b10dd0169b9a4e93bb9870b0f30ffb3f000da9e6427df01db9b1",
+      "size_bytes": 7095
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/CPUID.cpp",
-      "sha256": "917b8a07a670cd4e5f18f113ba885af0810583ec5d1bebee2592489adff1370d",
-      "size_bytes": 59733
+      "sha256": "7b3d3d9f381a4ba49a7e4c23ccb923e8cdcc188f748b4712a4eae08a53c2dba5",
+      "size_bytes": 59753
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/CPUID.h",
-      "sha256": "dcea9986b72d5c68cb1eb364423c3ce4d031ae7bc4dc4804554fd4316ca875c8",
-      "size_bytes": 23070
+      "sha256": "ef46a547b04aa5428b03a5417ec35250a2fd4aff00e12b6e6033502551234613",
+      "size_bytes": 23083
     },
     {
       "mode": 420,
@@ -21330,8 +21330,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Core.cpp",
-      "sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e",
-      "size_bytes": 89244
+      "sha256": "634d1288107e8c8b7718146e74771c2d83ad5222cc0f1fc20d2b68536e2b71f7",
+      "size_bytes": 106086
     },
     {
       "mode": 420,
@@ -21348,14 +21348,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
-      "sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5",
-      "size_bytes": 104331
+      "sha256": "10914dec18d3d18c11a6787ac8fc709eb8b1fb4f5a96f89e93515e6a8f011c2e",
+      "size_bytes": 107278
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
-      "sha256": "b5652700134eb59cc16eb9a5e967eb66444ae947d6d7cd1c8f51ac309b15f5a5",
-      "size_bytes": 7748
+      "sha256": "4703030c454aa3b20d461ce9b41dda7778491c187661d77b7bc28958c06529f4",
+      "size_bytes": 8087
     },
     {
       "mode": 420,
@@ -21450,14 +21450,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
-      "sha256": "6c964dab024d98d44a2e5d2096d1ca41ed28f34c7da58138f0a6fb48ec08715c",
-      "size_bytes": 63632
+      "sha256": "892e980f8f0149560e9d7ae41ea0c813ce55694431962471a6d6684796f0f02e",
+      "size_bytes": 81330
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
-      "sha256": "1026879160ccfb3ce47ec2ff5644982cfb3b8eabd37b4ba89daee594341c0b4e",
-      "size_bytes": 24903
+      "sha256": "ba5308e888336459f3787f342e63ae5b08cc2781c96035fb7f3fd221a3991422",
+      "size_bytes": 25344
     },
     {
       "mode": 420,
@@ -21492,14 +21492,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
-      "sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
-      "size_bytes": 5076
+      "sha256": "ac5cabe4a257920eb79f91c16ad8b9c539470690b2329f3316749f5ac57cdab4",
+      "size_bytes": 6599
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/LookupCache.h",
-      "sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
-      "size_bytes": 21317
+      "sha256": "01e8616f208521ca01091487bc5ff213773829cf2513dfa9d16066f97b001a7d",
+      "size_bytes": 22116
     },
     {
       "mode": 420,
@@ -21618,8 +21618,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
-      "sha256": "4709e3803973c52ce017aec4aa9e6d257509e4243aea63048ebdc059def91892",
-      "size_bytes": 21316
+      "sha256": "ebb44cd2f8007d0c1cb333dcb2e807fda3d94a2491d388fd68cc10fc91589fee",
+      "size_bytes": 21519
     },
     {
       "mode": 420,
@@ -21636,8 +21636,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
-      "sha256": "9026a6da593bccbfc3cc568a047abd02d22008fd6c262a65459959c02ca937b3",
-      "size_bytes": 9230
+      "sha256": "8fec80eef79c9662ef76dd72054ed3d97b11c3c2c9baf2566547b5aafd680657",
+      "size_bytes": 10518
     },
     {
       "mode": 420,
@@ -21768,20 +21768,20 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
-      "sha256": "192561361e2923da90c5bb3a6a82da4cfc60d020ce1443e8c2500bbe3dfd0ac1",
-      "size_bytes": 4202
+      "sha256": "b5d318ffc0cd909293f3a80966498952cae206c97851ba2f40fa36e9cd6c5599",
+      "size_bytes": 6143
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/IR/PassManager.h",
-      "sha256": "4f22d758fd18e068f5ecd75b4798fcdd97082c3da86e078714fede70c4a1ad6d",
-      "size_bytes": 2648
+      "sha256": "d0a7841d0286b8019faac1ebf8e03531ab4efcbb39c6fc4b2499eef6410cb270",
+      "size_bytes": 3394
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/IR/Passes.h",
-      "sha256": "e7501980f97b256f3ff52fc2e2a2368895ebd1aea033f79ce59bba4cb975d9b7",
-      "size_bytes": 627
+      "sha256": "4535c50bec0bf39e2e3b0fa31e06a806b140ed05c37e0ea663007482610803ec",
+      "size_bytes": 896
     },
     {
       "mode": 420,
@@ -21804,14 +21804,14 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp",
-      "sha256": "73a9afab26fbd9509686379230b34263cd1a83b7a50ff11a994b484fd259697f",
-      "size_bytes": 22912
+      "sha256": "1d921a6dbe67522ea35940fd32077d92117358f9b784f7f3ab9c971ea8327fa8",
+      "size_bytes": 23183
     },
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp",
-      "sha256": "81f98229a48235c346766b777401405bfa1015abd8885a151d28e779d135eff6",
-      "size_bytes": 28385
+      "sha256": "0dd7128c9bd62c0be131912763235175556e94616fda1182a870a41a405dde54",
+      "size_bytes": 28657
     },
     {
       "mode": 420,
@@ -21822,8 +21822,8 @@
     {
       "mode": 420,
       "path": "FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp",
-      "sha256": "e9b0d9a4061885940ad5d93955496257b03b74fc6095be15b51375dd0c18a878",
-      "size_bytes": 42149
+      "sha256": "6443c3f1bad6f00f3a4bd388292843820430e15dfbf4912aebf433eeab21d70b",
+      "size_bytes": 42463
     },
     {
       "mode": 420,
@@ -21953,6 +21953,12 @@
     },
     {
       "mode": 420,
+      "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+      "sha256": "4094c7633ea0da4ee032fe223eeea35e8f1fbd68029632833ad9f41ac26091c9",
+      "size_bytes": 3171
+    },
+    {
+      "mode": 420,
       "path": "FEXCore/Source/Utils/PearFEXRetirement.cpp",
       "sha256": "f491f83560a29b0d9233edef257a4f6f9a6ed26c325c745611e4062b82a1c613",
       "size_bytes": 2077
@@ -22056,8 +22062,14 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/Config/Config.h",
-      "sha256": "7242a4d253e2cb5bf765b6791e420b3c26f47c639b669cf8a3326242e834b1be",
-      "size_bytes": 11278
+      "sha256": "db67ac76ef6146bb587d7df7c69457681ec83de8b3fb6bcf1a39a1282d9ccbf4",
+      "size_bytes": 12042
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Config/PearConfigAllocator.h",
+      "sha256": "fe9b0d5fdca9c198738fcec9f86cb09a50a60257d2ce2bb1a88f83bc8d50ad77",
+      "size_bytes": 2886
     },
     {
       "mode": 420,
@@ -22247,6 +22259,12 @@
     },
     {
       "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+      "sha256": "4e9f94cc78fda875a6eab2e06483435de2468efb870e3a46097d020f855c1a60",
+      "size_bytes": 1367
+    },
+    {
+      "mode": 420,
       "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
       "sha256": "34abee87abed0b4f4d2c309c33a1f128f5a4d2f242f022151475c1328e181515",
       "size_bytes": 2243
@@ -22254,8 +22272,8 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
-      "sha256": "707469e62af6b4aaf56deeb35481713c96a5935127e36a21d197a33adba3b2f9",
-      "size_bytes": 13422
+      "sha256": "55baf05f090c17655989899704a280963ff3c2b8e44a83c96b4d228fb0e93819",
+      "size_bytes": 14249
     },
     {
       "mode": 420,
@@ -22392,8 +22410,8 @@
     {
       "mode": 420,
       "path": "FEXCore/include/FEXCore/fextl/memory.h",
-      "sha256": "e7f297f0930c2aa771e191d68ce2729dd85afaccf0764e545608289192125a15",
-      "size_bytes": 1168
+      "sha256": "c8fade6eb37b9526e0a6e516cb2f5e39c9ad1d18bb88f398a6d605506c6d2553",
+      "size_bytes": 1370
     },
     {
       "mode": 420,
@@ -24402,7 +24420,7 @@
     {
       "mode": 420,
       "path": "Source/Windows/Common/CMakeLists.txt",
-      "sha256": "81fa8a1026fa68c026bdd867ad1b98603da17437e464478640528151653cec37",
+      "sha256": "5efb5cebe2ea5011ead0cfe3e27b9721e8dc3dde75cbfc5c1a129a89ff693568",
       "size_bytes": 2104
     },
     {
@@ -24456,8 +24474,8 @@
     {
       "mode": 420,
       "path": "Source/Windows/Common/CRT/Misc.cpp",
-      "sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea",
-      "size_bytes": 7341
+      "sha256": "41946004123dc79da6c2d8d365f56ec1366b38e5cea12a12481bd14b0c7109e0",
+      "size_bytes": 7519
     },
     {
       "mode": 420,
@@ -24714,8 +24732,8 @@
     {
       "mode": 420,
       "path": "Source/Windows/Common/PearFEXMemory.cpp",
-      "sha256": "3698fba56f4a89b40db7b8d639969fe8aeda43eb365bfcb92a66f14deca0f1ef",
-      "size_bytes": 73008
+      "sha256": "329dafa9becf8505d0e5ca11d1fe19fec318db42de138a99cf2921dd1defafa4",
+      "size_bytes": 77694
     },
     {
       "mode": 420,
@@ -24762,8 +24780,8 @@
     {
       "mode": 420,
       "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
-      "sha256": "1a6b257c09b32b7640908820e02e1808153003a0bd0e4d1e9de98cd2f64b5df4",
-      "size_bytes": 5499
+      "sha256": "47aac01580b1e1a03ea6e3ad5fd2c9df709dd55ed849cabc3bd9bc53cca7b631",
+      "size_bytes": 7810
     },
     {
       "mode": 420,
@@ -24810,20 +24828,20 @@
     {
       "mode": 420,
       "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
-      "sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3",
-      "size_bytes": 22226
+      "sha256": "4906d7d58cb7200e4ee537b55ea392394114d633b7b7d1ed787a9d9dd729c008",
+      "size_bytes": 26540
     },
     {
       "mode": 420,
       "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
-      "sha256": "0de9589adbabca6ff819a9fdbebde26863415eb73cfd8cecb8fd1ce014fb8f12",
-      "size_bytes": 1239
+      "sha256": "9a6e7978bf35691562020cee4ce08fc0ca1050e313ba160a6e9777710a905180",
+      "size_bytes": 1834
     },
     {
       "mode": 420,
       "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
-      "sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715",
-      "size_bytes": 9056
+      "sha256": "a564d8821d5ec0ba92eca440fab1d3aa2c7e4d5efda0af1d7f89e0daf2bbaf21",
+      "size_bytes": 12417
     },
     {
       "mode": 420,
@@ -24834,8 +24852,8 @@
     {
       "mode": 420,
       "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
-      "sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c",
-      "size_bytes": 1345
+      "sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+      "size_bytes": 1798
     },
     {
       "mode": 420,

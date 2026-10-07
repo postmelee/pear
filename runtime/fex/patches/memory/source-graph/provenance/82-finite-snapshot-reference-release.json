@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear adds bounded actual backend and shared manager buffer growth, lookup switching, held old generation and retirement controls. No guest, signal handler or changed owner contract; proof flags stay closed pending measurement.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 106086,
+      "postimage_sha256": "634d1288107e8c8b7718146e74771c2d83ad5222cc0f1fc20d2b68536e2b71f7",
+      "preimage_sha256": "2efae98561b4d52a331f1239d8d851bb3000f5fd65aa0793bd9e75dac88f1744"
+    }
+  ],
+  "historical_strict_patch_sha256": "6f059aff958e85e8564e5d87c5ac98d54f2c302fd1c0a3fda6c8d7e9ff7004b0",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-snapshot-reference-release",
+  "native_runtime_execution": false,
+  "order": 82,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

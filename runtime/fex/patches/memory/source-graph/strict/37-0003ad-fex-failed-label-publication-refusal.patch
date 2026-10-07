@@ -1,0 +1,12 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -1387,7 +1387,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ bool Arm64JITCore::BeginPreparedPublication(CompiledCode& Code) {
+   // Called by the outer core only after its first invalidation scope ends.
+-  if (!Code.PearPendingEmission || Code.PearOwnerPublished || !PearPendingTemp || PearWriter ||
++  if (PearLabelFailure || !Code.PearPendingEmission || Code.PearOwnerPublished || !PearPendingTemp || PearWriter ||
+       Code.BlockBegin != PearPendingTemp || Code.Size != PearPendingSize || !Code.Size || (Code.Size & 15) ||
+       Code.Size > 16ULL*1024*1024 || !FEXCore::Utils::PearFEXMemory::CurrentExecutor()) {
+     LogMan::Msg::EFmt("Pear pending source publication is unavailable");

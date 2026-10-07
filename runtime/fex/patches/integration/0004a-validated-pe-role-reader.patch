@@ -1,0 +1,224 @@
+diff --git a/dlls/ntdll/unix/pear_pe_arena.h b/dlls/ntdll/unix/pear_pe_arena.h
+--- a/dlls/ntdll/unix/pear_pe_arena.h
++++ b/dlls/ntdll/unix/pear_pe_arena.h
+@@ -27,18 +27,23 @@
+ struct pear_pe_slot;
+ struct pear_dynamic_slot;
+ 
++enum pear_pe_role { PEAR_PE_ROLE_NATIVE = 1, PEAR_PE_ROLE_ARM64EC, PEAR_PE_ROLE_GUEST_X64 };
++
+ struct pear_pe_image
+ {
+     SIZE_T size;
+     ULONGLONG original_base;
+     ULONG entry_rva;
+     USHORT machine;
++    enum pear_pe_role role;
++    ULONG chpe_rva, native_entry_rva;
+ };
+ 
+ extern BOOL pear_pe_arena_enabled(void);
+ extern BOOL pear_pe_arena_overlaps(const void *base, SIZE_T size);
+ extern NTSTATUS pear_pe_arena_initialize(void **base, SIZE_T *size);
+ extern NTSTATUS pear_pe_plan_read(int fd, struct pear_pe_plan **plan, struct pear_pe_image *image);
++extern NTSTATUS pear_pe_plan_read_target(int fd, USHORT target, struct pear_pe_plan **plan, struct pear_pe_image *image);
+ extern void pear_pe_plan_free(struct pear_pe_plan *plan);
+ extern NTSTATUS pear_pe_slot_reserve(const struct pear_pe_plan *plan, ULONG_PTR low, ULONG_PTR high,
+                                     struct pear_pe_slot **slot, void **base, SIZE_T *capacity);
+diff --git a/dlls/ntdll/unix/pear_pe_arena.c b/dlls/ntdll/unix/pear_pe_arena.c
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -58,6 +58,7 @@
+     SIZE_T nt_offset;
+     ULONGLONG original_base;
+     BOOL relocated;
++    enum pear_pe_role role;
+ };
+ struct pear_pe_slot
+ {
+@@ -393,7 +394,133 @@
+     return STATUS_SUCCESS;
+ }
+ 
+-NTSTATUS pear_pe_plan_read(int fd, struct pear_pe_plan **ret, struct pear_pe_image *image)
++/* Original Pear role validation around Wine's IMAGE_ARM64EC_METADATA layout.
++ * The loader retains relocation/import/dispatch ownership. No allocation or
++ * executable publication occurs while validating this staged image. */
++static BOOL executable_range(const struct pear_pe_plan *plan, ULONG rva, SIZE_T size)
++{
++    SIZE_T page;
++    if (!size || !used_range(plan, rva, size, FALSE)) return FALSE;
++    for (page = rva / PAGE; page <= ((SIZE_T)rva + size - 1) / PAGE; ++page)
++        if (!(plan->pages[page] & PV_EXEC)) return FALSE;
++    return TRUE;
++}
++
++static BOOL chpe_table(const struct pear_pe_plan *plan, ULONG rva, ULONG count, SIZE_T item_size)
++{
++    return !count ? !rva : rva && count <= plan->size / item_size &&
++           used_range(plan, rva, (SIZE_T)count * item_size, FALSE);
++}
++
++static BOOL chpe_native_range(const struct pear_pe_plan *plan,
++                              const IMAGE_ARM64EC_METADATA *metadata, ULONG rva, SIZE_T size)
++{
++    ULONG i;
++    for (i = 0; i < metadata->CodeMapCount; ++i)
++    {
++        IMAGE_CHPE_RANGE_ENTRY range;
++        ULONG start;
++        memcpy(&range, plan->staging + metadata->CodeMap + i * sizeof(range), sizeof(range));
++        start = range.StartOffset & ~3u;
++        if ((range.StartOffset & 3) == 1 && rva >= start &&
++            (SIZE_T)rva - start <= range.Length && size <= range.Length - ((SIZE_T)rva - start)) return TRUE;
++    }
++    return FALSE;
++}
++
++static NTSTATUS check_chpe_role(struct pear_pe_plan *plan, const IMAGE_NT_HEADERS64 *nt,
++                                const IMAGE_DATA_DIRECTORY *cfg, USHORT target, struct pear_pe_image *image)
++{
++    IMAGE_ARM64EC_METADATA metadata = {0};
++    ULONGLONG pointer = 0;
++    ULONG length = 0, i, previous_end = 0, ec_ranges = 0;
++    SIZE_T metadata_rva, minimum = offsetof(IMAGE_ARM64EC_METADATA, AuxiliaryIATCopy) + sizeof(ULONG);
++    ULONG native_entry = nt->OptionalHeader.AddressOfEntryPoint;
++    image->role = PEAR_PE_ROLE_NATIVE;
++    if (cfg)
++    {
++        SIZE_T field = offsetof(IMAGE_LOAD_CONFIG_DIRECTORY64, CHPEMetadataPointer);
++        memcpy(&length, plan->staging + cfg->VirtualAddress, sizeof(length));
++        if (length > field && !extent(field, sizeof(pointer), length)) return STATUS_INVALID_IMAGE_FORMAT;
++        if (extent(field, sizeof(pointer), length))
++            memcpy(&pointer, plan->staging + cfg->VirtualAddress + field, sizeof(pointer));
++    }
++    if (!pointer)
++    {
++        if (nt->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64) image->role = PEAR_PE_ROLE_GUEST_X64;
++        return target == nt->FileHeader.Machine ? STATUS_SUCCESS : STATUS_NOT_SUPPORTED;
++    }
++    /* ARM64X needs the original Wine dynamic-relocation selection before role
++     * validation. Never grant native execution simply because metadata exists. */
++    if (nt->FileHeader.Machine == IMAGE_FILE_MACHINE_ARM64) return STATUS_NOT_SUPPORTED;
++    if (target != IMAGE_FILE_MACHINE_AMD64 || pointer < plan->original_base ||
++        pointer - plan->original_base > plan->size) return STATUS_INVALID_IMAGE_FORMAT;
++    metadata_rva = pointer - plan->original_base;
++    if (!used_range(plan, metadata_rva, minimum, FALSE)) return STATUS_INVALID_IMAGE_FORMAT;
++    memcpy(&metadata, plan->staging + metadata_rva, minimum);
++    if ((metadata.Version != 1 && metadata.Version != 2) || !metadata.CodeMapCount ||
++        !chpe_table(plan, metadata.CodeMap, metadata.CodeMapCount, sizeof(IMAGE_CHPE_RANGE_ENTRY)) ||
++        !chpe_table(plan, metadata.RedirectionMetadata, metadata.RedirectionMetadataCount,
++                    sizeof(IMAGE_ARM64EC_REDIRECTION_ENTRY)) ||
++        !chpe_table(plan, metadata.CodeRangesToEntryPoints, metadata.CodeRangesToEntryPointsCount,
++                    sizeof(IMAGE_ARM64EC_CODE_RANGE_ENTRY_POINT))) return STATUS_INVALID_IMAGE_FORMAT;
++    for (i = 0; i < metadata.CodeMapCount; ++i)
++    {
++        IMAGE_CHPE_RANGE_ENTRY range;
++        ULONG start, kind;
++        memcpy(&range, plan->staging + metadata.CodeMap + i * sizeof(range), sizeof(range));
++        start = range.StartOffset & ~3u; kind = range.StartOffset & 3;
++        if ((kind != 1 && kind != 2) || start < previous_end ||
++            !executable_range(plan, start, range.Length) ||
++            (kind == 1 && (range.Length & 3))) return STATUS_INVALID_IMAGE_FORMAT;
++        previous_end = start + range.Length;
++        ec_ranges += kind == 1;
++    }
++    if (!ec_ranges) return STATUS_INVALID_IMAGE_FORMAT;
++    previous_end = 0;
++    for (i = 0; i < metadata.RedirectionMetadataCount; ++i)
++    {
++        IMAGE_ARM64EC_REDIRECTION_ENTRY entry;
++        memcpy(&entry, plan->staging + metadata.RedirectionMetadata + i * sizeof(entry), sizeof(entry));
++        if ((i && entry.Source <= previous_end) || !executable_range(plan, entry.Source, 1) ||
++            (entry.Destination & 3) || !chpe_native_range(plan, &metadata, entry.Destination, 4))
++            return STATUS_INVALID_IMAGE_FORMAT;
++        if (entry.Source == native_entry) image->native_entry_rva = entry.Destination;
++        previous_end = entry.Source;
++    }
++    if (native_entry && !image->native_entry_rva)
++    {
++        if (!chpe_native_range(plan, &metadata, native_entry, 4)) return STATUS_INVALID_IMAGE_FORMAT;
++        image->native_entry_rva = native_entry;
++    }
++    previous_end = 0;
++    for (i = 0; i < metadata.CodeRangesToEntryPointsCount; ++i)
++    {
++        IMAGE_ARM64EC_CODE_RANGE_ENTRY_POINT entry;
++        memcpy(&entry, plan->staging + metadata.CodeRangesToEntryPoints + i * sizeof(entry), sizeof(entry));
++        if (entry.EndRva <= entry.StartRva || entry.StartRva < previous_end ||
++            !executable_range(plan, entry.StartRva, (SIZE_T)entry.EndRva - entry.StartRva) ||
++            !executable_range(plan, entry.EntryPoint, 1)) return STATUS_INVALID_IMAGE_FORMAT;
++        previous_end = entry.EndRva;
++    }
++    /* Wine/FEX write dispatch slots and auxiliary import pointers after mapping;
++     * their storage must remain ordinary NX, as do existing IAT/TLS fields. */
++    {
++        ULONG slots[] = {metadata.__os_arm64x_dispatch_call_no_redirect, metadata.__os_arm64x_dispatch_ret,
++            metadata.__os_arm64x_dispatch_call, metadata.__os_arm64x_dispatch_icall,
++            metadata.__os_arm64x_dispatch_icall_cfg, metadata.GetX64InformationFunctionPointer,
++            metadata.SetX64InformationFunctionPointer, metadata.__os_arm64x_dispatch_fptr,
++            metadata.AuxiliaryIAT, metadata.AuxiliaryIATCopy};
++        for (i = 0; i < sizeof(slots) / sizeof(slots[0]); ++i)
++            if (slots[i] && ((slots[i] & 7) || !used_range(plan, slots[i], sizeof(ULONGLONG), TRUE)))
++                return STATUS_INVALID_IMAGE_FORMAT;
++    }
++    image->role = PEAR_PE_ROLE_ARM64EC;
++    image->chpe_rva = metadata_rva;
++    return STATUS_SUCCESS;
++}
++
++NTSTATUS pear_pe_plan_read_target(int fd, USHORT target, struct pear_pe_plan **ret, struct pear_pe_image *image)
+ {
+     struct stat stat;
+     IMAGE_DOS_HEADER dos;
+@@ -404,12 +531,14 @@
+     NTSTATUS status = STATUS_INVALID_IMAGE_FORMAT;
+     SIZE_T section_offset, section_bytes, header_end, i, j;
+     *ret = NULL;
++    memset(image, 0, sizeof(*image));
++    if (target != IMAGE_FILE_MACHINE_ARM64 && target != IMAGE_FILE_MACHINE_AMD64) return STATUS_NOT_SUPPORTED;
+     if (fstat(fd, &stat) || stat.st_size < 0 || !S_ISREG(stat.st_mode)) return status;
+     if (!extent(0, sizeof(dos), stat.st_size) ||
+         read_exact(fd, &dos, sizeof(dos), 0) || dos.e_magic != IMAGE_DOS_SIGNATURE || dos.e_lfanew < (LONG)sizeof(dos) || dos.e_lfanew % _Alignof(IMAGE_NT_HEADERS64) ||
+         !extent(dos.e_lfanew, sizeof(header), stat.st_size) ||
+         read_exact(fd, &header, sizeof(header), dos.e_lfanew)) return status;
+-    if (header.Signature != IMAGE_NT_SIGNATURE || header.FileHeader.Machine != IMAGE_FILE_MACHINE_ARM64 ||
++    if (header.Signature != IMAGE_NT_SIGNATURE || (header.FileHeader.Machine != IMAGE_FILE_MACHINE_ARM64 && header.FileHeader.Machine != IMAGE_FILE_MACHINE_AMD64) ||
+         header.OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC ||
+         header.FileHeader.SizeOfOptionalHeader != sizeof(IMAGE_OPTIONAL_HEADER64) ||
+         !header.FileHeader.NumberOfSections || header.FileHeader.NumberOfSections > MAX_SECTIONS ||
+@@ -516,8 +645,10 @@
+         memcpy(&cfg_size, plan->staging + cfg->VirtualAddress, sizeof(cfg_size));
+         if (cfg_size < sizeof(cfg_size) || cfg_size > cfg->Size) { status = STATUS_INVALID_IMAGE_FORMAT; goto done; }
+         if (extent(field, sizeof(chpe), cfg_size)) memcpy(&chpe, plan->staging + cfg->VirtualAddress + field, sizeof(chpe));
+-        if (chpe) { status = STATUS_NOT_SUPPORTED; goto done; }
+-    }
++        (void)chpe; /* Role-specific validation below retains native-only rejection. */
++    }
++    if ((status = check_chpe_role(plan, nt, cfg, target, image))) goto done;
++    plan->role = image->role;
+     if ((status = check_loader_data(plan, nt)) || (status = parse_relocations(plan, relocs))) goto done;
+     image->size = plan->size;
+     image->original_base = plan->original_base;
+@@ -528,6 +659,11 @@
+ done:
+     pear_pe_plan_free(plan);
+     return status;
++}
++
++NTSTATUS pear_pe_plan_read(int fd, struct pear_pe_plan **ret, struct pear_pe_image *image)
++{
++    return pear_pe_plan_read_target(fd, IMAGE_FILE_MACHINE_ARM64, ret, image);
+ }
+ 
+ static BOOL compatible(const struct pear_pe_slot *slot, const struct pear_pe_plan *plan)
+@@ -654,6 +790,9 @@
+     require_owner();
+     if (slot->generation != generation || slot->state != SLOT_PREPARING || slot->image_size != plan->size || !compatible(slot, plan))
+         return STATUS_INVALID_PARAMETER;
++    /* Parsing a role does not grant executable publication. The integrated
++     * loader must connect registration/guest NX ownership before enabling it. */
++    if (plan->role != PEAR_PE_ROLE_NATIVE) return STATUS_NOT_SUPPORTED;
+     if (relocate_staging(plan, (ULONG_PTR)base)) return STATUS_INVALID_PARAMETER;
+     for (i = 0; i < plan->page_count; ++i)
+     {

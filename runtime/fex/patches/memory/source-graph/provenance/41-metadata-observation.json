@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear approved Amendment C adds a typed read-only metadata observer and conservative budget classifier. Paired ABI3, no new capability and all source initialization gates remain closed.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+      "postimage_bytes": 13901,
+      "postimage_sha256": "c36576d318040bcbadf2864de244ab55c31ce943254fb74434588fbc6c7a36e4",
+      "preimage_sha256": "707469e62af6b4aaf56deeb35481713c96a5935127e36a21d197a33adba3b2f9"
+    },
+    {
+      "path": "Source/Windows/Common/PearFEXMemory.cpp",
+      "postimage_bytes": 76045,
+      "postimage_sha256": "6adabd8ddcb149fe35f50aba400d0fe2a23d2ae5b592df01a05fdbe89119e59c",
+      "preimage_sha256": "3698fba56f4a89b40db7b8d639969fe8aeda43eb365bfcb92a66f14deca0f1ef"
+    }
+  ],
+  "historical_strict_patch_sha256": "8603d45aa1272a55bdca07e3ef360cebb8c8cf2b36e7851ae26c3980d6ac83e5",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "metadata-observation",
+  "native_runtime_execution": false,
+  "order": 41,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": true
+}

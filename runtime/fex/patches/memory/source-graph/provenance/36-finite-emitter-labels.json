@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear finite inline forward-label references reuse upstream emitter encodings and fixups. Sticky overflow refuses dispatcher publication and aborts the owned write window; non-owner dynamic labels are unchanged.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "CodeEmitter/CodeEmitter/Emitter.h",
+      "postimage_bytes": 29785,
+      "postimage_sha256": "42795591aeda8ba80b6f9eafbddd5393b0e2f9c571c94acc2ca1b2f0c7fe5f13",
+      "preimage_sha256": "39391a6be5d4e6335c4f8af313eb1baf2bc6f1bc7d9dedc719a43e693026964a"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 104742,
+      "postimage_sha256": "cdf90c8b9feec95690b2c564f2df37a665e5bfb3ed2f44275bb3a6bb839fe598",
+      "preimage_sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5"
+    }
+  ],
+  "historical_strict_patch_sha256": "e385dbbbb97cbb4c60b0aebf1cfbfd2a73d78bac68d2e0e93c4afb667223a786",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-emitter-labels",
+  "native_runtime_execution": false,
+  "order": 36,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

@@ -30,6 +30,7 @@ def wine_rows():
     shared=0
     for row in calls:
         row['scope']='wine_owner'
+        if row['control']=='unknown_opcode':row['opcode']=16
         if row['control']=='atomic_wrong_role':row['status']=row['returned_status']=3
         if row['control']=='reserve_extent':
             row['extent_size']=16777216 if shared<38 else 16384;shared+=1
@@ -479,6 +480,7 @@ class WineRunRecordControls(unittest.TestCase):
     def test_exact_nonce_control_endpoint_no_hostpid_or_graphics_environment(self):
         base=runner.environment(Path('/work'),Path('/prefix'),'a'*32,None)
         value=runner.loader_environment(base,'/private/tmp/pear-stage3-owned/control',17,'a'*32)
+        self.assertEqual(value['PEAR_FEX_BITMAP_DIAGNOSTICS'],'1')
         self.assertEqual(value['PEAR_FEX_MEMORY_FIXTURE_NONCE'],'a'*32)
         self.assertNotIn('PEAR_FEX_MEMORY_OWNER_PID',value)
         self.assertFalse(any(key.startswith('MTL_') for key in value))

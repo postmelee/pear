@@ -1,0 +1,12 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1448,7 +1448,7 @@
+   auto Life=M::AcquireCurrentSourceLifetime();
+   auto* Thread=Life ? Life.ActualThread() : nullptr;
+   if (!Thread || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !Thread->CTX) return;
+-  auto* CTX=Thread->CTX;
++  auto* CTX=static_cast<ContextImpl*>(Thread->CTX);
+   PearDispatcherGate Gate {};
+   *Output=CTX->BeginPearDispatcherGate(Frame,ResumePC,Gate);
+   if (!*Output) return;

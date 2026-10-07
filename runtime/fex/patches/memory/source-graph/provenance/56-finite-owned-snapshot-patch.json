@@ -1,0 +1,49 @@
+{
+  "attribution": "Original Pear adds closed finite owned JIT publication, real Frame/header/tail snapshot, half-barrier preparation, checked patch and source resume controls. Instructions are original native fixtures; unaligned instructions are decoded as data and never executed. Actual Context/Thread/backend generation and source-managed copies are reused. No guest, delivered handler, wire, capacity or security change.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+      "postimage_bytes": 7095,
+      "postimage_sha256": "e0d94f250946b10dd0169b9a4e93bb9870b0f30ffb3f000da9e6427df01db9b1",
+      "preimage_sha256": "48d637a0b2b06d13b44788ad143937b121d022d1025f9948839a8f5c88582b15"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "postimage_bytes": 20590,
+      "postimage_sha256": "278a598b5412e4a962a60c3e7d553548e9aa40ea2e94a1974d461d52a33f56c9",
+      "preimage_sha256": "68d767c7b549bab399eb7f885fbbe359be78e0ddd6dc5eb08b1b87f13805651b"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 10327,
+      "postimage_sha256": "789955f2e7d7a02c5f3a6875df4be6e37528a50cccf0e7c08181d1b725597fe8",
+      "preimage_sha256": "22a89afa7c581996b61477d5b8ff8e8f1c9ec9d80b6748b5eeb70079c04b528d"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 97147,
+      "postimage_sha256": "4c1287b482299402300ba7122b414fe18b6537788f6f8a72dc59df47958f240c",
+      "preimage_sha256": "e029e209ac9a69264307d32ee71563626c4f4595bc581d60220602630becfa4a"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "5c30da008d5149c78d292cbcc4906a56e12224df87896474f3dc5c22c8899974",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-owned-snapshot-patch",
+  "native_runtime_execution": false,
+  "order": 56,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

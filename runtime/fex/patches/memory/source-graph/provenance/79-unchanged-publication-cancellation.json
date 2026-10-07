@@ -1,0 +1,37 @@
+{
+  "attribution": "Original Pear cancels only pre-copy prepared publication by republishing unchanged prior RX bytes through the existing checked owner operation. No new entrypoint is published; virgin NONE uses Abort and post-copy failures retain quarantine. Proof flags remain closed for review.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 77507,
+      "postimage_sha256": "9df8fe52de91712ccca11b195e7b5e4ed06a24443c0135a6e64e51684136ef76",
+      "preimage_sha256": "7a0f67acad93a8cf7d553d8fc0ce79763d82830c62447990148f26974d280d9e"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "postimage_bytes": 25224,
+      "postimage_sha256": "4ab3c822ea25c9f80ff5a05ee4da61eb1d00f291331e54b191af545c3959e81c",
+      "preimage_sha256": "2c00d18da69fd98bd71f11759dfa268ccd8f9bd15bd955b6dbc167894e674ebd"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "402b8877a69fe0598e293834fe0b65ac087d1eaadc5e4feb2a6ec41d5f5b5d26",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "unchanged-publication-cancellation",
+  "native_runtime_execution": false,
+  "order": 79,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

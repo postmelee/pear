@@ -29,7 +29,7 @@ else:
 
 BASE_BUILD_SHA='0a2c854c0c42484ace9c077b8fb69a73b6e8a323d0b2a8b5e7c8cead90fb21ed'
 BASE_SOURCE_SHA='d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff'
-GRAPH_SHA='7a51a4252653926f284033ad478c907c7c178ee0d4fa04c3cf14b1d11206d673'
+GRAPH_SHA='a3765a567b41a6e186bd7fbcf82f86413065f0e720bd688346af18059e928d39'
 MAX_FILES=12000
 MAX_SOURCE_BYTES=128*1024**2
 MAX_SOURCE_FILE=8*1024**2
@@ -143,7 +143,7 @@ def publication_series_gate(derivatives,graph):
          and series['runtime_execution'] is False and series['baseline']['qualified_source_files_sha256']==BASE_SOURCE_SHA
          and series['authoritative_header']=={'path':'include/wine/pear_fex_memory.h','sha256':WIRE_SHA,
              'build_relative_path':'wine/pear_fex_memory.h','source_component':'wine-fex-memory'}
-         and series['preserved_abi']=={'fex_unixlib_services':8,'wire_record_bytes':128,'ntdll_unix_index':10,'wire_version':2}
+         and series['preserved_abi']=={'fex_unixlib_services':8,'wire_record_bytes':128,'ntdll_unix_index':10,'wire_version':3}
          and all(value is False for value in series['source_gates'].values()),'fex_memory_publication_series_scope')
     expected=[]
     for layer in graph['layers']:
@@ -153,7 +153,7 @@ def publication_series_gate(derivatives,graph):
             'provenance_manifest':'memory/source-graph/'+layer['source_manifest']['path'],
             'provenance_sha256':layer['source_manifest']['sha256'],'sources':layer['changes']})
     need(series['patches']==expected and series['source_graph']=={'file':'memory/source-graph/derivatives.json',
-         'layer_count':26,'reference_scope':'derivatives_root_relative_v1'},'fex_memory_publication_series_graph')
+         'layer_count':85,'reference_scope':'derivatives_root_relative_v1'},'fex_memory_publication_series_graph')
     return series
 
 
@@ -173,7 +173,7 @@ def selected_projection(baseline,derivatives):
     raw,_=regular_bytes(derivatives,'derivatives.json',8*1024**2)
     need(H(raw)==GRAPH_SHA,'fex_memory_selected_graph_changed')
     graph=decode_json(raw,max_bytes=8*1024**2)
-    need(len(graph['layers'])==26 and graph['reference_scope']=='derivatives_root_relative_v1' and graph['wire_version']==2
+    need(len(graph['layers'])==85 and graph['reference_scope']=='derivatives_root_relative_v1' and graph['wire_version']==3
          and all(graph[key] is False for key in
          ('git_execution_performed','compilation_performed','module_initialization_performed',
           'owner_execution_performed','stage3_complete')),'fex_memory_graph_scope')
@@ -208,13 +208,13 @@ def selected_projection(baseline,derivatives):
     final=sorted(rows.values(),key=lambda row:row['path'])
     need(len(final)<=MAX_FILES and sum(row['size_bytes'] for row in final)<=MAX_SOURCE_BYTES,'fex_memory_final_source_bounds')
     need([{**rows[path]} for path in sorted(changed)]==graph['final_changed_source_rows'],'fex_memory_final_changed_rows')
-    return {'scope':'source_only','source_files':final,'changed_bytes':changed,'layer_count':26,
+    return {'scope':'source_only','source_files':final,'changed_bytes':changed,'layer_count':85,
         'retained_layer_rows':retained,'graph_sha256':H(raw),'source_initialization':False,'stage3_complete':False}
 
 
-PROJECTION_MANIFEST_SHA='df804fbc430613ce0d90fdee4a1bdf16058aec538b4bb3200994a7bb87e5e639'
+PROJECTION_MANIFEST_SHA='83fd15dc88b0cfe6fc6a1964ad7ddad2488c43b78f85be26ccc92f2bf6d8830d'
 SOURCE_HELPER_SHA='be606e51e6031298cfa35b9eb5588c45233eff8aa481d5fa1842ad20d34a785e'
-WIRE_SHA='bee4d7f58bb796f7b86f85e5bf3d3dc9100a9df51789f0522762c6846d9ad1cf'
+WIRE_SHA='a089b475fe6d6f2401977319eb4f0702e85c0753063f5748093131088f9f8b55'
 FALSE_FLAGS=('source_runtime_qualified','metadata_qualified','fex_initialization','jit_execution',
              'module_loading','pe_execution','owner_execution','arm64ec_role_qualified',
              'raw_signal_handoff_qualified','guest_execution','runtime_qualified',
@@ -287,8 +287,8 @@ def projection_gate(projection,baseline,derivatives,*,source_helper,expected_con
          and type(value['source_bytes']) is int
          and value['source_bytes']==sum(row['size_bytes'] for row in derived['source_files'])
          and value['passed'] is True and value['baseline_unchanged_observed'] is True
-         and value['git_execution_performed'] is True and value['layers']==26
-         and value['changed_paths']==53 and value['new_files']==22
+         and value['git_execution_performed'] is True and value['layers']==85
+         and value['changed_paths']==69 and value['new_files']==25
          and value['inputs']['derivatives_sha256']==GRAPH_SHA
          and value['inputs']['baseline_manifest_sha256']==BASE_SOURCE_SHA,
          'fex_memory_projection_scope')
@@ -306,7 +306,7 @@ def projection_gate(projection,baseline,derivatives,*,source_helper,expected_con
              'baseline_manifest_sha256':BASE_SOURCE_SHA,'derivatives_manifest_sha256':GRAPH_SHA,
              'files':derived['source_files'],'materialization_performed':False,'compilation_performed':False},
          'fex_memory_projection_helper_manifest_changed')
-    need(type(value['commands']) is list and len(value['commands'])==52,'fex_memory_git_command_count')
+    need(type(value['commands']) is list and len(value['commands'])==170,'fex_memory_git_command_count')
     for index,row in enumerate(value['commands']):
         exact(row,('action','layer','argv','cwd','attempted','exit_code','elapsed_ms',
               'stdout','stdout_bytes','stdout_sha256','stderr','stderr_bytes','stderr_sha256'),
@@ -359,6 +359,9 @@ def recipe(root,tools,lock,features,config,cross):
     for target in ('arm64ec','wow64'):
         result[target+'.configure'] += ['-DPEAR_FEX_MEMORY_OWNER=ON',
                                         '-DPEAR_FEX_MEMORY_INCLUDE_ROOT='+str(Path(root)/'wire')]
+    # Expose the closed ordinary-ARM64 initializer target for separate compile/link
+    # inspection. The module build target does not build or load that fixture.
+    result['wow64.configure'] += ['-DPEAR_FEX_BUILD_EMPTY_SOURCE_FIXTURE=ON']
     for target in ('arm64ec','wow64'):
         result[target+'.build'] += ['--','-d','keepdepfile']
     need(len(result)==9,'fex_memory_recipe_count')
@@ -1100,7 +1103,10 @@ def snapshot_sources(repo,baseline,projection,derivatives,wine_root,old,*,source
     control,_=record_bytes(projection,'control.json')
     for row in control['commands']:
         paths.add(Path(projection)/row['stdout']);paths.add(Path(projection)/row['stderr'])
-    need(len(paths)<=512 and all(p.is_absolute() and '..' not in p.parts for p in paths),
+    # Each selected layer contributes three provenance files and four command
+    # logs. The 85-layer graph exceeds the former 512-file bound; retain a
+    # finite inventory cap and the independent 128-MiB aggregate byte limit.
+    need(len(paths)<=1024 and all(p.is_absolute() and '..' not in p.parts for p in paths),
          'fex_memory_snapshot_source_set')
     return sorted(paths,key=str)
 

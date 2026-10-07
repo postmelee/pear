@@ -1,0 +1,234 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearDataMemory.h b/FEXCore/include/FEXCore/Utils/PearDataMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearDataMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearDataMemory.h
+@@ -6,6 +6,17 @@
+ namespace FEXCore::Allocator {
+ FEXCore::Utils::PearFEXMemory::Result ReservePearData(size_t Size, bool Commit, void*& Address);
+ FEXCore::Utils::PearFEXMemory::Result ReleasePearData(void* Address);
++// Finite empty-init backing for objects enlarged by ownership metadata.
++// The ordinary loaded profile keeps the existing allocator when this is inactive.
++bool InitializePearEmptyObjectStorage();
++bool ShutdownPearEmptyObjectStorage();
++void* AllocatePearMetadataStorage(size_t Alignment,size_t Size);
++template<class T, class... Args>
++fextl::unique_ptr<T> TryMakePearMetadataObject(Args&&... Arguments) {
++  void* Storage=AllocatePearMetadataStorage(alignof(T),sizeof(T));
++  if (!Storage) return {};
++  return fextl::unique_ptr<T> {::new (Storage) T(std::forward<Args>(Arguments)...)};
++}
+ // A checked outer allocation does not qualify allocations inside T's constructor.
+ template<class T, class... Args>
+ fextl::unique_ptr<T> TryMakePearObject(Args&&... Arguments) {
+diff --git a/FEXCore/Source/Utils/AllocatorHooks.cpp b/FEXCore/Source/Utils/AllocatorHooks.cpp
+--- a/FEXCore/Source/Utils/AllocatorHooks.cpp
++++ b/FEXCore/Source/Utils/AllocatorHooks.cpp
+@@ -1,5 +1,9 @@
+ // SPDX-License-Identifier: MIT
+ #include <FEXCore/Utils/PrctlUtils.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearSourceGuard.h>
++#include <atomic>
++#endif
+ 
+ #ifdef ENABLE_FEX_ALLOCATOR
+ #include <rpmalloc/rpmalloc.h>
+@@ -91,7 +95,63 @@
+ void* aligned_alloc(size_t a, size_t s) {
+   return ::rpaligned_alloc(a, s);
+ }
++#ifdef PEAR_FEX_MEMORY_OWNER
++namespace {
++struct alignas(4096) PearEmptyObjectBacking {
++  alignas(16) unsigned char Bytes[8192] {};
++  // Start entries contain the run length; continuation entries use UINT16_MAX.
++  uint16_t Runs[512] {};
++};
++constinit PearEmptyObjectBacking PearEmptyObjects {};
++constinit std::atomic<uintptr_t> PearEmptyObjectThread {0};
++thread_local unsigned char PearEmptyObjectThreadTag;
++uintptr_t PearObjectThread() { return reinterpret_cast<uintptr_t>(&PearEmptyObjectThreadTag); }
++bool ReleasePearMetadataIfOwned(void* P) {
++  const uintptr_t Start=reinterpret_cast<uintptr_t>(PearEmptyObjects.Bytes);
++  const uintptr_t Address=reinterpret_cast<uintptr_t>(P);
++  if (Address<Start || Address-Start>=sizeof(PearEmptyObjects.Bytes)) return false;
++  PEAR_FEX_REQUIRE(PearEmptyObjectThread.load()==PearObjectThread(),"Finite object release thread");
++  PEAR_FEX_REQUIRE((Address-Start)%16==0,"Finite object release alignment");
++  const size_t Index=(Address-Start)/16;
++  const size_t Count=PearEmptyObjects.Runs[Index];
++  PEAR_FEX_REQUIRE(Count && Count<=512-Index,"Finite object release identity");
++  for (size_t I=1;I<Count;++I)
++    PEAR_FEX_REQUIRE(PearEmptyObjects.Runs[Index+I]==UINT16_MAX,"Finite object release extent");
++  for (size_t I=0;I<Count;++I) PearEmptyObjects.Runs[Index+I]=0;
++  return true;
++}
++}
++bool InitializePearEmptyObjectStorage() {
++  uintptr_t Expected=0;
++  return PearEmptyObjectThread.compare_exchange_strong(Expected,PearObjectThread());
++}
++bool ShutdownPearEmptyObjectStorage() {
++  if (PearEmptyObjectThread.load()!=PearObjectThread()) return false;
++  for (const auto Run:PearEmptyObjects.Runs) if (Run) return false;
++  PearEmptyObjectThread.store(0);return true;
++}
++void* AllocatePearMetadataStorage(size_t Alignment,size_t Size) {
++  const uintptr_t Owner=PearEmptyObjectThread.load();
++  if (!Owner) return aligned_alloc(Alignment,Size);
++  if (Owner!=PearObjectThread() || !Size || Size>8192 || !Alignment ||
++      Alignment>16 || (Alignment&(Alignment-1))) return nullptr;
++  const size_t Count=(Size+15)/16;
++  size_t Free=0;
++  for (size_t I=0;I<512;++I) {
++    Free=PearEmptyObjects.Runs[I] ? 0 : Free+1;
++    if (Free!=Count) continue;
++    const size_t Start=I+1-Count;
++    PearEmptyObjects.Runs[Start]=static_cast<uint16_t>(Count);
++    for (size_t J=1;J<Count;++J) PearEmptyObjects.Runs[Start+J]=UINT16_MAX;
++    return PearEmptyObjects.Bytes+16*Start;
++  }
++  return nullptr;
++}
++#endif
+ void aligned_free(void* ptr) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (ReleasePearMetadataIfOwned(ptr)) return;
++#endif
+   return ::rpfree(ptr);
+ }
+ 
+diff --git a/FEXCore/Source/Interface/Context/Context.cpp b/FEXCore/Source/Interface/Context/Context.cpp
+--- a/FEXCore/Source/Interface/Context/Context.cpp
++++ b/FEXCore/Source/Interface/Context/Context.cpp
+@@ -1,4 +1,7 @@
+ // SPDX-License-Identifier: MIT
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ #include <FEXCore/Utils/PearSourceGuard.h>
+ #include "Interface/Context/Context.h"
+ #include "Interface/Core/OpcodeDispatcher.h"
+@@ -28,7 +31,7 @@
+     FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+   // Reuse the selected allocator/alignment once, but never placement-construct
+   // a real Context into a null allocation. No errno is invented for rpaligned_alloc.
+-  auto* Storage=FEXCore::Allocator::aligned_alloc(alignof(FEXCore::Context::ContextImpl),sizeof(FEXCore::Context::ContextImpl));
++  auto* Storage=FEXCore::Allocator::AllocatePearMetadataStorage(alignof(FEXCore::Context::ContextImpl),sizeof(FEXCore::Context::ContextImpl));
+   if (!Storage) {
+     Outcome={PEAR_FEX_UNAVAILABLE,0,0};
+     FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome);
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -1,4 +1,7 @@
+ // SPDX-License-Identifier: MIT
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ 
+ #include "Common/VectorRegType.h"
+ #include "Interface/Context/Context.h"
+@@ -96,7 +99,7 @@
+   return Published;
+ }
+ fextl::unique_ptr<Dispatcher> Dispatcher::CreatePear(FEXCore::Context::ContextImpl* CTX, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+-  auto* Storage=FEXCore::Allocator::aligned_alloc(alignof(Dispatcher),sizeof(Dispatcher));
++  auto* Storage=FEXCore::Allocator::AllocatePearMetadataStorage(alignof(Dispatcher),sizeof(Dispatcher));
+   if (!Storage) {
+     Outcome={PEAR_FEX_UNAVAILABLE,0,0};
+     FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome); return {};
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.cpp b/FEXCore/Source/Interface/Core/LookupCache.cpp
+--- a/FEXCore/Source/Interface/Core/LookupCache.cpp
++++ b/FEXCore/Source/Interface/Core/LookupCache.cpp
+@@ -92,7 +92,7 @@
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ fextl::unique_ptr<LookupCache> LookupCache::CreatePear(FEXCore::Context::ContextImpl* CTX,FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+-  auto Actual=FEXCore::Allocator::TryMakePearObject<LookupCache>(CTX);
++  auto Actual=FEXCore::Allocator::TryMakePearMetadataObject<LookupCache>(CTX);
+   if (!Actual) { Outcome={PEAR_FEX_UNAVAILABLE,0,0}; return {}; }
+   Outcome=Actual->PearCreation;
+   return Outcome ? std::move(Actual) : fextl::unique_ptr<LookupCache> {};
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -1524,7 +1524,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ fextl::unique_ptr<CPUBackend> CreatePearArm64JITCore(FEXCore::Context::ContextImpl* CTX,
+     FEXCore::Core::InternalThreadState* Thread, fextl::shared_ptr<CodeBuffer> InitialBuffer) {
+-  return FEXCore::Allocator::TryMakePearObject<Arm64JITCore>(CTX, Thread, std::move(InitialBuffer));
++  return FEXCore::Allocator::TryMakePearMetadataObject<Arm64JITCore>(CTX, Thread, std::move(InitialBuffer));
+ }
+ #endif
+ 
+diff --git a/FEXCore/Source/Interface/IR/PassManager.cpp b/FEXCore/Source/Interface/IR/PassManager.cpp
+--- a/FEXCore/Source/Interface/IR/PassManager.cpp
++++ b/FEXCore/Source/Interface/IR/PassManager.cpp
+@@ -29,7 +29,7 @@
+ #if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED
+   return {}; // Validation-pass insertion is not the selected finite pipeline.
+ #else
+-  void* Storage=FEXCore::Allocator::aligned_alloc(alignof(PassManager),sizeof(PassManager));
++  void* Storage=FEXCore::Allocator::AllocatePearMetadataStorage(alignof(PassManager),sizeof(PassManager));
+   if (!Storage) return {};
+   fextl::unique_ptr<PassManager> Actual {::new (Storage) PassManager(PearEmptyTag {})};
+   if (Actual->PassManagerDumpIR()) return {};
+diff --git a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+--- a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
++++ b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+@@ -77,7 +77,7 @@
+   if (!LearnedBase || Allocation.Base || Allocation.Token.expected_state != PEAR_FEX_RESERVED_NONE)
+     return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_VERSION_MISMATCH, 0, 0});
+   Ptr = LearnedBase;
+-  LookupCache = FEXCore::Allocator::TryMakePearObject<GuestToHostMap>();
++  LookupCache = FEXCore::Allocator::TryMakePearMetadataObject<GuestToHostMap>();
+   if (!LookupCache) return {PEAR_FEX_UNAVAILABLE,0,0};
+   CodeBufferEnd = Ptr + UsableSize();
+   CodeBufferOffset = Ptr;
+@@ -105,7 +105,7 @@
+ }
+ fextl::shared_ptr<CodeBuffer> CodeBuffer::CreatePear(size_t Size, bool Named, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+   Outcome={PEAR_FEX_UNAVAILABLE,0,0};
+-  void* Storage=FEXCore::Allocator::aligned_alloc(16,256);
++  void* Storage=FEXCore::Allocator::AllocatePearMetadataStorage(16,256);
+   if (!Storage) return {};
+   auto Buffer = std::allocate_shared<CodeBuffer>(PearControlAllocator<CodeBuffer> {Storage},Size,Named);
+   Outcome = Buffer->InitializePear();
+diff --git a/Source/Windows/PearEmptyInit/Fixture.cpp b/Source/Windows/PearEmptyInit/Fixture.cpp
+--- a/Source/Windows/PearEmptyInit/Fixture.cpp
++++ b/Source/Windows/PearEmptyInit/Fixture.cpp
+@@ -12,6 +12,7 @@
+ #include <FEXCore/Config/Config.h>
+ #include <FEXCore/Core/Context.h>
+ #include <FEXCore/Utils/PearFEXMemory.h>
++#include <FEXCore/Utils/PearDataMemory.h>
+ #include <FEXCore/Utils/PearFEXRetirement.h>
+ #include <atomic>
+ #include <memory>
+@@ -31,6 +32,7 @@
+   FEXCore::Context::PearContextOwner Context;
+   FEXCore::Core::InternalThreadState* Thread {};
+   bool ConfigInitialized {};
++  bool ObjectStorageInitialized {};
+ };
+ static_assert(sizeof(State)<=8192,"One finite retained state; whole aggregate proof remains separate");
+ alignas(State) static std::byte Storage[sizeof(State)];
+@@ -88,6 +90,10 @@
+   // quarantine before its checked deletion; admission/metadata proofs remain.
+   if ((R.ContextCreated && !R.ContextAllocatorCompleted) || (R.ThreadCreated && !R.ThreadAllocatorCompleted)) return Refused(Phase::Cleanup);
+   S.Syscall.reset();S.Signal.reset();
++  if (S.ObjectStorageInitialized) {
++    if (!FEXCore::Allocator::ShutdownPearEmptyObjectStorage()) return Refused(Phase::Cleanup);
++    S.ObjectStorageInitialized=false;
++  }
+   if (S.ConfigInitialized) {
+     if (!FEXCore::Config::ShutdownPearEmpty()) return Refused(Phase::Cleanup);
+     S.ConfigInitialized=false;R.ConfigShutdown=1;
+@@ -118,6 +124,8 @@
+   if (!S.Syscall || !Original) return Source(Phase::Context,Original);
+   auto Features=FEX::Windows::CPUFeatures::FetchHostFeatures(true,FEXCore::HostFeatures::HostTypeEnum::Wow64,S.Plan.NativeOwnerPID);
+   if (Features.HostCPUCount!=Count || Features.ProcessPID!=S.Plan.NativeOwnerPID || !Features.CPUMIDRs.empty()) return Refused(Phase::HostBasics);
++  if (!FEXCore::Allocator::InitializePearEmptyObjectStorage()) return Refused(Phase::Context);
++  S.ObjectStorageInitialized=true;
+   R.ContextAttempted=1;
+   S.Context=FEXCore::Context::Context::CreatePearContext(Features,Original);
+   if (!S.Context || !Original) return Source(Phase::Context,Original);

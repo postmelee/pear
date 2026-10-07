@@ -1,0 +1,90 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -890,17 +890,27 @@
+     PearFiniteCheckpoint=384+I;
+     FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
+     auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);if (!Outcome) return Outcome;
++    PearFiniteCheckpoint=0x181;
+     const auto Private=JIT->TempCodeBufferAllocator.ReownOrClaimBufferWithSize(8192);
++    PearFiniteCheckpoint=0x182;
+     if (!Private.Ptr || Private.Size!=8192) return {PEAR_FEX_UNAVAILABLE,0,0};
+     MEMORY_BASIC_INFORMATION DataInfo {},GuardInfo {};
+-    if (::VirtualQuery(Private.Ptr,&DataInfo,sizeof(DataInfo))!=sizeof(DataInfo) ||
+-        ::VirtualQuery(Private.Ptr+4096,&GuardInfo,sizeof(GuardInfo))!=sizeof(GuardInfo) ||
+-        DataInfo.AllocationBase!=Private.Ptr || DataInfo.BaseAddress!=Private.Ptr ||
+-        GuardInfo.AllocationBase!=Private.Ptr || GuardInfo.BaseAddress!=Private.Ptr+4096 ||
+-        DataInfo.State!=MEM_COMMIT || GuardInfo.State!=MEM_COMMIT ||
+-        DataInfo.RegionSize<4096 || GuardInfo.RegionSize<4096 ||
+-        (DataInfo.Protect&0xff)!=PAGE_READWRITE || (GuardInfo.Protect&0xff)!=PAGE_NOACCESS)
+-      return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=387;
++    if (::VirtualQuery(Private.Ptr,&DataInfo,sizeof(DataInfo))!=sizeof(DataInfo)) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=388;
++    if (::VirtualQuery(Private.Ptr+4096,&GuardInfo,sizeof(GuardInfo))!=sizeof(GuardInfo)) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=389;
++    if (DataInfo.AllocationBase!=Private.Ptr || DataInfo.BaseAddress!=Private.Ptr) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=390;
++    if (GuardInfo.AllocationBase!=Private.Ptr || GuardInfo.BaseAddress!=Private.Ptr+4096) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=391;
++    if (DataInfo.State!=MEM_COMMIT || GuardInfo.State!=MEM_COMMIT) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=392;
++    if (DataInfo.RegionSize<4096 || GuardInfo.RegionSize<4096) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=393;
++    if ((DataInfo.Protect&0xff)!=PAGE_READWRITE) return {PEAR_FEX_UNAVAILABLE,0,0};
++    PearFiniteCheckpoint=394;
++    if ((GuardInfo.Protect&0xff)!=PAGE_NOACCESS) return {PEAR_FEX_UNAVAILABLE,0,0};
+     // Original ARM64 LDR-literal/RET plus one inline constant. No guest input,
+     // guest decoding, IR emission, JIT header or lookup publication is supplied.
+     const uint32_t Instructions[]={0x58000040,0xd65f03c0};
+@@ -911,11 +921,14 @@
+     Code.EntryPoints.emplace(0x3000,Private.Ptr);Code.PearPendingEmission=true;
+     JIT->PearPendingTemp=Private.Ptr;JIT->PearPendingSize=16;
+     const auto Before=JIT->CurrentCodeBuffer->GetPearSnapshot();
++    PearFiniteCheckpoint=0x18b;
+     if (!JIT->BeginPreparedPublication(Code)) return {PEAR_FEX_UNAVAILABLE,0,0};
+     if (!I) {
+       // A legitimate generation-invalidated publication must abort cleanly.
+       // The updated owner token must be visible before any following writer.
++      PearFiniteCheckpoint=0x18c;
+       if (JIT->FinishPreparedPublication(Code,false)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++      PearFiniteCheckpoint=0x18d;
+       const auto After=JIT->CurrentCodeBuffer->GetPearSnapshot();
+       if (JIT->PearWriter || JIT->PearPendingTemp || JIT->PearPreparedBuffer ||
+           Code.PearOwnerPublished || !M::Retirement::AdmissionOpen() ||
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;
