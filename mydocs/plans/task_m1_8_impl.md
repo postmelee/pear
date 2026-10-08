@@ -3,7 +3,7 @@
 Task plan: [task_m1_8.md](task_m1_8.md), approved October 8, 2026.
 GitHub Issue: [#8](https://github.com/postmelee/pear/issues/8)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: Stages 1 and 2 complete; Stage 3 awaiting explicit continuation.
+Status: Stages 1, 2 and 3 complete; Stage 4 awaits explicit continuation.
 
 ## Stage Overview
 
@@ -382,3 +382,159 @@ Later stages retain their explicit continuation checkpoints.
 On October 8, 2026, the requester explicitly continued after implementation-plan
 review. The planned source integration, development signing and bounded Stage 1
 execution are authorized. Later stages retain their continuation checkpoints.
+
+## Stage 3 Authorization and Reuse
+
+On October 9 the requester explicitly continued after the Stage 2 report.
+Use the final Stage 2 candidate and unchanged CPU/Wine PE/FEX components.
+The separately active #9 branch is preserved. The daily-board skill applies.
+
+Read pinned Apple `presenting-metal-drawables` guidance at
+`4f42344c90be22112f46becc3fb9687f423f2f88` and actual SDK drawable/command-buffer
+headers. Retain DXMT's existing Metal command-buffer presentation, not Metal 4
+queue APIs. DXMT's private WMT wrappers are not Apple's metal-cpp ownership API.
+Reuse #7 associated-object lifetime witnesses, main-thread bridge and registry
+counts. Add opt-in read-only observation at existing acquire/release, drawable,
+presented-handler and command-buffer-completion boundaries. No new ABI or owner.
+Only the two affected native objects are rebuilt against retained exact inputs;
+repeat native pairing and callback/ABI checks on the signed candidate.
+
+The independent presentation fixture uses D3D11 swapchains and event queries,
+three cycles and the already approved size/frame sequence. Separate files in
+the approved `tests/dxmt/translated_*` and `tools/dxmt/translated_*` locations
+preserve Stage 2 source/build admission. Owned-window captures, if available,
+are private evidence; no desktop capture or proprietary content is collected.
+Missing capture/visible observation remains an incomplete requirement.
+
+### Stage 3 amendment — own the real Wine client surface (approved)
+
+**Observed blocker.** `presentation2` reaches DXMT's actual swapchain constructor,
+but the v1 bridge returns `PEAR_METAL_NO_CLIENT` (6), then DXMT aborts with exit 3.
+The initial x64 descriptor alignment failure is separately preserved in
+`presentation1` (RVA `0x1612`, 8-byte store at a 16-byte boundary plus 12).
+The immutable, explicitly aligned descriptor preserves its values and isolates
+that known CPU defect; it does not fix or waive general x64 alignment handling.
+
+The original native #7 fixture explicitly creates a Wine `client_surface` before
+acquiring a Metal lease. Ordinary `CreateWindowEx` and DXMT's swapchain constructor
+do not do this. Its native-only success therefore cannot establish actual game
+presentation. This is a missing runtime integration, not a test assertion to relax.
+
+**Requester-approved change (October 9):**
+
+1. Keep the v1 getter, 48-byte table, feature mask 7, all four methods, closed
+   statuses and `NO_CLIENT` refusal unchanged. Keep the original 39-case oracle.
+2. Add a source-matched v2 getter/table for DXMT's real swapchain route. The
+   table is 56 bytes on the selected 64-bit Darwin ABI: the same typed header and
+   four methods plus `acquire_window(hwnd, native_device, out_lease)` at offset
+   48. Version 2 and feature bit 8 explicitly request managed window-surface
+   acquisition. Zero outputs and reject version/size/unknown features first.
+   No Wine structure pointers or layouts cross this boundary. The v2 consumer
+   requires v2; no silent fallback to an unrelated/private-symbol renderer.
+3. Reuse Wine's `client_surface` creation, active-list registration, presentation,
+   update, detach and reference-counting functions. The Wine adapter owns the
+   necessary surface reference; the opaque Metal lease continues to own its
+   checked attachment. Multiple leases share the same owned surface; never
+   replace another renderer's surface or count a foreign reference as ours.
+4. Create/update the Wine surface on the calling initialized Wine thread, with
+   no registry/data lock held across a Cocoa main-thread wait. Keep native layer
+   operations on the existing main-thread bridge. Serialize acquisition state,
+   recheck window/generation after creation and roll back every failed step.
+   Reject callback reentry and wrong execution context. Physical allocation
+   failure must not dereference the existing upstream null surface result.
+5. At the last managed lease, close the Metal attachment and release the owned
+   surface exactly once using Wine's normal unregister/release sequence, outside
+   the main-thread registry operation. Account for Wine's unused-surface cache:
+   window destruction must retire its retained reference. Resize/replacement and
+   destroyed-window races invalidate tokens rather than expose stale views.
+   Before implementing, inspect exact lock ordering and upstream active/cache
+   ownership; if this cannot fit the existing thread/lifetime contracts, return
+   for a concrete revised design instead of inventing a raw-pointer shortcut.
+6. Extend only existing approved runtime-patch, test/tool and task-document roots.
+   No CPU/JIT owner redesign, signing changes, new system tool or manager contract.
+   Preserve failed candidates and source snapshots; rebuild only affected Wine/
+   DXMT native objects and re-sign the resulting coherent candidate.
+
+**Necessary validation after approval:** preserve all v1 native cases; add finite
+v2 version/size/feature refusal, real missing-surface acquisition, shared leases,
+foreign-owner refusal, allocation/acquisition rollback, resize and window-destroy
+invalidation, final registry and physical lifetime checks. Then run the approved
+three translated device/window cycles and 18 frames with visible output, native
+presented/GPU callbacks, zero final leases/attachments and physical destruction.
+Repeat the same-candidate rendering cases and original CPU callback/ABI boundaries.
+Do not repeat unrelated CPU/ordering tests unless CPU/loader/owner bytes change.
+
+The requester explicitly approved this amendment and implementation on October 9.
+Lock/lifetime inspection selects upstream `client_surface_release` for the final
+owned reference: it removes the active-list entry, detaches and destroys directly.
+Calling `use_window_client_surface(FALSE)` would add an unused-cache reference,
+so the managed adapter avoids that optional cache rather than leaving a hidden
+owner after the last lease. No registry mutex spans Wine or Cocoa calls.
+
+### Stage 3 CPU repair — authorized scope extension
+
+On October 9 the coordinating chat delivered the requester's explicit instruction
+that this #8 session owns the real delivered-unaligned-access defect, preserving
+both original failing PEs and repairing/revalidating the actual final candidate.
+This is authorized work, not another scope-approval request. Track it here as
+`CPU-UNALIGNED-DELIVERY`; constant/aligned GPU setup is not its acceptance evidence.
+The later bounded owned Megabonk startup is prioritized after presentation and a
+coherent candidate, preferably with this repair. Normal Steam ownership/account
+requirements remain; no bypass, Steam stub, game binary patch or save alteration.
+#10 proceeds in another chat; no concurrent heavy runtime tests or other-task edits.
+
+Reuse the pinned upstream scalar unaligned preparation and #5/#6 source lifetime,
+retained CodeBuffer, checked RX copying, mutation turn, owner WriteGuard,
+publication and EC entry/exit. Investigate a private same-source adapter in the
+compiled Windows exception reset path; no raw signal-handler JIT writes, no new
+instruction emulator, owner wire ABI, executable allocator or security route.
+Capture the original native context and checked instruction snapshot while its
+real dispatcher lease is active. Any write must occur with source objects retained,
+all executors quiescent and the owner write gate held, followed by checked RX
+publication and managed re-entry before native context resumption. Check stale
+source/epoch and unsupported instruction families rather than pretending recovery.
+Review actual source invariants before choosing the final transaction sequence.
+
+Required acceptance: original 2-byte texture-preparation and 8-byte descriptor
+store PEs/inputs execute through actual delivered exception and recovery, plus
+original output/progress oracles. Re-run the affected 19-case CPU corpus, ordering,
+exception/lifecycle and graphics boundaries on the repaired final candidate.
+Reuse unchanged independent Windows references; retain all actual failure outcomes.
+A need to change the owner ABI or security contract is a separate concrete review,
+not implicitly authorized by this source-level integration extension.
+
+
+### Stage 3 visible-frame evidence refinement
+
+The v2 candidate completed all 18 DXGI presents, GPU callbacks and physical
+teardown, but Metal reported zero `presentedTime` for some callbacks. A targeted
+flush experiment did not establish a fix and was removed; actual drawable texture
+sizes already matched. Preserve those observations rather than claiming a renderer
+fix from a timestamp alone.
+
+Within the approved fixture/capture roots, `translated_presentation_frames.cpp`
+reuses the same three cycles and 18 frames with alternating adjacent colors and
+bounded 1.5-second per-frame holds. Capture every owned-window frame and independently
+check its dimensions and pixels. This provides direct evidence for all 18 frames;
+a prior/successor frame cannot pass because its color differs. Keep all 18 actual
+presentation callbacks, GPU completions and physical cleanup checks. Record zero
+timestamps as unavailable timing evidence, never positive times or performance.
+The exact two original failure PEs remain separately bound CPU recovery inputs.
+No official documentation destination, owner ABI, performance policy or Stage 4
+scope changes. The final aggregate also requires full repaired CPU/ordering results,
+23 v2 controls and the unchanged 39-case v1 oracle on the final signed candidate.
+
+
+Actual Stage 3 verification uses the final candidate and retained run identities
+below; it does not overwrite the preserved initial failed runs. The
+`--cpu-boundaries` argument now accepts the full repaired dependency index.
+
+```sh
+python3 -B -m tools.dxmt.translated_check --run .build/task8/device15 --runtime .build/task8/surface-runtime4
+python3 -B -m tools.dxmt.translated_check --run .build/task8/presentation-frames1 --runtime .build/task8/surface-runtime4 --pairing .build/task8/pairing10 --rendering .build/task8/surface-original-render1 --cpu-boundaries .build/task8/stage3-dependencies1.json --require-stage 3
+python3 -B -m unittest discover -s tests/dxmt -p 'test_translated_*.py'
+python3 -B -m unittest discover -s tests/dxmt -p 'test_surface_controls.py'
+python3 -B -m unittest discover -s tests/dxmt -p 'test_present_frames.py'
+python3 -B tools/check_governance.py
+git diff --check
+```

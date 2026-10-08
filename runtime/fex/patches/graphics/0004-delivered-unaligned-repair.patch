@@ -1,0 +1,131 @@
+--- a/FEXCore/include/FEXCore/Core/Context.h
++++ b/FEXCore/include/FEXCore/Core/Context.h
+@@ -89,6 +89,9 @@
+   FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result EnterPearEC(Core::InternalThreadState*, bool FillState);
+   FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result ExitPearEC(Core::InternalThreadState*, bool Required);
+   FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result ObservePearInstruction(Core::InternalThreadState*, uintptr_t PC, uint32_t& Word);
++  // Private compiled-exception adapter; preserves the Context layout and owner ABI.
++  FEX_DEFAULT_VISIBILITY FEXCore::Utils::PearFEXMemory::Result RepairPearUnaligned(
++    Core::InternalThreadState*, uintptr_t PC, bool& Handled, int32_t& ResumeDelta);
+   // Private paired-source construction outcomes, not a stable runtime ABI.
+   virtual bool InitPearCore(FEXCore::Utils::PearFEXMemory::Result&) = 0;
+   virtual bool PreparePearConstructionCleanup(FEXCore::Utils::PearFEXMemory::Result&) = 0;
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -145,6 +145,96 @@
+   const auto T=Thread->CPUBackend->FindPearRetainedTarget(PC);
+   if (!W || !T) return {PEAR_FEX_STALE_IDENTITY,0,0};
+   return M::CopyManagedRXUnderGlobalLease(D,*T,Thread,W->Offset,Bytes).Outcome;
++}
++
++// Called from the compiled Windows exception reset path, never a raw Darwin
++// signal callback. Retain actual source objects across the native mutation turn.
++FEXCore::Utils::PearFEXMemory::Result Context::RepairPearUnaligned(
++    Core::InternalThreadState* Thread, uintptr_t PC, bool& Handled, int32_t& ResumeDelta) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  namespace A=FEXCore::ArchHelpers::Arm64;
++  Handled=false;ResumeDelta=0;
++  auto Life=M::AcquireCurrentSourceLifetime(this);
++  auto* Impl=static_cast<ContextImpl*>(this);
++  if (!Life || !Thread || Life.ActualThread()!=Thread || Thread->CTX!=this ||
++      !Thread->CPUBackend || !Impl->Dispatcher || (PC&3) || PC<4)
++    return {PEAR_FEX_STALE_IDENTITY,0,0};
++  const auto D=Impl->Dispatcher->GetPearSnapshot();
++  if (!M::HasManagedActive(D)) return {PEAR_FEX_UNAVAILABLE,0,0};
++  auto Window=Thread->CPUBackend->FindPearManagedWindow(PC-4);
++  auto Target=Thread->CPUBackend->FindPearRetainedTarget(PC-4);
++  if (!Window || !Target) return {PEAR_FEX_STALE_IDENTITY,0,0};
++  const auto Captured=Window->Owner->GetPearSnapshot();
++  std::array<uint32_t,13> Words {};
++  auto Bytes=std::span<uint8_t>{reinterpret_cast<uint8_t*>(Words.data()),sizeof(Words)};
++  auto Read=M::CopyManagedRXUnderGlobalLease(D,*Target,Thread,Window->Offset,Bytes);
++  if (!Read) return Read.Outcome;
++  const auto Prepared=A::PrepareUnalignedPatchSnapshot(A::UnalignedHandlerType::HalfBarrier,Words);
++  if (Prepared.Kind!=A::UnalignedPatchKind::Candidate && Prepared.Kind!=A::UnalignedPatchKind::AlreadyPatched)
++    return {PEAR_FEX_OK,0,0}; // Preserve the actual guest exception for unsupported families.
++  if (Prepared.ResumeDelta!=0 && Prepared.ResumeDelta!=-4) return {PEAR_FEX_INVALID_REQUEST,0,0};
++  if (Prepared.Kind==A::UnalignedPatchKind::AlreadyPatched) {
++    Handled=true;ResumeDelta=Prepared.ResumeDelta;return {PEAR_FEX_OK,0,0};
++  }
++  // Upstream reserves a barrier slot beside scalar TSO accesses. Do not patch
++  // an arbitrary neighbouring instruction even if the access opcode matches.
++  for (uint32_t I=0;I<Prepared.StoreCount;++I) {
++    const auto Index=Prepared.StoreOrder[I];
++    if (Index>2 || (Index!=1 && Words[Index]!=0xd503201f && Words[Index]!=Prepared.Next[Index]))
++      return {PEAR_FEX_INVALID_REQUEST,0,0};
++  }
++  // No generated instruction runs while idle. The exact source CodeBuffer,
++  // Context and Thread remain held; the original native register context is
++  // untouched. Reject any intervening epoch change before writing or returning.
++  auto Outcome=ExitPearEC(Thread,true);if (!Outcome) return Outcome;
++  M::SourceMutationTurn Turn{Life,true};if (!Turn) return Turn.Status();
++  const auto Same=[](const M::Allocation& X,const M::Allocation& Y) {
++    return X.Base==Y.Base && X.Token.owner_pid==Y.Token.owner_pid &&
++      X.Token.allocation_id==Y.Token.allocation_id && X.Token.generation==Y.Token.generation &&
++      X.Token.extent_offset==Y.Token.extent_offset && X.Token.extent_size==Y.Token.extent_size &&
++      X.Token.allocation_class==Y.Token.allocation_class && X.Token.ec_role==Y.Token.ec_role &&
++      X.Token.expected_state==Y.Token.expected_state && X.Token.write_epoch==Y.Token.write_epoch;
++  };
++  auto Transaction=Window->Owner->GetPearSnapshot();
++  if (!Same(Captured,Transaction) || !Same(D,Impl->Dispatcher->GetPearSnapshot()))
++    return M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++  const auto Before=Transaction;
++  {
++    M::WriteGuard Write{Transaction,Window->Offset,sizeof(Words)};
++    if (!Write) return Write.Status();
++    if (!Write.Matches(0,{reinterpret_cast<const uint8_t*>(Words.data()),sizeof(Words)})) {
++      const auto Aborted=Write.Abort();
++      Window->Owner->ComparePearUpdate(Before,Transaction);
++      return M::Retirement::PoisonSourceAdmission(Aborted ? M::Result{PEAR_FEX_STALE_IDENTITY,0,0} : Aborted);
++    }
++    for (uint32_t I=0;I<Prepared.StoreCount;++I) {
++      const auto Index=Prepared.StoreOrder[I];
++      std::atomic_ref<uint32_t>(*reinterpret_cast<uint32_t*>(Write.Data()+4*Index)).store(Prepared.Next[Index],std::memory_order_release);
++    }
++    Outcome=Write.Publish();
++    if (!Outcome) {
++      const auto Aborted=Write.Abort();
++      if (!Window->Owner->ComparePearUpdate(Before,Transaction) || !Aborted)
++        M::Retirement::PoisonSourceAdmission(!Aborted ? Aborted : M::Result{PEAR_FEX_STALE_IDENTITY,0,0});
++      return Outcome;
++    }
++    if (!Window->Owner->ComparePearUpdate(Before,Transaction))
++      return M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++  }
++  // The same mutation turn spans exit, publish and re-entry, so neither another
++  // writer nor source invalidation can change this retained target between them.
++  // There is no pending native pin to discard or replace with a fresh ENTRY.
++  Outcome=EnterPearEC(Thread,false);if (!Outcome) return Outcome;
++  auto Fresh=Thread->CPUBackend->FindPearRetainedTarget(PC-4);
++  if (!Fresh) return M::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++  Read=M::CopyManagedRXUnderGlobalLease(Impl->Dispatcher->GetPearSnapshot(),*Fresh,Thread,Window->Offset,Bytes);
++  if (!Read || Words!=Prepared.Next) {
++    const auto Failure=Read ? M::Result{PEAR_FEX_STALE_IDENTITY,0,0} : Read.Outcome;
++    const auto Exited=ExitPearEC(Thread,true);(void)Exited;
++    return M::Retirement::PoisonSourceAdmission(Failure);
++  }
++  Handled=true;ResumeDelta=Prepared.ResumeDelta;
++  return {PEAR_FEX_OK,0,0};
+ }
+ 
+ #endif
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1059,7 +1059,16 @@
+       uint32_t Instruction {};
+       const auto Observed=CTX->ObservePearInstruction(Thread,Native->Pc,Instruction);
+       if (!Observed) { PearRecordPrimary(Observed); return STATUS_NOT_SUPPORTED; }
+-      if (Record->ExceptionCode==EXCEPTION_ACCESS_VIOLATION && Record->NumberParameters>=2 &&
++      bool UnalignedHandled=false;int32_t UnalignedResume=0;
++      if (IsJIT && Record->ExceptionCode==EXCEPTION_DATATYPE_MISALIGNMENT) {
++        const auto Repaired=CTX->RepairPearUnaligned(Thread,Native->Pc,UnalignedHandled,UnalignedResume);
++        if (!Repaired) { PearRecordPrimary(Repaired); return STATUS_NOT_SUPPORTED; }
++      }
++      if (UnalignedHandled) {
++        Native->Pc+=UnalignedResume;
++        PearInitCheckpoint("Unaligned.repaired",STATUS_SUCCESS,0,UnalignedResume);
++        Next=Action::NativeResume;
++      } else if (Record->ExceptionCode==EXCEPTION_ACCESS_VIOLATION && Record->NumberParameters>=2 &&
+           FEX::Windows::CallRetStack::HandleAccessViolation(Thread,Record->ExceptionInformation[1],Native->X17)) {
+         Next=Action::NativeResume;
+       } else {

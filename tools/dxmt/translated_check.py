@@ -121,13 +121,18 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run',type=Path)
     p.add_argument('--runtime',type=Path);p.add_argument('--require-stage',type=int)
     p.add_argument('--qualification',type=Path);p.add_argument('--pairing',type=Path)
+    p.add_argument('--rendering',type=Path);p.add_argument('--cpu-boundaries',type=Path)
     a=p.parse_args()
     if a.qualification:
         need(a.require_stage==1,'translated_stage_not_implemented')
         v=stage_one(a.qualification.resolve())
     else:
-        need(a.run is not None and a.runtime is not None and a.require_stage in (None,2),'translated_stage_requires_full_index')
-        if a.require_stage==2:
+        need(a.run is not None and a.runtime is not None and a.require_stage in (None,2,3),'translated_stage_requires_full_index')
+        if a.require_stage==3:
+            from tools.dxmt.translated_present_check import stage_three
+            need(a.pairing is not None and a.rendering is not None and a.cpu_boundaries is not None,'present_stage_dependencies')
+            v=stage_three(a.run.resolve(),a.runtime.resolve(),a.pairing.resolve(),a.rendering.resolve(),a.cpu_boundaries.resolve());save(a.run/'stage3-assessment.json',v)
+        elif a.require_stage==2:
             from tools.dxmt.translated_render_check import verify
             v=verify(a.run.resolve(),a.runtime.resolve(),a.pairing.resolve() if a.pairing else None);save(a.run/'rendering-assessment.json',v)
         else:

@@ -1,0 +1,236 @@
+--- a/dlls/winemac.drv/pear_metal_bridge.m
++++ b/dlls/winemac.drv/pear_metal_bridge.m
+@@ -5,7 +5,9 @@
+ #import "cocoa_event.h"
+ #import "cocoa_app.h"
+ #import "cocoa_window.h"
+-#import "pear_macdrv_metal_v1.h"
++#import "pear_macdrv_metal_v2.h"
++extern int32_t pear_macdrv_surface_take(uint64_t,uint64_t *);
++extern void pear_macdrv_surface_drop(uint64_t);
+ #import <Metal/Metal.h>
+ #import <QuartzCore/CAMetalLayer.h>
+ #include <string.h>
+@@ -27,7 +29,7 @@
+     id<MTLDevice> device;
+     unsigned count;
+ };
+-struct pear_lease { uint64_t token; struct pear_binding *binding; unsigned invalid; };
++struct pear_lease { uint64_t token, managed_owner; struct pear_binding *binding; unsigned invalid; };
+ static struct pear_binding bindings[PEAR_METAL_CAPACITY];
+ static struct pear_lease leases[PEAR_METAL_CAPACITY];
+ static uint64_t next_token;
+@@ -164,6 +166,7 @@
+ static int32_t release_lease(uint64_t token)
+ {
+     __block int32_t status=PEAR_METAL_OK;
++    __block uint64_t managed_owner=0;
+     if(!token) return PEAR_METAL_ARGUMENT;
+     run_main(^{ @autoreleasepool {
+         struct pear_lease *lease=find_lease(token);
+@@ -172,6 +175,7 @@
+         if(!lease) { status=PEAR_METAL_STALE; return; }
+         binding=lease->binding;
+         @try {
++            managed_owner=lease->managed_owner;
+             [binding->layer release]; [(id)binding->view release];
+             memset(lease,0,sizeof(*lease));
+             if(!--binding->count) {
+@@ -181,6 +185,7 @@
+             }
+         } @catch(NSException *exception) { (void)exception; status=PEAR_METAL_NATIVE_EXCEPTION; }
+     }});
++    if(managed_owner && !status) pear_macdrv_surface_drop(managed_owner);
+     pear_present_counts("release",status);
+     return status;
+ }
+@@ -223,3 +228,32 @@
+         }
+     });
+ }
++
++static int32_t acquire_window(uint64_t hwnd,uint64_t device,uint64_t *out)
++{
++    uint64_t owner=0,token=0;
++    __block int32_t status;
++    if(!out) return PEAR_METAL_ARGUMENT;
++    *out=0;
++    if(!device) return PEAR_METAL_DEVICE;
++    if((status=pear_macdrv_surface_take(hwnd,&owner))) return status;
++    if((status=acquire(hwnd,device,&token))) { pear_macdrv_surface_drop(owner);return status; }
++    run_main(^{
++        struct pear_lease *lease=find_lease(token);
++        status=valid_lease(lease);
++        if(!status) lease->managed_owner=owner;
++    });
++    if(status) { release_lease(token);pear_macdrv_surface_drop(owner);return status; }
++    *out=token;return PEAR_METAL_OK;
++}
++static const struct pear_macdrv_metal_v2 interface_v2={PEAR_METAL_V2_VERSION,sizeof(interface_v2),PEAR_METAL_V2_FEATURES,acquire,query,release_lease,with_layer,acquire_window};
++__attribute__((visibility("default"))) int32_t pear_macdrv_metal_v2_get_interface(
++    uint32_t version,uint32_t bytes,uint64_t features,const struct pear_macdrv_metal_v2 **out)
++{
++    if(!out) return PEAR_METAL_ARGUMENT;
++    *out=NULL;
++    if(version!=PEAR_METAL_V2_VERSION) return PEAR_METAL_VERSION_ERROR;
++    if(bytes!=sizeof(interface_v2)) return PEAR_METAL_SIZE;
++    if(features & ~PEAR_METAL_V2_FEATURES) return PEAR_METAL_FEATURE_ERROR;
++    *out=&interface_v2;return PEAR_METAL_OK;
++}
+--- a/dlls/winemac.drv/window.c
++++ b/dlls/winemac.drv/window.c
+@@ -1172,7 +1172,9 @@
+     struct macdrv_client_surface *surface;
+ 
+     surface = client_surface_create(&macdrv_client_surface_funcs, hwnd, pixel_format, raw);
++    if (!surface) return NULL;
+     surface->cocoa_view = macdrv_create_view(cgrect_from_rect(surface->client.monitor_rect));
++    if (!surface->cocoa_view) { client_surface_release(&surface->client); return NULL; }
+     macdrv_set_view_hidden(surface->cocoa_view, TRUE);
+ 
+     if (surface)
+@@ -1183,6 +1185,8 @@
+ 
+     return &surface->client;
+ }
++
++#include "pear_surface_owner.h"
+ 
+ bool macdrv_client_surface_acquire_metal_swapchain(struct macdrv_client_surface *surface)
+ {
+--- a/dlls/winemac.drv/pear_macdrv_metal_v2.h
++++ b/dlls/winemac.drv/pear_macdrv_metal_v2.h
+@@ -0,0 +1,19 @@
++/* Original Pear private native driver contract. SPDX-License-Identifier: MIT. */
++#ifndef PEAR_MACDRV_METAL_V2_H
++#define PEAR_MACDRV_METAL_V2_H
++#include "pear_macdrv_metal_v1.h"
++#define PEAR_METAL_V2_VERSION 2u
++#define PEAR_METAL_V2_FEATURES UINT64_C(15)
++struct pear_macdrv_metal_v2 {
++    uint32_t version, bytes;
++    uint64_t features;
++    int32_t (*acquire)(uint64_t, uint64_t, uint64_t *);
++    int32_t (*query)(uint64_t, struct pear_metal_query_v1 *);
++    int32_t (*release)(uint64_t);
++    int32_t (*with_layer)(uint64_t, pear_metal_layer_operation, void *);
++    int32_t (*acquire_window)(uint64_t, uint64_t, uint64_t *);
++};
++typedef int32_t (*pear_metal_v2_get_interface)(uint32_t,uint32_t,uint64_t,const struct pear_macdrv_metal_v2 **);
++_Static_assert(sizeof(struct pear_macdrv_metal_v2)==56,"native v2 table size");
++_Static_assert(offsetof(struct pear_macdrv_metal_v2,acquire_window)==48,"native v2 table tail");
++#endif
+--- a/dlls/winemac.drv/pear_surface_owner.h
++++ b/dlls/winemac.drv/pear_surface_owner.h
+@@ -0,0 +1,100 @@
++/* Original Pear surface ownership adapter. SPDX-License-Identifier: LGPL-2.1-or-later.
++ * Included in window.c. Private pointers never cross the exported native ABI.
++ * The small reservation mutex is NEVER held across Wine or Cocoa operations. */
++/* Source-matched Wine internal export; never part of the Pear native ABI. */
++extern void use_window_client_surface(struct client_surface *, BOOL);
++struct pear_surface_owner {
++    uint64_t token, hwnd;
++    struct client_surface *surface;
++    WineContentView *view; /* Identity only; never dereferenced here. */
++    unsigned refs, ready;
++};
++static pthread_mutex_t pear_surface_mutex = PTHREAD_MUTEX_INITIALIZER;
++static struct pear_surface_owner pear_surface_owners[PEAR_METAL_CAPACITY];
++static uint64_t pear_surface_sequence;
++
++void pear_macdrv_surface_drop(uint64_t token)
++{
++    struct pear_surface_owner *owner = NULL;
++    struct client_surface *surface = NULL;
++    unsigned i;
++    pthread_mutex_lock(&pear_surface_mutex);
++    for (i=0;i<PEAR_METAL_CAPACITY;i++)
++        if (pear_surface_owners[i].token==token && token) { owner=pear_surface_owners+i;break; }
++    if (owner && owner->refs && !--owner->refs) { owner->ready=0;surface=owner->surface; }
++    pthread_mutex_unlock(&pear_surface_mutex);
++    if (!surface) return;
++    /* The final upstream reference removes an active surface from its list,
++     * detaches it and destroys it. Do not use use_window_client_surface(FALSE):
++     * that would deliberately add an unused-cache reference, which we do not own. */
++    client_surface_release(surface);
++    pthread_mutex_lock(&pear_surface_mutex);
++    memset(owner,0,sizeof(*owner));
++    pthread_mutex_unlock(&pear_surface_mutex);
++}
++
++int32_t pear_macdrv_surface_take(uint64_t hwnd, uint64_t *out)
++{
++    struct pear_surface_owner *owner=NULL;
++    struct macdrv_client_surface *surface=NULL;
++    struct macdrv_win_data *data;
++    uint64_t generation=0,token=0;
++    unsigned i,shared=0;
++    int32_t status=PEAR_METAL_OK;
++    *out=0;
++    /* A native Cocoa callback is not an initialized Wine execution context. */
++    if (pthread_main_np() || !macdrv_thread_data()) return PEAR_METAL_OWNER_CONFLICT;
++    pthread_mutex_lock(&pear_surface_mutex);
++    for(i=0;i<PEAR_METAL_CAPACITY;i++)
++        if(pear_surface_owners[i].token && pear_surface_owners[i].hwnd==hwnd) {
++            owner=pear_surface_owners+i;shared=1;break;
++        }
++    if(shared) {
++        if(!owner->ready || !owner->refs || owner->refs==UINT_MAX) status=PEAR_METAL_OWNER_CONFLICT;
++        else { owner->refs++;token=owner->token; }
++    } else {
++        for(i=0;i<PEAR_METAL_CAPACITY;i++)
++            if(!pear_surface_owners[i].token) { owner=pear_surface_owners+i;break; }
++        if(!owner || pear_surface_sequence==UINT64_MAX) status=PEAR_METAL_CAPACITY_ERROR;
++        else { owner->token=token=++pear_surface_sequence;owner->hwnd=hwnd;owner->refs=1; }
++    }
++    pthread_mutex_unlock(&pear_surface_mutex);
++    if(status) return status;
++    if(!(data=get_win_data((HWND)(UINT_PTR)hwnd))) { status=PEAR_METAL_WINDOW;goto failed; }
++    generation=data->pear_metal_generation;
++    if(shared) {
++        if(!data->client_view || data->client_view!=owner->view) status=PEAR_METAL_STALE;
++    } else if(data->client_view) status=PEAR_METAL_OWNER_CONFLICT;
++    release_win_data(data);
++    if(status) goto failed;
++    if(shared) { *out=token;return PEAR_METAL_OK; }
++
++    surface=client_surface_create(&macdrv_client_surface_funcs,(HWND)(UINT_PTR)hwnd,0,FALSE);
++    if(!surface) { status=PEAR_METAL_VIEW;goto failed; }
++    owner->surface=&surface->client;
++    surface->cocoa_view=macdrv_create_view(cgrect_from_rect(surface->client.monitor_rect));
++    if(!surface->cocoa_view) { status=PEAR_METAL_VIEW;goto failed; }
++    owner->view=surface->cocoa_view;
++    macdrv_set_view_hidden(surface->cocoa_view,TRUE);
++    use_window_client_surface(&surface->client,TRUE);
++    /* Recheck after allocation/registration. Window destruction or a foreign
++     * renderer winning the race must never be overwritten by this adapter. */
++    if(!(data=get_win_data((HWND)(UINT_PTR)hwnd))) { status=PEAR_METAL_WINDOW;goto failed; }
++    if(data->pear_metal_generation!=generation || data->client_view) status=PEAR_METAL_STALE;
++    else {
++        data->client_view=surface->cocoa_view;
++        data->pear_metal_generation=pear_metal_next_epoch();
++        macdrv_set_view_hidden(surface->cocoa_view,FALSE);
++        pear_macdrv_metal_changed(hwnd,data->pear_metal_generation);
++    }
++    release_win_data(data);
++    if(status) goto failed;
++    pthread_mutex_lock(&pear_surface_mutex);owner->ready=1;pthread_mutex_unlock(&pear_surface_mutex);
++    *out=token;return PEAR_METAL_OK;
++failed:
++    if(shared || owner->surface) pear_macdrv_surface_drop(token);
++    else {
++        pthread_mutex_lock(&pear_surface_mutex);memset(owner,0,sizeof(*owner));pthread_mutex_unlock(&pear_surface_mutex);
++    }
++    return status;
++}
+--- a/dlls/win32u/window.c
++++ b/dlls/win32u/window.c
+@@ -468,7 +468,7 @@
+     return updated;
+ }
+ 
+-void use_window_client_surface( struct client_surface *surface, BOOL use )
++W32KAPI void use_window_client_surface( struct client_surface *surface, BOOL use )
+ {
+     TRACE( "surface %s, use %u\n", debugstr_client_surface( surface ), use );
+ 

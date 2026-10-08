@@ -1,0 +1,592 @@
+{
+  "cleanup": {
+    "completed_cpu_prefixes_retired": 20,
+    "current_candidate_and_required_inputs_retained": true,
+    "original_failures_retained": true
+  },
+  "cpu_cases": [
+    {
+      "id": "zero-extension",
+      "status": "passed"
+    },
+    {
+      "id": "carry-widths",
+      "status": "passed"
+    },
+    {
+      "id": "xor-flags",
+      "status": "passed"
+    },
+    {
+      "id": "zero-shift-flags",
+      "status": "passed"
+    },
+    {
+      "id": "cmpxchg-eax",
+      "status": "passed"
+    },
+    {
+      "id": "xadd-widths",
+      "status": "passed"
+    },
+    {
+      "id": "packed-float-add",
+      "status": "passed"
+    },
+    {
+      "id": "scalar-double-add",
+      "status": "passed"
+    },
+    {
+      "id": "float-to-integer",
+      "status": "passed"
+    },
+    {
+      "id": "configured-memory",
+      "status": "passed"
+    },
+    {
+      "id": "absolute-displacement",
+      "status": "passed"
+    },
+    {
+      "id": "avx-lane-preservation",
+      "status": "unsupported_not_exposed"
+    },
+    {
+      "id": "api-callback",
+      "status": "passed"
+    },
+    {
+      "id": "tls-thread",
+      "status": "passed"
+    },
+    {
+      "id": "guest-fault-guard",
+      "status": "passed"
+    },
+    {
+      "id": "code-invalidation",
+      "status": "passed"
+    },
+    {
+      "id": "suspend-context",
+      "status": "passed"
+    },
+    {
+      "id": "abi-state",
+      "status": "passed"
+    },
+    {
+      "id": "seh-unwind",
+      "status": "passed"
+    }
+  ],
+  "evidence": {
+    "assessment": {
+      "sha256": "43e5b3d718e13087fa647c85d0cf6087742a4270016363443d37a20851246823",
+      "size_bytes": 38360
+    },
+    "cpu_comparison": {
+      "sha256": "570971751ae1ec91a2b10932f378bbe0e7ce2430f02c30b26301cfc0292ea638",
+      "size_bytes": 16393
+    },
+    "cpu_repair_build": {
+      "sha256": "5457f0615c19d9ec28d0b403ef7eae280c82b21d5080e4f5703ad498fe5ef033",
+      "size_bytes": 13189
+    },
+    "device": {
+      "sha256": "d0a7f13795c9b0d3528eddd98802a426c99b0d0c4becff76795665ba1f7166eb",
+      "size_bytes": 8781213
+    },
+    "frames_build": {
+      "sha256": "901b61e4c9bdfc0ab747ef292df571b81196befe520799b0e09c015fad246cf1",
+      "size_bytes": 2230
+    },
+    "native_build": {
+      "sha256": "ac2dfa84b8c331e30854aa227a8719bbe4b7b728f004bba7d9bc763d3bf14288",
+      "size_bytes": 556038
+    },
+    "native_pairing": {
+      "sha256": "fcd64861c186c2c2620981d75315b74b1a390af4e04a2e0b986203b8b742b208",
+      "size_bytes": 3730001
+    },
+    "ordering": {
+      "sha256": "0d7e6ec171d7f8c0e041e69ba7d8f757c44750068a627cde7f0a8f15d37fd70f",
+      "size_bytes": 3395
+    },
+    "original_presentation_failure": {
+      "sha256": "a1029af3cb0b4de037c07914a2de526fe23f03239ba9f9f73c5bf9f5d89757df",
+      "size_bytes": 4608042
+    },
+    "original_presentation_recovery": {
+      "sha256": "14b39dfa3346b6099a9631a24e67d6fdda078e7169c3c0da9d35e26c5a402a12",
+      "size_bytes": 4245026
+    },
+    "original_rendering_failure": {
+      "sha256": "96453619247f31fb5e8ac0cc0027a8ba2f6d73caa8e02f88a1ef6fb9eb4d4ad1",
+      "size_bytes": 8974105
+    },
+    "original_rendering_recovery": {
+      "sha256": "7392e17beff7ecdeb9f0bcbd959b51f3f3f4743b295b2212ace26a31d849adc0",
+      "size_bytes": 4025959
+    },
+    "presentation": {
+      "sha256": "78e446ea3ab7512f7fbe1996d84b31f7241734ccf336489573b579746bf64d58",
+      "size_bytes": 4244874
+    },
+    "runtime": {
+      "sha256": "f90b2a601f556595a07b38bfa695def75b7f1def9bb1018e7dacb73bf7444f5f",
+      "size_bytes": 2335415
+    },
+    "v2_controls": {
+      "sha256": "dac9a0c7938c101de5f5a1fc6c3a2fb0e40507763b4ec3c5dd04e4b9d5e41ce0",
+      "size_bytes": 1503
+    }
+  },
+  "host": {
+    "chip": "Apple M4 Pro",
+    "macos": "26.5.2 (25F84)",
+    "xcode": "26.6 (17F113)"
+  },
+  "issue": 8,
+  "limitations": {
+    "complete_late_load_coverage": false,
+    "game_qualified": false,
+    "media": "optional winegstreamer dependency remains unavailable",
+    "ordinary_user_distribution": false,
+    "presentation_timing_qualified": false,
+    "unaligned_scope": "original scalar 2-byte and 8-byte delivered exceptions; other instruction families and universal concurrent repair remain unqualified"
+  },
+  "native_images": 41,
+  "native_pairing": {
+    "cases": 39,
+    "passed": true,
+    "physical_lifetime": "observed_balanced"
+  },
+  "ordering": {
+    "checked_worker_retirements": 8,
+    "iterations_per_mode": 2048,
+    "measured_pairs": 32768,
+    "passed": true,
+    "rounds": 4,
+    "universal_ordering_proof": false,
+    "workers": 8
+  },
+  "original_recoveries": {
+    "presentation-original": {
+      "delivered_recoveries": 1,
+      "exit_code": 42,
+      "fixture_sha256": "d0f2049d6a0efd982c51bbd2abcb25e6ed7c226136b038fb16599968c0e66b86",
+      "unchanged_original_pe": true
+    },
+    "rendering-original": {
+      "delivered_recoveries": 1,
+      "exit_code": 42,
+      "fixture_sha256": "40f5c39a5cabe5b5ac6f7833b2c17d09707cb0880c7e37ada915b022243ed1f1",
+      "unchanged_original_pe": true
+    }
+  },
+  "passed": true,
+  "presentation": {
+    "attachments": 0,
+    "gpu_completed": 18,
+    "leases": 0,
+    "physical_created": 9,
+    "physical_destroyed": 9,
+    "positive_presented_times": 2,
+    "presented_callbacks": 18,
+    "presents": 18,
+    "zero_presented_time_sequences": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "schema_version": 1,
+  "scope": "bounded_translated_presentation_and_delivered_scalar_repair",
+  "stage": 3,
+  "surface_controls": {
+    "case_count": 23,
+    "cases": [
+      {
+        "name": "getter_present",
+        "status": 0
+      },
+      {
+        "name": "version",
+        "status": 2
+      },
+      {
+        "name": "size",
+        "status": 3
+      },
+      {
+        "name": "features",
+        "status": 4
+      },
+      {
+        "name": "null_output",
+        "status": 1
+      },
+      {
+        "name": "valid_table",
+        "status": 0
+      },
+      {
+        "name": "invalid_window",
+        "status": 5
+      },
+      {
+        "name": "null_device",
+        "status": 7
+      },
+      {
+        "name": "wrong_context",
+        "status": 11
+      },
+      {
+        "name": "allocation_rollback",
+        "status": 8
+      },
+      {
+        "name": "allocation_no_client",
+        "status": 6
+      },
+      {
+        "name": "registration_rollback",
+        "status": 8
+      },
+      {
+        "name": "registration_no_client",
+        "status": 6
+      },
+      {
+        "name": "create_missing",
+        "status": 0
+      },
+      {
+        "name": "share_owned",
+        "status": 0
+      },
+      {
+        "name": "release_first",
+        "status": 0
+      },
+      {
+        "name": "remaining_live",
+        "status": 0
+      },
+      {
+        "name": "release_last",
+        "status": 0
+      },
+      {
+        "name": "recreate_missing",
+        "status": 0
+      },
+      {
+        "name": "detached_stale",
+        "status": 10
+      },
+      {
+        "name": "detached_release",
+        "status": 0
+      },
+      {
+        "name": "final_no_client",
+        "status": 6
+      },
+      {
+        "name": "foreign_surface",
+        "status": 11
+      }
+    ],
+    "passed": true
+  },
+  "visible_frames": [
+    {
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "cycle": 1,
+      "frame": 0,
+      "height": 128,
+      "image_sha256": "7061c0b979e8a6eade35dfdc6434b633d4da29318e85816621504a065732b214",
+      "matched_pixels": 16384,
+      "phase": 0,
+      "sequence": 1,
+      "width": 128
+    },
+    {
+      "color": [
+        0,
+        255,
+        255
+      ],
+      "cycle": 1,
+      "frame": 1,
+      "height": 128,
+      "image_sha256": "bb5cbfd6d590252a171cf62f6085f38185eab2319c95c4379e012769070bea6b",
+      "matched_pixels": 16384,
+      "phase": 0,
+      "sequence": 2,
+      "width": 128
+    },
+    {
+      "color": [
+        0,
+        255,
+        0
+      ],
+      "cycle": 1,
+      "frame": 0,
+      "height": 160,
+      "image_sha256": "620d1375c12b4d9e5ee1854fed8b57f7a9ec2dc762f499546bdb67367d45e06b",
+      "matched_pixels": 30720,
+      "phase": 1,
+      "sequence": 3,
+      "width": 192
+    },
+    {
+      "color": [
+        255,
+        0,
+        255
+      ],
+      "cycle": 1,
+      "frame": 1,
+      "height": 160,
+      "image_sha256": "eba9f762a7d619d113c8affd87d948e320f99dfa9ad1cb15b767fd22c817eb60",
+      "matched_pixels": 30720,
+      "phase": 1,
+      "sequence": 4,
+      "width": 192
+    },
+    {
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "cycle": 1,
+      "frame": 0,
+      "height": 128,
+      "image_sha256": "bcf3f67b81e37ac32ab6212d03135104ddcf821281b4b54a69fa232a4a06ee1a",
+      "matched_pixels": 16384,
+      "phase": 2,
+      "sequence": 5,
+      "width": 128
+    },
+    {
+      "color": [
+        255,
+        255,
+        0
+      ],
+      "cycle": 1,
+      "frame": 1,
+      "height": 128,
+      "image_sha256": "cb0edb4f9a13b6b7dc9e82ad38ae59c4a41dc17e063e97a6b3de9ded4964738b",
+      "matched_pixels": 16384,
+      "phase": 2,
+      "sequence": 6,
+      "width": 128
+    },
+    {
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "cycle": 2,
+      "frame": 0,
+      "height": 128,
+      "image_sha256": "7061c0b979e8a6eade35dfdc6434b633d4da29318e85816621504a065732b214",
+      "matched_pixels": 16384,
+      "phase": 0,
+      "sequence": 7,
+      "width": 128
+    },
+    {
+      "color": [
+        0,
+        255,
+        255
+      ],
+      "cycle": 2,
+      "frame": 1,
+      "height": 128,
+      "image_sha256": "bb5cbfd6d590252a171cf62f6085f38185eab2319c95c4379e012769070bea6b",
+      "matched_pixels": 16384,
+      "phase": 0,
+      "sequence": 8,
+      "width": 128
+    },
+    {
+      "color": [
+        0,
+        255,
+        0
+      ],
+      "cycle": 2,
+      "frame": 0,
+      "height": 160,
+      "image_sha256": "620d1375c12b4d9e5ee1854fed8b57f7a9ec2dc762f499546bdb67367d45e06b",
+      "matched_pixels": 30720,
+      "phase": 1,
+      "sequence": 9,
+      "width": 192
+    },
+    {
+      "color": [
+        255,
+        0,
+        255
+      ],
+      "cycle": 2,
+      "frame": 1,
+      "height": 160,
+      "image_sha256": "eba9f762a7d619d113c8affd87d948e320f99dfa9ad1cb15b767fd22c817eb60",
+      "matched_pixels": 30720,
+      "phase": 1,
+      "sequence": 10,
+      "width": 192
+    },
+    {
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "cycle": 2,
+      "frame": 0,
+      "height": 128,
+      "image_sha256": "bcf3f67b81e37ac32ab6212d03135104ddcf821281b4b54a69fa232a4a06ee1a",
+      "matched_pixels": 16384,
+      "phase": 2,
+      "sequence": 11,
+      "width": 128
+    },
+    {
+      "color": [
+        255,
+        255,
+        0
+      ],
+      "cycle": 2,
+      "frame": 1,
+      "height": 128,
+      "image_sha256": "cb0edb4f9a13b6b7dc9e82ad38ae59c4a41dc17e063e97a6b3de9ded4964738b",
+      "matched_pixels": 16384,
+      "phase": 2,
+      "sequence": 12,
+      "width": 128
+    },
+    {
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "cycle": 3,
+      "frame": 0,
+      "height": 128,
+      "image_sha256": "7061c0b979e8a6eade35dfdc6434b633d4da29318e85816621504a065732b214",
+      "matched_pixels": 16384,
+      "phase": 0,
+      "sequence": 13,
+      "width": 128
+    },
+    {
+      "color": [
+        0,
+        255,
+        255
+      ],
+      "cycle": 3,
+      "frame": 1,
+      "height": 128,
+      "image_sha256": "bb5cbfd6d590252a171cf62f6085f38185eab2319c95c4379e012769070bea6b",
+      "matched_pixels": 16384,
+      "phase": 0,
+      "sequence": 14,
+      "width": 128
+    },
+    {
+      "color": [
+        0,
+        255,
+        0
+      ],
+      "cycle": 3,
+      "frame": 0,
+      "height": 160,
+      "image_sha256": "620d1375c12b4d9e5ee1854fed8b57f7a9ec2dc762f499546bdb67367d45e06b",
+      "matched_pixels": 30720,
+      "phase": 1,
+      "sequence": 15,
+      "width": 192
+    },
+    {
+      "color": [
+        255,
+        0,
+        255
+      ],
+      "cycle": 3,
+      "frame": 1,
+      "height": 160,
+      "image_sha256": "eba9f762a7d619d113c8affd87d948e320f99dfa9ad1cb15b767fd22c817eb60",
+      "matched_pixels": 30720,
+      "phase": 1,
+      "sequence": 16,
+      "width": 192
+    },
+    {
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "cycle": 3,
+      "frame": 0,
+      "height": 128,
+      "image_sha256": "bcf3f67b81e37ac32ab6212d03135104ddcf821281b4b54a69fa232a4a06ee1a",
+      "matched_pixels": 16384,
+      "phase": 2,
+      "sequence": 17,
+      "width": 128
+    },
+    {
+      "color": [
+        255,
+        255,
+        0
+      ],
+      "cycle": 3,
+      "frame": 1,
+      "height": 128,
+      "image_sha256": "cb0edb4f9a13b6b7dc9e82ad38ae59c4a41dc17e063e97a6b3de9ded4964738b",
+      "matched_pixels": 16384,
+      "phase": 2,
+      "sequence": 18,
+      "width": 128
+    }
+  ]
+}

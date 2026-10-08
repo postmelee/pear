@@ -1,0 +1,21 @@
+{
+  "scope": "task8_delivered_unaligned_scalar_repair",
+  "base": "task8/fex3",
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "before": "a6b2f09f52c3319d3a34db4a02d397e487e92dbac2eea99245ba593e0f4fbaa9",
+      "after": "f498c2bb216b1b4109338e069a88343de29ea924557c84dc2e33001d6fc1fbc8"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "before": "968c1afaa444007dcb988bf90f1772a46d89b63919eb5bc7dbe6563d054b06b8",
+      "after": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518"
+    },
+    {
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "before": "90e68b85335d9cd9be77e65f6017f09219eb67e91f9c86760a8a3c8ae802358f",
+      "after": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9"
+    }
+  ]
+}

@@ -85,10 +85,13 @@ def corpus(runtime,cpu,reuse,output,name,seed=None,verify_only=False):
                 need(expected[row['id']]['status']=='passed' and actual['values']==expected[row['id']]['values'],'translated_cpu_native_mismatch')
                 status='passed'
             result['cases'].append(dict(id=row['id'],status=status,run_ref=fact(folder/'case.json'),evidence=evidence))
-            remove_prefix(folder)
-            save(output,result)
+            if not verify_only:
+                remove_prefix(folder)
+                save(output,result)
         result['passed']=True
-    finally:save(output,result)
+    finally:
+        if not verify_only:save(output,result)
+    if verify_only:need(results.read(output)==result,'translated_cpu_replay_changed')
     return result
 
 
@@ -116,7 +119,8 @@ def ordered(runtime,cpu,reuse,output,name,seed=None,verify_only=False):
     result=dict(scope='translated_graphics_ordering_comparison',passed=True,runtime_ref=fact(runtime/'runtime.json'),
                 build_ref=fact(build/'build.json'),reference_ref=fact(reference/'results.json'),reader=fact(REPO/'tools/cpu/ordering.py'),
                 run_ref=fact(folder/'case.json'),reference=expected,candidate=actual,evidence=evidence,game_qualified=False)
-    save(output,result);remove_prefix(folder)
+    if verify_only:need(results.read(output)==result,'translated_ordering_replay_changed')
+    else:save(output,result);remove_prefix(folder)
     return result
 
 if __name__=='__main__':

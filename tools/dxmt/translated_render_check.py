@@ -85,8 +85,18 @@ def pipeline_validation(stderr,shaders):
     return dict(all_observed_enabled=True,observed_pipeline_count=len(rows),fixture_render=render,fixture_compute=dispatch)
 
 def verify(run,runtime,pairing=None):
-    value=admit(runtime);r,raw=boundary(run,runtime,value)
-    need(r['fixture_id']=='rendering' and r['fixture_sha256']==value['fixtures']['rendering']['sha256'],'render_fixture_binding')
+    if 'managed_surface_overlay' in read(runtime/'runtime.json'):
+        from tools.dxmt.translated_surface_runtime import admit as admit_surface
+        value=admit_surface(runtime)
+    elif 'unaligned_repair_overlay' in read(runtime/'runtime.json'):
+        from tools.dxmt.translated_repair_runtime import admit as admit_repair
+        value=admit_repair(runtime)
+    elif 'presentation_overlay' in read(runtime/'runtime.json'):
+        from tools.dxmt.translated_present_runtime import admit as admit_presentation
+        value=admit_presentation(runtime)
+    else:value=admit(runtime)
+    r,raw=boundary(run,runtime,value)
+    need(r['fixture_id'] in ('rendering','rendering-original') and r['fixture_sha256']==value['fixtures'][r['fixture_id']]['sha256'],'render_fixture_binding')
     result=terminal(raw[('loader','stdout')]);validation(raw[('loader','stderr')])
     backend(run,runtime,value,r,raw,result['modules'])
     loader=next(x for x in r['launches'] if x['role']=='loader')
@@ -111,8 +121,8 @@ def verify(run,runtime,pairing=None):
                 readbacks=result['readbacks'],shaders=result['shaders'],pipelines=pipelines,native_pairing=native,compiler_dependencies=dependencies,
                 checker_ref=fact(REPO/'tools/dxmt/translated_render_check.py'),
                 native_core_unchanged=value['rendering_overlay']['projection']['native_code_unchanged'],
-                cpu_code_unchanged=value['rendering_overlay']['projection']['cpu_code_unchanged'],
+                cpu_code_unchanged=False if 'unaligned_repair_overlay' in value else value['rendering_overlay']['projection']['cpu_code_unchanged'],
                 stage1_ref=value['rendering_overlay']['stage1_ref'],
-                known_cpu_limitations=['delivered cross-boundary unaligned x64 store repair unavailable'],
+                known_cpu_limitations=['scalar delivered repair requires the separate original-PE and CPU/ordering qualification evidence'] if 'unaligned_repair_overlay' in value else ['delivered cross-boundary unaligned x64 store repair unavailable'],
                 no_rosetta_in_observed_processes_and_images=True,complete_late_load_coverage=False,
                 presentation_qualified=False,physical_teardown_qualified=False,game_qualified=False)

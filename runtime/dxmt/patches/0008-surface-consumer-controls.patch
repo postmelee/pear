@@ -1,0 +1,43 @@
+--- a/src/winemetal/unix/pear_dxmt_metal_proxy.h
++++ b/src/winemetal/unix/pear_dxmt_metal_proxy.h
+@@ -51,3 +51,24 @@
+     if(!lease || ![lease isKindOfClass:[PearDXMTMetalLease class]]) return STATUS_UNSUCCESSFUL;
+     [lease release]; return STATUS_SUCCESS;
+ }
++
++/* Explicit v1 regression entry for the original native fixture. The normal
++ * Unix-call table always uses acquire_window; there is no production fallback. */
++__attribute__((visibility("default"))) NTSTATUS pear_dxmt_v1_fixture_create(void *obj)
++{
++    struct unixcall_create_metal_view_from_hwnd *params=obj;
++    const char *flag=getenv("PEAR_DXMT_PAIRING_FIXTURE");
++    const struct pear_macdrv_metal_v1 *v1=NULL;
++    pear_metal_get_interface get=(pear_metal_get_interface)dlsym(RTLD_DEFAULT,"pear_macdrv_metal_v1_get_interface");
++    PearDXMTMetalLease *lease;
++    uint64_t token=0;
++    params->ret_view=params->ret_layer=0;
++    pthread_once(&pear_driver_once,pear_resolve_driver);
++    if(!flag || strcmp(flag,"1") || !get || !pear_driver || get(1,48,7,&v1) || !v1 ||
++       v1->release!=pear_driver->release || v1->with_layer!=pear_driver->with_layer ||
++       v1->acquire(params->hwnd,params->device,&token) || !token) return STATUS_UNSUCCESSFUL;
++    lease=[[PearDXMTMetalLease alloc] init];
++    if(!lease) { v1->release(token);return STATUS_UNSUCCESSFUL; }
++    lease->token=token;params->ret_view=params->ret_layer=(obj_handle_t)(uintptr_t)lease;
++    return STATUS_SUCCESS;
++}
+--- a/src/winemetal/unix/winemetal_unix.c
++++ b/src/winemetal/unix/winemetal_unix.c
+@@ -3107,6 +3107,13 @@
+             window.visible,[window.title isEqualToString:@"Pear Presentation"],pthread_main_np());
+     }
+     call->result=_pear_raw_MetalLayer_nextDrawable(&local);
++    if(local.ret && pear_present_observing()) {
++        id<CAMetalDrawable> drawable=(id<CAMetalDrawable>)(uintptr_t)local.ret;
++        CAMetalLayer *observed=(CAMetalLayer*)(uintptr_t)layer;
++        fprintf(stderr,"PEAR_PRESENT_TEXTURE drawable=%lu width=%lu height=%lu layer_width=%lu layer_height=%lu transaction=%d sync=%d\n",
++            (unsigned long)drawable.drawableID,(unsigned long)drawable.texture.width,(unsigned long)drawable.texture.height,
++            (unsigned long)observed.drawableSize.width,(unsigned long)observed.drawableSize.height,observed.presentsWithTransaction,observed.displaySyncEnabled);
++    }
+     if(local.ret) [(id)(uintptr_t)local.ret retain];
+     local.handle=params->handle; *params=local;
+ }

@@ -36,9 +36,19 @@ def run(runtime,output,reuse,case_id,sync_diagnostic=False,memory_diagnostic=Fal
         from tools.dxmt.translated_fex import admit_build as admit_fex
         need(fact(value['fex_correction_ref']['path'])==value['fex_correction_ref'],'translated_fex_runtime_ref')
         admit_fex(Path(value['fex_correction_ref']['path']).parent)
-    if 'rendering_overlay' in value:
+    if 'managed_surface_overlay' in value:
+        from tools.dxmt.translated_surface_runtime import admit as admit_surface
+        admit_surface(runtime)
+    elif 'unaligned_repair_overlay' in value:
+        from tools.dxmt.translated_repair_runtime import admit as admit_repair
+        admit_repair(runtime)
+    elif 'presentation_overlay' in value:
+        from tools.dxmt.translated_present_runtime import admit as admit_presentation
+        admit_presentation(runtime)
+    elif 'rendering_overlay' in value:
         from tools.dxmt.translated_render_runtime import admit as admit_rendering
         admit_rendering(runtime)
+    need(case_id!='presentation' or 'presentation_overlay' in value,'presentation_runtime_required')
     need(case_id!='rendering' or 'rendering_overlay' in value,'rendering_runtime_required')
     fixture=value['fixtures'][case_id]
     need(H((runtime/fixture['path']).read_bytes())==fixture['sha256'],'cpu_fixture_changed')
@@ -70,10 +80,11 @@ def run(runtime,output,reuse,case_id,sync_diagnostic=False,memory_diagnostic=Fal
         env=supervisor.environment(work/'work',prefix,nonce,os.environ.get('HOME'))
         env['WINEDEBUG']='-all,+loaddll,+seh,+module'
         env.update(METAL_ENV)
-        if case_id=='rendering':
+        if case_id in ('rendering','presentation','rendering-original','presentation-original','presentation-frames'):
             env.update(PEAR_METAL_PIPELINE_OBSERVE='1',MTL_SHADER_VALIDATION_DUMP_PIPELINES='1',MTL_SHADER_VALIDATION_DEFAULT_STATE='all',
                        MTL_SHADER_VALIDATION_ENABLE_ERROR_REPORTING='1',MTL_SHADER_VALIDATION_GLOBAL_MEMORY='1',
                        MTL_SHADER_VALIDATION_TEXTURE_USAGE='1')
+        if case_id in ('presentation','presentation-original','presentation-frames'):env['PEAR_PRESENT_OBSERVE']='1'
         if sync_diagnostic:env['WINEDEBUG']='-all,+loaddll,+seh,+sync,+thread'
         if memory_diagnostic:env['WINEDEBUG']='-all,+virtual,+module,+seh'
         paths={k:runtime/v for k,v in value['entrypoints'].items()}
@@ -104,6 +115,10 @@ def run(runtime,output,reuse,case_id,sync_diagnostic=False,memory_diagnostic=Fal
             # waiting for the known failing unwind path; retain the exact log
             # and use the same owned cleanup/sentinel/authorization checks.
             refusal=None
+            capture=None
+            if case_id in ('presentation','presentation-original','presentation-frames'):
+                from tools.dxmt.translated_present_capture import Capture,FrameCapture
+                capture=FrameCapture(output) if case_id=='presentation-frames' else Capture(output)
             def finished():
                 nonlocal refusal
                 stream=session.streams.get(('loader','stderr'),{})
@@ -113,6 +128,8 @@ def run(runtime,output,reuse,case_id,sync_diagnostic=False,memory_diagnostic=Fal
                 if not match:
                     guard=re.search(rb'[^\n]*(?:Pear source guard refused|Pear FEX assertion:)[^\n]*',bytes(stream.get('data',b''))[-65536:])
                     if guard: refusal=guard.group().decode('utf-8',errors='replace')
+                if capture is not None:
+                    capture.poll(bytes(session.streams.get(('loader','stdout'),{}).get('data',b'')),bytes(stream.get('data',b'')))
                 return loader.exited or refusal is not None
             completed=session.wait_for(finished,remaining(180))
             outcome='owner_refused' if refusal else 'exited' if completed else 'timeout'
