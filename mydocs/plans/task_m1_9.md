@@ -4,7 +4,7 @@ GitHub Issue: [#9](https://github.com/postmelee/pear/issues/9)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task9`
 Planning date: October 8, 2026 (Asia/Seoul)
-Status: the requester approved this task-plan direction and authorized the narrow reuse/minimal-structure supplements and detailed implementation planning on October 8, 2026, through the originating chat. The implementation plan and Stage 1 still require approval; no production implementation has begun. Later stages require explicit continuation in this chat after verification, report and commit.
+Status: the requester approved this task-plan direction and authorized the narrow reuse/minimal-structure supplements and detailed implementation planning on October 8, 2026, through the originating chat. The supplemented implementation plan and Stage 1 were subsequently approved through the same authorized relay; Stage 1 implementation is authorized. Later stages require explicit continuation in this chat after verification, report and commit.
 
 ## Purpose
 
@@ -273,14 +273,16 @@ The first three passed in planning on the unchanged base. The governance result 
 - **Shared host/integration changes:** #6 and other tasks may advance while #9 is staged. Recheck current branches/reports and preserve board/docs at integration; source/build changes invalidate affected evidence, not every unrelated check.
 - **Deadline/privacy false success:** old startup failure is unresolved, raw streams can hold arbitrary secrets, and stronger budgets do not prove reliability. Preserve approved safety assertions/bounds and allowlisted public output; no timing or game-support inference.
 
-## Approval Request
+## Original Task-plan Approval Request (Approved)
 
 - Approve #9's bounded scope, six tentative stages, Rust/#3 reuse, component-level WhiskyKit judgments and production ownership/at-use verification requirements.
 - Approve the official documentation locations and potential smallest explicitly versioned contract extension; exact fields/CLI/module paths and verification commands will be reviewed in the implementation plan.
 - Preserve all listed exclusions, independent policy, #9/#10 responsibilities, two-profile isolation and historical failures/evidence limits.
 
-The approved task-plan direction authorizes preparation of `task_m1_9_impl.md`; request approval of that concrete implementation plan and Stage 1 before source changes. Full runtime/game execution, later stages, PR publication, Issue closure and merge retain their separate approval boundaries.
+Task-plan and supplemented implementation-plan approval are recorded below. Stage 1 is implemented and verified in its stage report; Stage 2 requires explicit continuation. Full runtime/game execution, later stages, PR publication, Issue closure and merge retain their separate approval boundaries.
 
 ## Approval Record
 
 On October 8, 2026 the requester instructed the originating chat to deliver the requested supplements to this session and proceed with the work. The authorized relay approves the existing task-plan direction, the narrow implementation-choice/partial-reuse/minimal-structure supplements above and detailed implementation planning. It expressly preserves the implementation-plan approval checkpoint and stage-by-stage continuation; the same task-plan approval is not requested again.
+
+The subsequent requester review approved the detailed implementation plan with three narrow supplements: preserve purpose-specific qualification_run/supported_launch admission; bound observer deadlines, framing and backpressure; and test declared dynamic dependencies using small native executable/dylib fixtures. Stage 1 is authorized through verification, report and bundled commit. Stage 2/3 execution and supervision gates remain unperformed until their separately approved stages.

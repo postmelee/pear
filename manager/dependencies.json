@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "scope": "Task #9 Stage 1 native foundation; no runtime or distribution qualification",
+  "review_date": "2026-10-08",
+  "rust": {
+    "manifest": "Cargo.toml",
+    "lock": "Cargo.lock",
+    "packages": [
+      {
+        "name": "libc",
+        "version": "0.2.186",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "archive_url": "https://static.crates.io/crates/libc/libc-0.2.186.crate",
+        "sha256": "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66",
+        "license_expression": "MIT OR Apache-2.0",
+        "active_transitive_dependencies": [],
+        "license_sha256": {
+          "LICENSE-MIT": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e",
+          "LICENSE-APACHE": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        },
+        "build_script_sha256": "4b348c53d0a0cd0067ef9887b50f60a1fffdc5d00dda5c0e27fae6aa0ce3dee8",
+        "review": "Archive hash matches locked registry metadata. All 360 regular extracted source files matched archive members before compilation. Full manifest, license texts and build.rs reviewed. Optional rustc-std-workspace-core is inactive. No network or source writes observed in build.rs; invokes configured rustc --version, attempts emcc -dumpversion, and conditionally freebsd-version under LIBC_CI. Build uses controlled PATH, unsets compiler wrappers and unstable overrides, and runs offline/locked.",
+        "extraction_check": "build.py compares every regular archive member with its extracted cache bytes before each build."
+      }
+    ],
+    "system_ffi": [
+      "Darwin libc and mkdtempat_np",
+      "libproc proc_pidinfo",
+      "CommonCrypto CC_SHA256_Init/Update/Final"
+    ]
+  },
+  "system_ffi": [
+    "Darwin libc and mkdtempat_np",
+    "libproc proc_pidinfo",
+    "CommonCrypto CC_SHA256_Init/Update/Final"
+  ],
+  "python_oracle": {
+    "inventory": "../tests/contracts/dependencies.json",
+    "lock": "../tests/contracts/requirements.lock",
+    "role": "Independent harness only; not called by either native candidate."
+  },
+  "upstream_code": "Pear #3 reused parser, identity bridge and build checks; no Whisky code adopted",
+  "system_terms": "Apple SDK/OS inputs are host-provided and not redistributed here.",
+  "reused_review": {
+    "commit": "1f229dab08e30afb01080e7664240e317e5df2ef",
+    "path": "experiments/manager/dependencies.json",
+    "scope": "Exact libc archive/license/build-script review; current archive and extracted bytes checked again by the imported verify_lock."
+  }
+}

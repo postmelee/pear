@@ -5,13 +5,13 @@ GitHub Issue: [#9](https://github.com/postmelee/pear/issues/9)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task9`
 Date: October 8, 2026 (Asia/Seoul)
-Status: task-plan direction and reuse/minimal-structure supplements approved; this implementation plan and Stage 1 await approval. Commands and artifacts below are planned, except the explicitly identified planning probes. No implementation stage has begun.
+Status: implementation plan and Stage 1 approved on October 8, 2026 through an authorized relay, including the three review supplements below. Commands and artifacts below define the approved stages; actual Stage 1 results are in its report, and later-stage execution remains planned. Stage 1 is implemented and verified; see the [Stage 1 report](../working/task_m1_9_stage1.md). Stage 2 awaits explicit continuation.
 
 ## Context and Authorization
 
 Apply the task plan's requirements, document-location judgment, #3 reuse matrix, Whisky pin/licenses, exclusions and #9/#10 boundary. Root, host, runtime, tests and docs rules, task/Git workflow, conflict rules, document structure, and the central implementation-plan template have been read. Relevant specifications are [runtime contracts](../../docs/runtime-contracts.md), [manager decision](../../docs/decisions/manager-language.md), [architecture](../../docs/architecture.md) and the [delivery plan](../../docs/delivery-plan.md). The latest completed #3 stage/final reports and exact prototype/oracle/build inputs remain the starting implementation, not a reason to repeat language selection.
 
-The requester authorized this planning through the originating chat on October 8, including three specific supplements: compare actual implementation choices for new common functions, examine useful small portions of external implementations, and choose the minimum crash/activation/recovery structure. This is approval of planning, not all stages. Stage reporting will use task-stage-report/todo at the approved checkpoints; final publication uses task-final-report only after all stages. No Apple Metal skill applies: no shader, GPU, drawable or metal-cpp work is planned.
+The requester authorized this planning through the originating chat on October 8, including three specific supplements: compare actual implementation choices for new common functions, examine useful small portions of external implementations, and choose the minimum crash/activation/recovery structure. The subsequent requester instruction approves the supplemented detailed plan and Stage 1 implementation, verification, report and bundled commit, not later stages. Stage reporting will use task-stage-report/todo at the approved checkpoints; final publication uses task-final-report only after all stages. No Apple Metal skill applies: no shader, GPU, drawable or metal-cpp work is planned.
 
 Base remains `2e0985b` plus task-start `a6e60a3`. Updated remote #6 integration is `d019a6e` ([PR #38](https://github.com/postmelee/pear/pull/38)); its final report was inspected from the fetched commit, not borrowed from a private build. #9 remains independent of #6 and does not alter its FEX sources/runner/artifacts. Before final integration, inspect the then-current source/docs/board diff and obtain the repository-required merge/rebase decision. No such integration is authorized in this planning update.
 
@@ -109,6 +109,14 @@ Paths/IDs are exact local operands, not downloaded commands. Exit convention fol
 
 The sole new transport boundary is #9's existing observer interface obligation, not management IPC: a caller-selected inherited connected descriptor carries bounded length-framed UTF-8 request/ack/event records (maximum 256 KiB per frame). Bind ack to exact request bytes/run/capture and producer sequence. Unknown/stale ack or EOF before readiness prevents covered spawn; later loss/gaps remain incomplete. No boolean readiness/gap flag can qualify a real runtime. The Python fixture peer is synthetic, uses the existing event factory and has no real module collection authority. #10 supplies actual observation and trusted readiness backend later.
 
+### Bounded observer adapter (Stage 3 implementation)
+
+Use a connected nonblocking descriptor and a 4-byte unsigned network-order length followed by UTF-8 JSON. Reject zero or lengths above 256 KiB before allocating a body. Retain at most one partial incoming frame (256 KiB plus header), at most 512 KiB queued outgoing bytes including headers, and at most 1 MiB total adapter buffers. Queue overflow or allocation failure is an explicit observation failure; never silently drop an event. Do not add a general transport framework.
+
+Readiness has an absolute monotonic 1,500 ms deadline from handshake start, bounded also by the launch deadline. Every later frame assembly and queued send has an absolute 1,500 ms deadline from its first byte/enqueue; partial progress never extends it. Service at most 64 KiB in each direction per loop pass, with at most a 10 ms poll wait, while continuing child stdout/stderr drains, cancellation, execution timeout and owned cleanup. A silent/slow/non-reading peer, partial EOF, malformed length/JSON, EPIPE or connection loss fails readiness before spawn or marks observation incomplete after spawn and initiates the existing bounded owned cleanup. Final notification cannot extend the cleanup deadline; failed delivery remains recorded locally.
+
+Stage 3 `test_observer` includes no response; partial header and body followed by stall; drip feeding across the absolute deadline; zero/oversized frames; peer stops reading until the send queue reaches its bound; cancellation and child exit during that backpressure; disconnect/partial EOF. The independent harness asserts finite termination, actual drain/reap/cleanup outcomes and unrelated sentinel survival, plus incomplete observation rather than success. Stage 1 implements no transport or supervision loop.
+
 ## Explicit Version 2 Contract Scope
 
 Keep the seven record kinds and acyclic digest/ownership model. Preserve all v1 schema/example bytes and the v1 reference evaluator's public behavior. Add `runtime/contracts/v2/` with the same seven schema names/shared definitions and a version-specific local registry. It derives unchanged shapes from v1 rather than inventing another profile system. A bundle uses one supported contract version consistently; mixed/reachable reference versions are refused. v1 native launch supports the explicitly declared existing fixture subset; newly executable settings use v2. Unknown versions remain rejected.
@@ -120,11 +128,22 @@ Keep the seven record kinds and acyclic digest/ownership model. Preserve all v1 
 | Profile provenance/features | Add closed bounded provenance entries (primary URL, review date, scope/detail) and feature observations (ID, passed/failed/unknown/unsupported/untested, evidence). Self-declared feature success never supplies a qualification overlay. Current Megabonk observations remain dated/untested. |
 | Environment and typed settings | Retain existing two fixture keys for submitted environment and existing setting vocabulary. WINEPREFIX and the fixture work root are manager-owned resolved bindings; reject submitted overrides. No arbitrary environment/registry/script/download/migration operations. v2 implements only allowlisted `fixture_flag` settings initially; `dxmt_log_level` executes only if its actual adapter/path semantics are implemented and tested, otherwise refuses. |
 | Streaming payload bounds | v2 retains 256 KiB/4 MiB JSON, depth/node/reference/string bounds; declares 8 GiB per blob and 64 GiB aggregate streamed bytes. v1's 64 MiB/256 MiB bounds are unchanged. Quotas/path/regular-file checks precede reads; bounded chunk memory is not whole-file allocation. |
-| Policy/eligibility | External exact input approval, actual host/signing scope, source/build evidence and matching supported-launch qualification stay mandatory. Fixture/research promotion, partial disclosure or incomplete observation cannot pass. Version transition changes bytes and requires new policy/evidence, not grandfathered qualification. |
+| Policy/eligibility | External exact input approval, actual host/signing scope, source/build evidence and purpose-specific gates stay mandatory; only supported_launch additionally requires prior matching game qualification. Fixture/research promotion, partial disclosure or incomplete observation cannot pass. Version transition changes bytes and requires new policy/evidence, not grandfathered qualification. |
 
 `tests/contracts/validate_v2.py` is a narrow version-specific adapter using existing strict parsing, SafeRoot, reference and eligibility primitives; `fixture_factory.py` remains the base fixture producer. Keep v1 evaluation unchanged; do not fork a second generic validation framework. Native contract consumers implement the matching applicable shapes/eligibility; Python is an independent checker, never a hidden runtime subprocess. Required runtime execution authorization is a current independently approved input/host receipt bound to exact payloads/scope, not merely submitted signing fields or a successful codesign invocation. If the actual producer/grant is unavailable, runtime launch refuses; no new entitlement/provisioning path is included.
 
 The future v2 files and exact closed schema fields above are part of this implementation-plan approval request. Stage 1 verifies the shapes before later execution. If that concrete shape needs an additional operation, policy authority or ownership change, report and update the plan before implementation. A different semantics-preserving file organization is routine; broad scope/contract changes are not.
+
+### Purpose-specific admission semantics
+
+| Purpose | Required candidate gates | Prior game qualification | Required positive/negative controls |
+|---|---|---|---|
+| `inspect` | Strict version, structure, bytes and relationships | None | Unknown research profile remains inspectable; no execution permission follows |
+| `fixture_launch` | Fixture context and the declared complete owned fixture subset | None | Fixture execution cannot authorize a runtime-context launch |
+| `qualification_run` | Runtime context; complete source/build/host/signing/family/cache/ownership and observer prerequisites; independently selected exact policy | Not required | A complete synthetic candidate without previous game qualification passes oracle admission; missing host/signing/ownership/observer/policy conditions refuses |
+| `supported_launch` | All qualification_run candidate gates plus current accepted qualification matching exact inputs/configuration/entry | Required | The same candidate without qualification refuses; mismatched/stale qualification refuses |
+
+Preserve `docs/runtime-contracts.md` purpose meanings and reuse the Python oracle's existing eligibility implementation. Do not copy #3 native contract.rs's fixture-only entry restriction into the production policy path. Stage 1 tests contract structure/oracle meaning with explicitly synthetic declarations and non-executable bytes. These tests neither authenticate receipts nor grant actual runtime execution. Stage 2 implements native admission and checks actual required authorization/readiness/ownership before execution; no prior-game-qualification circular dependency is introduced.
 
 ## Document Location Check
 
@@ -143,9 +162,9 @@ The future v2 files and exact closed schema fields above are part of this implem
 
 ### Artifacts
 
-- `manager/AGENTS.md`, `Cargo.toml`, exact `Cargo.lock`, `dependencies.json`, `src/lib.rs`, reused `src/json.rs`, initial `src/diagnostics.rs`, `native/bridge.h/.c` ABI foundation.
+- `manager/AGENTS.md`, `Cargo.toml`, exact `Cargo.lock`, `dependencies.json`, `src/lib.rs`, reused `src/json.rs`, initial `src/diagnostics.rs`, `src/native.rs`, `native/bridge.h/.c` ABI foundation and `examples/foundation.rs` test probe.
 - `runtime/contracts/v2/` closed schemas/registry and non-executable fixture/research examples.
-- `tests/contracts/validate_v2.py`, `test_v2.py`; `tests/manager/build.py`, `support.py`, `test_foundation.py` as small existing-helper adapters.
+- `tests/contracts/validate_v2.py`, `v2_fixture.py`, `test_v2.py`; `tests/manager/build.py`, `support.py`, `test_foundation.py` as small existing-helper adapters.
 - `mydocs/tech/task_m1_9_reuse.md`, Stage 1 report/evidence and approved implementation status.
 
 ### Changes
@@ -170,7 +189,7 @@ python3 -B tools/check_governance.py
 git diff --check
 ```
 
-Native build adapter imports #3 environment/lock/capture/package helpers and compiles only selected task9 Rust/C, not Swift or Wine. It records commands, tool/SDK/source/binary hashes, linker ad-hoc signature inspection and actual ARM64 slice. Tests include all original v1 IDs, raw duplicate/Unicode/numeric bounds, unknown/null inspection but launch refusal, remote ref refusal and mixed versions. ABI checks repeat locks/staging/hash against the implemented glue; no probe outcome is blindly inherited.
+Native build adapter imports #3 environment/lock/capture helpers, adapts its package inspection, runs the foundation library ABI tests and compiles only selected task9 Rust/C, not Swift or Wine. It records commands, tool/SDK/source/binary hashes, linker ad-hoc signature inspection and actual ARM64 slice. Tests include all original v1 IDs, raw duplicate/Unicode/numeric bounds, unknown/null inspection but launch refusal, remote ref refusal and mixed versions. ABI checks repeat locks/staging/hash against the implemented glue; no probe outcome is blindly inherited.
 
 Retain exact source additions separately from historical #3 input maps. #3's current-input report checker may reject an expanded covered inventory; retain that result and unchanged historical report instead of rewriting it. Unchanged original input hashes support only their old fixture claims; Stage 1 and later results have their own identities.
 
@@ -183,7 +202,7 @@ Retain exact source additions separately from historical #3 input maps. #3's cur
 ### Artifacts
 
 - `manager/src/fs.rs`, `contract.rs`, `policy.rs`, `activation.rs`, initial inspect/activate dispatch in `main.rs`; completed narrow native bridge/hash functions.
-- `tests/manager/test_admission.py`, `test_activation.py`, `fixtures/entry.c`; task-owned activation snapshots/evidence.
+- `tests/manager/test_admission.py`, `test_activation.py`, `fixtures/entry.c`, a small owned native executable/dylib pair and an alternate marker dylib; task-owned activation snapshots/evidence.
 
 ### Changes
 
@@ -201,6 +220,12 @@ git diff --check
 ```
 
 Required outcomes: wrong bytes/kind/version/family/policy, unsafe absolute/traversing/symlink/hardlink/nonregular references and incomplete host/signing/source inputs refuse before exec. Actual read-only image blocks payload writes; writable chmod-only input refuses. Rename/replace ancestors at the validation/use barrier and concurrent version change must execute only the selected old bytes or refuse. Hash executable/library inventories before/after. Multi-chunk data above old v1 blob bounds is checked with independent hashlib; oversize metadata refuses without allocating/reading oversized payloads. No actual game or heavy Wine/FEX reconstruction is needed. Native errors/host skips remain explicit; unavailable read-only execution is an unmet required gate.
+
+Declared dynamic dependency controls: build an ARM64 executable using `@rpath/libfixture.dylib`, one approved in-payload dylib and one alternative dylib with different deterministic return/output markers. Use existing `otool -L/-l`, hashes and a closed supported load-command/path policy; no new Mach-O parser framework. An internal `@loader_path`/`@executable_path`-anchored RPATH resolving entirely within the selected read-only payload must execute the approved marker. An absolute writable external dependency or external RPATH candidate must refuse before entry (no executable/alternate marker). At the validation/use barrier replace an ancestor or an external candidate and change activation concurrently: execute only the approved marker or refuse, never the alternate marker. Record exact source/binary hashes, load commands, selected candidates, mount/FD identity, mutation timing, independent stdout/exit markers and before/after hashes. This is a finite declared-dependency admission test, not full module observation.
+
+#9 admission checks declared, supported static dependencies. Arbitrary `dlopen`, plugins, unresolved weak/re-export/dependency forms or dynamic lookup outside the closed supported scope must be explicitly restricted/refused and recorded as integration prerequisites. #10 owns actual complete loaded-module observation; neither this inventory nor a read-only main executable proves every runtime load. Reference: [Apple run-path dependent libraries](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/RunpathDependentLibraries.html), inspected October 8, 2026; dyld searches run paths in recorded order. No Wine reconstruction is required for these owned fixtures.
+
+Stage 2 also repeats the purpose table's positive/negative admission cases natively, keeping synthetic policy-unit results distinct from actual execution authorization.
 
 ### Commit
 
@@ -347,7 +372,7 @@ Private streams/state/signing/account/game data never enter Git. Retain task-own
 
 Each stage source commit includes `mydocs/working/task_m1_9_stage{N}.md`, actual verification/evidence limitations and that stage's artifacts. Use the exact stage commit messages above. Complete/report/commit before requesting the next stage. Stage 2 depends on the approved verified shape/ABI foundation; Stage 3 depends on actual immutable entry admission; Stage 4 depends on current lifecycle ownership; Stage 5 depends on generic fixtures/state behavior; Stage 6 depends on all approved stages and then-current integration inputs.
 
-Task-plan approval is already recorded; this concrete implementation plan and Stage 1 are the next approval. Later explicit continuations in this chat authorize only their next approved scope. If immutable execution, crash semantics, a new custodian, license combination, schema vocabulary or real runtime integration requires a material change, present the concrete gap and revised plan before that dependent work.
+Task-plan and supplemented implementation-plan approval are recorded; Stage 1 is authorized. Stage 2 is the next approval after Stage 1 verification/report/commit. Later explicit continuations in this chat authorize only their next approved scope. If immutable execution, crash semantics, a new custodian, license combination, schema vocabulary or real runtime integration requires a material change, present the concrete gap and revised plan before that dependent work.
 
 ## Risks and Responses
 
@@ -359,6 +384,6 @@ Task-plan approval is already recorded; this concrete implementation plan and St
 - **Integration state:** #6 merged after branch creation. Preserve its changes and old evidence; review exact docs/board/source overlaps at approved integration, no private artifact copying or needless runtime reruns.
 - **Availability:** libc/wheel acquisition and actual read-only mounting remain stage prerequisites. Record failure/unavailable explicitly; do not loosen dependency hashes or required execution checks.
 
-## Approval Request
+## Approval Record and Next Checkpoint
 
-Approve these six stages, exact implementation choices, minimum foreground/journal/manual-recovery structure, read-only payload/relative-entry gate, explicit v2 fields/bounds, artifact/document locations, verification commands and commits. Authorize Stage 1 only after this implementation-plan review. All later stages, real game/runtime qualification, changed architecture/license scope, final publication and merge retain their separate checkpoints.
+On October 8, 2026 the requester instructed the originating chat to convey the review findings, correct the plans and proceed with Stage 1. The authorized relay expressly approves these three supplements and Stage 1 implementation, verification, reporting and bundled commit; the same plan/Stage 1 approval must not be requested again. Stage 2 and later retain explicit continuation after the preceding verified/reported/committed stage. Material new architecture or scope changes require a concrete revised proposal.
