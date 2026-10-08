@@ -4,8 +4,10 @@ Task plan: [task_m1_40.md](task_m1_40.md)
 GitHub Issue: [#40](https://github.com/postmelee/pear/issues/40)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task40`; base: `29f04a3daa028cb8e52e06af9ee74d15c7cbe11e`
-Status: task plan approved October 9, 2026; implementation plan awaits approval.
-No Stage 1 source changes or new native execution have occurred.
+Status: task and implementation plans approved October 9, 2026; Stage 1
+implementation and diagnostic execution authorized by explicit continuation.
+Stage 1 is complete; the [Stage 1 report](../working/task_m1_40_stage1.md) records
+the exact native origin and proposed 64 MiB budget. Stage 2 awaits approval.
 
 ## Context and Reuse
 

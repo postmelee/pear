@@ -1,0 +1,141 @@
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -663,6 +663,27 @@
+     return STATUS_SUCCESS;
+ }
+ 
++/* Opt-in Task #40 diagnostics; preserve errno and the original status.
++ * The caller holds virtual_mutex. File identity disambiguates mapping attempts;
++ * this observer neither authorizes nor modifies image admission. */
++NTSTATUS pear_pe_diagnostic(int fd, const char *phase, NTSTATUS status)
++{
++    int saved = errno, count;
++    struct stat info;
++    char line[384];
++    if (getenv("PEAR_IMAGE_ADMISSION_DIAGNOSTIC") && !fstat(fd, &info))
++    {
++        count = snprintf(line, sizeof(line),
++                         "PEAR_IMAGE_ADMISSION pid=%u fd=%d dev=%llu ino=%llu bytes=%llu phase=%s status=%08x\n",
++                         (unsigned)getpid(), fd, (unsigned long long)info.st_dev,
++                         (unsigned long long)info.st_ino, (unsigned long long)info.st_size,
++                         phase, (unsigned)status);
++        if (count > 0 && count < sizeof(line)) (void)write(2, line, count);
++    }
++    errno = saved;
++    return status;
++}
++
+ NTSTATUS pear_pe_plan_read_target(int fd, USHORT target, struct pear_pe_plan **ret, struct pear_pe_image *image)
+ {
+     struct stat stat;
+@@ -673,36 +694,37 @@
+     struct pear_pe_plan *plan = NULL;
+     NTSTATUS status = STATUS_INVALID_IMAGE_FORMAT;
+     SIZE_T section_offset, section_bytes, header_end, i, j;
++    pear_pe_diagnostic(fd, "parser.begin", STATUS_SUCCESS);
+     *ret = NULL;
+     memset(image, 0, sizeof(*image));
+-    if (target != IMAGE_FILE_MACHINE_ARM64 && target != IMAGE_FILE_MACHINE_AMD64) return STATUS_NOT_SUPPORTED;
+-    if (fstat(fd, &stat) || stat.st_size < 0 || !S_ISREG(stat.st_mode)) return status;
++    if (target != IMAGE_FILE_MACHINE_ARM64 && target != IMAGE_FILE_MACHINE_AMD64) return pear_pe_diagnostic(fd, "parser.return01", STATUS_NOT_SUPPORTED);
++    if (fstat(fd, &stat) || stat.st_size < 0 || !S_ISREG(stat.st_mode)) return pear_pe_diagnostic(fd, "parser.return02", status);
+     if (!extent(0, sizeof(dos), stat.st_size) ||
+         read_exact(fd, &dos, sizeof(dos), 0) || dos.e_magic != IMAGE_DOS_SIGNATURE || dos.e_lfanew < (LONG)sizeof(dos) || dos.e_lfanew % _Alignof(IMAGE_NT_HEADERS64) ||
+         !extent(dos.e_lfanew, sizeof(header), stat.st_size) ||
+-        read_exact(fd, &header, sizeof(header), dos.e_lfanew)) return status;
++        read_exact(fd, &header, sizeof(header), dos.e_lfanew)) return pear_pe_diagnostic(fd, "parser.return03", status);
+     if (header.Signature != IMAGE_NT_SIGNATURE || (header.FileHeader.Machine != IMAGE_FILE_MACHINE_ARM64 && header.FileHeader.Machine != IMAGE_FILE_MACHINE_AMD64) ||
+         header.OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC ||
+         header.FileHeader.SizeOfOptionalHeader != sizeof(IMAGE_OPTIONAL_HEADER64) ||
+         !header.FileHeader.NumberOfSections || header.FileHeader.NumberOfSections > MAX_SECTIONS ||
+-        header.OptionalHeader.NumberOfRvaAndSizes > IMAGE_NUMBEROF_DIRECTORY_ENTRIES) return status;
+-    if (header.OptionalHeader.ImageBase & (PEAR_ARENA_ALIGNMENT - 1)) return status;
++        header.OptionalHeader.NumberOfRvaAndSizes > IMAGE_NUMBEROF_DIRECTORY_ENTRIES) return pear_pe_diagnostic(fd, "parser.return04", status);
++    if (header.OptionalHeader.ImageBase & (PEAR_ARENA_ALIGNMENT - 1)) return pear_pe_diagnostic(fd, "parser.return05", status);
+     if (!(header.FileHeader.Characteristics & IMAGE_FILE_LARGE_ADDRESS_AWARE) ||
+         header.FileHeader.Characteristics & IMAGE_FILE_RELOCS_STRIPPED ||
+-        !(header.OptionalHeader.DllCharacteristics & IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE)) return STATUS_NOT_SUPPORTED;
++        !(header.OptionalHeader.DllCharacteristics & IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE)) return pear_pe_diagnostic(fd, "parser.return06", STATUS_NOT_SUPPORTED);
+     if ((header.OptionalHeader.SectionAlignment != PAGE && header.OptionalHeader.SectionAlignment != PEAR_ARENA_ALIGNMENT) ||
+         header.OptionalHeader.FileAlignment < 512 || header.OptionalHeader.FileAlignment > header.OptionalHeader.SectionAlignment ||
+-        (header.OptionalHeader.FileAlignment & (header.OptionalHeader.FileAlignment - 1))) return STATUS_NOT_SUPPORTED;
++        (header.OptionalHeader.FileAlignment & (header.OptionalHeader.FileAlignment - 1))) return pear_pe_diagnostic(fd, "parser.return07", STATUS_NOT_SUPPORTED);
+     if (!header.OptionalHeader.SizeOfImage || header.OptionalHeader.SizeOfImage % header.OptionalHeader.SectionAlignment ||
+-        header.OptionalHeader.SizeOfImage > PEAR_ARENA_MAX_IMAGE_BYTES) return STATUS_NOT_SUPPORTED;
++        header.OptionalHeader.SizeOfImage > PEAR_ARENA_MAX_IMAGE_BYTES) return pear_pe_diagnostic(fd, "parser.return08", STATUS_NOT_SUPPORTED);
+     section_offset = (SIZE_T)dos.e_lfanew + sizeof(header);
+     section_bytes = (SIZE_T)header.FileHeader.NumberOfSections * sizeof(*sections);
+     if (header.OptionalHeader.SizeOfHeaders % header.OptionalHeader.FileAlignment ||
+         !extent(section_offset, section_bytes, header.OptionalHeader.SizeOfHeaders) ||
+         !extent(0, header.OptionalHeader.SizeOfHeaders, stat.st_size) ||
+         !rounded(header.OptionalHeader.SizeOfHeaders, header.OptionalHeader.SectionAlignment, &header_end) ||
+-        !extent(0, header_end, header.OptionalHeader.SizeOfImage)) return status;
+-    if (!(plan = calloc(1, sizeof(*plan)))) return STATUS_NO_MEMORY;
++        !extent(0, header_end, header.OptionalHeader.SizeOfImage)) return pear_pe_diagnostic(fd, "parser.return09", status);
++    if (!(plan = calloc(1, sizeof(*plan)))) return pear_pe_diagnostic(fd, "parser.return10", STATUS_NO_MEMORY);
+     plan->size = header.OptionalHeader.SizeOfImage;
+     plan->page_count = plan->size / PAGE;
+     plan->header_bytes = header_end;
+@@ -823,10 +845,10 @@
+     image->original_machine = header.FileHeader.Machine;
+     image->original_entry_rva = header.OptionalHeader.AddressOfEntryPoint;
+     *ret = plan;
+-    return STATUS_SUCCESS;
++    return pear_pe_diagnostic(fd, "parser.return11", STATUS_SUCCESS);
+ done:
+     pear_pe_plan_free(plan);
+-    return status;
++    return pear_pe_diagnostic(fd, "parser.return12", status);
+ }
+ 
+ NTSTATUS pear_pe_plan_read(int fd, struct pear_pe_plan **ret, struct pear_pe_image *image)
+--- a/dlls/ntdll/unix/pear_pe_arena.h
++++ b/dlls/ntdll/unix/pear_pe_arena.h
+@@ -22,6 +22,8 @@
+ /* Two simultaneously owned copies of the original relocation fixture. */
+ #define PEAR_ARENA_RELOCATION_COPIES 2u
+ #define PEAR_ARENA_PAGE_BYTES ((SIZE_T)4096)
++
++extern NTSTATUS pear_pe_diagnostic(int fd, const char *phase, NTSTATUS status);
+ 
+ struct pear_pe_plan;
+ struct pear_pe_slot;
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -3691,11 +3691,13 @@
+         /* main_image_info is not initialized until the main mapping returns.
+          * Select that first image from its server-validated PE machine. */
+         if (!selected_machine) selected_machine = pe_mapping->image.machine;
++        pear_pe_diagnostic(unix_fd, "caller.begin", STATUS_SUCCESS);
+         if (offset || alloc_type || shared_fd != -1 ||
+             (selected_machine != IMAGE_FILE_MACHINE_ARM64 && selected_machine != IMAGE_FILE_MACHINE_AMD64) ||
+             (pe_mapping->image.machine != IMAGE_FILE_MACHINE_ARM64 && pe_mapping->image.machine != IMAGE_FILE_MACHINE_AMD64))
+-        { status = STATUS_NOT_SUPPORTED; goto done; }
++        { status = pear_pe_diagnostic(unix_fd, "caller.parameters", STATUS_NOT_SUPPORTED); goto done; }
+         status = pear_pe_plan_read_target( unix_fd, selected_machine, &plan, &image );
++        pear_pe_diagnostic(unix_fd, "caller.parsed", status);
+         if (status)
+         {
+             ERR("Pear PE role selection failed: target=%04x image=%04x status=%08x\n",
+@@ -3706,10 +3708,13 @@
+             image.original_entry_rva != pe_mapping->image.entry_point || image.original_machine != pe_mapping->image.machine)
+         { status = STATUS_INVALID_IMAGE_FORMAT; pear_pe_plan_free( plan ); goto done; }
+         status = pear_initialize_views();
++        pear_pe_diagnostic(unix_fd, "caller.initialized", status);
+         if (!status) status = pear_pe_slot_reserve( plan, max( limit_low, (ULONG_PTR)address_space_start ),
+                               limit_high ? limit_high : (ULONG_PTR)user_space_limit - 1, &slot, &base, &capacity );
++        pear_pe_diagnostic(unix_fd, "caller.reserved", status);
+         if (status) { pear_pe_plan_free( plan ); goto done; }
+         status = pear_create_image_view( &view, slot, base, size );
++        pear_pe_diagnostic(unix_fd, "caller.view", status);
+         if (status)
+         {
+             pear_pe_slot_retire( slot, pear_pe_slot_generation( slot ) );
+@@ -3717,6 +3722,7 @@
+             goto done;
+         }
+         status = pear_pe_slot_publish( slot, view->pear_generation, plan );
++        pear_pe_diagnostic(unix_fd, "caller.published", status);
+         pear_pe_plan_free( plan );
+         if (!status)
+             for (page = 0; page < size; page += page_size)
