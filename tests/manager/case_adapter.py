@@ -12,7 +12,7 @@ import tarfile
 import tempfile
 import time
 import uuid
-from support import REPO,experiment_build,experiment_cases
+from support import REPO,experiment_build,experiment_cases,fixture_input_identity
 from fixture_factory import encoded,rewrite
 from synthetic_peer import Peer
 from v2_fixture import upgrade_fixture
@@ -64,13 +64,15 @@ class Cases:
             self.entries[name]={'case':case,'source':source,'root':self.mount/name if valid else source,'policy':policy_path,'valid':valid}
         self.tool(['/usr/bin/hdiutil','create','-format','UDRO','-fs','HFS+','-volname','PearTask9Stage3','-srcfolder',str(self.source),str(self.image)]);self.image.chmod(0o600)
         self.tool(['/usr/bin/hdiutil','attach','-readonly','-nobrowse','-mountpoint',str(self.mount),str(self.image)]);self.mounted=True
+        inputs={'evidence_version':1,'task':9,'kind':'owned_fixture_inputs','build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'corpus_sha256':experiment_build.digest(REPO/'experiments/manager/fixtures/cases.json'),'image_sha256':experiment_build.digest(self.image),'cases':{name:{'structurally_valid_before_admission':item['valid'],**fixture_input_identity(item['root'],item['policy'])} for name,item in self.entries.items()}}
+        (self.retained/'inputs.json').write_text(json.dumps(inputs,indent=2)+'\n')
     def tool(self,args):
         p=subprocess.Popen(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True);out,err,failure=experiment_cases.capture_bounded(p,60)
         self.commands.append({'argv':args,'returncode':p.returncode,'capture_failure':failure,'stdout':out.decode(errors='replace'),'stderr':err.decode(errors='replace')});(self.retained/'commands.json').write_text(json.dumps(self.commands,indent=2)+'\n')
         if p.returncode or failure:raise AssertionError((p.returncode,failure,err))
     def close(self):
         if self.mounted:self.tool(['/usr/bin/hdiutil','detach',str(self.mount)]);self.mounted=False
-        (self.retained/'results.json').write_text(json.dumps({'build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'corpus_sha256':experiment_build.digest(REPO/'experiments/manager/fixtures/cases.json'),'results':self.results},indent=2)+'\n');self.tmp.cleanup()
+        (self.retained/'results.json').write_text(json.dumps({'build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'corpus_sha256':experiment_build.digest(REPO/'experiments/manager/fixtures/cases.json'),'input_receipt_sha256':experiment_build.digest(self.retained/'inputs.json'),'results':self.results},indent=2)+'\n');self.tmp.cleanup()
     def state(self):
         state=self.root/('state-'+uuid.uuid4().hex);state.mkdir(mode=0o700);work=state/'contexts/default';pass
         return state,work

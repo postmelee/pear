@@ -14,7 +14,7 @@ import tempfile
 import time
 import unittest
 import uuid
-from support import REPO,experiment_cases,experiment_build
+from support import REPO,experiment_cases,experiment_build,fixture_input_identity
 sys.path.insert(0,str(REPO/'tests/contracts'))
 from fixture_factory import build_fixture,encoded,rewrite
 from v2_fixture import upgrade_fixture
@@ -49,6 +49,8 @@ class ActivationTests(unittest.TestCase):
                 image.chmod(0o600);ancestor=work/'lookup';ancestor.mkdir();mount=ancestor/'media';mount.mkdir()
                 cls.tool(['/usr/bin/hdiutil','attach','-readonly','-nobrowse','-mountpoint',str(mount),str(image)]);cls.mounted.append(mount)
                 cls.payloads[variant]={'before_hashes':{name:experiment_build.digest(mount/'payload'/name) for name in ('entry','lib/libfixture.dylib')},'image_sha256':experiment_build.digest(image),'root_identity':{'device':mount.stat().st_dev,'inode':mount.stat().st_ino},'root':mount,'image':image,'policy':policy,'fixture':f,'source':source}
+            inputs={'evidence_version':1,'task':9,'kind':'owned_activation_inputs','build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'variants':{name:{'image_sha256':payload['image_sha256'],**fixture_input_identity(payload['root'],payload['policy'])} for name,payload in cls.payloads.items()}}
+            (cls.retained/'inputs.json').write_text(json.dumps(inputs,indent=2)+'\n')
         except BaseException:
             cls.clean();raise
     @classmethod
@@ -72,7 +74,7 @@ class ActivationTests(unittest.TestCase):
         for mount in reversed(cls.mounted):
             try:cls.tool(['/usr/bin/hdiutil','detach',str(mount)])
             except BaseException as e:errors.append(repr(e))
-        (cls.retained/'summary.json').write_text(json.dumps({'task':9,'stage':2,'build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'results':cls.results,'cleanup_errors':errors,'game_execution':False,'runtime_qualified':False},indent=2)+'\n')
+        (cls.retained/'summary.json').write_text(json.dumps({'task':9,'stage':2,'build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'input_receipt_sha256':experiment_build.digest(cls.retained/'inputs.json') if (cls.retained/'inputs.json').is_file() else None,'results':cls.results,'cleanup_errors':errors,'game_execution':False,'runtime_qualified':False},indent=2)+'\n')
         if errors:raise AssertionError(errors)
         cls.scratch.cleanup()
     @classmethod
@@ -87,6 +89,7 @@ class ActivationTests(unittest.TestCase):
         return [str(root or p['root']),'records/request.json',str(self.state),str(p['policy'])]
     def activate(self,variant='approved',root=None):
         base,entry,state,policy=self.args(variant,root)
+        self.results.append({'case':self.id(),'activation_variant':variant,'policy_sha256':experiment_build.digest(policy),'root_identity':{'device':Path(base).stat().st_dev,'inode':Path(base).stat().st_ino}})
         result=subprocess.run([str(BINARY),'activate','--bundle-root',base,'--entry',entry,'--context','fixture','--state-root',state,'--policy',policy],capture_output=True,timeout=30)
         self.assertLess(len(result.stdout)+len(result.stderr),8192);return result
     def probe(self,variant='approved',mode='execute',boundary='none'):
