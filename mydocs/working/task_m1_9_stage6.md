@@ -4,7 +4,7 @@ GitHub Issue: [#9](https://github.com/postmelee/pear/issues/9)
 Implementation plan: [task_m1_9_impl.md](../plans/task_m1_9_impl.md)
 Stage: 6
 Date: October 9, 2026
-Status: Implemented and verified; final report and concrete PR await publication approval.
+Status: Initial Stage 6 verified at `263eb00`; publication approved as PR #39. The current Stage 6.1 correction and verification are recorded in the addendum below.
 
 ## Stage Purpose
 
@@ -85,3 +85,64 @@ All six approved implementation stages are complete. The next checkpoint is revi
 ## Approval Request
 
 Please review the final report and concrete PR proposal and approve publication from `codex/publish-task9` to `master`. This request follows the implementation plan's explicit final-report/publication checkpoint.
+
+## Stage 6.1 Addendum — Enforce the External-Policy Boundary
+
+### Stage Purpose and Authorization
+
+After approving publication of [PR #39](https://github.com/postmelee/pear/pull/39), the requester asked for review and then explicitly requested correction on October 9, 2026. Review reproduced activation and successful owned fixture launch using `--policy` inside the submitted read-only bundle at `263eb00`; the reference CLI rejected it as `policy_inside_bundle`. The old passing 517-test inventory did not cover this policy-location boundary. Its evidence is preserved unchanged and does not establish the missing check.
+
+The correction is authorized within Issue #9/PR #39 and recorded in the implementation plan. Context remains the root, manager, host and tests rules; runtime contracts and official CLI guidance; approved task/implementation plans and the final report. The task-stage-report and todo procedures apply. No new architecture, dependency, product-documentation destination, real-runtime authorization or merge is introduced.
+
+### Artifacts and Body Change Scope
+
+| Artifact | Change |
+|---|---|
+| `manager/src/fs.rs` | Reuse no-follow absolute traversal with an optional excluded root identity; compare each opened ancestor's device/inode |
+| `manager/src/policy.rs` | One shared filesystem policy loader reusing exact-byte bounded record reading and strict JSON parsing |
+| `manager/src/main.rs`, `manager/src/launch.rs` | Use the shared loader for inspection/evaluation/activation and selection reload for prepare/recover/launch |
+| `tests/manager/case_adapter.py`, `test_policy_boundary.py` | Owned embedded-policy fixture and six actual CLI regressions, including refused state mutation and successful external-copy execution |
+| [Correction evidence](task_m1_9_stage6_1_evidence.json), final report, plan and board | Current source/binary/input-bound results and preserved original failing reproduction |
+
+Actual directory identity avoids a lexical prefix check: nested files and HFS+ case aliases refuse, while similarly named external siblings remain eligible. Existing no-follow and single-link checks refuse symbolic-link and hardlink aliases. An external policy copy may legitimately have identical bytes; independent caller review remains required, because file location alone is not authenticity. The programmatic `Admitted::new` API still receives caller-supplied parsed policy; path-based production CLI entry points share the new location check.
+
+Existing original corpus, parser, dependency locks, contract schemas, public guidance and earlier evidence remain byte-preserved. Public documentation already specified an external policy and therefore needs no change. This closes a missing implementation check rather than weakening the reference validator or rewriting prior results.
+
+### Verification Results
+
+Execution context: the recorded native ARM64 macOS 26.5.2 host, Xcode 26.6/SDK 26.5, Apple clang 21.0.0, Rust/Cargo 1.94.1 and task-owned Python environment. A new empty locked offline output was built; all-target construction finalized probe bytes before behavioral suites. Current evidence contains 13 ARM64 binary entries and 129 source/document inputs. No old binary result substitutes for the changed native boundary.
+
+```sh
+python3 -B tests/manager/build.py --output .build/task9/policy-fix-49b5b0aa --locked --require-empty
+python3 -B tests/manager/build.py --output .build/task9/policy-fix-49b5b0aa --locked --rust-tests
+PEAR_MANAGER_BUILD=.build/task9/policy-fix-49b5b0aa .build/task9/venv/bin/python -B -m unittest discover -s tests/manager -p test_policy_boundary.py -v
+.build/task9/venv/bin/python -B tests/contracts/validate.py --check-schemas --check-examples
+.build/task9/venv/bin/python -B tests/contracts/validate_v2.py --check-schemas --check-examples
+.build/task9/venv/bin/python -B -m unittest discover -s tests/contracts -p 'test_*.py'
+PEAR_MANAGER_BUILD=.build/task9/policy-fix-49b5b0aa .build/task9/venv/bin/python -B -m unittest discover -s tests/manager -p 'test_*.py'
+PEAR_MANAGER_BUILD=.build/task9/policy-fix-49b5b0aa .build/task9/venv/bin/python -B -m unittest discover -s tests/profiles -p 'test_*.py'
+python3 -B -m unittest discover -s experiments/manager -p 'test_*.py'
+python3 -B tools/check_governance.py
+git diff --check
+git status --short
+```
+
+| Verification | Current result |
+|---|---|
+| Dedicated external-policy regressions | Six pass; repeated within the full manager suite and counted once |
+| v1/v2 schemas/examples and contract behavior | Both schema/example gates and 154 tests pass |
+| Full native manager behavior | 287 pass, including all 55 original corpus IDs and the six new boundary cases |
+| Profiles, original experiment and Rust | 12 + 60 + 10 pass |
+| Distinct required tests | **523 pass**, zero required skips or failures |
+| Original preservation | All 58 original source inputs and 10 historical artifacts unchanged |
+| Governance, links/privacy and whitespace | Pass; final checks recorded with the correction evidence |
+
+Embedded policies refuse before creating/replacing activation selection, preparing/recovering contexts, sending observer handshake bytes, spawning a child or mutating a launch journal. The launch regression starts from a legitimately prepared selection with the same policy hash, proving the check is enforced again at use. HFS+ case aliases are verified by actual file identity, not assumed. External symlink/file-parent aliases and hardlinks refuse; a similarly named external sibling evaluates successfully. An independently selected byte-identical external copy completes actual owned fixture execution, reaping, observation and unrelated-sentinel checks.
+
+The original review reproduction is retained as the negative baseline, including the old successful embedded-policy activation/launch and the oracle refusal. The exact original v1 review reproducer was also rerun against the corrected binary: both native activation and the oracle reject `policy_inside_bundle`, no selection is created, and embedded-policy execution stops at admission. This additional confirmation is not counted as another test. All current correction gates passed on their first run. Dedicated/full repeated cases are not counted twice. Actual owned read-only media were detached by each suite; only their temporary fixture state was removed.
+
+The historical #3 reproduction current-input checker still reports the previously documented source/history identity and test-accounting mismatch; the historical comparison checker passes. Those records are unchanged. These historical diagnostics do not replace the newly repeated current required gates.
+
+### Residual Risks and Handoff
+
+The earlier runtime, real observer, game, save and distribution qualification limits still apply. This is an external-location boundary under existing no-follow/private-root assumptions, not a new policy authentication service or hostile same-user filesystem sandbox. The user-authorized correction will update the existing Open PR with its current evidence; merge and Issue closure remain separate approvals.

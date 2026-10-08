@@ -82,10 +82,9 @@ fn execute() -> Result<()> {
     let b = Bundle::inspect(Root::open(root)?, entry, context)?;
     let mut policy_hash = String::new();
     let policy = if let Some(path) = options.get("--policy") {
-        let (parent, name) = path.rsplit_once('/').ok_or(Error::code("invalid_path"))?;
-        let (bytes, hash, _) = Root::open(parent)?.read_record(name, 262144)?;
+        let (policy, hash) = pear_manager::policy::load_external(&b.root, path)?;
         policy_hash = hash;
-        Some(pear_manager::json::parse(&bytes)?)
+        Some(policy)
     } else {
         None
     };

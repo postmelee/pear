@@ -1,11 +1,20 @@
 //! Purpose-specific evaluation ported from the v1 independent oracle.
 //! A passing result is an evaluation, never an execution authorization receipt.
 use crate::{
-    contract::{self, string_set, timestamp, Bundle},
-    fs::{require, Result},
-    json::{ensure, J},
+    contract::{self, Bundle, string_set, timestamp},
+    fs::{Error, Result, Root, require},
+    json::{J, ensure},
 };
 use std::collections::{BTreeMap, BTreeSet};
+/// A filesystem policy is caller-selected outside the submitted bundle. Compare
+/// opened directory identities, not textual prefixes or resolved symlink paths.
+pub fn load_external(bundle: &Root, path: &str) -> Result<(J, String)> {
+    let (parent, name) = path.rsplit_once('/').ok_or(Error::code("invalid_path"))?;
+    let root = Root::open_outside(parent, bundle)?;
+    let (bytes, hash, _) = root.read_record(name, 262144)?;
+    Ok((crate::json::parse(&bytes)?, hash))
+}
+
 pub type Codes = BTreeSet<&'static str>;
 fn add(c: &mut Codes, condition: bool, code: &'static str) {
     if condition {

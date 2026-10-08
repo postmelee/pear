@@ -80,6 +80,12 @@ pub struct Root {
 }
 impl Root {
     pub fn open(path: &str) -> Result<Self> {
+        Self::open_checked(path, None)
+    }
+    pub(crate) fn open_outside(path: &str, excluded: &Self) -> Result<Self> {
+        Self::open_checked(path, Some(identity(&excluded.file)?))
+    }
+    fn open_checked(path: &str, excluded: Option<Identity>) -> Result<Self> {
         require(
             path.starts_with('/') && !path.ends_with('/') && path.len() <= 4096,
             "invalid_root",
@@ -99,6 +105,9 @@ impl Root {
                     libc::O_RDONLY | libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC,
                 )
             })?;
+            if let Some(excluded) = excluded {
+                require(identity(&file)? != excluded, "policy_inside_bundle")?;
+            }
         }
         Ok(Self { file })
     }

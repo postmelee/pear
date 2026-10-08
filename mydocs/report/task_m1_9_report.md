@@ -6,10 +6,10 @@ Date: October 9, 2026
 
 ## Work Summary
 
-- Target Issue: #9; six approved stages implemented, verified and reported.
+- Target Issue: #9; six approved stages and the requester-approved Stage 6.1 PR review correction implemented, verified and reported.
 - Purpose: provide a native foreground supervisor with strict shared-record admission, immutable local payload selection, owned lifecycle control, isolated profile state and preservation-first recovery.
 - Result: seven native CLI operations, two executable synthetic profiles and one researched Megabonk profile with explicit unknowns. The result is verified with owned native fixtures; supported Megabonk execution remains gated.
-- Integration: requester-approved merge `2864f7b` imports master `d019a6e` and preserves #6 and #9 board history. PR publication, master integration of #9 and Issue closure remain separate actions.
+- Integration: requester-approved merge `2864f7b` imports master `d019a6e` and preserves #6 and #9 board history. Publication was approved as [PR #39](https://github.com/postmelee/pear/pull/39). The external-policy review correction was separately authorized; master integration and Issue closure remain separate actions.
 
 ## Changed Files and Impact Area
 
@@ -43,27 +43,27 @@ The [task plan](../plans/task_m1_9.md#document-location-judgment) records approv
 | Versioned researched Megabonk profile | 0 | 1, with current prerequisites explicitly unknown |
 | A/B generic executable profiles | 0 | 2 with observed argv/settings/save isolation |
 | Contract behavioral tests | 119 | 154 |
-| Complete current required regression | No Task #9 suite | 517 distinct passing tests; zero required skips/failures |
+| Complete current required regression | No Task #9 suite | 523 distinct passing tests; zero required skips/failures |
 | Qualified native game/distribution | None | None; explicit downstream gates remain |
 
 These are functional coverage counts, not performance measurements. Repeated successful builds/tests are counted once by distinct test ID.
 
 ## Verification Results
 
-Fresh final output and exact source/tool/binary/policy/mount identities are recorded in the [Stage 6 report](../working/task_m1_9_stage6.md) and [sanitized evidence](../working/task_m1_9_stage6_evidence.json). Current native execution used ARM64 macOS 26.5.2, Xcode 26.6/SDK 26.5, Apple clang 21.0.0, Rust/Cargo 1.94.1 and locked task-owned Python dependencies. All-target construction preceded behavioral tests to bind them to final probe bytes.
+Fresh current output and exact source/tool/binary/policy/mount identities are recorded in the [Stage 6.1 addendum](../working/task_m1_9_stage6.md#stage-61-addendum--enforce-the-external-policy-boundary) and [correction evidence](../working/task_m1_9_stage6_1_evidence.json). Original [Stage 6 evidence](../working/task_m1_9_stage6_evidence.json) remains an unchanged historical record of its then-current 517 tests. Current native execution used ARM64 macOS 26.5.2, Xcode 26.6/SDK 26.5, Apple clang 21.0.0, Rust/Cargo 1.94.1 and locked task-owned Python dependencies. All-target construction preceded behavioral tests to bind them to final probe bytes.
 
 | Acceptance Criterion | Result |
 |---|---|
 | Explicit contract versions and bounded paths/operations | OK — v1/v2 schema/examples and 154 behavioral tests; native/oracle parity and unknown/version/path/policy negatives |
-| Imported runtime bytes cannot self-authorize execution | OK within owned fixture scope — OS read-only admission, exact artifact/policy/media identity, descriptor-retained lookup, library closure and at-use substitution controls |
+| Imported runtime bytes cannot self-authorize execution | OK within owned fixture scope — OS read-only admission, exact artifact/policy/media identity, descriptor-retained lookup, library closure and at-use substitution controls; Stage 6.1 now rejects policy files inside the submitted bundle at activation and selection reload |
 | Atomic selection and prior version preservation | OK — interrupted/failing publication, ENOSPC/EIO, concurrent activation, retained descriptor/lease and unchanged old selection controls |
 | Owned lifecycle, crash reporting and privacy | OK within fixture scope — direct-child reaping, both pipe faults, cancellation, bounded output/backpressure, generation checks and unrelated sentinel survival; uncertain crash/detach stays incomplete |
 | Prefix/settings/save isolation and safe recovery | OK — A/B sequential/concurrent actual fixtures preserve distinct data, reject overlap/busy/wrong identity and retain old data through fresh/clean-context recovery |
 | Generic researched Megabonk profile | OK — App ID 3405340 and executable provenance represented; current unknowns remain unknown and real activation refuses without authority |
-| Reproducible current evidence | OK — fresh empty locked build, 13 ARM64 binary entries, 128 source/document inputs, 55 original case IDs and all 517 distinct tests; retained per-case policy/mount/file identities |
+| Reproducible current evidence | OK — fresh empty locked build, 13 ARM64 binary entries, 129 source/document inputs, 55 original case IDs and all 523 distinct tests; retained per-case policy/mount/file identities |
 | Documentation and preservation | OK — approved official locations, executed guide examples, governance/whitespace checks, 58 original source and 10 historical hashes unchanged |
 
-Current test accounting: contracts 154 + manager 281 + profiles 12 + original experiment 60 + native Rust 10 = **517**. Media creation/attachment/detachment were actual host operations; synthetic observer messages do not establish real runtime coverage. Ad-hoc signature/dependency inspection is construction evidence only. No remote CI run is claimed.
+Current test accounting: contracts 154 + manager 287 + profiles 12 + original experiment 60 + native Rust 10 = **523**. Media creation/attachment/detachment were actual host operations; synthetic observer messages do not establish real runtime coverage. Ad-hoc signature/dependency inspection is construction evidence only. The initial PR head passed eight remote documentation/portable checks; current-head CI is checked separately after publishing this correction.
 
 The historical #3 reproduction current-input checker is ineligible after the planned contract/test expansion (`source_or_history_identity`, `unit_test_accounting`), while original bytes and historical claim scope remain preserved. Its comparison checker passes. This known historical mismatch is distinct from the passing current required gates.
 
@@ -74,9 +74,9 @@ The historical #3 reproduction current-input checker is ineligible after the pla
 - [Stage 3](../working/task_m1_9_stage3.md): original corpus adaptation, owned supervision, cancellation, crash refusal and bounded synthetic observer handoff (`74d9801`).
 - [Stage 4](../working/task_m1_9_stage4.md): A/B state isolation, preservation and manual recovery; retained development failures and corrected Darwin cleanup identity gap (`e4183a9`).
 - [Stage 5](../working/task_m1_9_stage5.md): researched profile, executable official guidance and exact early-refusal oracle correction (`95b50a7`).
-- [Stage 6](../working/task_m1_9_stage6.md): approved master merge, fresh full construction, exact retained case identities and 517 current passing tests; bundled with this final report.
+- [Stage 6](../working/task_m1_9_stage6.md): approved master merge, fresh full construction and 517 initial passing tests at `263eb00`; the Stage 6.1 addendum records the review correction and 523 newly passing tests.
 
-Earlier development failures remain preserved in their stage evidence. The first complete Stage 6 run passed, then was superseded after improving receipt completeness; the complete required gate set was rerun on the changed producer inputs. No failed or old run was relabeled as current success.
+Earlier development failures remain preserved in their stage evidence. The first complete Stage 6 run passed, then was superseded after improving receipt completeness; the complete required gate set was rerun on the changed producer inputs. No failed or old run was relabeled as current success. Review then exposed embedded-policy acceptance missing from that inventory. The user-authorized correction adds six CLI regressions and repeats the complete required gates on new native outputs. The old failing review reproduction and original Stage 6 evidence remain retained.
 
 ## Residual Risks and Follow-up Work
 
@@ -94,4 +94,4 @@ Existing issues already cover the remaining work: #10 actual observer integratio
 
 ## Approval Request to Task Requester
 
-Please approve this final report and the concrete PR body before publishing `codex/task9` as `codex/publish-task9` for an Open PR to `master`. All six approved stages and current checks are complete. Publication approval does not itself authorize self-merge or Issue closure.
+Publication was approved and PR #39 is open from `codex/publish-task9` to `master`. The requester also approved correcting the embedded-policy review finding and updating this PR. Please review the corrected result; self-merge and Issue closure remain unauthorized.

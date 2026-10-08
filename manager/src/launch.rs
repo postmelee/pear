@@ -149,9 +149,8 @@ pub(crate) fn load(selection: &json::J, request: &str, path: &str) -> Result<Adm
     let root = Root::open(selection.get("bundle_root")?.s()?)?;
     let q = root.json(request)?;
     let bundle = Bundle::inspect(root, request, q.get("record_context")?.s()?)?;
-    let (parent, name) = path.rsplit_once('/').ok_or(Error::code("invalid_path"))?;
-    let (bytes, hash, _) = Root::open(parent)?.read_record(name, 262144)?;
-    let admitted = Admitted::new(bundle, request, &json::parse(&bytes)?, &hash)?;
+    let (policy, hash) = crate::policy::load_external(&bundle.root, path)?;
+    let admitted = Admitted::new(bundle, request, &policy, &hash)?;
     admitted.matches_selection(selection)?;
     Ok(admitted)
 }

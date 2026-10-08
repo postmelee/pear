@@ -55,6 +55,8 @@ class Cases:
             selected=policy(f)
             if case['mutation']=='untrusted_executable_digest':selected['approved_record_digests']=[]
             policy_path=self.root/(name+'-policy.json');policy_path.write_bytes(encoded(selected))
+            if case.get('embedded_policy'):
+                (source/'policies').mkdir();(source/'policies/caller.json').write_bytes(encoded(selected))
             # Invalid/nonregular inputs must refuse before media admission. Keep these
             # originals writable rather than copying a FIFO into an image creator.
             result=subprocess.run([str(BINARY),'inspect','--bundle-root',str(source),'--entry','records/request.json','--context',case['oracle_context']],capture_output=True,timeout=10)
