@@ -2,7 +2,7 @@
 
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Planning date: October 8, 2026. Status: task plan awaiting approval.
+Planning date: October 8, 2026. Status: task plan approved; detailed implementation plan awaiting approval.
 
 ## Purpose
 
@@ -200,3 +200,10 @@ this concrete task plan is newly prepared. Under task-start, approval of this
 plan precedes its detailed implementation plan and source changes. Later stage
 reports and continuation checkpoints remain in effect. No implementation plan
 or new CPU source has been written during this planning step.
+
+## Approval Record
+
+On October 8, 2026, the requester explicitly approved this task plan in this
+thread. Scope, reuse direction and document locations are approved. Detailed
+implementation planning is authorized; Stage 1 starts after its concrete plan
+is approved under the task workflow.
