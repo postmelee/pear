@@ -13,6 +13,7 @@ import sys
 if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.cpu.corpus import REPO, assess, digest
+from tools.cpu.adapt import effective_case, adapt_body, rules
 from tools.wine.common import need, read_relative, load_json, encoded
 
 GPRS = 'RAX RBX RCX RDX RSI RDI RBP RSP R8 R9 R10 R11 R12 R13 R14 R15'.split()
@@ -25,6 +26,7 @@ def assembly(case, raw):
     need(count == 1, 'config_block')
     need(not re.search(r'^\s*(?:section|segment|global|extern|%include|incbin)\b', body, re.M | re.I), 'external_asm_input')
     need('pear_' not in body, 'reserved_symbol')
+    body = adapt_body(case, body)
     body, stops = re.subn(r'^\s*hlt\s*(?:;[^\n]*)?$', '    jmp pear_capture', body, flags=re.M | re.I)
     need(stops > 0, 'missing_termination')
     avx = case['contract']['features'] == ['AVX']
@@ -73,6 +75,7 @@ def reservations(case):
 
 
 def header(case, manifest_hash):
+    case = effective_case(case)
     expected = case['contract']['expectations']
     h = ['/* Generated contract: FEX MIT expectations, Pear capture layout. */',
          f'#define PEAR_CASE_ID "{case["id"]}"', f'#define PEAR_MANIFEST "{manifest_hash}"',
@@ -117,7 +120,7 @@ def generate(source, output):
     for name in ('FEX-MIT.txt', 'Madeira-GPL-3.0.txt', 'Madeira-EXCEPTION.md'):
         (output/name).write_bytes(read_relative(REPO, 'tests/cpu/LICENSES/'+name))
     result = dict(scope='cpu_generated_sources', manifest_sha256=digest(encoded(manifest)),
-                  generator_sha256=digest(Path(__file__).read_bytes()), cases=rows,
+                  generator_sha256=digest(Path(__file__).read_bytes()), adaptations_sha256=digest(encoded(rules())), cases=rows,
                   guest_execution=False, cpu_qualified=False)
     (output/'generated.json').write_bytes(encoded(result))
     return result

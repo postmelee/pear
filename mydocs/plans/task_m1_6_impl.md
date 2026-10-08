@@ -272,3 +272,17 @@ Local Stage 2 preflight: 19 PEs built, 12 harness refusal checks and 14 corpus
 checks passed. The [reference publication review](../working/task_m1_6_stage2_reference_review.md)
 was approved by the requester, including confined corrections and reruns.
 This is not native execution or Stage 2 completion.
+
+
+### Stage 2 Fixture-hosting Correction
+
+The original absolute-displacement setup failed before guest instructions: the
+unchanged Wine/FEX image arena occupied `0x7fff0000`, including the requested
+`0x7ffff000` page. Treat this as a fixture/loader address-space precondition,
+not an ISA result or a required-path waiver. The recorded Stage 2 adaptation
+moves data loads/stores to `0x1000f000`, keeps every upstream register expectation,
+and adds an exact `R8 = 0x7ffffff8` LEA check for the original upper disp32 edge.
+The original source manifest and failure remain intact; a separate hashed
+`tests/cpu/adaptations.json` binds the generated execution inputs. Native Windows
+must validate the changed PE before a new Pear comparison. No owner allocation,
+Wine/FEX implementation, runtime permission or expected-value relaxation occurs.

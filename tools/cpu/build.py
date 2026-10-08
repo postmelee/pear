@@ -95,12 +95,12 @@ def build(source, output, nasm, clang):
         compile_case('seh-unwind',REPO/'tests/cpu/seh.c',seh)
         corresponding=output/'corresponding-source';corresponding.mkdir()
         paths=['tools/cpu/build.py','tools/cpu/generate.py','tools/cpu/corpus.py','tools/wine/common.py',
-               'tests/cpu/runner.c','tests/cpu/abi.c','tests/cpu/seh.c','tests/cpu/corpus.json','tests/cpu/sources.json']
+               'tools/cpu/adapt.py','tests/cpu/adaptations.json','tests/cpu/runner.c','tests/cpu/abi.c','tests/cpu/seh.c','tests/cpu/corpus.json','tests/cpu/sources.json']
         paths += [b['source']['path'] for b in manifest['boundaries'] if b['stage']==2 and b['source']]
         for path in paths:
             target=corresponding/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((REPO/path).read_bytes())
         result=dict(version=1,scope='cpu_pe_build',passed=True,guest_execution=False,cpu_qualified=False,
-                    manifest_sha256=generated['manifest_sha256'],generated_sha256=digest(encoded(generated)),
+                    manifest_sha256=generated['manifest_sha256'],adaptations_sha256=generated['adaptations_sha256'],generated_sha256=digest(encoded(generated)),
                     build_script_sha256=digest(Path(__file__).read_bytes()),
                     tools={k:dict(sha256=digest(p.read_bytes()),version=versions[k]) for k,p in [('nasm',nasm),('clang',clang)]},
                     build_host=dict(system=platform.system(),machine=platform.machine()),

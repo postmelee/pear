@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from tools.cpu.adapt import effective_case, rules
 
 
 def require(condition, message):
@@ -20,8 +21,8 @@ def digest(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def decode(raw):
-    require(len(raw)<=8*1024*1024, 'record_size')
+def decode(raw, limit=8*1024*1024):
+    require(len(raw)<=limit, 'record_size')
     def pairs(rows):
         result={}
         for key,value in rows:
@@ -31,10 +32,10 @@ def decode(raw):
     return json.loads(raw,object_pairs_hook=pairs,parse_constant=lambda _:(_ for _ in ()).throw(ValueError('nonfinite')))
 
 
-def read(path):
+def read(path, limit=8*1024*1024):
     path=Path(path)
-    require(path.is_file() and not path.is_symlink() and path.stat().st_size<=8*1024*1024,'record_file')
-    return decode(path.read_bytes())
+    require(path.is_file() and not path.is_symlink() and path.stat().st_size<=limit,'record_file')
+    return decode(path.read_bytes(),limit=limit)
 
 
 def hex64(value):
@@ -49,6 +50,7 @@ def fixture_ids(manifest):
 def admit_build(manifest, manifest_raw, build, root):
     require(build['scope']=='cpu_pe_build' and build['passed'] is True,'build_status')
     require(manifest==decode(manifest_raw) and build['manifest_sha256']==digest(canonical(manifest)), 'build_manifest')
+    require(build.get('adaptations_sha256')==digest(canonical(rules())), 'build_adaptations')
     ids=fixture_ids(manifest)
     require([r['id'] for r in build['cases']]==ids,'build_case_set')
     for row in build['cases']:
@@ -64,6 +66,7 @@ def admit_build(manifest, manifest_raw, build, root):
 
 
 def case_result(case, row, manifest_hash):
+    case=effective_case(case)
     require(row['id']==case['id'], 'case_identity')
     events=row['events']
     require(type(events) is list and events, 'missing_events')
@@ -110,6 +113,7 @@ def assess_records(manifest, build_raw, record, route):
     ids=fixture_ids(manifest)
     require(build.get('scope')=='cpu_pe_build' and build.get('passed') is True and
             build.get('manifest_sha256')==digest(canonical(manifest)), 'build_contract')
+    require(build.get('adaptations_sha256')==digest(canonical(rules())), 'build_adaptations')
     require([r['id'] for r in build['cases']]==ids, 'build_case_set')
     require([r['id'] for r in record['cases']]==ids and record['completed_count']==len(ids),'missing_case')
     if route=='native':

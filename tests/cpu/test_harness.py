@@ -8,6 +8,7 @@ from pathlib import Path
 
 from tools.cpu.results import assess_records, canonical, digest, decode, admit_build
 from tools.cpu.generate import reservations, assembly
+from tools.cpu.adapt import effective_case, rules, adapt_body
 
 REPO=Path(__file__).resolve().parents[2]
 
@@ -17,10 +18,11 @@ class HarnessTests(unittest.TestCase):
         self.manifest=decode((REPO/'tests/cpu/corpus.json').read_bytes())
         self.hash=digest(canonical(self.manifest))
         ids=[c['id'] for c in self.manifest['cases']]+[c['id'] for c in self.manifest['boundaries'] if c['stage']==2]
-        self.build=dict(scope='cpu_pe_build',passed=True,manifest_sha256=self.hash,
+        self.build=dict(scope='cpu_pe_build',passed=True,manifest_sha256=self.hash,adaptations_sha256=digest(canonical(rules())),
                         cases=[dict(id=i,sha256='a'*64) for i in ids])
         rows=[]
         for c in self.manifest['cases']:
+            c=effective_case(c)
             rows.append(dict(id=c['id'],binary_sha256='a'*64,exit_code=42,outcome='exited',events=[
                 dict(event='begin',id=c['id'],manifest=self.hash,cpuid_ecx='0x0000000018000000',
                      cpuid_edx='0x0000000004000000',xcr0='0x0000000000000006',avx=True),
@@ -50,6 +52,15 @@ class HarnessTests(unittest.TestCase):
             self.assertEqual(len(admit_build(self.manifest,raw,self.build,root)),19)
             changed=copy.deepcopy(self.manifest);changed['version']=999
             with self.assertRaisesRegex(ValueError,'build_manifest'):admit_build(changed,canonical(changed),self.build,root)
+
+    def test_declared_adaptation_preserves_original_outputs_and_boundary(self):
+        case=next(c for c in self.manifest['cases'] if c['id']=='absolute-displacement')
+        actual=effective_case(case)
+        self.assertEqual(actual['contract']['expectations'][:-1],case['contract']['expectations'])
+        self.assertEqual(actual['contract']['expectations'][-1],dict(register='R8',lane=0,value='0x000000007ffffff8'))
+        self.assertEqual(actual['contract']['regions'],[dict(address=0x1000f000,size=4096)])
+        self.build['adaptations_sha256']='f'*64;self.run['build_sha256']=digest(canonical(self.build))
+        self.rejected('build_adaptations')
 
     def test_complete_declared_results(self):
         self.assertEqual(len(self.assess()),19)
