@@ -1,0 +1,15 @@
+{
+  "patch": "0002-observe-effective-thread-policy.patch",
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "before": "525e5d72904f37e3794b7c1d49c27801b0d40509653eb96dc4dba1a4f455b21d",
+      "after": "968c1afaa444007dcb988bf90f1772a46d89b63919eb5bc7dbe6563d054b06b8"
+    },
+    {
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "before": "beacee12f4ca4ff4ae5d25cea4cf600cb0fbddf0dc052e3048d990725cc3ae56",
+      "after": "90e68b85335d9cd9be77e65f6017f09219eb67e91f9c86760a8a3c8ae802358f"
+    }
+  ]
+}

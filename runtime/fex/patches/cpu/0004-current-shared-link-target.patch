@@ -1,0 +1,30 @@
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -725,10 +725,26 @@
+   if (Changed) Host=0; // Never reuse the lookup captured before a peer invalidation.
+   if (!Host) Host=C->CompilePearBlock(Frame,Copy.GuestRIP,0);
+   PEAR_FEX_REQUIRE(Host && !(Host&3),"Pear linker compiled no admitted target");
++  // Upstream permits replacement of a shared mapping when a backend switches
++  // buffers. A thread-local L1 hit can still name the retained older block.
++  // The source mutation turn excludes peer publication here; bind new links
++  // to the authoritative shared mapping under its existing read lock.
++  {
++    auto Invalidation=GuardSignalDeferringSection<std::shared_lock>(C->CodeInvalidationMutex,Thread);
++    auto* Shared=Thread->LookupCache->Shared;
++    auto Lookup=Shared->AcquireReadLock();
++    if (const auto* Current=Shared->FindBlock(Copy.GuestRIP,Lookup)) Host=Current->HostCode;
++  }
+   auto TargetWindow=Thread->CPUBackend->FindPearManagedWindow(Host);
+   const bool SameMap=TargetWindow && TargetWindow->Owner==Window->Owner &&
+     Thread->LookupCache->Shared==Window->Owner->LookupCache.get();
+-  if (SameMap && !Changed && !Mutation.Contended()) {
++  // Contended() only reports waiting inside turn acquisition. A peer may have
++  // published after the RX snapshot but before this thread tried the turn.
++  // In that case leave the existing indirect path intact, without minting a
++  // transaction from stale caller/thunk bytes. Own compilation may also advance
++  // this epoch; skipping this optional link remains safe in that case.
++  const bool SameSourceEpoch=Window->Facts.Token.write_epoch==Window->Owner->GetPearSnapshot().Token.write_epoch;
++  if (SameMap && !Changed && !Mutation.Contended() && SameSourceEpoch) {
+     uint32_t Marker {}; std::memcpy(&Marker,Caller.data(),sizeof(Marker));
+     const auto Encoded=PearJITLinkLayout::Encode(Window->Begin,Layout,Host,Marker);
+     PEAR_FEX_REQUIRE(PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller),

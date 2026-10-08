@@ -1,0 +1,22 @@
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -948,6 +948,9 @@
+   Outcome = {PEAR_FEX_OK, 0, 0};
+   FinishPearConstructionSlot(*Slot, nullptr, true);
+   Guard.Released = true;
++  LogMan::Msg::EFmt("Pear CPU policy state={:x} scalar={} vector={} memcpy={}",
++    reinterpret_cast<uintptr_t>(Thread), IsAtomicTSOEnabled(),
++    IsVectorAtomicTSOEnabled(), IsMemcpyAtomicTSOEnabled());
+   return Thread;
+ }
+ #endif
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1591,6 +1591,7 @@
+     return STATUS_NOT_SUPPORTED;
+   }
+   Preparation.Commit();
++  LogMan::Msg::EFmt("Pear CPU thread tid={} state={:x}", GetCurrentThreadId(), reinterpret_cast<uintptr_t>(Thread));
+   PearInitCheckpoint("ThreadInit.complete", STATUS_SUCCESS);
+   return STATUS_SUCCESS;
+ #else

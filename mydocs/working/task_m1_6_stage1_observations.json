@@ -1,0 +1,67 @@
+{
+  "categories": [
+    "abi",
+    "atomic",
+    "callback",
+    "code_change",
+    "fault",
+    "flags",
+    "float",
+    "guard",
+    "memory",
+    "ordering",
+    "partial_register",
+    "seh",
+    "simd",
+    "tls"
+  ],
+  "census_count": 2270,
+  "census_sha256": "6c1811d39d7dbeb9141cfbd33b2de775dc85a1bd45abc63a09e1528d47b02541",
+  "classification_counts": {
+    "conflicting_environment": 156,
+    "duplicate_json_key": 2,
+    "empty_expectations": 23,
+    "memory_region_range": 1,
+    "outside_selected_feature_corpus": 876,
+    "outside_selected_finite_corpus": 926,
+    "register_width": 11,
+    "selected_unperformed": 12,
+    "unsupported_config_key": 25,
+    "unsupported_register": 238
+  },
+  "cpu_qualified": false,
+  "duplicate_config_paths": [
+    "unittests/ASM/FEX_bugs/pdep_overlap.asm",
+    "unittests/ASM/VEX/vpackuswb.asm"
+  ],
+  "guest_execution": false,
+  "inventory_valid": true,
+  "manifest_sha256": "c6ad9b39b475d1dbd7f0fbe377c50022a11d32d7b08e967e684b2250d1d593f9",
+  "reference_status": "unavailable",
+  "required_boundaries": 10,
+  "scope": "source_inventory_only",
+  "selected": 12,
+  "sources_sha256": "69727b6125bbea096c1d635e7b2cdb5e4c794c2df9fa1964568763645e190839",
+  "tool_availability": {
+    "cross_clang_native_arm64_slice": true,
+    "cross_clang_sha256": "2d216723fd4024ec3386b9f5f68e3703712147a2a7781e67fede78adc21276cb",
+    "nasm": "not_found_in_PATH_or_checked_caches",
+    "nasm_candidate": {
+      "archive_sha256": null,
+      "build_status": "unperformed",
+      "commit": "8f1fb545a582c55c69607f457b4d1e71c19b2ecf",
+      "url": "https://www.nasm.us/pub/nasm/releasebuilds/3.02/",
+      "version": "3.02"
+    },
+    "native_reference": "unavailable_not_executed"
+  },
+  "verification": {
+    "architecture": "arm64",
+    "failures": 0,
+    "governance": "25 documents; 231 local targets",
+    "producer_sha256": "021759a850a166560e620fdb6d84d21baee0b5a80633fc485c71ef073d826cc7",
+    "python": "3.14.4",
+    "skips": 0,
+    "tests": 14
+  }
+}

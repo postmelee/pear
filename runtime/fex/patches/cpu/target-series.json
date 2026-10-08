@@ -1,0 +1,10 @@
+{
+  "patch": "0004-current-shared-link-target.patch",
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "before": "415dc26f1b8dbff1ccfc11e42d011df4733e49897ac8f3a1a37325b4dc7608b1",
+      "after": "3c5b3a28a6525e4eeb230b00d5616dc56e6dc229de6ab8111f0fdab339f6389d"
+    }
+  ]
+}

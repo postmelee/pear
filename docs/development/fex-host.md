@@ -108,10 +108,117 @@ callers access to the translator's memory interface. The old native fixture's
 20-control expectation was updated for the current 12-setting policy (26 checks);
 its original failure remains recorded. No runtime permission was relaxed.
 
-Wider CPU/ordering conformance belongs to #6; complete process/module observation
-to #10; required i386 Steam helpers to the inspected Steam path; translated
-D3D11 to #8. Forced foreign-thread termination, arbitrary exception/unwind and
+The declared #6 CPU/ordering results below extend this finite evidence. Complete
+process/module observation belongs to #10, required i386 helpers to the inspected
+Steam path, and translated D3D11 to #8. Forced foreign-thread termination, arbitrary exception/unwind and
 SMC/unaligned paths remain unqualified. Pair #7's graphics work with this exact
 CPU source set before graphics claims. Follow the [delivery plan](../delivery-plan.md)
 and [reuse review](../research/platform-reuse.md); all Steam, play, save/relaunch,
 independent reproduction and ordinary-user distribution gates remain explicit.
+
+## Declared CPU qualification — Task #6
+
+On October 8, 2026, the final #6 component set passed **18 of 19 declared
+instruction/API PEs**, with the remaining AVX case explicitly unsupported
+(CPUID/XCR0 feature refusal, exit 77). Native Windows passed all 19 exact PEs.
+A separate same-PE ordering fixture passed **32,768 measured pairs per host**:
+aligned locked RMW, message passing, plain store buffering and fenced store
+buffering. Plain SB 00 is allowed and need not occur; forbidden message-passing
+and fenced-SB outcomes remained zero. These finite tests do not qualify all x64
+instructions, arbitrary concurrency or game behavior.
+
+The [final CPU report](../../mydocs/report/task_m1_6_report.md) and
+[Stage 4 observations](../../mydocs/working/task_m1_6_stage4_observations.json)
+bind the corpus, references and actual component set. Eight worker lifetimes,
+two at a time plus a coordinator, passed TLS, normal joins and checked FEX
+retirement. Each participant's actual scalar/vector/memcpy software TSO policy
+was observed from FEX Context getters; configuration strings alone were not used
+as proof. Hardware TSO remains unavailable in the Darwin service.
+
+This candidate layers four independently identified CPU patches over the #5
+FEX source: [private staging label storage](../../runtime/fex/patches/cpu/series.json),
+[effective policy observation](../../runtime/fex/patches/cpu/policy-series.json),
+[link diagnostics](../../runtime/fex/patches/cpu/link-series.json), and
+[current shared link targets](../../runtime/fex/patches/cpu/target-series.json).
+The last correction keeps the existing shared-map read lock and source mutation
+turn, refreshes the authoritative target, and declines optional direct linking
+when the captured source epoch changed. Owner checks and memory permissions stay
+strict. Wine, owner wire ABI and upstream languages are unchanged.
+
+### Developer reproduction and evidence reuse
+
+These commands use the same receipt-bound developer setup described above, not
+an ordinary-user installer. `PEAR_TASK5_REPO` must retain the admitted #5 source,
+build and signed runtime receipts; `PEAR_REUSE_SOURCE` selects the pinned signing
+and supervision implementation. `PEAR_FEX_SOURCE` is the qualified FEX source for
+ASM extraction. `PEAR_NASM` is pinned native NASM 3.02 and `PEAR_CROSS_CLANG` is the
+recorded LLVM-MinGW compiler. Each output must be fresh.
+
+```sh
+python3 -B tools/cpu/build.py --source "$PEAR_FEX_SOURCE" \
+  --nasm "$PEAR_NASM" --clang "$PEAR_CROSS_CLANG" --output .build/task6/cpu-pe
+python3 -B tools/cpu/ordering.py build --iterations 2048 --rounds 4 \
+  --nasm "$PEAR_NASM" --clang "$PEAR_CROSS_CLANG" --output .build/task6/ordering-pe
+python3 -B tools/cpu/fex_build.py --prior-repo "$PEAR_TASK5_REPO" \
+  --observe-policy --link-diagnostic --link-correction --output .build/task6/cpu-fex
+```
+
+Run `tools/cpu/native_run.py` on actual native Windows x64 for the 19-PE build;
+run `tools/cpu/ordering.py native` for ordering. Both accept `--build` and
+`--output`; the 19-PE command also requires `--manifest tests/cpu/corpus.json`.
+The branch-only [reference workflow](../../.github/workflows/cpu-native-reference.yml)
+provides the pinned ordering build and native calibration/qualification example.
+Keep raw artifact bytes and actual runner architecture/image identity. On a clean
+Windows runner, preserve LF fixture source bytes when checking out, as in that
+workflow. Perform the 64-iteration/two-round calibration before qualification.
+
+Use each exact Windows-tested build on Pear; a separately rebuilt or changed PE
+cannot inherit its reference. Prepare a signed runtime for each fixture bundle:
+
+```sh
+python3 -B tools/cpu/runtime.py --prior-repo "$PEAR_TASK5_REPO" \
+  --signing-source "$PEAR_REUSE_SOURCE" --fex-correction .build/task6/cpu-fex \
+  --build "$PEAR_CPU_BUILD" --output .build/task6/cpu-runtime
+python3 -B tools/cpu/run.py --runtime .build/task6/cpu-runtime \
+  --build "$PEAR_CPU_BUILD" --reuse "$PEAR_REUSE_SOURCE" \
+  --name qualification --output .build/task6/cpu-candidate.json
+```
+
+For the ordering build, prepare another fresh runtime with `runtime.py`, then use
+`pear_run.py --runtime ... --reuse ... --case ordering --output ...`. Its candidate
+JSON has `scope: ordering_candidate` plus absolute `build`, `runtime`, `run` and
+`signing_source` paths. Keep this local record private. `run.py` resumes only
+unchanged fully admitted cases and removes completed synthetic prefixes; do not
+turn a missing record, failure or skipped execution into a pass.
+
+Bind both completed suites using the existing source/component receipts and
+actual payload code, allowing only declared fixture and signature differences:
+
+```sh
+python3 -B tools/cpu/qualify.py --build "$PEAR_CPU_BUILD" \
+  --reference "$PEAR_NATIVE_REFERENCE" --candidate "$PEAR_CPU_RUN" \
+  --ordering-reference "$PEAR_ORDERING_REFERENCE" \
+  --ordering-candidate "$PEAR_ORDERING_RUN" --output .build/task6/qualification
+```
+
+Qualification re-reads the exact PEs, raw results, authorization and cleanup
+records, patch/source identities, bundle inventories and Mach-O code origins.
+Changed components/settings invalidate affected prior observations. Reuse the
+passed records only while those identities and their original scope still match.
+A fresh checkout lacks private preparation/signing records; independent-machine
+reproduction and distributable packaging remain separate work.
+
+### Integration handoff and unsupported coverage
+
+Use the recorded final FEX DLL and all ordered patches when pairing #7's graphics
+component for #8; the older #5 or Stage 2 DLL is not this qualified candidate.
+#9 owns production supervision, #10 complete process/module observation, #11
+Steam and required helper architectures, and #12 gameplay/save/relaunch. #13
+owns assembly/reproduction of the eventual runtime artifact.
+
+AVX exposure and i386/WoW64 execution remain unsupported by this qualification.
+Unselected x64 instructions, arbitrary concurrency/forced termination, full SMC
+and exception behavior, complete late-load observation, independent Mac
+reproduction, performance/power and ordinary-user distribution remain unqualified.
+If Steam or Megabonk needs an unsupported path, that requirement blocks the
+corresponding qualification; the finite CPU result cannot waive it.
