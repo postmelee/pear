@@ -27,11 +27,12 @@ def fields(value,expected,code):
     need(isinstance(value,dict) and set(value)==set(expected),code)
 
 
-def observation(raw,cache_line_bytes):
+def observation(raw,cache_line_bytes,*,policy_controls=20):
+    need(type(policy_controls) is int and policy_controls in (20,26),'service_policy_profile')
     value=record(decode_json(raw),'fex_native_service_observation')
     fields(value,OBS_FIELDS,'service_observation_fields')
     need(value['scope']=='fex_component' and value['passed'] is True,'service_observation_failed')
-    for name,expected in (('service_count',8),('mapping_controls',7),('policy_controls',20),('owned_workers',2),('workers_joined',2),('cache_line_bytes',cache_line_bytes)):
+    for name,expected in (('service_count',8),('mapping_controls',7),('policy_controls',policy_controls),('owned_workers',2),('workers_joined',2),('cache_line_bytes',cache_line_bytes)):
         need(type(value[name]) is int and value[name]==expected,'service_observation_contract')
     need(type(value['pid']) is int and 0<value['pid']<=0x7fffffff,'service_observation_pid')
     need(value['software_tso_required'] is True and value['descriptor_cleanup'] is True,'service_fallback_or_cleanup')

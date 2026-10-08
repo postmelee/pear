@@ -3,7 +3,7 @@
 Issue: [#5](https://github.com/postmelee/pear/issues/5)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Task scope: [task plan](task_m1_5.md)
-Updated: October 8, 2026. State: Stages 3/4/5 completed locally; Stage 6 fresh reconstruction approved and in progress.
+Updated: October 8, 2026. State: Stages 3/4/5 completed locally; Stage 6 fresh reconstruction and required finite checks completed locally.
 
 ## Authority and approved direction
 
@@ -74,8 +74,8 @@ Do not append experiment logs or every build attempt here.
 | GitHub criterion | Required evidence | Current status |
 |---|---|---|
 | Small x64 PE executes through recorded FEX in ARM64 Wine without Rosetta | Real translator entry, deterministic guest result and native process/library identity for the required fixture path | Passed for two deterministic fixtures; complete late-load observation remains outside this evidence |
-| Required Darwin services and thread/JIT/exception ownership | Existing service results plus affected real integration/lifecycle tests and explicit ownership documentation | Services and native memory passed in recorded scopes; translated integration open |
-| Rebuildable source patch series and contribution policy | Pinned source/tools, attributable patches/notices and one fresh final paired reconstruction | Source85 component build passed; final integrated reconstruction open |
+| Required Darwin services and thread/JIT/exception ownership | Existing service results plus affected real integration/lifecycle tests and explicit ownership documentation | Required representative translated lifecycle and native controls passed; broader CPU/game scope remains downstream |
+| Rebuildable source patch series and contribution policy | Pinned source/tools, attributable patches/notices and one fresh final paired reconstruction | Final paired fresh Wine/FEX reconstruction passed; Stage 6 report owns exact evidence |
 
 Do not close #5 for module installation, native initialization or passing unit
 tests alone. Conversely, do not require Megabonk/Steam, broad CPU conformance or

@@ -57,7 +57,10 @@ int main(int argc, char** argv) {
   }
   require(!FEX::Windows::DarwinPolicy::AcceptJSON("UnreviewedTuning","1"),"unknown-json-policy-refused");++policy_controls;
   require(!FEX::Windows::DarwinPolicy::AcceptEnvironment("FEX_UNREVIEWEDTUNING","1"),"unknown-env-policy-refused");++policy_controls;
-  require(policy_controls==20,"policy-control-count");
+  // Stage 3 adds three cache restrictions to the original nine settings.
+  constexpr unsigned settings = sizeof(FEX::Windows::DarwinPolicy::Settings) /
+                                sizeof(FEX::Windows::DarwinPolicy::Settings[0]);
+  require(policy_controls==2*settings+2,"policy-control-count");
   void* library=dlopen(argv[1],RTLD_NOW|RTLD_LOCAL);
   require(library!=nullptr,"native-unixlib-load");
   auto table=static_cast<Entry*>(dlsym(library,"__wine_unix_call_funcs"));

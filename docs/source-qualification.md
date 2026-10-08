@@ -10,6 +10,12 @@ The [inventory](../runtime/sources/manifest.json) is the factual source of truth
 
 This dated component result preserves the September 28 audit and its blocked aggregate decision. Darwin FEX host services, translated execution, Wine/DXMT pairing, final dependency/notice closure, Steam/game qualification and general-user distribution still require their own evidence. Same-host fresh directories and a reverified compiler cache do not establish clean-machine or independent-compiler reproduction.
 
+## Scoped Wine/FEX component update — October 8, 2026
+
+[Task #5 Stage 6](../mydocs/working/task_m1_5_stage6.md) freshly rebuilt the selected Wine/FEX pair and passed five original x64 lifecycle/API fixtures from empty synthetic prefixes on this development Mac. Current authorization, ARM64 observations and cleanup passed; native caller refusal and Darwin service controls also passed. See the [FEX development guide](development/fex-host.md) for exact scope and prepared-input requirements.
+
+This is separate component evidence, preserving the original blocked audit and source inventory. It does not qualify broader CPU behavior, graphics/Steam/Megabonk, full module observation, independent reproduction or ordinary-user distribution.
+
 ## Selected input set
 
 All pins below identify source. They do not identify a built or supported runtime.

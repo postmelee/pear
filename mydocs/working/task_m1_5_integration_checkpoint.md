@@ -389,3 +389,19 @@ was subsequently confirmed as authorized by the source conversation's explicit
 human instruction to continue the planned next work. The earlier approval-wait
 interpretation is superseded; fresh reconstruction and required checks may proceed.
 This local documentation commit does not publish runtime code or close Issue #5.
+
+## Stage 6 completion — October 8
+
+Fresh Wine (21 commands) and FEX (10 commands, 32 inspected artifacts) passed
+without prior object reuse. The same candidate passed all five x64 API/lifecycle
+cases from empty synthetic prefixes, plus actual ordinary-caller refusal and
+current native UnixLib service controls. Current per-image authorization, ARM64
+observations, owned cleanup and sentinel survival passed. The Stage 6 report and
+sanitized sidecar own receipts, original failures and finite limits.
+
+No runtime engine source changed from Stage 5. Collector/install-mode and the
+older native test's fixed policy-count assumptions were corrected with original
+failures preserved. Six completed disposable synthetic prefixes were inventoried
+and removed (4,992,257,066 logical bytes; physical recovery unmeasured). Required
+builds, runtime inputs, logs and failures remain. All six stages are complete
+locally; no runtime-code push, PR, merge or Issue closure was performed.

@@ -11,7 +11,8 @@
 - [Manager language decision](decisions/manager-language.md): Rust/Swift fixture evidence, the Rust supervisor choice, reproduction scope, and remaining production gates.
 - [Source qualification](source-qualification.md): reproduced public-source pins, the complete blocked audit, contributor verification commands and remaining Wine/FEX/DXMT port/build gates.
 - [Host capability diagnostics](host-capabilities.md): reproduce native host probes and understand their declared development-configuration evidence and limits.
-- [Wine host development](development/wine-host.md): exact component build, development authorization and finite native fixture reproduction; FEX, game and distribution gates remain open.
+- [Wine host development](development/wine-host.md): exact component build, development authorization and finite native fixture reproduction; later translator integration has separate evidence.
+- [FEX CPU integration](development/fex-host.md): fresh Wine/FEX reconstruction, finite x64 lifecycle fixtures, native refusal controls and development-only limits.
 - [Apple technical guidance](development/apple-tooling.md): select relevant pinned Metal expertise, check tool availability and preserve evidence boundaries.
 
 ## Research and observations
@@ -22,7 +23,7 @@ These existing research documents remain dated evidence and analysis within the 
 - [macOS runtime audit](research/macos-runtime-audit.md): Wine/FEX source availability, host APIs and porting work.
 - [Graphics and game integration](research/graphics-and-game-integration.md): DXMT, alternatives, Steam dependencies and validation.
 - [Engine and language options](research/engine-and-language-options.md): Rust, Cranelift and the path to a Pear-owned engine.
-- [Platform reuse](research/platform-reuse.md): launcher, profile and Steam integration projects.
+- [Platform reuse](research/platform-reuse.md): runtime, launcher, profile and Steam reuse with revision-specific boundaries.
 
 ## Where information is authoritative
 

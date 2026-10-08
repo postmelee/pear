@@ -8,7 +8,10 @@ def assess(run, runtime, output, layout=None):
     case = json.loads((run / 'case.json').read_text())
     manifest = json.loads((runtime / 'runtime.json').read_text())
     assert case['runtime_sha256'] == H((runtime / 'runtime.json').read_bytes())
-    assert case['outcome'] == 'exited' and case['processes']['loader']['exit_code'] == 42
+    native_refusal = manifest.get('fixture_case') == 'native-owner'
+    expected_exit = 68 if native_refusal else 42
+    assert case['expected_exit'] == expected_exit
+    assert case['outcome'] == 'exited' and case['processes']['loader']['exit_code'] == expected_exit
     assert not case['error'] and not case['stream_error'] and not case['cleanup_errors']
     assert case['cleanup']['complete'] and case['sentinel_survived'] and case['authorization_before_after_passed']
     events = [row for rows in case['events'].values() for row in rows]
@@ -23,8 +26,24 @@ def assess(run, runtime, output, layout=None):
         source_receipts=manifest['input_receipts'], instrumented=bool(manifest.get('test_instrumentation')),
         translation_observations=len(translated), arm64_image_events=len(images), image_event_kinds=image_kinds,
         host_architecture='ARM64', authorization_before_after=True, cleanup_complete=True,
-        sentinel_survived=True, exit_code=42, elapsed_ms=case['elapsed_ms'],
+        sentinel_survived=True, exit_code=expected_exit, elapsed_ms=case['elapsed_ms'],
         late_load_coverage_complete=False, game_execution=False, distribution_qualified=False)
+    if native_refusal:
+        rows = []
+        for line in (run / 'run/loader.stdout.log').read_text().splitlines():
+            try:
+                row = json.loads(line)
+            except ValueError:
+                continue
+            if row.get('record_kind') == 'pear_fex_memory_wine':
+                rows.append(row)
+        assert rows == [dict(version=1, record_kind='pear_fex_memory_wine',
+            event='readiness_call', control='register_readiness_native_executor', opcode=7,
+            returned_status=3, status=3, native_error_domain=0, native_error_code=0)]
+        assert layout is None
+        result.update(scope='finite_native_caller_refusal',
+                      native_caller_without_translator_identity='unavailable',
+                      fex_initialization=False, translated_guest_execution=False)
     if layout:
         log = (run / 'run/loader.stderr.log').read_text()
         for required in ('ECMemory.complete: status=00000000 domain=0 code=62',

@@ -88,7 +88,7 @@ def run(runtime,output,reuse,prefix_template=None):
         prefix.mkdir(mode=0o700)
     for p in (work/'work',work/'work/tmp'):p.mkdir(mode=0o700)
     result={'scope':'fex_component','kind':'first_x64_dispatch_observation','passed':False,'runtime_sha256':H((runtime/'runtime.json').read_bytes()),
-            'expected_exit':42,'guest_execution_qualified':False,'stage3_complete':False,'prefix_origin':prefix_origin}
+            'expected_exit':value.get('expected_exit',42),'guest_execution_qualified':False,'stage3_complete':False,'prefix_origin':prefix_origin}
     with supervisor.supervision(reuse) as (life,helpers):
         nonce=uuid.uuid4().hex;packet=supervisor.assessment_packet(value)
         session=helpers.api.APISession(work,runtime,packet,nonce,suite='api-abi',case_id='first-dispatch')

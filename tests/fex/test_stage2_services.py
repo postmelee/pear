@@ -21,6 +21,13 @@ class ServiceOutcomeTests(unittest.TestCase):
     def test_finite_outcome_preserves_unsupported_services(self):
         self.assertEqual(services.observation(json.dumps(valid()).encode(),128),valid())
 
+    def test_extended_policy_profile_is_explicit_and_complete(self):
+        data=valid();data['policy_controls']=26
+        with self.assertRaises(Error):services.observation(json.dumps(data).encode(),128)
+        self.assertEqual(services.observation(json.dumps(data).encode(),128,policy_controls=26),data)
+        data['policy_controls']=25
+        with self.assertRaises(Error):services.observation(json.dumps(data).encode(),128,policy_controls=26)
+
     def test_incomplete_abi_workers_policy_cleanup_or_geometry_rejected(self):
         for name,value in (('service_count',7),('workers_joined',1),('policy_controls',19),('descriptor_cleanup',False),('cache_line_bytes',64),('pid',0),('pid',True)):
             with self.subTest(name=name,value=value):

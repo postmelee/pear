@@ -10,14 +10,14 @@ from tools.fex.common import REPO,need,relative
 from tools.fex import memory_wine_runtime as reuse,byte_readers
 H=lambda b:hashlib.sha256(b).hexdigest()
 
-def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output):
-    paths=[Path(x).resolve(strict=True) for x in (base,paired,fex,linked,fixture,helper,signing_source)]
-    base,paired,fex,linked,fixture,helper,signing_source=paths
-    root=Path(output).absolute()
-    need(root.parent==REPO/'.build/task5' and not root.exists(),'integration_fresh_output')
-    # Preparation only clones/signs the bundle. Cold and initialized-prefix
-    # execution have separate storage gates in integration_run.py.
-    need(shutil.disk_usage(REPO).free>=5*1024**3//2,'integration_storage')
+def component_records(paired,fex,linked,fixture,reconstruction,base):
+    if reconstruction:
+        from tools.fex.reconstruction_check import components
+        from tools.fex.integration_fixture import verify
+        expected,records=components(base,paired,fex,linked)
+        records['fixture']=verify(fixture)
+        expected['fixture']=H((fixture/'control.json').read_bytes())
+        return expected,records
     expected={'paired':'5e4ab7c106939179b50a128f00da1f9cdc2cf981d6ec9a1cef88f6b43aad2c25',
               'fex':'9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304',
               'linked':'8581ae239b641b38f450e33f45ede8dcc38ea5df0ea1c275e8f1e5f5977be6e0',
@@ -59,6 +59,17 @@ def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output)
     records={}
     for name,path in [('paired',paired/'control.json'),('fex',fex/'build.json'),('linked',linked/'control.json'),('fixture',fixture/'control.json')]:
         raw=path.read_bytes();need(H(raw)==expected[name],'integration_component_receipt');records[name]=json.loads(raw)
+    return expected,records
+
+def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output,reconstruction=False):
+    paths=[Path(x).resolve(strict=True) for x in (base,paired,fex,linked,fixture,helper,signing_source)]
+    base,paired,fex,linked,fixture,helper,signing_source=paths
+    root=Path(output).absolute()
+    need(root.parent==REPO/'.build/task5' and not root.exists(),'integration_fresh_output')
+    # Preparation only clones/signs the bundle. Cold and initialized-prefix
+    # execution have separate storage gates in integration_run.py.
+    need(shutil.disk_usage(REPO).free>=5*1024**3//2,'integration_storage')
+    expected,records=component_records(paired,fex,linked,fixture,reconstruction,base)
     base_record=json.loads((base/'build.json').read_text())
     raw=(base/'installed-files.json').read_bytes();need(H(raw)==base_record['artifacts_manifest']['sha256'],'integration_baseline_manifest')
     inventory=json.loads(raw);root.mkdir(mode=0o700)
@@ -67,7 +78,9 @@ def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output)
     value={'scope':'fex_component','kind':'integrated_development_runtime','passed':False,
            'wine_execution':False,'guest_execution':False,'input_receipts':expected,
            'baseline_build_sha256':H((base/'build.json').read_bytes()),'commands':commands,
-           'test_instrumentation':records['linked'].get('test_instrumentation')}
+           'test_instrumentation':records['linked'].get('test_instrumentation'),
+           'fixture_case':records['fixture'].get('case','legacy-x64'),
+           'expected_exit':records['fixture'].get('expected_exit',42)}
     try:
         authorization,private,raw_profile=helpers.capture_authorization(profile,root,reader,authorization_commands)
         sources={};selected={}
@@ -75,7 +88,8 @@ def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output)
             sources[row['path']]=(base/'install',row['path'],row['sha256'],row['mode'])
         for row in records['paired']['outputs']:
             target=reuse.NTDLL if row['path'].endswith('.so') else reuse.NTDLL_PE
-            sources[target]=(paired,row['path'],row['sha256'],0o755)
+            mode=(paired/row['path']).stat().st_mode & 0o777 if reconstruction else 0o755
+            sources[target]=(paired,row['path'],row['sha256'],mode)
         dll=next(r for r in records['linked']['outputs'] if r['path']=='deployment.dll')
         sources['lib/wine/aarch64-windows/xtajit64.dll']=(linked,dll['path'],dll['sha256'],0o755)
         unix=next(r for r in records['fex']['artifacts'] if r['path']=='install/libarm64ecfex.so')
@@ -136,7 +150,8 @@ def prepare(base,paired,fex,linked,fixture,helper,profile,signing_source,output)
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('base','paired','fex','linked','fixture','helper','profile','signing-source','output'):p.add_argument('--'+key,required=True)
+    p.add_argument('--reconstruction',action='store_true')
     args=p.parse_args()
     with open('/private/tmp/pear-native-compilation.lock','a+') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-        prepare(args.base,args.paired,args.fex,args.linked,args.fixture,args.helper,args.profile,args.signing_source,args.output)
+        prepare(args.base,args.paired,args.fex,args.linked,args.fixture,args.helper,args.profile,args.signing_source,args.output,args.reconstruction)
