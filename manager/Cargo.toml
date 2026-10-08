@@ -1,0 +1,15 @@
+[package]
+name = "pear-manager"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.94"
+publish = false
+
+[dependencies]
+libc = "=0.2.186"
+
+[profile.release]
+opt-level = 3
+lto = false
+codegen-units = 1
+panic = "abort"
