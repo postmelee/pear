@@ -8,6 +8,8 @@
 - [Contributor guide](contributing.md): requests, reports, testing, documentation, profiles and code contributions; no AI subscription required.
 - [Runtime architecture](architecture.md): requirements, subsystem boundaries, interfaces, language decisions and qualification gates.
 - [Runtime contracts](runtime-contracts.md): seven experimental record kinds, reference validation, source handoff, and supervisor/observer ownership.
+- [Native supervisor CLI](development/runtime-supervisor.md): read-only fixture setup, activation, prepared contexts, cancellation and preservation-first recovery; real-runtime execution remains unavailable.
+- [Game profiles](game-profiles.md): v2 profile knowledge, two fixture profiles and researched Megabonk facts with explicit unknowns.
 - [Manager language decision](decisions/manager-language.md): Rust/Swift fixture evidence, the Rust supervisor choice, reproduction scope, and remaining production gates.
 - [Source qualification](source-qualification.md): reproduced public-source pins, the complete blocked audit, contributor verification commands and remaining Wine/FEX/DXMT port/build gates.
 - [Host capability diagnostics](host-capabilities.md): reproduce native host probes and understand their declared development-configuration evidence and limits.

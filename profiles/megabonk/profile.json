@@ -1,0 +1,145 @@
+{
+  "record_kind": "game_profile",
+  "schema_version": 2,
+  "record_context": "research",
+  "record_id": "megabonk.research",
+  "disclosure": {
+    "mode": "full",
+    "withheld": [],
+    "origin_token": null
+  },
+  "store": "steam",
+  "app_id": 3405340,
+  "game_build": null,
+  "executable": {
+    "path_type": "guest_relative",
+    "path": "Megabonk.exe"
+  },
+  "compatibility_family": null,
+  "renderer": null,
+  "arguments": [],
+  "environment": [],
+  "operations": [],
+  "required_checks": [
+    "rosetta-independent-runtime",
+    "steam-initialization",
+    "gameplay-20-minutes",
+    "input",
+    "audio",
+    "save-relaunch"
+  ],
+  "required_processes": [
+    "game",
+    "steam"
+  ],
+  "save_paths": [],
+  "save_inventory_status": {
+    "status": "unknown",
+    "reason": "No current verified save inventory or Wine user mapping. Empty save_paths is unknown, not evidence that no saves exist."
+  },
+  "path_observations": [
+    {
+      "kind": "settings",
+      "status": "unknown",
+      "path": null,
+      "reason": "A dated local-script inspection suggested AppData/LocalLow/Ved/Megabonk/Saves/LocalDir/config.json. Current existence, Wine user mapping and native applicability are unverified; this hint grants no write operation.",
+      "evidence": []
+    },
+    {
+      "kind": "saves",
+      "status": "unknown",
+      "path": null,
+      "reason": "Configuration-path hints do not establish a complete save inventory or persistence. No user directory is guessed.",
+      "evidence": []
+    }
+  ],
+  "provenance": [
+    {
+      "url": "https://store.steampowered.com/app/3405340/Megabonk/",
+      "review_date": "2026-10-09",
+      "scope": "store-identity",
+      "detail": "Official Steam listing identifies Megabonk at App ID 3405340. Store feature labels are not Pear verification."
+    },
+    {
+      "url": "https://github.com/postmelee/pear/blob/e4183a9baf70a1d6721845f374ce9e7ebf2a3a5c/docs/research/local-evidence.md",
+      "review_date": "2026-10-09",
+      "scope": "historical-rosetta-observation",
+      "detail": "September 27, 2026 report: game 1.0.69; Windows depot 3405342, manifest 446680890915713051; Wine 11.0, DXMT 0.80, Whisky Libraries 3.1.1 used Rosetta. App BuildID and current Steam build were not established. No current qualification follows."
+    },
+    {
+      "url": "https://github.com/postmelee/pear/blob/e4183a9baf70a1d6721845f374ce9e7ebf2a3a5c/docs/research/graphics-and-game-integration.md",
+      "review_date": "2026-10-09",
+      "scope": "historical-executable-inspection",
+      "detail": "September 27, 2026 read-only inventory named Megabonk.exe, UnityPlayer.dll and GameAssembly.dll as Windows x86-64 PE files. File presence does not establish loading or complete process/module coverage."
+    },
+    {
+      "url": "https://github.com/postmelee/pear/blob/e4183a9baf70a1d6721845f374ce9e7ebf2a3a5c/mydocs/plans/task_m1_9.md",
+      "review_date": "2026-10-09",
+      "scope": "sanitized-script-hints",
+      "detail": "October 8 planning recorded a prior local script inspection: -force-d3d11, window/size and local log arguments plus a candidate configuration path. These are historical hints, not verified native defaults; executable arguments and operations remain empty."
+    },
+    {
+      "url": "https://partner.steamgames.com/doc/sdk/api",
+      "review_date": "2026-10-09",
+      "scope": "steam-development-boundary",
+      "detail": "Valve documents steam_appid.txt for development and says not to ship it. Pear requires the normal official Steam launch/ownership path; an App ID is not an ownership credential."
+    }
+  ],
+  "features": [
+    {
+      "feature_id": "rosetta-independent-runtime",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "steam-initialization",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "gameplay-20-minutes",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "input",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "audio",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "save-relaunch",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "steam-overlay",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "steam-cloud",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "achievements",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "controller",
+      "status": "untested",
+      "evidence": []
+    },
+    {
+      "feature_id": "discord",
+      "status": "untested",
+      "evidence": []
+    }
+  ]
+}

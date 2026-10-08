@@ -97,6 +97,8 @@ For M1 runtime development, start with a CLI and a narrowly defined supervisor. 
 
 Launches use argument arrays, scoped environments, and explicit paths. A profile may select approved configuration operations; it is not an arbitrary downloaded shell script. Runtime files are immutable. Writes go to separately located prefixes, saves, logs, and caches. Installation completes in a staging directory before activation.
 
+The [native supervisor CLI](development/runtime-supervisor.md) now implements this boundary for owned native fixtures, including two isolated profiles, exact context bindings, cancellation and manual recovery. The [Megabonk profile](game-profiles.md) remains research-only. Actual runtime authorization and complete process/module observation are separate integration gates.
+
 Failures are classified as source/build, host capability, code signing, CPU translation, Windows API, graphics, Steam integration, or game behavior. A report includes the failing phase, component identity, and relevant redacted evidence. A generic launch failure is not enough for maintaining compatibility.
 
 ## 4. Language choices
@@ -148,7 +150,7 @@ Continue investment only if the prototype offers a measured or otherwise demonst
 
 ## 7. Versioned data contracts
 
-The [version 1 runtime contracts](runtime-contracts.md) refine these records into seven experimental kinds with a tested reference validator. They include explicit launch request/event and failure records. Artifact/profile qualification is a later overlay referencing immutable inputs, avoiding circular digests; the summary below is conceptual, and the linked specification defines exact fields and eligibility. No production runtime implementation is implied.
+The [versioned runtime contracts](runtime-contracts.md) refine these records into seven experimental kinds with tested reference validators. Version 1 is preserved; version 2 adds explicit profile knowledge/provenance and narrowly executable fixture settings. They include explicit launch request/event and failure records. Artifact/profile qualification is a later overlay referencing immutable inputs, avoiding circular digests; the summary below is conceptual, and the linked specification defines exact fields and eligibility. No production runtime implementation is implied.
 
 | Record | Required contents |
 |---|---|
