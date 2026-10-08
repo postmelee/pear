@@ -4,7 +4,7 @@ GitHub Issue: [#9](https://github.com/postmelee/pear/issues/9)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task9`
 Planning date: October 8, 2026 (Asia/Seoul)
-Status: task start and preparation authorized; task plan awaiting requester approval. No implementation plan or production source change is authorized yet. Later stages require explicit continuation in this chat after verification, report and commit.
+Status: the requester approved this task-plan direction and authorized the narrow reuse/minimal-structure supplements and detailed implementation planning on October 8, 2026, through the originating chat. The implementation plan and Stage 1 still require approval; no production implementation has begun. Later stages require explicit continuation in this chat after verification, report and commit.
 
 ## Purpose
 
@@ -28,6 +28,8 @@ Read-only checks on October 8 found:
 - Retained task1/task3/task5 detached evidence worktrees and the locked task7 evidence worktree remain needed. Do not mutate, clean or remove their artifacts. The main and #6 daily boards have differing task-local updates; #9 adds its own row only and must preserve both sets of rows during eventual integration.
 
 [#5's final report](../report/task_m1_5_report.md) provides a source-built Wine/FEX pair and finite x64 execution, while [#7's report](../report/task_m1_7_report.md) provides graphics construction and finite native pairing. They do not provide a complete launch-eligible product lock/artifact, complete observation, game support or unrestricted distribution. #9 fixture work can proceed without waiting for #6. Future product-record integration must review the actual later source/build/signing evidence; the old #1 blocked audit must not be relabeled as ready.
+
+Follow-up planning check: #6 is now CLOSED and [PR #38](https://github.com/postmelee/pear/pull/38) merged at `d019a6efb202615e84cbcb9be63e5f55ba7f44c1` on October 8, 2026. The fetched remote has advanced to that commit; #9 retains its original base and does not merge/rebase or consume private #6 artifacts during planning. Its final report supplies finite CPU/ordering evidence, with AVX/i386 and game limitations still separate. Review that merged handoff and preserve concurrent board/docs when integrating later. The earlier worktree observations above remain dated snapshots.
 
 ### Mandatory #3 reuse inventory
 
@@ -105,9 +107,15 @@ Version 1 currently allows only two fixture environment keys, `fixture_flag`/`dx
 
 Implement only required launch consumers/outputs and qualification eligibility. Reuse the reference evaluator for independent tests of existing run/qualification semantics; do not implement a competing evidence collector or trust service. Typed errors preserve the failing phase, stable reason and actual native numeric error without raw input, private roots, whole environments or inferred game/backend diagnoses.
 
+### Requester-directed implementation choice supplement
+
+The requester asked to reduce necessary new code through actual existing implementations, not treat a source review as code adoption. The detailed implementation plan must compare #3 reuse, standard APIs, a small external library, thin Pear glue and unavoidable new policy for leases, staging/temp files, descriptors/syscalls and streaming hashes. Preserve the existing strict JSON parser unless a concrete semantics-preserving reduction justifies replacing it. Rust std file locks, tempfile, rustix and nix are candidates to assess, not dependencies to add automatically. Locking does not prevent arbitrary same-user writes and wrappers do not establish process generations or ownership.
+
+WhiskyKit judgments above reject incompatible complete modules, not every independent function or scenario. Compare a small direct Swift portion/test, narrow adaptation and existing #3 behavior at the actual useful boundary. Preserve Swift, headers and GPL provenance if code is directly adopted; do not replace this decision with another broad hash collection or imply that design/test-case references are imported code. The implementation plan records the chosen reductions and remaining verification.
+
 ### Activation and mutable storage
 
-Local activation accepts already acquired verified inputs; download/authentication is out of scope. Stage in an owned fresh directory, verify complete selected records/payload closure, activate an immutable content-identified version atomically, and lease that version for the run. Refuse unknown versions, incompatible families, unsafe aliases and incomplete artifacts. Retain the old active version across cancellation, failed verification or interruption.
+Local activation accepts already acquired verified inputs; download/authentication is out of scope. Prefer manual payload preparation using existing OS tools and a read-only payload precondition, then stage only owned activation metadata, verify the complete selected records/payload closure, select the content-identified version atomically, and lease it for the run. Exact at-use execution and namespace guarantees remain mandatory. Refuse unknown versions, incompatible families, unsafe aliases and incomplete artifacts. Retain the old active version across cancellation, failed verification or interruption; do not build a general installer/updater framework.
 
 Do not execute the imported pathname after a one-time metadata check. Freeze a concrete macOS at-use ownership/activation mechanism and threat model in the implementation plan; prove replacement, symlink/hardlink, concurrent activation and stale-path cases with controlled mutations before calling the race closed. Mode bits or a cooperative lock alone are insufficient evidence against arbitrary same-user writers. If the selected mechanism cannot establish its declared guarantee, reject the configuration and report the remaining boundary. These controls are not a hostile-game sandbox and do not disable normal macOS protections.
 
@@ -119,7 +127,7 @@ Cache identity reuses lock/artifact/profile, translator/configuration, ABI and C
 
 Retain #3's direct-child reservation through group signaling and reaping, bounded nonblocking pipes and native creation identity. Add explicit cancellation and bounded graceful/forced cleanup. Only exact owned sessions/process generations may be signaled. No `killall`, process-name scan, global Wine shutdown or unrelated-prefix server command is allowed.
 
-A controller/custodian ownership boundary with a private control channel is the initial design candidate for abrupt CLI death: the custodian retains children/leases and treats lost control as cancellation. Its own crash must leave recoverable evidence and block unsafe reuse; document what cannot be proved. Stage 1 must review this against simpler reuse and define crash/detach protocol and FFI/threading contracts before implementation. Detached helpers require attributable ownership/session association; ambiguity yields an explicit unsupported or cleanup-failed state, never speculative PID termination or fabricated complete cleanup. Real Wine/Steam helper behavior remains a later integration gate, while owned detaching fixture controls are required here.
+Compare a single foreground supervisor with #3 cleanup, OS-held leases and a small durable incomplete-run journal against a controller/custodian. Choose the smallest structure that satisfies the existing cancellation/crash/ownership checks. A custodian is not predetermined: record a concrete failure the simpler design cannot handle before adding a process or protocol. Abrupt death may yield an explicitly incomplete run and quarantined prefix with manual new-context recovery, never asserted automatic cleanup. Detached helpers require attributable ownership/session association; ambiguity yields an explicit unsupported or cleanup-failed state, never speculative PID termination or fabricated complete cleanup. Real Wine/Steam helper behavior remains a later integration gate, while owned detaching fixture controls are required here.
 
 Finalize the launch request before observer readiness. Require an acknowledgement bound to exact request bytes, run/capture identity and declared coverage before a covered launch. Preserve per-producer sequence/previous links and exact exit references. Wrong, stale or unavailable readiness prevents covered execution; later gaps remain incomplete. #9 owns lifecycle and cleanup; #10 owns backend acknowledgements, observation generations, gaps and host/module coverage. Backend synchronous replies, observer readiness and child entry-point progress are different events. The fixture peer is synthetic and cannot establish Rosetta independence.
 
@@ -184,13 +192,13 @@ No task6, Wine/FEX/DXMT source/patches, retained build/prefix or live game/accou
 ## Tentative Stages
 
 - **Stage 1 — Freeze reuse and production boundaries**
-  - Retain complete pinned-file/license review, chosen native module reuse, exact profile/schema gaps, CLI commands, independent policy, activation threat model and controller/custodian/detachment contract.
+  - Retain complete pinned-file/license review, chosen native module reuse, exact profile/schema gaps, CLI commands, independent policy, activation threat model and the smallest crash/detachment ownership structure.
   - Introduce scoped rules beside real initial implementation artifacts and any approved contract extension. Verify version/research rejection and independently evaluated shapes without real runtime claims.
 - **Stage 2 — Native validation and local activation**
   - Implement native shared-record consumers and strict errors; verified owned staging/activation, runtime leases and at-use enforcement.
   - Test wrong versions/bytes/policy, unsafe aliases/references, activation interruption and concurrent mutation/replacement. Imported bytes cannot be executed merely because their metadata validated.
 - **Stage 3 — Owned supervision and failure recovery**
-  - Adapt spawn/pipe/cleanup logic, generation reservations, cancellation, crash journal and controller/custodian protocol; add synthetic exact-request readiness peer.
+  - Adapt spawn/pipe/cleanup logic, generation reservations, cancellation, crash journal and the approved minimum ownership structure; add synthetic exact-request readiness peer.
   - Test exit/crash, both pipe-setup failures, timeouts, output bounds, crash/disconnect, detach controls and unrelated sentinels. Report ownership/cleanup gaps honestly.
 - **Stage 4 — Scoped state and two fixture profiles**
   - Implement prefix/settings/save-root allocation, cross-process leases, cache isolation, preservation and manual compatible-version recovery.
@@ -216,7 +224,7 @@ Planning availability: native ARM64 macOS 26.5.2, CPython 3.14.4, Rust/Cargo 1.9
 | Native argv/environment/reaping/privacy | Existing Rust/C fixture, 55 corpus cases, two pipe faults and Python capture/oracle | Independently observed child traces, exact reaping/identity disappearance and unrelated sentinel survival remain mandatory. Exit zero alone, observer flags, skipped case or watchdog intervention never pass. New source/binary/fixture/budget changes require affected reruns. |
 | Runtime immutability/at-use identity | Task9 controlled mutation and activation tests, existing descriptor/hash primitives | Bad payload, changed executable/library/ancestor, symlink/hardlink aliases, concurrent activation and interruption cannot execute mismatched bytes or mutate active content. Test at the validation-to-use boundary, not only lexical paths. |
 | State isolation and preservation | Existing fixture factory plus A/B task9 profiles | Distinct settings/argv/prefix/saves, wrong-family/overlap rejection, busy lease, interrupted setup and manual recovery with unchanged old data. Hash inventories prove unaffected runtime/other profile contents; a passing local marker alone is insufficient. |
-| Crash/detach ownership | Existing generation bridge plus task9 independent finite child/custodian controls | Controller crash, custodian failure, detached helpers, identity substitution, withheld pipes and denied cleanup preserve original errors. Unknown identity must refuse signaling/reuse, and unrelated processes survive. |
+| Crash/detach ownership | Existing generation bridge plus task9 independent finite child/crash controls | Supervisor crash, lease loss, detached helpers, identity substitution, withheld pipes and denied cleanup preserve original errors. Unknown identity must refuse signaling/reuse, and unrelated processes survive. |
 | Observer handoff | Existing v1 events/eligibility tests plus synthetic peer | Wrong/stale request ack, absent readiness, delayed readiness, sequence gaps and missing exit basis produce refusal/incomplete results. No actual module collector or Rosetta-free claim from the peer. |
 | Megabonk metadata | Existing dated evidence/audit, later independently supplied metadata if available | Research hints cannot imply current build, save persistence or supported Steam path. Missing prerequisites refuse launch; no `steam_appid.txt` bypass or guessed user/save path. |
 
@@ -249,7 +257,7 @@ The first three passed in planning on the unchanged base. The governance result 
 - Every #9 acceptance item maps to current execution or explicit research/unsupported evidence: version/path rejection; child exit/crash; bounded redaction; prefix/settings/save isolation; immutable runtime; unrelated Wine/process/prefix survival; honest versioned Megabonk profile; documented CLI/manual recovery.
 - Two profiles use the same generic manager with different settings/argv/state. No Megabonk/App ID branch or secret fixture bypass can authorize runtime launch.
 - Required process ownership/reaping, native errors and cleanup assertions remain intact under cancellation, manager death and detached-control scenarios. An unsupported real Wine/helper scope is named and cannot be reported as complete supervision.
-- Native architecture is inspected for each required manager/custodian/helper. Fixture host execution remains distinct from complete game/runtime Rosetta evidence and distribution authorization.
+- Native architecture is inspected for the manager and any actually selected helper. Fixture host execution remains distinct from complete game/runtime Rosetta evidence and distribution authorization.
 - Fresh task9 outputs identify source, schema, policy, toolchain/SDK/dependency, fixture, activated artifact, binary and case results; skips, missing observations and failed attempts remain explicit.
 - No other task build/cache/prefix is modified. Heavy Wine/FEX/GPU/game runs are not required for fixture acceptance and are not started by this plan.
 - `git diff --check` passes. Task-owned worktree status is clean before PR preparation; preserve other workers' rows/documents and required artifacts during integration.
@@ -258,7 +266,7 @@ The first three passed in planning on the unchanged base. The governance result 
 
 - **Contract representation gaps:** v1's narrow operation/environment/profile vocabulary cannot be stretched silently. Freeze minimal explicit evolution and refusal semantics; preserve old consumer behavior and the #9/#10 boundary.
 - **Pathname and concurrent writer races:** prototype inode/hash checks alone are insufficient. Define the ownership model and test actual activation/use mutation before claiming closure; refuse guarantees the implementation cannot provide.
-- **Crash or detached-process ambiguity:** a reaped PID or liveness probe cannot authorize signaling. Keep reservations, generation/session evidence, bounded custodian protocol and conservative recovery refusal; real Wine/Steam coverage needs later integration evidence.
+- **Crash or detached-process ambiguity:** a reaped PID or liveness probe cannot authorize signaling. Keep reservations, generation/session evidence, minimal crash journal and conservative recovery refusal; real Wine/Steam coverage needs later integration evidence.
 - **Runtime readiness versus #9 completion:** #5/#7 results and #1 closure do not automatically produce a complete product artifact. Complete fixture implementation while making unavailable real runtime/Steam prerequisites visible; do not add #6 as a new acceptance dependency.
 - **License/language drift:** source designs/tests can carry GPL provenance. Retain exact origins/terms, preserve Swift when directly reused, and review compatible combinations before code adoption; no wholesale import, transliteration or project-license decision.
 - **Historical game/path hints:** local Rosetta script paths and old game identities may be stale or only configured assumptions. Keep provenance/unknowns, read no private live state, and reject unsafe or unverified mapping rather than guessing.
@@ -271,4 +279,8 @@ The first three passed in planning on the unchanged base. The governance result 
 - Approve the official documentation locations and potential smallest explicitly versioned contract extension; exact fields/CLI/module paths and verification commands will be reviewed in the implementation plan.
 - Preserve all listed exclusions, independent policy, #9/#10 responsibilities, two-profile isolation and historical failures/evidence limits.
 
-After task-plan approval, create `task_m1_9_impl.md` and request its approval before Stage 1. No source changes, full runtime/game execution, later stage, PR publication, Issue closure or merge is authorized by this draft.
+The approved task-plan direction authorizes preparation of `task_m1_9_impl.md`; request approval of that concrete implementation plan and Stage 1 before source changes. Full runtime/game execution, later stages, PR publication, Issue closure and merge retain their separate approval boundaries.
+
+## Approval Record
+
+On October 8, 2026 the requester instructed the originating chat to deliver the requested supplements to this session and proceed with the work. The authorized relay approves the existing task-plan direction, the narrow implementation-choice/partial-reuse/minimal-structure supplements above and detailed implementation planning. It expressly preserves the implementation-plan approval checkpoint and stage-by-stage continuation; the same task-plan approval is not requested again.
