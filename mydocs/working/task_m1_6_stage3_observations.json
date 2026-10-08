@@ -1,0 +1,435 @@
+{
+  "boundary_regressions": [
+    {
+      "evidence": {
+        "arm64_image_events": 16437,
+        "authorization_before_after": true,
+        "case_sha256": "cd715f5079433965e1515b82f8bdc03a2272adbe558597f1c9fb2c047054d2d0",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "api-callback",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "adf295ef6899b1c0bb885e9d354c328042b53aaf4b53aa7ecb0008c30b23d2b8",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "tls-thread",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "d819a67e5ac2f2110468106c5833efb1ab930b88d86c44043a7252ec353e2662",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "guest-fault-guard",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "eab123bb4fadd541d8e5f94b81ec9bdb58f3b0a0cc7b392fe774484b572c3cf8",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "code-invalidation",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "1ba90473bf73b7b75401f9806277cf1612728c5ba3e898a85d1f07334dc07695",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "suspend-context",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "3a2ee7d0af0aa1764334e00451988df2fcaba783dacfcbec3a5e04e07d3eb639",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "abi-state",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "8eb13654202cbbe075fe99183ab5a8d7b34b070c557288119e119966ea99003f",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "seh-unwind",
+      "status": "passed"
+    }
+  ],
+  "cpu_qualified": false,
+  "execution_evidence": {
+    "arm64_image_events": 16439,
+    "authorization_before_after": true,
+    "case_sha256": "912a43b674cd1971028f72853b4c2fa58d7404d89e5d147da5eb90cf80a14569",
+    "cleanup_complete": true,
+    "late_load_coverage_complete": false,
+    "runtime_sha256": "4995218b3a4d502aa5fbf35291a990047e38b6531bd2390b41db986e38215bd2",
+    "sentinel_survived": true,
+    "translation_observations": 41
+  },
+  "game_execution": false,
+  "histogram_order": [
+    "locked-rmw",
+    "message-passing",
+    "store-buffer",
+    "fenced-store-buffer"
+  ],
+  "histograms": {
+    "native": [
+      [
+        [
+          2048,
+          0,
+          0,
+          0
+        ],
+        [
+          463,
+          0,
+          0,
+          1585
+        ],
+        [
+          0,
+          2048,
+          0,
+          0
+        ],
+        [
+          0,
+          2048,
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          2048,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2048
+        ],
+        [
+          0,
+          2004,
+          44,
+          0
+        ],
+        [
+          0,
+          0,
+          2048,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          2047,
+          0,
+          0
+        ],
+        [
+          2048,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2048,
+          0
+        ],
+        [
+          0,
+          0,
+          2048,
+          0
+        ]
+      ],
+      [
+        [
+          1364,
+          684,
+          0,
+          0
+        ],
+        [
+          2048,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2048,
+          0
+        ],
+        [
+          0,
+          0,
+          2048,
+          0
+        ]
+      ]
+    ],
+    "pear": [
+      [
+        [
+          1006,
+          1042,
+          0,
+          0
+        ],
+        [
+          1045,
+          0,
+          0,
+          1003
+        ],
+        [
+          0,
+          1018,
+          1030,
+          0
+        ],
+        [
+          0,
+          1038,
+          1010,
+          0
+        ]
+      ],
+      [
+        [
+          1056,
+          992,
+          0,
+          0
+        ],
+        [
+          1043,
+          0,
+          0,
+          1005
+        ],
+        [
+          0,
+          1040,
+          1008,
+          0
+        ],
+        [
+          0,
+          926,
+          1122,
+          0
+        ]
+      ],
+      [
+        [
+          1108,
+          940,
+          0,
+          0
+        ],
+        [
+          1028,
+          0,
+          0,
+          1020
+        ],
+        [
+          0,
+          1073,
+          975,
+          0
+        ],
+        [
+          0,
+          1042,
+          1006,
+          0
+        ]
+      ],
+      [
+        [
+          1013,
+          1035,
+          0,
+          0
+        ],
+        [
+          1176,
+          0,
+          0,
+          872
+        ],
+        [
+          0,
+          1112,
+          936,
+          0
+        ],
+        [
+          0,
+          944,
+          1104,
+          0
+        ]
+      ]
+    ]
+  },
+  "host": {
+    "architecture": "arm64",
+    "build": "25F84",
+    "chip": "Apple M4 Pro",
+    "macos": "26.5.2",
+    "python": "3.14.4"
+  },
+  "inputs": {
+    "build_sha256": "ec5a0852b361b6bc5fb5e4d4b890c1224889fb43c26bf3eb3357a2d39981d3e0",
+    "fex_build_sha256": "d2a20605cabd9501fe2ce36e1acfb66b5f553d11cebfd2f2d6572920923a7f88",
+    "fex_dll_sha256": "2925abaafea4d4c3293c30e778629208b507d9690e7d2b128e9b500733608364",
+    "fex_inputs_sha256": "f2d9ac9f98d375c839c61ded32e8852833339d8bae64c613537bd636f6fd510b",
+    "patches": {
+      "0001-private-staging-label-references.patch": "840ccf015783786fe43020be97b4180cbe91fdd45007d52b075b4d0c69776d80",
+      "0002-observe-effective-thread-policy.patch": "2ca9e283703b26930d4b730400c5719f7ce81fc3d566d96f80c4b9045696acb6",
+      "0003-link-validity.patch": "a62343e7e074be18cd6be0eee0f9fe50990888c153a6e080985b366934a8dbd5",
+      "0004-current-shared-link-target.patch": "42df7823378f73cd8cd2921d8bd240fcb57f51b7ef9732e25afb1c945aa26cdd"
+    },
+    "pe_sha256": "ddfa74961318047c160ffc80f1dee8d4a39504b6df8b1b931ab5880ed489a093",
+    "runtime_sha256": "4995218b3a4d502aa5fbf35291a990047e38b6531bd2390b41db986e38215bd2",
+    "source_sha256": {
+      "tests/cpu/ordering.asm": "1297602b4fb41c90764265842ffcff3404a9943ccb2dd96ae90eda711efad404",
+      "tests/cpu/ordering.c": "2bde8b2f86558e644c483a419da9c1a4c48c7c2f8cf39c267520a2d404c6f662"
+    }
+  },
+  "limitations": [
+    "finite original x64 fixtures only",
+    "no i386/WoW64 qualification",
+    "AVX remains unsupported from Stage 2; not rerun here",
+    "remaining instruction cases require final-candidate integration in Stage 4",
+    "no complete late-loaded module coverage; Issue #10",
+    "instrumented correctness, not performance or power evidence",
+    "no game, Steam or ordinary-user distribution qualification"
+  ],
+  "native": {
+    "elapsed_ms": 47,
+    "head": "ba5658add1d412701ea0769af4d66777a9d4da33",
+    "host": {
+      "image": {
+        "GITHUB_RUN_ATTEMPT": "1",
+        "GITHUB_RUN_ID": "37757016708",
+        "GITHUB_SHA": "ba5658add1d412701ea0769af4d66777a9d4da33",
+        "ImageOS": "win22",
+        "ImageVersion": "20260927.320.1",
+        "RUNNER_ARCH": "X64"
+      },
+      "logical_cpus": 2,
+      "native_machine": 34404,
+      "pointer_bits": 64,
+      "process_machine": 0,
+      "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+      "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+      "system": "Windows-2022Server-10.0.20348-SP0"
+    },
+    "results_sha256": "5200f307557ea83d5f2ac929f5da432c771d7d2bf67d30e75069abd33014ef3a",
+    "url": "https://github.com/postmelee/pear/actions/runs/37757016708"
+  },
+  "passed": true,
+  "prior_failures": [
+    {
+      "id": "pear-calibration-1",
+      "reason": "stale link identity",
+      "retained": true,
+      "status": "owner_refused"
+    },
+    {
+      "id": "pear-calibration-2",
+      "reason": "shared mapping host differs from thread-local target; identity, revision and bytes valid",
+      "retained": true,
+      "status": "owner_refused"
+    },
+    {
+      "id": "native-37756093282",
+      "reason": "Windows CRLF conversion; guest execution unperformed",
+      "status": "input_admission_failed"
+    },
+    {
+      "exit_code": 106,
+      "id": "native-37756466893",
+      "reason": "45-second round deadline; no completed round",
+      "status": "failed"
+    }
+  ],
+  "qualification": {
+    "checked_worker_retirements": 8,
+    "forbidden_outcomes": 0,
+    "iterations_per_mode": 2048,
+    "maximum_concurrent_participants": 3,
+    "measured_pairs_per_host": 32768,
+    "memcpy_tso": true,
+    "pear_elapsed_ms": 12436,
+    "policy_observations": 9,
+    "rounds": 4,
+    "scalar_tso": true,
+    "universal_ordering_proof": false,
+    "vector_tso": true,
+    "worker_lifetimes": 8
+  },
+  "scope": "task6_stage3_finite_ordering_and_lifecycle",
+  "stage3_complete": true,
+  "version": 1
+}

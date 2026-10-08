@@ -3,7 +3,7 @@
 Task plan: [task_m1_6.md](task_m1_6.md), approved October 8, 2026.
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan approved; Stages 1 and 2 completed locally; Stage 3 authorized and in progress.
+Status: implementation plan approved; Stages 1–3 completed locally; Stage 4 awaits explicit continuation.
 
 ## Stage Overview
 
@@ -371,3 +371,5 @@ participants can progress on a smaller native runner. Retain the frozen operatio
 counts and timeouts. Recalibrate the changed PE on Pear and native Windows before
 using its qualification result. Record native logical CPU count and bounded wait
 progress; require one successful checked FEX ThreadTerm for every joined worker.
+
+Stage 3 is complete: see [the Stage 3 report](../working/task_m1_6_stage3.md) and its sanitized observations for final input identities, failures, finite ordering results and Stage 4 integration requirements.
