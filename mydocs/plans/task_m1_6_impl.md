@@ -3,7 +3,7 @@
 Task plan: [task_m1_6.md](task_m1_6.md), approved October 8, 2026.
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan approved; Stage 1 completed locally; Stage 2 awaits continuation.
+Status: implementation plan approved; Stage 1 completed locally; Stage 2 approved and in progress.
 
 ## Stage Overview
 
@@ -260,3 +260,15 @@ Stage 1 is complete: 12 source-bound ASM selections, 10 boundary contracts and
 14 passing validator checks. Full source census and actual limitations are in
 [the Stage 1 report](../working/task_m1_6_stage1.md). Python 3.14.4 was actually used.
 No guest/reference execution, remote workflow or runtime changes occurred.
+
+## Stage 2 Continuation
+
+The requester explicitly continued on October 8. Local harness implementation is
+authorized. The concrete early reference-workflow push remains subject to the
+review described above. NASM 3.02 was built as native ARM64 in a task-owned
+35 MiB temporary tree, below the 256 MiB preparation budget; no system install.
+
+Local Stage 2 preflight: 19 PEs built, 12 harness refusal checks and 14 corpus
+checks passed. The [reference publication review](../working/task_m1_6_stage2_reference_review.md)
+was approved by the requester, including confined corrections and reruns.
+This is not native execution or Stage 2 completion.

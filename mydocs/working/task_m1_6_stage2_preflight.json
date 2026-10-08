@@ -1,0 +1,28 @@
+{
+  "build_sha256": "9ce8f7b0fca067f73631124899e5ede4c4cb544055711fb3174bf7340411c9d8",
+  "corpus_tests": 14,
+  "files": {
+    ".github/workflows/cpu-native-reference.yml": "9bf40506a9a039ca3033c30db3f854123c467c95be4eb2782a0d9dfccb0da04b",
+    "tests/cpu/abi.c": "8f745bce9240eb5e4fb64c641f12eebde16caae1f352e4c43a064273cea4c384",
+    "tests/cpu/runner.c": "d4e4c3b6710f7e5d09f352be20e57d55bb47e02f758ee34eb28468b78103f1ef",
+    "tests/cpu/seh.c": "df38f07c5b81b0b06f9f66d63cd934aa73cb295574ec6e87b1dc315cbcf1a1d6",
+    "tests/cpu/test_harness.py": "ac74e8d22f76a373db0882d500d279be170e57eafa1482c24a857e633b3ff8bf",
+    "tools/cpu/build.py": "606437b6a8918ebb471abbe806501d88afdc57a3357cd48369610de2e31f78e1",
+    "tools/cpu/generate.py": "5b5cfbfabdb024f3d2607c36369af5a8df2a61302afbc25575b8b667b1672763",
+    "tools/cpu/native_run.py": "ce9f9a173ea403b4f97ce2ccf27f1859fc2d119ddb294c72a3c4ab85bd50cc45",
+    "tools/cpu/results.py": "e9d1f0a3f84b8b768d0c3ba21aae2fb6426efe3a448d36f7118a0aa857e8d505"
+  },
+  "fixture_count": 19,
+  "harness_tests": 12,
+  "local_build_passed": true,
+  "native_reference_executed": false,
+  "pear_guest_executed": false,
+  "scope": "task6_stage2_local_preflight",
+  "stage_complete": false,
+  "static_checks": {
+    "amd64_pe32_plus": 19,
+    "seh_unwind_table_present": true,
+    "workflow_yaml_parsed": true,
+    "writable_executable_sections": 0
+  }
+}
