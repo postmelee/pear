@@ -363,3 +363,11 @@ Two prior failed calibration records remain failures. The existing reference
 workflow will run only this new exact PE; unchanged 19-PE native results are
 reused from Stage 2. This remains the approved branch-only reference harness,
 ordinary runners, pinned tools, read-only token and 14-day artifact retention.
+
+The first native qualification execution hit its 45-second round bound (exit
+106), without a completed round; it is not an ordering pass. Add scheduler yield
+only to the existing epoch/completion wait loop, outside measured ASM, so three
+participants can progress on a smaller native runner. Retain the frozen operation
+counts and timeouts. Recalibrate the changed PE on Pear and native Windows before
+using its qualification result. Record native logical CPU count and bounded wait
+progress; require one successful checked FEX ThreadTerm for every joined worker.

@@ -60,6 +60,11 @@ def policy_records(raw,assessment):
         require(tid in available,'worker_policy_missing');available.remove(tid)
     return observed
 
+def retirements(raw,workers):
+    completed=re.findall(rb'Pear FEX init ThreadTerm.complete: status=00000000 domain=0 code=0',raw)
+    require(len(completed)==workers,'worker_source_retirement_incomplete')
+    return len(completed)
+
 def build(output,nasm,clang,iterations,rounds):
     require(type(iterations) is int and 1<=iterations<=4096 and type(rounds) is int and 1<=rounds<=4,'ordering_budget')
     require(not output.exists(),'output_exists');output.mkdir(parents=True)
@@ -112,7 +117,10 @@ def native(build_root,output):
     require(not output.exists(),'output_exists');output.mkdir(parents=True)
     result=dict(scope='ordering_native_reference',passed=False)
     try:
-        result['host']=native_host();built=admit_ordering_build(build_root)
+        result['host']=native_host()
+        import os
+        result['host']['logical_cpus']=os.cpu_count()
+        built=admit_ordering_build(build_root)
         result['build_sha256']=digest((build_root/'build.json').read_bytes())
         stdout=output/'stdout';stderr=output/'stderr';start=time.monotonic()
         with stdout.open('xb') as out,stderr.open('xb') as err:
@@ -151,6 +159,7 @@ def observe(build_root,runtime,run):
     stream=next(r for r in record['logs'] if r['role']=='loader' and r['channel']=='stderr')
     require(stream['sha256']==digest(raw) and stream['bytes']==len(raw) and stream['eof'] and not stream['write_error'],'policy_log_changed')
     actual['policy']=policy_records(raw,actual);actual['evidence']=evidence
+    actual['checked_worker_retirements']=retirements(raw,len(actual['workers']))
     actual['elapsed_ms']=record['elapsed_ms']
     return actual
 

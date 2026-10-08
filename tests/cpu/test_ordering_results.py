@@ -2,7 +2,7 @@
 """Reject incomplete, forbidden and unbound multithread observations."""
 import copy
 import unittest
-from tools.cpu.ordering import assess, policy_records
+from tools.cpu.ordering import assess, policy_records, retirements
 
 class OrderingResultsTests(unittest.TestCase):
     def setUp(self):
@@ -47,5 +47,11 @@ class OrderingResultsTests(unittest.TestCase):
     def test_thread_state_reuse_needs_new_policy_observation(self):
         raw=self.log+b'Pear CPU thread tid=12 state=c\n'
         with self.assertRaisesRegex(ValueError,'thread_without_policy'):policy_records(raw,self.run_case())
+
+    def test_guest_join_does_not_replace_checked_source_retirement(self):
+        line=b'Pear FEX init ThreadTerm.complete: status=00000000 domain=0 code=0\n'
+        self.assertEqual(retirements(line*2,2),2)
+        for raw in (line,line.replace(b'status=00000000',b'status=c00000bb')+line):
+            with self.assertRaisesRegex(ValueError,'worker_source_retirement_incomplete'):retirements(raw,2)
 
 if __name__=='__main__':unittest.main()

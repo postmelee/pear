@@ -24,6 +24,9 @@ static int await(unsigned *p, unsigned value) {
     unsigned spins=0;
     while (__atomic_load_n(p,__ATOMIC_ACQUIRE)!=value) {
         __builtin_ia32_pause();
+        /* Three participants must also progress on a two-vCPU reference host.
+         * Yield only while awaiting an epoch/completion, outside measured ASM. */
+        if (!(spins & 1023)) SwitchToThread();
         if (__atomic_load_n(&aborted.value,__ATOMIC_ACQUIRE)) return 0;
         if (!(++spins & 65535) && GetTickCount64()>deadline) {
             __atomic_store_n(&aborted.value,1,__ATOMIC_RELEASE); return 0;
@@ -77,7 +80,13 @@ static LONG exercise(void) {
         for(unsigned mode=0;mode<4;++mode) for(unsigned i=0;i<PEAR_ITERATIONS;++i) {
             x.value=y.value=0;
             __atomic_store_n(&epoch.value,++serial,__ATOMIC_RELEASE);
-            if(!await(&done[0].value,serial) || !await(&done[1].value,serial)) return 106;
+            if(!await(&done[0].value,serial) || !await(&done[1].value,serial)) {
+                text("{\"event\":\"ordering_wait_failed\",\"round\":");number(round);
+                text(",\"serial\":");number(serial);
+                text(",\"done\":[");number(__atomic_load_n(&done[0].value,__ATOMIC_ACQUIRE));
+                text(",");number(__atomic_load_n(&done[1].value,__ATOMIC_ACQUIRE));text("]}");
+                emit();return 106;
+            }
             unsigned bucket;
             if(mode==0) {
                 if(x.value!=2 || results[0]>1 || results[1]>1 || results[0]==results[1]) return 107;

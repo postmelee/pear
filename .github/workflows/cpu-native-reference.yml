@@ -52,6 +52,7 @@ jobs:
           set -euo pipefail
           python3 -B -m unittest discover -s tests/cpu -p 'test_ordering_results.py' -v
           python3 -B tools/cpu/ordering.py build --iterations 2048 --rounds 4 --output "$BUILD_ROOT" --nasm "$TOOL_ROOT/nasm-3.02/nasm" --clang "$TOOL_ROOT/llvm-mingw-20260908-ucrt-ubuntu-22.04-x86_64/bin/clang"
+          python3 -B tools/cpu/ordering.py build --iterations 64 --rounds 2 --output "$BUILD_ROOT/calibration" --nasm "$TOOL_ROOT/nasm-3.02/nasm" --clang "$TOOL_ROOT/llvm-mingw-20260908-ucrt-ubuntu-22.04-x86_64/bin/clang"
       - name: Retain exact redistributable PEs and corresponding source
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -81,7 +82,9 @@ jobs:
         run: |
           git -c core.autocrlf=false checkout-index --force -- tests/cpu/ordering.c tests/cpu/ordering.asm
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -B tools/cpu/ordering.py native --build "$env:BUILD_ROOT" --output "$env:RESULT_ROOT"
+          python -B tools/cpu/ordering.py native --build "$env:BUILD_ROOT/calibration" --output "$env:RESULT_ROOT/calibration"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B tools/cpu/ordering.py native --build "$env:BUILD_ROOT" --output "$env:RESULT_ROOT/qualification"
           exit $LASTEXITCODE
       - name: Preserve complete or failed native observations
         if: always()
