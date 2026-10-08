@@ -124,8 +124,11 @@ if __name__=='__main__':
     p.add_argument('--rendering',type=Path);p.add_argument('--cpu-boundaries',type=Path)
     a=p.parse_args()
     if a.qualification:
-        need(a.require_stage==1,'translated_stage_not_implemented')
-        v=stage_one(a.qualification.resolve())
+        need(a.require_stage in (1,4),'translated_stage_not_implemented')
+        if a.require_stage==4:
+            from tools.dxmt.translated_qualification import verify
+            v=verify(a.qualification.resolve())
+        else:v=stage_one(a.qualification.resolve())
     else:
         need(a.run is not None and a.runtime is not None and a.require_stage in (None,2,3),'translated_stage_requires_full_index')
         if a.require_stage==3:

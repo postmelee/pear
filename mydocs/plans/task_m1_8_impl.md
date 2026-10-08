@@ -3,7 +3,7 @@
 Task plan: [task_m1_8.md](task_m1_8.md), approved October 8, 2026.
 GitHub Issue: [#8](https://github.com/postmelee/pear/issues/8)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: Stages 1, 2 and 3 complete; Stage 4 awaits explicit continuation.
+Status: All four stages complete locally (October 9, 2026); final review and GitHub publication approval pending.
 
 ## Stage Overview
 
