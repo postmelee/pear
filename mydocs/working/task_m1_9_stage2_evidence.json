@@ -1,0 +1,442 @@
+{
+  "evidence_version": 1,
+  "task": 9,
+  "stage": 2,
+  "date_kst": "2026-10-09",
+  "status": "passed",
+  "base_commit": "24084cc5acd9ca44a1395f51674b87be1e9be131",
+  "scope": {
+    "native_contract_policy_evaluation": true,
+    "actual_owned_arm64_fixture_execution": true,
+    "readonly_udro_media": true,
+    "real_runtime_authorized": false,
+    "game_qualified": false,
+    "distribution_qualified": false
+  },
+  "recording_method": "Current native outputs and unittest summaries, exact build input/output hashes, independent fixture markers, before/after inventories, original historical input comparisons. No performance or game claim.",
+  "source_sha256": {
+    "experiments/manager/build.py": "5c48b704f66b6dce0461e46b1bc1dafbf128fef9d68d3d65a49c4f9d563fc896",
+    "experiments/manager/fixtures/cases.json": "96c6f785764b498df203a48bbc05389b85ced4e4c097c405fc54035a791ab2f7",
+    "experiments/manager/fixtures/native_bridge.c": "ab1dd5b6e071f82b267d5c68ba23f3cb26e9d8a6497256a9faac1fe719c2106f",
+    "experiments/manager/fixtures/native_bridge.h": "6f110785d41f0d0ff9cbc576c93240776d581ae17d5f34a876e086500633498d",
+    "experiments/manager/run_cases.py": "51b3a088364d27acd098f71defccd1bfa5d586fa59b647cde82bf53b915c9e30",
+    "experiments/manager/rust/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+    "experiments/manager/rust/Cargo.toml": "33d2ac2a3edd665dbf2c18b7d7f04b5e3ae2d76fb367d99f774495058307e5ff",
+    "experiments/manager/rust/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+    "manager/AGENTS.md": "6d47f7ba9883ec9590f1cea458b10ed9703562e2ecdd0e41be681932ac6e7845",
+    "manager/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+    "manager/Cargo.toml": "33d2ac2a3edd665dbf2c18b7d7f04b5e3ae2d76fb367d99f774495058307e5ff",
+    "manager/dependencies.json": "1929b73f710a58b38a24e64dff086ba7e4fed6a229ea7845043bdac2630d9411",
+    "manager/examples/activation_probe.rs": "901bec48de86cf886e898b83dda14616fbc003afa663fb460cf26cad604957e9",
+    "manager/examples/foundation.rs": "21fe06e3c1ea070d1ba4fbbfb7eb659c945604b788c13756b45b002e8f87121f",
+    "manager/native/bridge.c": "4b1fa23ee69ea70ecbfcb39e07d2d60b75c443300ba2015f11a913d7b35853e9",
+    "manager/native/bridge.h": "c6057ed480d3f734214f59342d233b38874d5a206e7843752d55cf30f6b48344",
+    "manager/src/activation.rs": "fd13881aec72b23746ced00d0e610e71ae15851c197c1caa0c706a6d897649cc",
+    "manager/src/contract.rs": "1d1c0302482a36a115298e586f9cc6b8cc056353513c88c62bcbcf6ef5b20444",
+    "manager/src/diagnostics.rs": "3a76ae7da12ea94b64318a5af98cc66fb8f7b76ee58872671fd223d5f3e78bac",
+    "manager/src/encoding.rs": "843aa694e698f3fa26762150dfbab97d418fc4d9c037291f5e6402c9041c7846",
+    "manager/src/fs.rs": "90503693eabc4377f7ee258d2cd122813a42c1469c736a1b64f202afebae23f5",
+    "manager/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+    "manager/src/lib.rs": "bd4cea7206468c6fd16449fcca3f3cd1cf2d80fe0e059506990c7e408f12fa5d",
+    "manager/src/main.rs": "0f296bc4a73a30762dcf6be0f6cc17dd6fae990fbcad3e991857d6d3f37b92eb",
+    "manager/src/native.rs": "8447ff3f0aa0f2fcd3942a8470acdbff0f37e10821eeac475f967d9bd7badfc4",
+    "manager/src/policy.rs": "5bfcc01af9ce04e8eb1e4f2f0dc1fa72e375e7ece65574106715e81bfa593b79",
+    "manager/src/tools.rs": "7f17240ea7144c047ff1e256dd6f44f87648184e3439d1c4e21dc44c2d48b9e5",
+    "runtime/contracts/contract-index.json": "09e4415eb374da6fb72fee42d8c2cf884377cb1ffa60ffb2ee30ad97930f84c4",
+    "runtime/contracts/examples/fixture/blobs/build-config.json": "49ddde4996e00d37e19cb46b0bf46d8c38a2b12e2523e39487a192de13bcf044",
+    "runtime/contracts/examples/fixture/blobs/evidence.json": "f4430917e18762fd5aa741802174762a940d56cb80351b33b58ece79701fb172",
+    "runtime/contracts/examples/fixture/blobs/payload.txt": "b98ef52f9441b9010093ec631e80834f34e85b21f5a29a069217babecf060680",
+    "runtime/contracts/examples/fixture/blobs/source.txt": "422b763f208f8db9d6981759ec236bc603ea4708b0075c213a39d0dba7596ea2",
+    "runtime/contracts/examples/fixture/blobs/terms.txt": "3c222f5dd0a1cf735d0d5bbdcfc872fe74f765ddda1356fa35948a55b55ce4b8",
+    "runtime/contracts/examples/fixture/records/artifact.json": "569b85f9632218a27099568561f77755e10f2f6a8763710f33bb7c3f0dedc65f",
+    "runtime/contracts/examples/fixture/records/complete.json": "2a92dc486cc774ed36f0740e4a65d7fe1628b7508b3a8e99718b3bf99c5474a5",
+    "runtime/contracts/examples/fixture/records/exited.json": "c7c8e29bc32d44900f6f0b84cad4b0b45a5b363891b3ef9644eec9bb3313cbb2",
+    "runtime/contracts/examples/fixture/records/failure.json": "481c32761b4a71235c5578aab14ce59b2fd4402453bd0c03195300c485880dbe",
+    "runtime/contracts/examples/fixture/records/lock.json": "623a9a3617f57b1ee1593acbb6bb062f49d76d2b193e47b7021d9edae0e92844",
+    "runtime/contracts/examples/fixture/records/profile.json": "5ddab7c8c938afe40e033d06322e17bd47daabfed2562bf58a9126990c217c29",
+    "runtime/contracts/examples/fixture/records/qualification.json": "48aac43c0898d8024874ac17b7e5e8e6a248ba117a7b269f0fc261b320e63f98",
+    "runtime/contracts/examples/fixture/records/ready.json": "657b763ee2b5da476342787e4de5fb0227b7bc1aaceeb202260abd119b73cdbe",
+    "runtime/contracts/examples/fixture/records/request.json": "2061ccbd36854a37fd351c729d827ba0f424a03835fcca433aebd3839a57cf47",
+    "runtime/contracts/examples/fixture/records/run.json": "2196fefe859609e30200205e5c75e4814628d4287fe3e4a8f99b8f01cc8cc615",
+    "runtime/contracts/examples/fixture/records/spawned.json": "605f037815461fa825ada3741ebb4f6de76224cecebf28ccda5e002e4b168f3b",
+    "runtime/contracts/examples/research-lock.json": "9a811fc396c212d1ecba1e2f4f31b7d7c436a413b303d9508d1bf00a0ae7ed97",
+    "runtime/contracts/v1/common.schema.json": "caec772e5b2a5cbdca283a067a356517da87833e191ac1cbbc795fd12fba41f1",
+    "runtime/contracts/v1/failure.schema.json": "d82820af8f251b37303cb5b54a81c9ff40c295718dc85012b3d77497a0af0e43",
+    "runtime/contracts/v1/game-profile.schema.json": "4580c389cb35268392c2c547e7ae5b73a25d3a6f83c10fe9db14c38c95b6768d",
+    "runtime/contracts/v1/launch.schema.json": "11eebae032457ccc5095dd826a01b2cae5575bc384be87227be2f5c6c68a5594",
+    "runtime/contracts/v1/qualification.schema.json": "c561f91823d7f31dda82b057eb7a173660d342d06d037b31e858e3600737b171",
+    "runtime/contracts/v1/run.schema.json": "45049c4d5f62108a491db3e8d6fceaf92d1dcca5ecbafa8cf09b693c369d5846",
+    "runtime/contracts/v1/runtime-artifact.schema.json": "7608b9f2cd3be8f12de59da9cb3fba0a70f06865b39bf31b66249183484beccc",
+    "runtime/contracts/v1/runtime-lock.schema.json": "9d201ee41f1514d277570c22de84ef9d3f8e9b3e9a66440d4608fbde3fa2ebc2",
+    "runtime/contracts/v2/common.schema.json": "e87fca0c468961702c6c07b72ce2b17f829d894365c02e5afbe77c36995cf28b",
+    "runtime/contracts/v2/contract-index.json": "69cd45518d4d5382088a122c4428ea1ca19f7491ac141a44e234b98f7520f8ba",
+    "runtime/contracts/v2/examples/fixture/blobs/build-config.json": "49ddde4996e00d37e19cb46b0bf46d8c38a2b12e2523e39487a192de13bcf044",
+    "runtime/contracts/v2/examples/fixture/blobs/evidence.json": "f4430917e18762fd5aa741802174762a940d56cb80351b33b58ece79701fb172",
+    "runtime/contracts/v2/examples/fixture/blobs/payload.txt": "b98ef52f9441b9010093ec631e80834f34e85b21f5a29a069217babecf060680",
+    "runtime/contracts/v2/examples/fixture/blobs/source.txt": "422b763f208f8db9d6981759ec236bc603ea4708b0075c213a39d0dba7596ea2",
+    "runtime/contracts/v2/examples/fixture/blobs/terms.txt": "3c222f5dd0a1cf735d0d5bbdcfc872fe74f765ddda1356fa35948a55b55ce4b8",
+    "runtime/contracts/v2/examples/fixture/records/artifact.json": "7a2ba42e618e673cfb223d0fb2429b82b91ad03e8066e365efe0df5c1cc434aa",
+    "runtime/contracts/v2/examples/fixture/records/complete.json": "b83e70e3bd41625dc8cb028b8d4e9fc64000cc9ab409b54f27c6ee52466651b4",
+    "runtime/contracts/v2/examples/fixture/records/exited.json": "027d34dd73f6dfb5c1251b28b79508940f01f75274f88e783635c2105e069e79",
+    "runtime/contracts/v2/examples/fixture/records/failure.json": "915cc6746d75f0c097756f88891e85d1e00b7f46245a0cf9dcb46fa9685bc694",
+    "runtime/contracts/v2/examples/fixture/records/lock.json": "eaf090cf1db32967b6e5a4a55cd00f03777988cd70518d7e743ff7eff2110c95",
+    "runtime/contracts/v2/examples/fixture/records/profile.json": "775e17d0d3d3e72a99b7f88a02620f4924a1740c39efc35c22d0eb2edff68263",
+    "runtime/contracts/v2/examples/fixture/records/qualification.json": "db7b996b68768bc29a5029a12c28ddcccf1a5255a6c80d71c4858706b1005397",
+    "runtime/contracts/v2/examples/fixture/records/ready.json": "ce7a228fb98fbbfe24c0a32ac4c250db91e94ef696175927ec04663d3afc4028",
+    "runtime/contracts/v2/examples/fixture/records/request.json": "ede243ea0fc2c6cc75356dcf543d4b9491d7da110f9c6de60c907e8f18cc34bd",
+    "runtime/contracts/v2/examples/fixture/records/run.json": "14e7bae63be8555513c583bcbe35055574a3ab5c53a0b63b8809eeb949ee00b9",
+    "runtime/contracts/v2/examples/fixture/records/spawned.json": "7855350efd597f9ae6d71d503f67c777a9148f8c65efe23c95cf229eb39e9a32",
+    "runtime/contracts/v2/examples/research-lock.json": "888fbf30e4f88e861582248bf37fd167da8133ba9a88285a4d841f86a237916b",
+    "runtime/contracts/v2/failure.schema.json": "ddaccdb9be10c3fdfc0b188701767c0b85a703bf832a05a09e3559f161fa7312",
+    "runtime/contracts/v2/game-profile.schema.json": "ee3dbb89268d6cd65cec85edc3aa0e3dbc1337b11df620970cfe55a2d98237c8",
+    "runtime/contracts/v2/launch.schema.json": "c380cf6b5474972a96eb1a3bce54e68026e61400a4151670259c55bce74bc363",
+    "runtime/contracts/v2/qualification.schema.json": "3cea22c70438504c5a346369d3bcf44c55811b6f25497d8714f3d98aec7ad3ec",
+    "runtime/contracts/v2/run.schema.json": "8a7d6a7b214e32570f1cab96de6642ce5beccfc9ec63dbcb54141ffe593941c4",
+    "runtime/contracts/v2/runtime-artifact.schema.json": "398e81e71d15c47fc7f6675aae27a067ede5881c62fe29caa28e4466048574c4",
+    "runtime/contracts/v2/runtime-lock.schema.json": "16d0cf82afdc7e06257e7a3a67cdf5ab9ac1ee448164ff2521da353450c72762",
+    "tests/contracts/dependencies.json": "bb37b0d0ea8139acfc3633927e3eee968ac292f7d7e4e0dc53a12bccde43693d",
+    "tests/contracts/fixture_factory.py": "e21bfe501d8ff1e398180956f621243aa54650f5b8849878bb550770883495d2",
+    "tests/contracts/requirements.lock": "bdade2e42764a640d91028635045e9f1c6c1708bc336a2818700b8e06954a215",
+    "tests/contracts/test_eligibility.py": "6baee52f0b454efe82d76e9ea251426f24175d4493cfedfd9fbfd7bd040835b8",
+    "tests/contracts/test_paths_and_privacy.py": "2dfca763d1005d82d2025403982415301c4d855508797a43c8a5c043e1b9856e",
+    "tests/contracts/test_structure.py": "26c981683f640527558beb409c9db1eaef9da1615764658d14bc5397409cd1b9",
+    "tests/contracts/test_v2.py": "23c0ec712490697e4d6952eb29047559674dcfb6f183539d5ce483337a2e3efb",
+    "tests/contracts/v2_fixture.py": "e8198ec4dbd82bab188c5d5abdab0b61c2ef3a76dcfcca92a6c8d7ddc2918259",
+    "tests/contracts/validate.py": "e483bd7ca50246e29a018ecd05c4dfc1192b779c509da5b579752c8d21bad2db",
+    "tests/contracts/validate_v2.py": "d71badaa9bcc0fd8617f00e9fbc7cf04cf751dbe9138943f8e3e90c7c258e561",
+    "tests/manager/build.py": "1e5fb91ac138cf0d3f68b4d85215fe61fb67aaf09974582b45ec87afe64ad83d",
+    "tests/manager/fixtures/entry.c": "4c45c7ade87ccc3bfd45acdcb2efa3e7e652520f0dba39dad3bfe578ca933ab5",
+    "tests/manager/fixtures/library.c": "e35939fafd6201256e684b9030384d1ec137431d210d6da8609298869f61af19",
+    "tests/manager/support.py": "48e195ab705c612db8bb68eb0bbb5d4c54e427721aaaeb18c6fd9594378ae261",
+    "tests/manager/test_activation.py": "3579fb5b480f851947119de6d88844221ca6967d1134ce127aef9b1eea24a7b8",
+    "tests/manager/test_admission.py": "157888526147f51a3eadf5c9a609d5ac265140dbf2430b05788f774bac6abb03",
+    "tests/manager/test_foundation.py": "ea2725b3eb71dd2440b8fdbeaa88d763a52deccaabdf4fbb54ceb1e873d7110a"
+  },
+  "toolchains": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+    "sdk": "26.5",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: aarch64-apple-darwin\nrelease: 1.94.1\nLLVM version: 21.1.8",
+    "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84",
+    "machine": "arm64"
+  },
+  "binaries": {
+    "foundation": {
+      "sha256": "5736cb95f796f2970b8534c10fd3ef1e0efe19adb2e8de3301d0d3b30b18bed9",
+      "slices": "arm64",
+      "size_bytes": 450336
+    },
+    "pear-manager": {
+      "sha256": "5eff41cb058076a721d0f096ad9351b832de2b48f6d89fe5c069c0bbd9be4efc",
+      "slices": "arm64"
+    },
+    "activation_probe": {
+      "sha256": "0bb8295105c5183c79994a02473b0c6d37d542b6cffbbb1b223c110d00d2d3e0",
+      "slices": "arm64"
+    },
+    "fixtures/approved/entry": {
+      "sha256": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+      "slices": "arm64"
+    },
+    "fixtures/approved/lib/libfixture.dylib": {
+      "sha256": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05",
+      "slices": "arm64"
+    },
+    "fixtures/alternate/entry": {
+      "sha256": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+      "slices": "arm64"
+    },
+    "fixtures/alternate/lib/libfixture.dylib": {
+      "sha256": "30ce8984e9ff6ba35e2bc8284e35e87553423e32a16cebd30c0f8f32eb9180ca",
+      "slices": "arm64"
+    },
+    "fixtures/external/entry": {
+      "sha256": "7db1673f50a7c4af0e74ebb1d39b9c506a96538f9b0f77e93cc57fe8a06aa740",
+      "slices": "arm64"
+    },
+    "fixtures/external/lib/libfixture.dylib": {
+      "sha256": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05",
+      "slices": "arm64"
+    }
+  },
+  "build_receipt_sha256": "cb4ab3e1b9aa9e377fa3972a84c01188f46cfa220e5612d5717beb043418f09f",
+  "tests": {
+    "admission-final": {
+      "tests": 133,
+      "passed": 133,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "4d3078b63b3e7807c95ee41cd59dfd986835d102cff464830aae5e9d84c32b81"
+    },
+    "activation-final": {
+      "tests": 16,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "5dc578518be93335d4c7c10116b7675328d17b6b14c466639bdc56044b73211a"
+    },
+    "foundation-final": {
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "b2b4a0787a88a119d359ebda8529a344403717c7343e75d1dbf520d8744666a3"
+    },
+    "contracts-final": {
+      "tests": 154,
+      "passed": 154,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "de7095ec7eaca31302f55472292b217d6d48dc469d60cb3f66342830afc207bc"
+    },
+    "experiment-regression": {
+      "tests": 60,
+      "passed": 60,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "6e0be05f73678e7fb62f36e2bec2a80bb0ef4005d08c8f7b9d7c7a2120fe9854"
+    }
+  },
+  "rust_abi_tests": {
+    "passed": 3,
+    "failed": 0
+  },
+  "host_activation_results": [
+    {
+      "case": "test_activation.ActivationTests.test_actual_readonly_and_internal_dylib_execution",
+      "write_target": "entry",
+      "write_errno": 30
+    },
+    {
+      "case": "test_activation.ActivationTests.test_actual_readonly_and_internal_dylib_execution",
+      "write_target": "libfixture.dylib",
+      "write_errno": 30
+    },
+    {
+      "case": "test_activation.ActivationTests.test_actual_readonly_and_internal_dylib_execution",
+      "native_exit": 0,
+      "observed_marker": "approved!"
+    },
+    {
+      "case": "test_activation.ActivationTests.test_actual_readonly_and_internal_dylib_execution",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_alternate_library_is_an_observable_negative_control",
+      "native_exit": 0,
+      "observed_marker": "alternate"
+    },
+    {
+      "case": "test_activation.ActivationTests.test_alternate_library_is_an_observable_negative_control",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "ancestor_replacement_outcome",
+      "returncode": 0,
+      "original_marker": true
+    },
+    {
+      "case": "test_activation.ActivationTests.test_ancestor_replacement_uses_original_entry_and_library_or_refuses",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_atomic_selection_exact_policy_and_payload_identity",
+      "completed": true,
+      "selection_sha256": "6910ab186273d4e98e6075d70492302263df69e13c644a2b3fdadbe661e4d9e1",
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_busy_activation_refuses_and_preserves_old_selection",
+      "completed": true,
+      "selection_sha256": "6910ab186273d4e98e6075d70492302263df69e13c644a2b3fdadbe661e4d9e1",
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_concurrent_activation_retains_open_version_and_lease",
+      "native_exit": 0,
+      "observed_marker": "approved!"
+    },
+    {
+      "case": "test_activation.ActivationTests.test_concurrent_activation_retains_open_version_and_lease",
+      "completed": true,
+      "selection_sha256": "88c155e27861a9ee85f6e83ed0eee1cb0cd4b2613ef9f0954c26744cf0bd2d4e",
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_corrupt_policy_preserves_existing_selection",
+      "completed": true,
+      "selection_sha256": "6910ab186273d4e98e6075d70492302263df69e13c644a2b3fdadbe661e4d9e1",
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_external_rpath_and_undeclared_dependency_refuse",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_postpublication_failure_reports_uncertain_complete_selection",
+      "completed": true,
+      "selection_sha256": "88c155e27861a9ee85f6e83ed0eee1cb0cd4b2613ef9f0954c26744cf0bd2d4e",
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_postpublication_sigkill_leaves_complete_selection",
+      "completed": true,
+      "selection_sha256": "88c155e27861a9ee85f6e83ed0eee1cb0cd4b2613ef9f0954c26744cf0bd2d4e",
+      "retained_staging_count": 1
+    },
+    {
+      "case": "test_activation.ActivationTests.test_prepublication_failures_preserve_previous_selection",
+      "completed": true,
+      "selection_sha256": "6910ab186273d4e98e6075d70492302263df69e13c644a2b3fdadbe661e4d9e1",
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_prepublication_sigkill_preserves_previous_selection",
+      "completed": true,
+      "selection_sha256": "6910ab186273d4e98e6075d70492302263df69e13c644a2b3fdadbe661e4d9e1",
+      "retained_staging_count": 3
+    },
+    {
+      "case": "test_activation.ActivationTests.test_state_private_permission_and_symlink_lock_refusal",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_writable_and_chmod_only_payloads_refuse_without_selection",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_writable_backing_media_permissions_refuse",
+      "completed": true,
+      "selection_sha256": null,
+      "retained_staging_count": 0
+    },
+    {
+      "case": "test_activation.ActivationTests.test_write_space_and_sync_faults_preserve_old_selection_and_errno",
+      "completed": true,
+      "selection_sha256": "6910ab186273d4e98e6075d70492302263df69e13c644a2b3fdadbe661e4d9e1",
+      "retained_staging_count": 0
+    }
+  ],
+  "payload_inventories": [
+    {
+      "variant": "approved",
+      "before": {
+        "entry": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "lib/libfixture.dylib": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05"
+      },
+      "after": {
+        "entry": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "lib/libfixture.dylib": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05"
+      },
+      "image_sha256": "14ea6d06fa2565a076886f998da080e7e4093153186a7c04da4e61c3ded31b48",
+      "root_identity": {
+        "device": 16777249,
+        "inode": 2
+      }
+    },
+    {
+      "variant": "alternate",
+      "before": {
+        "entry": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "lib/libfixture.dylib": "30ce8984e9ff6ba35e2bc8284e35e87553423e32a16cebd30c0f8f32eb9180ca"
+      },
+      "after": {
+        "entry": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "lib/libfixture.dylib": "30ce8984e9ff6ba35e2bc8284e35e87553423e32a16cebd30c0f8f32eb9180ca"
+      },
+      "image_sha256": "b9164d107b6324557fece6ff68384648418bdb64ed43bd0a0a5d2160ddd440d3",
+      "root_identity": {
+        "device": 16777251,
+        "inode": 2
+      }
+    },
+    {
+      "variant": "external",
+      "before": {
+        "entry": "7db1673f50a7c4af0e74ebb1d39b9c506a96538f9b0f77e93cc57fe8a06aa740",
+        "lib/libfixture.dylib": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05"
+      },
+      "after": {
+        "entry": "7db1673f50a7c4af0e74ebb1d39b9c506a96538f9b0f77e93cc57fe8a06aa740",
+        "lib/libfixture.dylib": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05"
+      },
+      "image_sha256": "61af70dfedfb9ee7078b9217e4ea87e651ec5887f6d6c58f56c7ad4ff8a9e38a",
+      "root_identity": {
+        "device": 16777253,
+        "inode": 2
+      }
+    },
+    {
+      "variant": "undeclared",
+      "before": {
+        "entry": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "lib/libfixture.dylib": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05"
+      },
+      "after": {
+        "entry": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "lib/libfixture.dylib": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05"
+      },
+      "image_sha256": "cae359ae91b4fd467957650a40e5d2794ea6c5733e75ff6085aad7eccf496421",
+      "root_identity": {
+        "device": 16777255,
+        "inode": 2
+      }
+    }
+  ],
+  "media_cleanup": {
+    "images_created": 4,
+    "images_detached": 4,
+    "errors": []
+  },
+  "historical_reproduction": {
+    "original_sources_unchanged": 58,
+    "historical_records_unchanged": 10,
+    "report_sha256": "a214a305dde1d3c05aed9eb4409cd7d12495c3c58d2acf83126e37830f7e291a",
+    "current_input_check_errors": [
+      "source_or_history_identity",
+      "unit_test_accounting"
+    ],
+    "comparison_consistency": "passed"
+  },
+  "development_failures": [
+    {
+      "gate": "initial native compile",
+      "result": "Failed: encoder incorrectly called parser string validation method; corrected with bounded local metadata encoder before testing."
+    },
+    {
+      "gate": "first differential run",
+      "tests": 133,
+      "failures": 2,
+      "result": "One native module-content scope was stricter than the oracle and was corrected. One Python v2-only API rejection was excluded from native auto-version differential comparisons; native v1/v2 positive dispatch is covered independently."
+    }
+  ],
+  "local_evidence": {
+    "build": ".build/task9/stage2",
+    "build_log": ".build/task9/stage2/build-log-e749240e61614561bdd0a757539fa473.json",
+    "activation_run": ".build/task9/runs/stage2-2999b3a54c3e4c01922d69522f927ccb",
+    "retention": "Task #9 owned ignored evidence retained through review/integration; raw scratch paths remain only in local tool logs. Self-owned mounted media and disposable state were detached and removed after retained evidence was saved."
+  },
+  "unperformed": [
+    "Real Wine/FEX/Steam/Megabonk execution and qualification",
+    "Independent real host/signing/observer grant producer",
+    "Full dynamic module collection and arbitrary dlopen support",
+    "Current-manager original 55 lifecycle cases and both pipe faults (Stage 3)",
+    "Observer framed transport and foreground crash journal (Stage 3)",
+    "Real disk exhaustion or forced physical sync failure; ENOSPC/EIO publication faults were injected at explicit boundaries",
+    "Power loss; SIGKILL controls do not prove physical power-loss durability",
+    "Forced noexec remount; current actual mount flags are checked by native fstatfs and actual fixture execution passes"
+  ]
+}

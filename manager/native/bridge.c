@@ -59,3 +59,13 @@ int32_t pear_sha256_fd(int32_t fd, uint64_t limit, uint8_t *digest, uint64_t *by
     *bytes = total;
     return 0;
 }
+
+#include <sys/mount.h>
+int32_t pear_mount_info(int32_t fd, uint64_t *flags, int32_t *fsid0, int32_t *fsid1) {
+    if (!flags || !fsid0 || !fsid1) return EINVAL;
+    struct statfs info;
+    memset(&info, 0, sizeof(info));
+    if (fstatfs(fd, &info) != 0) return errno;
+    *flags = info.f_flags; *fsid0 = info.f_fsid.val[0]; *fsid1 = info.f_fsid.val[1];
+    return 0;
+}

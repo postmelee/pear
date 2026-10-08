@@ -5,7 +5,7 @@ GitHub Issue: [#9](https://github.com/postmelee/pear/issues/9)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task9`
 Date: October 8, 2026 (Asia/Seoul)
-Status: implementation plan and Stage 1 approved on October 8, 2026 through an authorized relay, including the three review supplements below. Commands and artifacts below define the approved stages; actual Stage 1 results are in its report, and later-stage execution remains planned. Stage 1 is implemented and verified; see the [Stage 1 report](../working/task_m1_9_stage1.md). Stage 2 awaits explicit continuation.
+Status: implementation plan and Stage 1 approved on October 8, 2026 through an authorized relay, including the three review supplements below. Commands and artifacts below define the approved stages; actual Stage 1 results are in its report, and later-stage execution remains planned. Stage 1 is implemented and verified; see the [Stage 1 report](../working/task_m1_9_stage1.md). Stage 2 was explicitly approved on October 9, 2026 and is implemented and verified; see the [Stage 2 report](../working/task_m1_9_stage2.md). Stage 3 awaits explicit continuation.
 
 ## Context and Authorization
 
@@ -387,3 +387,5 @@ Task-plan and supplemented implementation-plan approval are recorded; Stage 1 is
 ## Approval Record and Next Checkpoint
 
 On October 8, 2026 the requester instructed the originating chat to convey the review findings, correct the plans and proceed with Stage 1. The authorized relay expressly approves these three supplements and Stage 1 implementation, verification, reporting and bundled commit; the same plan/Stage 1 approval must not be requested again. Stage 2 and later retain explicit continuation after the preceding verified/reported/committed stage. Material new architecture or scope changes require a concrete revised proposal.
+
+On October 9, 2026 the requester explicitly instructed this chat to proceed, authorizing Stage 2 under the supplemented plan. Stage 3 remains a separate checkpoint.

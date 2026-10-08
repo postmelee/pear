@@ -13,6 +13,7 @@ int32_t pear_process_identity(int32_t pid, uint64_t *started_sec, uint64_t *star
  * return errno values, retain no pointers, and must not run in a post-fork child. */
 int32_t pear_stage_directory(int32_t parent, uint8_t *name, size_t capacity);
 int32_t pear_sha256_fd(int32_t fd, uint64_t limit, uint8_t *digest, uint64_t *bytes);
+int32_t pear_mount_info(int32_t fd, uint64_t *flags, int32_t *fsid0, int32_t *fsid1);
 #ifdef __cplusplus
 }
 #endif

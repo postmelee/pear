@@ -5,6 +5,7 @@ use std::os::fd::AsFd;
 use std::os::fd::AsRawFd;
 
 unsafe extern "C" {
+    fn pear_mount_info(fd: i32, flags: *mut u64, fsid0: *mut i32, fsid1: *mut i32) -> i32;
     fn pear_process_identity(pid: i32, seconds: *mut u64, micros: *mut u64) -> i32;
     fn pear_stage_directory(parent: i32, name: *mut u8, capacity: usize) -> i32;
     fn pear_sha256_fd(fd: i32, limit: u64, digest: *mut u8, bytes: *mut u64) -> i32;
@@ -76,4 +77,12 @@ mod tests {
         assert_eq!(error, libc::EINVAL);
         assert_eq!(&name, b"../escape\0");
     }
+}
+
+pub fn mount_info(file: &impl AsFd) -> io::Result<(u64, i32, i32)> {
+    let (mut flags, mut fsid0, mut fsid1) = (0, 0, 0);
+    checked(unsafe {
+        pear_mount_info(file.as_fd().as_raw_fd(), &mut flags, &mut fsid0, &mut fsid1)
+    })?;
+    Ok((flags, fsid0, fsid1))
 }

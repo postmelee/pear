@@ -72,7 +72,7 @@ def build(output, require_empty=False, rust_tests=False):
     rust_env = {'CARGO_TARGET_DIR':str(output / 'rust'), 'RUSTC':str(Path.home() / '.cargo/bin/rustc'),
                 'CARGO_ENCODED_RUSTFLAGS':'\x1f'.join(['-C','link-arg='+str(bridge),'-C','link-arg=-lproc'])}
     common = ['--manifest-path',REPO / 'manager/Cargo.toml','--locked','--offline','--release','--target','aarch64-apple-darwin']
-    run(['cargo','build',*common,'--example','foundation'],rust_env)
+    run(['cargo','build',*common,'--bins','--examples'],rust_env)
     run(['cargo','test',*common,*([] if rust_tests else ['--lib'])],rust_env)
     binary = output / 'bin/foundation'
     shutil.copy2(output / 'rust/aarch64-apple-darwin/release/examples/foundation', binary)
@@ -82,14 +82,34 @@ def build(output, require_empty=False, rust_tests=False):
     run(['codesign','--verify',binary])
     signature = subprocess.run(['codesign','-d','--verbose=2',binary],capture_output=True,text=True,timeout=10)
     if signature.returncode: raise RuntimeError('signature inspection failed')
+    extra_binaries = {}
+    for name, source in [('pear-manager','pear-manager'), ('activation_probe','examples/activation_probe')]:
+        destination=output/'bin'/name
+        shutil.copy2(output/'rust/aarch64-apple-darwin/release'/source,destination)
+        slices_extra=run(['lipo','-archs',destination])
+        if slices_extra != 'arm64': raise ValueError('unexpected executable slice')
+        run(['codesign','--verify',destination])
+        extra_binaries[name]={'sha256':original.digest(destination),'slices':slices_extra}
+    fixture=output/'fixtures';fixture.mkdir(exist_ok=True)
+    for variant, alternate in [('approved',0),('alternate',1),('external',0)]:
+        target=fixture/variant; (target/'lib').mkdir(parents=True,exist_ok=True)
+        library=target/'lib/libfixture.dylib'
+        run(['xcrun','clang',*flags,'-dynamiclib','-DFIXTURE_ALTERNATE='+str(alternate),REPO/'tests/manager/fixtures/library.c','-Wl,-install_name,@rpath/libfixture.dylib','-o',library])
+        entry=target/'entry'
+        run(['xcrun','clang',*flags,REPO/'tests/manager/fixtures/entry.c',library,'-Wl,-rpath,@executable_path/lib',*(['-Wl,-rpath,'+str(fixture/'alternate/lib')] if variant=='external' else []),'-o',entry])
+        for path in (entry,library):
+            if run(['lipo','-archs',path]) != 'arm64': raise ValueError('fixture not native')
+            run(['codesign','--verify',path])
+            extra_binaries[str(path.relative_to(output))]={'sha256':original.digest(path),'slices':'arm64','dependencies':run(['otool','-L',path]),'load_commands':run(['otool','-l',path])}
     inputs = [path for group in ('manager','tests/manager','tests/contracts','runtime/contracts')
               for path in (REPO / group).rglob('*') if path.is_file() and '__pycache__' not in path.parts]
     inputs += [original.EXPERIMENT / path for path in ('build.py','run_cases.py','fixtures/cases.json','fixtures/native_bridge.c','fixtures/native_bridge.h','rust/src/json.rs','rust/Cargo.toml','rust/Cargo.lock')]
-    metadata = {'version':1,'stage':1,'fixture_only':True,'runtime_eligible':False,'toolchains':versions,
+    metadata = {'version':1,'stage':2,'fixture_only':True,'runtime_eligible':False,'toolchains':versions,
                 'sources':{str(path.relative_to(REPO)):original.digest(path) for path in sorted(set(inputs))},
                 'binaries':{'foundation':{'sha256':original.digest(binary),'slices':slices,'size_bytes':binary.stat().st_size,
                     'file':run(['file',binary]),'dependencies':run(['otool','-L',binary]),'signature_inspection':signature.stderr}},
                 'c_flags':flags,'rust_environment':rust_env,'locked_offline_rust':True,'build_log':log_path.name}
+    metadata['binaries'].update(extra_binaries)
     encoded = json.dumps(metadata,indent=2)+'\n'
     (output / ('build-' + attempt + '.json')).write_text(encoded)
     (output / 'build.json').write_text(encoded)
@@ -105,7 +125,7 @@ def main():
     args=parser.parse_args()
     try:
         build(args.output,args.require_empty,args.rust_tests)
-        print(json.dumps({'build':'passed','stage':1,'runtime_eligible':False}))
+        print(json.dumps({'build':'passed','stage':2,'runtime_eligible':False}))
         return 0
     except (OSError,ValueError,RuntimeError,subprocess.SubprocessError):
         print(json.dumps({'build':'failed','reason':'input_or_build_failure','runtime_eligible':False}))
