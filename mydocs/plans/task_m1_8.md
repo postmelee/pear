@@ -3,7 +3,7 @@
 GitHub Issue: [#8](https://github.com/postmelee/pear/issues/8)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task8`
-Planning date: October 8, 2026. Status: task plan awaiting approval.
+Planning date: October 8, 2026. Status: task plan approved; implementation plan prepared for approval.
 
 ## Purpose
 
@@ -231,3 +231,10 @@ Approve this #8 scope, reuse direction, four stages, document locations and
 necessary-test strategy. Then prepare the detailed implementation plan; Stage 1
 implementation follows its approval. This request does not reopen #6/#7 or
 request approval for the already authorized #6 merge.
+
+## Approval Record
+
+On October 8, 2026, the requester explicitly continued after the task-plan
+approval request. Scope, reuse direction, stage split and document locations are
+approved. Detailed implementation planning is authorized; no implementation or
+new runtime execution has been performed during that planning step.
