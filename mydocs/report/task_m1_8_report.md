@@ -10,7 +10,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
   source-built ARM64 Wine/FEX/DXMT/Metal candidate.
 - Result: the required graphics fixtures pass. Megabonk reaches Unity startup but
   fails game DLL image admission; M1 and ordinary-user support remain incomplete.
-- Publication state: local review preparation only; Issue remains open.
+- Publication state: publication and review approved; Issue remains open pending PR merge approval.
 
 ## Changed Files and Impact Area
 
@@ -95,9 +95,9 @@ native execution. No repeated full build was required for Stage 4.
   reconstruction and packaging remain #13. No proprietary data or credentials
   are committed; source publication alone cannot replace retained runtime inputs.
 
-### Follow-up Candidates
+### Follow-up Work
 
-- Game integration: trace PE image admission, review larger-image arena and metadata
+- [#40](https://github.com/postmelee/pear/issues/40): trace PE image admission, review larger-image arena and metadata
   budgets with relocation/publication bounds, and reproduce against the unchanged
   owned DLL. Required memory/loader regressions depend on the resulting change.
 - #9: consume qualified component identity through the native supervisor/profile.
@@ -106,7 +106,30 @@ native execution. No repeated full build was required for Stage 4.
 - #13–#16: independent assembly, regression, controlled performance and final M1
   qualification only after their own acceptance criteria pass.
 
+## Publication Integration Review
+
+Publication and review were approved on October 9, 2026. Integrated master
+`2279f4620e418dfebd2f2da832bc2ff0b897a1d0`, including the merged #9 supervisor.
+Only the October 8 and 9 task boards conflicted; both tasks were preserved and
+the newer #6 merge/closure status retained. No #8 runtime producer, patch,
+configuration or retained candidate input changed during this integration.
+
+- Stage 4 evidence replay passed after integration, including the original
+  scalar failures, visible frames, surface controls and affected CPU evidence.
+  This is retained-evidence verification, not new native execution.
+- Focused portable tests passed: 29 translated reader tests, four surface-control
+  tests and three visible-frame tests (36 total).
+- Documentation governance passed for 27 documents and 263 local targets;
+  staged whitespace checks passed.
+- Source review covered delivered scalar repair/publication, VM identity,
+  managed surface ownership/rollback/teardown, candidate admission and evidence
+  readers. No blocking finding was identified in this bounded review; it is
+  not a general concurrency or renderer-conformance audit.
+- Existing publication CI covers documentation and portable baseline verifiers.
+  The new translated reader/control/frame tests above were run locally;
+  broader regression integration remains #14.
+
 ## Approval Request to Task Requester
 
-Review the final report and local PR draft. GitHub publication, CI, merge and
-Issue closure have not been performed; publication requires the next approval.
+Review the published PR and its CI results before authorizing merge and Issue
+closure. Publication is approved; merge and closure are not yet authorized.

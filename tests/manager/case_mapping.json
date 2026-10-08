@@ -1,0 +1,777 @@
+{
+  "task": 9,
+  "stage": 3,
+  "original_corpus": "experiments/manager/fixtures/cases.json",
+  "cases": [
+    {
+      "original_id": "success",
+      "original_expected": "success",
+      "native_expected": "success",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "args",
+      "original_expected": "success",
+      "native_expected": "success",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "environment",
+      "original_expected": "success",
+      "native_expected": "success",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "stdin",
+      "original_expected": "success",
+      "native_expected": "success",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "nonzero",
+      "original_expected": "nonzero_exit",
+      "native_expected": "nonzero_exit",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "signal",
+      "original_expected": "signal_exit",
+      "native_expected": "signal_exit",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "timeout",
+      "original_expected": "timeout",
+      "native_expected": "timeout",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "excess_stdout",
+      "original_expected": "output_limit",
+      "native_expected": "output_limit",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "excess_stderr",
+      "original_expected": "output_limit",
+      "native_expected": "output_limit",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "malformed_child",
+      "original_expected": "child_output_invalid",
+      "native_expected": "success",
+      "difference": "Production stdout is opaque counted private bytes, not the old fixture JSON protocol; require exactly 9 bytes, exit 0, reap/cleanup and privacy.",
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "secret_redaction",
+      "original_expected": "success",
+      "native_expected": "success",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "descendant_pipe",
+      "original_expected": "timeout",
+      "native_expected": "timeout",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "missing_observer_ready",
+      "original_expected": "observer_not_ready",
+      "native_expected": "observer_not_ready",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "observer_gap",
+      "original_expected": "observer_gap",
+      "native_expected": "observer_gap",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "spawn_permission",
+      "original_expected": "spawn_failed",
+      "native_expected": "spawn_failed",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "duplicate_key",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "invalid_utf8",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "bom",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "float",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "nonfinite",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "large_integer",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "unknown_version",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "unknown_kind",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "unknown_field",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "bad_digest",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "wrong_ref_kind",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "family_mismatch",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "cache_mismatch",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "missing_entry",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "path_traversal",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "absolute_path",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "blob_symlink",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "record_symlink",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "state_symlink",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "blob_fifo",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "record_too_large",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "deep_json",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "source_bytes_changed",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "build_bytes_changed",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "terms_bytes_changed",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "payload_changed",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "blob_hardlink",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "overlapping_roots",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "untrusted_executable_digest",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "unsupported_operations",
+      "original_expected": "invalid_contract",
+      "native_expected": "ineligible",
+      "difference": "Valid v1 operation shape is refused by the production operation-support gate before execution; no mutable settings in Stage 3.",
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "unknown_source",
+      "original_expected": "invalid_contract",
+      "native_expected": "ineligible",
+      "difference": "Generic structural inspection permits unknown source but purpose admission refuses before execution.",
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "research_context",
+      "original_expected": "ineligible",
+      "native_expected": "ineligible",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "wrong_purpose",
+      "original_expected": "ineligible",
+      "native_expected": "ineligible",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "oversize_reason",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "oversize_key",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "control_string",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "nested_duplicate_key",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "boolean_version",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "percent_path",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    },
+    {
+      "original_id": "tilde_path",
+      "original_expected": "invalid_contract",
+      "native_expected": "invalid_contract",
+      "difference": null,
+      "safety_assertions": [
+        "no_unexpected_spawn",
+        "exact_exit_or_signal",
+        "bounded_output_and_wall_time",
+        "direct_reap_and_trace_identity_disappearance_when_spawned",
+        "unrelated_sentinel_survival",
+        "no_raw_private_stream_output"
+      ]
+    }
+  ]
+}

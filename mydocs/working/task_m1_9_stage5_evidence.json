@@ -1,0 +1,1667 @@
+{
+  "evidence_version": 1,
+  "task": 9,
+  "stage": 5,
+  "date_kst": "2026-10-09",
+  "status": "passed_final_gates_with_development_failure_retained",
+  "base_commit": "e4183a9baf70a1d6721845f374ce9e7ebf2a3a5c",
+  "scope": {
+    "research_profile_inspection": true,
+    "owned_native_fixtures": true,
+    "synthetic_observer": true,
+    "real_game_execution": false,
+    "real_runtime_authorization": false,
+    "distribution_qualified": false
+  },
+  "source_sha256": {
+    "experiments/manager/build.py": "5c48b704f66b6dce0461e46b1bc1dafbf128fef9d68d3d65a49c4f9d563fc896",
+    "experiments/manager/fixtures/cases.json": "96c6f785764b498df203a48bbc05389b85ced4e4c097c405fc54035a791ab2f7",
+    "experiments/manager/fixtures/child.c": "c2574cfbe2b850988975d8ca5f978dc3e44d7383065b3610cd5b2eb3a5d6b36c",
+    "experiments/manager/fixtures/native_bridge.c": "ab1dd5b6e071f82b267d5c68ba23f3cb26e9d8a6497256a9faac1fe719c2106f",
+    "experiments/manager/fixtures/native_bridge.h": "6f110785d41f0d0ff9cbc576c93240776d581ae17d5f34a876e086500633498d",
+    "experiments/manager/run_cases.py": "51b3a088364d27acd098f71defccd1bfa5d586fa59b647cde82bf53b915c9e30",
+    "experiments/manager/rust/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+    "experiments/manager/rust/Cargo.toml": "33d2ac2a3edd665dbf2c18b7d7f04b5e3ae2d76fb367d99f774495058307e5ff",
+    "experiments/manager/rust/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+    "experiments/manager/rust/src/main.rs": "bb0ff3906aae325a98b7c4395196d0d2c6b9ff415f1ac063e18dc5c29bdcdc90",
+    "experiments/manager/rust/src/supervisor_tests.rs": "9148060f749083ab7ad354d85cdc108306114a1f8bc5e79df73526187fe4469e",
+    "manager/AGENTS.md": "6d47f7ba9883ec9590f1cea458b10ed9703562e2ecdd0e41be681932ac6e7845",
+    "manager/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+    "manager/Cargo.toml": "33d2ac2a3edd665dbf2c18b7d7f04b5e3ae2d76fb367d99f774495058307e5ff",
+    "manager/dependencies.json": "1929b73f710a58b38a24e64dff086ba7e4fed6a229ea7845043bdac2630d9411",
+    "manager/examples/activation_probe.rs": "901bec48de86cf886e898b83dda14616fbc003afa663fb460cf26cad604957e9",
+    "manager/examples/foundation.rs": "21fe06e3c1ea070d1ba4fbbfb7eb659c945604b788c13756b45b002e8f87121f",
+    "manager/examples/state_probe.rs": "6ccc1bc5655d93e441e7144cd06f4e713cfd4ff0f5a2aeaa378871e1725d2882",
+    "manager/native/bridge.c": "a1b6cb9e8a099470f0ba8949eb6b4ea8eec97d90877f1bb670df5643ab565730",
+    "manager/native/bridge.h": "e4c6ba683213684bddcf1ce813316a3ddb4174eb3363e48af0b6e9b2377f65fb",
+    "manager/src/activation.rs": "98d4960c20c7aae89ed187bb36889752237d17e87cc008b69cf20f7b1ee13b2a",
+    "manager/src/contract.rs": "188787931b3b91f9bd82871593795ae012ca9b24cef7716d9c2027ac43ad1c83",
+    "manager/src/diagnostics.rs": "3a76ae7da12ea94b64318a5af98cc66fb8f7b76ee58872671fd223d5f3e78bac",
+    "manager/src/encoding.rs": "2f624890f44a895376dc61d0d0ff8ed9f932f944621f2e03b10b6b5edfe1a96e",
+    "manager/src/fs.rs": "fd629dc25cb8f501f136a6ab38509d347933e5d72c123f22b2c8bc854ba65407",
+    "manager/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+    "manager/src/launch.rs": "f3413ffc0c076410dd1d371a2be5ae81c5082a082369b0b0a2d9e71303a72168",
+    "manager/src/lib.rs": "6713adacb21d8a0d18c452aa671476a8e61db68cc62ce527b19860945cc26368",
+    "manager/src/main.rs": "3d102dee2c7b0cdc4535ca5e695e335c08cc1196aca1c7116d0a292c93114fa7",
+    "manager/src/native.rs": "37e06ed0a0e2b7dd50ad106302d7a1fc8e6e15ba0d55aa6bea000f5ddb587d7a",
+    "manager/src/observer.rs": "84063e0cf1d48b3450cd1d03df68e7f73e7700477798e3cbb1443084fd8ccb53",
+    "manager/src/policy.rs": "5bfcc01af9ce04e8eb1e4f2f0dc1fa72e375e7ece65574106715e81bfa593b79",
+    "manager/src/profile.rs": "915b0e634b42361860f25e5efef133306ca9d02dce071c1b088af6cfb68bb04a",
+    "manager/src/state.rs": "b945ae7445136f28499d37c8a43a16c262d89fd3e65c95ef23fbf7923b6f31ee",
+    "manager/src/supervisor.rs": "3cea56c8c1cd3683124a7e98d01ac9ef28f4b7ebd7b6007686843c33f05f4995",
+    "manager/src/supervisor_tests.rs": "78586540f1b7477dfa28c38e1787e77a873dc3be3fef33b49882d4d42b6f1913",
+    "manager/src/tools.rs": "7f17240ea7144c047ff1e256dd6f44f87648184e3439d1c4e21dc44c2d48b9e5",
+    "profiles/AGENTS.md": "2e96c7ea1460216f57c03522f473f70770a0320605a5a162dbd8bf79c6e29580",
+    "profiles/fixtures/a.json": "4410c8307db01d5d1b1bff472bf447a33e2f560ef933e5fca5f7577057403594",
+    "profiles/fixtures/b.json": "5f4fa73b635d8c059cf1cfa58ead494c2f8b2512f2fb2b149baf7821bcae42dc",
+    "runtime/contracts/contract-index.json": "09e4415eb374da6fb72fee42d8c2cf884377cb1ffa60ffb2ee30ad97930f84c4",
+    "runtime/contracts/examples/fixture/blobs/build-config.json": "49ddde4996e00d37e19cb46b0bf46d8c38a2b12e2523e39487a192de13bcf044",
+    "runtime/contracts/examples/fixture/blobs/evidence.json": "f4430917e18762fd5aa741802174762a940d56cb80351b33b58ece79701fb172",
+    "runtime/contracts/examples/fixture/blobs/payload.txt": "b98ef52f9441b9010093ec631e80834f34e85b21f5a29a069217babecf060680",
+    "runtime/contracts/examples/fixture/blobs/source.txt": "422b763f208f8db9d6981759ec236bc603ea4708b0075c213a39d0dba7596ea2",
+    "runtime/contracts/examples/fixture/blobs/terms.txt": "3c222f5dd0a1cf735d0d5bbdcfc872fe74f765ddda1356fa35948a55b55ce4b8",
+    "runtime/contracts/examples/fixture/records/artifact.json": "569b85f9632218a27099568561f77755e10f2f6a8763710f33bb7c3f0dedc65f",
+    "runtime/contracts/examples/fixture/records/complete.json": "2a92dc486cc774ed36f0740e4a65d7fe1628b7508b3a8e99718b3bf99c5474a5",
+    "runtime/contracts/examples/fixture/records/exited.json": "c7c8e29bc32d44900f6f0b84cad4b0b45a5b363891b3ef9644eec9bb3313cbb2",
+    "runtime/contracts/examples/fixture/records/failure.json": "481c32761b4a71235c5578aab14ce59b2fd4402453bd0c03195300c485880dbe",
+    "runtime/contracts/examples/fixture/records/lock.json": "623a9a3617f57b1ee1593acbb6bb062f49d76d2b193e47b7021d9edae0e92844",
+    "runtime/contracts/examples/fixture/records/profile.json": "5ddab7c8c938afe40e033d06322e17bd47daabfed2562bf58a9126990c217c29",
+    "runtime/contracts/examples/fixture/records/qualification.json": "48aac43c0898d8024874ac17b7e5e8e6a248ba117a7b269f0fc261b320e63f98",
+    "runtime/contracts/examples/fixture/records/ready.json": "657b763ee2b5da476342787e4de5fb0227b7bc1aaceeb202260abd119b73cdbe",
+    "runtime/contracts/examples/fixture/records/request.json": "2061ccbd36854a37fd351c729d827ba0f424a03835fcca433aebd3839a57cf47",
+    "runtime/contracts/examples/fixture/records/run.json": "2196fefe859609e30200205e5c75e4814628d4287fe3e4a8f99b8f01cc8cc615",
+    "runtime/contracts/examples/fixture/records/spawned.json": "605f037815461fa825ada3741ebb4f6de76224cecebf28ccda5e002e4b168f3b",
+    "runtime/contracts/examples/research-lock.json": "9a811fc396c212d1ecba1e2f4f31b7d7c436a413b303d9508d1bf00a0ae7ed97",
+    "runtime/contracts/v1/common.schema.json": "caec772e5b2a5cbdca283a067a356517da87833e191ac1cbbc795fd12fba41f1",
+    "runtime/contracts/v1/failure.schema.json": "d82820af8f251b37303cb5b54a81c9ff40c295718dc85012b3d77497a0af0e43",
+    "runtime/contracts/v1/game-profile.schema.json": "4580c389cb35268392c2c547e7ae5b73a25d3a6f83c10fe9db14c38c95b6768d",
+    "runtime/contracts/v1/launch.schema.json": "11eebae032457ccc5095dd826a01b2cae5575bc384be87227be2f5c6c68a5594",
+    "runtime/contracts/v1/qualification.schema.json": "c561f91823d7f31dda82b057eb7a173660d342d06d037b31e858e3600737b171",
+    "runtime/contracts/v1/run.schema.json": "45049c4d5f62108a491db3e8d6fceaf92d1dcca5ecbafa8cf09b693c369d5846",
+    "runtime/contracts/v1/runtime-artifact.schema.json": "7608b9f2cd3be8f12de59da9cb3fba0a70f06865b39bf31b66249183484beccc",
+    "runtime/contracts/v1/runtime-lock.schema.json": "9d201ee41f1514d277570c22de84ef9d3f8e9b3e9a66440d4608fbde3fa2ebc2",
+    "runtime/contracts/v2/common.schema.json": "e87fca0c468961702c6c07b72ce2b17f829d894365c02e5afbe77c36995cf28b",
+    "runtime/contracts/v2/contract-index.json": "69cd45518d4d5382088a122c4428ea1ca19f7491ac141a44e234b98f7520f8ba",
+    "runtime/contracts/v2/examples/fixture/blobs/build-config.json": "49ddde4996e00d37e19cb46b0bf46d8c38a2b12e2523e39487a192de13bcf044",
+    "runtime/contracts/v2/examples/fixture/blobs/evidence.json": "f4430917e18762fd5aa741802174762a940d56cb80351b33b58ece79701fb172",
+    "runtime/contracts/v2/examples/fixture/blobs/payload.txt": "b98ef52f9441b9010093ec631e80834f34e85b21f5a29a069217babecf060680",
+    "runtime/contracts/v2/examples/fixture/blobs/source.txt": "422b763f208f8db9d6981759ec236bc603ea4708b0075c213a39d0dba7596ea2",
+    "runtime/contracts/v2/examples/fixture/blobs/terms.txt": "3c222f5dd0a1cf735d0d5bbdcfc872fe74f765ddda1356fa35948a55b55ce4b8",
+    "runtime/contracts/v2/examples/fixture/records/artifact.json": "7a2ba42e618e673cfb223d0fb2429b82b91ad03e8066e365efe0df5c1cc434aa",
+    "runtime/contracts/v2/examples/fixture/records/complete.json": "b83e70e3bd41625dc8cb028b8d4e9fc64000cc9ab409b54f27c6ee52466651b4",
+    "runtime/contracts/v2/examples/fixture/records/exited.json": "027d34dd73f6dfb5c1251b28b79508940f01f75274f88e783635c2105e069e79",
+    "runtime/contracts/v2/examples/fixture/records/failure.json": "915cc6746d75f0c097756f88891e85d1e00b7f46245a0cf9dcb46fa9685bc694",
+    "runtime/contracts/v2/examples/fixture/records/lock.json": "eaf090cf1db32967b6e5a4a55cd00f03777988cd70518d7e743ff7eff2110c95",
+    "runtime/contracts/v2/examples/fixture/records/profile.json": "775e17d0d3d3e72a99b7f88a02620f4924a1740c39efc35c22d0eb2edff68263",
+    "runtime/contracts/v2/examples/fixture/records/qualification.json": "db7b996b68768bc29a5029a12c28ddcccf1a5255a6c80d71c4858706b1005397",
+    "runtime/contracts/v2/examples/fixture/records/ready.json": "ce7a228fb98fbbfe24c0a32ac4c250db91e94ef696175927ec04663d3afc4028",
+    "runtime/contracts/v2/examples/fixture/records/request.json": "ede243ea0fc2c6cc75356dcf543d4b9491d7da110f9c6de60c907e8f18cc34bd",
+    "runtime/contracts/v2/examples/fixture/records/run.json": "14e7bae63be8555513c583bcbe35055574a3ab5c53a0b63b8809eeb949ee00b9",
+    "runtime/contracts/v2/examples/fixture/records/spawned.json": "7855350efd597f9ae6d71d503f67c777a9148f8c65efe23c95cf229eb39e9a32",
+    "runtime/contracts/v2/examples/research-lock.json": "888fbf30e4f88e861582248bf37fd167da8133ba9a88285a4d841f86a237916b",
+    "runtime/contracts/v2/failure.schema.json": "ddaccdb9be10c3fdfc0b188701767c0b85a703bf832a05a09e3559f161fa7312",
+    "runtime/contracts/v2/game-profile.schema.json": "ee3dbb89268d6cd65cec85edc3aa0e3dbc1337b11df620970cfe55a2d98237c8",
+    "runtime/contracts/v2/launch.schema.json": "c380cf6b5474972a96eb1a3bce54e68026e61400a4151670259c55bce74bc363",
+    "runtime/contracts/v2/qualification.schema.json": "3cea22c70438504c5a346369d3bcf44c55811b6f25497d8714f3d98aec7ad3ec",
+    "runtime/contracts/v2/run.schema.json": "8a7d6a7b214e32570f1cab96de6642ce5beccfc9ec63dbcb54141ffe593941c4",
+    "runtime/contracts/v2/runtime-artifact.schema.json": "398e81e71d15c47fc7f6675aae27a067ede5881c62fe29caa28e4466048574c4",
+    "runtime/contracts/v2/runtime-lock.schema.json": "16d0cf82afdc7e06257e7a3a67cdf5ab9ac1ee448164ff2521da353450c72762",
+    "tests/contracts/dependencies.json": "bb37b0d0ea8139acfc3633927e3eee968ac292f7d7e4e0dc53a12bccde43693d",
+    "tests/contracts/fixture_factory.py": "e21bfe501d8ff1e398180956f621243aa54650f5b8849878bb550770883495d2",
+    "tests/contracts/requirements.lock": "bdade2e42764a640d91028635045e9f1c6c1708bc336a2818700b8e06954a215",
+    "tests/contracts/test_eligibility.py": "6baee52f0b454efe82d76e9ea251426f24175d4493cfedfd9fbfd7bd040835b8",
+    "tests/contracts/test_paths_and_privacy.py": "2dfca763d1005d82d2025403982415301c4d855508797a43c8a5c043e1b9856e",
+    "tests/contracts/test_structure.py": "26c981683f640527558beb409c9db1eaef9da1615764658d14bc5397409cd1b9",
+    "tests/contracts/test_v2.py": "23c0ec712490697e4d6952eb29047559674dcfb6f183539d5ce483337a2e3efb",
+    "tests/contracts/v2_fixture.py": "e8198ec4dbd82bab188c5d5abdab0b61c2ef3a76dcfcca92a6c8d7ddc2918259",
+    "tests/contracts/validate.py": "e483bd7ca50246e29a018ecd05c4dfc1192b779c509da5b579752c8d21bad2db",
+    "tests/contracts/validate_v2.py": "d71badaa9bcc0fd8617f00e9fbc7cf04cf751dbe9138943f8e3e90c7c258e561",
+    "tests/manager/build.py": "b046797723813d230cfff6a1b56511b0beb8150c0bbe7cf860edcabf78b35e3b",
+    "tests/manager/case_adapter.py": "666fa609b58f05ed1982db681fc14d3e445f74d567c7b8a90656b74b7461e289",
+    "tests/manager/case_mapping.json": "a212d4a64236431574f3ab89b9267224f33eedd6a69df6eddf8dd26c4765a2a2",
+    "tests/manager/fixtures/entry.c": "4c45c7ade87ccc3bfd45acdcb2efa3e7e652520f0dba39dad3bfe578ca933ab5",
+    "tests/manager/fixtures/library.c": "e35939fafd6201256e684b9030384d1ec137431d210d6da8609298869f61af19",
+    "tests/manager/fixtures/state.c": "0191057edf61ac84af41a20bcf589f85e0d029e51d1d026ca7c5fe7686e51cc8",
+    "tests/manager/fixtures/supervision_entry.c": "12bec0b4fc6968de600081be5019a9db533dec02869cf29b9c4c5d9b1c00800d",
+    "tests/manager/state_support.py": "0089f80e67706c03be9f66127447a15092b068a2d84889ea3e87627f94ff3525",
+    "tests/manager/support.py": "48e195ab705c612db8bb68eb0bbb5d4c54e427721aaaeb18c6fd9594378ae261",
+    "tests/manager/synthetic_peer.py": "20982b064a7cc9be250b734f6f0f1f036c8f250482a770e6db5858c5d0da9803",
+    "tests/manager/test_activation.py": "3579fb5b480f851947119de6d88844221ca6967d1134ce127aef9b1eea24a7b8",
+    "tests/manager/test_admission.py": "157888526147f51a3eadf5c9a609d5ac265140dbf2430b05788f774bac6abb03",
+    "tests/manager/test_crash.py": "cd4623bf8383e3f682b1630de90e4592b61a1c92be051b6e3f31fde942044739",
+    "tests/manager/test_foundation.py": "ea2725b3eb71dd2440b8fdbeaa88d763a52deccaabdf4fbb54ceb1e873d7110a",
+    "tests/manager/test_observer.py": "754d27b3397a0c6f515b8d3cea531eb3177716f3c3d782d218f1739d207cea44",
+    "tests/manager/test_state.py": "3e5c743a05a0ed531e34c3c5f2613892033bd5859f5c8a9f2fea45cd9a2545f2",
+    "tests/manager/test_supervision.py": "02599ac32807207198af3283f87e4d97e9023676c5e15b8ca18fdad29d594345",
+    "tests/profiles/test_profiles.py": "da265ab067dc36c2ad920dd95f6bfc3c5d7990456da98c64685300a7de4b783d",
+    "docs/README.md": "d2c56e7c19d19a88e95b82db737812685d3d737178fb10ea150ac1ac1c1b67b0",
+    "docs/architecture.md": "4924dcf8f214056c1cb420bd9cf4f9d599f10221bc577cbbbbbdf66e87509911",
+    "docs/runtime-contracts.md": "be108df5e20583c3134bdc005cd4d078551a7ab528b24022dd28d7027ba89f76",
+    "docs/game-profiles.md": "8ac3b23660e141f4dae107d512d046a82626cfe7f601f7e6a85a2c0c714e64af",
+    "docs/development/runtime-supervisor.md": "471520d829c3e3583cee2770c9ba57778659e21cacf8e5708f67cb9b02493d82",
+    "profiles/megabonk/profile.json": "93312f01699ecaaf204581e1f751cfdf44a63cb65bdf9f6cf592e1bf269abc53",
+    "tests/profiles/test_megabonk.py": "8024f2f52e7526f17e96d8686292f772393276d05eddf732046eb668f149802d",
+    "tests/manager/test_cli.py": "7540f5ae00b24bf52bd06d5fd12a0671fc78b1794e0b33ffe62060ab5ad9acd1"
+  },
+  "reused_build": {
+    "receipt": ".build/task9/stage4/build.json",
+    "sha256": "4c761d44c1e4871a5f9c33e90233638ade61dcc37c59743031d96c078ff4b604",
+    "unchanged_source_count": 120,
+    "unchanged_binary_count": 13,
+    "binaries": {
+      "foundation": {
+        "sha256": "4d41bbfe58640cd4e6131b7546af855e8f0910a0cb9ebe04829329529a8056ca",
+        "slices": "arm64",
+        "size_bytes": 450432
+      },
+      "fixture-child": {
+        "sha256": "0a12bd061ad26750cfc45d9eefaed6d314cfc89999e1224599056ba7b5223e47",
+        "slices": "arm64"
+      },
+      "fixture-entry": {
+        "sha256": "13fcb49914f92ad3e996fd035f5028de0b88b4cb8da0881c081ece1de504a7c0",
+        "slices": "arm64"
+      },
+      "fixture-entry-next": {
+        "sha256": "9e16b69677ec46e0aa1cee14bf9641b071fba2433acd76c3953d93a89755b4b9",
+        "slices": "arm64"
+      },
+      "pear-manager": {
+        "sha256": "1615c0199bb13a03b71a42682e3bbcf2cb91353d5d0ea21fde390993070aa896",
+        "slices": "arm64"
+      },
+      "activation_probe": {
+        "sha256": "8cbf8207a511769982bee7ef2a3f5c5f3fd9c3c355a7a8156fed09926246f77d",
+        "slices": "arm64"
+      },
+      "state_probe": {
+        "sha256": "043064d2d11cb72d3eb2af008a8c0a9779dc676b3d61a55824f111fc5d752698",
+        "slices": "arm64"
+      },
+      "fixtures/approved/entry": {
+        "sha256": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "slices": "arm64"
+      },
+      "fixtures/approved/lib/libfixture.dylib": {
+        "sha256": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05",
+        "slices": "arm64"
+      },
+      "fixtures/alternate/entry": {
+        "sha256": "e8276419f478bad4c9abfb1603a7699c90d650b7d777d0f54a5a8a15ad02030f",
+        "slices": "arm64"
+      },
+      "fixtures/alternate/lib/libfixture.dylib": {
+        "sha256": "30ce8984e9ff6ba35e2bc8284e35e87553423e32a16cebd30c0f8f32eb9180ca",
+        "slices": "arm64"
+      },
+      "fixtures/external/entry": {
+        "sha256": "0e8cb22f78b3a62783c43850f3ca8812b6735f6d3d065d239801ff0422d4d233",
+        "slices": "arm64"
+      },
+      "fixtures/external/lib/libfixture.dylib": {
+        "sha256": "87ca3b96085a6e67296f16f57c0eaf9fe7739d31a4867d629d979cabd35ecb05",
+        "slices": "arm64"
+      }
+    },
+    "recorded_toolchains": {
+      "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+      "sdk": "26.5",
+      "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: aarch64-apple-darwin\nrelease: 1.94.1\nLLVM version: 21.1.8",
+      "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+      "xcode": "Xcode 26.6\nBuild version 17F113",
+      "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84",
+      "machine": "arm64"
+    }
+  },
+  "tests": [
+    {
+      "suite": "profiles",
+      "command": "PEAR_MANAGER_BUILD=.build/task9/stage4 .build/task9/venv/bin/python -B -m unittest discover -s tests/profiles -p 'test_*.py'",
+      "passed": 12,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "log": ".build/task9/stage5-profiles-final.log",
+      "sha256": "f5f325494ae3a29d8ca8d517e24176ed7b051523574d6cb3089f62bc0e5e6173"
+    },
+    {
+      "suite": "cli",
+      "command": "PEAR_MANAGER_BUILD=.build/task9/stage4 .build/task9/venv/bin/python -B -m unittest discover -s tests/manager -p test_cli.py",
+      "passed": 5,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "log": ".build/task9/stage5-cli-final.log",
+      "sha256": "4720a1e2ac02423160a1a067bf3ca173bce1ec8488e3785f5b3d7a89243e533e"
+    }
+  ],
+  "distinct_current_passing_tests": 17,
+  "prior_stage4_tests_not_counted_as_rerun": 505,
+  "runtime_and_profile_runs": [
+    {
+      "location": ".build/task9/runs/stage5-profile-f3b29f1ae9924dfbb595ec68e2439380",
+      "results_sha256": "a9a87804ee26d5b22fea9d9afd9d31ae3c4d8d1eec01f60edb1ce353eada04ee",
+      "results": [
+        {
+          "test": "test_checked_in_profile_is_inspectable_by_both_consumers",
+          "command": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 1,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_complete_synthetic_runtime_still_has_no_execution_authority",
+          "command": "activate",
+          "returncode": 3,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "runtime_authorization_unavailable"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_documented_profile_inspection_commands",
+          "command": "documented-inspect",
+          "returncode": 0,
+          "result": {
+            "eligible": true,
+            "evaluation_only": true,
+            "outcome_codes": [],
+            "record_count": 1,
+            "record_valid": true
+          }
+        },
+        {
+          "test": "test_documented_profile_inspection_commands",
+          "command": "documented-inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 1,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_guessed_save_mapping_or_unproved_feature_cannot_pass_inspection",
+          "command": "inspect",
+          "returncode": 1,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "contract_invalid"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_guessed_save_mapping_or_unproved_feature_cannot_pass_inspection",
+          "command": "inspect",
+          "returncode": 1,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "contract_invalid"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_guessed_save_mapping_or_unproved_feature_cannot_pass_inspection",
+          "command": "inspect",
+          "returncode": 1,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "contract_invalid"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_private_or_malformed_metadata_is_not_echoed",
+          "command": "inspect",
+          "returncode": 1,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "contract_invalid"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_research_request_refuses_activation_without_state_mutation",
+          "command": "activate",
+          "returncode": 1,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "incompatible_family"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_unknown_current_inputs_do_not_become_executable_defaults",
+          "command": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": false,
+            "outcome_codes": [
+              "runtime_context_required",
+              "wrong_entry_kind"
+            ],
+            "record_count": 1,
+            "evaluation_only": true
+          }
+        },
+        {
+          "test": "test_unknown_current_inputs_do_not_become_executable_defaults",
+          "command": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": false,
+            "outcome_codes": [
+              "runtime_context_required",
+              "wrong_entry_kind"
+            ],
+            "record_count": 1,
+            "evaluation_only": true
+          }
+        }
+      ]
+    },
+    {
+      "location": ".build/task9/runs/stage3-e4ed34b055c24523a4ef7a881edd7129",
+      "results_sha256": "63e1a904ac01f3005a832685855dac840398c4e05fbf48785696c47929d93e64",
+      "results": [
+        {
+          "id": "test_changed_setting_refuses_launch_before_child",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_changed_setting_refuses_launch_before_child",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "invalid_contract",
+            "spawned": false,
+            "reaped": false,
+            "cleanup": "not_started",
+            "exit_code": null,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": null,
+            "observation_complete": false
+          }
+        },
+        {
+          "id": "test_concurrent_contexts_use_their_own_selected_runtime_and_data",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_concurrent_contexts_use_their_own_selected_runtime_and_data",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_concurrent_contexts_use_their_own_selected_runtime_and_data",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_concurrent_contexts_use_their_own_selected_runtime_and_data",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "actual_concurrency",
+          "start_difference_usec": 5992,
+          "each_successful_child_minimum_lifetime_usec": 500000,
+          "overlap_observed": true
+        },
+        {
+          "id": "test_preexisting_unrelated_save_bytes_are_never_replaced",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_preexisting_unrelated_save_bytes_are_never_replaced",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_preexisting_unrelated_save_bytes_are_never_replaced",
+          "preserved_root": "contexts/a/state/saves-a",
+          "file_count": 1,
+          "before_inventory_sha256": "12a555f9562a6ad251db29e445767cf33f5a1c81edd2ea8f7e9def8d6a641370",
+          "after_inventory_sha256": "12a555f9562a6ad251db29e445767cf33f5a1c81edd2ea8f7e9def8d6a641370"
+        },
+        {
+          "id": "test_preexisting_unrelated_save_bytes_are_never_replaced",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "nonzero_exit",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 75,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_preexisting_unrelated_save_bytes_are_never_replaced",
+          "preserved_root": "contexts/a/state/saves-a",
+          "file_count": 1,
+          "before_inventory_sha256": "12a555f9562a6ad251db29e445767cf33f5a1c81edd2ea8f7e9def8d6a641370",
+          "after_inventory_sha256": "12a555f9562a6ad251db29e445767cf33f5a1c81edd2ea8f7e9def8d6a641370"
+        },
+        {
+          "id": "test_prepare_updates_only_allowlisted_setting_and_preserves_saves",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_prepare_updates_only_allowlisted_setting_and_preserves_saves",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_prepare_updates_only_allowlisted_setting_and_preserves_saves",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_prepare_updates_only_allowlisted_setting_and_preserves_saves",
+          "preserved_root": "contexts/a/state/saves-a",
+          "file_count": 1,
+          "before_inventory_sha256": "6975bbf5c8b6e4322af53d22e67c08ac9aa1174f7e3b6b9e3b59aee7baf35fbe",
+          "after_inventory_sha256": "6975bbf5c8b6e4322af53d22e67c08ac9aa1174f7e3b6b9e3b59aee7baf35fbe"
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "command": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "preserved_root": "contexts/b",
+          "file_count": 5,
+          "before_inventory_sha256": "084d6a4730f2e853a897db4cdd3592342d944e01656f56999e3c42fb6f773189",
+          "after_inventory_sha256": "084d6a4730f2e853a897db4cdd3592342d944e01656f56999e3c42fb6f773189"
+        },
+        {
+          "id": "profile_observation",
+          "profile": "a",
+          "round": 0,
+          "marker": "alpha",
+          "setting": true,
+          "previous_save": false
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "preserved_root": "contexts/a",
+          "file_count": 9,
+          "before_inventory_sha256": "0d052c32abc17c6b090ab13800c1a5d9bdfa335202be24f3003366b10a1ef05e",
+          "after_inventory_sha256": "0d052c32abc17c6b090ab13800c1a5d9bdfa335202be24f3003366b10a1ef05e"
+        },
+        {
+          "id": "profile_observation",
+          "profile": "b",
+          "round": 0,
+          "marker": "beta",
+          "setting": false,
+          "previous_save": false
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "preserved_root": "contexts/b",
+          "file_count": 9,
+          "before_inventory_sha256": "bb5bee5435626c527f7691ca96b571f4ea1d1fe4648ec737fce1df7436baab26",
+          "after_inventory_sha256": "bb5bee5435626c527f7691ca96b571f4ea1d1fe4648ec737fce1df7436baab26"
+        },
+        {
+          "id": "profile_observation",
+          "profile": "a",
+          "round": 1,
+          "marker": "alpha",
+          "setting": true,
+          "previous_save": true
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_sequential_relaunch_preserves_distinct_settings_and_save_bytes",
+          "preserved_root": "contexts/a",
+          "file_count": 9,
+          "before_inventory_sha256": "156ae2f7a56f79bab91efc23b56b3a7cb079031d90d18da97d29727f3c1cecd2",
+          "after_inventory_sha256": "156ae2f7a56f79bab91efc23b56b3a7cb079031d90d18da97d29727f3c1cecd2"
+        },
+        {
+          "id": "profile_observation",
+          "profile": "b",
+          "round": 1,
+          "marker": "beta",
+          "setting": false,
+          "previous_save": true
+        },
+        {
+          "id": "runtime_preservation",
+          "file_count": 88,
+          "before_inventory_sha256": "9cc4fffd760b210908301d43b54322a516517068496590d0bb2e869c55d1006b",
+          "after_inventory_sha256": "9cc4fffd760b210908301d43b54322a516517068496590d0bb2e869c55d1006b",
+          "image_before_sha256": "c7db1bc5ac8c131ca77f2b446fda24f17c791bdb187c4af36df8033d3c300bd1",
+          "image_after_sha256": "c7db1bc5ac8c131ca77f2b446fda24f17c791bdb187c4af36df8033d3c300bd1"
+        }
+      ]
+    },
+    {
+      "location": ".build/task9/runs/stage3-f38382e6324747209605af4ecdbae421",
+      "results_sha256": "ead5660afbd038b01af6f4c590c8c92fd2afe54aff46c61993b27b40823167f5",
+      "results": [
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "cancelled",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": null,
+            "signal": 9,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": null,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "example": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_both_documented_signals_cancel_only_the_owned_run",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "cancelled",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": null,
+            "signal": 9,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": null,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "preserved_root": "contexts/b",
+          "file_count": 5,
+          "before_inventory_sha256": "15bedf5b237aef93a8166b9d2f2c47e8ca52eeeb54845256edbb1eddd5d9dbe3",
+          "after_inventory_sha256": "15bedf5b237aef93a8166b9d2f2c47e8ca52eeeb54845256edbb1eddd5d9dbe3"
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "status",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "status",
+            "reason": "context_clean",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "documented_profile_observation",
+          "profile": "a",
+          "round": 0,
+          "marker": "alpha",
+          "setting": true,
+          "previous_save": false
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "preserved_root": "contexts/a",
+          "file_count": 9,
+          "before_inventory_sha256": "3bb8e709715001a73beb9caee20f17e1501f3e019dea07147196c916ecd09465",
+          "after_inventory_sha256": "3bb8e709715001a73beb9caee20f17e1501f3e019dea07147196c916ecd09465"
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "status",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "status",
+            "reason": "context_clean",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "documented_profile_observation",
+          "profile": "b",
+          "round": 0,
+          "marker": "beta",
+          "setting": false,
+          "previous_save": false
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "preserved_root": "contexts/b",
+          "file_count": 9,
+          "before_inventory_sha256": "279bdccc664bf5dbeb06dbdc6868302f4c097a63d9d2d234351e0c54b4fe37b9",
+          "after_inventory_sha256": "279bdccc664bf5dbeb06dbdc6868302f4c097a63d9d2d234351e0c54b4fe37b9"
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "status",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "status",
+            "reason": "context_clean",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "documented_profile_observation",
+          "profile": "a",
+          "round": 1,
+          "marker": "alpha",
+          "setting": true,
+          "previous_save": true
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "preserved_root": "contexts/a",
+          "file_count": 9,
+          "before_inventory_sha256": "505f1c7c271946d0c6da0a43d767ebc45271631b3279fc355dbec904e03908cc",
+          "after_inventory_sha256": "505f1c7c271946d0c6da0a43d767ebc45271631b3279fc355dbec904e03908cc"
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "status",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "status",
+            "reason": "context_clean",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "documented_profile_observation",
+          "profile": "b",
+          "round": 1,
+          "marker": "beta",
+          "setting": false,
+          "previous_save": true
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "recover-existing",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "recover",
+            "reason": "compatible_context_selected",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "recover-new",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "recover",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "preserved_root": "contexts/a",
+          "file_count": 9,
+          "before_inventory_sha256": "505f1c7c271946d0c6da0a43d767ebc45271631b3279fc355dbec904e03908cc",
+          "after_inventory_sha256": "505f1c7c271946d0c6da0a43d767ebc45271631b3279fc355dbec904e03908cc"
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "preserved_root": "contexts/b",
+          "file_count": 9,
+          "before_inventory_sha256": "e4553d71e2f57300c74b9ef1bdd49ca36d45788af6ab02567b1b03024e6aef3e",
+          "after_inventory_sha256": "e4553d71e2f57300c74b9ef1bdd49ca36d45788af6ab02567b1b03024e6aef3e"
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_documented_two_profile_relaunch_and_recovery",
+          "example": "recover-new",
+          "returncode": 3,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "recover",
+            "reason": "recovery_requires_new_context",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_manual_python_descriptor_handoff_runs",
+          "example": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_manual_python_descriptor_handoff_runs",
+          "example": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_manual_python_descriptor_handoff_runs",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_manual_python_descriptor_handoff_runs",
+          "example": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "manual_python_descriptor_handoff",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "inspect",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "evaluate",
+          "returncode": 0,
+          "result": {
+            "record_valid": true,
+            "eligible": true,
+            "outcome_codes": [],
+            "record_count": 4,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "activate",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "activation",
+            "reason": "selection_committed",
+            "runtime_eligible": false
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "prepare",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "prepare",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "observer_not_ready",
+            "spawned": false,
+            "reaped": false,
+            "cleanup": "not_started",
+            "exit_code": null,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": null,
+            "observation_complete": false
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "status",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "status",
+            "reason": "context_incomplete",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "context_incomplete",
+            "spawned": false,
+            "reaped": false,
+            "cleanup": "not_started",
+            "exit_code": null,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": null,
+            "observation_complete": false
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "recover-existing",
+          "returncode": 3,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "recover",
+            "reason": "context_incomplete",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "example": "recover-new",
+          "returncode": 0,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "recover",
+            "reason": "context_prepared",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "preserved_root": "contexts/a",
+          "file_count": 6,
+          "before_inventory_sha256": "4442b91588d8e5518f239fbc7effedbc48242018f7e62e6fe611c48afac51d6d",
+          "after_inventory_sha256": "4442b91588d8e5518f239fbc7effedbc48242018f7e62e6fe611c48afac51d6d"
+        },
+        {
+          "id": "test_readiness_refusal_leaves_incomplete_state_and_fresh_recovery_preserves_it",
+          "command": "launch",
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "success",
+            "spawned": true,
+            "reaped": true,
+            "cleanup": "passed",
+            "exit_code": 0,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": 1,
+            "observation_complete": true
+          }
+        },
+        {
+          "id": "cli_misuse",
+          "returncode": 2,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "cli_misuse"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "cli_misuse",
+          "returncode": 2,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "cli_misuse"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "cli_misuse",
+          "returncode": 2,
+          "result": {
+            "diagnostic_version": 1,
+            "phase": "status",
+            "reason": "cli_misuse",
+            "runtime_eligible": false,
+            "native_error": null
+          }
+        },
+        {
+          "id": "cli_misuse",
+          "returncode": 2,
+          "result": {
+            "record_valid": false,
+            "eligible": false,
+            "outcome_codes": [
+              "cli_misuse"
+            ],
+            "native_error": null,
+            "evaluation_only": true
+          }
+        },
+        {
+          "id": "cli_misuse",
+          "returncode": 1,
+          "result": {
+            "diagnostic_version": 1,
+            "fixture_only": true,
+            "runtime_eligible": false,
+            "host_architecture": "arm64",
+            "translated": false,
+            "classification": "invalid_contract",
+            "spawned": false,
+            "reaped": false,
+            "cleanup": "not_started",
+            "exit_code": null,
+            "signal": null,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "native_error": null,
+            "observation_complete": false
+          }
+        },
+        {
+          "id": "documentation_examples",
+          "guide_sha256": "471520d829c3e3583cee2770c9ba57778659e21cacf8e5708f67cb9b02493d82",
+          "executed": [
+            "activate",
+            "evaluate",
+            "inspect",
+            "launch",
+            "prepare",
+            "recover-existing",
+            "recover-new",
+            "status"
+          ],
+          "required": [
+            "activate",
+            "evaluate",
+            "inspect",
+            "launch",
+            "prepare",
+            "recover-existing",
+            "recover-new",
+            "status"
+          ]
+        },
+        {
+          "id": "runtime_preservation",
+          "file_count": 22,
+          "before_inventory_sha256": "595e0940d7af6bad1f6e86080b47c929b2fb3f6b8ff715d33d59f8913371de49",
+          "after_inventory_sha256": "595e0940d7af6bad1f6e86080b47c929b2fb3f6b8ff715d33d59f8913371de49",
+          "image_before_sha256": "7b518ec560c673d5b11fa548bac4048b359917478298d9d9029836409ba3f2d7",
+          "image_after_sha256": "7b518ec560c673d5b11fa548bac4048b359917478298d9d9029836409ba3f2d7"
+        }
+      ]
+    }
+  ],
+  "additional_checks": {
+    "governance": "PASS: 27 documents, 253 local targets; skill routing and source inventory consistent (offline)",
+    "new_guide_local_links_and_heading_anchors": 12,
+    "public_artifacts_privacy_checked": 6,
+    "diff_whitespace": "passed"
+  },
+  "sources_reviewed": [
+    {
+      "url": "https://store.steampowered.com/app/3405340/Megabonk/",
+      "review_date": "2026-10-09",
+      "scope": "Official store/App ID; feature labels are not Pear evidence."
+    },
+    {
+      "url": "https://partner.steamgames.com/doc/sdk/api",
+      "review_date": "2026-10-09",
+      "scope": "Development-only App ID file, normal Steam context and ownership boundary."
+    }
+  ],
+  "development_failures": [
+    {
+      "log": ".build/task9/stage5-profile-initial.log",
+      "sha256": "71691ab1d2bd692c3b119fce0a9ed36183ff858b12cb19f9abb3a46c26bc777f",
+      "result": "One of six initial profile tests failed: expected activation refusal exit 3/ineligible, observed earlier exit 1/incompatible_family from unresolved profile/request identity. Expectation corrected to the exact earlier refusal, retaining no-state-mutation assertions and independent oracle agreement; native source unchanged."
+    }
+  ],
+  "review_corrections": [
+    "Native bundle roots require absolute physical paths. The profile guide now uses pwd -P; both documented inspection commands are executed in the final tests.",
+    "The original dependency-guide heading link was corrected to the existing setup heading and validated."
+  ],
+  "retention": "Ignored .build/task9 logs/receipts and failed attempts retained through review/integration. Owned read-only media detached and disposable fixture state removed. No game files or authenticated prefixes used.",
+  "limitations": [
+    "Current game BuildID, runtime family/renderer, Steam client identity, save inventory and Wine user mapping remain unknown.",
+    "All listed features remain untested for the researched native candidate; old Rosetta observations are dated provenance only.",
+    "No manager/schema/source dependency changes or new real observer authority.",
+    "Exact context compatibility and explicit fresh/clean-context recovery do not implement save migration or rollback.",
+    "Unchanged Stage 4 source/binaries are reused for their recorded fixture scope; full fresh reconstruction remains Stage 6.",
+    "No Wine, Steam, Megabonk, Raft, signing/provisioning or ordinary-user distribution execution was performed."
+  ]
+}
