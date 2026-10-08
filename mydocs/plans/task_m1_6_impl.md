@@ -3,7 +3,7 @@
 Task plan: [task_m1_6.md](task_m1_6.md), approved October 8, 2026.
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan approved; Stages 1–3 completed locally; Stage 4 awaits explicit continuation.
+Status: implementation plan approved; all four stages complete locally; final report and PR publication review pending.
 
 ## Stage Overview
 
@@ -373,3 +373,18 @@ using its qualification result. Record native logical CPU count and bounded wait
 progress; require one successful checked FEX ThreadTerm for every joined worker.
 
 Stage 3 is complete: see [the Stage 3 report](../working/task_m1_6_stage3.md) and its sanitized observations for final input identities, failures, finite ordering results and Stage 4 integration requirements.
+
+## Stage 4 Continuation
+
+The requester explicitly continued after reviewing the Stage 3 checkpoint. Reuse
+`stage3-fex3`, both Stage 3 signed fixture runtimes and seven completed boundary
+cases. Run the remaining 12 instruction PEs with the same `s3reg` run identity,
+then independently admit the complete instruction/ordering references and bind
+them to matching Wine/FEX code origins, receipts, authorization and configuration.
+No build is needed. #9 has an active separate worktree; this task changes only
+its approved CPU paths and existing guide, preserving all shared dependency caches.
+
+Stage 4 is complete: [the Stage 4 report](../working/task_m1_6_stage4.md) binds
+the final 18-pass/one-unsupported corpus and ordering evidence to the same component
+set. [The final report](../report/task_m1_6_report.md) maps all Issue criteria and
+records the remaining integration limits. No final PR, merge or Issue closure yet.

@@ -2,7 +2,7 @@
 
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Planning date: October 8, 2026. Status: task and implementation plans approved; Stage 1 complete locally.
+Planning date: October 8, 2026. Status: task and implementation plans approved; all four stages complete locally; final publication review pending.
 
 ## Purpose
 
