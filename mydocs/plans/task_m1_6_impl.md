@@ -3,7 +3,7 @@
 Task plan: [task_m1_6.md](task_m1_6.md), approved October 8, 2026.
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan approved; Stage 1 completed locally; Stage 2 approved and in progress.
+Status: implementation plan approved; Stages 1 and 2 completed locally; Stage 3 awaits explicit continuation.
 
 ## Stage Overview
 
@@ -154,7 +154,7 @@ execution, owned cleanup and sentinel survival remain required for Pear runs.
 
 ```sh
 python3 -B -m unittest discover -s tests/cpu -p test_harness.py
-python3 -B tools/cpu/compare.py --manifest tests/cpu/corpus.json --reference "$PEAR_NATIVE_REFERENCE" --candidate "$PEAR_CPU_RUN" --output .build/task6/stage2-comparison
+python3 -B tools/cpu/compare.py --manifest tests/cpu/corpus.json --build "$PEAR_CPU_BUILD" --reference "$PEAR_NATIVE_REFERENCE" --candidate "$PEAR_CPU_RUN" --output .build/task6/stage2-comparison
 git diff --check
 ```
 
@@ -286,3 +286,31 @@ The original source manifest and failure remain intact; a separate hashed
 `tests/cpu/adaptations.json` binds the generated execution inputs. Native Windows
 must validate the changed PE before a new Pear comparison. No owner allocation,
 Wine/FEX implementation, runtime permission or expected-value relaxation occurs.
+
+
+### Stage 2 Required-path Correction
+
+The same ABI PE passed native Windows but reached FEX's `Unhandled long bind`
+on Pear. Logging-only diagnostics identified Pear's earlier 16-additional-reference
+label limit, rather than an architectural branch-distance failure. The current
+#5 design already stages JIT output in ordinary NX memory before owner publication.
+The #6 correction therefore reuses upstream `fextl::vector` for excess references
+only during that checked private staging path. Direct owner emission stays fixed,
+allocation-free and fail-closed; changing its buffer resets spill permission.
+No owner wire ABI, guest golden value, permission or Wine implementation changes.
+The source correction is independently ordered and hashed under existing
+`runtime/fex/patches/cpu/`; preparation/admission and focused controls remain in
+the approved `tools/cpu/` and `tests/cpu/` locations. No official document moves.
+
+Only ARM64EC FEX is rebuilt; the original #5 inputs and Windows PE reference stay
+unchanged. The changed engine invalidates earlier Pear corpus results, so the
+whole declared Stage 2 corpus must be checked once on this new candidate. Native
+Windows needs no repeat when its exact PE bytes, capture and oracle are unchanged.
+The added header control checks 256 actual branch fixups and the retained direct
+emission refusal. Correction admission checks exact patch pre/postimages, because
+`git apply` from an ignored nested directory was observed to skip every file while
+returning zero. That failed preparation and its stopped runtime remain failures.
+
+Stage 2 is complete locally: 18 native-matching Pear cases, one explicitly
+unsupported AVX case and zero required failures. The [Stage 2 report](../working/task_m1_6_stage2.md)
+and sanitized observations own the final identities, failures and retained limits.

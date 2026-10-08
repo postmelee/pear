@@ -1,0 +1,378 @@
+{
+  "controls": {
+    "correction_evidence": 4,
+    "direct_heap_allocations": 0,
+    "emitter": true,
+    "execution_evidence": 4,
+    "harness": 14,
+    "private_branches_bound": 256
+  },
+  "cpu_qualified": false,
+  "game_execution": false,
+  "identities": {
+    "adaptations_sha256": "17bf454588ee9544cad95d8b78fd8d65ac5bc96579eae88d1d191b03695167ed",
+    "comparison_sha256": "627a98d47b951dfdfcb708fb9d998bba45d92eab041362060326332eed4fff60",
+    "corpus_sha256": "c6ad9b39b475d1dbd7f0fbe377c50022a11d32d7b08e967e684b2250d1d593f9",
+    "cpu_build_sha256": "77a734c951322789ef364de84b830ed803798e93f8da65311a1bbe9bb13293f3",
+    "fex_build_sha256": "188de207b0f42f5a499baa134c938c87458d477fda4869b677fc6ed7ba5087a7",
+    "fex_dll_sha256": "143c3b18ea462eede35de256d66067148139001986881987d11de504c070eaf4",
+    "fex_patch_sha256": "840ccf015783786fe43020be97b4180cbe91fdd45007d52b075b4d0c69776d80",
+    "fex_series_sha256": "ffc1c415649fedf348bdab6b39e3b58ad56c57faace07246be165c23db85cc73",
+    "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d"
+  },
+  "limitations": [
+    "Finite x64 corpus only; AVX is not exposed and is not qualified.",
+    "Stage 3 ordering and multithread stress remain unperformed.",
+    "Late-loaded image coverage is incomplete; #10 retains full observation responsibility.",
+    "Development-profile execution only; no game or distribution qualification.",
+    "Ordinary ARM64/WoW64 rebuilt execution is not part of this ARM64EC correction."
+  ],
+  "native_host": {
+    "image": {
+      "GITHUB_RUN_ATTEMPT": "1",
+      "GITHUB_RUN_ID": "37729128660",
+      "GITHUB_SHA": "03ebc15bac561cc36e6403b178b6cf11d479c1cb",
+      "ImageOS": "win22",
+      "ImageVersion": "20261004.326.1",
+      "RUNNER_ARCH": "X64"
+    },
+    "native_machine": 34404,
+    "pointer_bits": 64,
+    "process_machine": 0,
+    "processor": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "system": "Windows-2022Server-10.0.20348-SP0"
+  },
+  "native_reference": {
+    "artifacts": [
+      {
+        "digest": "sha256:e4621a8454b4061c14b95295a4d233f9a8729e65f08f2da58f7bf5bacbf899de",
+        "expired": false,
+        "id": 11529361464,
+        "name": "task6-cpu-pe",
+        "size_in_bytes": 152891
+      },
+      {
+        "digest": "sha256:de08c7cd13b19cacd823710a9be4657364a9ae5dce21bcdf04c10c3e0427c29e",
+        "expired": false,
+        "id": 11529246880,
+        "name": "task6-native-results",
+        "size_in_bytes": 11943
+      }
+    ],
+    "build_sha256": "77a734c951322789ef364de84b830ed803798e93f8da65311a1bbe9bb13293f3",
+    "head_sha": "03ebc15bac561cc36e6403b178b6cf11d479c1cb",
+    "repository": "postmelee/pear",
+    "results_sha256": "f4034a541ef48e6e31d125c75ef10b831eb06c357be2ce89e49f7192bb8e5a03",
+    "run_id": 37729128660,
+    "scope": "native_reference_origin",
+    "url": "https://github.com/postmelee/pear/actions/runs/37729128660"
+  },
+  "pear_host": {
+    "machine": "arm64",
+    "python": "3.14.4",
+    "system": "macOS-26.5.2-arm64-arm-64bit-Mach-O"
+  },
+  "results": {
+    "cases": [
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "925aebd5c655e0ff8bd3cce85f3666c4e01247bca1e7812badc2d4ab1618d8b4",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "zero-extension",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "fd91d2f641b43640b47945bbfd76ac3d617040410069ac8dc711cfda799e948d",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "carry-widths",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "5c1625577e751da0f1051f5ac5dc7a4708420db126e96bea7d3afb20644c2136",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "xor-flags",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "0ee9bd6f26260cecb92ef28ef9066126b0480657ae61c609cebb0f064df1c304",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "zero-shift-flags",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "0eb6c504d5d5a8eda3054f228b469315af1c670b1460109bf2ddbdb0d69ad6ff",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "cmpxchg-eax",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "08a01f899494bb44f697ecc6d262bfffe6c7633b52a1ad11b02a2b90b859ae8e",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "xadd-widths",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16438,
+          "authorization_before_after": true,
+          "case_sha256": "7f46b98ac5096c379a30adc8a768ad6cd9bdb62fa3d42a1e7dfed1d1900f81df",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "packed-float-add",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "13fc7b90c6a86b3d170ca18a6ce3b2e1e39739e168be3b3635041ca01bb04699",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "scalar-double-add",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "a19487981fc8c78bd9d7148eb2db30c48272459105330d5a0b9c4062d1842e77",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "float-to-integer",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "d84dcb82bf8d20652ddb6a3b5632166b36c97f957fafed1375640a0e83952e8a",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "configured-memory",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16436,
+          "authorization_before_after": true,
+          "case_sha256": "836b48d8b0f4d3ae89e27356becb04ddda2b36d5d5022ea3cf285129167331c5",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "absolute-displacement",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "f973c420886afd7b39f2a151b7dbbf2e6fdfdbb87cde648ef68eb3f235801192",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "avx-lane-preservation",
+        "status": "unsupported_not_exposed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "ab1721d20b7452035c10a1ffc4953c2a903aea99659bd276fd3027ee464f3c90",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "api-callback",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16437,
+          "authorization_before_after": true,
+          "case_sha256": "c1e809b3787ec88d6acbff722f82c8803d51ca00e4be18d5874b2bec5cc6761c",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "tls-thread",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "bfd7749dc7e33263350d1e959be76cd1e39f60159c4c6367cdf09932f91051c2",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "guest-fault-guard",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "a3c7c1d8f2ce9ceebe62a894e4a50289d8cc18b6d5ce3f75284f3e9a97a867ce",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "code-invalidation",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "c72ab572b0dc26ac47a46f05550cfcfee146b81e7b2ea4ccdeab42ebecba8592",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "suspend-context",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16437,
+          "authorization_before_after": true,
+          "case_sha256": "beee73cf8f2a59c292bf80bc659a4e78cf780cf19124fc3d61ea545b3cf10512",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "abi-state",
+        "status": "passed"
+      },
+      {
+        "evidence": {
+          "arm64_image_events": 16439,
+          "authorization_before_after": true,
+          "case_sha256": "8b74d0e439bbe5314eab11b8fd043c2ec89469ab8a2b706647d4e8e338464ffc",
+          "cleanup_complete": true,
+          "late_load_coverage_complete": false,
+          "runtime_sha256": "fe921ee5bf1809870638ebc1ee98b4c3f805b1668b2280669c2968c62a40994d",
+          "sentinel_survived": true,
+          "translation_observations": 41
+        },
+        "id": "seh-unwind",
+        "status": "passed"
+      }
+    ],
+    "native_passed": 19,
+    "pear_failed": 0,
+    "pear_passed": 18,
+    "pear_unsupported": 1
+  },
+  "retention": {
+    "ci_artifact_days": 14,
+    "current": [
+      "stage2-fex2",
+      "stage2-runtime4",
+      "candidate4.json",
+      "stage2-comparison",
+      "cpu-r4-*",
+      "emitter-control2"
+    ],
+    "failures": [
+      "cpu-r2-abi-state",
+      "cpu-abi-diagnostic2",
+      "cpu-abi-diagnostic3",
+      "stage2-fex1",
+      "cpu-r3-abi-state"
+    ],
+    "native_copy": [
+      "native-build3",
+      "native-results3",
+      "native-origin3.json"
+    ],
+    "prefixes": "Completed task-owned synthetic prefixes removed after verified cleanup; source, binaries and unique logs retained.",
+    "root": ".build/task6/"
+  },
+  "schema_version": 1,
+  "scope": "task6_stage2_finite_comparison",
+  "stage2_complete": true
+}
