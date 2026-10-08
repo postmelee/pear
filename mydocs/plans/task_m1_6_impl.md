@@ -3,7 +3,7 @@
 Task plan: [task_m1_6.md](task_m1_6.md), approved October 8, 2026.
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan prepared; Stage 1 not started.
+Status: implementation plan approved; Stage 1 completed locally; Stage 2 awaits continuation.
 
 ## Stage Overview
 
@@ -252,3 +252,11 @@ and [manual workflow requirements](https://docs.github.com/en/actions/how-tos/ma
 These establish offered x64 labels and dispatch constraints, not a completed or
 available reference run for this repository. Private-repository jobs use the
 account's Actions allowance; no larger runner or new paid service is selected.
+
+## October 8 Approval and Stage 1 Checkpoint
+
+The requester explicitly continued the detailed-plan/Stage 1 approval request.
+Stage 1 is complete: 12 source-bound ASM selections, 10 boundary contracts and
+14 passing validator checks. Full source census and actual limitations are in
+[the Stage 1 report](../working/task_m1_6_stage1.md). Python 3.14.4 was actually used.
+No guest/reference execution, remote workflow or runtime changes occurred.
