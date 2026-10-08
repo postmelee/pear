@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear adds one fixed four-byte diagnostic checkpoint to the private finite source callback without altering primary errors or owner protocol. Source selections are closed pending measured metadata and final image review.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 97634,
+      "postimage_sha256": "d597c1be986be23465312eacb4a07be2becc2ac6ed8a02b7585aebb42da6cd8c",
+      "preimage_sha256": "5e0c586ebca1fd80bc7a6ebb6aa7d6567c5032e7672f431ca9d634ec9790a9ec"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "73e6d1dfc2338924eb07b6940931bac151bba1dcbccf8a1d73062394d3790db4",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-patch-checkpoints",
+  "native_runtime_execution": false,
+  "order": 59,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

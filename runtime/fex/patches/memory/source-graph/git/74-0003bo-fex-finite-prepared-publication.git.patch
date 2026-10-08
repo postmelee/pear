@@ -1,0 +1,168 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -872,6 +872,75 @@
+ }
+ #endif
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++FEXCore::Utils::PearFEXMemory::Result Arm64JITCore::ExecutePearFinitePublication(
++    FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  auto Life=M::AcquireCurrentSourceLifetime();
++  auto* Thread=Life ? Life.ActualThread() : nullptr;
++  auto* C=Life ? const_cast<FEXCore::Context::ContextImpl*>(
++    static_cast<const FEXCore::Context::ContextImpl*>(Life.ActualContext())) : nullptr;
++  if (!Thread || !C || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !Thread->CPUBackend ||
++      !C->Dispatcher || !M::HasManagedActive(C->Dispatcher->GetPearSnapshot())) return {PEAR_FEX_UNAVAILABLE,0,0};
++  auto* JIT=static_cast<Arm64JITCore*>(Thread->CPUBackend.get());
++  if (JIT->ThreadState!=Thread || JIT->PearPendingTemp || JIT->PearWriter || JIT->PearLabelFailure ||
++      !JIT->CurrentCodeBuffer || Thread->LookupCache->Shared!=JIT->CurrentCodeBuffer->LookupCache.get())
++    return {PEAR_FEX_UNAVAILABLE,0,0};
++  for (uint32_t I=0;I<2;++I) {
++    PearFiniteCheckpoint=384+I;
++    FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
++    auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);if (!Outcome) return Outcome;
++    const auto Private=JIT->TempCodeBufferAllocator.ReownOrClaimBufferWithSize(8192);
++    if (!Private.Ptr || Private.Size!=8192) return {PEAR_FEX_UNAVAILABLE,0,0};
++    // Original ARM64 LDR-literal/RET plus one inline constant. No guest input,
++    // guest decoding, IR emission, JIT header or lookup publication is supplied.
++    const uint32_t Instructions[]={0x58000040,0xd65f03c0};
++    const uint64_t Literal=0x12345678abcdef01ULL+I;
++    std::memcpy(Private.Ptr,Instructions,sizeof(Instructions));
++    std::memcpy(Private.Ptr+8,&Literal,sizeof(Literal));
++    CompiledCode Code {};Code.BlockBegin=Private.Ptr;Code.Size=16;
++    Code.EntryPoints.emplace(0x3000,Private.Ptr);Code.PearPendingEmission=true;
++    JIT->PearPendingTemp=Private.Ptr;JIT->PearPendingSize=16;
++    const auto Before=JIT->CurrentCodeBuffer->GetPearSnapshot();
++    if (!JIT->BeginPreparedPublication(Code)) return {PEAR_FEX_UNAVAILABLE,0,0};
++    if (!I) {
++      // A legitimate generation-invalidated publication must abort cleanly.
++      // The updated owner token must be visible before any following writer.
++      if (JIT->FinishPreparedPublication(Code,false)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++      const auto After=JIT->CurrentCodeBuffer->GetPearSnapshot();
++      if (JIT->PearWriter || JIT->PearPendingTemp || JIT->PearPreparedBuffer ||
++          Code.PearOwnerPublished || !M::Retirement::AdmissionOpen() ||
++          After.Token.allocation_id!=Before.Token.allocation_id || After.Token.generation!=Before.Token.generation ||
++          After.Token.expected_state!=PEAR_FEX_PUBLISHED_RX || After.Base!=Before.Base ||
++          After.Token.write_epoch<=Before.Token.write_epoch) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    } else {
++      bool Published {};
++      {
++        auto Lock=GuardSignalDeferringSection<std::shared_lock>(C->CodeInvalidationMutex,Thread);
++        Published=JIT->FinishPreparedPublication(Code,Life.Validate() && JIT->ThreadState==Thread &&
++          Thread->LookupCache->Shared==JIT->CurrentCodeBuffer->LookupCache.get());
++      }
++      if (!Published || !Code.PearOwnerPublished || Code.PearPendingEmission || Code.EntryPoints.size()!=1 ||
++          Code.EntryPoints.begin()->second!=Code.BlockBegin || JIT->PearPendingTemp || JIT->PearWriter)
++        return {PEAR_FEX_STALE_IDENTITY,0,0};
++    }
++    Outcome=C->FinishPearDispatcherGate(Gate);if (!Outcome) return Outcome;
++    if (I) {
++      auto Window=JIT->FindPearManagedWindow(reinterpret_cast<uintptr_t>(Code.BlockBegin));
++      auto Target=JIT->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Code.BlockBegin));
++      if (!Window || !Target || Window->Offset!=Code.HostCodeOffset) return {PEAR_FEX_UNAVAILABLE,0,0};
++      std::array<uint8_t,16> Observed {};
++      const auto Read=M::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Target,Thread,Window->Offset,Observed);
++      if (!Read) return Read.Outcome;
++      if (std::memcmp(Observed.data(),Instructions,8) || std::memcmp(Observed.data()+8,&Literal,8))
++        return {PEAR_FEX_STALE_IDENTITY,0,0};
++      if (reinterpret_cast<uint64_t (*)()>(Code.BlockBegin)()!=Literal) return {PEAR_FEX_STALE_IDENTITY,0,0};
++    }
++  }
++  return {PEAR_FEX_OK,0,0};
++}
++#endif
++
+ void Arm64JITCore::Op_NoOp(const IR::IROp_Header* IROp, IR::Ref Node) {}
+ 
+ Arm64JITCore::Arm64JITCore(FEXCore::Context::ContextImpl* ctx, FEXCore::Core::InternalThreadState* Thread
+@@ -1519,9 +1588,9 @@
+   }
+   PearBefore = PearPreparedBuffer->GetPearSnapshot(); PearTransaction = PearBefore;
+   PearPreparedDestination = Allocated.BufferAllocationOffset;
+-  PearWriter = fextl::make_unique<FEXCore::Utils::PearFEXMemory::WriteGuard>(PearTransaction, Destination-Base, Code.Size);
+-  if (!*PearWriter) {
+-    const auto Error = PearWriter->Status();
++  PearWriter = FEXCore::Allocator::TryMakePearMetadataObject<FEXCore::Utils::PearFEXMemory::WriteGuard>(PearTransaction, Destination-Base, Code.Size);
++  if (!PearWriter || !*PearWriter) {
++    const auto Error = PearWriter ? PearWriter->Status() : FEXCore::Utils::PearFEXMemory::Result{PEAR_FEX_UNAVAILABLE,0,0};
+     LogMan::Msg::EFmt("Pear source write refused: status {}, domain {}, code {}", Error.Status, Error.ErrorDomain, Error.ErrorCode);
+     DiscardPreparedPublication(); return false;
+   }
+@@ -1575,8 +1644,14 @@
+ void Arm64JITCore::DiscardPreparedPublication() {
+   if (PearWriter && *PearWriter) {
+     const auto Aborted = PearWriter->Abort();
+-    if (!Aborted) LogMan::Msg::EFmt("Pear source abort refused: status {}, domain {}, code {}",
+-                                  Aborted.Status, Aborted.ErrorDomain, Aborted.ErrorCode);
++    const bool Updated=PearPreparedBuffer && PearPreparedBuffer->ComparePearUpdate(PearBefore,PearTransaction);
++    if (!Aborted) {
++      FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Aborted);
++      LogMan::Msg::EFmt("Pear source abort refused: status {}, domain {}, code {}",
++                       Aborted.Status, Aborted.ErrorDomain, Aborted.ErrorCode);
++    } else if (!Updated) {
++      FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++    }
+   }
+   PearWriter.reset(); PearPreparedBuffer.reset(); PearPreparedDestination = nullptr;
+   if (PearPendingTemp) TempCodeBufferAllocator.DelayedDisownBuffer();
+diff --git a/FEXCore/Source/Interface/Core/JIT/JITClass.h b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+--- a/FEXCore/Source/Interface/Core/JIT/JITClass.h
++++ b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+@@ -63,6 +63,7 @@
+ 
+   void ClearCache() override;
+ #ifdef PEAR_FEX_MEMORY_OWNER
++  static FEXCore::Utils::PearFEXMemory::Result ExecutePearFinitePublication(FEXCore::Core::CpuStateFrame*, uintptr_t ResumePC);
+   static FEXCore::Utils::PearFEXMemory::Result ExecutePearFiniteLinks(FEXCore::Core::CpuStateFrame*,uintptr_t);
+ #endif
+ #ifdef PEAR_FEX_MEMORY_OWNER
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1686,6 +1686,8 @@
+   if (!*Output) return;
+   *Output=ExecutePearFiniteBufferLifetimes(Frame,ResumePC);
+   if (!*Output) return;
++  *Output=FEXCore::CPU::Arm64JITCore::ExecutePearFinitePublication(Frame,ResumePC);
++  if (!*Output) return;
+   const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
+   if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
+   if (*Output) PearFiniteCheckpoint=17;
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

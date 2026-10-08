@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear reuses the selected Windows runtime thread ID instead of adding unsupported static TLS. The checked prelude verifies absent static TLS against actual sections and callback bytes; a present TLS directory retains the original full validation. No proof gate or memory ceiling changes.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+      "postimage_bytes": 3171,
+      "postimage_sha256": "4094c7633ea0da4ee032fe223eeea35e8f1fbd68029632833ad9f41ac26091c9",
+      "preimage_sha256": "0238d7dd2d5651cdcf5a46331be45c99bdb3dfeec4961e402d5b59411385fbf4"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "postimage_bytes": 24570,
+      "postimage_sha256": "b9f6e5a180511dbc66e1b1d55abb95c75239f29eda435671a2732878daf9f850",
+      "preimage_sha256": "482b2cdad7991e6a50f1be1d4d71311f79713c2389bd0295b32a2f02b15759f4"
+    }
+  ],
+  "historical_strict_patch_sha256": "3850946149efef99471718657cc92d8897a2c420826ac6fe972f3b7d430e423c",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "dynamic-thread-identity",
+  "native_runtime_execution": false,
+  "order": 44,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

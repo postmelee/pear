@@ -1,0 +1,55 @@
+{
+  "attribution": "Original Pear isolates finite object storage in an owner-selected FEXCore_Base unit and source object deletion boundary. The original JemallocLibs allocator source and target are restored byte-for-byte; no upstream allocator compile-policy exception is changed.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+      "postimage_bytes": 2863,
+      "postimage_sha256": "0238d7dd2d5651cdcf5a46331be45c99bdb3dfeec4961e402d5b59411385fbf4",
+      "preimage_sha256": null
+    },
+    {
+      "path": "FEXCore/Source/Utils/AllocatorHooks.cpp",
+      "postimage_bytes": 6402,
+      "postimage_sha256": "f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f",
+      "preimage_sha256": "56bedf9486c2f371796a6076f63761285772b1d27512ac187acf368607e2d7a9"
+    },
+    {
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "postimage_bytes": 11494,
+      "postimage_sha256": "dfcd2cb0d1406122ae875ac1d0e48bcee35658ae4ca8b2e14a28ca2ed824ce8c",
+      "preimage_sha256": "1e362e8a7ee9e89d5d62308979d30ab73d2e658b1d00f612cca59373c0da415f"
+    },
+    {
+      "path": "FEXCore/include/FEXCore/fextl/memory.h",
+      "postimage_bytes": 1370,
+      "postimage_sha256": "c8fade6eb37b9526e0a6e516cb2f5e39c9ad1d18bb88f398a6d605506c6d2553",
+      "preimage_sha256": "e7f297f0930c2aa771e191d68ce2729dd85afaccf0764e545608289192125a15"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.cpp",
+      "postimage_bytes": 8113,
+      "postimage_sha256": "a64c770f4d41e38bfe912b0afda878996d35d7bd260e03e4db8ab6b0432cf187",
+      "preimage_sha256": "93b33025721b5e646be49a5bbd601a8f3b1a219084f8d6ddee120e8266037319"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+      "postimage_bytes": 10518,
+      "postimage_sha256": "8fec80eef79c9662ef76dd72054ed3d97b11c3c2c9baf2566547b5aafd680657",
+      "preimage_sha256": "ec85db75f30f93c1b209686ab5929f20d3ae9e7949d163a8065cd43369bed603"
+    }
+  ],
+  "historical_strict_patch_sha256": "8b008b713b0dc48d74846ed47840dbd0108961c3687c415f4ac4ceb55d58653e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "isolated-finite-object-storage",
+  "native_runtime_execution": false,
+  "order": 40,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

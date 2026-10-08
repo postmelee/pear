@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "scope": "task5_stage6_finite_component_reconstruction",
+  "date": "2026-10-08",
+  "passed": true,
+  "host": {
+    "architecture": "ARM64",
+    "macos": "26.5.2",
+    "build": "25F84"
+  },
+  "source_pins": {
+    "wine": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "fex": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa"
+  },
+  "wine": {
+    "build_sha256": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+    "source_manifest_sha256": "fc7c9c9ebb7a4201a67c7be9f5131c7aa6316347b734708b758269d1f18b95a7",
+    "commands": 21,
+    "fresh_objects": true,
+    "collection_only_finalization": true,
+    "original_collection_failure_preserved": true
+  },
+  "fex": {
+    "build_sha256": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+    "source_manifest_sha256": "335041ec2255891287b4a8a139de760efac651dfd471f62e8dea40d1931a4539",
+    "commands": 10,
+    "artifacts": 32,
+    "fresh_objects": true,
+    "deployment_sha256": "10069347abcbace30b3874d91da0ee1b0460613b1794d60c6e56fac2b8a19237"
+  },
+  "cases": [
+    {
+      "case": "api",
+      "result": {
+        "scope": "finite_x64_execution",
+        "passed": true,
+        "case_sha256": "12c367c62704b97aeb250a6e89c6651d777cbdd0a1a541c6f94886981a9b205f",
+        "runtime_sha256": "daf965486f2c0b89c019c36638886efbfcaf590b25cd197839dc2fef60060506",
+        "source_receipts": {
+          "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+          "fex": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "linked": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "fixture": "4d183f1764d53b8752e53c13cda77e00fcda005bf6880fb4e32fe335ca8d3739"
+        },
+        "instrumented": false,
+        "translation_observations": 41,
+        "arm64_image_events": 16437,
+        "image_event_kinds": [
+          "image",
+          "images_end"
+        ],
+        "host_architecture": "ARM64",
+        "authorization_before_after": true,
+        "cleanup_complete": true,
+        "sentinel_survived": true,
+        "exit_code": 42,
+        "elapsed_ms": 10095,
+        "late_load_coverage_complete": false,
+        "game_execution": false,
+        "distribution_qualified": false
+      }
+    },
+    {
+      "case": "thread",
+      "result": {
+        "scope": "finite_x64_execution",
+        "passed": true,
+        "case_sha256": "2d1b91a3ca2a298fbcd8fa33f27e898fd0993fe011a359008ab5d23109353668",
+        "runtime_sha256": "fd1b72437f3cf82a4027fe653aaef77412221c76e97a518066b01dde4d9ad22e",
+        "source_receipts": {
+          "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+          "fex": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "linked": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "fixture": "9790e23061359f8f959ff7ad6d11f2ecbe971ace366a85c62cda56596f0c06c8"
+        },
+        "instrumented": false,
+        "translation_observations": 41,
+        "arm64_image_events": 16437,
+        "image_event_kinds": [
+          "image",
+          "images_end"
+        ],
+        "host_architecture": "ARM64",
+        "authorization_before_after": true,
+        "cleanup_complete": true,
+        "sentinel_survived": true,
+        "exit_code": 42,
+        "elapsed_ms": 7968,
+        "late_load_coverage_complete": false,
+        "game_execution": false,
+        "distribution_qualified": false
+      }
+    },
+    {
+      "case": "invalidation",
+      "result": {
+        "scope": "finite_x64_execution",
+        "passed": true,
+        "case_sha256": "625cdbc878edab33cde1b4d8cd7468e78901daaafd92457e6b0640b3e26ad9be",
+        "runtime_sha256": "72f4de408c9b3fbaa0025e07a20235d8d24eb93884f8686bbd4b02006577d531",
+        "source_receipts": {
+          "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+          "fex": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "linked": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "fixture": "605cf7484431e993deedf37cdffd3e46c4f8e74dd8f136f56346bbdcd640dc50"
+        },
+        "instrumented": false,
+        "translation_observations": 41,
+        "arm64_image_events": 16439,
+        "image_event_kinds": [
+          "image",
+          "images_end"
+        ],
+        "host_architecture": "ARM64",
+        "authorization_before_after": true,
+        "cleanup_complete": true,
+        "sentinel_survived": true,
+        "exit_code": 42,
+        "elapsed_ms": 7297,
+        "late_load_coverage_complete": false,
+        "game_execution": false,
+        "distribution_qualified": false
+      }
+    },
+    {
+      "case": "exception",
+      "result": {
+        "scope": "finite_x64_execution",
+        "passed": true,
+        "case_sha256": "65f67822720ea7f7dac25e852618a56aa3b30c5714e30326cd2dcaa59b9a3bcf",
+        "runtime_sha256": "64473fd8020b8cb4e58492303c0942a03d913b6fb47003ec31d3f4339af2a924",
+        "source_receipts": {
+          "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+          "fex": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "linked": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "fixture": "3a75e1f299469640c6e7f4aa8f01e0ecc6a142de7b71064b820ace71959c8094"
+        },
+        "instrumented": false,
+        "translation_observations": 41,
+        "arm64_image_events": 16439,
+        "image_event_kinds": [
+          "image",
+          "images_end"
+        ],
+        "host_architecture": "ARM64",
+        "authorization_before_after": true,
+        "cleanup_complete": true,
+        "sentinel_survived": true,
+        "exit_code": 42,
+        "elapsed_ms": 7465,
+        "late_load_coverage_complete": false,
+        "game_execution": false,
+        "distribution_qualified": false
+      }
+    },
+    {
+      "case": "context",
+      "result": {
+        "scope": "finite_x64_execution",
+        "passed": true,
+        "case_sha256": "ba875fbb6f3a637c0255383fb750d27c0a2bdc74d0ecc4361002edbe3a744a58",
+        "runtime_sha256": "a5a78c1bf5db6f4850b35fdbb530e9fb0e34711f3fa6eed186b159c66b0331de",
+        "source_receipts": {
+          "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+          "fex": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "linked": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "fixture": "ade18f61d509e84c09addec702ecce212be1c4dbb447ae9104a8c01ad297b08b"
+        },
+        "instrumented": false,
+        "translation_observations": 41,
+        "arm64_image_events": 16439,
+        "image_event_kinds": [
+          "image",
+          "images_end"
+        ],
+        "host_architecture": "ARM64",
+        "authorization_before_after": true,
+        "cleanup_complete": true,
+        "sentinel_survived": true,
+        "exit_code": 42,
+        "elapsed_ms": 9826,
+        "late_load_coverage_complete": false,
+        "game_execution": false,
+        "distribution_qualified": false
+      }
+    },
+    {
+      "case": "native-owner",
+      "result": {
+        "scope": "finite_native_caller_refusal",
+        "passed": true,
+        "case_sha256": "5a6ed078b345f7a160549b7aeaf344d0638fe7d6496f86792391144043d6b86c",
+        "runtime_sha256": "e6164b186afb96821593a8553fe34015fef1ff1c2b61e73489e2102fe2ffb52d",
+        "source_receipts": {
+          "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1",
+          "fex": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "linked": "a91d836a6a9c915be98ff4a3a7ad759f0a928d9018a98fee726b2191891048cd",
+          "fixture": "25eedb16857d1fd80a36e58127435fed8595eb2a96ec4d0bd33cac578907f007"
+        },
+        "instrumented": false,
+        "translation_observations": 41,
+        "arm64_image_events": 16787,
+        "image_event_kinds": [
+          "image",
+          "images_end"
+        ],
+        "host_architecture": "ARM64",
+        "authorization_before_after": true,
+        "cleanup_complete": true,
+        "sentinel_survived": true,
+        "exit_code": 68,
+        "elapsed_ms": 7759,
+        "late_load_coverage_complete": false,
+        "game_execution": false,
+        "distribution_qualified": false,
+        "native_caller_without_translator_identity": "unavailable",
+        "fex_initialization": false,
+        "translated_guest_execution": false
+      }
+    }
+  ],
+  "native_services": {
+    "receipt_sha256": "1733b07af6c9692015f87736c6bd01011485c4b0f6ac9d2b9e1fabb1add66eb6",
+    "roles": [
+      "arm64ec",
+      "wow64"
+    ],
+    "services_per_role": 8,
+    "policy_controls_per_role": 26,
+    "mapping_controls_per_role": 7,
+    "owned_workers_per_role": 2,
+    "cleanup_passed": true,
+    "original_fixed_count_failure_preserved": true
+  },
+  "portable_checks": {
+    "build_admission": 4,
+    "native_service_reader": 7,
+    "passed": true
+  },
+  "retention": {
+    "receipt_sha256": "eeb3b50f9855c3c0cf5542ac4dd50ed6efc9e8a83d17a8a46f1dd1d7b7313762",
+    "completed_synthetic_prefixes_removed": 6,
+    "logical_bytes": 4992257066,
+    "physical_recovery_measured": false
+  },
+  "qualification": {
+    "clean_prefix_fixture_start": true,
+    "independent_mac": false,
+    "complete_module_timeline": false,
+    "i386_execution": false,
+    "graphics_pairing": false,
+    "steam": false,
+    "megabonk": false,
+    "ordinary_user_distribution": false
+  },
+  "limitations": [
+    "one Context and at most three participating translated test threads",
+    "forced foreign termination and broad SMC/unaligned/JIT-guard coverage unqualified",
+    "same Mac and verified compiler caches; source preparation and private development authorization required"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "attribution": "Original Pear adds a closed finite ordinary ARM64 tail-transfer candidate using actual Context/Thread/Dispatcher and atomic source resume. BR preserves the native return path on refusal; the exact original resume leaf runs only after admission. All initializer and transfer selections are closed pending new image and metadata review. No guest, delivered fault, ABI, capacity or permission change.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+      "postimage_bytes": 8087,
+      "postimage_sha256": "4703030c454aa3b20d461ce9b41dda7778491c187661d77b7bc28958c06529f4",
+      "preimage_sha256": "b5652700134eb59cc16eb9a5e967eb66444ae947d6d7cd1c8f51ac309b15f5a5"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "postimage_bytes": 24603,
+      "postimage_sha256": "dd0d6dfb9fcfc82048616bbc00c16bcd711482511395dd2da5a90680adebdb3b",
+      "preimage_sha256": "e148791d743b743511f9cf67f89b871730317a3179ddb5fcb33e48bfd3f078e0"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 107429,
+      "postimage_sha256": "addf94e06b68b1a60d129e191c448396e3c84168e50e05c6722ffb4bef04b179",
+      "preimage_sha256": "29fe869b30e5547861851d346a57b0a978ba8a52d50ece5fae2ebf1b49b13150"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 93328,
+      "postimage_sha256": "f0bbf4547d49ff8f5fe0a1b1a575faf75a6f3954c9d3acb08d28858da143b336",
+      "preimage_sha256": "87017f86e7e06b874c815b2fc8d6ac40fb2a9b9d5f6e2cabcb0e8fcd577aaf9d"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "4c7f6c7e6e569f4744c4aafd41aae44c1296076f8441c8a1ac574995c036bb31"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 10101,
+      "postimage_sha256": "22a89afa7c581996b61477d5b8ff8e8f1c9ec9d80b6748b5eeb70079c04b528d",
+      "preimage_sha256": "0211812fd3cc5987cb28e07037ceb0fd4b67dcf26807667506e402076e8042f7"
+    }
+  ],
+  "historical_strict_patch_sha256": "e1d628feb386e5cc3458a15bfaad6e884c5479ae4f9a559bf2d3e97513cf60ce",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-native-tail-transfer",
+  "native_runtime_execution": false,
+  "order": 51,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

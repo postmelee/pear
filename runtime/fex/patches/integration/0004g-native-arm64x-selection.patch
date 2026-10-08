@@ -1,0 +1,75 @@
+diff --git a/dlls/ntdll/unix/pear_pe_arena.c b/dlls/ntdll/unix/pear_pe_arena.c
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -557,7 +557,7 @@
+ }
+ 
+ static BOOL chpe_native_range(const struct pear_pe_plan *plan,
+-                              const IMAGE_ARM64EC_METADATA *metadata, ULONG rva, SIZE_T size)
++                              const IMAGE_ARM64EC_METADATA *metadata, ULONG rva, SIZE_T size, ULONG code_kind)
+ {
+     ULONG i;
+     for (i = 0; i < metadata->CodeMapCount; ++i)
+@@ -566,7 +566,7 @@
+         ULONG start;
+         memcpy(&range, plan->staging + metadata->CodeMap + i * sizeof(range), sizeof(range));
+         start = range.StartOffset & ~3u;
+-        if ((range.StartOffset & 3) == 1 && rva >= start &&
++        if ((range.StartOffset & 3) == code_kind && rva >= start &&
+             (SIZE_T)rva - start <= range.Length && size <= range.Length - ((SIZE_T)rva - start)) return TRUE;
+     }
+     return FALSE;
+@@ -596,8 +596,7 @@
+     }
+     /* ARM64X needs the original Wine dynamic-relocation selection before role
+      * validation. Never grant native execution simply because metadata exists. */
+-    if (nt->FileHeader.Machine == IMAGE_FILE_MACHINE_ARM64) return STATUS_NOT_SUPPORTED;
+-    if (target != IMAGE_FILE_MACHINE_AMD64 || pointer < plan->original_base ||
++    if (target != nt->FileHeader.Machine || pointer < plan->original_base ||
+         pointer - plan->original_base > plan->size) return STATUS_INVALID_IMAGE_FORMAT;
+     metadata_rva = pointer - plan->original_base;
+     if (!used_range(plan, metadata_rva, minimum, FALSE)) return STATUS_INVALID_IMAGE_FORMAT;
+@@ -627,14 +626,14 @@
+         IMAGE_ARM64EC_REDIRECTION_ENTRY entry;
+         memcpy(&entry, plan->staging + metadata.RedirectionMetadata + i * sizeof(entry), sizeof(entry));
+         if ((i && entry.Source <= previous_end) || !executable_range(plan, entry.Source, 1) ||
+-            (entry.Destination & 3) || !chpe_native_range(plan, &metadata, entry.Destination, 4))
++            (entry.Destination & 3) || !chpe_native_range(plan, &metadata, entry.Destination, 4, 1))
+             return STATUS_INVALID_IMAGE_FORMAT;
+-        if (entry.Source == native_entry) image->native_entry_rva = entry.Destination;
++        if (target == IMAGE_FILE_MACHINE_AMD64 && entry.Source == native_entry) image->native_entry_rva = entry.Destination;
+         previous_end = entry.Source;
+     }
+     if (native_entry && !image->native_entry_rva)
+     {
+-        if (!chpe_native_range(plan, &metadata, native_entry, 4)) return STATUS_INVALID_IMAGE_FORMAT;
++        if (!chpe_native_range(plan, &metadata, native_entry, 4, target == IMAGE_FILE_MACHINE_ARM64 ? 0 : 1)) return STATUS_INVALID_IMAGE_FORMAT;
+         image->native_entry_rva = native_entry;
+     }
+     previous_end = 0;
+@@ -659,7 +658,7 @@
+             if (slots[i] && ((slots[i] & 7) || !used_range(plan, slots[i], sizeof(ULONGLONG), TRUE)))
+                 return STATUS_INVALID_IMAGE_FORMAT;
+     }
+-    image->role = PEAR_PE_ROLE_ARM64EC;
++    image->role = target == IMAGE_FILE_MACHINE_ARM64 ? PEAR_PE_ROLE_NATIVE : PEAR_PE_ROLE_ARM64EC;
+     image->chpe_rva = metadata_rva;
+     return STATUS_SUCCESS;
+ }
+@@ -787,7 +786,15 @@
+          * Re-read changed data directories; geometry/section headers were not writable. */
+         for (i = 0; i < nt->OptionalHeader.NumberOfRvaAndSizes; ++i)
+         {
+-            if (i == IMAGE_DIRECTORY_ENTRY_SECURITY) continue;
++            if (i == IMAGE_DIRECTORY_ENTRY_SECURITY)
++            {
++                const IMAGE_DATA_DIRECTORY *security = &nt->OptionalHeader.DataDirectory[i];
++                if ((security->Size || security->VirtualAddress) &&
++                    (!security->Size || !security->VirtualAddress ||
++                     !extent(security->VirtualAddress, security->Size, stat.st_size)))
++                { status = STATUS_INVALID_IMAGE_FORMAT; goto done; }
++                continue;
++            }
+             if (!directory(nt, i, plan->size, &dir) || (dir && !used_range(plan, dir->VirtualAddress, dir->Size, FALSE)))
+             { status = STATUS_INVALID_IMAGE_FORMAT; goto done; }
+         }

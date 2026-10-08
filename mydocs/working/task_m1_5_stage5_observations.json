@@ -1,0 +1,143 @@
+{
+  "scope": "finite_stage5_translated_lifecycle",
+  "passed": true,
+  "date": "2026-10-07",
+  "host": {
+    "architecture": "arm64",
+    "macos": "26.5.2",
+    "build": "25F84"
+  },
+  "source_pins": {
+    "fex": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+    "wine": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf"
+  },
+  "build_receipt_sha256": "bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff",
+  "incremental_build": true,
+  "build_commands": 12,
+  "series_sha256": "84ef083d120c69ce36bb3ef5d495da08a7d733a52c05009568915c6cbaf90f9c",
+  "independent_patch_replay": {
+    "passed": true,
+    "patches": 24,
+    "source_files": 15,
+    "receipt_sha256": "5fe11d02519944d6a7b312484dced8b4f0cb052fdf5f005a70ac69d8a8058134"
+  },
+  "aggregate_receipt_sha256": "c413b7b08e4fd504f2ac6136a3776cdf44684f8bcf84cbc2791f3cff218ca494",
+  "mutable_PE_pages_bytes": 102400,
+  "mutable_PE_allowance_bytes": 131072,
+  "cases": [
+    {
+      "fixture": "thread1",
+      "case_sha256": "f0e7cc5b084afd6e462f77bf7a9df06ecdc0b097d1248ad64abfe96b446088f2",
+      "runtime_sha256": "a20f437cf1597ad2b0140cfb1f3c02bd2e71cb9ea7e00be467cdbd3c69923620",
+      "source_receipts": {
+        "paired": "5e4ab7c106939179b50a128f00da1f9cdc2cf981d6ec9a1cef88f6b43aad2c25",
+        "fex": "9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304",
+        "linked": "bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff",
+        "fixture": "4ce68208acb2b3c9fe92e32b7cee886f283322b6a18a64fd7aa17af597ad0aed"
+      },
+      "exit_code": 42,
+      "elapsed_ms": 6302,
+      "translation_observations": 21,
+      "arm64_image_events": 4566,
+      "authorization_before_after": true,
+      "cleanup_complete": true,
+      "sentinel_survived": true,
+      "late_load_coverage_complete": false,
+      "game_execution": false,
+      "distribution_qualified": false
+    },
+    {
+      "fixture": "invalidation2",
+      "case_sha256": "50ff99d2c099ffb4b70a2598de3123d7a40b0d196eff0905bcb273ed796602fb",
+      "runtime_sha256": "29789c002913f3f8637ddb32495aede9cdb1b8489d6825cc6c3ce640dc50843c",
+      "source_receipts": {
+        "paired": "5e4ab7c106939179b50a128f00da1f9cdc2cf981d6ec9a1cef88f6b43aad2c25",
+        "fex": "9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304",
+        "linked": "bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff",
+        "fixture": "479c8ef277e6164a912399ba45d33009a6323df16f92e4d3739e874c4e36c9db"
+      },
+      "exit_code": 42,
+      "elapsed_ms": 6072,
+      "translation_observations": 21,
+      "arm64_image_events": 4566,
+      "authorization_before_after": true,
+      "cleanup_complete": true,
+      "sentinel_survived": true,
+      "late_load_coverage_complete": false,
+      "game_execution": false,
+      "distribution_qualified": false
+    },
+    {
+      "fixture": "exception2",
+      "case_sha256": "8f1a0844b7c3f28bff80d0051db66bba665020f0dcb0f72d8f58ebf001242a0a",
+      "runtime_sha256": "a1e2d4133fd11bc6ad236fed7c6d6c21eeabab9f5ae596e8a22803a3a29d44af",
+      "source_receipts": {
+        "paired": "5e4ab7c106939179b50a128f00da1f9cdc2cf981d6ec9a1cef88f6b43aad2c25",
+        "fex": "9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304",
+        "linked": "bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff",
+        "fixture": "41575731d09efa7a5851f086cf898a2f6e9e44eddb54daa94643c0ef5e3d4c05"
+      },
+      "exit_code": 42,
+      "elapsed_ms": 6017,
+      "translation_observations": 21,
+      "arm64_image_events": 4566,
+      "authorization_before_after": true,
+      "cleanup_complete": true,
+      "sentinel_survived": true,
+      "late_load_coverage_complete": false,
+      "game_execution": false,
+      "distribution_qualified": false
+    },
+    {
+      "fixture": "context2",
+      "case_sha256": "a0111cfc3b38f944d3799decb655b66b0b675c4456f2d155185f184b85c2435a",
+      "runtime_sha256": "59511410232cd9b3969ad0bb386bbe9a750f6f027dd4b15093d91a0a95de5b7f",
+      "source_receipts": {
+        "paired": "5e4ab7c106939179b50a128f00da1f9cdc2cf981d6ec9a1cef88f6b43aad2c25",
+        "fex": "9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304",
+        "linked": "bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff",
+        "fixture": "ae9762db98a61acbfeb103502f1eaca7598ab5f86b2ed5cf50ea1ff637edf145"
+      },
+      "exit_code": 42,
+      "elapsed_ms": 6743,
+      "translation_observations": 21,
+      "arm64_image_events": 4566,
+      "authorization_before_after": true,
+      "cleanup_complete": true,
+      "sentinel_survived": true,
+      "late_load_coverage_complete": false,
+      "game_execution": false,
+      "distribution_qualified": false
+    },
+    {
+      "fixture": "api1",
+      "case_sha256": "7cff74ef7002d3d0c6389000c626c6aab18a60ade9613f2eda2fa5d9fb3fd995",
+      "runtime_sha256": "5edf710ddd814aefb028e11ebb5f916c30bac2d0fa0bf2a9417b960a1777767d",
+      "source_receipts": {
+        "paired": "5e4ab7c106939179b50a128f00da1f9cdc2cf981d6ec9a1cef88f6b43aad2c25",
+        "fex": "9d4e431ee002099fde7c681327747cbfe653b33eae222dc0152e489dd9d1d304",
+        "linked": "bb2f424fb3326e66d075422020b332f552f83f19cfd7a220155951c194d884ff",
+        "fixture": "499ec84d650b3efae2a4067721b9b2ec5247b133d63527fe091e5362f01ad3b2"
+      },
+      "exit_code": 42,
+      "elapsed_ms": 7304,
+      "translation_observations": 21,
+      "arm64_image_events": 4566,
+      "authorization_before_after": true,
+      "cleanup_complete": true,
+      "sentinel_survived": true,
+      "late_load_coverage_complete": false,
+      "game_execution": false,
+      "distribution_qualified": false
+    }
+  ],
+  "qualification": {
+    "i386_guest_execution": false,
+    "forced_foreign_thread_termination": false,
+    "broad_CPU_stress": false,
+    "full_late_load_observation": false,
+    "fresh_final_pair_reconstruction": false,
+    "game_execution": false,
+    "distribution": false
+  }
+}

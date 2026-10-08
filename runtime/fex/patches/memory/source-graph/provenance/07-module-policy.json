@@ -1,0 +1,30 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "postimage_bytes": 61701,
+      "postimage_sha256": "919120b2505362e1ce0b946508b38268102c38ca8b2e18db32eba9da0f03a9e8",
+      "preimage_sha256": "a823223199731eb5a94bd5f47c6c37a9332fec75845e57490d1e91e6ebd2d84d"
+    },
+    {
+      "path": "Source/Windows/WOW64/Module.cpp",
+      "postimage_bytes": 49171,
+      "postimage_sha256": "dc179e0c3fa9148f3c84d1477f080bd635f556554f4c3d1fcf8d05d377add053",
+      "preimage_sha256": "c37a1e15535d136d9fd989d053d53b92ced664e07443c873bc7001b63e072873"
+    }
+  ],
+  "historical_source_manifest_sha256": "20a4d04a9fdf6b911171d9cc734ba6294a768b8c7a5fa08fd30822a8b9e488ff",
+  "historical_strict_patch_sha256": "e23f7f2c7654149856a3db092faadc5fe38155503e80f41265ddacf3ebdf4e76",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "module-policy",
+  "native_runtime_execution": false,
+  "order": 7,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

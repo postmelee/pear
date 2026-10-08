@@ -1,0 +1,216 @@
+diff --git a/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -8233,6 +8233,58 @@
+ }
+ #endif
+ 
++/* Called under the owner gate, then virtual_mutex: never invert that order. */
++static int pear_fex_wine_ec_register(uint64_t offset, uint64_t size, int publish,
++                                     struct pear_fex_memory_error *error)
++{
++    struct pear_fex_view_record *record;
++    struct file_view *view;
++    void *base, *bitmap_base;
++    SIZE_T first, last, bitmap_size;
++    sigset_t sigset;
++    NTSTATUS status;
++    int result = 1;
++    memset(error, 0, sizeof(*error));
++    server_enter_uninterrupted_section(&virtual_mutex, &sigset);
++    if (!is_arm64ec() || !pear_fex_wine_backing.private_base ||
++        pear_fex_wine_backing.owner_pid != (uint64_t)getpid() || !size ||
++        ((offset | size) & page_mask) || offset > PEAR_ARENA_MAPPING_BYTES ||
++        size > PEAR_ARENA_MAPPING_BYTES - offset) goto invalid;
++    base = (char *)(uintptr_t)pear_fex_wine_backing.private_base + offset;
++    record = pear_fex_view_at(base, size);
++    view = find_view(base, size);
++    if (!record || record->role != PEAR_FEX_ROLE_ARM64EC || !view || view->pear_owned != 4 ||
++        view->pear_generation != record->generation || view->base != record->base ||
++        view->size != record->size) goto invalid;
++    if ((status = pear_fex_checked_bitmap_allocate()))
++    { pear_fex_nt_error(error, status); goto done; }
++    first = ((SIZE_T)base >> page_shift) / 8;
++    last = (((SIZE_T)base + size - 1) >> page_shift) / 8;
++    bitmap_size = ROUND_SIZE(first, last + 1 - first, page_mask);
++    bitmap_base = ROUND_ADDR((char *)arm64ec_view->base + first, page_mask);
++    if ((char *)bitmap_base < (char *)arm64ec_view->base || bitmap_size > arm64ec_view->size ||
++        (SIZE_T)((char *)bitmap_base - (char *)arm64ec_view->base) > arm64ec_view->size - bitmap_size)
++        goto invalid;
++    if (!set_vprot(arm64ec_view, bitmap_base, bitmap_size, VPROT_READ|VPROT_WRITE|VPROT_COMMITTED) ||
++        pear_fex_bitmap_protection(bitmap_base, bitmap_size, PROT_READ|PROT_WRITE, error)) goto done;
++    if (publish)
++    {
++        if (pear_fex_backing_query(offset, size, PEAR_FEX_PROTECTION_RX, error)) goto done;
++        set_arm64ec_range(base, size);
++    }
++    else clear_arm64ec_range(base, size);
++    if (!pear_fex_bitmap_bits(base, size, publish)) goto invalid;
++    result = 0;
++    goto done;
++ invalid:
++    pear_fex_nt_error(error, STATUS_INVALID_PARAMETER);
++ done:
++    if (result && !error->domain) pear_fex_nt_error(error, STATUS_ACCESS_DENIED);
++    server_leave_uninterrupted_section(&virtual_mutex, &sigset);
++    return result;
++}
++static int pear_fex_wine_role(uint32_t role);
++
+ static int pear_fex_wine_view(uint64_t offset, uint64_t size, uint64_t id, uint64_t generation,
+                                uint32_t allocation_class, uint32_t role, int reserve,
+                                struct pear_fex_memory_error *error)
+@@ -8253,8 +8305,7 @@
+     backing = pear_fex_wine_backing;
+     if (!backing.private_base || backing.owner_pid != (uint64_t)getpid()) goto done;
+     base = (char *)(uintptr_t)backing.private_base+offset;
+-    if (!id || !generation || !size || role != PEAR_FEX_ROLE_NATIVE ||
+-        !pear_fex_fixture_enabled() || (allocation_class != PEAR_FEX_CLASS_SHARED &&
++    if (!id || !generation || !size || !pear_fex_wine_role(role) || (allocation_class != PEAR_FEX_CLASS_SHARED &&
+         allocation_class != PEAR_FEX_CLASS_DISPATCHER)) goto done;
+ #if defined(__APPLE__) && defined(__aarch64__) && defined(PEAR_FEX_MEMORY_FINITE_FIXTURE)
+     if (reserve && allocation_class == PEAR_FEX_CLASS_SHARED)
+@@ -8305,13 +8356,18 @@
+ }
+ static int pear_fex_wine_role(uint32_t role)
+ {
+-    /* General paired-module admission is a Stage4 source/loader/TLS gate. */
+-    return pear_fex_fixture_enabled() && role == PEAR_FEX_ROLE_NATIVE;
++    /* Caller identity is checked by the private PE thunk, using Wine's selected
++     * pinned translator. Unix additionally checks the actual process role. */
++    return (is_arm64ec() && role == PEAR_FEX_ROLE_ARM64EC) ||
++           (!is_arm64ec() && pear_fex_fixture_enabled() && role == PEAR_FEX_ROLE_NATIVE);
+ }
+ static int pear_fex_wine_entry(uint64_t offset, uint64_t usable_size, uint64_t entry_offset,
+                                 uint32_t allocation_class, uint32_t role)
+ {
+     (void)offset;
++    if (is_arm64ec() && role == PEAR_FEX_ROLE_ARM64EC)
++        return (allocation_class == PEAR_FEX_CLASS_SHARED || allocation_class == PEAR_FEX_CLASS_DISPATCHER) &&
++               !(entry_offset & 3) && entry_offset <= usable_size && 4 <= usable_size-entry_offset;
+     /* The finite fixture alone admits exact source-owned leaf entry positions.
+      * General FEX lookup/entry metadata must be paired before runtime use. */
+     return pear_fex_fixture_enabled() && role == PEAR_FEX_ROLE_NATIVE &&
+@@ -8322,7 +8378,7 @@
+ {
+     struct pear_fex_memory_call *call = opaque;
+     const struct pear_fex_memory_backend backend = {pear_fex_wine_initialize, pear_fex_wine_query,
+-        pear_fex_wine_protect, NULL, pear_fex_wine_view, pear_fex_wine_role, pear_fex_wine_entry, pear_fex_wine_metadata};
++        pear_fex_wine_protect, pear_fex_wine_ec_register, pear_fex_wine_view, pear_fex_wine_role, pear_fex_wine_entry, pear_fex_wine_metadata};
+     struct pear_fex_memory_error error = {0};
+     uint32_t status;
+     if (!call) return STATUS_INVALID_PARAMETER;
+@@ -8343,7 +8399,7 @@
+     /* Pure record checks precede MAP_JIT construction. */
+     status = pear_fex_memory_dispatch(&call->request, &call->response);
+     if (status != PEAR_FEX_UNAVAILABLE) return STATUS_SUCCESS;
+-    if (!pear_fex_fixture_enabled() || call->request.ec_role != PEAR_FEX_ROLE_NATIVE ||
++    if (!pear_fex_wine_role(call->request.ec_role) ||
+         (call->request.opcode != PEAR_FEX_RESERVE && call->request.opcode != PEAR_FEX_EXECUTOR_REGISTER))
+         return STATUS_SUCCESS;
+     if ((status = pear_fex_memory_initialize(&backend, &error)))
+diff --git a/dlls/ntdll/pear_fex_memory.c b/dlls/ntdll/pear_fex_memory.c
+--- a/dlls/ntdll/pear_fex_memory.c
++++ b/dlls/ntdll/pear_fex_memory.c
+@@ -6,6 +6,46 @@
+ #include "winternl.h"
+ #include "wine/pear_fex_memory.h"
+ #include "unixlib.h"
++#include "ntdll_misc.h"
++
++/* Bound by Wine's selected translator load, before ProcessInit. Pinning keeps
++ * return-address ownership stable for the process lifetime. This is private
++ * paired-runtime admission, not an isolation boundary against in-process code. */
++static void *memory_translator_module;
++NTSTATUS pear_fex_bind_module(HMODULE module)
++{
++#ifdef __arm64ec__
++    static const char *const required[] = {"ProcessInit", "ThreadInit", "BeginSimulation",
++        "ExitToX64", "DispatchJump", "RetToEntryThunk", "ResetToConsistentState"};
++    const IMAGE_ARM64EC_METADATA *metadata;
++    void *owner;
++    unsigned int i;
++    NTSTATUS status;
++    if (!module || (memory_translator_module && memory_translator_module != module))
++        return STATUS_INVALID_PARAMETER;
++    metadata = arm64ec_get_module_metadata(module);
++    if (!metadata || (metadata->Version != 1 && metadata->Version != 2) || !metadata->CodeMapCount)
++        return STATUS_INVALID_IMAGE_FORMAT;
++    for (i = 0; i < ARRAY_SIZE(required); ++i)
++    {
++        void *entry = RtlFindExportedRoutineByName(module, required[i]);
++        if (!entry || !RtlPcToFileHeader(entry, &owner) || owner != module)
++            return STATUS_PROCEDURE_NOT_FOUND;
++    }
++    if ((status = LdrAddRefDll(1, module))) return status;
++    memory_translator_module = module;
++    return STATUS_SUCCESS;
++#else
++    (void)module;
++    return STATUS_NOT_SUPPORTED;
++#endif
++}
++static BOOL memory_admitted_caller(void *return_address)
++{
++    void *owner = NULL;
++    return memory_translator_module && RtlPcToFileHeader(return_address, &owner) &&
++           owner == memory_translator_module;
++}
+ 
+ static uint32_t memory_reply_failure(struct pear_fex_memory_response *response,
+                                      uint32_t status, NTSTATUS native_status)
+@@ -72,19 +112,21 @@
+         return memory_reply_failure(response, PEAR_FEX_INVALID_REQUEST, status);
+     memcpy(&call.request, request, sizeof(call.request));
+     memset(&call.response, 0, sizeof(call.response));
+-    /* Stage3 admits only the compile-selected original native PE fixture.
+-     * Future paired FEX admission needs actual loader/source/CHPE/TLS binding;
+-     * a module basename or user-selected role is not that binding. */
++    /* EC calls are admitted only from the translator selected and pinned by
++     * Wine. The original native fixture remains an independent finite path. */
++    if (!memory_admitted_caller(__builtin_return_address(0)))
++    {
+ #ifdef PEAR_FEX_MEMORY_FINITE_FIXTURE
+-    if (!memory_fixture_nonce() ||
+-        !RtlPcToFileHeader(__builtin_return_address(0), &caller) ||
+-        caller != NtCurrentTeb()->Peb->ImageBaseAddress ||
+-        call.request.ec_role == PEAR_FEX_ROLE_ARM64EC)
++        if (!memory_fixture_nonce() ||
++            !RtlPcToFileHeader(__builtin_return_address(0), &caller) ||
++            caller != NtCurrentTeb()->Peb->ImageBaseAddress ||
++            call.request.ec_role == PEAR_FEX_ROLE_ARM64EC)
++            return memory_reply_failure(response, PEAR_FEX_UNAVAILABLE, 0);
++#else
++        (void)caller;
+         return memory_reply_failure(response, PEAR_FEX_UNAVAILABLE, 0);
+-#else
+-    (void)caller;
+-    return memory_reply_failure(response, PEAR_FEX_UNAVAILABLE, 0);
+ #endif
++    }
+     status = WINE_UNIX_CALL(unix_pear_fex_memory, &call);
+     if (status && call.response.status == PEAR_FEX_OK)
+         memory_reply_failure(&call.response, PEAR_FEX_NATIVE_FAILURE, status);
+diff --git a/dlls/ntdll/ntdll_misc.h b/dlls/ntdll/ntdll_misc.h
+--- a/dlls/ntdll/ntdll_misc.h
++++ b/dlls/ntdll/ntdll_misc.h
+@@ -161,6 +161,7 @@
+ 
+ #ifdef __arm64ec__
+ 
++extern NTSTATUS pear_fex_bind_module(HMODULE module);
+ extern NTSTATUS arm64ec_process_init( HMODULE module );
+ extern NTSTATUS arm64ec_thread_init(void);
+ extern IMAGE_ARM64EC_METADATA *arm64ec_get_module_metadata( HMODULE module );
+diff --git a/dlls/ntdll/signal_arm64ec.c b/dlls/ntdll/signal_arm64ec.c
+--- a/dlls/ntdll/signal_arm64ec.c
++++ b/dlls/ntdll/signal_arm64ec.c
+@@ -221,6 +221,8 @@
+     info->EmulatedMachineType = IMAGE_FILE_MACHINE_AMD64;
+     memcpy( KiUserExceptionDispatcher_orig, KiUserExceptionDispatcher_thunk, sizeof(KiUserExceptionDispatcher_orig) );
+ 
++    /* The selected module is the sole private owner caller for this process. */
++    if ((status = pear_fex_bind_module(module))) return status;
+     enter_syscall_callback();
+     if (pProcessInit) status = pProcessInit();
+     if (!status)

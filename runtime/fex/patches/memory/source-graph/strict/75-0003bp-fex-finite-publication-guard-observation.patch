@@ -1,0 +1,27 @@
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -892,6 +892,15 @@
+     auto Outcome=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);if (!Outcome) return Outcome;
+     const auto Private=JIT->TempCodeBufferAllocator.ReownOrClaimBufferWithSize(8192);
+     if (!Private.Ptr || Private.Size!=8192) return {PEAR_FEX_UNAVAILABLE,0,0};
++    MEMORY_BASIC_INFORMATION DataInfo {},GuardInfo {};
++    if (::VirtualQuery(Private.Ptr,&DataInfo,sizeof(DataInfo))!=sizeof(DataInfo) ||
++        ::VirtualQuery(Private.Ptr+4096,&GuardInfo,sizeof(GuardInfo))!=sizeof(GuardInfo) ||
++        DataInfo.AllocationBase!=Private.Ptr || DataInfo.BaseAddress!=Private.Ptr ||
++        GuardInfo.AllocationBase!=Private.Ptr || GuardInfo.BaseAddress!=Private.Ptr+4096 ||
++        DataInfo.State!=MEM_COMMIT || GuardInfo.State!=MEM_COMMIT ||
++        DataInfo.RegionSize<4096 || GuardInfo.RegionSize<4096 ||
++        (DataInfo.Protect&0xff)!=PAGE_READWRITE || (GuardInfo.Protect&0xff)!=PAGE_NOACCESS)
++      return {PEAR_FEX_UNAVAILABLE,0,0};
+     // Original ARM64 LDR-literal/RET plus one inline constant. No guest input,
+     // guest decoding, IR emission, JIT header or lookup publication is supplied.
+     const uint32_t Instructions[]={0x58000040,0xd65f03c0};
+@@ -1629,6 +1638,7 @@
+     // Published bytes have no new lookup pointer. Do not fabricate a token or
+     // recover by generic protection/allocation; the source must refuse/recover.
+     LogMan::Msg::EFmt("Pear source token changed before lookup publication");
++    FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
+     DiscardPreparedPublication(); return false;
+   }
+   for (auto& Entry : Code.EntryPoints) {

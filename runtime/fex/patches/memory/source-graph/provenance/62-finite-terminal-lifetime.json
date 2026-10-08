@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear adds a finite terminal source lifetime control after the last native resume. Actual retained lifetime blocks cleanup, preserves backing and closes future admission; normal checked cleanup follows explicit release. All initialization selections remain closed pending review.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 11422,
+      "postimage_sha256": "aed7cf60039863f76f20b6caecb1d02ceaef86b5f4531e388cdd001e05d4239f",
+      "preimage_sha256": "789955f2e7d7a02c5f3a6875df4be6e37528a50cccf0e7c08181d1b725597fe8"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "e65980f370e40f51bad5cbaa611680512f318074e7cb57cea19b9c256bc7187f",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-terminal-lifetime",
+  "native_runtime_execution": false,
+  "order": 62,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

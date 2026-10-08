@@ -1,0 +1,79 @@
+{
+  "attribution": "Original Pear checked construction reuses upstream optimization passes, shared_ptr control blocks and PMR maps. The selected finite pipeline retains ordering while checking allocation before object construction; ordinary non-owner paths are retained.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/IR/PassManager.h",
+      "postimage_bytes": 3394,
+      "postimage_sha256": "d0a7841d0286b8019faac1ebf8e03531ab4efcbb39c6fc4b2499eef6410cb270",
+      "preimage_sha256": "4f22d758fd18e068f5ecd75b4798fcdd97082c3da86e078714fede70c4a1ad6d"
+    },
+    {
+      "path": "FEXCore/Source/Interface/IR/Passes.h",
+      "postimage_bytes": 896,
+      "postimage_sha256": "4535c50bec0bf39e2e3b0fa31e06a806b140ed05c37e0ea663007482610803ec",
+      "preimage_sha256": "e7501980f97b256f3ff52fc2e2a2368895ebd1aea033f79ce59bba4cb975d9b7"
+    },
+    {
+      "path": "FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp",
+      "postimage_bytes": 42463,
+      "postimage_sha256": "6443c3f1bad6f00f3a4bd388292843820430e15dfbf4912aebf433eeab21d70b",
+      "preimage_sha256": "e9b0d9a4061885940ad5d93955496257b03b74fc6095be15b51375dd0c18a878"
+    },
+    {
+      "path": "FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp",
+      "postimage_bytes": 23183,
+      "postimage_sha256": "1d921a6dbe67522ea35940fd32077d92117358f9b784f7f3ab9c971ea8327fa8",
+      "preimage_sha256": "73a9afab26fbd9509686379230b34263cd1a83b7a50ff11a994b484fd259697f"
+    },
+    {
+      "path": "FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp",
+      "postimage_bytes": 28657,
+      "postimage_sha256": "0dd7128c9bd62c0be131912763235175556e94616fda1182a870a41a405dde54",
+      "preimage_sha256": "81f98229a48235c346766b777401405bfa1015abd8885a151d28e779d135eff6"
+    },
+    {
+      "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+      "postimage_bytes": 6129,
+      "postimage_sha256": "8dbdbe8d3081ea76682f1bb3af543ad6d443c2d5ddbe5e01e8f9d90e154e0dd4",
+      "preimage_sha256": "192561361e2923da90c5bb3a6a82da4cfc60d020ce1443e8c2500bbe3dfd0ac1"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 91621,
+      "postimage_sha256": "87017f86e7e06b874c815b2fc8d6ac40fb2a9b9d5f6e2cabcb0e8fcd577aaf9d",
+      "preimage_sha256": "5703cc0542f83f18aaaf6ce8335e3f81fd8a03ae7a0196b855c602f350796c22"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+      "postimage_bytes": 10486,
+      "postimage_sha256": "5da6baf55895d296742e811e7cdb600a2b6b41fc6f5529023eed1f7c04eb9a10",
+      "preimage_sha256": "9026a6da593bccbfc3cc568a047abd02d22008fd6c262a65459959c02ca937b3"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "postimage_bytes": 22116,
+      "postimage_sha256": "01e8616f208521ca01091487bc5ff213773829cf2513dfa9d16066f97b001a7d",
+      "preimage_sha256": "0090e64d66c13d056b64ccfc7a184a72ba03cd68b2d7561856ad1f7b843ebf93"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "postimage_bytes": 6591,
+      "postimage_sha256": "c783418b2efcb753669717801bbba64d0a803102c974952cd1715314987b8f97",
+      "preimage_sha256": "c1fd5b6d89a7df95f1b0b1dc10a56b4c402ecf0187ffaf3438bbbaecfb22d305"
+    }
+  ],
+  "historical_strict_patch_sha256": "88460ca546bda91bf46d4f02abfa10e6ed51ad4ce8f5cb62ae951d09f9484456",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-compiler-construction",
+  "native_runtime_execution": false,
+  "order": 35,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

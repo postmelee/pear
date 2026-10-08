@@ -1,0 +1,74 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+@@ -102,7 +102,7 @@
+ // Callers retain their actual SourceLifetime until this turn is released.
+ class SourceMutationTurn {
+ public:
+-  explicit SourceMutationTurn(const SourceLifetime&);
++  explicit SourceMutationTurn(const SourceLifetime&, bool Writing=true);
+   SourceMutationTurn(const SourceMutationTurn&)=delete;
+   SourceMutationTurn& operator=(const SourceMutationTurn&)=delete;
+   SourceMutationTurn(SourceMutationTurn&&) noexcept;
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -696,7 +696,7 @@
+   RtlWakeAddressAll(const_cast<std::atomic<uint32_t>*>(&Word));
+ }
+ 
+-SourceMutationTurn::SourceMutationTurn(const SourceLifetime& Life) {
++SourceMutationTurn::SourceMutationTurn(const SourceLifetime& Life, bool Writing) {
+   Outcome=Life.Validate();
+   if (!Outcome) return;
+   Executor=Life.Executor();
+@@ -710,7 +710,27 @@
+     const auto Sequence=MutationSequence.load(std::memory_order_acquire);
+     uint64_t Empty=0;
+     if (MutationExecutor.compare_exchange_strong(Empty,Executor,std::memory_order_acquire,std::memory_order_relaxed)) {
+-      Owned=true; Outcome=Refuse(PEAR_FEX_OK); return;
++      Owned=true;
++      if (Writing) {
++        // Reuse FEX's existing block-boundary suspend check, not a new signal
++        // handler or executable patch. Entry/resume holds the same source turn,
++        // so no executor can become ACTIVE after this scan until publication.
++        RegistryGuard Guard;
++        for (auto& Peer:Bindings) {
++          if (Peer.Executor==Executor || Peer.SourceKind!=Binding::Kind::Thread ||
++              Peer.Role!=PEAR_FEX_ROLE_ARM64EC || Peer.Active.Kind!=LeaseKind::Active ||
++              Peer.LifetimeClosing || Peer.LifetimeDeleteSealed || Peer.Unresolved) continue;
++          const auto* C=ContextRecord(Peer.SourceContext);
++          if (!C || C->Closing || C->DeleteSealed || C->Retained) continue;
++          // Registry ownership prevents lifetime sealing/deletion during this
++          // bounded metadata-only access. No owner, VM or callback call occurs.
++          auto* Thread=const_cast<FEXCore::Core::InternalThreadState*>(
++            static_cast<const FEXCore::Core::InternalThreadState*>(Peer.SourceState));
++          if (Thread && Thread->CTX==Peer.SourceContext && Thread->CurrentFrame && Thread->CurrentFrame->Thread==Thread)
++            __atomic_fetch_or(&Thread->CurrentFrame->SuspendDoorbell,1U,__ATOMIC_RELEASE);
++        }
++      }
++      Outcome=Refuse(PEAR_FEX_OK); return;
+     }
+     // The linker synchronously invokes compilation on the same actual native
+     // thread. The outer turn spans that nested work; no second release occurs.
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -97,6 +97,8 @@
+   auto Life = M::AcquireCurrentSourceLifetime(this);
+   if (!Life || !Thread || Life.ActualThread() != Thread || Thread->CTX != this || !Thread->CurrentFrame ||
+       Thread->CurrentFrame->Thread != Thread) return {PEAR_FEX_STALE_IDENTITY, 0, 0};
++  M::SourceMutationTurn EntryTurn {Life,false};
++  if (!EntryTurn) return EntryTurn.Status();
+   auto* Impl = static_cast<ContextImpl*>(this);
+   if (!Impl->Dispatcher) return {PEAR_FEX_UNAVAILABLE, 0, 0};
+   const auto Facts = Impl->Dispatcher->GetPearSnapshot();
+@@ -1451,6 +1453,8 @@
+   if (!Gate.Open || !Gate.Continuation || !Gate.OriginalPinEpoch || !Dispatcher || !Thread ||
+       Gate.Frame!=Thread->CurrentFrame || Gate.Frame->Thread!=Thread || Thread->CTX!=this ||
+       Memory::CurrentExecutor()!=Gate.Lifetime.Executor()) return {PEAR_FEX_STALE_IDENTITY,0,0};
++  Memory::SourceMutationTurn EntryTurn {Gate.Lifetime,false};
++  if (!EntryTurn) return EntryTurn.Status();
+   Memory::Links::SealedEntry Entry;
+   Memory::Result Sealed {PEAR_FEX_UNAVAILABLE,0,0};
+   // At most four source polls and four 50-ms ntdll waits. Each owner poll has

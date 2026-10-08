@@ -1,0 +1,26 @@
+diff --git a/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -3688,13 +3688,20 @@
+         SIZE_T capacity, page;
+         void *base;
+         USHORT selected_machine = machine ? machine : main_image_info.Machine;
+-        if (!selected_machine) selected_machine = current_machine;
++        /* main_image_info is not initialized until the main mapping returns.
++         * Select that first image from its server-validated PE machine. */
++        if (!selected_machine) selected_machine = pe_mapping->image.machine;
+         if (offset || alloc_type || shared_fd != -1 ||
+             (selected_machine != IMAGE_FILE_MACHINE_ARM64 && selected_machine != IMAGE_FILE_MACHINE_AMD64) ||
+             (pe_mapping->image.machine != IMAGE_FILE_MACHINE_ARM64 && pe_mapping->image.machine != IMAGE_FILE_MACHINE_AMD64))
+         { status = STATUS_NOT_SUPPORTED; goto done; }
+         status = pear_pe_plan_read_target( unix_fd, selected_machine, &plan, &image );
+-        if (status) goto done;
++        if (status)
++        {
++            ERR("Pear PE role selection failed: target=%04x image=%04x status=%08x\n",
++                selected_machine, pe_mapping->image.machine, status);
++            goto done;
++        }
+         if (image.size != size || image.original_base != pe_mapping->image.base ||
+             image.original_entry_rva != pe_mapping->image.entry_point || image.original_machine != pe_mapping->image.machine)
+         { status = STATUS_INVALID_IMAGE_FORMAT; pear_pe_plan_free( plan ); goto done; }

@@ -1,0 +1,24 @@
+{
+  "attribution": "Original Pear downstream source integration against pinned FEX; upstream language and contribution policy retained. No upstream submission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/CMakeLists.txt",
+      "postimage_bytes": 2104,
+      "postimage_sha256": "81fa8a1026fa68c026bdd867ad1b98603da17437e464478640528151653cec37",
+      "preimage_sha256": "597be805df33ae88a67d3052cd02c9a8fc502e92d6b1b9dcc0297f3ee90c22e7"
+    }
+  ],
+  "historical_source_manifest_sha256": "5af4b3f8d3bff03158d7a1723ce16f03a03cdb57cdd204d562bcc99e07fe8169",
+  "historical_strict_patch_sha256": "52c56fe33d0e87e2ecab3a069526c2f47a55de4c7ab5bd595d8bbe10f0b4cef2",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "abi2-header-selection",
+  "native_runtime_execution": false,
+  "order": 13,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "stage3_complete": false
+}

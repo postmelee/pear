@@ -1,0 +1,15 @@
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.h b/Source/Windows/PearEmptyInit/CheckedCRT.h
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.h
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.h
+@@ -11,7 +11,10 @@
+ // The plan contains NX callback pointers only and is retained lexically until
+ // actual source objects finish cleanup. It is never permission or a fake TLS.
+ struct CRTPlan {
+-  static constexpr size_t MAX_CALLBACKS=256;
++  // The pinned ordinary image has two FEX and six GNU callbacks. Keep a small
++  // explicit headroom while refusing larger/unreviewed callback tables before
++  // constructors. This bounds both persistent entries and GNU inspection scratch.
++  static constexpr size_t MAX_CALLBACKS=16;
+   enum class Kind : uint32_t { FEX, GNU, XI, XC, XL };
+   struct Callback { uintptr_t Address {}; Kind Group {}; };
+   Callback Entries[MAX_CALLBACKS] {};

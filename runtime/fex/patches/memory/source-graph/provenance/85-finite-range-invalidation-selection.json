@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear selects the finite prepared-publication candidate after source phase, allocator provider and actual linked table review. Final selected-image binding and current runtime authorization remain required; no execution or Stage3 completion is claimed.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1798,
+      "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+      "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+    }
+  ],
+  "historical_strict_patch_sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-range-invalidation-selection",
+  "native_runtime_execution": false,
+  "order": 85,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

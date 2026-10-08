@@ -1,0 +1,31 @@
+diff --git a/FEXCore/include/FEXCore/Utils/AllocatorHooks.h b/FEXCore/include/FEXCore/Utils/AllocatorHooks.h
+--- a/FEXCore/include/FEXCore/Utils/AllocatorHooks.h
++++ b/FEXCore/include/FEXCore/Utils/AllocatorHooks.h
+@@ -11,6 +11,9 @@
+ #else
+ #define NTDDI_VERSION 0x0A000005
+ #include <memoryapi.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <errhandlingapi.h>
++#endif
+ #endif
+ 
+ #include <new>
+@@ -73,7 +76,17 @@
+ }
+ 
+ inline void VirtualFree(void* Ptr, size_t Size) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (!::VirtualFree(Ptr, 0, MEM_RELEASE)) {
++    const DWORD Error = ::GetLastError();
++    // Keep the original Win32 error before logging; do not return to a caller
++    // that would discard the still-owned allocation or retry its release.
++    LogMan::Throw::MFmt("Pear VirtualFree failed: Win32 error {}, address {}, requested bytes {}",
++                       fmt::make_format_args(Error, Ptr, Size));
++  }
++#else
+   ::VirtualFree(Ptr, 0, MEM_RELEASE);
++#endif
+ }
+ 
+ inline void VirtualDontNeed(void* Ptr, size_t Size, bool Recommit = true) {

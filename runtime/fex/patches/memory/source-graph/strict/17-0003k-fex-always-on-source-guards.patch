@@ -1,0 +1,844 @@
+diff --git a/CodeEmitter/CodeEmitter/Buffer.h b/CodeEmitter/CodeEmitter/Buffer.h
+--- a/CodeEmitter/CodeEmitter/Buffer.h
++++ b/CodeEmitter/CodeEmitter/Buffer.h
+@@ -5,6 +5,7 @@
+ #include <cstring>
+ #include <type_traits>
+ #ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include <FEXCore/Utils/LogManager.h>
+ #endif
+ 
+@@ -21,7 +22,7 @@
+ 
+   void SetBuffer(uint8_t* Base, uint64_t BaseSize) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT((Base || !BaseSize) && BaseSize <= SIZE_MAX &&
++    PEAR_FEX_REQUIRE((Base || !BaseSize) && BaseSize <= SIZE_MAX &&
+                       (!Base || reinterpret_cast<uintptr_t>(Base) <= UINTPTR_MAX - BaseSize),
+                       "Pear emitter buffer geometry is invalid");
+ #endif
+@@ -54,7 +55,7 @@
+ 
+   void EmitString(const char* String) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(String, "Pear emitter string is unavailable");
++    PEAR_FEX_REQUIRE(String, "Pear emitter string is unavailable");
+ #endif
+     const auto StringLength = strlen(String);
+ #ifdef PEAR_FEX_MEMORY_OWNER
+@@ -66,7 +67,7 @@
+ 
+   void Align(size_t Size = 4) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(Size && !(Size & (Size - 1)), "Pear emitter alignment is invalid");
++    PEAR_FEX_REQUIRE(Size && !(Size & (Size - 1)), "Pear emitter alignment is invalid");
+     CheckRange(CurrentOffset, 0);
+ #endif
+     // Align the buffer to provided size.
+@@ -112,7 +113,7 @@
+ 
+   void SetCursorOffset(size_t Offset) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(Offset <= Size && (BufferBase || !Offset), "Pear emitter cursor is outside its buffer");
++    PEAR_FEX_REQUIRE(Offset <= Size && (BufferBase || !Offset), "Pear emitter cursor is outside its buffer");
+ #endif
+     CurrentOffset = BufferBase + Offset;
+   }
+@@ -140,7 +141,7 @@
+     const auto Address = reinterpret_cast<uintptr_t>(Pointer);
+     const bool Empty = !Base && !Address && !Size && !Bytes;
+     const bool Fits = Base && Address >= Base && Address - Base <= Size && Bytes <= Size - (Address - Base);
+-    LOGMAN_THROW_A_FMT(Empty || Fits, "Pear emitter read/write exceeds its source buffer");
++    PEAR_FEX_REQUIRE(Empty || Fits, "Pear emitter read/write exceeds its source buffer");
+   }
+ #endif
+ 
+diff --git a/CodeEmitter/CodeEmitter/Emitter.h b/CodeEmitter/CodeEmitter/Emitter.h
+--- a/CodeEmitter/CodeEmitter/Emitter.h
++++ b/CodeEmitter/CodeEmitter/Emitter.h
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: MIT
+ #pragma once
+ 
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include <FEXCore/Utils/CompilerDefs.h>
+ #include <FEXCore/Utils/EnumUtils.h>
+ #include <FEXCore/Utils/LogManager.h>
+@@ -648,7 +649,12 @@
+   // Bind a backward label to an address.
+   // Address that is bound is the current emitter location.
+   [[nodiscard]] bool Bind(BackwardLabel* Label) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    PEAR_FEX_REQUIRE(Label, "Pear backward label is unavailable");
++    PEAR_FEX_REQUIRE(Label->Location == nullptr, "Pear backward label was already bound");
++#else
+     LOGMAN_THROW_A_FMT(Label->Location == nullptr, "Trying to bind a label twice");
++#endif
+     Label->Location = GetCursorAddress<uint8_t*>();
+ 
+     // Always binds because it is only storing a location.
+@@ -657,7 +663,7 @@
+ 
+   [[nodiscard]] bool Bind(const ForwardLabel::Reference* Label) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(Label, "Pear emitter label is unavailable");
++    PEAR_FEX_REQUIRE(Label, "Pear emitter label is unavailable");
+     CheckRange(Label->Location, Label->Type == ForwardLabel::InstType::LONG_ADDRESS_GEN ? 12 : 4);
+     CheckRange(GetCursorAddress<uint8_t*>(), 0);
+ #endif
+@@ -824,7 +830,7 @@
+ 
+   static constexpr Condition InvertCondition(Condition cond) {
+     // These behave as always, so it makes no sense to allow inverting these.
+-    LOGMAN_THROW_A_FMT(cond != Condition::CC_AL && cond != Condition::CC_NV, "Cannot invert CC_AL or CC_NV");
++    PEAR_FEX_REQUIRE(cond != Condition::CC_AL && cond != Condition::CC_NV, "Cannot invert CC_AL or CC_NV");
+     return static_cast<Condition>(FEXCore::ToUnderlying(cond) ^ 1);
+   }
+ 
+diff --git a/FEXCore/Source/Interface/Context/Context.cpp b/FEXCore/Source/Interface/Context/Context.cpp
+--- a/FEXCore/Source/Interface/Context/Context.cpp
++++ b/FEXCore/Source/Interface/Context/Context.cpp
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: MIT
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include "Interface/Context/Context.h"
+ #include "Interface/Core/OpcodeDispatcher.h"
+ #include "Interface/Core/Dispatcher/Dispatcher.h"
+@@ -60,7 +61,7 @@
+ void FEXCore::Context::ContextImpl::CompileRIP(FEXCore::Core::InternalThreadState* Thread, uint64_t GuestRIP) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::AcquireCurrentSourceLifetime(this);
+-  LOGMAN_THROW_A_FMT(Life && Life.ActualThread()==Thread && Life.Validate(),"Pear source Thread lifetime is unavailable");
++  PEAR_FEX_REQUIRE(Life && Life.ActualThread()==Thread && Life.Validate(),"Pear source Thread lifetime is unavailable");
+ #endif
+ 
+   CompileBlock(Thread->CurrentFrame, GuestRIP);
+@@ -69,7 +70,7 @@
+ void FEXCore::Context::ContextImpl::CompileRIPCount(FEXCore::Core::InternalThreadState* Thread, uint64_t GuestRIP, uint64_t MaxInst) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::AcquireCurrentSourceLifetime(this);
+-  LOGMAN_THROW_A_FMT(Life && Life.ActualThread()==Thread && Life.Validate(),"Pear source Thread lifetime is unavailable");
++  PEAR_FEX_REQUIRE(Life && Life.ActualThread()==Thread && Life.Validate(),"Pear source Thread lifetime is unavailable");
+ #endif
+ 
+   CompileBlock(Thread->CurrentFrame, GuestRIP, MaxInst);
+@@ -78,7 +79,7 @@
+ void FEXCore::Context::ContextImpl::SetSignalDelegator(FEXCore::SignalDelegator* _SignalDelegation) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   SignalDelegation = _SignalDelegation;
+@@ -87,7 +88,7 @@
+ void FEXCore::Context::ContextImpl::SetSyscallHandler(FEXCore::HLE::SyscallHandler* Handler) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   SyscallHandler = Handler;
+@@ -97,7 +98,7 @@
+ void FEXCore::Context::ContextImpl::SetThunkHandler(FEXCore::ThunkHandler* Handler) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   ThunkHandler = Handler;
+@@ -106,7 +107,7 @@
+ FEXCore::CPUID::FunctionResults FEXCore::Context::ContextImpl::RunCPUIDFunction(uint32_t Function, uint32_t Leaf) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   return CPUID.RunFunction(Function, Leaf);
+@@ -115,7 +116,7 @@
+ FEXCore::CPUID::XCRResults FEXCore::Context::ContextImpl::RunXCRFunction(uint32_t Function) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   return CPUID.RunXCRFunction(Function);
+@@ -124,7 +125,7 @@
+ FEXCore::CPUID::FunctionResults FEXCore::Context::ContextImpl::RunCPUIDFunctionName(uint32_t Function, uint32_t Leaf, uint32_t CPU) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   return CPUID.RunFunctionName(Function, Leaf, CPU);
+@@ -133,7 +134,7 @@
+ bool FEXCore::Context::ContextImpl::IsAddressInCodeBuffer(FEXCore::Core::InternalThreadState* Thread, uintptr_t Address) const {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::AcquireCurrentSourceLifetime(this);
+-  LOGMAN_THROW_A_FMT(Life && Life.ActualThread()==Thread && Life.Validate(),"Pear source Thread lifetime is unavailable");
++  PEAR_FEX_REQUIRE(Life && Life.ActualThread()==Thread && Life.Validate(),"Pear source Thread lifetime is unavailable");
+ #endif
+ 
+   return Thread->CPUBackend->IsAddressInCodeBuffer(Address) || CodeCache.IsAddressInMappedCodeBuffer(Address);
+@@ -142,7 +143,7 @@
+ bool FEXCore::Context::ContextImpl::RequiresRelocatableConstants() const {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto Life=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!Life,"Pear source Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!Life,"Pear source Context lifetime is unavailable");
+ #endif
+ 
+   // Support relocation when generating a cache or when generating reference code for validation
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -8,6 +8,7 @@
+ $end_info$
+ */
+ 
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include <cstdint>
+ #ifdef ZYDIS_DISASSEMBLER
+ #include <Zydis/Zydis.h>
+@@ -137,8 +138,7 @@
+     const auto First=Memory::Retirement::FirstFailureSnapshot();
+     if (First.Present) Original=First.Outcome;
+     Memory::Retirement::PoisonSourceAdmission(Original);
+-    LOGMAN_THROW_A_FMT(false,"Pear source lifetime refused: status {}, domain {}, code {}",
+-                      Original.Status,Original.ErrorDomain,Original.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(false, "Pear source lifetime refused: status {}, domain {}, code {}", Original);
+   }
+   return Life;
+ }
+@@ -195,8 +195,7 @@
+ }
+ static void RequirePearFrameSnapshot(FEXCore::Utils::PearFEXMemory::Result Outcome) {
+   if (!Outcome) FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome);
+-  LOGMAN_THROW_A_FMT(!!Outcome, "Pear managed metadata snapshot refused: status {}, domain {}, code {}",
+-    Outcome.Status, Outcome.ErrorDomain, Outcome.ErrorCode);
++  PEAR_FEX_REQUIRE_RESULT(!!Outcome, "Pear managed metadata snapshot refused: status {}, domain {}, code {}", Outcome);
+ }
+ bool ContextImpl::IsAddressInCurrentBlock(FEXCore::Core::InternalThreadState* Thread, uint64_t Address, uint64_t Size) {
+   PearFrameBlockSnapshot Snapshot;
+@@ -893,7 +892,7 @@
+ void ContextImpl::OnCodeBufferAllocated(const fextl::shared_ptr<CPU::CodeBuffer>& Buffer) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+ #endif
+ 
+   if (Config.GlobalJITNaming()) {
+@@ -1367,8 +1366,7 @@
+                                                 uint64_t MaxInst, uintptr_t ResumePC) {
+   PearDispatcherGate Gate {};
+   const auto Begun = BeginPearDispatcherGate(Frame, ResumePC, Gate);
+-  LOGMAN_THROW_A_FMT(!!Begun, "Pear dispatcher native handoff refused: status {}, domain {}, code {}",
+-                    Begun.Status, Begun.ErrorDomain, Begun.ErrorCode);
++  PEAR_FEX_REQUIRE_RESULT(!!Begun, "Pear dispatcher native handoff refused: status {}, domain {}, code {}", Begun);
+   // D is native-pinned and this wrapper holds no source locks. Detached
+   // generations may now wait/retire without blocking their own lookup lock.
+   const auto Drained = FEXCore::Utils::PearFEXMemory::Retirement::DrainAtNativeGate();
+@@ -1391,9 +1389,8 @@
+   HostCode = CompilePearBlock(Frame, GuestRIP, MaxInst);
+ #endif
+   const auto Finished = FinishPearDispatcherGate(Gate);
+-  LOGMAN_THROW_A_FMT(!!Finished, "Pear dispatcher native resume refused: status {}, domain {}, code {}",
+-                    Finished.Status, Finished.ErrorDomain, Finished.ErrorCode);
+-  LOGMAN_THROW_A_FMT(HostCode, "Pear dispatcher compilation produced no admitted code target");
++  PEAR_FEX_REQUIRE_RESULT(!!Finished, "Pear dispatcher native resume refused: status {}, domain {}, code {}", Finished);
++  PEAR_FEX_REQUIRE(HostCode, "Pear dispatcher compilation produced no admitted code target");
+   return HostCode;
+ }
+ uintptr_t ContextImpl::CompilePearBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_t GuestRIP, uint64_t MaxInst) {
+@@ -1517,7 +1514,7 @@
+           }
+         }
+ 
+-        LOGMAN_THROW_A_FMT(Hit->EntryPointRIPs.size() == Hit->EntryPointHostOffsets.size(), "Mismatched Disk Cache entrypoint pairs!");
++        PEAR_FEX_REQUIRE(Hit->EntryPointRIPs.size() == Hit->EntryPointHostOffsets.size(), "Mismatched Disk Cache entrypoint pairs!");
+ 
+         uintptr_t CachedHostCode = 0;
+         for (size_t i = 0; i < Hit->EntryPointRIPs.size(); i++) {
+@@ -1528,7 +1525,7 @@
+           }
+         }
+ 
+-        LOGMAN_THROW_A_FMT(CachedHostCode != 0, "Couldn't find GuestRIP in Disk Cache entrypoints!");
++        PEAR_FEX_REQUIRE(CachedHostCode != 0, "Couldn't find GuestRIP in Disk Cache entrypoints!");
+ 
+         FEXCORE_PROFILE_INSTANT_INCREMENT(Thread, AccumulatedDiskCacheHitCount, 1);
+         Thread->FrontendDecoder->DelayedDisownBuffer();
+@@ -1558,7 +1555,7 @@
+   }
+ 
+   // if this ever fires, we need to serialize the offset into disk cache
+-  LOGMAN_THROW_A_FMT(StartAddr == GuestRIP, "StartAddr offset from GuestRIP");
++  PEAR_FEX_REQUIRE(StartAddr == GuestRIP, "StartAddr offset from GuestRIP");
+ 
+   // The core managed to compile the code.
+   if (Config.BlockJITNaming()) {
+@@ -1697,16 +1694,16 @@
+ void ContextImpl::InvalidateCodeBuffersCodeRange(uint64_t Start, uint64_t Length) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+-#endif
+-
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-  LOGMAN_THROW_A_FMT(PearLinkInvalidationAdmitted(),"Pear invalidation has no real pre-lock target write admission");
+-  LOGMAN_THROW_A_FMT(RecordPearInvalidation(), "Pear invalidation revision exhausted");
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++#endif
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++  PEAR_FEX_REQUIRE(PearLinkInvalidationAdmitted(),"Pear invalidation has no real pre-lock target write admission");
++  PEAR_FEX_REQUIRE(RecordPearInvalidation(), "Pear invalidation revision exhausted");
+ #endif
+   FEXCORE_PROFILE_SCOPED("InvalidateCodeBuffersCodeRange");
+ 
+-  LOGMAN_THROW_A_FMT(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
++  PEAR_FEX_REQUIRE(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
+   std::scoped_lock lk {CodeBufferListLock};
+   auto it = CodeBufferList.begin();
+   while (it != CodeBufferList.end()) {
+@@ -1725,10 +1722,10 @@
+ #endif
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  LOGMAN_THROW_A_FMT(PearLinkInvalidationAdmitted(),"Pear invalidation has no real pre-lock target write admission");
+-  LOGMAN_THROW_A_FMT(RecordPearInvalidation(), "Pear invalidation revision exhausted");
+-#endif
+-  LOGMAN_THROW_A_FMT(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
++  PEAR_FEX_REQUIRE(PearLinkInvalidationAdmitted(),"Pear invalidation has no real pre-lock target write admission");
++  PEAR_FEX_REQUIRE(RecordPearInvalidation(), "Pear invalidation revision exhausted");
++#endif
++  PEAR_FEX_REQUIRE(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
+ 
+   // Ensures now-modified mappings aren't cached as being in their previous non-executable state.
+   // Accessing FrontendDecoder is safe as the thread's code invalidation mutex must be locked here.
+@@ -1746,7 +1743,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearSourceHold=FEXCore::Utils::PearFEXMemory::AcquireCurrentSourceLifetime();
+   auto* ActualThread=PearSourceHold ? PearSourceHold.ActualThread() : nullptr;
+-  LOGMAN_THROW_A_FMT(ActualThread && Frame==ActualThread->CurrentFrame && Frame->Thread==ActualThread && PearSourceHold.Validate(),
++  PEAR_FEX_REQUIRE(ActualThread && Frame==ActualThread->CurrentFrame && Frame->Thread==ActualThread && PearSourceHold.Validate(),
+                     "Pear frame lifetime is unavailable");
+ #endif
+ 
+@@ -1757,10 +1754,10 @@
+ ContextImpl::AddCustomIREntrypoint(uintptr_t Entrypoint, CustomIREntrypointHandler Handler, void* Creator, void* Data) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+-#endif
+-
+-  LOGMAN_THROW_A_FMT(Config.Is64BitMode || !(Entrypoint >> 32), "64-bit Entrypoint in 32-bit mode {:x}", Entrypoint);
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++#endif
++
++  PEAR_FEX_REQUIRE(Config.Is64BitMode || !(Entrypoint >> 32), "64-bit Entrypoint in 32-bit mode {:x}", Entrypoint);
+ 
+   std::unique_lock lk(CustomIRMutex);
+ 
+@@ -1778,14 +1775,14 @@
+ void ContextImpl::AddThunkTrampolineIRHandler(uintptr_t Entrypoint, uintptr_t GuestThunkEntrypoint) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+-#endif
+-
+-  LOGMAN_THROW_A_FMT(Entrypoint, "Tried to link null pointer address to guest function");
+-  LOGMAN_THROW_A_FMT(GuestThunkEntrypoint, "Tried to link address to null pointer guest function");
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++#endif
++
++  PEAR_FEX_REQUIRE(Entrypoint, "Tried to link null pointer address to guest function");
++  PEAR_FEX_REQUIRE(GuestThunkEntrypoint, "Tried to link address to null pointer guest function");
+   if (!Config.Is64BitMode) {
+-    LOGMAN_THROW_A_FMT((Entrypoint >> 32) == 0, "Tried to link 64-bit address in 32-bit mode");
+-    LOGMAN_THROW_A_FMT((GuestThunkEntrypoint >> 32) == 0, "Tried to link 64-bit address in 32-bit mode");
++    PEAR_FEX_REQUIRE((Entrypoint >> 32) == 0, "Tried to link 64-bit address in 32-bit mode");
++    PEAR_FEX_REQUIRE((GuestThunkEntrypoint >> 32) == 0, "Tried to link 64-bit address in 32-bit mode");
+   }
+ 
+   LogMan::Msg::DFmt("Thunks: Adding guest trampoline from address {:#x} to guest function {:#x}", Entrypoint, GuestThunkEntrypoint);
+@@ -1827,10 +1824,14 @@
+ void ContextImpl::AddForceTSOInformation(const IntervalList<uint64_t>& ValidRanges, fextl::set<uint64_t>&& Instructions) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+-#endif
+-
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++#endif
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++  PEAR_FEX_REQUIRE(CodeInvalidationMutex.try_lock() == false, "Pear source invalidation lock must already be owned");
++#else
+   LogMan::Throw::AFmt(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
++#endif
+   ForceTSOValidRanges.Insert(ValidRanges);
+   ForceTSOInstructions.merge(std::move(Instructions));
+ }
+@@ -1838,10 +1839,14 @@
+ void ContextImpl::RemoveForceTSOInformation(uint64_t Address, uint64_t Size) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+-#endif
+-
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++#endif
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++  PEAR_FEX_REQUIRE(CodeInvalidationMutex.try_lock() == false, "Pear source invalidation lock must already be owned");
++#else
+   LogMan::Throw::AFmt(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
++#endif
+ 
+   ForceTSOValidRanges.Remove({Address, Address + Size});
+   ForceTSOInstructions.erase(ForceTSOInstructions.lower_bound(Address), ForceTSOInstructions.upper_bound(Address + Size));
+@@ -1850,7 +1855,7 @@
+ void ContextImpl::MarkMonoBackpatcherBlock(uint64_t BlockEntry) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearContextHold=FEXCore::Utils::PearFEXMemory::SourceLifecycle::HoldContext(this);
+-  LOGMAN_THROW_A_FMT(!!PearContextHold,"Pear actual Context lifetime is unavailable");
++  PEAR_FEX_REQUIRE(!!PearContextHold,"Pear actual Context lifetime is unavailable");
+ #endif
+ 
+   MonoBackpatcherBlock.store(BlockEntry, std::memory_order_relaxed);
+@@ -1861,7 +1866,7 @@
+   auto PearSourceHold=RequirePearSourceThread(this,Thread);
+ #endif
+ 
+-  LOGMAN_THROW_A_FMT(Config.Is64BitMode || !(Entrypoint >> 32), "64-bit Entrypoint in 32-bit mode {:x}", Entrypoint);
++  PEAR_FEX_REQUIRE(Config.Is64BitMode || !(Entrypoint >> 32), "64-bit Entrypoint in 32-bit mode {:x}", Entrypoint);
+ 
+   std::scoped_lock lk(CustomIRMutex);
+ 
+@@ -1874,7 +1879,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   auto PearSourceHold=FEXCore::Utils::PearFEXMemory::AcquireCurrentSourceLifetime();
+   auto* ActualThread=PearSourceHold ? PearSourceHold.ActualThread() : nullptr;
+-  LOGMAN_THROW_A_FMT(ActualThread && Frame==ActualThread->CurrentFrame && Frame->Thread==ActualThread && PearSourceHold.Validate(),
++  PEAR_FEX_REQUIRE(ActualThread && Frame==ActualThread->CurrentFrame && Frame->Thread==ActualThread && PearSourceHold.Validate(),
+                     "Pear frame lifetime is unavailable");
+ #endif
+ 
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: MIT
+ #pragma once
+ 
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include "Interface/Core/ArchHelpers/Arm64Emitter.h"
+ #include "Interface/Core/Interpreter/InterpreterOps.h"
+ 
+@@ -58,43 +59,39 @@
+ #else
+   void ExecuteDispatch(FEXCore::Core::CpuStateFrame* Frame) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(FEXCore::Utils::PearFEXMemory::Retirement::AdmissionOpen(), "Pear source retirement admission is closed");
++    PEAR_FEX_REQUIRE(FEXCore::Utils::PearFEXMemory::Retirement::AdmissionOpen(), "Pear source retirement admission is closed");
+     const auto Facts = GetPearSnapshot();
+     const auto Base = reinterpret_cast<uintptr_t>(Facts.Base);
+     const auto Address = reinterpret_cast<uintptr_t>(DispatchPtr);
+-    LOGMAN_THROW_A_FMT(Facts && Facts.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
++    PEAR_FEX_REQUIRE(Facts && Facts.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
+                       Facts.Token.allocation_class == PEAR_FEX_CLASS_DISPATCHER && Address >= Base &&
+                       Address-Base < Facts.Token.extent_size && !(Address & 3), "Pear dispatcher entry range unavailable");
+     const auto Entered = FEXCore::Utils::PearFEXMemory::Enter(Facts, Address-Base);
+-    LOGMAN_THROW_A_FMT(!!Entered, "Pear dispatcher entry refused: status {}, domain {}, code {}",
+-                      Entered.Status, Entered.ErrorDomain, Entered.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Entered, "Pear dispatcher entry refused: status {}, domain {}, code {}", Entered);
+ #endif
+     DispatchPtr(Frame, false);
+ #ifdef PEAR_FEX_MEMORY_OWNER
+     const auto Exited = FEXCore::Utils::PearFEXMemory::Exit(Facts);
+-    LOGMAN_THROW_A_FMT(!!Exited, "Pear dispatcher native return refused: status {}, domain {}, code {}",
+-                      Exited.Status, Exited.ErrorDomain, Exited.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Exited, "Pear dispatcher native return refused: status {}, domain {}, code {}", Exited);
+ #endif
+   }
+ 
+   void ExecuteJITCallback(FEXCore::Core::CpuStateFrame* Frame, uint64_t RIP) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(FEXCore::Utils::PearFEXMemory::Retirement::AdmissionOpen(), "Pear source retirement admission is closed");
++    PEAR_FEX_REQUIRE(FEXCore::Utils::PearFEXMemory::Retirement::AdmissionOpen(), "Pear source retirement admission is closed");
+     const auto Facts = GetPearSnapshot();
+     const auto Base = reinterpret_cast<uintptr_t>(Facts.Base);
+     const auto Address = reinterpret_cast<uintptr_t>(CallbackPtr);
+-    LOGMAN_THROW_A_FMT(Facts && Facts.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
++    PEAR_FEX_REQUIRE(Facts && Facts.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
+                       Facts.Token.allocation_class == PEAR_FEX_CLASS_DISPATCHER && Address >= Base &&
+                       Address-Base < Facts.Token.extent_size && !(Address & 3), "Pear dispatcher entry range unavailable");
+     const auto Entered = FEXCore::Utils::PearFEXMemory::Enter(Facts, Address-Base);
+-    LOGMAN_THROW_A_FMT(!!Entered, "Pear dispatcher entry refused: status {}, domain {}, code {}",
+-                      Entered.Status, Entered.ErrorDomain, Entered.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Entered, "Pear dispatcher entry refused: status {}, domain {}, code {}", Entered);
+ #endif
+     CallbackPtr(Frame, RIP);
+ #ifdef PEAR_FEX_MEMORY_OWNER
+     const auto Exited = FEXCore::Utils::PearFEXMemory::Exit(Facts);
+-    LOGMAN_THROW_A_FMT(!!Exited, "Pear dispatcher native return refused: status {}, domain {}, code {}",
+-                      Exited.Status, Exited.ErrorDomain, Exited.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Exited, "Pear dispatcher native return refused: status {}, domain {}, code {}", Exited);
+ #endif
+   }
+ #endif
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -11,6 +11,7 @@
+ $end_info$
+ */
+ 
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include "Interface/Context/Context.h"
+ #include "Interface/Core/LookupCache.h"
+ #ifdef PEAR_FEX_MEMORY_OWNER
+@@ -675,16 +676,15 @@
+   auto* Thread=Life ? Life.ActualThread() : nullptr;
+   auto* C=Life ? const_cast<FEXCore::Context::ContextImpl*>(
+       static_cast<const FEXCore::Context::ContextImpl*>(Life.ActualContext())) : nullptr;
+-  LOGMAN_THROW_A_FMT(Thread && C && Life.Validate() && Frame==Thread->CurrentFrame &&
++  PEAR_FEX_REQUIRE(Thread && C && Life.Validate() && Frame==Thread->CurrentFrame &&
+     Frame->Thread==Thread && Thread->CTX==C && Thread->CPUBackend && C->Dispatcher,
+     "Pear linker actual source lifetime unavailable");
+   const auto Bound=Memory::BindSourceThread(Thread);
+-  LOGMAN_THROW_A_FMT(!!Bound, "Pear linker source binding refused: status {}, domain {}, code {}",
+-                    Bound.Status,Bound.ErrorDomain,Bound.ErrorCode);
++  PEAR_FEX_REQUIRE_RESULT(!!Bound, "Pear linker source binding refused: status {}, domain {}, code {}", Bound);
+   const auto Protection=C->Dispatcher->GetPearSnapshot();
+   const auto Window=Thread->CPUBackend->FindPearManagedWindow(reinterpret_cast<uintptr_t>(Record));
+   const auto Retained=Thread->CPUBackend->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Record));
+-  LOGMAN_THROW_A_FMT(Window && Retained && Memory::HasManagedActive(Protection),
++  PEAR_FEX_REQUIRE(Window && Retained && Memory::HasManagedActive(Protection),
+                     "Pear linker record is not an actual retained source target under D");
+   FEXCore::Context::ExitFunctionLinkData Copy {};
+   PearJITLinkLayout::Layout Layout {};
+@@ -697,13 +697,12 @@
+     Revision=C->GetPearInvalidationRevision();
+     std::span<uint8_t> RecordBytes {reinterpret_cast<uint8_t*>(&Copy),sizeof(Copy)};
+     const auto Read=Memory::CopyManagedRXUnderGlobalLease(Protection,*Retained,Thread,Window->Offset,RecordBytes);
+-    LOGMAN_THROW_A_FMT(!!Read,"Pear linker record snapshot refused: status {}, domain {}, code {}",
+-                      Read.Outcome.Status,Read.Outcome.ErrorDomain,Read.Outcome.ErrorCode);
+-    LOGMAN_THROW_A_FMT(PearJITLinkLayout::Build(Window->Begin,Window->Size,reinterpret_cast<uintptr_t>(Record),Copy,Layout) &&
++    PEAR_FEX_REQUIRE_RESULT(!!Read, "Pear linker record snapshot refused: status {}, domain {}, code {}", Read.Outcome);
++    PEAR_FEX_REQUIRE(PearJITLinkLayout::Build(Window->Begin,Window->Size,reinterpret_cast<uintptr_t>(Record),Copy,Layout) &&
+       (C->Config.Is64BitMode() || !(Copy.GuestRIP>>32)),"Pear linker source layout refused");
+     const auto ReadThunk=Memory::CopyManagedRXUnderGlobalLease(Protection,*Retained,Thread,Layout.ThunkOffset,Thunk);
+     const auto ReadCaller=Memory::CopyManagedRXUnderGlobalLease(Protection,*Retained,Thread,Layout.MarkerOffset,Caller);
+-    LOGMAN_THROW_A_FMT(!!ReadThunk && !!ReadCaller &&
++    PEAR_FEX_REQUIRE(!!ReadThunk && !!ReadCaller &&
+       !std::memcmp(Thunk.data()+16,&Copy,sizeof(Copy)),"Pear linker source bytes changed during active snapshot");
+     Host=Thread->LookupCache->FindBlock(Thread,Copy.GuestRIP);
+   }
+@@ -715,51 +714,46 @@
+   // This generated D resume label is exact; a synthetic Frame is never used.
+   FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
+   const auto Handed=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);
+-  LOGMAN_THROW_A_FMT(!!Handed,"Pear linker native handoff refused: status {}, domain {}, code {}",
+-                    Handed.Status,Handed.ErrorDomain,Handed.ErrorCode);
++  PEAR_FEX_REQUIRE_RESULT(!!Handed, "Pear linker native handoff refused: status {}, domain {}, code {}", Handed);
+   if (!Host) Host=C->CompilePearBlock(Frame,Copy.GuestRIP,0);
+-  LOGMAN_THROW_A_FMT(Host && !(Host&3),"Pear linker compiled no admitted target");
++  PEAR_FEX_REQUIRE(Host && !(Host&3),"Pear linker compiled no admitted target");
+   auto TargetWindow=Thread->CPUBackend->FindPearManagedWindow(Host);
+   const bool SameMap=TargetWindow && TargetWindow->Owner==Window->Owner &&
+     Thread->LookupCache->Shared==Window->Owner->LookupCache.get();
+   if (SameMap) {
+     uint32_t Marker {}; std::memcpy(&Marker,Caller.data(),sizeof(Marker));
+     const auto Encoded=PearJITLinkLayout::Encode(Window->Begin,Layout,Host,Marker);
+-    LOGMAN_THROW_A_FMT(PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller),
++    PEAR_FEX_REQUIRE(PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller),
+                       "Pear linker bytes are not the actual appended pending-thunk/source caller shape");
+     const auto Facts=Window->Owner->GetPearSnapshot();
+     const auto Ticket=PearJITLinks::Prepare(PearJITLinks::SourceDescriptor {Window->Owner,C,Facts,Layout,Encoded,
+                                                                                      Thunk,Caller,Copy.GuestRIP,Host});
+-    LOGMAN_THROW_A_FMT(Ticket.has_value(),"Pear finite source link admission refused");
++    PEAR_FEX_REQUIRE(Ticket.has_value(),"Pear finite source link admission refused");
+     // Compile may append into A, but any real guest invalidation since the
+     // original snapshot invalidates this source transaction before any store.
+     const auto Patched=PearJITLinks::PatchPrepared(*Ticket,Thread,Revision);
+-    LOGMAN_THROW_A_FMT(!!Patched,"Pear link patch refused: status {}, domain {}, code {}",
+-                      Patched.Status,Patched.ErrorDomain,Patched.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Patched, "Pear link patch refused: status {}, domain {}, code {}", Patched);
+     {
+       auto Invalidation=GuardSignalDeferringSection<std::shared_lock>(C->CodeInvalidationMutex,Thread);
+       auto Lookup=Thread->LookupCache->AcquireWriteLock();
+-      LOGMAN_THROW_A_FMT(C->GetPearInvalidationRevision()==Revision && Thread->LookupCache->Shared==Window->Owner->LookupCache.get(),
++      PEAR_FEX_REQUIRE(C->GetPearInvalidationRevision()==Revision && Thread->LookupCache->Shared==Window->Owner->LookupCache.get(),
+                         "Pear linked source changed before lookup visibility");
+       Thread->LookupCache->AddPearBlockLink(Copy.GuestRIP,Record,*Ticket,Lookup);
+       const auto Committed=PearJITLinks::Commit(*Ticket);
+-      LOGMAN_THROW_A_FMT(!!Committed,"Pear source link ticket publication refused: status {}, domain {}, code {}",
+-                        Committed.Status,Committed.ErrorDomain,Committed.ErrorCode);
++      PEAR_FEX_REQUIRE_RESULT(!!Committed, "Pear source link ticket publication refused: status {}, domain {}, code {}", Committed);
+     }
+   }
+   const auto Resumed=C->FinishPearDispatcherGate(Gate);
+-  LOGMAN_THROW_A_FMT(!!Resumed,"Pear linker native resume refused: status {}, domain {}, code {}",
+-                    Resumed.Status,Resumed.ErrorDomain,Resumed.ErrorCode);
++  PEAR_FEX_REQUIRE_RESULT(!!Resumed, "Pear linker native resume refused: status {}, domain {}, code {}", Resumed);
+   // The source target is revalidated under renewed genuine D protection before
+   // its actual address is returned to the generated br instruction.
+   TargetWindow=Thread->CPUBackend->FindPearManagedWindow(Host);
+   const auto Target=Thread->CPUBackend->FindPearRetainedTarget(Host);
+   std::array<uint8_t,4> TargetWord {};
+-  LOGMAN_THROW_A_FMT(TargetWindow && Target,"Pear linked target reference is unavailable after native resume");
++  PEAR_FEX_REQUIRE(TargetWindow && Target,"Pear linked target reference is unavailable after native resume");
+   const auto Observed=Memory::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Target,Thread,
+                                                           TargetWindow->Offset,TargetWord);
+-  LOGMAN_THROW_A_FMT(!!Observed,"Pear linked target RX observation refused: status {}, domain {}, code {}",
+-                    Observed.Outcome.Status,Observed.Outcome.ErrorDomain,Observed.Outcome.ErrorCode);
++  PEAR_FEX_REQUIRE_RESULT(!!Observed, "Pear linked target RX observation refused: status {}, domain {}, code {}", Observed.Outcome);
+   return Host;
+ }
+ #endif
+@@ -991,7 +985,7 @@
+ 
+ CodeBuffer::CodeBufferAllocation Arm64JITCore::AllocateCodeBufferInSharedCache(size_t Size) {
+   CodeBuffer::CodeBufferAllocation AllocatedInfo {};
+-  LOGMAN_THROW_A_FMT(CurrentCodeBuffer->LookupCache.get() == ThreadState->LookupCache->Shared, "INVARIANT VIOLATED: SharedLookupCache "
++  PEAR_FEX_REQUIRE(CurrentCodeBuffer->LookupCache.get() == ThreadState->LookupCache->Shared, "INVARIANT VIOLATED: SharedLookupCache "
+                                                                                                "doesn't match up!\n");
+   // Bring CodeBuffer up to date
+   if (auto Prev = CheckCodeBufferUpdate()) {
+@@ -1030,7 +1024,7 @@
+                                                    FEXCore::Core::DebugData* DebugData, bool CheckTF) {
+   FEXCORE_PROFILE_SCOPED("Arm64::CompileCode");
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  LOGMAN_THROW_A_FMT(!PearPendingTemp && !PearWriter, "Pear backend already owns pending emission");
++  PEAR_FEX_REQUIRE(!PearPendingTemp && !PearWriter, "Pear backend already owns pending emission");
+ #endif
+   const auto PrevNumAllocations = Relocations.size();
+ 
+@@ -1068,7 +1062,7 @@
+   // One page baseline, plus SSANodeMultipler bytes, plus another page for guard page.
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   const uint64_t RequestedRange = uint64_t(FEXCore::Utils::FEX_PAGE_SIZE)*2 + uint64_t(SSACount)*SSANodeMultiplier;
+-  LOGMAN_THROW_A_FMT(RequestedRange <= 16ULL*1024*1024-FEXCore::Utils::FEX_PAGE_SIZE,
++  PEAR_FEX_REQUIRE(RequestedRange <= 16ULL*1024*1024-FEXCore::Utils::FEX_PAGE_SIZE,
+                     "Pear private NX emission exceeds its approved16MiB bound");
+   const uint32_t DesiredBufferRange = AlignUp(static_cast<uint32_t>(RequestedRange), FEXCore::Utils::FEX_PAGE_SIZE);
+ #else
+@@ -1080,7 +1074,7 @@
+   auto TempCodeBufferInfo = TempCodeBufferAllocator.ReownOrClaimBufferWithSize(DesiredBufferRange);
+   auto TempCodeBuffer = TempCodeBufferInfo.Ptr;
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  LOGMAN_THROW_A_FMT(TempCodeBuffer && TempCodeBufferInfo.Size > FEXCore::Utils::FEX_PAGE_SIZE &&
++  PEAR_FEX_REQUIRE(TempCodeBuffer && TempCodeBufferInfo.Size > FEXCore::Utils::FEX_PAGE_SIZE &&
+                     TempCodeBufferInfo.Size <= 16ULL*1024*1024, "Pear private NX allocator exceeded its finite bound");
+ #endif
+   const uint32_t UsableBufferRange = TempCodeBufferInfo.Size - FEXCore::Utils::FEX_PAGE_SIZE;
+@@ -1097,7 +1091,7 @@
+   ThreadState->JITGuardOverflowArgument = FEXCore::ToUnderlying(RestartOptions::Control::NeedsLargerJITSpace);
+ 
+   CodeData.BlockBegin = GetCursorAddress<uint8_t*>();
+-  LOGMAN_THROW_A_FMT(GetCursorOffset() == 0, "Needs to be zero");
++  PEAR_FEX_REQUIRE(GetCursorOffset() == 0, "Needs to be zero");
+ 
+   // Put the code header at the start of the data block.
+   ARMEmitter::BackwardLabel JITCodeHeaderLabel {};
+@@ -1135,7 +1129,7 @@
+   for (auto [BlockNode, BlockHeader] : IR->GetBlocks()) {
+     auto BlockIROp = BlockHeader->CW<FEXCore::IR::IROp_CodeBlock>();
+ #if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED
+-    LOGMAN_THROW_A_FMT(BlockIROp->Header.Op == IR::OP_CODEBLOCK, "IR type failed to be a code block");
++    PEAR_FEX_REQUIRE(BlockIROp->Header.Op == IR::OP_CODEBLOCK, "IR type failed to be a code block");
+ #endif
+ 
+     auto BlockStartHostCode = GetCursorAddress<uint8_t*>();
+@@ -1248,7 +1242,7 @@
+   Align(alignof(JITCodeTail));
+   const auto JITBlockTailLocation = GetCursorAddress<uint8_t*>();
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  LOGMAN_THROW_A_FMT(InPrivateBuffer(CodeHeader, sizeof(*CodeHeader)) &&
++  PEAR_FEX_REQUIRE(InPrivateBuffer(CodeHeader, sizeof(*CodeHeader)) &&
+                     InPrivateBuffer(JITBlockTailLocation, sizeof(JITCodeTail)), "Pear private tail/header range refused");
+ #endif
+   CodeHeader->OffsetToBlockTail = JITBlockTailLocation - CodeData.BlockBegin;
+@@ -1292,7 +1286,7 @@
+       int64_t GuestRIPOffset = GuestOpcode.GuestEntryOffset - CurrentRIPOffset;
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-      LOGMAN_THROW_A_FMT(InPrivateBuffer(JITRIPEntriesLocation, FEXCore::Utils::vl64pair::EncodedSize(HostPCOffset, GuestRIPOffset)),
++      PEAR_FEX_REQUIRE(InPrivateBuffer(JITRIPEntriesLocation, FEXCore::Utils::vl64pair::EncodedSize(HostPCOffset, GuestRIPOffset)),
+                         "Pear private variable-length metadata range refused");
+ #endif
+       JITRIPEntriesLocation += FEXCore::Utils::vl64pair::Encode(JITRIPEntriesLocation, HostPCOffset, GuestRIPOffset);
+@@ -1324,7 +1318,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   // Keep the original temporary emission owned and NX until the outer core
+   // releases its first invalidation scope and obtains the exact owner window.
+-  LOGMAN_THROW_A_FMT(CodeData.Size && CodeData.Size <= UsableBufferRange && !(CodeData.Size & 15),
++  PEAR_FEX_REQUIRE(CodeData.Size && CodeData.Size <= UsableBufferRange && !(CodeData.Size & 15),
+                     "Pear private emission result range refused");
+   PearPendingTemp = TempCodeBuffer; PearPendingSize = CodeData.Size;
+   CodeData.PearPendingEmission = true; CodeData.PearOwnerPublished = false;
+@@ -1358,7 +1352,7 @@
+ #ifdef VIXL_DISASSEMBLER
+   if (Disassemble() & FEXCore::Config::Disassemble::STATS) {
+     auto HeaderOp = IR->GetHeader();
+-    LOGMAN_THROW_A_FMT(HeaderOp->Header.Op == IR::OP_IRHEADER, "First op wasn't IRHeader");
++    PEAR_FEX_REQUIRE(HeaderOp->Header.Op == IR::OP_IRHEADER, "First op wasn't IRHeader");
+ 
+     LogMan::Msg::IFmt("RIP: 0x{:x}", Entry);
+     LogMan::Msg::IFmt("Guest Code instructions: {}", HeaderOp->NumHostInstructions);
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.cpp b/FEXCore/Source/Interface/Core/LookupCache.cpp
+--- a/FEXCore/Source/Interface/Core/LookupCache.cpp
++++ b/FEXCore/Source/Interface/Core/LookupCache.cpp
+@@ -6,6 +6,7 @@
+ $end_info$
+ */
+ 
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include <FEXCore/Utils/Allocator.h>
+ #include <FEXCore/Utils/LogManager.h>
+ #include <FEXCore/HLE/SyscallHandler.h>
+@@ -39,7 +40,7 @@
+   // We need one pointer per page of virtual memory
+   // At 64GB of virtual memory this will allocate 128MB of virtual memory space
+   PagePointer = reinterpret_cast<uintptr_t>(FEXCore::Allocator::VirtualAlloc(TotalCacheSize, false, false));
+-  LOGMAN_THROW_A_FMT(PagePointer != -1ULL, "Failed to allocate PagePointer");
++  PEAR_FEX_REQUIRE(PagePointer != -1ULL, "Failed to allocate PagePointer");
+ 
+   // Disable THP on the Lookup cache.
+   FEXCore::Allocator::VirtualTHPControl(reinterpret_cast<const void*>(PagePointer), TotalCacheSize, FEXCore::Allocator::THPControl::Disable);
+@@ -107,8 +108,7 @@
+   // invalidation batch drains these tickets only after all locks are released.
+   for (const auto& Item:*BlockLinks) {
+     const auto Queued=FEXCore::CPU::PearJITLinks::Queue(Item.second);
+-    LOGMAN_THROW_A_FMT(!!Queued,"Pear cache-clear link queue refused: status {}, domain {}, code {}",
+-                      Queued.Status,Queued.ErrorDomain,Queued.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Queued, "Pear cache-clear link queue refused: status {}, domain {}, code {}", Queued);
+   }
+ #endif
+   // Allocate a new pointer from the BlockLinks pma again.
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.h b/FEXCore/Source/Interface/Core/LookupCache.h
+--- a/FEXCore/Source/Interface/Core/LookupCache.h
++++ b/FEXCore/Source/Interface/Core/LookupCache.h
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: MIT
+ #pragma once
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include "Interface/Context/Context.h"
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ #include "Interface/Core/PearJITLinks.h"
+@@ -129,8 +130,7 @@
+       // Only bounded NX ticket copying occurs under lookup locks. A real
+       // source target WriteGuard was admitted before the caller's mutation.
+       const auto Queued=FEXCore::CPU::PearJITLinks::Queue(it->second);
+-      LOGMAN_THROW_A_FMT(!!Queued,"Pear delink queue refused: status {}, domain {}, code {}",
+-                        Queued.Status,Queued.ErrorDomain,Queued.ErrorCode);
++      PEAR_FEX_REQUIRE_RESULT(!!Queued, "Pear delink queue refused: status {}, domain {}, code {}", Queued);
+ #else
+       it->second(it->first.HostLink);
+ #endif
+@@ -157,7 +157,7 @@
+   void AddBlockLink(uint64_t GuestDestination, FEXCore::Context::ExitFunctionLinkData* HostLink,
+                     const FEXCore::Context::BlockDelinkerFunc& delinker, const LookupCacheWriteLockToken&) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(false, "Pear under-lock block link registration is unavailable");
++    PEAR_FEX_REQUIRE(false, "Pear under-lock block link registration is unavailable");
+     return;
+ #else
+     BlockLinks->insert({{GuestDestination, HostLink}, delinker});
+@@ -170,7 +170,7 @@
+     // The actual source JIT minted T and published its observed owner/token.
+     // NumericSourceLink is a lookup key only and is never read beneath locks.
+     const auto Added=BlockLinks->insert({{GuestDestination,NumericSourceLink},T});
+-    LOGMAN_THROW_A_FMT(Added.second,"Pear source link key was already registered");
++    PEAR_FEX_REQUIRE(Added.second,"Pear source link key was already registered");
+   }
+ #endif
+   bool AddBlockExecutableRange(const std::ranges::input_range auto& Addresses, uint64_t Start, uint64_t Length, const LookupCacheWriteLockToken&) {
+@@ -344,7 +344,7 @@
+     // Metadata matching is not execution admission; the dispatcher still needs
+     // the exact owner entry lease. No NX/pending/raw byte-span pointer is cached.
+     const auto Window = Thread->CPUBackend->FindPearManagedWindow(reinterpret_cast<uintptr_t>(HostCode));
+-    LOGMAN_THROW_A_FMT(Window && Window->Owner->LookupCache.get() == Shared,
++    PEAR_FEX_REQUIRE(Window && Window->Owner->LookupCache.get() == Shared,
+                       "Pear lookup insertion lacks a matching published owner generation");
+ #endif
+     std::optional<FEXCore::SHMStats::AccumulationBlock<uint64_t>> LockTime(
+diff --git a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h
+--- a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h
++++ b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h
+@@ -9,6 +9,7 @@
+ 
+ #include <FEXCore/fextl/memory.h>
+ #ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include <FEXCore/Utils/PearFEXMemory.h>
+ #include <FEXCore/Utils/PearFEXRetirement.h>
+ #endif
+@@ -64,7 +65,11 @@
+     if (!Size || Size > UsableSize() || Size > SIZE_MAX - 15) return {};
+ #endif
+     Size = FEXCore::AlignUp(Size, 16);
++#ifdef PEAR_FEX_MEMORY_OWNER
++    PEAR_FEX_REQUIRE(reinterpret_cast<uintptr_t>(CodeBufferOffset.load()) % 16 == 0, "Buffer needs to always be 16B aligned!");
++#else
+     LOGMAN_THROW_A_FMT(reinterpret_cast<uintptr_t>(CodeBufferOffset.load()) % 16 == 0, "Buffer needs to always be 16B aligned!");
++#endif
+ 
+     auto ExpectedOffset = CodeBufferOffset.load(std::memory_order_relaxed);
+ #ifdef PEAR_FEX_MEMORY_OWNER
+diff --git a/FEXCore/include/FEXCore/Utils/PearSourceGuard.h b/FEXCore/include/FEXCore/Utils/PearSourceGuard.h
+--- /dev/null
++++ b/FEXCore/include/FEXCore/Utils/PearSourceGuard.h
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: MIT
++// Original Pear downstream guard for the selected source owner profile.
++// Preserve upstream LOGMAN asserts and no-exception/fatal policy; this helper
++// changes no global logging macro, build type, permission or execution grant.
++#pragma once
++#include <FEXCore/Utils/LogManager.h>
++#include <cstdint>
++#ifdef PEAR_FEX_MEMORY_OWNER
++namespace FEXCore::Utils::PearSourceGuard {
++[[noreturn]] inline void Fail(const char* File,unsigned Line,const char* Function) {
++  // Genuine MFmt is unconditionally noreturn and ends in ForcedAssert even
++  // when ASSERTIONS_ENABLED==0. Only constant source-site facts are formatted:
++  // do not dereference rejected caller fields while constructing diagnostics.
++  LogMan::Throw::MFmt("{}:{} {}: Pear source guard refused",fmt::make_format_args(File,Line,Function));
++}
++[[noreturn]] inline void FailResult(const char* File,unsigned Line,const char* Function,
++                                  uint32_t Status,uint32_t Domain,int32_t Code) {
++  // These values are copies of an actual local Result, never refused source
++  // Frame/Thread fields. Preserve the original numeric failure provenance.
++  LogMan::Throw::MFmt("{}:{} {}: Pear source guard refused: status {}, domain {}, code {}",
++                     fmt::make_format_args(File,Line,Function,Status,Domain,Code));
++}
++} // namespace FEXCore::Utils::PearSourceGuard
++#define PEAR_FEX_REQUIRE(pred, message, ...) \
++  do { \
++    const bool PearGuardPassed=!!(pred); \
++    if (!PearGuardPassed) ::FEXCore::Utils::PearSourceGuard::Fail(__FILE_NAME__,__LINE__,__FUNCTION__); \
++  } while (0)
++#define PEAR_FEX_REQUIRE_RESULT(pred, message, result) \
++  do { \
++    const bool PearGuardPassed=!!(pred); \
++    if (!PearGuardPassed) { \
++      const auto& PearGuardResult=(result); \
++      ::FEXCore::Utils::PearSourceGuard::FailResult(__FILE_NAME__,__LINE__,__FUNCTION__, \
++        PearGuardResult.Status,PearGuardResult.ErrorDomain,PearGuardResult.ErrorCode); \
++    } \
++  } while (0)
++#else
++// Non-owner upstream branches retain their exact original assertion behavior.
++#define PEAR_FEX_REQUIRE(pred, message, ...) LOGMAN_THROW_A_FMT(pred,message __VA_OPT__(,) __VA_ARGS__)
++#define PEAR_FEX_REQUIRE_RESULT(pred, message, result) \
++  LOGMAN_THROW_A_FMT(pred,message,(result).Status,(result).ErrorDomain,(result).ErrorCode)
++#endif

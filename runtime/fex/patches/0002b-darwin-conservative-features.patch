@@ -1,0 +1,105 @@
+diff --git a/Source/Windows/Common/CPUFeatures.cpp b/Source/Windows/Common/CPUFeatures.cpp
+--- a/Source/Windows/Common/CPUFeatures.cpp
++++ b/Source/Windows/Common/CPUFeatures.cpp
+@@ -10,6 +10,7 @@
+ 
+ #include "CPUFeatures.h"
+ 
++#ifndef PEAR_FEX_DARWIN
+ namespace {
+ 
+ HKEY OpenProcessorKey(uint32_t Idx) {
+@@ -29,8 +30,10 @@
+ }
+ 
+ } // namespace
++#endif
+ 
+ namespace FEX::Windows {
++#ifndef PEAR_FEX_DARWIN
+ #define GetSysReg(name, reg)                         \
+   static uint64_t Get_##name() {                     \
+     uint64_t Result {};                              \
+@@ -55,8 +58,30 @@
+     FillFeatureFlags();
+   }
+ };
++#endif
+ 
+ FEXCore::HostFeatures CPUFeatures::FetchHostFeatures(bool IsWine, FEXCore::HostFeatures::HostTypeEnum HostType, uint32_t ProcessPID) {
++#ifdef PEAR_FEX_DARWIN
++  // Conservative Darwin policy: do not read Linux CP registers or invent MIDRs.
++  // The builder binds this cache-line value to an actual native sysctl receipt.
++#ifndef PEAR_FEX_DARWIN_DCACHE_LOG2
++#error The Darwin build requires a verified host cache-line configuration
++#endif
++  static_assert(PEAR_FEX_DARWIN_DCACHE_LOG2 >= 2 && PEAR_FEX_DARWIN_DCACHE_LOG2 <= 8);
++  SYSTEM_INFO SystemInfo {};
++  GetSystemInfo(&SystemInfo);
++  if (!IsWine || !SystemInfo.dwNumberOfProcessors || SystemInfo.dwNumberOfProcessors > 1024) {
++    ERROR_AND_DIE_FMT("Invalid Darwin Wine processor-count provider");
++  }
++  FEXCore::HostFeatures HostFeatures {};
++  HostFeatures.HostCPUCount = SystemInfo.dwNumberOfProcessors;
++  HostFeatures.DCacheLineLog2 = PEAR_FEX_DARWIN_DCACHE_LOG2;
++  HostFeatures.HostType = HostType;
++  HostFeatures.ProcessPID = ProcessPID;
++  // All optional ISA/FP, cache-maintenance, SVE, TPIDRRO and AVX acceleration
++  // remain disabled. Upstream guest feature masking/fallback code is retained.
++  return HostFeatures;
++#else
+   HKEY Key = OpenProcessorKey(0);
+   if (!Key) {
+     ERROR_AND_DIE_FMT("Couldn't detect CPU features");
+@@ -91,6 +116,7 @@
+     HostFeatures.SupportsAVX = false;
+   }
+   return HostFeatures;
++#endif
+ }
+ 
+ CPUFeatures::CPUFeatures(FEXCore::Context::Context& CTX) {
+diff --git a/FEXCore/include/FEXCore/Core/HostFeatures.h b/FEXCore/include/FEXCore/Core/HostFeatures.h
+--- a/FEXCore/include/FEXCore/Core/HostFeatures.h
++++ b/FEXCore/include/FEXCore/Core/HostFeatures.h
+@@ -97,5 +97,9 @@
+   // The Linux PID of this process. Useful for punching through perf-top information.
+   uint32_t ProcessPID {};
+   uint32_t pad2 {};
++#ifdef PEAR_FEX_DARWIN
++  // Actual GetSystemInfo count when hardware MIDR metadata is unavailable.
++  uint32_t HostCPUCount {};
++#endif
+ };
+ } // namespace FEXCore
+diff --git a/FEXCore/Source/Interface/Core/CPUID.cpp b/FEXCore/Source/Interface/Core/CPUID.cpp
+--- a/FEXCore/Source/Interface/Core/CPUID.cpp
++++ b/FEXCore/Source/Interface/Core/CPUID.cpp
+@@ -157,6 +157,14 @@
+ void CPUIDEmu::SetupHostHybridFlag() {
+   FEX_CONFIG_OPT(HideHybrid, HIDEHYBRID);
+   PerCPUData.resize(Cores);
++#ifdef PEAR_FEX_DARWIN
++  if (CTX->HostFeatures.CPUMIDRs.empty()) {
++    // Retain unknown product IDs internally; no hardware MIDR is synthesized.
++    for (auto& Data : PerCPUData) Data.ProductName = ProductNames::ARM_UNKNOWN;
++    Hybrid = false;
++    return;
++  }
++#endif
+ 
+   uint64_t MIDR {};
+   for (size_t i = 0; i < Cores; ++i) {
+@@ -1361,7 +1369,12 @@
+   : CTX {ctx}
+   , SupportsCPUIndexInTPIDRRO {CTX->HostFeatures.SupportsCPUIndexInTPIDRRO != 0}
+   , GetCPUID {GetCPUID_Syscall} {
++#ifdef PEAR_FEX_DARWIN
++  Cores = CTX->HostFeatures.HostCPUCount;
++  LOGMAN_THROW_A_FMT(Cores > 0 && Cores <= 1024, "Invalid observed Darwin host CPU count");
++#else
+   Cores = CTX->HostFeatures.CPUMIDRs.size();
++#endif
+ 
+   // Setup some state tracking
+   SetupHostHybridFlag();

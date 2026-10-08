@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear matches the checked prelude environment name to the existing native owner launcher. The launcher supplies its actual process PID; the independent native UnixLib GetPID comparison remains mandatory. No fallback or caller-provided substitute is added.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "postimage_bytes": 25537,
+      "postimage_sha256": "4b768a001ea05f13466348a23236de7620d245035c9a56da018180063502648b",
+      "preimage_sha256": "66a98ae207333c2d3078c3c3cbc4a31b4860f801274061d77c3e045c6d901723"
+    }
+  ],
+  "historical_strict_patch_sha256": "bd1506f542bfb4df0a31cd6f4787b7e1e87495d0be38e4b24fa88182df56356e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "owner-pid-environment-name",
+  "native_runtime_execution": false,
+  "order": 46,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

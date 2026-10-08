@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear checked CRT compile fixes; reuse pinned Wine header selection, const-preserving PE section lookup, and unsigned processor count.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "postimage_bytes": 22434,
+      "postimage_sha256": "59c36c73f5a370e6c21548f9b1afbd924d5a9933b447691464c5169900f0f711",
+      "preimage_sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3"
+    }
+  ],
+  "historical_strict_patch_sha256": "ccc186fbf0e894e86622c331ca6548f58bedd4fb6120a1407eda5b21e31739e7",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "checked-crt-build",
+  "native_runtime_execution": false,
+  "order": 28,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

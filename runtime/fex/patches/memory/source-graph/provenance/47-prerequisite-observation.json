@@ -1,0 +1,31 @@
+{
+  "attribution": "Original Pear factors the finite prerequisite observation for the approved pre-engine metadata fixture. The engine initializer retains its unchanged Ready check and all twelve proof flags remain false. Observation constructs no FEX object, invokes no CRT constructor, creates no source lifetime or executable extent, and requires actual externally verified signing plus native owner admission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+      "postimage_bytes": 1594,
+      "postimage_sha256": "3744392a91e7200b6c0ae6c8f11decf5be5026f5a17b29965100b70529f3ada8",
+      "preimage_sha256": "6e6cedd76fcfc780c27aed1d0bd6c9456118abf2db4d381be9cb5b35b8c876bb"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "postimage_bytes": 25628,
+      "postimage_sha256": "58bf0a0d15a65874e28f083e6eb6d8f03e073970deb63cb56e04f7ce3a6dbfff",
+      "preimage_sha256": "4b768a001ea05f13466348a23236de7620d245035c9a56da018180063502648b"
+    }
+  ],
+  "historical_strict_patch_sha256": "cf1af0120525bee4b20f3cada8ab30bb91b67553a2fa7ec5ea276c4cbe5c66bb",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "prerequisite-observation",
+  "native_runtime_execution": false,
+  "order": 47,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

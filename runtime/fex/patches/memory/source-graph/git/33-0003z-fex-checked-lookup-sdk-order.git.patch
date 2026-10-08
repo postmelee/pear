@@ -1,0 +1,23 @@
+diff --git a/Source/Windows/Common/WinAPI/Alloc.cpp b/Source/Windows/Common/WinAPI/Alloc.cpp
+--- a/Source/Windows/Common/WinAPI/Alloc.cpp
++++ b/Source/Windows/Common/WinAPI/Alloc.cpp
+@@ -2,6 +2,9 @@
+ #define NTDDI_VERSION 0x0A000005
+ #define WINAPI
+ #define WINBASEAPI
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ 
+ #include <cstdlib>
+ #include <cstdio>
+@@ -12,9 +15,6 @@
+ #include <windows.h>
+ #include <processenv.h>
+ #include "../Priv.h"
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-#include <FEXCore/Utils/PearDataMemory.h>
+-#endif
+ 
+ #ifndef _M_ARM64EC
+ namespace {

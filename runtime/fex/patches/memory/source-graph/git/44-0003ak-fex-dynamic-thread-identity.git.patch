@@ -1,0 +1,72 @@
+diff --git a/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp b/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp
+--- a/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp
++++ b/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp
+@@ -5,6 +5,9 @@
+ #include <atomic>
+ #include <cstddef>
+ #include <cstdint>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <processthreadsapi.h>
++#endif
+ namespace FEXCore::Allocator {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ namespace {
+@@ -15,8 +18,10 @@
+ };
+ constinit PearEmptyObjectBacking PearEmptyObjects {};
+ constinit std::atomic<uintptr_t> PearEmptyObjectThread {0};
+-thread_local unsigned char PearEmptyObjectThreadTag;
+-uintptr_t PearObjectThread() { return reinterpret_cast<uintptr_t>(&PearEmptyObjectThreadTag); }
++// Reuse the selected Windows runtime's direct TEB thread-ID observation.
++// The upstream custom CRT has no PE static-TLS directory; do not introduce
++// a new static-TLS allocation just to identify this one owned thread.
++uintptr_t PearObjectThread() { return static_cast<uintptr_t>(GetCurrentThreadId()); }
+ bool ReleasePearMetadataIfOwned(void* P) {
+   const uintptr_t Start=reinterpret_cast<uintptr_t>(PearEmptyObjects.Bytes);
+   const uintptr_t Address=reinterpret_cast<uintptr_t>(P);
+@@ -34,10 +39,12 @@
+ }
+ bool InitializePearEmptyObjectStorage() {
+   uintptr_t Expected=0;
+-  return PearEmptyObjectThread.compare_exchange_strong(Expected,PearObjectThread());
++  const auto Current=PearObjectThread();
++  return Current && PearEmptyObjectThread.compare_exchange_strong(Expected,Current);
+ }
+ bool ShutdownPearEmptyObjectStorage() {
+-  if (PearEmptyObjectThread.load()!=PearObjectThread()) return false;
++  const auto Current=PearObjectThread();
++  if (!Current || PearEmptyObjectThread.load()!=Current) return false;
+   for (const auto Run:PearEmptyObjects.Runs) if (Run) return false;
+   PearEmptyObjectThread.store(0);return true;
+ }
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.cpp b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.cpp
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+@@ -142,6 +142,27 @@
+ }
+ Outcome TLS(const Image& I,Report& R) {
+   const auto& D=I.NT->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_TLS];
++  if (!D.VirtualAddress && !D.Size) {
++    // The pinned FEX CRT uses dynamic TLS through its original Windows API
++    // wrappers. An absent PE static-TLS directory is admissible only when the
++    // actual image has no static-TLS section and no TLS callback to invoke.
++    const auto Sections=reinterpret_cast<const IMAGE_SECTION_HEADER*>(
++      reinterpret_cast<const std::byte*>(I.NT)+offsetof(IMAGE_NT_HEADERS64,OptionalHeader)+I.NT->FileHeader.SizeOfOptionalHeader);
++    auto O=ImageSpan(I,reinterpret_cast<uintptr_t>(Sections),
++      I.NT->FileHeader.NumberOfSections*sizeof(IMAGE_SECTION_HEADER),Phase::TLS);if (!O) return O;
++    for (unsigned N=0;N<I.NT->FileHeader.NumberOfSections;++N)
++      if (!std::memcmp(Sections[N].Name,".tls",4) && Sections[N].Misc.VirtualSize) return Refused(Phase::TLS);
++    const auto Begin=reinterpret_cast<uintptr_t>(&XLA),End=reinterpret_cast<uintptr_t>(&XLZ);
++    if (!Begin || End<Begin || (End-Begin)%sizeof(uintptr_t) ||
++        End-Begin>CRTPlan::MAX_CALLBACKS*sizeof(uintptr_t)) return Bad(Phase::TLS);
++    if (Begin!=End) {
++      O=ImageSpan(I,Begin,End-Begin,Phase::TLS);if (!O) return O;
++      for (auto A=Begin;A<End;A+=sizeof(uintptr_t)) if (*reinterpret_cast<const uintptr_t*>(A)) return Refused(Phase::TLS);
++    }
++    // Records a verified TLS prerequisite, including verified absence. It does
++    // not claim that a static TLS block was allocated or observed.
++    R.TLSObserved=1;return Good(Phase::TLS);
++  }
+   if (!D.VirtualAddress || D.Size!=sizeof(IMAGE_TLS_DIRECTORY64)) return Bad(Phase::TLS);
+   uintptr_t Address {};if (!Add(I.Base,D.VirtualAddress,Address)) return Bad(Phase::TLS);
+   auto O=ImageSpan(I,Address,sizeof(IMAGE_TLS_DIRECTORY64),Phase::TLS);if (!O) return O;

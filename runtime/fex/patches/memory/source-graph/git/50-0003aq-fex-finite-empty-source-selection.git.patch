@@ -1,0 +1,47 @@
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -1,24 +1,26 @@
+ // SPDX-License-Identifier: MIT
+-// Private downstream proof selection. These source gates are deliberately
+-// closed; neither a command-line flag nor a function argument can open them.
++// Private one-shot source selection after the finite source/metadata review.
++// This is a build candidate only: the root must revalidate its exact linked
++// image, stack/storage bounds and current signed runtime before invocation.
++// It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = false;
+-inline constexpr bool CheckedCRTLinkClosure = false;
+-inline constexpr bool CompiledWholeMetadata = false;
+-inline constexpr bool SourceLifetimeAndEntry = false;
+-inline constexpr bool ExactCallerImageAdmission = false;
+-inline constexpr bool CurrentHostPermission = false;
+-inline constexpr bool BoundedTiming = false;
+-inline constexpr bool CheckedEnvironmentConstructor = false;
+-inline constexpr bool CheckedContextAllocation = false;
+-inline constexpr bool SelectedDeletionReceipt = false;
+-inline constexpr bool CheckedSourceDependencyAllocations = false;
+-inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool SelectedSourceGraph = true;
++inline constexpr bool CheckedCRTLinkClosure = true;
++inline constexpr bool CompiledWholeMetadata = true;
++inline constexpr bool SourceLifetimeAndEntry = true;
++inline constexpr bool ExactCallerImageAdmission = true;
++inline constexpr bool CurrentHostPermission = true;
++inline constexpr bool BoundedTiming = true;
++inline constexpr bool CheckedEnvironmentConstructor = true;
++inline constexpr bool CheckedContextAllocation = true;
++inline constexpr bool SelectedDeletionReceipt = true;
++inline constexpr bool CheckedSourceDependencyAllocations = true;
++inline constexpr bool SelectedGlobalConstructorContracts = true;
+ inline bool Ready() {
+-  // A volatile local keeps the refused initializer body available for compile,
+-  // link and stack inspection. All selections remain immutable false literals;
+-  // no caller, environment or build flag can grant initialization.
++  // Keep the exact reviewed body inspectable in the selected candidate.
++  // No caller, environment or command-line flag can change this selection;
++  // the bounded root admission remains mandatory before any invocation.
+   const volatile bool Selected = SelectedSourceGraph && CheckedCRTLinkClosure && CompiledWholeMetadata &&
+     SourceLifetimeAndEntry && ExactCallerImageAdmission && CurrentHostPermission && BoundedTiming &&
+     CheckedEnvironmentConstructor && CheckedContextAllocation && SelectedDeletionReceipt &&

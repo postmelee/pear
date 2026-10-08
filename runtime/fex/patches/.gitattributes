@@ -1,0 +1,3 @@
+# Unified-diff context markers are patch syntax, not source indentation.
+# Check added source with git apply --stat --whitespace=error.
+*.patch -whitespace

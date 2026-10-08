@@ -1,0 +1,73 @@
+{
+  "attribution": "Original Pear finite ordinary-data backing for the one-shot empty initializer, with checked bounded admission and exact source object lifetimes. Original allocation remains selected outside this finite initialization mode; executable ownership and security policy are unchanged.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+      "postimage_bytes": 1367,
+      "postimage_sha256": "4e9f94cc78fda875a6eab2e06483435de2468efb870e3a46097d020f855c1a60",
+      "preimage_sha256": "c545db33f126b094dd653b5d49423280e23ac004fe12166e970b6e67a7356521"
+    },
+    {
+      "path": "FEXCore/Source/Utils/AllocatorHooks.cpp",
+      "postimage_bytes": 9005,
+      "postimage_sha256": "56bedf9486c2f371796a6076f63761285772b1d27512ac187acf368607e2d7a9",
+      "preimage_sha256": "f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.cpp",
+      "postimage_bytes": 8103,
+      "postimage_sha256": "93b33025721b5e646be49a5bbd601a8f3b1a219084f8d6ddee120e8266037319",
+      "preimage_sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 104834,
+      "postimage_sha256": "29fe869b30e5547861851d346a57b0a978ba8a52d50ece5fae2ebf1b49b13150",
+      "preimage_sha256": "cdf90c8b9feec95690b2c564f2df37a665e5bfb3ed2f44275bb3a6bb839fe598"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "postimage_bytes": 6599,
+      "postimage_sha256": "ac5cabe4a257920eb79f91c16ad8b9c539470690b2329f3316749f5ac57cdab4",
+      "preimage_sha256": "c783418b2efcb753669717801bbba64d0a803102c974952cd1715314987b8f97"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 63757,
+      "postimage_sha256": "cb338bead3e47c906972ec6752f6ea3f419e2d4e085b93d98e34ec531a33bdae",
+      "preimage_sha256": "9b8f5833da351ef55ff4ac56b50a084609c0f9e9e20d4c18ce1cf4af39c27bd0"
+    },
+    {
+      "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+      "postimage_bytes": 6143,
+      "postimage_sha256": "b5d318ffc0cd909293f3a80966498952cae206c97851ba2f40fa36e9cd6c5599",
+      "preimage_sha256": "8dbdbe8d3081ea76682f1bb3af543ad6d443c2d5ddbe5e01e8f9d90e154e0dd4"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+      "postimage_bytes": 10508,
+      "postimage_sha256": "ec85db75f30f93c1b209686ab5929f20d3ae9e7949d163a8065cd43369bed603",
+      "preimage_sha256": "5da6baf55895d296742e811e7cdb600a2b6b41fc6f5529023eed1f7c04eb9a10"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "postimage_bytes": 9577,
+      "postimage_sha256": "0211812fd3cc5987cb28e07037ceb0fd4b67dcf26807667506e402076e8042f7",
+      "preimage_sha256": "ecb7a9f4bb1120cfe2781b2992a14d9e6f5b92db0f4bc0c91537ba976649db68"
+    }
+  ],
+  "historical_strict_patch_sha256": "09c5c28369f074c90c878212f78556707acc850d10a102f802e7ea425e65a92e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-empty-object-backing",
+  "native_runtime_execution": false,
+  "order": 38,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

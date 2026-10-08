@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear pairs the mandatory CMake header identity check to the approved authoritative Wine ABI3 header. The exact hash check remains mandatory; no mismatch bypass.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/CMakeLists.txt",
+      "postimage_bytes": 2104,
+      "postimage_sha256": "5efb5cebe2ea5011ead0cfe3e27b9721e8dc3dde75cbfc5c1a129a89ff693568",
+      "preimage_sha256": "81fa8a1026fa68c026bdd867ad1b98603da17437e464478640528151653cec37"
+    }
+  ],
+  "historical_strict_patch_sha256": "4dd5a1e10b824e54c8ded19e0171243569d17a0cad100afc5b1f4d03efa56562",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "metadata-paired-header-pin",
+  "native_runtime_execution": false,
+  "order": 43,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

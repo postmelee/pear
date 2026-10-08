@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear corrects the finite assertion to the pinned upstream register-offset LDR and DMB_LD encodings. This changes no emitter or upstream ordering algorithm. All initializer/transfer selections remain closed.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 97147,
+      "postimage_sha256": "5e0c586ebca1fd80bc7a6ebb6aa7d6567c5032e7672f431ca9d634ec9790a9ec",
+      "preimage_sha256": "4c1287b482299402300ba7122b414fe18b6537788f6f8a72dc59df47958f240c"
+    }
+  ],
+  "historical_strict_patch_sha256": "b95ef33668b6346f8aaeaac2c82df4cebc6c2704521236dfd166d63748b7afea",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-upstream-patch-encoding",
+  "native_runtime_execution": false,
+  "order": 57,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

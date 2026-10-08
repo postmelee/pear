@@ -1,0 +1,21 @@
+diff --git a/FEXCore/Source/Interface/Context/Context.cpp b/FEXCore/Source/Interface/Context/Context.cpp
+--- a/FEXCore/Source/Interface/Context/Context.cpp
++++ b/FEXCore/Source/Interface/Context/Context.cpp
+@@ -26,7 +26,16 @@
+ }
+ PearContextOwner FEXCore::Context::Context::CreatePearContext(const FEXCore::HostFeatures& Features,
+     FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+-  auto Actual=fextl::make_unique<FEXCore::Context::ContextImpl>(Features);
++  // Reuse the selected allocator/alignment once, but never placement-construct
++  // a real Context into a null allocation. No errno is invented for rpaligned_alloc.
++  auto* Storage=FEXCore::Allocator::aligned_alloc(alignof(FEXCore::Context::ContextImpl),sizeof(FEXCore::Context::ContextImpl));
++  if (!Storage) {
++    Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++    FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome);
++    return {};
++  }
++  auto Actual=fextl::unique_ptr<FEXCore::Context::ContextImpl> {
++    ::new (Storage) FEXCore::Context::ContextImpl(Features)};
+   Outcome=Actual->GetPearLifetimeCreation();
+   if (!Outcome) {
+     // This actual allocation was never admitted, bound or initialized. Its

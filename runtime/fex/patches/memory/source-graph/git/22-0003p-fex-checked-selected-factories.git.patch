@@ -1,0 +1,113 @@
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -87,7 +87,14 @@
+   return Published;
+ }
+ fextl::unique_ptr<Dispatcher> Dispatcher::CreatePear(FEXCore::Context::ContextImpl* CTX, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+-  auto Candidate = fextl::make_unique<Dispatcher>(CTX);
++  auto* Storage=FEXCore::Allocator::aligned_alloc(alignof(Dispatcher),sizeof(Dispatcher));
++  if (!Storage) {
++    Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++    FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome); return {};
++  }
++  // Construct only the actual selected shell; InitializePear still returns the
++  // original observed owner/VM outcome and uses the unchanged owned deleter.
++  auto Candidate=fextl::unique_ptr<Dispatcher> {::new (Storage) Dispatcher(CTX)};
+   Outcome = Candidate->InitializePear();
+   return Outcome ? std::move(Candidate) : fextl::unique_ptr<Dispatcher> {};
+ }
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -776,10 +776,17 @@
+   const auto Slot = AcquirePearConstructionSlot();
+   if (!Slot) { Outcome = {PEAR_FEX_CAPACITY, 0, 0}; return nullptr; }
+   FEXCore::Core::InternalThreadState* Thread {};
++  auto* ThreadStorage=FEXCore::Allocator::aligned_alloc(alignof(FEXCore::Core::InternalThreadState),sizeof(FEXCore::Core::InternalThreadState));
++  if (!ThreadStorage) {
++    FinishPearConstructionSlot(*Slot,nullptr,false);
++    Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++    Memory::Retirement::PoisonSourceAdmission(Outcome); return nullptr;
++  }
+ #if defined(__cpp_exceptions) || defined(__EXCEPTIONS)
+   try {
+-    Thread = new FEXCore::Core::InternalThreadState {.CTX = this};
++    Thread = ::new (ThreadStorage) FEXCore::Core::InternalThreadState {.CTX = this};
+   } catch (...) {
++    FEXCore::Allocator::aligned_free(ThreadStorage);
+     FinishPearConstructionSlot(*Slot, nullptr, false);
+     throw; // Preserve the upstream NX allocation exception when supported.
+   }
+@@ -787,7 +794,7 @@
+   // The pinned target disables C++ unwinding. Preserve that upstream policy;
+   // typed-return cleanup/normal exits remain checked, allocator termination is
+   // not a recoverable or qualified cleanup path.
+-  Thread = new FEXCore::Core::InternalThreadState {.CTX = this};
++  Thread = ::new (ThreadStorage) FEXCore::Core::InternalThreadState {.CTX = this};
+ #endif
+   struct ConstructionGuard {
+     ContextImpl& Owner;
+diff --git a/Source/Tools/CommonTools/DummyHandlers.cpp b/Source/Tools/CommonTools/DummyHandlers.cpp
+--- a/Source/Tools/CommonTools/DummyHandlers.cpp
++++ b/Source/Tools/CommonTools/DummyHandlers.cpp
+@@ -1,5 +1,8 @@
+ // SPDX-License-Identifier: MIT
+ #include "DummyHandlers.h"
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearFEXRetirement.h>
++#endif
+ 
+ namespace FEX::DummyHandlers {
+ thread_local FEXCore::Core::InternalThreadState* TLSThread;
+@@ -23,4 +26,28 @@
+ fextl::unique_ptr<FEX::DummyHandlers::DummySignalDelegator> CreateSignalDelegator() {
+   return fextl::make_unique<DummySignalDelegator>();
+ }
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++// Narrow checked counterparts for the finite selected source target. The old
++// factory bodies and the pinned fixed-field dependency constructors remain.
++fextl::unique_ptr<FEXCore::HLE::SyscallHandler> CreatePearSyscallHandler(FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  auto* Storage=FEXCore::Allocator::aligned_alloc(alignof(DummySyscallHandler),sizeof(DummySyscallHandler));
++  if (!Storage) {
++    Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++    FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome); return {};
++  }
++  auto Actual=fextl::unique_ptr<DummySyscallHandler> {::new (Storage) DummySyscallHandler()};
++  Outcome={PEAR_FEX_OK,0,0};return Actual;
++}
++fextl::unique_ptr<DummySignalDelegator> CreatePearSignalDelegator(FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  auto* Storage=FEXCore::Allocator::aligned_alloc(alignof(DummySignalDelegator),sizeof(DummySignalDelegator));
++  if (!Storage) {
++    Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++    FEXCore::Utils::PearFEXMemory::Retirement::PoisonSourceAdmission(Outcome); return {};
++  }
++  auto Actual=fextl::unique_ptr<DummySignalDelegator> {::new (Storage) DummySignalDelegator()};
++  Outcome={PEAR_FEX_OK,0,0};return Actual;
++}
++#endif
++
+ } // namespace FEX::DummyHandlers
+diff --git a/Source/Tools/CommonTools/DummyHandlers.h b/Source/Tools/CommonTools/DummyHandlers.h
+--- a/Source/Tools/CommonTools/DummyHandlers.h
++++ b/Source/Tools/CommonTools/DummyHandlers.h
+@@ -6,6 +6,9 @@
+ #include <FEXCore/Utils/AllocatorHooks.h>
+ 
+ #include <FEXCore/fextl/memory.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearFEXMemory.h>
++#endif
+ 
+ namespace FEX::DummyHandlers {
+ 
+@@ -41,4 +44,8 @@
+ 
+ fextl::unique_ptr<FEXCore::HLE::SyscallHandler> CreateSyscallHandler();
+ fextl::unique_ptr<FEX::DummyHandlers::DummySignalDelegator> CreateSignalDelegator();
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<FEXCore::HLE::SyscallHandler> CreatePearSyscallHandler(FEXCore::Utils::PearFEXMemory::Result&);
++fextl::unique_ptr<DummySignalDelegator> CreatePearSignalDelegator(FEXCore::Utils::PearFEXMemory::Result&);
++#endif
+ } // namespace FEX::DummyHandlers

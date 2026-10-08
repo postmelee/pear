@@ -1,0 +1,488 @@
+{
+  "audit_ref": {
+    "path": "runtime/sources/manifest.json",
+    "sha256": "535cdcb7b2e76d4bc536d63ad7d17d31f562f438b7850a75a0ace1b9c88466b8"
+  },
+  "baseline_ref": {
+    "materialized_source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7",
+    "series_ref": {
+      "path": "runtime/wine/patches/series.json",
+      "sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086"
+    },
+    "wine_commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "wine_tree": "10b47b2965a7b3e1e9694ec506a3d13525211892"
+  },
+  "components": [
+    {
+      "audit_component_id": "fex-upstream",
+      "cache_path": "fex-upstream/repo.git",
+      "commit": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "id": "fex-upstream",
+      "listing_ref": {
+        "path": "fex-upstream/tree-listing.z",
+        "sha256": "00b9e613e0c7942ec35776578a87aa6529224cba1ff6de2c1a73331a2d5d5f1c"
+      },
+      "tree": "7509ab443d32692ac72ee51c0697ccf86d0a66af",
+      "url": "https://github.com/FEX-Emu/FEX.git"
+    },
+    {
+      "audit_component_id": "fex-cpp-optparse",
+      "cache_path": "fex-cpp-optparse/repo.git",
+      "commit": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+      "id": "fex-cpp-optparse",
+      "listing_ref": {
+        "path": "fex-cpp-optparse/tree-listing.z",
+        "sha256": "7213c3a365d0f913484839a0bbc2a739ec7d429892203b2a63ef751d4662e2de"
+      },
+      "tree": "83f3445fe4f223102506c20b2ec583f712b28910",
+      "url": "https://github.com/Sonicadvance1/cpp-optparse"
+    },
+    {
+      "audit_component_id": "fex-fmt",
+      "cache_path": "fex-fmt/repo.git",
+      "commit": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+      "id": "fex-fmt",
+      "listing_ref": {
+        "path": "fex-fmt/tree-listing.z",
+        "sha256": "344344b91f8658d5b34a6a6b059707451ae336baa9c0921868a38d8a73f91f31"
+      },
+      "tree": "f7d6122a22a4b5a2241e9d14570817633b55ddc4",
+      "url": "https://github.com/fmtlib/fmt.git"
+    },
+    {
+      "audit_component_id": "fex-range-v3",
+      "cache_path": "fex-range-v3/repo.git",
+      "commit": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "id": "fex-range-v3",
+      "listing_ref": {
+        "path": "fex-range-v3/tree-listing.z",
+        "sha256": "98194cdca7259bedb9df26d63dc1b2280e59d81f6cb06be2f5d692dd6a131b87"
+      },
+      "tree": "bddf4cfede92ace82abac9847af08962a82f36cf",
+      "url": "https://github.com/ericniebler/range-v3.git"
+    },
+    {
+      "audit_component_id": "fex-rpmalloc",
+      "cache_path": "fex-rpmalloc/repo.git",
+      "commit": "09142d726429416bfa7b459151515fe3ab7622dd",
+      "id": "fex-rpmalloc",
+      "listing_ref": {
+        "path": "fex-rpmalloc/tree-listing.z",
+        "sha256": "7dd720544d7555f0af09b99b69679f471f2ff5a307c651cff6825f7e3cf3c19e"
+      },
+      "tree": "8df22bc1162ac2da5d776bb20631f964598c8353",
+      "url": "https://github.com/FEX-Emu/rpmalloc.git"
+    },
+    {
+      "audit_component_id": "fex-unordered_dense",
+      "cache_path": "fex-unordered_dense/repo.git",
+      "commit": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+      "id": "fex-unordered_dense",
+      "listing_ref": {
+        "path": "fex-unordered_dense/tree-listing.z",
+        "sha256": "f8d9a39dff2a834b8f9560398760616a162480fb79f3bde0c97036f6396dbb0c"
+      },
+      "tree": "40f25261cffbae5c901319dd76013224ff3658dd",
+      "url": "https://github.com/martinus/unordered_dense.git"
+    },
+    {
+      "audit_component_id": "fex-xxhash",
+      "cache_path": "fex-xxhash/repo.git",
+      "commit": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+      "id": "fex-xxhash",
+      "listing_ref": {
+        "path": "fex-xxhash/tree-listing.z",
+        "sha256": "c13fad6c7eb8b797a3252cb1ef980cbac3af89083cbb9bbd9957c0a547f237ee"
+      },
+      "tree": "9d4f447c856962a98e22f144bd9b0315ab4d18f8",
+      "url": "https://github.com/Cyan4973/xxHash.git"
+    }
+  ],
+  "interface_sources": [
+    {
+      "component": "fex-upstream",
+      "git_blob": "ed7f18ce63b94fb4ad4519b0acfd70540270c659",
+      "path": "Source/Windows/UnixLib/FEXUnixLib.h",
+      "sha256": "0946d1a2b406a04dc778597009ba2098e2c35cad359333c44aebed5e2151da23"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "8adef59935e993b21e94dd20fdd2923321fdf94a",
+      "path": "Source/Windows/UnixLib/FEXUnixLib.cpp",
+      "sha256": "e1fd4f01391f8b070e0de78458ed37cc8ee3fc7f07562f162db3668ddf5af5fa"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "e37807fda1443c66ee185b39f47ffeb96d6b13b5",
+      "path": "Source/Windows/Common/FEXUnixLib.cpp",
+      "sha256": "ded96c55879a7a7f537022910efa7e94462c0c078f7376467c3eb1ce2e3ef182"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "f63478d792dc7f1774f7cf15ee05c95d13e459c8",
+      "path": "Source/Windows/Common/TSOHandlerConfig.h",
+      "sha256": "88a2daeea537dd33e04c4b47c2f547b2f0e4b602c3e5c4871a113370f03dd7e7"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "c033db8affb2e49bb7b14f81d26674cb611f19a6",
+      "path": "Source/Windows/Common/CPUFeatures.cpp",
+      "sha256": "a9ff29663ee6de4d60da233b762e0df37a0fb9f9ad79184080c01b7184524a1e"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "93a3ab098afa48ea0e833db2628402d4c8787b3a",
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "b6e9a6da61b5c89476f41c3b2b774231bd3da3e11c14fc55a1c1c4330e9c7ea0"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "4a59cf650bc54b33ef5252ae5fa2aa86e49c6b48",
+      "path": "Source/Windows/ARM64EC/Module.S",
+      "sha256": "3d9aa27520c934b1b54dc7afb308abb1109c9628cca4f399a3ffdffd8362ed62"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "bb51ca889bbefe83eae7780a65b0fcd48aa93d0a",
+      "path": "Source/Windows/ARM64EC/libarm64ecfex.def",
+      "sha256": "263cdaf82e317faaec4b390bbc58eed2079230c0731e8aecb5f8f534f7bf4e84"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "5fff39032763d01c937fdd05dfd710ad55cd3fcc",
+      "path": "Source/Windows/WOW64/libwow64fex.def",
+      "sha256": "b2894fe31fc6dc2f9914a37728303c9f135e55693c96cbe9dcb77c26246c4a24"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "c4cadf40aa8a54b5caa792d51a39a1810793c3d7",
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "sha256": "5992a78d13a679a1c632bde6e98878acd05e1beb0dc7d8539ae4440c16098897"
+    }
+  ],
+  "mounts": [
+    {
+      "commit": "2dae74bb693e42d850fb0adcc9045c5b71fbdeae",
+      "component": null,
+      "condition": "Documentation publishing tree outside the source-build candidate with RANGE_V3_DOCS disabled; not acquired.",
+      "parent": "fex-range-v3",
+      "path": "doc/gh-pages",
+      "status": "excluded"
+    },
+    {
+      "commit": "b3fb4b9feafcd8d91c5cb510a4775143fdbef02f",
+      "component": null,
+      "condition": "BUILD_TESTING and no selected system Catch2 package.",
+      "parent": "fex-upstream",
+      "path": "External/Catch2",
+      "status": "excluded"
+    },
+    {
+      "commit": "ee2ec5fd83dafce291024683b50dc89219333076",
+      "component": null,
+      "condition": "Header input not selected for the initial MINGW Windows-module subset with BUILD_THUNKS=OFF. Reassess if a port enables thunks or other configurations.",
+      "parent": "fex-upstream",
+      "path": "External/Vulkan-Headers",
+      "status": "excluded"
+    },
+    {
+      "commit": "3e49836995c1dcb3df709440ad2f270b569c6a5f",
+      "component": null,
+      "condition": "Linux DRM header input outside the initial Windows-module source subset. Reassess the final port configuration before excluding it from a build closure.",
+      "parent": "fex-upstream",
+      "path": "External/drm-headers",
+      "status": "excluded"
+    },
+    {
+      "commit": "442678a134e2d25e759c430cca32e06e9e142f1f",
+      "component": null,
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "parent": "fex-upstream",
+      "path": "External/fex-gcc-target-tests-bins",
+      "status": "excluded"
+    },
+    {
+      "commit": "71349ae6d14ac2e3e792730e240aecd8076cee6c",
+      "component": null,
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "parent": "fex-upstream",
+      "path": "External/fex-gvisor-tests-bins",
+      "status": "excluded"
+    },
+    {
+      "commit": "9ae29638f8000c1603f16385ed1cf6c4c23ee414",
+      "component": null,
+      "condition": "Prebuilt Linux test repository, not part of the selected public source subset; no test binary is downloaded or executed.",
+      "parent": "fex-upstream",
+      "path": "External/fex-posixtest-bins",
+      "status": "excluded"
+    },
+    {
+      "commit": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+      "component": "fex-fmt",
+      "condition": "Bundled source used under MINGW; fallback elsewhere.",
+      "parent": "fex-upstream",
+      "path": "External/fmt",
+      "status": "enabled"
+    },
+    {
+      "commit": "8436195ad5e1bc347d9b39743af3d29abee59f06",
+      "component": null,
+      "condition": "The inspected MINGW branch disables ENABLE_JEMALLOC_GLIBC_ALLOC; no Darwin allocator configuration is established.",
+      "parent": "fex-upstream",
+      "path": "External/jemalloc_glibc",
+      "status": "excluded"
+    },
+    {
+      "commit": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+      "component": "fex-range-v3",
+      "condition": "Bundled source fallback when a system range-v3 package is not selected.",
+      "parent": "fex-upstream",
+      "path": "External/range-v3",
+      "status": "enabled"
+    },
+    {
+      "commit": "09142d726429416bfa7b459151515fe3ab7622dd",
+      "component": "fex-rpmalloc",
+      "condition": "ENABLE_FEX_ALLOCATOR; the inspected MINGW branch sets this true.",
+      "parent": "fex-upstream",
+      "path": "External/rpmalloc",
+      "status": "enabled"
+    },
+    {
+      "commit": "650c98ece70da9e155e7ba1c2b3ee16004aae118",
+      "component": null,
+      "condition": "ENABLE_FEXCORE_PROFILER and FEXCORE_PROFILER_BACKEND exactly TRACY in the inspected condition; no profiler configuration selected.",
+      "parent": "fex-upstream",
+      "path": "External/tracy",
+      "status": "excluded"
+    },
+    {
+      "commit": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+      "component": "fex-unordered_dense",
+      "condition": "Bundled source fallback when a system unordered_dense package is not selected.",
+      "parent": "fex-upstream",
+      "path": "External/unordered_dense",
+      "status": "enabled"
+    },
+    {
+      "commit": "585d860b12cdfc3a72f5fdad5e02e4d50a64c014",
+      "component": null,
+      "condition": "BUILD_TESTING or ENABLE_VIXL_DISASSEMBLER or ENABLE_VIXL_SIMULATOR; acquired for the declared test/diagnostic source path.",
+      "parent": "fex-upstream",
+      "path": "External/vixl",
+      "status": "excluded"
+    },
+    {
+      "commit": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+      "component": "fex-xxhash",
+      "condition": "Bundled source fallback; cross-compilation bypasses the initial system-package lookup.",
+      "parent": "fex-upstream",
+      "path": "External/xxhash",
+      "status": "enabled"
+    },
+    {
+      "commit": "9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f",
+      "component": null,
+      "condition": "ENABLE_ZYDIS and no selected system Zydis/Zycore pair; acquired as an optional diagnostic source.",
+      "parent": "fex-upstream",
+      "path": "External/zydis",
+      "status": "excluded"
+    },
+    {
+      "commit": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+      "component": "fex-cpp-optparse",
+      "condition": "Source/Common and the Windows offline compiler use this source dependency.",
+      "parent": "fex-upstream",
+      "path": "Source/Common/cpp-optparse",
+      "status": "enabled"
+    }
+  ],
+  "record_kind": "fex_build_inputs",
+  "schema_version": 1,
+  "scope": "fex_component",
+  "source_requirements": [
+    {
+      "component": "fex-upstream",
+      "git_blob": "87b7c311d4a28c44f1fef7b989ac7d606f7b176b",
+      "path": "CMakeLists.txt",
+      "sha256": "f4ad1ac1466ee8251c5168c75b7587cec8f0e5e3fda959d73a603828ca8e66dd"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "d05e07d3a70b19b549799b8790020826881eadb6",
+      "path": "Source/Common/CMakeLists.txt",
+      "sha256": "16391dc3c24290c861ea0fa1dd7e57460feb9a3bd56085012ae001e1b4d2e5d1"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "fa7ed605c1f439f54d55e5c5866d802df8a6ee52",
+      "path": "Source/Windows/CMakeLists.txt",
+      "sha256": "9de13e8036b3762b7b2dac898c3302a54e51f9a32fc042089a59dbf355edd54a"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "e61f1b9f98800cca04a3fca5ee7a7a5dca8ba8c7",
+      "path": "FEXCore/CMakeLists.txt",
+      "sha256": "fd124a11355244133132dad44a8208365fa76e630bf572cfdfba62612f03638b"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "0c9a57a1732391e91eced52f8d01e5a232dc01b2",
+      "path": "Source/Windows/ARM64EC/CMakeLists.txt",
+      "sha256": "f1b1be4a3be65c0369c1c754590376ba7bb0b26700a75959de110bef0b729597"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "5bc5accff0d5d4772f82bbd12b9a87040bc1dbbc",
+      "path": "Source/Windows/WOW64/CMakeLists.txt",
+      "sha256": "7ded9799dbe6e8b7e45cc02f31d35135fe04c8e5e29e5b01013034472a5076fc"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "37eda6aa03dbcc80670aaa09cb683c9965bf26d7",
+      "path": "Source/Windows/UnixLib/CMakeLists.txt",
+      "sha256": "f21019f636c1172b4bd822a04d5fd098d2212f17681c4e42b825ceef527e883f"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "cff0b7b27173660a331f894ef5272925bd0aceac",
+      "path": "Data/CMake/toolchain_mingw.cmake",
+      "sha256": "a1df8f20e3efdd860dbf963382c9a220ae2a8723781e0ad68cbec1d0a5df4b71"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "938377f32409d90b36765566917b7312aef5e74c",
+      "path": "FEXCore/Source/Interface/Config/Config.json.in",
+      "sha256": "9e3f33a5a3284d9d7d3f83854c6119292538b130ca65d1d58b11971300b452a5"
+    }
+  ],
+  "terms": [
+    {
+      "component": "fex-upstream",
+      "git_blob": "cdb4f90b34cd30c0e0fd88108481c1fe61f66e57",
+      "path": "LICENSE",
+      "role": "notice",
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "cdb4f90b34cd30c0e0fd88108481c1fe61f66e57",
+      "path": "FEXCore/LICENSE",
+      "role": "notice",
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "f0a3c2c511e3209e4959d2b723f74b23b8fa6f70",
+      "path": "CONTRIBUTING.md",
+      "role": "contribution_policy",
+      "sha256": "0965cc62eb051f931dde53234d69e837d4f500e4a2437cf27d893a735c5206e1"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "e222eb56762e40223a7c20a812a930f8ec3cbf85",
+      "path": "AGENTS.md",
+      "role": "contribution_policy",
+      "sha256": "3c77f003d355447c8166e3f02b64c6828126ac3e3b1ea0268ea332a7afbb6e09"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "0fccdb29fff1b065712a0b43c9568adbb71ecc83",
+      "path": "External/tiny-json/LICENSE",
+      "role": "notice",
+      "sha256": "83c6abf07e7123427303b5f12cd995122c372a5cb96815ec130a18628396fb7c"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "3cfe13ae33195472f56d340f51fc9bf16760b95b",
+      "path": "External/cephes/LICENSE",
+      "role": "notice",
+      "sha256": "edf1440b625e6d434a986cdb535c702001afab8959d94ce6275441a58cfd0ebb"
+    },
+    {
+      "component": "fex-upstream",
+      "git_blob": "1bf64c24f89cfffcb83d299b90b9d8ca13e04dfa",
+      "path": "External/SoftFloat-3e/include/SoftFloat-3e/softfloat.h",
+      "role": "notice",
+      "sha256": "907a309d402530a9647cfe8292228250539d4cafb6f2c1cbb9eaa6e7bd9d639c"
+    },
+    {
+      "component": "fex-cpp-optparse",
+      "git_blob": "995e40750f9bead22bdbfb7e3c0c1c310cc8d6c4",
+      "path": "LICENSE",
+      "role": "notice",
+      "sha256": "d638447635afa6837615553bcebbba60bc80a0e62ed9b158b4ed969e8bb72421"
+    },
+    {
+      "component": "fex-fmt",
+      "git_blob": "795fdaec8f2ce6fcc97bbb15d1a6ac073af7bd17",
+      "path": "LICENSE",
+      "role": "notice",
+      "sha256": "a65fcc5a1095fc33cc37e4fff69366e49d7e92f613558a2b95ed1b70e33758b4"
+    },
+    {
+      "component": "fex-fmt",
+      "git_blob": "b82f145069a8c61601ce12604b00fd06a8050488",
+      "path": "CONTRIBUTING.md",
+      "role": "contribution_policy",
+      "sha256": "be39c4f99e35a65dc2212867fc13a58478c0591e2e1e523cc07a9e77a0c681f3"
+    },
+    {
+      "component": "fex-fmt",
+      "git_blob": "1cd1ef92696b65b2ecb0e560e622f0a0e869dcf3",
+      "path": "doc/LICENSE-exception",
+      "role": "notice",
+      "sha256": "07580f2a3b35709ce703d523f447b242f6dfec7582a8c0df102c7fa2849375f8"
+    },
+    {
+      "component": "fex-range-v3",
+      "git_blob": "698193e974ec62c17bbd913769336de5e9e85ce2",
+      "path": "LICENSE.txt",
+      "role": "notice",
+      "sha256": "2b74ee37dd1a90b2b385534b7dbc171938409bda468673a123ff25302c9c5739"
+    },
+    {
+      "component": "fex-rpmalloc",
+      "git_blob": "8ee63b86189d4a3fc51b2bdf48f77df316468d2e",
+      "path": "LICENSE",
+      "role": "notice",
+      "sha256": "9fdc653aacc736bef0cd12854f4a8d94f703ec5603fb5dca1be945b7f679918c"
+    },
+    {
+      "component": "fex-rpmalloc",
+      "git_blob": "6bb8a291517d679d962db079ade50adfaf39ae2a",
+      "path": "UNLICENSE",
+      "role": "notice",
+      "sha256": "79d0fc44716007dddc375601bca8879ad45bc1165bf9342b7a16572b4f41abe8"
+    },
+    {
+      "component": "fex-unordered_dense",
+      "git_blob": "c4d1a0e48eba077622a1aeb77522ab008b196bfc",
+      "path": "LICENSE",
+      "role": "notice",
+      "sha256": "4f5a62734899ec0ba85d3e8264a7ed1fcb4bcb8f0b4359c0afd627b6314ae599"
+    },
+    {
+      "component": "fex-unordered_dense",
+      "git_blob": "58f8c7aacaa62ecca2e5ed6169ebfcbd9049aa54",
+      "path": "CONTRIBUTING.md",
+      "role": "contribution_policy",
+      "sha256": "dc8c6127bcf3405588f442968ec385c4d6c7795636f514660ac49906b5ea3171"
+    },
+    {
+      "component": "fex-xxhash",
+      "git_blob": "e4c5da7234eca7baad9a46f0b144e49ccad2e500",
+      "path": "LICENSE",
+      "role": "notice",
+      "sha256": "6ffedbc0f7878612d2b23589f1ff2ab15633e1df7963a5d9fc750ec5500c7e7a"
+    },
+    {
+      "component": "fex-xxhash",
+      "git_blob": "d159169d1050894d3ea3b98e1c965c4058208fe1",
+      "path": "cli/COPYING",
+      "role": "notice",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    }
+  ]
+}

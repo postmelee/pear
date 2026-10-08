@@ -1,0 +1,12 @@
+diff --git a/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp b/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
+--- a/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
++++ b/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
+@@ -2012,7 +2012,7 @@
+   // Multiple threads can be attempting to handle the SIGBUS or even be executing the code being backpatched.
+   // The ordinary owner path operates on a coherent NX snapshot after global
+   // quiescence. Its RX tail lock is inert and is never written or acquired.
+-  std::optional<FEXCore::Utils::SpinWaitLock::UniqueSpinMutex> lk;
++  std::optional<FEXCore::Utils::SpinWaitLock::UniqueSpinMutex<uint32_t>> lk;
+   if (InlineTail) lk.emplace(&InlineTail->SpinLockFutex);
+ 
+   if ((Instr & LDAXR_MASK) == LDAR_INST ||  // LDAR*

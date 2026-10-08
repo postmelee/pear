@@ -1,0 +1,345 @@
+diff --git a/FEXCore/Source/Interface/IR/PassManager.h b/FEXCore/Source/Interface/IR/PassManager.h
+--- a/FEXCore/Source/Interface/IR/PassManager.h
++++ b/FEXCore/Source/Interface/IR/PassManager.h
+@@ -13,6 +13,10 @@
+ #include <FEXCore/fextl/unordered_map.h>
+ #include <FEXCore/fextl/vector.h>
+ 
++#include <array>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearFEXMemory.h>
++#endif
+ #include <concepts>
+ #include <utility>
+ 
+@@ -43,6 +47,9 @@
+     AddDefaultPasses(CTX);
+   }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  static fextl::unique_ptr<PassManager> CreatePear(Context::ContextImpl*,FEXCore::Utils::PearFEXMemory::Result&);
++#endif
+   // Executes all of the passes added to the manager.
+   // If assertions are enabled, this will also run all validation passes.
+   void Run(IREmitter* IREmit);
+@@ -53,6 +60,9 @@
+ 
+   // Whether or not a pass with the given name is within the manager.
+   bool HasPass(const fextl::string& Name) const {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    if (PearFinite) return Name=="RA" && PearRA;
++#endif
+     return NameToPassMaping.contains(Name);
+   }
+ 
+@@ -63,6 +73,9 @@
+     return dynamic_cast<T*>(GetPass(Name));
+   }
+   Pass* GetPass(const fextl::string& Name) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    if (PearFinite) return Name=="RA" ? PearRA : nullptr;
++#endif
+     const auto Iter = NameToPassMaping.find(Name);
+     if (Iter == NameToPassMaping.end()) {
+       return nullptr;
+@@ -76,6 +89,15 @@
+ 
+ private:
+   void AddDefaultPasses(Context::ContextImpl* ctx);
++#ifdef PEAR_FEX_MEMORY_OWNER
++  struct PearEmptyTag {};
++  explicit PassManager(PearEmptyTag) : PearFinite {true} {}
++  // The selected non-dumping pipeline contains these same three upstream passes.
++  std::array<fextl::unique_ptr<Pass>,3> PearPasses {};
++  Pass* PearRA {};
++  size_t PearCount {};
++  bool PearFinite {};
++#endif
+ 
+   using PassArrayType = fextl::vector<fextl::unique_ptr<Pass>>;
+   PassArrayType::iterator InsertAt(PassArrayType::iterator pos, fextl::unique_ptr<Pass> Pass);
+diff --git a/FEXCore/Source/Interface/IR/Passes.h b/FEXCore/Source/Interface/IR/Passes.h
+--- a/FEXCore/Source/Interface/IR/Passes.h
++++ b/FEXCore/Source/Interface/IR/Passes.h
+@@ -15,6 +15,11 @@
+ fextl::unique_ptr<Pass> CreateRegisterAllocationPass(const CPUIDEmu* CPUID);
+ fextl::unique_ptr<Pass> CreateX87StackOptimizationPass(const HostFeatures&, OpSize GPROpSize);
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<Pass> CreatePearDeadFlagCalculationEliminination();
++fextl::unique_ptr<Pass> CreatePearRegisterAllocationPass(const CPUIDEmu*);
++fextl::unique_ptr<Pass> CreatePearX87StackOptimizationPass(const HostFeatures&,OpSize);
++#endif
+ namespace Validation {
+   fextl::unique_ptr<Pass> CreateIRValidation();
+ } // namespace Validation
+diff --git a/FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp b/FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp
+--- a/FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp
++++ b/FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp
+@@ -1,4 +1,7 @@
+ // SPDX-License-Identifier: MIT
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ #include "FEXCore/Utils/LogManager.h"
+ #include "Interface/Core/Interpreter/Fallbacks/FallbackOpHandler.h"
+ #include "Interface/IR/IR.h"
+@@ -1237,4 +1240,9 @@
+ fextl::unique_ptr<Pass> CreateX87StackOptimizationPass(const HostFeatures& Features, OpSize GPROpSize) {
+   return fextl::make_unique<X87StackOptimization>(Features, GPROpSize);
+ }
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<Pass> CreatePearX87StackOptimizationPass(const HostFeatures& Features,OpSize GPROpSize) {
++  return FEXCore::Allocator::TryMakePearObject<X87StackOptimization>(Features,GPROpSize);
++}
++#endif
+ } // namespace FEXCore::IR
+diff --git a/FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp b/FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp
+--- a/FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp
++++ b/FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp
+@@ -1,4 +1,7 @@
+ // SPDX-License-Identifier: MIT
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ /*
+ $info$
+ tags: ir|opts
+@@ -752,4 +755,9 @@
+   return fextl::make_unique<DeadFlagCalculationEliminination>();
+ }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<Pass> CreatePearDeadFlagCalculationEliminination() {
++  return FEXCore::Allocator::TryMakePearObject<DeadFlagCalculationEliminination>();
++}
++#endif
+ } // namespace FEXCore::IR
+diff --git a/FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp b/FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp
+--- a/FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp
++++ b/FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp
+@@ -1,4 +1,7 @@
+ // SPDX-License-Identifier: MIT
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#endif
+ /*
+ $info$
+ tags: ir|opts
+@@ -792,4 +795,9 @@
+ fextl::unique_ptr<IR::Pass> CreateRegisterAllocationPass(const CPUIDEmu* CPUID) {
+   return fextl::make_unique<ConstrainedRAPass>(CPUID);
+ }
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<Pass> CreatePearRegisterAllocationPass(const CPUIDEmu* CPUID) {
++  return FEXCore::Allocator::TryMakePearObject<ConstrainedRAPass>(CPUID);
++}
++#endif
+ } // namespace FEXCore::IR
+diff --git a/FEXCore/Source/Interface/IR/PassManager.cpp b/FEXCore/Source/Interface/IR/PassManager.cpp
+--- a/FEXCore/Source/Interface/IR/PassManager.cpp
++++ b/FEXCore/Source/Interface/IR/PassManager.cpp
+@@ -13,13 +13,53 @@
+ #include "Interface/IR/Passes/RegisterAllocationPass.h"
+ 
+ #include <FEXCore/Config/Config.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearDataMemory.h>
++#include <FEXCore/Utils/PearSourceGuard.h>
++#endif
+ #include <FEXCore/Utils/LogManager.h>
+ #include <FEXCore/Utils/Profiler.h>
+ 
+ namespace FEXCore::IR {
+ class IREmitter;
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::unique_ptr<PassManager> PassManager::CreatePear(Context::ContextImpl* CTX,FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++#if defined(ASSERTIONS_ENABLED) && ASSERTIONS_ENABLED
++  return {}; // Validation-pass insertion is not the selected finite pipeline.
++#else
++  void* Storage=FEXCore::Allocator::aligned_alloc(alignof(PassManager),sizeof(PassManager));
++  if (!Storage) return {};
++  fextl::unique_ptr<PassManager> Actual {::new (Storage) PassManager(PearEmptyTag {})};
++  if (Actual->PassManagerDumpIR()) return {};
++  auto Append=[&](fextl::unique_ptr<Pass> Next) {
++    if (!Next) return false;
++    PEAR_FEX_REQUIRE(Actual->PearCount<Actual->PearPasses.size(),"Finite pass count");
++    Next->RegisterPassManager(Actual.get());
++    Actual->PearPasses[Actual->PearCount++]=std::move(Next);
++    return true;
++  };
++  FEX_CONFIG_OPT(DisablePasses,O0);
++  if (!DisablePasses()) {
++    if (!Append(CreatePearX87StackOptimizationPass(CTX->HostFeatures,CTX->Config.Is64BitMode ? IR::OpSize::i64Bit : IR::OpSize::i32Bit))) return {};
++    if (!Append(CreatePearDeadFlagCalculationEliminination())) return {};
++  }
++  auto RA=CreatePearRegisterAllocationPass(&CTX->CPUID);
++  if (!RA) return {};
++  Actual->PearRA=RA.get();
++  if (!Append(std::move(RA))) return {};
++  Outcome={PEAR_FEX_OK,0,0};return Actual;
++#endif
++}
++#endif
+ void PassManager::Finalize() {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (PearFinite) {
++    PEAR_FEX_REQUIRE(!PassManagerDumpIR(),"Finite pipeline does not insert dumping passes");
++    return;
++  }
++#endif
+   if (!PassManagerDumpIR()) {
+     // Not configured to dump any IR, just return.
+     return;
+@@ -85,6 +125,9 @@
+ }
+ 
+ Pass* PassManager::InsertPass(fextl::unique_ptr<Pass> Pass, const fextl::string& Name) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  PEAR_FEX_REQUIRE(!PearFinite,"Finite pass pipeline cannot accept dynamic insertion");
++#endif
+   auto* PassPtr = InsertAt(Passes.end(), std::move(Pass))->get();
+   AttemptNameMapping(Name, PassPtr);
+   return PassPtr;
+@@ -104,6 +147,12 @@
+ #endif
+ 
+ void PassManager::Run(IREmitter* IREmit) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (PearFinite) {
++    for (size_t I=0;I<PearCount;++I) PearPasses[I]->Run(IREmit);
++    return;
++  }
++#endif
+   FEXCORE_PROFILE_SCOPED("PassManager::Run");
+ 
+   for (const auto& Pass : Passes) {
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -669,8 +669,8 @@
+   if (!Thread->LookupCache) return Outcome;
+   Thread->FrontendDecoder=FEXCore::Allocator::TryMakePearObject<FEXCore::Frontend::Decoder>(Thread);
+   if (!Thread->FrontendDecoder) return {PEAR_FEX_UNAVAILABLE,0,0};
+-  Thread->PassManager=FEXCore::Allocator::TryMakePearObject<FEXCore::IR::PassManager>(this);
+-  if (!Thread->PassManager) return {PEAR_FEX_UNAVAILABLE,0,0};
++  Thread->PassManager=FEXCore::IR::PassManager::CreatePear(this,Outcome);
++  if (!Thread->PassManager) return Outcome;
+ #else
+   Thread->OpDispatcher = fextl::make_unique<FEXCore::IR::OpDispatchBuilder>(this, Thread);
+   Thread->OpDispatcher->SetMultiblock(Config.Multiblock);
+diff --git a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+--- a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
++++ b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+@@ -8,6 +8,8 @@
+ #include <FEXCore/Utils/MathUtils.h>
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ #include <utility>
++#include <FEXCore/Utils/PearDataMemory.h>
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #endif
+ 
+ #ifndef _WIN32
+@@ -75,13 +77,37 @@
+   if (!LearnedBase || Allocation.Base || Allocation.Token.expected_state != PEAR_FEX_RESERVED_NONE)
+     return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_VERSION_MISMATCH, 0, 0});
+   Ptr = LearnedBase;
+-  LookupCache = fextl::make_unique<GuestToHostMap>();
++  LookupCache = FEXCore::Allocator::TryMakePearObject<GuestToHostMap>();
++  if (!LookupCache) return {PEAR_FEX_UNAVAILABLE,0,0};
+   CodeBufferEnd = Ptr + UsableSize();
+   CodeBufferOffset = Ptr;
+   return {PEAR_FEX_OK, 0, 0};
+ }
++namespace {
++// Prechecked storage still uses the real shared_ptr control block. Its allocator
++// survives the managed object until the final weak reference is released.
++template<typename T> struct PearControlAllocator {
++  using value_type=T;
++  void* Storage;
++  explicit PearControlAllocator(void* P) : Storage {P} {}
++  template<typename U> PearControlAllocator(const PearControlAllocator<U>& Other) : Storage {Other.Storage} {}
++  T* allocate(size_t Count) {
++    static_assert(sizeof(T)<=256 && alignof(T)<=16);
++    PEAR_FEX_REQUIRE(Count==1 && Storage,"Code-buffer control allocation shape");
++    return static_cast<T*>(Storage);
++  }
++  void deallocate(T* P,size_t Count) {
++    PEAR_FEX_REQUIRE(P==Storage && Count==1,"Code-buffer control allocation identity");
++    FEXCore::Allocator::aligned_free(P);
++  }
++  template<typename U> bool operator==(const PearControlAllocator<U>& Other) const { return Storage==Other.Storage; }
++};
++}
+ fextl::shared_ptr<CodeBuffer> CodeBuffer::CreatePear(size_t Size, bool Named, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
+-  auto Buffer = fextl::make_shared<CodeBuffer>(Size, Named);
++  Outcome={PEAR_FEX_UNAVAILABLE,0,0};
++  void* Storage=FEXCore::Allocator::aligned_alloc(16,256);
++  if (!Storage) return {};
++  auto Buffer = std::allocate_shared<CodeBuffer>(PearControlAllocator<CodeBuffer> {Storage},Size,Named);
+   Outcome = Buffer->InitializePear();
+   // A failed shell's destructor retains any exact detached allocation facts;
+   // no unchecked pointer or partially initialized LookupCache is published.
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.h b/FEXCore/Source/Interface/Core/LookupCache.h
+--- a/FEXCore/Source/Interface/Core/LookupCache.h
++++ b/FEXCore/Source/Interface/Core/LookupCache.h
+@@ -87,8 +87,17 @@
+ #else
+   using BlockLinksMapType = std::pmr::map<BlockLinkTag, FEXCore::Context::BlockDelinkerFunc>;
+ #endif
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Empty construction needs neither a PMR page nor a separately allocated map.
++  // Map nodes retain the upstream resource and its normal release lifetime.
++  std::pmr::polymorphic_allocator<std::byte> PearBlockLinksAllocator {&BlockLinks_mbr};
++  BlockLinksMapType PearBlockLinks {&BlockLinks_mbr};
++  std::pmr::polymorphic_allocator<std::byte>* BlockLinks_pma {&PearBlockLinksAllocator};
++  BlockLinksMapType* BlockLinks {&PearBlockLinks};
++#else
+   fextl::unique_ptr<std::pmr::polymorphic_allocator<std::byte>> BlockLinks_pma;
+   BlockLinksMapType* BlockLinks;
++#endif
+ 
+   struct BlockEntry {
+     uint64_t HostCode;
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.cpp b/FEXCore/Source/Interface/Core/LookupCache.cpp
+--- a/FEXCore/Source/Interface/Core/LookupCache.cpp
++++ b/FEXCore/Source/Interface/Core/LookupCache.cpp
+@@ -20,14 +20,18 @@
+ namespace FEXCore {
+ GuestToHostMap::GuestToHostMap()
+   : BlockLinks_mbr {"FEXMem_BlockLinks"} {
++#ifndef PEAR_FEX_MEMORY_OWNER
+   BlockLinks_pma = fextl::make_unique<std::pmr::polymorphic_allocator<std::byte>>(&BlockLinks_mbr);
+   // Setup our PMR map.
+   BlockLinks = BlockLinks_pma->new_object<BlockLinksMapType>();
++#endif
+ }
+ 
+ GuestToHostMap::~GuestToHostMap() {
+-  // Destroy map nodes before the resource releases their backing pages.
++  // The inline owner map is destroyed before its resource by member order.
++#ifndef PEAR_FEX_MEMORY_OWNER
+   BlockLinks_pma->delete_object(BlockLinks);
++#endif
+ }
+ 
+ LookupCache::LookupCache(FEXCore::Context::ContextImpl* CTX)
+@@ -148,10 +152,15 @@
+   }
+ #endif
+   // Link tickets above are values copied before their map storage is retired.
++#ifdef PEAR_FEX_MEMORY_OWNER
++  std::destroy_at(BlockLinks);
++  BlockLinks_mbr.release();
++  std::construct_at(BlockLinks,&BlockLinks_mbr);
++#else
+   BlockLinks_pma->delete_object(BlockLinks);
+   BlockLinks_mbr.release();
+-  // Allocate a new pointer from the BlockLinks pma again.
+   BlockLinks = BlockLinks_pma->new_object<BlockLinksMapType>();
++#endif
+   // All code is gone, clear the block list
+   BlockList.clear();
+ }

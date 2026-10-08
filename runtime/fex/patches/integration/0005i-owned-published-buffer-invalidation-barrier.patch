@@ -1,0 +1,94 @@
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.h b/FEXCore/Source/Interface/Core/CPUBackend.h
+--- a/FEXCore/Source/Interface/Core/CPUBackend.h
++++ b/FEXCore/Source/Interface/Core/CPUBackend.h
+@@ -162,6 +162,8 @@
+     // No IR translation, guest dispatch or caller-provided code bytes.
+     FEXCore::Utils::PearFEXMemory::Result PreparePearFiniteCode();
+     std::optional<PearManagedWindow> FindPearManagedWindow(uintptr_t PC) const;
++    // Actual current published source buffer, including one with no direct links.
++    std::optional<PearManagedWindow> FindPearPublishedBarrierTarget() const;
+     // The thin target constructor is friend-only. No caller-supplied tuple or
+     // pointer can substitute for this backend's actual retained CodeBuffer.
+     std::optional<FEXCore::Utils::PearFEXMemory::RetainedManagedTarget> FindPearRetainedTarget(uintptr_t PC) const;
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -420,6 +420,11 @@
+     for (const auto& Buffer : SignalHandlerCodeBuffers) if (auto Window = Match(Buffer)) return Window;
+     return std::nullopt;
+   }
++  std::optional<CPUBackend::PearManagedWindow> CPUBackend::FindPearPublishedBarrierTarget() const {
++    if (!ThreadState || !ThreadState->CTX || !ThreadState->CurrentFrame || ThreadState->CurrentFrame->Thread!=ThreadState ||
++        ThreadState->CPUBackend.get()!=this || !CurrentCodeBuffer || CurrentCodeBuffer->UsableSize()<16) return std::nullopt;
++    return FindPearManagedWindow(reinterpret_cast<uintptr_t>(CurrentCodeBuffer->GetBufferBase()));
++  }
+   std::optional<FEXCore::Utils::PearFEXMemory::Links::ReservedBarrierTarget> CPUBackend::FindPearReservedBarrierTarget() const {
+     if (!ThreadState || !ThreadState->CTX || !ThreadState->CurrentFrame || ThreadState->CurrentFrame->Thread!=ThreadState ||
+         ThreadState->CPUBackend.get()!=this || !CurrentCodeBuffer) return std::nullopt;
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -19,6 +19,7 @@
+     // Guard and its referenced transaction have one stable registry lifetime.
+     std::optional<Memory::WriteGuard> Writer;
+     std::optional<Memory::Links::ReservedBarrierTarget> Reserved;
++    std::optional<CPUBackend::PearManagedWindow> Published;
+   };
+   std::mutex Mutex;
+   TicketLedger Ledger;
+@@ -220,6 +221,7 @@
+   if (!Mutation) return Mutation.Status();
+   std::optional<SourceDescriptor> First;
+   auto Reserved=Registry::ReservedSource(Thread);
++  auto Published=Thread->CPUBackend->FindPearPublishedBarrierTarget();
+   Ticket T {};
+   {
+     std::lock_guard L {R.Mutex};
+@@ -227,7 +229,7 @@
+     // Its real guard/Abort remains distinct from published/callable code.
+     for (size_t I=0;I<CAPACITY;++I) if (R.Ledger.GetState(I)==State::Linked && R.Slots[I].Source &&
+       R.Slots[I].Source->SourceContext==C) { First=R.Slots[I].Source; T={I,R.Ledger.GetTicket(I)}; break; }
+-    if (!First && !Reserved) { LogMan::Msg::EFmt("Pear batch has neither linked nor reserved source target"); return {PEAR_FEX_UNAVAILABLE,0,0}; }
++    if (!First && !Reserved && !Published) { LogMan::Msg::EFmt("Pear batch has no actual linked, reserved or published source target"); return {PEAR_FEX_UNAVAILABLE,0,0}; }
+     if (!R.Ledger.BeginBatch()) { LogMan::Msg::EFmt("Pear batch ledger refused: sealed {}, occupied {}, entry-open {}",R.Ledger.HasSealedEntries(),R.Ledger.Occupied(),R.Ledger.EntryAdmissionOpen()); return {PEAR_FEX_UNAVAILABLE,0,0}; }
+     R.BatchContext=C; R.BatchThread=Thread; R.BatchExecutor=Memory::CurrentExecutor();
+   }
+@@ -241,6 +243,17 @@
+     Work->Writer.emplace(Work->Transaction,First->Layout.WriteOffset,First->Layout.WriteSize);
+     if (!*Work->Writer) return R.Poison(Work->Writer->Status());
+     if (!Registry::Matches(*First,*Work->Writer)) return R.RefuseOpen(*First,Work->Before,Work->Transaction,*Work->Writer,{PEAR_FEX_STALE_IDENTITY,0,0});
++  } else if (Published) {
++    Work->Published=std::move(Published);
++    Work->Before=Work->Published->Owner->GetPearSnapshot(); Work->Transaction=Work->Before;
++    const auto& A=Work->Before;
++    if (!A || A.Base!=Work->Published->Owner->GetBufferBase() || A.Token.expected_state!=PEAR_FEX_PUBLISHED_RX ||
++        A.Token.allocation_class!=PEAR_FEX_CLASS_SHARED || A.Token.ec_role!=PEAR_SOURCE_CODE_ROLE)
++      return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    // A real target write gate supplies quiescence even when the translator has
++    // emitted code but no link descriptor. No code bytes are changed here.
++    Work->Writer.emplace(Work->Transaction,0,16);
++    if (!*Work->Writer) return R.Poison(Work->Writer->Status());
+   } else {
+     Work->Reserved=std::move(Reserved); Work->Before=Registry::ReservedSnapshot(*Work->Reserved); Work->Transaction=Work->Before;
+     if (!Registry::SameReserved(*Work->Reserved,Work->Before,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+@@ -274,10 +287,16 @@
+     std::lock_guard L {R.Mutex};
+     if (R.BatchContext!=C || R.BatchThread!=Thread || R.BatchExecutor!=Memory::CurrentExecutor() || !R.Held)
+       return {PEAR_FEX_STALE_IDENTITY,0,0};
+-    Held=&*R.Held; if (!Held->Reserved) First=R.Slots[Held->First.Index].Source;
+-  }
+-  if (!First && !Held->Reserved) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+-  const auto FinishedFirst=Held->Reserved ? R.AbortReserved(*Held) : R.Publish(*First,Held->Before,Held->Transaction,*Held->Writer);
++    Held=&*R.Held; if (!Held->Reserved && !Held->Published) First=R.Slots[Held->First.Index].Source;
++  }
++  if (!First && !Held->Reserved && !Held->Published) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  Memory::Result FinishedFirst;
++  if (Held->Published) {
++    FinishedFirst=Held->Writer->Publish();
++    if (!FinishedFirst) return R.Poison(FinishedFirst);
++    if (!Held->Published->Owner->ComparePearUpdate(Held->Before,Held->Transaction))
++      return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  } else FinishedFirst=Held->Reserved ? R.AbortReserved(*Held) : R.Publish(*First,Held->Before,Held->Transaction,*Held->Writer);
+   Held->Writer.reset();
+   if (!FinishedFirst) return FinishedFirst;
+   for (size_t I=0;I<CAPACITY;++I) {

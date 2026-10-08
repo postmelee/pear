@@ -1,0 +1,24 @@
+diff --git a/Source/Windows/ARM64EC/CMakeLists.txt b/Source/Windows/ARM64EC/CMakeLists.txt
+--- a/Source/Windows/ARM64EC/CMakeLists.txt
++++ b/Source/Windows/ARM64EC/CMakeLists.txt
+@@ -19,7 +19,7 @@
+   CommonWindowsRuntime
+   ntdll_ex)
+ 
+-target_link_options(arm64ecfex PRIVATE -static -nostdlib -nostartfiles -nodefaultlibs -lc++ -lc++abi -lunwind)
++target_link_options(arm64ecfex PRIVATE -static -nostdlib -nostartfiles -nodefaultlibs -lc++abi -lc++ -lunwind)
+ target_link_libraries(arm64ecfex PRIVATE ${LIBGCC_PATH})
+ install(TARGETS arm64ecfex RUNTIME
+   DESTINATION ${CMAKE_INSTALL_LIBDIR}
+diff --git a/Source/Windows/WOW64/CMakeLists.txt b/Source/Windows/WOW64/CMakeLists.txt
+--- a/Source/Windows/WOW64/CMakeLists.txt
++++ b/Source/Windows/WOW64/CMakeLists.txt
+@@ -19,7 +19,7 @@
+   wow64_ex
+   ntdll_ex)
+ 
+-target_link_options(wow64fex PRIVATE -static -nostdlib -nostartfiles -nodefaultlibs -lc++ -lc++abi -lunwind)
++target_link_options(wow64fex PRIVATE -static -nostdlib -nostartfiles -nodefaultlibs -lc++abi -lc++ -lunwind)
+ target_link_libraries(wow64fex PRIVATE ${LIBGCC_PATH})
+ install(TARGETS wow64fex RUNTIME
+   DESTINATION ${CMAKE_INSTALL_LIBDIR}

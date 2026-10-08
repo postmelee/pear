@@ -1,0 +1,280 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+@@ -144,6 +144,11 @@
+ Result Exit(const Allocation&);
+ Result Pin(const Allocation&, size_t ResumeOffset, uint64_t& Continuation);
+ Result Unpin(const Allocation&, uint64_t Continuation, uint64_t PinEpoch);
++// Paired ABI2 owner transition only. The source caller must separately hold
++// a sealed entry reservation and the actual Context/Thread/Dispatcher lifetime.
++// This leaf does not manufacture those source proofs or authorize a raw handler.
++Result Resume(const Allocation& CurrentD, size_t OriginalResumeOffset,
++              uint64_t OriginalContinuation, uint64_t OriginalPinEpoch);
+ Result Handoff(const Allocation&, size_t ResumeOffset, uint64_t& Continuation);
+ // Poll only an already-owned native handoff. The original pin epoch is explicit
+ // and must survive any later writer epoch; it is never inferred from Allocation.
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -20,6 +20,7 @@
+ static BridgeType BridgeDirect {};
+ static uint64_t OwnerPID {};
+ static std::atomic<bool> Configured {false};
++enum class LeaseKind : uint32_t { None, Active, Pinned, Unresolved };
+ struct ActiveLease {
+   Allocation Target {};
+   const void* TEB {};
+@@ -28,7 +29,7 @@
+   uint64_t Executor {};
+   size_t EntryOffset {};
+   uint64_t Continuation {};
+-  bool Owned {};
++  LeaseKind Kind {LeaseKind::None};
+ };
+ struct Binding {
+   enum class Kind : uint32_t { None, Bootstrap, Thread } SourceKind {};
+@@ -133,7 +134,8 @@
+     RegistryGuard Guard;
+     auto* B = CurrentBinding();
+     if (B) {
+-      B->Unresolved = true; B->Active = {};
++      B->Unresolved = true;
++      if (B->Active.Kind != LeaseKind::None) B->Active.Kind = LeaseKind::Unresolved;
+       if (B->OriginalFailure) B->OriginalFailure = Outcome;
+     }
+   }
+@@ -223,7 +225,7 @@
+   RegistryGuard Guard;
+   auto* B = CurrentBinding();
+   if (!B || B->Pending || B->Capturing || B->Unresolved || !B->Executor || (A && !TargetBinding(*A, *B))) return Refuse();
+-  if (Entry && B->Active.Owned) return Refuse(PEAR_FEX_INVALID_REQUEST);
++  if (Entry && B->Active.Kind == LeaseKind::Active) return Refuse(PEAR_FEX_INVALID_REQUEST);
+   Snapshot = *B;
+   B->Active = {};
+   B->Pending = true;
+@@ -244,13 +246,13 @@
+   if (Outcome && Unregistered) *B = {};
+   else if (Outcome && Entered) {
+     B->Active = {*Entered, Snapshot.TEB, Snapshot.NativeThread, Snapshot.SourceState,
+-                 Snapshot.Executor, EntryOffset, Continuation, true};
++                 Snapshot.Executor, EntryOffset, Continuation, LeaseKind::Active};
+   }
+   return Outcome;
+ }
+ static Result Operation(const Allocation& A, uint32_t Opcode, uint64_t Continuation,
+                         size_t Offset, uint64_t OverrideEpoch, pear_fex_memory_response& R,
+-                        const Binding* Captured = nullptr, bool ExistingHandoff = false) {
++                        const Binding* Captured = nullptr, bool ExistingHandoff = false, InvocationFacts* Facts = nullptr) {
+   Binding B;
+   if (Captured) {
+     B = *Captured;
+@@ -262,11 +264,12 @@
+   Q.executor_id = B.Executor;
+   if (Opcode == PEAR_FEX_CONTINUATION_UNPIN || ExistingHandoff) Q.write_epoch = OverrideEpoch;
+   if (Opcode == PEAR_FEX_EXECUTOR_ENTRY || Opcode == PEAR_FEX_EXECUTOR_HANDOFF ||
+-      Opcode == PEAR_FEX_CONTINUATION_UNPIN || Opcode == PEAR_FEX_QUERY) Q.continuation_id = Continuation;
+-  if (Opcode == PEAR_FEX_EXECUTOR_ENTRY || Opcode == PEAR_FEX_EXECUTOR_HANDOFF || Opcode == PEAR_FEX_CONTINUATION_PIN) {
++      Opcode == PEAR_FEX_EXECUTOR_RESUME || Opcode == PEAR_FEX_CONTINUATION_UNPIN || Opcode == PEAR_FEX_QUERY) Q.continuation_id = Continuation;
++  if (Opcode == PEAR_FEX_EXECUTOR_ENTRY || Opcode == PEAR_FEX_EXECUTOR_HANDOFF ||
++      Opcode == PEAR_FEX_EXECUTOR_RESUME || Opcode == PEAR_FEX_CONTINUATION_PIN) {
+     Q.operation_offset = Offset; Q.operation_size = ExistingHandoff ? 0 : 4;
+   }
+-  const auto Result = Invoke(Q, R);
++  const auto Result = Invoke(Q, R, Facts);
+   if (!Result) return Result;
+   // UNPIN validates the captured continuation epoch; its reply observes the
+   // extent's current epoch, which may advance during a safely parked patch.
+@@ -288,6 +291,11 @@
+   case PEAR_FEX_EXECUTOR_ENTRY:
+     if (R.flags != PEAR_FEX_MANAGED_ACTIVE || R.lifecycle_state != PEAR_FEX_PUBLISHED_RX ||
+         R.effective_protection != PEAR_FEX_PROTECTION_RX || R.continuation_id != Continuation)
++      return ResponseShapeFailure(Opcode);
++    break;
++  case PEAR_FEX_EXECUTOR_RESUME:
++    if (R.flags != PEAR_FEX_MANAGED_ACTIVE || R.lifecycle_state != PEAR_FEX_PUBLISHED_RX ||
++        R.effective_protection != PEAR_FEX_PROTECTION_RX || R.continuation_id)
+       return ResponseShapeFailure(Opcode);
+     break;
+   case PEAR_FEX_EXECUTOR_EXIT:
+@@ -348,7 +356,7 @@
+          Thread->CurrentFrame == &Thread->BaseFrameState && Thread->CurrentFrame->Thread == Thread;
+ }
+ static bool HasUnreleasedOwner(const Binding& B) {
+-  return B.Executor || B.Unresolved || B.Pending || B.Capturing || B.Active.Owned;
++  return B.Executor || B.Unresolved || B.Pending || B.Capturing || (B.Active.Kind != LeaseKind::None);
+ }
+ static void RetainCleanup(Binding& B, Result Outcome, bool Called) {
+   // Preserve the first actual cleanup failure. A later success/unperformed
+@@ -489,7 +497,7 @@
+     RegistryGuard Guard;
+     auto* B = CurrentBinding();
+     if (B) {
+-      if (B->SourceContext != Context || B->Pending || B->Capturing || B->Active.Owned || B->Unresolved)
++      if (B->SourceContext != Context || B->Pending || B->Capturing || (B->Active.Kind != LeaseKind::None) || B->Unresolved)
+         return B->Unresolved && !B->OriginalFailure ? B->OriginalFailure : Refuse(PEAR_FEX_STALE_IDENTITY);
+       SameThread = B->SourceKind == Binding::Kind::Thread && B->SourceState == Thread;
+       if (!SameThread && B->SourceKind != Binding::Kind::Bootstrap) return Refuse(PEAR_FEX_STALE_IDENTITY);
+@@ -579,7 +587,7 @@
+       (Thread ? B->SourceKind == Binding::Kind::Thread && B->SourceState == Thread :
+                 B->SourceKind == Binding::Kind::Bootstrap && B->SourceState == Context);
+     if (!Match || !B->Executor || B->Role != CompiledSourceRole() ||
+-        B->Pending || B->Capturing || B->Unresolved || B->Active.Owned) return Refuse();
++        B->Pending || B->Capturing || B->Unresolved || (B->Active.Kind != LeaseKind::None)) return Refuse();
+     Snapshot = *B; B->Pending = true;
+   }
+   // Cleanup is allowed after poison, but never from an unknown identity. The
+@@ -666,14 +674,14 @@
+   if (B.Pending || B.SourceKind != Binding::Kind::Thread || !TargetBinding(A, B)) return false;
+   const auto& Active = B.Active;
+   const auto Limit = Usable(A);
+-  return Active.Owned && Active.TEB == B.TEB && Active.NativeThread == B.NativeThread &&
++  return Active.Kind == LeaseKind::Active && Active.TEB == B.TEB && Active.NativeThread == B.NativeThread &&
+          Active.SourceState == B.SourceState && Active.Executor == B.Executor &&
+          A.Base && A.Token.write_epoch && A.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
+          !(Active.EntryOffset & 3) && Active.EntryOffset <= Limit && 4 <= Limit-Active.EntryOffset &&
+          SameAllocation(Active.Target, A);
+ }
+ static bool SameActive(const ActiveLease& A, const ActiveLease& B) {
+-  return A.Owned == B.Owned && A.TEB == B.TEB && A.NativeThread == B.NativeThread &&
++  return A.Kind == B.Kind && A.TEB == B.TEB && A.NativeThread == B.NativeThread &&
+          A.SourceState == B.SourceState && A.Executor == B.Executor &&
+          A.EntryOffset == B.EntryOffset && A.Continuation == B.Continuation &&
+          SameAllocation(A.Target, B.Target);
+@@ -821,30 +829,124 @@
+   if (Result) Continuation = R.continuation_id;
+   return Result;
+ }
++namespace {
++static bool PinnedMatches(const Binding& B, const Allocation& Current, size_t Offset,
++                          uint64_t Continuation, uint64_t OriginalEpoch, bool DispatcherOnly = false) {
++  if (B.SourceKind != Binding::Kind::Thread || B.Active.Kind != LeaseKind::Pinned ||
++      B.Active.TEB != B.TEB || B.Active.NativeThread != B.NativeThread ||
++      B.Active.SourceState != B.SourceState || B.Active.Executor != B.Executor ||
++      !Continuation || B.Active.Continuation != Continuation || B.Active.EntryOffset != Offset ||
++      !OriginalEpoch || B.Active.Target.Token.write_epoch != OriginalEpoch ||
++      (DispatcherOnly && Current.Token.allocation_class != PEAR_FEX_CLASS_DISPATCHER) ||
++      Current.Token.expected_state != PEAR_FEX_PUBLISHED_RX || Current.Token.write_epoch < OriginalEpoch)
++    return false;
++  auto Original = B.Active.Target;
++  Original.Token.write_epoch = Current.Token.write_epoch;
++  return SameAllocation(Original, Current) && TargetBinding(Current, B);
++}
++static Result FinishPinTransition(const Binding& Before, Result Outcome, const InvocationFacts& Facts,
++                                 const Allocation& A, size_t Offset, uint64_t Continuation,
++                                 bool NewPin, bool Resumed, bool Released = false) {
++  RegistryGuard Guard;
++  auto* B = CurrentBinding();
++  // ResponseShapeFailure may already have marked this same real binding
++  // unresolved. Compare identities without erasing that uncertainty first.
++  auto Observed = B ? *B : Binding {};
++  Observed.Unresolved = Before.Unresolved;
++  if (!B || !B->Pending || !SameBinding(Observed, Before)) {
++    const auto Primary = Outcome ? Refuse(PEAR_FEX_STALE_IDENTITY) : Outcome;
++    Retirement::PoisonSourceAdmission(Primary);
++    return Primary;
++  }
++  const bool Unknown = B->Unresolved || (!Outcome && Facts.BridgeCalled &&
++    (NewPin || !Facts.ValidatedRefusal));
++  B->Pending = false; B->Active = {};
++  if (Unknown) {
++    // Retain only the real pre-call tuple, explicitly without ACTIVE or retry
++    // authority. Initial HANDOFF uncertainty cannot adopt unreturned pin IDs.
++    B->Active = Before.Active;
++    if (B->Active.Kind != LeaseKind::None) B->Active.Kind = LeaseKind::Unresolved;
++    B->Unresolved = true;
++    const auto Primary = Outcome ? Refuse(PEAR_FEX_STALE_IDENTITY) : Outcome;
++    if (B->OriginalFailure) B->OriginalFailure = Primary;
++    Retirement::PoisonSourceAdmission(Primary);
++    return Primary;
++  }
++  if (Outcome && !Released) {
++    B->Active = {A, Before.TEB, Before.NativeThread, Before.SourceState, Before.Executor,
++                 Offset, Resumed ? 0 : Continuation, Resumed ? LeaseKind::Active : LeaseKind::Pinned};
++  } else if (!Outcome && !NewPin && (!Facts.BridgeCalled || Facts.ValidatedRefusal)) {
++    // Only strict poll and ABI2 resume promise precommit pin retention. The
++    // initial size-four HANDOFF may mint a pin before its park later fails.
++    B->Active = Before.Active;
++  } else if (!Outcome && Facts.BridgeCalled) {
++    B->Unresolved = true;
++    if (B->OriginalFailure) B->OriginalFailure = Outcome;
++    Retirement::PoisonSourceAdmission(Outcome);
++  }
++  return Outcome;
++}
++}
+ Result Unpin(const Allocation& A, uint64_t Continuation, uint64_t PinEpoch) {
+   if (!Continuation) return Refuse(PEAR_FEX_INVALID_REQUEST);
+-  pear_fex_memory_response R {};
+-  return Operation(A, PEAR_FEX_CONTINUATION_UNPIN, Continuation, 0, PinEpoch, R);
+-}
+-Result Handoff(const Allocation& A, size_t ResumeOffset, uint64_t& Continuation) {
++  const auto Original = CurrentSnapshot();
++  // Retain the original leaf for other source PIN records. Only a captured
++  // current HANDOFF tuple can change this source-side pinned-lease record.
++  if (!PinnedMatches(Original, A, Original.Active.EntryOffset, Continuation, PinEpoch)) {
++    pear_fex_memory_response R {};
++    return Operation(A, PEAR_FEX_CONTINUATION_UNPIN, Continuation, 0, PinEpoch, R);
++  }
+   Binding B;
+   const auto Begun = BeginTransition(&A, B, false);
+   if (!Begun) return Begun;
+   pear_fex_memory_response R {};
+-  const auto Outcome = Operation(A, PEAR_FEX_EXECUTOR_HANDOFF, Continuation, ResumeOffset, 0, R, &B);
+-  const auto Finished = FinishTransition(B, Outcome);
+-  if (Finished) Continuation = R.continuation_id;
+-  return Finished;
+-}
+-Result Poll(const Allocation& A, size_t ResumeOffset, uint64_t Continuation, uint64_t OriginalPinEpoch) {
+-  if (!Continuation || !OriginalPinEpoch) return Refuse(PEAR_FEX_INVALID_REQUEST);
++  InvocationFacts Facts;
++  const auto Outcome = Operation(A, PEAR_FEX_CONTINUATION_UNPIN, Continuation, 0, PinEpoch, R, &B, false, &Facts);
++  return FinishPinTransition(B, Outcome, Facts, A, 0, 0, false, false, true);
++}
++Result Handoff(const Allocation& A, size_t ResumeOffset, uint64_t& Continuation) {
++  const auto Active = CurrentSnapshot();
++  if (!ManagedActiveMatches(A, Active)) return Refuse(PEAR_FEX_STALE_IDENTITY);
+   Binding B;
+   const auto Begun = BeginTransition(&A, B, false);
+   if (!Begun) return Begun;
+   pear_fex_memory_response R {};
++  InvocationFacts Facts;
++  const auto Outcome = Operation(A, PEAR_FEX_EXECUTOR_HANDOFF, Continuation, ResumeOffset, 0, R, &B, false, &Facts);
++  const auto Finished = FinishPinTransition(B, Outcome, Facts, A, ResumeOffset, R.continuation_id, true, false);
++  if (Finished) Continuation = R.continuation_id;
++  return Finished;
++}
++Result Poll(const Allocation& A, size_t ResumeOffset, uint64_t Continuation, uint64_t OriginalPinEpoch) {
++  const auto Original = CurrentSnapshot();
++  if (!PinnedMatches(Original, A, ResumeOffset, Continuation, OriginalPinEpoch))
++    return Refuse(PEAR_FEX_STALE_IDENTITY);
++  Binding B;
++  const auto Begun = BeginTransition(&A, B, false);
++  if (!Begun) return Begun;
++  pear_fex_memory_response R {};
++  InvocationFacts Facts;
+   const auto Outcome = Operation(A, PEAR_FEX_EXECUTOR_HANDOFF, Continuation, ResumeOffset,
+-                                 OriginalPinEpoch, R, &B, true);
+-  return FinishTransition(B, Outcome);
++                                 OriginalPinEpoch, R, &B, true, &Facts);
++  // A positive poll keeps the original captured tuple; its reply may observe
++  // a newer current extent epoch, not a replacement continuation epoch.
++  return FinishPinTransition(B, Outcome, Facts, Original.Active.Target, ResumeOffset, Continuation, false, false);
++}
++Result Resume(const Allocation& CurrentD, size_t ResumeOffset, uint64_t Continuation, uint64_t OriginalPinEpoch) {
++  const auto Admission = NewAdmission();
++  if (!Admission) return Admission;
++  const auto Original = CurrentSnapshot();
++  if (!PinnedMatches(Original, CurrentD, ResumeOffset, Continuation, OriginalPinEpoch, true))
++    return Refuse(PEAR_FEX_STALE_IDENTITY);
++  // This is the atomic owner leaf. The actual Core call site must retain its
++  // sealed entry and actual object lifetimes; neither is created by this call.
++  Binding B;
++  const auto Begun = BeginTransition(&CurrentD, B, false);
++  if (!Begun) return Begun;
++  pear_fex_memory_response R {};
++  InvocationFacts Facts;
++  const auto Outcome = Operation(CurrentD, PEAR_FEX_EXECUTOR_RESUME, Continuation, ResumeOffset, 0, R, &B, false, &Facts);
++  return FinishPinTransition(B, Outcome, Facts, CurrentD, ResumeOffset, 0, false, true);
+ }
+ Result Retire(Allocation& A) {
+   pear_fex_memory_response R {};

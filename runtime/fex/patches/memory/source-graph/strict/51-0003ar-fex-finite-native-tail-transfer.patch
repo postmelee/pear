@@ -1,0 +1,209 @@
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+@@ -104,8 +104,11 @@
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   FEXCore::Utils::PearFEXMemory::Allocation GetPearSnapshot() const { return PearToken.Snapshot(); }
++  // Private finite source fixture: caller supplies only its real Frame. The
++  // native target is fixed by this translation unit; no guest callback input.
++  FEXCore::Utils::PearFEXMemory::Result ExecutePearFiniteTransfer(FEXCore::Core::CpuStateFrame*);
+   bool IsPearNativeResume(uintptr_t PC) const {
+-    return PC && (PC == PearCompileResumePC || PC == PearSingleStepResumePC || PC == PearExitLinkResumePC);
++    return PC && (PC == PearCompileResumePC || PC == PearSingleStepResumePC || PC == PearExitLinkResumePC || PC == PearFiniteResumePC);
+   }
+ #endif
+ protected:
+@@ -123,6 +126,7 @@
+   uintptr_t PearCompileResumePC {};
+   uintptr_t PearSingleStepResumePC {};
+   uintptr_t PearExitLinkResumePC {};
++  uintptr_t PearFiniteEntryPC {}, PearFiniteResumePC {};
+ #endif
+   /**
+    * @name Dispatch Helper functions
+diff --git a/FEXCore/Source/Interface/Context/Context.h b/FEXCore/Source/Interface/Context/Context.h
+--- a/FEXCore/Source/Interface/Context/Context.h
++++ b/FEXCore/Source/Interface/Context/Context.h
+@@ -508,6 +508,10 @@
+   static_assert(sizeof(PearDispatcherGate) <= 256, "Bounded source native-gate metadata");
+   FEXCore::Utils::PearFEXMemory::Result BeginPearDispatcherGate(FEXCore::Core::CpuStateFrame*, uintptr_t ResumePC, PearDispatcherGate&);
+   FEXCore::Utils::PearFEXMemory::Result FinishPearDispatcherGate(PearDispatcherGate&);
++  // Source-owned tail transfer. It returns to the native wrapper even on
++  // refusal, so a retained pin never forces a return through managed code.
++  static void PearFiniteNativeTransfer(FEXCore::Core::CpuStateFrame*, uintptr_t ResumePC, uintptr_t NativeTarget,
++                                     FEXCore::Utils::PearFEXMemory::Result*);
+   uintptr_t CompilePearFromDispatcher(FEXCore::Core::CpuStateFrame*, uint64_t GuestRIP, uint64_t MaxInst, uintptr_t ResumePC);
+ #endif
+ 
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -73,6 +73,28 @@
+   }
+   SetBuffer(Emission.Data(), MAX_DISPATCHER_CODE_SIZE);
+   EmitDispatcher();
++  if (PearLabelFailure) {
++    const Memory::Result Original {PEAR_FEX_UNAVAILABLE,0,0};
++    const auto BeforeAbort=PearToken.Snapshot();
++    const auto Aborted=Emission.Abort();
++    if (!PearToken.CompareUpdate(BeforeAbort,Allocation))
++      Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++    if (!Aborted) Memory::Retirement::PoisonSourceAdmission(Aborted);
++    return Original;
++  }
++  // Original finite ARM64 tail-transfer site, separate from guest dispatch.
++  // x0 is the actual Frame; x2 is this source's fixed native target. x1 is
++  // caller-saved. SP, LR, x18, callee-saved GPRs and all SIMD state are untouched.
++  // BR preserves the native wrapper's LR: a refused callback returns directly
++  // to native code. A successful callback explicitly invokes the resume leaf.
++  PearFiniteEntryPC=GetCursorAddress<uintptr_t>();
++  ARMEmitter::ForwardLabel FiniteResume;
++  adr(ARMEmitter::XReg::x1,&FiniteResume);
++  br(ARMEmitter::XReg::x2);
++  Bind(&FiniteResume);
++  PearFiniteResumePC=GetCursorAddress<uintptr_t>();
++  mov(ARMEmitter::WReg::w0,42);
++  ret();
+   if (PearLabelFailure) {
+     const Memory::Result Original {PEAR_FEX_UNAVAILABLE,0,0};
+     const auto BeforeAbort=PearToken.Snapshot();
+@@ -109,6 +131,32 @@
+   auto Candidate=fextl::unique_ptr<Dispatcher> {::new (Storage) Dispatcher(CTX)};
+   Outcome = Candidate->InitializePear();
+   return Outcome ? std::move(Candidate) : fextl::unique_ptr<Dispatcher> {};
++}
++#endif
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++FEXCore::Utils::PearFEXMemory::Result Dispatcher::ExecutePearFiniteTransfer(FEXCore::Core::CpuStateFrame* Frame) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  auto Life=M::AcquireCurrentSourceLifetime(CTX);
++  if (!Life || !Life.ActualThread() || Frame!=Life.ActualThread()->CurrentFrame ||
++      Frame->Thread!=Life.ActualThread() || CTX->Dispatcher.get()!=this) return {PEAR_FEX_UNAVAILABLE,0,0};
++  const auto Facts=GetPearSnapshot();
++  const auto Base=reinterpret_cast<uintptr_t>(Facts.Base);
++  if (!Facts || Facts.Token.expected_state!=PEAR_FEX_PUBLISHED_RX || !Base || PearFiniteEntryPC<Base ||
++      PearFiniteEntryPC-Base>Facts.Token.extent_size || 16>Facts.Token.extent_size-(PearFiniteEntryPC-Base) ||
++      PearFiniteResumePC!=PearFiniteEntryPC+8) return {PEAR_FEX_UNAVAILABLE,0,0};
++  const auto Entered=M::Enter(Facts,PearFiniteEntryPC-Base);
++  if (!Entered) return Entered;
++  using Native=void (*)(FEXCore::Core::CpuStateFrame*,uintptr_t,uintptr_t,M::Result*);
++  using Transfer=void (*)(FEXCore::Core::CpuStateFrame*,uintptr_t,Native,M::Result*);
++  M::Result Outcome;
++  reinterpret_cast<Transfer>(PearFiniteEntryPC)(Frame,0,&FEXCore::Context::ContextImpl::PearFiniteNativeTransfer,&Outcome);
++  // Only an actual remaining ACTIVE lease can be exited. A failed transition
++  // retains its genuine pin/source state for checked outer cleanup.
++  if (M::HasManagedActive(Facts)) {
++    const auto Exit=M::Exit(Facts); if (!Exit) return Exit;
++  }
++  return Outcome;
+ }
+ #endif
+ 
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1439,6 +1439,36 @@
+   return {PEAR_FEX_OK,0,0};
+ }
+ 
++void ContextImpl::PearFiniteNativeTransfer(FEXCore::Core::CpuStateFrame* Frame, uintptr_t ResumePC,
++                                          uintptr_t NativeTarget, FEXCore::Utils::PearFEXMemory::Result* Output) {
++  namespace M=FEXCore::Utils::PearFEXMemory;
++  // Only the fixed source wrapper calls this private experiment. Its x3 output
++  // points into that still-live native frame; x2 retains the actual target.
++  if (NativeTarget!=reinterpret_cast<uintptr_t>(&PearFiniteNativeTransfer)) return;
++  auto Life=M::AcquireCurrentSourceLifetime();
++  auto* Thread=Life ? Life.ActualThread() : nullptr;
++  if (!Thread || Frame!=Thread->CurrentFrame || Frame->Thread!=Thread || !Thread->CTX) return;
++  auto* CTX=Thread->CTX;
++  PearDispatcherGate Gate {};
++  *Output=CTX->BeginPearDispatcherGate(Frame,ResumePC,Gate);
++  if (!*Output) return;
++  // The actual original pin must block retirement. A deletion attempt closes
++  // source admission permanently, so it belongs to a separate terminal control.
++  auto Retired=Gate.Facts;
++  const auto Refusal=M::Retire(Retired);
++  if (Refusal.Status!=PEAR_FEX_UNAVAILABLE || Refusal.ErrorDomain || Refusal.ErrorCode) {
++    *Output=Refusal ? M::Result{PEAR_FEX_STALE_IDENTITY,0,0} : Refusal; return;
++  }
++  *Output=M::Poll(Gate.Facts,Gate.ResumeOffset,Gate.Continuation,Gate.OriginalPinEpoch);
++  if (!*Output) return;
++  *Output=CTX->FinishPearDispatcherGate(Gate);
++  if (!*Output) return;
++  // Only the fixed original resume leaf is called, after atomic pin consumption
++  // and the source's original expected-byte revalidation. No guest instruction.
++  const auto Value=reinterpret_cast<uint32_t (*)()>(ResumePC)();
++  if (Value!=42) *Output={PEAR_FEX_STALE_IDENTITY,0,0};
++}
++
+ uintptr_t ContextImpl::CompilePearFromDispatcher(FEXCore::Core::CpuStateFrame* Frame, uint64_t GuestRIP,
+                                                 uint64_t MaxInst, uintptr_t ResumePC) {
+   PearDispatcherGate Gate {};
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,18 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;
+diff --git a/Source/Windows/PearEmptyInit/Fixture.cpp b/Source/Windows/PearEmptyInit/Fixture.cpp
+--- a/Source/Windows/PearEmptyInit/Fixture.cpp
++++ b/Source/Windows/PearEmptyInit/Fixture.cpp
+@@ -3,6 +3,9 @@
+ // closed by default; build flags and caller-supplied data cannot open it.
+ #include <FEXCore/Utils/AllocatorHooks.h>
+ #include "CheckedCRT.h"
++#include "Interface/Context/Context.h"
++#include "Interface/Core/Dispatcher/Dispatcher.h"
++#include <FEXCore/Debug/InternalThreadState.h>
+ #include "PearEmptyInitProof.h"
+ #include "Common/Allocator.h"
+ #include "Common/CPUFeatures.h"
+@@ -143,8 +146,15 @@
+     return Source(Phase::Thread,Original);
+   }
+   R.ThreadCreated=1;
+-  // This actual Thread is retained only for immediate checked cleanup. No
+-  // CompileRIP, dispatch, link callback, delivered handler or guest invocation.
++  // A separately selected finite ordinary ARM64 transfer uses the actual
++  // source objects. The volatile local preserves its closed candidate body.
++  volatile bool TransferSelected=Proof::FiniteTransfer;
++  if (TransferSelected) {
++    auto* Actual=static_cast<FEXCore::Context::ContextImpl*>(S.Context.get());
++    const auto Transfer=Actual->Dispatcher->ExecutePearFiniteTransfer(S.Thread->CurrentFrame);
++    if (!Transfer) return Source(Phase::Thread,Transfer);
++  }
++  // No CompileRIP, guest dispatch, delivered handler or guest invocation.
+   return Good(Phase::Thread);
+ }
+ } // namespace

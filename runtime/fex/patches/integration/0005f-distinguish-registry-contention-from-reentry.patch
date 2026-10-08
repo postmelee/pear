@@ -1,0 +1,43 @@
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -80,18 +80,34 @@
+   for (auto& C:ContextLifetimes) if (C.Object == Object && Object) return &C;
+   return nullptr;
+ }
+-static std::atomic_flag Registry = ATOMIC_FLAG_INIT;
++static std::atomic<uintptr_t> Registry {0};
+ static_assert(sizeof(Bindings) + sizeof(ContextLifetimes) + sizeof(NextLifetimeSerial) + sizeof(Registry) + sizeof(BridgeDirect) + sizeof(OwnerPID) + sizeof(Configured) <= 24576,
+               "Bounded source adapter NX metadata, typed bindings and retained registration failures");
+ // This local bound is part of, not a substitute for, the compiled aggregate
+ // 256-KiB owner/adapter/holder/descriptor metadata accounting.
++// Record ownership in the lock word itself: an exception between acquisition
++// and a separate owner store must not mistake self-reentry for peer contention.
++// No owner/VM call or callback runs while this short NX registry lock is held.
+ struct RegistryGuard {
+-  RegistryGuard() { while (Registry.test_and_set(std::memory_order_acquire)) {} }
+-  ~RegistryGuard() { Registry.clear(std::memory_order_release); }
++  RegistryGuard() {
++    const auto Self=reinterpret_cast<uintptr_t>(GetCurrentTEB());
++    uintptr_t Empty=0;
++    while (!Registry.compare_exchange_weak(Empty,Self,std::memory_order_acquire,std::memory_order_relaxed)) Empty=0;
++  }
++  ~RegistryGuard() { Registry.store(0,std::memory_order_release); }
+ };
+ struct TryRegistryGuard {
+-  bool Owned {!Registry.test_and_set(std::memory_order_acquire)};
+-  ~TryRegistryGuard() { if (Owned) Registry.clear(std::memory_order_release); }
++  bool Owned {};
++  TryRegistryGuard() {
++    const auto Self=reinterpret_cast<uintptr_t>(GetCurrentTEB());
++    uintptr_t Seen=0;
++    for (;;) {
++      if (Registry.compare_exchange_weak(Seen,Self,std::memory_order_acquire,std::memory_order_relaxed)) { Owned=true; return; }
++      if (Seen==Self) return; // Interrupted native copy: never wait on ourselves.
++      Seen=0; // A peer's finite metadata access is contention, not lost ownership.
++    }
++  }
++  ~TryRegistryGuard() { if (Owned) Registry.store(0,std::memory_order_release); }
+ };
+ // Reuse the source FEXUnixLib ARM64EC register-branch mechanism. An ordinary
+ // indirect ARM64EC call would invoke the FEX call checker before admission.

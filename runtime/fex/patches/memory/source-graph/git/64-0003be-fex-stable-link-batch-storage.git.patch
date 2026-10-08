@@ -1,0 +1,152 @@
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -15,7 +15,8 @@
+   struct BatchWrite {
+     Ticket First {};
+     Memory::Allocation Before {}, Transaction {};
+-    std::unique_ptr<Memory::WriteGuard> Writer;
++    // Guard and its referenced transaction have one stable registry lifetime.
++    std::optional<Memory::WriteGuard> Writer;
+     std::optional<Memory::Links::ReservedBarrierTarget> Reserved;
+   };
+   std::mutex Mutex;
+@@ -226,20 +227,23 @@
+     if ((!First && !Reserved) || !R.Ledger.BeginBatch()) return {PEAR_FEX_UNAVAILABLE,0,0};
+     R.BatchContext=C; R.BatchThread=Thread; R.BatchExecutor=Memory::CurrentExecutor();
+   }
+-  Registry::BatchWrite Work; Work.First=T;
++  // Admission is closed before constructing the guard. Keep its referenced
++  // Transaction at this stable address through publish/abort and destruction.
++  Registry::BatchWrite* Work;
++  { std::lock_guard L {R.Mutex}; R.Held.emplace(); Work=&*R.Held; Work->First=T; }
+   if (First) {
+-    Work.Before=First->Owner->GetPearSnapshot(); Work.Transaction=Work.Before;
+-    if (!Registry::Identity(*First,Work.Before)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+-    Work.Writer=std::make_unique<Memory::WriteGuard>(Work.Transaction,First->Layout.WriteOffset,First->Layout.WriteSize);
+-    if (!*Work.Writer) return R.Poison(Work.Writer->Status());
+-    if (!Registry::Matches(*First,*Work.Writer)) return R.RefuseOpen(*First,Work.Before,Work.Transaction,*Work.Writer,{PEAR_FEX_STALE_IDENTITY,0,0});
++    Work->Before=First->Owner->GetPearSnapshot(); Work->Transaction=Work->Before;
++    if (!Registry::Identity(*First,Work->Before)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    Work->Writer.emplace(Work->Transaction,First->Layout.WriteOffset,First->Layout.WriteSize);
++    if (!*Work->Writer) return R.Poison(Work->Writer->Status());
++    if (!Registry::Matches(*First,*Work->Writer)) return R.RefuseOpen(*First,Work->Before,Work->Transaction,*Work->Writer,{PEAR_FEX_STALE_IDENTITY,0,0});
+   } else {
+-    Work.Reserved=std::move(Reserved); Work.Before=Registry::ReservedSnapshot(*Work.Reserved); Work.Transaction=Work.Before;
+-    if (!Registry::SameReserved(*Work.Reserved,Work.Before,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+-    Work.Writer=std::make_unique<Memory::WriteGuard>(Work.Transaction,0,16);
+-    if (!*Work.Writer) return R.Poison(Work.Writer->Status());
+-    if (Work.Writer->Data()!=Registry::ReservedNumericBase(*Work.Reserved)) {
+-      const auto Cleanup=R.AbortReserved(Work);
++    Work->Reserved=std::move(Reserved); Work->Before=Registry::ReservedSnapshot(*Work->Reserved); Work->Transaction=Work->Before;
++    if (!Registry::SameReserved(*Work->Reserved,Work->Before,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    Work->Writer.emplace(Work->Transaction,0,16);
++    if (!*Work->Writer) return R.Poison(Work->Writer->Status());
++    if (Work->Writer->Data()!=Registry::ReservedNumericBase(*Work->Reserved)) {
++      const auto Cleanup=R.AbortReserved(*Work);
+       if (!Cleanup) LogMan::Msg::EFmt("Pear reserved barrier abort retained: status {}, domain {}, code {}",
+                                      Cleanup.Status,Cleanup.ErrorDomain,Cleanup.ErrorCode);
+       return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+@@ -247,7 +251,6 @@
+   }
+   // Actual owned RWNX admission has parked every cooperative participant. This
+   // observed target guard, not the marker, precedes the caller's guest mutation.
+-  { std::lock_guard L {R.Mutex}; R.Held.emplace(std::move(Work)); }
+   return {PEAR_FEX_OK,0,0};
+ }
+ Memory::Result Queue(Ticket T) {
+@@ -261,13 +264,13 @@
+   auto& R=StateRegistry();
+   auto Life=Memory::AcquireCurrentSourceLifetime(C);
+   if (!Life || Life.ActualThread()!=Thread || !Registry::ThreadMatches(C,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+-  std::optional<Registry::BatchWrite> Held;
++  Registry::BatchWrite* Held {};
+   std::optional<SourceDescriptor> First;
+   {
+     std::lock_guard L {R.Mutex};
+     if (R.BatchContext!=C || R.BatchThread!=Thread || R.BatchExecutor!=Memory::CurrentExecutor() || !R.Held)
+       return {PEAR_FEX_STALE_IDENTITY,0,0};
+-    Held.swap(R.Held); if (!Held->Reserved) First=R.Slots[Held->First.Index].Source;
++    Held=&*R.Held; if (!Held->Reserved) First=R.Slots[Held->First.Index].Source;
+   }
+   if (!First && !Held->Reserved) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
+   const auto FinishedFirst=Held->Reserved ? R.AbortReserved(*Held) : R.Publish(*First,Held->Before,Held->Transaction,*Held->Writer);
+@@ -295,7 +298,7 @@
+   bool Complete {};
+   { std::lock_guard L {R.Mutex};
+     Complete=R.Ledger.FinishBatch();
+-    if (Complete) { R.BatchContext=nullptr; R.BatchThread=nullptr; R.BatchExecutor=0; }
++    if (Complete) { R.Held.reset(); R.BatchContext=nullptr; R.BatchThread=nullptr; R.BatchExecutor=0; }
+   }
+   R.Changed();
+   return Complete ? Memory::Result{PEAR_FEX_OK,0,0} : R.Poison({PEAR_FEX_UNAVAILABLE,0,0});
+diff --git a/Source/Windows/PearEmptyInit/Fixture.cpp b/Source/Windows/PearEmptyInit/Fixture.cpp
+--- a/Source/Windows/PearEmptyInit/Fixture.cpp
++++ b/Source/Windows/PearEmptyInit/Fixture.cpp
+@@ -6,6 +6,7 @@
+ #include "Interface/Context/Context.h"
+ #include "Interface/Core/Dispatcher/Dispatcher.h"
+ #include "Interface/Core/CPUBackend.h"
++#include "Interface/Core/PearJITLinks.h"
+ #include <FEXCore/Debug/InternalThreadState.h>
+ #include "PearEmptyInitProof.h"
+ #include "Common/Allocator.h"
+@@ -153,6 +154,22 @@
+   volatile bool TransferSelected=Proof::FiniteTransfer;
+   if (TransferSelected) {
+     auto* Actual=static_cast<FEXCore::Context::ContextImpl*>(S.Context.get());
++    // Exercise the actual empty reserved-target invalidation barrier before
++    // any generated metadata page is populated. No guest mutation is performed.
++    PearFiniteCheckpoint=48;
++    auto Life=Memory::AcquireCurrentSourceLifetime(Actual);
++    if (!Life) return Refused(Phase::Thread);
++    const auto Begun=FEXCore::CPU::PearJITLinks::BeginBatch(Actual,S.Thread);
++    if (!Begun) return Source(Phase::Thread,Begun);
++    Memory::Links::SealedEntry Entry;
++    const auto Closed=Memory::Links::TrySealEntry(Life,Entry);
++    if (Closed || Closed.Status!=PEAR_FEX_UNAVAILABLE || Entry)
++      return Source(Phase::Thread,{PEAR_FEX_STALE_IDENTITY,0,0});
++    const auto Finished=FEXCore::CPU::PearJITLinks::FinishBatch(Actual,S.Thread);
++    if (!Finished) return Source(Phase::Thread,Finished);
++    const auto ReleasedBarrierLife=Life.Release();
++    if (!ReleasedBarrierLife) return Source(Phase::Thread,ReleasedBarrierLife);
++    PearFiniteCheckpoint=49;
+     const auto Prepared=S.Thread->CPUBackend->PreparePearFiniteCode();
+     if (!Prepared) return Source(Phase::Thread,Prepared);
+     const auto Transfer=Actual->Dispatcher->ExecutePearFiniteTransfer(S.Thread->CurrentFrame);
+diff --git a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+--- a/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
++++ b/Source/Windows/PearEmptyInit/PearEmptyInitProof.h
+@@ -5,19 +5,19 @@
+ // It grants no Module initialization, guest dispatch or distribution support.
+ #pragma once
+ namespace FEX::Windows::PearEmptyInit::Proof {
+-inline constexpr bool SelectedSourceGraph = true;
+-inline constexpr bool CheckedCRTLinkClosure = true;
+-inline constexpr bool CompiledWholeMetadata = true;
+-inline constexpr bool SourceLifetimeAndEntry = true;
+-inline constexpr bool ExactCallerImageAdmission = true;
+-inline constexpr bool CurrentHostPermission = true;
+-inline constexpr bool BoundedTiming = true;
+-inline constexpr bool CheckedEnvironmentConstructor = true;
+-inline constexpr bool CheckedContextAllocation = true;
+-inline constexpr bool SelectedDeletionReceipt = true;
+-inline constexpr bool CheckedSourceDependencyAllocations = true;
+-inline constexpr bool SelectedGlobalConstructorContracts = true;
+-inline constexpr bool FiniteTransfer = true;
++inline constexpr bool SelectedSourceGraph = false;
++inline constexpr bool CheckedCRTLinkClosure = false;
++inline constexpr bool CompiledWholeMetadata = false;
++inline constexpr bool SourceLifetimeAndEntry = false;
++inline constexpr bool ExactCallerImageAdmission = false;
++inline constexpr bool CurrentHostPermission = false;
++inline constexpr bool BoundedTiming = false;
++inline constexpr bool CheckedEnvironmentConstructor = false;
++inline constexpr bool CheckedContextAllocation = false;
++inline constexpr bool SelectedDeletionReceipt = false;
++inline constexpr bool CheckedSourceDependencyAllocations = false;
++inline constexpr bool SelectedGlobalConstructorContracts = false;
++inline constexpr bool FiniteTransfer = false;
+ inline bool Ready() {
+   // Keep the exact reviewed body inspectable in the selected candidate.
+   // No caller, environment or command-line flag can change this selection;

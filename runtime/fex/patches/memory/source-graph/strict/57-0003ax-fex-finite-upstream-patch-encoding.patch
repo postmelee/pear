@@ -1,0 +1,12 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1469,7 +1469,7 @@
+   const auto Prepared=A::PrepareUnalignedPatchSnapshot(A::UnalignedHandlerType::HalfBarrier,Instructions);
+   if (Prepared.Kind!=A::UnalignedPatchKind::Candidate || Prepared.StoreCount!=2 ||
+       Prepared.StoreOrder[0]!=2 || Prepared.StoreOrder[1]!=1 || Prepared.ResumeDelta!=0 ||
+-      Prepared.Next[1]!=0xf9400020 || Prepared.Next[2]!=0xd50339bf) {
++      Prepared.Next[1]!=0xf87f6820 || Prepared.Next[2]!=0xd5033dbf) {
+     *Output={PEAR_FEX_INVALID_REQUEST,0,0};return;
+   }
+   auto Window=Thread->CPUBackend->FindPearManagedWindow(Snapshot.BlockBegin);

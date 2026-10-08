@@ -1,0 +1,14 @@
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -665,8 +665,8 @@
+ Result ObserveMetadata(pear_fex_memory_metadata& Output) {
+   Output={};
+   if (!Configured.load(std::memory_order_acquire) || !BridgeDirect || !OwnerPID ||
+-      CompiledSourceRole()!=PEAR_FEX_ROLE_NATIVE) return Refuse();
+-  auto Q=Request(PEAR_FEX_OBSERVE_METADATA);Q.ec_role=PEAR_FEX_ROLE_NATIVE;
++      (CompiledSourceRole()!=PEAR_FEX_ROLE_NATIVE && CompiledSourceRole()!=PEAR_FEX_ROLE_ARM64EC)) return Refuse();
++  auto Q=Request(PEAR_FEX_OBSERVE_METADATA);Q.ec_role=CompiledSourceRole();
+   pear_fex_memory_response Raw {};
+   const uint32_t Status=CallBridge(&Q,&Raw);
+   pear_fex_memory_metadata M {};memcpy(&M,&Raw,sizeof(M));

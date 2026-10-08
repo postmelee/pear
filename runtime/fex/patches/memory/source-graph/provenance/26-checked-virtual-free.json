@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear checked Windows release on pinned FEX C++; existing fatal logging policy and MIT notices retained.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "postimage_bytes": 7397,
+      "postimage_sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+      "preimage_sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73"
+    }
+  ],
+  "historical_strict_patch_sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "checked-virtual-free",
+  "native_runtime_execution": false,
+  "order": 26,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

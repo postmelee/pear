@@ -1,0 +1,76 @@
+diff --git a/Source/Windows/Common/WinAPI/Alloc.cpp b/Source/Windows/Common/WinAPI/Alloc.cpp
+--- a/Source/Windows/Common/WinAPI/Alloc.cpp
++++ b/Source/Windows/Common/WinAPI/Alloc.cpp
+@@ -8,6 +8,7 @@
+ #include <cstdint>
+ #include <cerrno>
+ #include <winternl.h>
++#include <ntstatus.h>
+ #include <windows.h>
+ #include <processenv.h>
+ #include "../Priv.h"
+@@ -28,6 +29,26 @@
+   return Reqs;
+ }
+ } // namespace
++namespace FEX::Windows::PearCRT {
++bool IsOriginalBasicInfoInitializer(uintptr_t Address) {
++  return Address==reinterpret_cast<uintptr_t>(&InitBasicInfo);
++}
++NTSTATUS InitializeBasicInfoChecked() {
++  // Preserve the real provider status and publish only complete observations.
++  // The original module callback remains unchanged; the finite checked CRT
++  // substitutes this typed call only for its exact original callback address.
++  SYSTEM_BASIC_INFORMATION Observed {};ULONG Returned {};
++  const auto Status=NtQuerySystemInformation(SystemEmulationBasicInformation,&Observed,sizeof(Observed),&Returned);
++  if (Status) return Status;
++  const auto Grain=Observed.AllocationGranularity;
++  if (Returned!=sizeof(Observed) || Observed.PhysicalPageSize!=4096 ||
++      !Grain || (Grain&(Grain-1)) || Grain<Observed.PhysicalPageSize ||
++      Observed.HighestUserAddress<Observed.LowestUserAddress || Observed.HighestUserAddress<Grain)
++    return STATUS_INVALID_PARAMETER;
++  BasicInfo=Observed;
++  return STATUS_SUCCESS;
++}
++} // namespace FEX::Windows::PearCRT
+ #endif
+ 
+ DLLEXPORT_FUNC(void*, VirtualAlloc, (void* lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)) {
+diff --git a/Source/Windows/PearEmptyInit/CheckedCRT.cpp b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+--- a/Source/Windows/PearEmptyInit/CheckedCRT.cpp
++++ b/Source/Windows/PearEmptyInit/CheckedCRT.cpp
+@@ -17,6 +17,11 @@
+ #include <winbase.h>
+ #include <sysinfoapi.h>
+ #include <initializer_list>
++
++namespace FEX::Windows::PearCRT {
++bool IsOriginalBasicInfoInitializer(uintptr_t);
++NTSTATUS InitializeBasicInfoChecked();
++}
+ 
+ extern "C" {
+ extern void (*FEXA)(),(*FEXZ)(),(*XIA)(),(*XIZ)(),(*XCA)(),(*XCZ)();
+@@ -280,6 +285,11 @@
+                  Phase::Environment,Domain::None,0,0,0};
+       if (!E.Published) return Refused(Phase::Environment);
+       continue; // Already counted this actual typed return exactly once.
++    } else if (K==CRTPlan::Kind::FEX && PearCRT::IsOriginalBasicInfoInitializer(P.Entries[N].Address)) {
++      const auto Actual=PearCRT::InitializeBasicInfoChecked();
++      ++R.CallbackReturns;
++      if (Actual) return NTFailure(Phase::CRTProcess,Actual);
++      continue;
+     } else if (K==CRTPlan::Kind::XL) {
+       reinterpret_cast<void(*)(HINSTANCE,DWORD,LPVOID*)>(P.Entries[N].Address)(nullptr,Reason,nullptr);
+       ++R.TLSCallbacks;
+@@ -320,6 +330,10 @@
+   for (size_t N=0;N<P.Count;++N) if (P.Entries[N].Group==CRTPlan::Kind::FEX &&
+       PearCRT::IsOriginalEnvironmentInitializer(P.Entries[N].Address)) ++EnvironmentInitializers;
+   if (EnvironmentInitializers!=1) return Refused(Phase::Environment);
++  size_t BasicInfoInitializers {};
++  for (size_t N=0;N<P.Count;++N) if (P.Entries[N].Group==CRTPlan::Kind::FEX &&
++      PearCRT::IsOriginalBasicInfoInitializer(P.Entries[N].Address)) ++BasicInfoInitializers;
++  if (BasicInfoInitializers!=1) return Refused(Phase::CRTProcess);
+   O=TLS(I,R);if (!O) return O;
+   uint64_t PID {};
+   { PEBLock Locked;O=Environment(PID,&P.Environment,&P.EnvironmentCharacters);if (!O) return O; }

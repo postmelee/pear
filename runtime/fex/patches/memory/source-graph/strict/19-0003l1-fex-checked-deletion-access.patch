@@ -1,0 +1,31 @@
+diff --git a/FEXCore/Source/Interface/Context/Context.cpp b/FEXCore/Source/Interface/Context/Context.cpp
+--- a/FEXCore/Source/Interface/Context/Context.cpp
++++ b/FEXCore/Source/Interface/Context/Context.cpp
+@@ -37,6 +37,10 @@
+ }
+ bool Context::DestroyPearContextChecked(PearContextOwner& Owner, FEXCore::Utils::PearFEXMemory::Result& Outcome,
+                                        bool& Destroyed, bool& Freed) {
++  return ContextImpl::DestroyPearContextBackingChecked(Owner,Outcome,Destroyed,Freed);
++}
++bool ContextImpl::DestroyPearContextBackingChecked(PearContextOwner& Owner, FEXCore::Utils::PearFEXMemory::Result& Outcome,
++                                                  bool& Destroyed, bool& Freed) {
+   namespace Memory=FEXCore::Utils::PearFEXMemory;
+   Destroyed=false; Freed=false;
+   auto* Actual=Owner.get();
+diff --git a/FEXCore/Source/Interface/Context/Context.h b/FEXCore/Source/Interface/Context/Context.h
+--- a/FEXCore/Source/Interface/Context/Context.h
++++ b/FEXCore/Source/Interface/Context/Context.h
+@@ -143,6 +143,13 @@
+ };
+ 
+ class ContextImpl final : public FEXCore::Context::Context, public CPU::SharedCodeBufferManager {
++#ifdef PEAR_FEX_MEMORY_OWNER
++private:
++  // Only the existing checked actual-source owner API may invoke this helper.
++  // SourceLifecycle already friends this genuine owning implementation class.
++  friend bool Context::DestroyPearContextChecked(PearContextOwner&, FEXCore::Utils::PearFEXMemory::Result&, bool&, bool&);
++  static bool DestroyPearContextBackingChecked(PearContextOwner&, FEXCore::Utils::PearFEXMemory::Result&, bool&, bool&);
++#endif
+ public:
+   // Context base class implementation.
+   bool InitCore() override;

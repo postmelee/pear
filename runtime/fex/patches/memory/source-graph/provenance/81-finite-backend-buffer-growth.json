@@ -1,0 +1,43 @@
+{
+  "attribution": "Original Pear adds bounded actual backend and shared manager buffer growth, lookup switching, held old generation and retirement controls. No guest, signal handler or changed owner contract; proof flags stay closed pending measurement.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 80570,
+      "postimage_sha256": "99d6ffa28914b5dcbe0c7b170fdc824dc11d481a50e3a5d4af9996805d978e5c",
+      "preimage_sha256": "9df8fe52de91712ccca11b195e7b5e4ed06a24443c0135a6e64e51684136ef76"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "postimage_bytes": 25344,
+      "postimage_sha256": "ba5308e888336459f3787f342e63ae5b08cc2781c96035fb7f3fd221a3991422",
+      "preimage_sha256": "4ab3c822ea25c9f80ff5a05ee4da61eb1d00f291331e54b191af545c3959e81c"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 105872,
+      "postimage_sha256": "2efae98561b4d52a331f1239d8d851bb3000f5fd65aa0793bd9e75dac88f1744",
+      "preimage_sha256": "df2fdc5b5c0b19471b6714a70066a3b0c9c58f447e69286aa754181d4af4df95"
+    },
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1811,
+      "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+      "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+    }
+  ],
+  "historical_strict_patch_sha256": "a0172b812258ef679222703832ba340605b435898b7cc95d79fdf1beddf1f28e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-backend-buffer-growth",
+  "native_runtime_execution": false,
+  "order": 81,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

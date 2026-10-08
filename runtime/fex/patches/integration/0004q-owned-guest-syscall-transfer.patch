@@ -1,0 +1,37 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -74,6 +74,7 @@
+ namespace Exception {
+ class ECSyscallHandler;
+ }
++static void PearInitCheckpoint(const char*, uint32_t, uint32_t = 0, int32_t = 0);
+ 
+ extern "C" {
+ extern IMAGE_DOS_HEADER __ImageBase; // Provided by the linker
+@@ -615,6 +616,16 @@
+       .Rec = {.ExceptionCode = STATUS_EMULATION_SYSCALL}};
+     // PC is expected to hold the return address after the thunk, so skip over the INT 2E/SYSCALL instruction.
+     DispatchArgs.Context.Pc += 2;
++#ifdef PEAR_FEX_MEMORY_OWNER
++    // Upstream's Windows syscall transfer abandons this native call frame and
++    // resumes through BeginSimulation, not through the dispatcher return PC.
++    // Release the actual global execution lease before that nonlocal transfer;
++    // BeginSimulation must obtain a new checked lease after Wine redirects it.
++    const auto Exited = CTX->ExitPearEC(Thread, true);
++    PearInitCheckpoint("GuestSyscall.exit", Exited.Status, Exited.ErrorDomain, Exited.ErrorCode);
++    PEAR_FEX_REQUIRE_RESULT(!!Exited, "Pear guest syscall handoff refused: status {}, domain {}, code {}", Exited);
++    GetCPUArea().Area->InSimulation = false;
++#endif
+     JumpSetStack(KiUserExceptionDispatcher, reinterpret_cast<uintptr_t>(&DispatchArgs));
+   }
+ 
+@@ -698,7 +709,7 @@
+ 
+ // Bounded development checkpoints use Wine's existing output path. No guest
+ // memory, account data, register dump or new runtime ABI is recorded here.
+-static void PearInitCheckpoint(const char* Phase, uint32_t Status, uint32_t Domain = 0, int32_t Code = 0) {
++static void PearInitCheckpoint(const char* Phase, uint32_t Status, uint32_t Domain, int32_t Code) {
+   const auto Output = reinterpret_cast<int (*)(const char*)>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "__wine_dbg_output"));
+   if (!Output) return;
+   char Text[192];

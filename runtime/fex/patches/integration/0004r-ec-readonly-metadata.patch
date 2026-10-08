@@ -1,0 +1,12 @@
+diff --git a/dlls/ntdll/unix/pear_fex_memory.c b/dlls/ntdll/unix/pear_fex_memory.c
+--- a/dlls/ntdll/unix/pear_fex_memory.c
++++ b/dlls/ntdll/unix/pear_fex_memory.c
+@@ -433,7 +433,7 @@
+     if (q->opcode == PEAR_FEX_OBSERVE_METADATA)
+     {
+         struct pear_fex_memory_metadata metadata = {0};
+-        if (q->ec_role != PEAR_FEX_ROLE_NATIVE || !role_valid(q->ec_role) || !owner.backend.metadata)
++        if (!role_valid(q->ec_role) || !owner.backend.metadata)
+         { status = PEAR_FEX_UNAVAILABLE; goto done; }
+         if (owner.backend.metadata(&metadata, &error))
+         { status = PEAR_FEX_NATIVE_FAILURE; goto done; }

@@ -1,0 +1,170 @@
+{
+  "build_tools": {
+    "cmake": {
+      "checksum_sha256": "8d08ce0586bf40ff6b80e46fffe2db8855bab5b030db8b3782f11f68b6274ad8",
+      "origin": "https://github.com/Kitware/CMake/releases/tag/v3.31.8",
+      "role": "build-only-prebuilt-native-slice",
+      "sha256": "d1449f969c54d5c00886d5b643340d493dfb3c81cb39ee29b35453395c11ebf7",
+      "version": "3.31.8"
+    },
+    "ninja": {
+      "commit": "79feac0f3e3bc9da9effc586cd5fea41e7550051",
+      "origin": "https://github.com/ninja-build/ninja.git",
+      "role": "build-only-source-bootstrap",
+      "version": "1.13.1"
+    }
+  },
+  "cross_toolchain": {
+    "archive_root": "llvm-mingw-20260908-ucrt-macos-universal",
+    "notice_files": [
+      {
+        "path": "LICENSE.TXT",
+        "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+        "size_bytes": 15141
+      },
+      {
+        "path": "aarch64-w64-mingw32/share/mingw32/COPYING",
+        "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+        "size_bytes": 2326
+      },
+      {
+        "path": "aarch64-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+        "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+        "size_bytes": 12155
+      },
+      {
+        "path": "aarch64-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+        "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+        "size_bytes": 5905
+      },
+      {
+        "path": "aarch64-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+        "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+        "size_bytes": 2883
+      },
+      {
+        "path": "aarch64-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+        "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+        "size_bytes": 1099
+      },
+      {
+        "path": "armv7-w64-mingw32/share/mingw32/COPYING",
+        "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+        "size_bytes": 2326
+      },
+      {
+        "path": "armv7-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+        "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+        "size_bytes": 12155
+      },
+      {
+        "path": "armv7-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+        "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+        "size_bytes": 5905
+      },
+      {
+        "path": "armv7-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+        "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+        "size_bytes": 2883
+      },
+      {
+        "path": "armv7-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+        "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+        "size_bytes": 1099
+      },
+      {
+        "path": "i686-w64-mingw32/share/mingw32/COPYING",
+        "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+        "size_bytes": 2326
+      },
+      {
+        "path": "i686-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+        "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+        "size_bytes": 12155
+      },
+      {
+        "path": "i686-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+        "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+        "size_bytes": 5905
+      },
+      {
+        "path": "i686-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+        "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+        "size_bytes": 2883
+      },
+      {
+        "path": "i686-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+        "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+        "size_bytes": 1099
+      },
+      {
+        "path": "share/gendef/COPYING.txt",
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "size_bytes": 35147
+      },
+      {
+        "path": "share/widl/COPYING.txt",
+        "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+        "size_bytes": 2326
+      },
+      {
+        "path": "x86_64-w64-mingw32/share/mingw32/COPYING",
+        "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f",
+        "size_bytes": 2326
+      },
+      {
+        "path": "x86_64-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt",
+        "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+        "size_bytes": 12155
+      },
+      {
+        "path": "x86_64-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt",
+        "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1",
+        "size_bytes": 5905
+      },
+      {
+        "path": "x86_64-w64-mingw32/share/mingw32/COPYING.winpthreads.txt",
+        "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+        "size_bytes": 2883
+      },
+      {
+        "path": "x86_64-w64-mingw32/share/mingw32/COPYING.winstorecompat.txt",
+        "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
+        "size_bytes": 1099
+      }
+    ],
+    "sha256": "d1dc5d1ecf3a3ced5ed5544c72f1acd0c8e84eb3024d520ecc6b143eec62a149",
+    "size_bytes": 124244100,
+    "source_commit": "030097eeee87fcfd0f3bfe536b21cbd6e5d3b324",
+    "url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260908/llvm-mingw-20260908-ucrt-macos-universal.tar.xz"
+  },
+  "native_tools": {
+    "clang": {
+      "id": "clang",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+      "sha256": "7def90dd8829726686213a747fc5bff1583df933dae5edc55d755479e0bfe00a",
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+    },
+    "clang++": {
+      "id": "clang++",
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++",
+      "sha256": "7def90dd8829726686213a747fc5bff1583df933dae5edc55d755479e0bfe00a",
+      "version": "Apple clang version 21.0.0 (clang-2100.1.1.101)"
+    },
+    "xcrun": {
+      "id": "xcrun",
+      "path": "/usr/bin/xcrun",
+      "sha256": "a439970aea2b4e435eac6518ff62c97fd1c57d8c731974027ad211b515c7a7b8",
+      "version": "Bundled with macOS 26.5.2 / Xcode 26.6; no separate version asserted"
+    }
+  },
+  "qualification": "candidate_until_stage1_actual_checks",
+  "record_kind": "fex_toolchain",
+  "runtime_qualified": false,
+  "schema_version": 1,
+  "scope": "fex_component",
+  "sdk": {
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+    "version": "26.5"
+  }
+}

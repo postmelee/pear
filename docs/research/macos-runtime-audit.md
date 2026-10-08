@@ -1,5 +1,7 @@
 # Rosetta-free macOS runtime audit
 
+October 8, 2026 follow-up: [Task #5's component reconstruction](../development/fex-host.md) now has finite x64 execution/lifecycle evidence on a development Mac. The dated source audit below remains historical analysis; it does not inherit game, Steam or distribution qualification.
+
 Checked: 2026-09-27. Status: architecture research, not an implemented or certified Pear runtime.
 
 This audit distinguishes inspected public source, locally inspected SDK declarations, vendor demonstrations, and work that Pear must still validate. It does not claim that Megabonk has run without Rosetta. The existing local Wine/DXMT game experiment remains a Rosetta-dependent reference.

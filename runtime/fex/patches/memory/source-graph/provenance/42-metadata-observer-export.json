@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear exposes the metadata observer and budget classifier in the declared namespace; private bridge and owner state remain internal. No gate, permission, or budget changes.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/PearFEXMemory.cpp",
+      "postimage_bytes": 76045,
+      "postimage_sha256": "347887b77dbc7ac39b0ded6fd4be55b1f99c620b1dbe82d5bdc63bd8dfddc95b",
+      "preimage_sha256": "6adabd8ddcb149fe35f50aba400d0fe2a23d2ae5b592df01a05fdbe89119e59c"
+    }
+  ],
+  "historical_strict_patch_sha256": "22e8be0ba0b91cd1265b2e800189d9e991ee8a3470d36fd53b3ce6c199d02c2e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "metadata-observer-export",
+  "native_runtime_execution": false,
+  "order": 42,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

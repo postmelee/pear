@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear corrects the static derived Context type after an actual protected Thread identifies it. Source51 compile failure is retained. All source invocation selections remain closed; no ABI, capacity or permission change.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 93355,
+      "postimage_sha256": "e029e209ac9a69264307d32ee71563626c4f4595bc581d60220602630becfa4a",
+      "preimage_sha256": "f0bbf4547d49ff8f5fe0a1b1a575faf75a6f3954c9d3acb08d28858da143b336"
+    }
+  ],
+  "historical_strict_patch_sha256": "7cb0178503da2bb74c4e0082f0954c5d596ba37c65c823cb106ffb1f071cee2a",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-transfer-context-type",
+  "native_runtime_execution": false,
+  "order": 52,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

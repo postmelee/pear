@@ -1,0 +1,14 @@
+diff --git a/Source/Windows/Common/CRT/Misc.cpp b/Source/Windows/Common/CRT/Misc.cpp
+--- a/Source/Windows/Common/CRT/Misc.cpp
++++ b/Source/Windows/Common/CRT/Misc.cpp
+@@ -93,7 +93,9 @@
+     ++I;
+   }
+   DWORD Bytes {};
+-  auto S=RtlUnicodeToMultiByteSize(&Bytes,Actual,static_cast<DWORD>(WideBytes));
++  // The pinned MinGW declaration lacks const; the paired Wine implementation
++  // only reads this locked, validated input while computing the output size.
++  auto S=RtlUnicodeToMultiByteSize(&Bytes,const_cast<wchar_t*>(Actual),static_cast<DWORD>(WideBytes));
+   O.ConversionSizeReturned=true;
+   if (S) { O.Status=EnvironmentStatus::ConversionFailure;O.NativeStatus=static_cast<int32_t>(S);return O; }
+   if (Bytes<2 || Bytes>65536) return O;

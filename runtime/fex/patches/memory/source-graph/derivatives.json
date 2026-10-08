@@ -1,0 +1,3833 @@
+{
+  "baseline": {
+    "materialized_source_sha256": "d7cf7fa57fe69b1f59d808a385d5900d2ffe565d6fda472f1a6264c3751dadff",
+    "source_scope": "selected_original_stage2_source"
+  },
+  "compilation_performed": false,
+  "controls": {
+    "git_execution_performed": false,
+    "refusal_controls": 12,
+    "roundtrip_controls": 2,
+    "source_build_performed": false
+  },
+  "core_callsite_replacement": "source_candidate_unqualified",
+  "final_changed_source_rows": [
+    {
+      "mode": 420,
+      "path": "CodeEmitter/CodeEmitter/Buffer.h",
+      "sha256": "19ee5cea1f985286be33a6bac9ffbc8b3f8d475c7164fa9a70a7656e08e1f42f",
+      "size_bytes": 4367
+    },
+    {
+      "mode": 420,
+      "path": "CodeEmitter/CodeEmitter/Emitter.h",
+      "sha256": "42795591aeda8ba80b6f9eafbddd5393b0e2f9c571c94acc2ca1b2f0c7fe5f13",
+      "size_bytes": 29785
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "sha256": "dfcd2cb0d1406122ae875ac1d0e48bcee35658ae4ca8b2e14a28ca2ed824ce8c",
+      "size_bytes": 11494
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Config/Config.cpp",
+      "sha256": "3dfaf99dbdc0165ab8c6dead751bf5c0ba17a7dc566fe1663b7e3684d588acf4",
+      "size_bytes": 23567
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Context/Context.cpp",
+      "sha256": "a64c770f4d41e38bfe912b0afda878996d35d7bd260e03e4db8ab6b0432cf187",
+      "size_bytes": 8113
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "sha256": "dd0d6dfb9fcfc82048616bbc00c16bcd711482511395dd2da5a90680adebdb3b",
+      "size_bytes": 24603
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "sha256": "0d90b82ce1e43f59015da6845ced194d7a0cb88b5dde85f2a0a06c34d74cee32",
+      "size_bytes": 21794
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+      "sha256": "e0d94f250946b10dd0169b9a4e93bb9870b0f30ffb3f000da9e6427df01db9b1",
+      "size_bytes": 7095
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/CPUID.cpp",
+      "sha256": "7b3d3d9f381a4ba49a7e4c23ccb923e8cdcc188f748b4712a4eae08a53c2dba5",
+      "size_bytes": 59753
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/CPUID.h",
+      "sha256": "ef46a547b04aa5428b03a5417ec35250a2fd4aff00e12b6e6033502551234613",
+      "size_bytes": 23083
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "634d1288107e8c8b7718146e74771c2d83ad5222cc0f1fc20d2b68536e2b71f7",
+      "size_bytes": 106086
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "sha256": "10914dec18d3d18c11a6787ac8fc709eb8b1fb4f5a96f89e93515e6a8f011c2e",
+      "size_bytes": 107278
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+      "sha256": "4703030c454aa3b20d461ce9b41dda7778491c187661d77b7bc28958c06529f4",
+      "size_bytes": 8087
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "sha256": "892e980f8f0149560e9d7ae41ea0c813ce55694431962471a6d6684796f0f02e",
+      "size_bytes": 81330
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "sha256": "ba5308e888336459f3787f342e63ae5b08cc2781c96035fb7f3fd221a3991422",
+      "size_bytes": 25344
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "sha256": "ac5cabe4a257920eb79f91c16ad8b9c539470690b2329f3316749f5ac57cdab4",
+      "size_bytes": 6599
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "sha256": "01e8616f208521ca01091487bc5ff213773829cf2513dfa9d16066f97b001a7d",
+      "size_bytes": 22116
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/PearJITLinkLayout.h",
+      "sha256": "6224e0a5256534708f06595f86ad9e6bfb29d9b65771eee9189f59af0e3f0a37",
+      "size_bytes": 4412
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/PearJITLinkTickets.h",
+      "sha256": "cd597ac65552115352bd7c52b0d229e85c0215a7a84076fb5fd177e3ed4cb25b",
+      "size_bytes": 4166
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+      "sha256": "ebb44cd2f8007d0c1cb333dcb2e807fda3d94a2491d388fd68cc10fc91589fee",
+      "size_bytes": 21519
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.h",
+      "sha256": "b4e70e8385cfbadf64389b6dd57376bb96629196ca4cb49c857d0c78981d2f81",
+      "size_bytes": 3572
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/PearJITMetadata.h",
+      "sha256": "20431878e7e975bffd6b6060db3678a6623b9b60845208a1cd86d5fb2f5c2ff7",
+      "size_bytes": 2628
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+      "sha256": "8fec80eef79c9662ef76dd72054ed3d97b11c3c2c9baf2566547b5aafd680657",
+      "size_bytes": 10518
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.h",
+      "sha256": "39e638d9ce84ce69db1977aaf97e2a307b50e0655a5d7c016f7b83833f651e79",
+      "size_bytes": 6897
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+      "sha256": "b5d318ffc0cd909293f3a80966498952cae206c97851ba2f40fa36e9cd6c5599",
+      "size_bytes": 6143
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/IR/PassManager.h",
+      "sha256": "d0a7841d0286b8019faac1ebf8e03531ab4efcbb39c6fc4b2499eef6410cb270",
+      "size_bytes": 3394
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/IR/Passes.h",
+      "sha256": "4535c50bec0bf39e2e3b0fa31e06a806b140ed05c37e0ea663007482610803ec",
+      "size_bytes": 896
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp",
+      "sha256": "1d921a6dbe67522ea35940fd32077d92117358f9b784f7f3ab9c971ea8327fa8",
+      "size_bytes": 23183
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp",
+      "sha256": "0dd7128c9bd62c0be131912763235175556e94616fda1182a870a41a405dde54",
+      "size_bytes": 28657
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp",
+      "sha256": "6443c3f1bad6f00f3a4bd388292843820430e15dfbf4912aebf433eeab21d70b",
+      "size_bytes": 42463
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Utils/AllocatorHooks.cpp",
+      "sha256": "f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f",
+      "size_bytes": 6402
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+      "sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+      "size_bytes": 80018
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64InstructionConstants.h",
+      "sha256": "7f6a789075544099408e373a98511b796a712912265ac334a92129331e9d9d64",
+      "size_bytes": 3789
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64Preparation.h",
+      "sha256": "db39e4ade63756c134609bc79f12a2bb730f0978f4af9dc82820f37b0bce5566",
+      "size_bytes": 3573
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+      "sha256": "4094c7633ea0da4ee032fe223eeea35e8f1fbd68029632833ad9f41ac26091c9",
+      "size_bytes": 3171
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/Source/Utils/PearFEXRetirement.cpp",
+      "sha256": "f491f83560a29b0d9233edef257a4f6f9a6ed26c325c745611e4062b82a1c613",
+      "size_bytes": 2077
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Config/Config.h",
+      "sha256": "db67ac76ef6146bb587d7df7c69457681ec83de8b3fb6bcf1a39a1282d9ccbf4",
+      "size_bytes": 12042
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Config/PearConfigAllocator.h",
+      "sha256": "fe9b0d5fdca9c198738fcec9f86cb09a50a60257d2ce2bb1a88f83bc8d50ad77",
+      "size_bytes": 2886
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "sha256": "49fdcc378509bfb59e8a56826b37d2913b0f571a8a071d7d100c35ff370c47d2",
+      "size_bytes": 11363
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Debug/InternalThreadState.h",
+      "sha256": "08ab6d391701355f4356c508f3bb8e5abd0a6e52360808d3c7f518935d2dc142",
+      "size_bytes": 4125
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+      "size_bytes": 7397
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/ArchHelpers/Arm64.h",
+      "sha256": "0e413f8e9e895bc1ffb048d7f2c4d8a9d78384ed5370606da398e7d43b447380",
+      "size_bytes": 2321
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+      "sha256": "4e9f94cc78fda875a6eab2e06483435de2468efb870e3a46097d020f855c1a60",
+      "size_bytes": 1367
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+      "sha256": "34abee87abed0b4f4d2c309c33a1f128f5a4d2f242f022151475c1328e181515",
+      "size_bytes": 2243
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+      "sha256": "55baf05f090c17655989899704a280963ff3c2b8e44a83c96b4d228fb0e93819",
+      "size_bytes": 14249
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXRetirement.h",
+      "sha256": "1edc6cf02d96adc20be530219f98943a3b89f7acb5d2adfc208f148c56979e11",
+      "size_bytes": 8506
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/Utils/PearSourceGuard.h",
+      "sha256": "f39c5b7957091b0ba2cf49a492eec3ac6259501a511147614bc30276468fd674",
+      "size_bytes": 2331
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/fextl/memory.h",
+      "sha256": "c8fade6eb37b9526e0a6e516cb2f5e39c9ad1d18bb88f398a6d605506c6d2553",
+      "size_bytes": 1370
+    },
+    {
+      "mode": 420,
+      "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+      "sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+      "size_bytes": 5725
+    },
+    {
+      "mode": 420,
+      "path": "Source/Tools/CommonTools/DummyHandlers.cpp",
+      "sha256": "4fddd369e6b194e0fc63ef6c1ae4132ac25e94336a0b6ad9dd1772f46d12040c",
+      "size_bytes": 2102
+    },
+    {
+      "mode": 420,
+      "path": "Source/Tools/CommonTools/DummyHandlers.h",
+      "sha256": "a7bbe3aadf0b2f0b895a546f3ea6409347d60ff431f440d5508de4ae6c266d23",
+      "size_bytes": 1826
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "c2651bf0052003380125cdd754deb610cd35093ad954f7fe5121571940dec9e3",
+      "size_bytes": 61928
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/CMakeLists.txt",
+      "sha256": "097934c05a0fc551ce79e1015e5d3f28d86381570f0753c6daa640ed568d2720",
+      "size_bytes": 1630
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/CMakeLists.txt",
+      "sha256": "5efb5cebe2ea5011ead0cfe3e27b9721e8dc3dde75cbfc5c1a129a89ff693568",
+      "size_bytes": 2104
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/CRT/Misc.cpp",
+      "sha256": "41946004123dc79da6c2d8d365f56ec1366b38e5cea12a12481bd14b0c7109e0",
+      "size_bytes": 7519
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+      "sha256": "ec96b961925118ce4878f9b3f7cce314aa75c140bf599234d651f3803a2cea39",
+      "size_bytes": 969
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/DarwinConfigPolicy.cpp",
+      "sha256": "6a0d801be1f77abe01a2605a9b04a13ae156f85dd4554d30ca48d1af52d26dd3",
+      "size_bytes": 2000
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/DarwinConfigPolicy.h",
+      "sha256": "24a09f91b100112da8076fa5099929e80e0ad44e1882e4feb795fb49986904d3",
+      "size_bytes": 2032
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/PearFEXMemory.cpp",
+      "sha256": "329dafa9becf8505d0e5ca11d1fe19fec318db42de138a99cf2921dd1defafa4",
+      "size_bytes": 77694
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+      "sha256": "47aac01580b1e1a03ea6e3ad5fd2c9df709dd55ed849cabc3bd9bc53cca7b631",
+      "size_bytes": 7810
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/CMakeLists.txt",
+      "sha256": "e9202b3af6a6c0255e568216ac28eeb7584a477591314e20c4744c6af29d77b6",
+      "size_bytes": 1070
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "sha256": "4906d7d58cb7200e4ee537b55ea392394114d633b7b7d1ed787a9d9dd729c008",
+      "size_bytes": 26540
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+      "sha256": "9a6e7978bf35691562020cee4ce08fc0ca1050e313ba160a6e9777710a905180",
+      "size_bytes": 1834
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "sha256": "a564d8821d5ec0ba92eca440fab1d3aa2c7e4d5efda0af1d7f89e0daf2bbaf21",
+      "size_bytes": 12417
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/Fixture.def",
+      "sha256": "42c3727c1473d7e43da199c6949c3d65b6fd2c502ddae667bc321633ba9521ca",
+      "size_bytes": 59
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+      "size_bytes": 1798
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/PearEmptyInit/Report.h",
+      "sha256": "9360ef88c8e6857583023c9813d0dd8a5157dc3838de394d248ff4dc495a8381",
+      "size_bytes": 2040
+    },
+    {
+      "mode": 420,
+      "path": "Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "size_bytes": 49398
+    },
+    {
+      "mode": 420,
+      "path": "Tests/Windows/PearEmptyInit/caller.cpp",
+      "sha256": "6084fe624b8a0eddefea9d39c59637df03fcd3648b02dee739d022b5c6a7623b",
+      "size_bytes": 3365
+    }
+  ],
+  "general_source_lifetime": "unclosed",
+  "git_execution_performed": false,
+  "historical_graph_sha256": "8282a1b65a109875d34eb1cfe09853652ca39c57de11c8b39e8bc8358215c8cb",
+  "layers": [
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "postimage_bytes": 9244,
+          "postimage_sha256": "5e93ab3ff838d907d192e445172715ec6f7ae5227390c12209620421f0a666c8",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 46816,
+          "postimage_sha256": "9ea7e3b0188a0fade09bfa276451887b0c3c1df4cc751ed8a6c6e71de5fc8e6c",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/Common/CMakeLists.txt",
+          "postimage_bytes": 2104,
+          "postimage_sha256": "597be805df33ae88a67d3052cd02c9a8fc502e92d6b1b9dcc0297f3ee90c22e7",
+          "preimage_sha256": "fbcaba03ea7c68546e7ce2670eb4b6eccba72e6f879b1b7c0a8ced1bb6f7d64f"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/01-0003c-fex-memory-adapter.git.patch",
+        "sha256": "f2e4bec6b5d1c81504e2e1f45f0a00b48613fac00aa00ff82c780d17083eb7a2",
+        "size_bytes": 59366
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "common",
+      "order": 1,
+      "source_manifest": {
+        "path": "provenance/01-common.json",
+        "sha256": "eff526526d5dc07f009a70b7fcb65e344f245d29031c8a234e1517b59727ce23",
+        "size_bytes": 1503
+      },
+      "strict_patch": {
+        "path": "strict/01-0003c-fex-memory-adapter.patch",
+        "sha256": "fd42ac2ca2b12bde3f7304dbd83194995f1cf57f6497154401ee3eaeb596f846",
+        "size_bytes": 59324
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+          "postimage_bytes": 6882,
+          "postimage_sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73",
+          "preimage_sha256": "5992a78d13a679a1c632bde6e98878acd05e1beb0dc7d8539ae4440c16098897"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.h",
+          "postimage_bytes": 6660,
+          "postimage_sha256": "bab545f07e14f1b2aaa841f6d143f0fe1545dff9c70a19fde7de565ef8eb636a",
+          "preimage_sha256": "990075f12f35db0840bdf6c304473f41a1e8e55e068a137d9929b3ed397f2824"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+          "postimage_bytes": 9120,
+          "postimage_sha256": "38ec4888f7fd09005740814950f6956d9d6f1c2602d0763f0b96277ffceadac5",
+          "preimage_sha256": "142f2dc0b875946a3123d3121a055d71815935c000928cef6c4650ce18a7a941"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 7853,
+          "postimage_sha256": "ce96a5b000b843236de30bf68755da332baf333bd95bde746d6ad0d0734493ac",
+          "preimage_sha256": "dfb8445edafb67dadc73bb4e6b208b22c8cf4f2d0161a25434f12ea554cd769c"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 103569,
+          "postimage_sha256": "b14cc660e1689108808314734bdb8432162aaa0d3d87c945910cc1f49561e25d",
+          "preimage_sha256": "a90bd75e2e17a4a092f3a2aaba016a411bb91ea850aeab31dde88a3c87ee1764"
+        },
+        {
+          "path": "CodeEmitter/CodeEmitter/Buffer.h",
+          "postimage_bytes": 4334,
+          "postimage_sha256": "ce7df2ad8aac259b7329ca3fec48e973f7a6ccad050f75b4f3bdc66ac5256fe0",
+          "preimage_sha256": "66b1b9bf49079c75e87326b82995e9ddd9f7c44f741e21bd103aff5e5c3f7f2c"
+        },
+        {
+          "path": "CodeEmitter/CodeEmitter/Emitter.h",
+          "postimage_bytes": 28802,
+          "postimage_sha256": "0f3fe362d200a21ab29c5b7f5607965f10a9a78a1ea8e603d630978126282a01",
+          "preimage_sha256": "af66bd18c6b7fe246b8b8f50b47504beb1e7844ab34bc01ed8886bf3ef92e068"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/02-0003c1-fex-code-owner-hooks-canonical.git.patch",
+        "sha256": "7e44e06f82d728621eb5e764f81b471f6b086476ef1c2e2e739021901ad67abd",
+        "size_bytes": 32033
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "shared",
+      "order": 2,
+      "source_manifest": {
+        "path": "provenance/02-shared.json",
+        "sha256": "4b972f9f071ef1e0691db70fe959580adf3ddce75fe5ee5d3897cbfabc1d5648",
+        "size_bytes": 2832
+      },
+      "strict_patch": {
+        "path": "strict/02-0003c1-fex-code-owner-hooks-canonical.patch",
+        "sha256": "7e44e06f82d728621eb5e764f81b471f6b086476ef1c2e2e739021901ad67abd",
+        "size_bytes": 32033
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 57026,
+          "postimage_sha256": "86dbdccfc361bd80b37e3e7c3ce5fc667d05c13733cc07d1698e3be05d6c64a7",
+          "preimage_sha256": "e2426d022d7fcea1d10d078eb01dd289d318119a8786fd5d89cf835b23a95783"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+          "postimage_bytes": 24735,
+          "postimage_sha256": "16892f066de0db43ef24f86ba57565df62d6b91c0cfe1e6723c42b0e950d1212",
+          "preimage_sha256": "b72eafbb3b8ec87bedb56082c76c0d193da4be79d3110482a77d4e80c2abc183"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 69766,
+          "postimage_sha256": "0d8956fb1d97fab77deb95d8ce237dd0c2d9654c1cd155937da21574a3f63789",
+          "preimage_sha256": "75576f7149e6dcf9aedf95031bc72be97cd8a938554720c6c04884b99b91c63c"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+          "postimage_bytes": 6717,
+          "postimage_sha256": "791c9730080173612867546dba51ecd0efb4def025c39660b9ece4444e9b5695",
+          "preimage_sha256": "6c24f3d6fcce551ad845bf08ad9d9e20566eaa6a4e41664f5a1831355d6f26fb"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 17157,
+          "postimage_sha256": "df2794c025440f6e2ad56c2fea63dabe22e475111d639f8a59a95b82d5dd2e84",
+          "preimage_sha256": "da6f882d069c7b756a716d167ab454f529987fde7bcf4d9328895d48cbb67bc2"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 19914,
+          "postimage_sha256": "9235aa826bda6d8c0f7655efa5e2cc1a763054c5964108c9a4ec95affe962e54",
+          "preimage_sha256": "0c5825c7153e98ae3bb7bee95dac07e7a8253720196813fa0eb68174ef973384"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 22789,
+          "postimage_sha256": "30e2133b9b42d23a3a960f51b858da673d76dccfc82b022de39ad72ac965d609",
+          "preimage_sha256": "38e7d562e071e7868a085dc17246f6a4568cf76ec18bd5fe7938064f930c4940"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "postimage_bytes": 9891,
+          "postimage_sha256": "7d93cb333dba79bd18ff9e2719e4fd566498a6b8ed7fe6793c26efb9c1d17e59",
+          "preimage_sha256": "56d008aea507758c3b82bec5f6ae6856af69e7660fe4263fa610b347b490f0fd"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXRetirement.h",
+          "postimage_bytes": 8506,
+          "postimage_sha256": "1edc6cf02d96adc20be530219f98943a3b89f7acb5d2adfc208f148c56979e11",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/Utils/PearFEXRetirement.cpp",
+          "postimage_bytes": 2039,
+          "postimage_sha256": "f2205f2c45ca06be81fab46936e4639c2bc17a91419db45219b755566bb8c9a5",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/CMakeLists.txt",
+          "postimage_bytes": 11395,
+          "postimage_sha256": "23e43cf665752357b338042e9cc4dbe8f75bd4abd914e872428dc34d93036496",
+          "preimage_sha256": "16ab4b3165d58b708458816cf2b24c69236925763aec2805e1d76c836f71423e"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/03-0003d0-fex-jit-hooks-canonical.git.patch",
+        "sha256": "a3cb7d0be04b8c6a06cbe864a7411fbff1822cc61e873a6f6ec9ffee6c86f742",
+        "size_bytes": 69751
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "jit",
+      "order": 3,
+      "source_manifest": {
+        "path": "provenance/03-jit.json",
+        "sha256": "3aeba220cd7ad240eb3e859280cddcaa0188a8a463595a9d0d98200a4e8d962c",
+        "size_bytes": 4001
+      },
+      "strict_patch": {
+        "path": "strict/03-0003d0-fex-jit-hooks-canonical.patch",
+        "sha256": "f80ed90adc8bcb935f386c4091bbfb33da0048ab7a9f2e72318a4e2f7bb2ef32",
+        "size_bytes": 69709
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 70328,
+          "postimage_sha256": "cff1294b3257867c44d86fb087c3efe629e13f5bc85670583e731eeea68d3d96",
+          "preimage_sha256": "0d8956fb1d97fab77deb95d8ce237dd0c2d9654c1cd155937da21574a3f63789"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/04-0003d1-fex-no-exceptions-policy.git.patch",
+        "sha256": "876eea3510cda6eed092626b1332bcad6eda5bb9f160fad0441c3f72e2c07218",
+        "size_bytes": 2029
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "core-policy",
+      "order": 4,
+      "source_manifest": {
+        "path": "provenance/04-core-policy.json",
+        "sha256": "5f292d57ac789c41db70a0acd01ef215ce9c4abbbdb8cdea4e7461f0ff69630a",
+        "size_bytes": 1054
+      },
+      "strict_patch": {
+        "path": "strict/04-0003d1-fex-no-exceptions-policy.patch",
+        "sha256": "876eea3510cda6eed092626b1332bcad6eda5bb9f160fad0441c3f72e2c07218",
+        "size_bytes": 2029
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 76841,
+          "postimage_sha256": "631c5950f4e3c3bbed83cfadca04a3938ba68376576b48b80db62e2d9cc3d62f",
+          "preimage_sha256": "cff1294b3257867c44d86fb087c3efe629e13f5bc85670583e731eeea68d3d96"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITMetadata.h",
+          "postimage_bytes": 2628,
+          "postimage_sha256": "20431878e7e975bffd6b6060db3678a6623b9b60845208a1cd86d5fb2f5c2ff7",
+          "preimage_sha256": null
+        }
+      ],
+      "git_derivative": {
+        "path": "git/05-0003e1-fex-managed-readers-rebased.git.patch",
+        "sha256": "86fe57c13b89277da3260a8aa586a549aa84037ad87e72ded5465d8fbfc2b50b",
+        "size_bytes": 10393
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "reader",
+      "order": 5,
+      "source_manifest": {
+        "path": "provenance/05-reader.json",
+        "sha256": "54befdec5da9fb2aadf26e71018cb19cc55ccacabc79a220c20ec9ca57ab5ca8",
+        "size_bytes": 1282
+      },
+      "strict_patch": {
+        "path": "strict/05-0003e1-fex-managed-readers-rebased.patch",
+        "sha256": "d7d91a71c4a3065eec3bc8bdae9e4d46e7e57ff016c1475f04f16d3cfbb35ff3",
+        "size_bytes": 10372
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "postimage_bytes": 61453,
+          "postimage_sha256": "a823223199731eb5a94bd5f47c6c37a9332fec75845e57490d1e91e6ebd2d84d",
+          "preimage_sha256": "fc8ec43ff66c4816297142d2e5e72f46195d814d15773cfe5611fb31d68302ef"
+        },
+        {
+          "path": "Source/Windows/WOW64/Module.cpp",
+          "postimage_bytes": 48923,
+          "postimage_sha256": "c37a1e15535d136d9fd989d053d53b92ced664e07443c873bc7001b63e072873",
+          "preimage_sha256": "24c10fed3e902eb440442b4b3bc844fbfcaf1b39819e75aff60b78ed66122547"
+        },
+        {
+          "path": "Source/Windows/Common/DarwinConfigPolicy.h",
+          "postimage_bytes": 2032,
+          "postimage_sha256": "24a09f91b100112da8076fa5099929e80e0ad44e1882e4feb795fb49986904d3",
+          "preimage_sha256": "dd6b8c2ea9d8f8c58d369be68ec87ec9e7d6a36b5f2bdc2943928c5716531a7c"
+        },
+        {
+          "path": "Source/Windows/Common/DarwinConfigPolicy.cpp",
+          "postimage_bytes": 2000,
+          "postimage_sha256": "6a0d801be1f77abe01a2605a9b04a13ae156f85dd4554d30ca48d1af52d26dd3",
+          "preimage_sha256": "e8a419f01e3454245bd1d035fcabe14ff297e06e1934489e63e09bcbecb6b588"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/06-0003f-fex-module-bootstrap-policy.git.patch",
+        "sha256": "1e70e4f95090a838f328c8289ff47a1cf09b85f39330ba0c6ea6f5ca68862fb5",
+        "size_bytes": 49122
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "module",
+      "order": 6,
+      "source_manifest": {
+        "path": "provenance/06-module.json",
+        "sha256": "3f51ee95580eb65fcae05a21cf238c22d1c93b56691ad8da1b89761156178788",
+        "size_bytes": 1906
+      },
+      "strict_patch": {
+        "path": "strict/06-0003f-fex-module-bootstrap-policy.patch",
+        "sha256": "1e70e4f95090a838f328c8289ff47a1cf09b85f39330ba0c6ea6f5ca68862fb5",
+        "size_bytes": 49122
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "postimage_bytes": 61701,
+          "postimage_sha256": "919120b2505362e1ce0b946508b38268102c38ca8b2e18db32eba9da0f03a9e8",
+          "preimage_sha256": "a823223199731eb5a94bd5f47c6c37a9332fec75845e57490d1e91e6ebd2d84d"
+        },
+        {
+          "path": "Source/Windows/WOW64/Module.cpp",
+          "postimage_bytes": 49171,
+          "postimage_sha256": "dc179e0c3fa9148f3c84d1477f080bd635f556554f4c3d1fcf8d05d377add053",
+          "preimage_sha256": "c37a1e15535d136d9fd989d053d53b92ced664e07443c873bc7001b63e072873"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/07-0003f1-fex-module-no-exceptions-policy.git.patch",
+        "sha256": "e23f7f2c7654149856a3db092faadc5fe38155503e80f41265ddacf3ebdf4e76",
+        "size_bytes": 3160
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "module-policy",
+      "order": 7,
+      "source_manifest": {
+        "path": "provenance/07-module-policy.json",
+        "sha256": "f09a3eb07e55964fe9a6fdcd98d015cc3964eea62006dd7c08d7049faedc2307",
+        "size_bytes": 1331
+      },
+      "strict_patch": {
+        "path": "strict/07-0003f1-fex-module-no-exceptions-policy.patch",
+        "sha256": "e23f7f2c7654149856a3db092faadc5fe38155503e80f41265ddacf3ebdf4e76",
+        "size_bytes": 3160
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/CMakeLists.txt",
+          "postimage_bytes": 11427,
+          "postimage_sha256": "7797766c0ca8a1d298a7bdc0ab23667170118feabe891b5d7d13dd6841fb77f4",
+          "preimage_sha256": "23e43cf665752357b338042e9cc4dbe8f75bd4abd914e872428dc34d93036496"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 23070,
+          "postimage_sha256": "3c066b69b35ecb18b60c3ccca0858797de1e4397b3e5e98b5f6c6874b4a12248",
+          "preimage_sha256": "30e2133b9b42d23a3a960f51b858da673d76dccfc82b022de39ad72ac965d609"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 18043,
+          "postimage_sha256": "68d767c7b549bab399eb7f885fbbe359be78e0ddd6dc5eb08b1b87f13805651b",
+          "preimage_sha256": "df2794c025440f6e2ad56c2fea63dabe22e475111d639f8a59a95b82d5dd2e84"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+          "postimage_bytes": 6875,
+          "postimage_sha256": "48d637a0b2b06d13b44788ad143937b121d022d1025f9948839a8f5c88582b15",
+          "preimage_sha256": "791c9730080173612867546dba51ecd0efb4def025c39660b9ece4444e9b5695"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 78327,
+          "postimage_sha256": "654017a8d41722ec2c04b0db9892e35e2f01b774e2fbea9bc54b621d5da6c191",
+          "preimage_sha256": "631c5950f4e3c3bbed83cfadca04a3938ba68376576b48b80db62e2d9cc3d62f"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 103904,
+          "postimage_sha256": "83de462ad8c4ee6d024a76debf48a6d89387e2aca8a0a1a20c6fead92921415b",
+          "preimage_sha256": "b14cc660e1689108808314734bdb8432162aaa0d3d87c945910cc1f49561e25d"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 7920,
+          "postimage_sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f",
+          "preimage_sha256": "ce96a5b000b843236de30bf68755da332baf333bd95bde746d6ad0d0734493ac"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 63915,
+          "postimage_sha256": "0b232f6a9d3e50187c78a38f2839e062c19db425dad2cbc9c63d78a2eac859e0",
+          "preimage_sha256": "86dbdccfc361bd80b37e3e7c3ce5fc667d05c13733cc07d1698e3be05d6c64a7"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+          "postimage_bytes": 24903,
+          "postimage_sha256": "1026879160ccfb3ce47ec2ff5644982cfb3b8eabd37b4ba89daee594341c0b4e",
+          "preimage_sha256": "16892f066de0db43ef24f86ba57565df62d6b91c0cfe1e6723c42b0e950d1212"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 4785,
+          "postimage_sha256": "4ac2f90094a932f84486eaa16d7cf3a624763589edb4e24592c39f7f4c5647cd",
+          "preimage_sha256": "93338457a4d2cc8701f697af97244f58d94ca614251add174ee98f8c4532d113"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 21320,
+          "postimage_sha256": "f9ee66db321f7e2d8f0f0f0ee23fecdb03dbdcd9d106166b59e352d1a18cf659",
+          "preimage_sha256": "9235aa826bda6d8c0f7655efa5e2cc1a763054c5964108c9a4ec95affe962e54"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinkLayout.h",
+          "postimage_bytes": 4412,
+          "postimage_sha256": "6224e0a5256534708f06595f86ad9e6bfb29d9b65771eee9189f59af0e3f0a37",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinkTickets.h",
+          "postimage_bytes": 3399,
+          "postimage_sha256": "8b1ad9acb5f8ccda4ebdf4c48658084773e7bc390f7a3f0c80396e07bd684a90",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "postimage_bytes": 16601,
+          "postimage_sha256": "8b0b297b90d854eb0dcbc39d9d05a2210b3deca27ffd06e9386066f56c1c0bee",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.h",
+          "postimage_bytes": 3572,
+          "postimage_sha256": "b4e70e8385cfbadf64389b6dd57376bb96629196ca4cb49c857d0c78981d2f81",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "postimage_bytes": 10250,
+          "postimage_sha256": "741a595977f0315cfb64c6aeebe1cb57af5e6d2fcf07acbb6f80254602bb0bcb",
+          "preimage_sha256": "7d93cb333dba79bd18ff9e2719e4fd566498a6b8ed7fe6793c26efb9c1d17e59"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+          "postimage_bytes": 1298,
+          "postimage_sha256": "91021ecd7989e8a3cb8a97f82dd5b7e626fca795e572a5ff92dba10f9dd6f04c",
+          "preimage_sha256": null
+        }
+      ],
+      "git_derivative": {
+        "path": "git/08-0003g-fex-link-transactions.git.patch",
+        "sha256": "74f116d8b00d04ccf2a37d461c1765a3052f7edde371887d3844b19250964125",
+        "size_bytes": 54605
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "links",
+      "order": 8,
+      "source_manifest": {
+        "path": "provenance/08-links.json",
+        "sha256": "535d627661065ad245f1b9e514f58f18ef78c543da2d89d12b0917b2bde0081f",
+        "size_bytes": 5425
+      },
+      "strict_patch": {
+        "path": "strict/08-0003g-fex-link-transactions.patch",
+        "sha256": "f244dd0e4bc76dfdf4994ab360c81a27072ef6e19cbaefcdfbb69f5a9d5b4298",
+        "size_bytes": 54500
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 47143,
+          "postimage_sha256": "9a2cf4030f82357371132fe22d2f878bfe2fe3cba55d06694f005a0cd5487545",
+          "preimage_sha256": "9ea7e3b0188a0fade09bfa276451887b0c3c1df4cc751ed8a6c6e71de5fc8e6c"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/09-0003g1-fex-common-link-entry-gate.git.patch",
+        "sha256": "5554a427d825aa8122f81ff41eb3ce1f5fb4c68d052f3c99f497df98c2ff83dd",
+        "size_bytes": 1173
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "common-entry",
+      "order": 9,
+      "source_manifest": {
+        "path": "provenance/09-common-entry.json",
+        "sha256": "9076fd48a396fe25ece0f041022eb16cc20daf7c0b02d3bd4967b7b134b5dc3f",
+        "size_bytes": 1056
+      },
+      "strict_patch": {
+        "path": "strict/09-0003g1-fex-common-link-entry-gate.patch",
+        "sha256": "5554a427d825aa8122f81ff41eb3ce1f5fb4c68d052f3c99f497df98c2ff83dd",
+        "size_bytes": 1173
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 78711,
+          "postimage_sha256": "5d6766c30af538b050216630c98976604dc85b6edd302513a002f3f80e2bf713",
+          "preimage_sha256": "654017a8d41722ec2c04b0db9892e35e2f01b774e2fbea9bc54b621d5da6c191"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/10-0003g2-fex-reader-compaction.git.patch",
+        "sha256": "94b14cb6b7cca0de9cbba61391a5dddefd129d2a2a1c63383c50ab63f983355c",
+        "size_bytes": 2123
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "reader-compaction",
+      "order": 10,
+      "source_manifest": {
+        "path": "provenance/10-reader-compaction.json",
+        "sha256": "964d44dea2fcc410cc189c7f3bfa12ae642dd9c18865eb58f527cdf76ffb7257",
+        "size_bytes": 1061
+      },
+      "strict_patch": {
+        "path": "strict/10-0003g2-fex-reader-compaction.patch",
+        "sha256": "94b14cb6b7cca0de9cbba61391a5dddefd129d2a2a1c63383c50ab63f983355c",
+        "size_bytes": 2123
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+          "postimage_bytes": 80008,
+          "postimage_sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248",
+          "preimage_sha256": "f01e08d434eafb80de62cc2bf5c1d6854be7863559339ab55f5e2a949aa4cd6e"
+        },
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64InstructionConstants.h",
+          "postimage_bytes": 3789,
+          "postimage_sha256": "7f6a789075544099408e373a98511b796a712912265ac334a92129331e9d9d64",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64Preparation.h",
+          "postimage_bytes": 3573,
+          "postimage_sha256": "db39e4ade63756c134609bc79f12a2bb730f0978f4af9dc82820f37b0bce5566",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/ArchHelpers/Arm64.h",
+          "postimage_bytes": 2321,
+          "postimage_sha256": "0e413f8e9e895bc1ffb048d7f2c4d8a9d78384ed5370606da398e7d43b447380",
+          "preimage_sha256": "86b28757c82ddb7705d27e9b139ab96914905b72646bb2ea2c9f72df1095ad6b"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/11-0003h-fex-unaligned-preparation.git.patch",
+        "sha256": "1e0e8d1ad774f5936dcd7a7ab7c6a2c0c2338cacc24fc3d441ea274837edd153",
+        "size_bytes": 19152
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "unaligned-preparation",
+      "order": 11,
+      "source_manifest": {
+        "path": "provenance/11-unaligned-preparation.json",
+        "sha256": "c617428c771ef4861435d9917d64323d72e2c6ab44d54d23865f4d92e6c4e888",
+        "size_bytes": 2028
+      },
+      "strict_patch": {
+        "path": "strict/11-0003h-fex-unaligned-preparation.patch",
+        "sha256": "37b34c7499438e58e6a265560cfba65a9bb432168f619d2b37e0886f7b61d9bf",
+        "size_bytes": 19110
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "postimage_bytes": 9628,
+          "postimage_sha256": "b5dd9fd216458cfbee4318ce7c998e5efe6f21778423523ecf0aa983c93f440c",
+          "preimage_sha256": "5e93ab3ff838d907d192e445172715ec6f7ae5227390c12209620421f0a666c8"
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 53051,
+          "postimage_sha256": "885b1ca821b245fcb4e9aed168ada843a87c8c5ff78630407ae74dcc66603e30",
+          "preimage_sha256": "9a2cf4030f82357371132fe22d2f878bfe2fe3cba55d06694f005a0cd5487545"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/12-0003i-fex-abi2-atomic-resume.git.patch",
+        "sha256": "0d5316d4d3a49e6d0be96c4898450451812be2b5077202f6acb8fb7de5b19013",
+        "size_bytes": 15405
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "abi2-atomic-resume",
+      "order": 12,
+      "source_manifest": {
+        "path": "provenance/12-abi2-atomic-resume.json",
+        "sha256": "fb47f977f729a87160be46bbacffd07141b10883f0a801f3a8d948719da26941",
+        "size_bytes": 1356
+      },
+      "strict_patch": {
+        "path": "strict/12-0003i-fex-abi2-atomic-resume.patch",
+        "sha256": "0d5316d4d3a49e6d0be96c4898450451812be2b5077202f6acb8fb7de5b19013",
+        "size_bytes": 15405
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/CMakeLists.txt",
+          "postimage_bytes": 2104,
+          "postimage_sha256": "81fa8a1026fa68c026bdd867ad1b98603da17437e464478640528151653cec37",
+          "preimage_sha256": "597be805df33ae88a67d3052cd02c9a8fc502e92d6b1b9dcc0297f3ee90c22e7"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/13-0003i1-fex-abi2-header-selection.git.patch",
+        "sha256": "52c56fe33d0e87e2ecab3a069526c2f47a55de4c7ab5bd595d8bbe10f0b4cef2",
+        "size_bytes": 802
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "abi2-header-selection",
+      "order": 13,
+      "source_manifest": {
+        "path": "provenance/13-abi2-header-selection.json",
+        "sha256": "5ff4c0fdda6eae6a22fc38a49c925623794c25e3ae2ca8fe4d1a6d220eb0c778",
+        "size_bytes": 1062
+      },
+      "strict_patch": {
+        "path": "strict/13-0003i1-fex-abi2-header-selection.patch",
+        "sha256": "52c56fe33d0e87e2ecab3a069526c2f47a55de4c7ab5bd595d8bbe10f0b4cef2",
+        "size_bytes": 802
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 7965,
+          "postimage_sha256": "cafcffe5a53b33f989ae38f974b440e46411d5c680b427dd1f7993e8f95282db",
+          "preimage_sha256": "159ebbbeaa95007ecdcf941f71c9f17222a9472e18ecde3d845cafb246f3960f"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/14-0003k-fex-dispatcher-retirement-include.git.patch",
+        "sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
+        "size_bytes": 515
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "dispatcher-retirement-include",
+      "order": 14,
+      "source_manifest": {
+        "path": "provenance/14-dispatcher-retirement-include.json",
+        "sha256": "770978414d189b35dacd9e8d4fdf86592abc53edd7aa518462c4f766dae50ce5",
+        "size_bytes": 1188
+      },
+      "strict_patch": {
+        "path": "strict/14-0003k-fex-dispatcher-retirement-include.patch",
+        "sha256": "0cb1298657c5952e109903ff9de0401304dc29ab51d528cdc0ed4ab880e758b2",
+        "size_bytes": 515
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+          "postimage_bytes": 80018,
+          "postimage_sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+          "preimage_sha256": "110a80dd923e5bec1d05da454ab7f607c37e0ed25bf6fa1f77a1ad8c2d325248"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/15-0003l-fex-spinmutex-template.git.patch",
+        "sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+        "size_bytes": 749
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "spinmutex-template",
+      "order": 15,
+      "source_manifest": {
+        "path": "provenance/15-spinmutex-template.json",
+        "sha256": "c8e2b3343d247358db57f8c7e4bbc69fc047a4c251fd1fbf13fa597c02ac9090",
+        "size_bytes": 1205
+      },
+      "strict_patch": {
+        "path": "strict/15-0003l-fex-spinmutex-template.patch",
+        "sha256": "ed5b70311d9be295d8954addb3a25b0189e7426e91d0c1dc0edf28b88772c0f2",
+        "size_bytes": 749
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 6485,
+          "postimage_sha256": "f5238178397384e6c4d9e7902d3f541fea38552cbc3f74d217eb8932d05e0f90",
+          "preimage_sha256": "86c4fc5ea0ad3e5036884683491b698324a7f76c7a232c7cbceaae4e8f515431"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 23541,
+          "postimage_sha256": "e6b5c41cdbd3abfdd460bd5934a93092b92060eebb920551151a11173e08d6b0",
+          "preimage_sha256": "3c066b69b35ecb18b60c3ccca0858797de1e4397b3e5e98b5f6c6874b4a12248"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 87963,
+          "postimage_sha256": "7c5b91bf697b594d01a5785d999cfe5373f9d81eda4c24832f5f4f844a767fce",
+          "preimage_sha256": "5d6766c30af538b050216630c98976604dc85b6edd302513a002f3f80e2bf713"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 64075,
+          "postimage_sha256": "978538d717a8fb81e03914c6f7e9c69967ad5380610f00159d1753f724c17b6f",
+          "preimage_sha256": "0b232f6a9d3e50187c78a38f2839e062c19db425dad2cbc9c63d78a2eac859e0"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinkTickets.h",
+          "postimage_bytes": 4166,
+          "postimage_sha256": "cd597ac65552115352bd7c52b0d229e85c0215a7a84076fb5fd177e3ed4cb25b",
+          "preimage_sha256": "8b1ad9acb5f8ccda4ebdf4c48658084773e7bc390f7a3f0c80396e07bd684a90"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "postimage_bytes": 21316,
+          "postimage_sha256": "4709e3803973c52ce017aec4aa9e6d257509e4243aea63048ebdc059def91892",
+          "preimage_sha256": "8b0b297b90d854eb0dcbc39d9d05a2210b3deca27ffd06e9386066f56c1c0bee"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+          "postimage_bytes": 9230,
+          "postimage_sha256": "9026a6da593bccbfc3cc568a047abd02d22008fd6c262a65459959c02ca937b3",
+          "preimage_sha256": "38ec4888f7fd09005740814950f6956d9d6f1c2602d0763f0b96277ffceadac5"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.h",
+          "postimage_bytes": 6684,
+          "postimage_sha256": "34a2bd752e0b24a8b192e5abfb94063802c88d3682755b04bda5e45dcd7d7004",
+          "preimage_sha256": "bab545f07e14f1b2aaa841f6d143f0fe1545dff9c70a19fde7de565ef8eb636a"
+        },
+        {
+          "path": "FEXCore/Source/Utils/PearFEXRetirement.cpp",
+          "postimage_bytes": 2077,
+          "postimage_sha256": "f491f83560a29b0d9233edef257a4f6f9a6ed26c325c745611e4062b82a1c613",
+          "preimage_sha256": "f2205f2c45ca06be81fab46936e4639c2bc17a91419db45219b755566bb8c9a5"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "postimage_bytes": 10846,
+          "postimage_sha256": "3317ec3d98ba2e7759020536471f96dde361d785fa9969e4c662e13757b2d8ed",
+          "preimage_sha256": "741a595977f0315cfb64c6aeebe1cb57af5e6d2fcf07acbb6f80254602bb0bcb"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Debug/InternalThreadState.h",
+          "postimage_bytes": 4125,
+          "postimage_sha256": "08ab6d391701355f4356c508f3bb8e5abd0a6e52360808d3c7f518935d2dc142",
+          "preimage_sha256": "94b1806d1ba08b0c3fef1f02b21dd83eec256c0062084f8912868151bbd0563d"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+          "postimage_bytes": 2243,
+          "postimage_sha256": "34abee87abed0b4f4d2c309c33a1f128f5a4d2f242f022151475c1328e181515",
+          "preimage_sha256": "91021ecd7989e8a3cb8a97f82dd5b7e626fca795e572a5ff92dba10f9dd6f04c"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "postimage_bytes": 13422,
+          "postimage_sha256": "707469e62af6b4aaf56deeb35481713c96a5935127e36a21d197a33adba3b2f9",
+          "preimage_sha256": "b5dd9fd216458cfbee4318ce7c998e5efe6f21778423523ecf0aa983c93f440c"
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "postimage_bytes": 61928,
+          "postimage_sha256": "c2651bf0052003380125cdd754deb610cd35093ad954f7fe5121571940dec9e3",
+          "preimage_sha256": "919120b2505362e1ce0b946508b38268102c38ca8b2e18db32eba9da0f03a9e8"
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 73008,
+          "postimage_sha256": "3698fba56f4a89b40db7b8d639969fe8aeda43eb365bfcb92a66f14deca0f1ef",
+          "preimage_sha256": "885b1ca821b245fcb4e9aed168ada843a87c8c5ff78630407ae74dcc66603e30"
+        },
+        {
+          "path": "Source/Windows/WOW64/Module.cpp",
+          "postimage_bytes": 49398,
+          "postimage_sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+          "preimage_sha256": "dc179e0c3fa9148f3c84d1477f080bd635f556554f4c3d1fcf8d05d377add053"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/16-0003j-fex-source-lifetime-entry.git.patch",
+        "sha256": "338d223c7c529103cc55cf423b0c04acf2dd0d920f289a151563a29487e929da",
+        "size_bytes": 102539
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "source-lifetime-entry",
+      "order": 16,
+      "source_manifest": {
+        "path": "provenance/16-source-lifetime-entry.json",
+        "sha256": "4b51ed1e9f399d408abb58169f1d9cb294a89be6427f83b91f8f7a13377beb34",
+        "size_bytes": 5572
+      },
+      "strict_patch": {
+        "path": "strict/16-0003j-fex-source-lifetime-entry.patch",
+        "sha256": "338d223c7c529103cc55cf423b0c04acf2dd0d920f289a151563a29487e929da",
+        "size_bytes": 102539
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "CodeEmitter/CodeEmitter/Buffer.h",
+          "postimage_bytes": 4367,
+          "postimage_sha256": "19ee5cea1f985286be33a6bac9ffbc8b3f8d475c7164fa9a70a7656e08e1f42f",
+          "preimage_sha256": "ce7df2ad8aac259b7329ca3fec48e973f7a6ccad050f75b4f3bdc66ac5256fe0"
+        },
+        {
+          "path": "CodeEmitter/CodeEmitter/Emitter.h",
+          "postimage_bytes": 29041,
+          "postimage_sha256": "39391a6be5d4e6335c4f8af313eb1baf2bc6f1bc7d9dedc719a43e693026964a",
+          "preimage_sha256": "0f3fe362d200a21ab29c5b7f5607965f10a9a78a1ea8e603d630978126282a01"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 6508,
+          "postimage_sha256": "56d8057f228677cb4e48b2e803a2ca8c8d06601723a16022ff3602d7658304ab",
+          "preimage_sha256": "f5238178397384e6c4d9e7902d3f541fea38552cbc3f74d217eb8932d05e0f90"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 88045,
+          "postimage_sha256": "6978534b89fffc0a1985c1e2c22f674f4816b54d51d8740b583e91805f601559",
+          "preimage_sha256": "7c5b91bf697b594d01a5785d999cfe5373f9d81eda4c24832f5f4f844a767fce"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 7748,
+          "postimage_sha256": "b5652700134eb59cc16eb9a5e967eb66444ae947d6d7cd1c8f51ac309b15f5a5",
+          "preimage_sha256": "cafcffe5a53b33f989ae38f974b440e46411d5c680b427dd1f7993e8f95282db"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 63632,
+          "postimage_sha256": "6c964dab024d98d44a2e5d2096d1ca41ed28f34c7da58138f0a6fb48ec08715c",
+          "preimage_sha256": "978538d717a8fb81e03914c6f7e9c69967ad5380610f00159d1753f724c17b6f"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 4767,
+          "postimage_sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63",
+          "preimage_sha256": "4ac2f90094a932f84486eaa16d7cf3a624763589edb4e24592c39f7f4c5647cd"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 21296,
+          "postimage_sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95",
+          "preimage_sha256": "f9ee66db321f7e2d8f0f0f0ee23fecdb03dbdcd9d106166b59e352d1a18cf659"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.h",
+          "postimage_bytes": 6897,
+          "postimage_sha256": "39e638d9ce84ce69db1977aaf97e2a307b50e0655a5d7c016f7b83833f651e79",
+          "preimage_sha256": "34a2bd752e0b24a8b192e5abfb94063802c88d3682755b04bda5e45dcd7d7004"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearSourceGuard.h",
+          "postimage_bytes": 2331,
+          "postimage_sha256": "f39c5b7957091b0ba2cf49a492eec3ac6259501a511147614bc30276468fd674",
+          "preimage_sha256": null
+        }
+      ],
+      "git_derivative": {
+        "path": "git/17-0003k-fex-always-on-source-guards.git.patch",
+        "sha256": "0b6f9476a2e6d29f5ea7b810a28250a855396e9394000acc31de0e8d18bae39a",
+        "size_bytes": 47862
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "always-on-source-guards",
+      "order": 17,
+      "source_manifest": {
+        "path": "provenance/17-always-on-source-guards.json",
+        "sha256": "fe920d16c244575e2c1ae6ec1e8bdad9e51557948b8d9d1472299e867039c114",
+        "size_bytes": 3754
+      },
+      "strict_patch": {
+        "path": "strict/17-0003k-fex-always-on-source-guards.patch",
+        "sha256": "2dfcaa7d350c5ff9a97b80caf0649590c3a4bb87aa330c1f5ea797808f62b5c6",
+        "size_bytes": 47841
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 7213,
+          "postimage_sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b",
+          "preimage_sha256": "56d8057f228677cb4e48b2e803a2ca8c8d06601723a16022ff3602d7658304ab"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 23730,
+          "postimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd",
+          "preimage_sha256": "e6b5c41cdbd3abfdd460bd5934a93092b92060eebb920551151a11173e08d6b0"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 88817,
+          "postimage_sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6",
+          "preimage_sha256": "6978534b89fffc0a1985c1e2c22f674f4816b54d51d8740b583e91805f601559"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Core/Context.h",
+          "postimage_bytes": 11363,
+          "postimage_sha256": "49fdcc378509bfb59e8a56826b37d2913b0f571a8a071d7d100c35ff370c47d2",
+          "preimage_sha256": "3317ec3d98ba2e7759020536471f96dde361d785fa9969e4c662e13757b2d8ed"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/18-0003l-fex-checked-source-deletion.git.patch",
+        "sha256": "6f5a9993c783c325257a4b6a7db3a52355b4ea91db3f11321f329c470e270b5f",
+        "size_bytes": 8332
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-source-deletion",
+      "order": 18,
+      "source_manifest": {
+        "path": "provenance/18-checked-source-deletion.json",
+        "sha256": "fd3d6963db155826714624f6ca98b6e5f38637e03673df416e47024c7f68152c",
+        "size_bytes": 2219
+      },
+      "strict_patch": {
+        "path": "strict/18-0003l-fex-checked-source-deletion.patch",
+        "sha256": "6f5a9993c783c325257a4b6a7db3a52355b4ea91db3f11321f329c470e270b5f",
+        "size_bytes": 8332
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 7508,
+          "postimage_sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1",
+          "preimage_sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 24177,
+          "postimage_sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba",
+          "preimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/19-0003l1-fex-checked-deletion-access.git.patch",
+        "sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+        "size_bytes": 1685
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-deletion-access",
+      "order": 19,
+      "source_manifest": {
+        "path": "provenance/19-checked-deletion-access.json",
+        "sha256": "d4d0aeb2b1c28f33d1b0c598f2c96847b6c07862d36c4ba9b1a05b9a92694947",
+        "size_bytes": 2698
+      },
+      "strict_patch": {
+        "path": "strict/19-0003l1-fex-checked-deletion-access.patch",
+        "sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+        "size_bytes": 1685
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 8011,
+          "postimage_sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883",
+          "preimage_sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/20-0003m-fex-checked-context-allocation.git.patch",
+        "sha256": "1cb5a44a6df1c7b7d05da68675d8019a27cf99dc1093dc0ed1e768979d7e0250",
+        "size_bytes": 1192
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-context-allocation",
+      "order": 20,
+      "source_manifest": {
+        "path": "provenance/20-checked-context-allocation.json",
+        "sha256": "74195fa4467748bab853d3d2a21e5b65b55e0f0db63034c1acaa111b505dae47",
+        "size_bytes": 1916
+      },
+      "strict_patch": {
+        "path": "strict/20-0003m-fex-checked-context-allocation.patch",
+        "sha256": "1cb5a44a6df1c7b7d05da68675d8019a27cf99dc1093dc0ed1e768979d7e0250",
+        "size_bytes": 1192
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/CRT/Misc.cpp",
+          "postimage_bytes": 7341,
+          "postimage_sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea",
+          "preimage_sha256": "df6d971e6046bfbd2d884db64b5344514699f2f4abe746b5436aa487861ba3bc"
+        },
+        {
+          "path": "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+          "postimage_bytes": 969,
+          "postimage_sha256": "ec96b961925118ce4878f9b3f7cce314aa75c140bf599234d651f3803a2cea39",
+          "preimage_sha256": null
+        }
+      ],
+      "git_derivative": {
+        "path": "git/21-0003n-fex-checked-environment.git.patch",
+        "sha256": "476e052dad2fdeff1da936f5084ee6499f4d12bcc4670832964ea0cd89a54bcd",
+        "size_bytes": 6681
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-environment",
+      "order": 21,
+      "source_manifest": {
+        "path": "provenance/21-checked-environment.json",
+        "sha256": "8a73de41346edfa276911f2716b57f0fd814244695142dc5deafaef9c1db2706",
+        "size_bytes": 2134
+      },
+      "strict_patch": {
+        "path": "strict/21-0003n-fex-checked-environment.patch",
+        "sha256": "5ef325bc149a126b8e8dac742fe23521d4869d959be6eae17b6ad44d8d0ec4f5",
+        "size_bytes": 6660
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 104331,
+          "postimage_sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5",
+          "preimage_sha256": "83de462ad8c4ee6d024a76debf48a6d89387e2aca8a0a1a20c6fead92921415b"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 89244,
+          "postimage_sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e",
+          "preimage_sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6"
+        },
+        {
+          "path": "Source/Tools/CommonTools/DummyHandlers.cpp",
+          "postimage_bytes": 2102,
+          "postimage_sha256": "4fddd369e6b194e0fc63ef6c1ae4132ac25e94336a0b6ad9dd1772f46d12040c",
+          "preimage_sha256": "4c4dc902c65b09587f4ee1e965055992d07c56b530eb7315a408d426f0e622b4"
+        },
+        {
+          "path": "Source/Tools/CommonTools/DummyHandlers.h",
+          "postimage_bytes": 1826,
+          "postimage_sha256": "a7bbe3aadf0b2f0b895a546f3ea6409347d60ff431f440d5508de4ae6c266d23",
+          "preimage_sha256": "e5ae9f81564a73441395ad704ee3ed61cb48abb1960ddf5b55c06cb07ca3ea19"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/22-0003p-fex-checked-selected-factories.git.patch",
+        "sha256": "611ef7dc67b62ffc03515ca805002d019a082bfbe7887dd0f1ae458626629e91",
+        "size_bytes": 5491
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-selected-factories",
+      "order": 22,
+      "source_manifest": {
+        "path": "provenance/22-checked-selected-factories.json",
+        "sha256": "45a5335e28dd20e7f7f51f38e3d68bd4440ee9ac4c55d4d1e1fe5063228143f7",
+        "size_bytes": 2794
+      },
+      "strict_patch": {
+        "path": "strict/22-0003p-fex-checked-selected-factories.patch",
+        "sha256": "611ef7dc67b62ffc03515ca805002d019a082bfbe7887dd0f1ae458626629e91",
+        "size_bytes": 5491
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/CMakeLists.txt",
+          "postimage_bytes": 1630,
+          "postimage_sha256": "097934c05a0fc551ce79e1015e5d3f28d86381570f0753c6daa640ed568d2720",
+          "preimage_sha256": "9de13e8036b3762b7b2dac898c3302a54e51f9a32fc042089a59dbf355edd54a"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CMakeLists.txt",
+          "postimage_bytes": 1070,
+          "postimage_sha256": "e9202b3af6a6c0255e568216ac28eeb7584a477591314e20c4744c6af29d77b6",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 22226,
+          "postimage_sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+          "postimage_bytes": 1239,
+          "postimage_sha256": "0de9589adbabca6ff819a9fdbebde26863415eb73cfd8cecb8fd1ce014fb8f12",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9056,
+          "postimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.def",
+          "postimage_bytes": 59,
+          "postimage_sha256": "42c3727c1473d7e43da199c6949c3d65b6fd2c502ddae667bc321633ba9521ca",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1345,
+          "postimage_sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Report.h",
+          "postimage_bytes": 2040,
+          "postimage_sha256": "9360ef88c8e6857583023c9813d0dd8a5157dc3838de394d248ff4dc495a8381",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Tests/Windows/PearEmptyInit/caller.cpp",
+          "postimage_bytes": 3365,
+          "postimage_sha256": "6084fe624b8a0eddefea9d39c59637df03fcd3648b02dee739d022b5c6a7623b",
+          "preimage_sha256": null
+        }
+      ],
+      "git_derivative": {
+        "path": "git/23-0003o-fex-empty-source-fixture.git.patch",
+        "sha256": "9b5ddc6e6e4a71bfa19eee76d22372eff905a093723ce3c414453c63841a8395",
+        "size_bytes": 43270
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "closed-empty-source-fixture",
+      "order": 23,
+      "source_manifest": {
+        "path": "provenance/23-closed-empty-source-fixture.json",
+        "sha256": "bb2f373c5b40132f951f1dc04ab5fbd59c669d9039cfab350d48444c433ed44e",
+        "size_bytes": 3720
+      },
+      "strict_patch": {
+        "path": "strict/23-0003o-fex-empty-source-fixture.patch",
+        "sha256": "a5cd8dce450bf4cd3b7cec6cb375413926ba3677d68c4aea3e3832cbbca6a396",
+        "size_bytes": 43102
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9056,
+          "postimage_sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715",
+          "preimage_sha256": "8ff88f340e2c601d151ee4f31c97538abaee92a8bff3dec8ef6f170c841a6eee"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/24-0003q-fex-empty-include-order.git.patch",
+        "sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+        "size_bytes": 806
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "empty-include-order",
+      "order": 24,
+      "source_manifest": {
+        "path": "provenance/24-empty-include-order.json",
+        "sha256": "6aa9ac5a8c1ad2bed4e2a54d108e0d1505ce3adf539d8ac79f4742d0ee261544",
+        "size_bytes": 1237
+      },
+      "strict_patch": {
+        "path": "strict/24-0003q-fex-empty-include-order.patch",
+        "sha256": "7b6945e8b27ab50f338aef294f0b4e1aaecf3e148408e4882c7631b3fb7cbc6c",
+        "size_bytes": 806
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+          "postimage_bytes": 5725,
+          "postimage_sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+          "preimage_sha256": "075a098eb77a428797a9b6a123fc6273c32bead8cc00273d925d99b6abeacaa6"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 21317,
+          "postimage_sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16",
+          "preimage_sha256": "5d65e77ad420f99bda70438c7dec7666b62bdd1240bf9069bd200685d1974e95"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 5076,
+          "postimage_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35",
+          "preimage_sha256": "24127237421f5bd36271c2e690feaeb457c99ab08be21d87d3721e744ec52a63"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/25-0003r-fex-pmr-lifetime.git.patch",
+        "sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+        "size_bytes": 2756
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "pmr-lifetime",
+      "order": 25,
+      "source_manifest": {
+        "path": "provenance/25-pmr-lifetime.json",
+        "sha256": "fc121c325d4363d7856e3750d8c879309c497a0fa06afd437de71e3d0f0c5800",
+        "size_bytes": 1685
+      },
+      "strict_patch": {
+        "path": "strict/25-0003r-fex-pmr-lifetime.patch",
+        "sha256": "b11fb6da69c90ea0007faf61f1616956ea53e6b3edfdd42604ce02a561f60725",
+        "size_bytes": 2756
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+          "postimage_bytes": 7397,
+          "postimage_sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+          "preimage_sha256": "730764bf524714e8a624e5707714b0ce70432dbfffcd2ec4e1aeaf15e6077d73"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/26-0003s-fex-checked-virtual-free.git.patch",
+        "sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+        "size_bytes": 1048
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-virtual-free",
+      "order": 26,
+      "source_manifest": {
+        "path": "provenance/26-checked-virtual-free.json",
+        "sha256": "74b1d056511562582da596d0f44ec48fd5fc380b6be4f2fa28d5f138393514b0",
+        "size_bytes": 1002
+      },
+      "strict_patch": {
+        "path": "strict/26-0003s-fex-checked-virtual-free.patch",
+        "sha256": "17d74ec34bb6aab785b8fc1a44d081b3ca527209e29b4494ad1cc0bee9c54cd6",
+        "size_bytes": 1048
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/CRT/Misc.cpp",
+          "postimage_bytes": 7519,
+          "postimage_sha256": "41946004123dc79da6c2d8d365f56ec1366b38e5cea12a12481bd14b0c7109e0",
+          "preimage_sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/27-0003t-fex-environment-const-compat.git.patch",
+        "sha256": "5cfd7656dbf07518094acdfa96ed057c65e290a0b32d0bf97b76035e9b89bd76",
+        "size_bytes": 747
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "environment-const-compat",
+      "order": 27,
+      "source_manifest": {
+        "path": "provenance/27-environment-const-compat.json",
+        "sha256": "e52608b396d3a48bebe673ec02338ee932440f2b50a4d7a5ee679c3aa33e4ef7",
+        "size_bytes": 1035
+      },
+      "strict_patch": {
+        "path": "strict/27-0003t-fex-environment-const-compat.patch",
+        "sha256": "5cfd7656dbf07518094acdfa96ed057c65e290a0b32d0bf97b76035e9b89bd76",
+        "size_bytes": 747
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 22434,
+          "postimage_sha256": "59c36c73f5a370e6c21548f9b1afbd924d5a9933b447691464c5169900f0f711",
+          "preimage_sha256": "75267dfb158db962ea9189722f0e2af9597b283f1d1e8072d4da5bc52de038b3"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/28-0003u-fex-checked-crt-build.git.patch",
+        "sha256": "ccc186fbf0e894e86622c331ca6548f58bedd4fb6120a1407eda5b21e31739e7",
+        "size_bytes": 2277
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-crt-build",
+      "order": 28,
+      "source_manifest": {
+        "path": "provenance/28-checked-crt-build.json",
+        "sha256": "a6cc9c33511895f81f462a24ecb2d9f6b195a28442d58a97ce77e6fc672ce8d4",
+        "size_bytes": 1027
+      },
+      "strict_patch": {
+        "path": "strict/28-0003u-fex-checked-crt-build.patch",
+        "sha256": "ccc186fbf0e894e86622c331ca6548f58bedd4fb6120a1407eda5b21e31739e7",
+        "size_bytes": 2277
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1613,
+          "postimage_sha256": "232f55707c86c07a1da029c2803edb86419b8e572467e477dc086aa2c5089aec",
+          "preimage_sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/29-0003v-fex-closed-init-body.git.patch",
+        "sha256": "80da31bfca8c6cf96e14b8a5d4caec504c2a100d781ad5262d336bf27cf9e4d1",
+        "size_bytes": 1255
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "closed-init-body",
+      "order": 29,
+      "source_manifest": {
+        "path": "provenance/28-closed-init-body.json",
+        "sha256": "c1ac9a19fe179147d59df2eab041653bf4106cd42bb16237fa389391fa2e10b9",
+        "size_bytes": 1040
+      },
+      "strict_patch": {
+        "path": "strict/29-0003v-fex-closed-init-body.patch",
+        "sha256": "80da31bfca8c6cf96e14b8a5d4caec504c2a100d781ad5262d336bf27cf9e4d1",
+        "size_bytes": 1255
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+          "postimage_bytes": 6570,
+          "postimage_sha256": "731269adedb45b84713c68e903d12428201dcd3fdb6b07e2bf13861c123f3a6e",
+          "preimage_sha256": "1a6b257c09b32b7640908820e02e1808153003a0bd0e4d1e9de98cd2f64b5df4"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 23106,
+          "postimage_sha256": "482b2cdad7991e6a50f1be1d4d71311f79713c2389bd0295b32a2f02b15759f4",
+          "preimage_sha256": "59c36c73f5a370e6c21548f9b1afbd924d5a9933b447691464c5169900f0f711"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/30-0003w-fex-checked-basic-information.git.patch",
+        "sha256": "48e55f8fe4bf37ad81432f12b702ca8fed167ad6b83005c5eec9878fc5c1c42e",
+        "size_bytes": 3477
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-basic-information",
+      "order": 30,
+      "source_manifest": {
+        "path": "provenance/30-checked-basic-information.json",
+        "sha256": "5459b5ac16566bf54e1b31640425404791647b6ebc4e884a678c85d3865c4f46",
+        "size_bytes": 1344
+      },
+      "strict_patch": {
+        "path": "strict/30-0003w-fex-checked-basic-information.patch",
+        "sha256": "48e55f8fe4bf37ad81432f12b702ca8fed167ad6b83005c5eec9878fc5c1c42e",
+        "size_bytes": 3477
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Config/PearConfigAllocator.h",
+          "postimage_bytes": 2886,
+          "postimage_sha256": "fe9b0d5fdca9c198738fcec9f86cb09a50a60257d2ce2bb1a88f83bc8d50ad77",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/include/FEXCore/Config/Config.h",
+          "postimage_bytes": 12042,
+          "postimage_sha256": "db67ac76ef6146bb587d7df7c69457681ec83de8b3fb6bcf1a39a1282d9ccbf4",
+          "preimage_sha256": "7242a4d253e2cb5bf765b6791e420b3c26f47c639b669cf8a3326242e834b1be"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Config/Config.cpp",
+          "postimage_bytes": 23567,
+          "postimage_sha256": "3dfaf99dbdc0165ab8c6dead751bf5c0ba17a7dc566fe1663b7e3684d588acf4",
+          "preimage_sha256": "f0075e95475bf4e969b353f1941db8f34868dedbdf841ebb6da90f6d5f08f251"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9196,
+          "postimage_sha256": "ecb7a9f4bb1120cfe2781b2992a14d9e6f5b92db0f4bc0c91537ba976649db68",
+          "preimage_sha256": "de8c7de2ecb3ce77a250e03df2eccb384daf90ac7ad18f46b9c5970321e45715"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/31-0003x-fex-finite-config-backing.git.patch",
+        "sha256": "c07920ababedd5bf6b51200c27db5acd0cffeaf1dbac262038b4983145f583bf",
+        "size_bytes": 11085
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-config-backing",
+      "order": 31,
+      "source_manifest": {
+        "path": "provenance/31-finite-config-backing.json",
+        "sha256": "5ba67d9bd18f86bb35be0e21ba04e22a02a7712050d9712ee6bc7b6d44fbda0f",
+        "size_bytes": 1891
+      },
+      "strict_patch": {
+        "path": "strict/31-0003x-fex-finite-config-backing.patch",
+        "sha256": "93c804d2a042655e9a4cd6065819c5844116130805d6a9f3e125109f25105092",
+        "size_bytes": 11064
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+          "postimage_bytes": 782,
+          "postimage_sha256": "c545db33f126b094dd653b5d49423280e23ac004fe12166e970b6e67a7356521",
+          "preimage_sha256": null
+        },
+        {
+          "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+          "postimage_bytes": 7810,
+          "postimage_sha256": "92224d9361690e95760f24cb9777d14b274843bd9957d4d059ab1e697b24082a",
+          "preimage_sha256": "731269adedb45b84713c68e903d12428201dcd3fdb6b07e2bf13861c123f3a6e"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 21634,
+          "postimage_sha256": "0090e64d66c13d056b64ccfc7a184a72ba03cd68b2d7561856ad1f7b843ebf93",
+          "preimage_sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 6423,
+          "postimage_sha256": "c1fd5b6d89a7df95f1b0b1dc10a56b4c402ecf0187ffaf3438bbbaecfb22d305",
+          "preimage_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 91659,
+          "postimage_sha256": "5703cc0542f83f18aaaf6ce8335e3f81fd8a03ae7a0196b855c602f350796c22",
+          "preimage_sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 24261,
+          "postimage_sha256": "e148791d743b743511f9cf67f89b871730317a3179ddb5fcb33e48bfd3f078e0",
+          "preimage_sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 63729,
+          "postimage_sha256": "1a2bb54337732a79294b0e0f91fae6c77d0619b855d89bfb0d03c7ac29b82514",
+          "preimage_sha256": "6c964dab024d98d44a2e5d2096d1ca41ed28f34c7da58138f0a6fb48ec08715c"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/32-0003y-fex-checked-lookup-construction.git.patch",
+        "sha256": "e8f10eec1b95261552e3abe8376a2b85787d1e15af53ef9fc4a76ba633bf4edc",
+        "size_bytes": 14055
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-lookup-construction",
+      "order": 32,
+      "source_manifest": {
+        "path": "provenance/32-checked-lookup-construction.json",
+        "sha256": "16809e52756f09ab4a2142983b047312e5fa76bf34ce7ffcc6324ccf5eccf27b",
+        "size_bytes": 2789
+      },
+      "strict_patch": {
+        "path": "strict/32-0003y-fex-checked-lookup-construction.patch",
+        "sha256": "c2984243154c8f981a39b657b17987d6e889e4e56cec3bca70ca0646c63a1fd0",
+        "size_bytes": 14034
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+          "postimage_bytes": 7810,
+          "postimage_sha256": "47aac01580b1e1a03ea6e3ad5fd2c9df709dd55ed849cabc3bd9bc53cca7b631",
+          "preimage_sha256": "92224d9361690e95760f24cb9777d14b274843bd9957d4d059ab1e697b24082a"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/33-0003z-fex-checked-lookup-sdk-order.git.patch",
+        "sha256": "26482c34d5ad60c1f820d9822c9ec3e0a4fbf69a4e19bcf6d3e01e5a8491a865",
+        "size_bytes": 594
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-lookup-sdk-order",
+      "order": 33,
+      "source_manifest": {
+        "path": "provenance/33-checked-lookup-sdk-order.json",
+        "sha256": "278a50292c0e6d34e9ec2f5c5103912efaa97c717b52763788ca93b087931258",
+        "size_bytes": 1063
+      },
+      "strict_patch": {
+        "path": "strict/33-0003z-fex-checked-lookup-sdk-order.patch",
+        "sha256": "26482c34d5ad60c1f820d9822c9ec3e0a4fbf69a4e19bcf6d3e01e5a8491a865",
+        "size_bytes": 594
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUID.h",
+          "postimage_bytes": 23083,
+          "postimage_sha256": "ef46a547b04aa5428b03a5417ec35250a2fd4aff00e12b6e6033502551234613",
+          "preimage_sha256": "dcea9986b72d5c68cb1eb364423c3ce4d031ae7bc4dc4804554fd4316ca875c8"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUID.cpp",
+          "postimage_bytes": 59753,
+          "postimage_sha256": "7b3d3d9f381a4ba49a7e4c23ccb923e8cdcc188f748b4712a4eae08a53c2dba5",
+          "preimage_sha256": "917b8a07a670cd4e5f18f113ba885af0810583ec5d1bebee2592489adff1370d"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/34-0003aa-fex-constant-unknown-cpu-metadata.git.patch",
+        "sha256": "6a8da056321127f66a708bb34b71ec427f2044ed7a93f94f255c515b03afa07f",
+        "size_bytes": 4508
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "constant-unknown-cpu-metadata",
+      "order": 34,
+      "source_manifest": {
+        "path": "provenance/34-constant-unknown-cpu-metadata.json",
+        "sha256": "ac7ff4365e50464653749b1b010dbc34099e5d3cc3a0929c4d489ba3fc442339",
+        "size_bytes": 1394
+      },
+      "strict_patch": {
+        "path": "strict/34-0003aa-fex-constant-unknown-cpu-metadata.patch",
+        "sha256": "6a8da056321127f66a708bb34b71ec427f2044ed7a93f94f255c515b03afa07f",
+        "size_bytes": 4508
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/IR/PassManager.h",
+          "postimage_bytes": 3394,
+          "postimage_sha256": "d0a7841d0286b8019faac1ebf8e03531ab4efcbb39c6fc4b2499eef6410cb270",
+          "preimage_sha256": "4f22d758fd18e068f5ecd75b4798fcdd97082c3da86e078714fede70c4a1ad6d"
+        },
+        {
+          "path": "FEXCore/Source/Interface/IR/Passes.h",
+          "postimage_bytes": 896,
+          "postimage_sha256": "4535c50bec0bf39e2e3b0fa31e06a806b140ed05c37e0ea663007482610803ec",
+          "preimage_sha256": "e7501980f97b256f3ff52fc2e2a2368895ebd1aea033f79ce59bba4cb975d9b7"
+        },
+        {
+          "path": "FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp",
+          "postimage_bytes": 42463,
+          "postimage_sha256": "6443c3f1bad6f00f3a4bd388292843820430e15dfbf4912aebf433eeab21d70b",
+          "preimage_sha256": "e9b0d9a4061885940ad5d93955496257b03b74fc6095be15b51375dd0c18a878"
+        },
+        {
+          "path": "FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp",
+          "postimage_bytes": 23183,
+          "postimage_sha256": "1d921a6dbe67522ea35940fd32077d92117358f9b784f7f3ab9c971ea8327fa8",
+          "preimage_sha256": "73a9afab26fbd9509686379230b34263cd1a83b7a50ff11a994b484fd259697f"
+        },
+        {
+          "path": "FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp",
+          "postimage_bytes": 28657,
+          "postimage_sha256": "0dd7128c9bd62c0be131912763235175556e94616fda1182a870a41a405dde54",
+          "preimage_sha256": "81f98229a48235c346766b777401405bfa1015abd8885a151d28e779d135eff6"
+        },
+        {
+          "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+          "postimage_bytes": 6129,
+          "postimage_sha256": "8dbdbe8d3081ea76682f1bb3af543ad6d443c2d5ddbe5e01e8f9d90e154e0dd4",
+          "preimage_sha256": "192561361e2923da90c5bb3a6a82da4cfc60d020ce1443e8c2500bbe3dfd0ac1"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 91621,
+          "postimage_sha256": "87017f86e7e06b874c815b2fc8d6ac40fb2a9b9d5f6e2cabcb0e8fcd577aaf9d",
+          "preimage_sha256": "5703cc0542f83f18aaaf6ce8335e3f81fd8a03ae7a0196b855c602f350796c22"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+          "postimage_bytes": 10486,
+          "postimage_sha256": "5da6baf55895d296742e811e7cdb600a2b6b41fc6f5529023eed1f7c04eb9a10",
+          "preimage_sha256": "9026a6da593bccbfc3cc568a047abd02d22008fd6c262a65459959c02ca937b3"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+          "postimage_bytes": 22116,
+          "postimage_sha256": "01e8616f208521ca01091487bc5ff213773829cf2513dfa9d16066f97b001a7d",
+          "preimage_sha256": "0090e64d66c13d056b64ccfc7a184a72ba03cd68b2d7561856ad1f7b843ebf93"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 6591,
+          "postimage_sha256": "c783418b2efcb753669717801bbba64d0a803102c974952cd1715314987b8f97",
+          "preimage_sha256": "c1fd5b6d89a7df95f1b0b1dc10a56b4c402ecf0187ffaf3438bbbaecfb22d305"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/35-0003ab-fex-finite-compiler-construction.git.patch",
+        "sha256": "88460ca546bda91bf46d4f02abfa10e6ed51ad4ce8f5cb62ae951d09f9484456",
+        "size_bytes": 14176
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-compiler-construction",
+      "order": 35,
+      "source_manifest": {
+        "path": "provenance/35-finite-compiler-construction.json",
+        "sha256": "9d2320b2a1ab1df032c078c9be3350d4ad576124662640365ed61ad0fc08abe3",
+        "size_bytes": 3840
+      },
+      "strict_patch": {
+        "path": "strict/35-0003ab-fex-finite-compiler-construction.patch",
+        "sha256": "88460ca546bda91bf46d4f02abfa10e6ed51ad4ce8f5cb62ae951d09f9484456",
+        "size_bytes": 14176
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "CodeEmitter/CodeEmitter/Emitter.h",
+          "postimage_bytes": 29785,
+          "postimage_sha256": "42795591aeda8ba80b6f9eafbddd5393b0e2f9c571c94acc2ca1b2f0c7fe5f13",
+          "preimage_sha256": "39391a6be5d4e6335c4f8af313eb1baf2bc6f1bc7d9dedc719a43e693026964a"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 104742,
+          "postimage_sha256": "cdf90c8b9feec95690b2c564f2df37a665e5bfb3ed2f44275bb3a6bb839fe598",
+          "preimage_sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/36-0003ac-fex-finite-emitter-labels.git.patch",
+        "sha256": "e385dbbbb97cbb4c60b0aebf1cfbfd2a73d78bac68d2e0e93c4afb667223a786",
+        "size_bytes": 2782
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-emitter-labels",
+      "order": 36,
+      "source_manifest": {
+        "path": "provenance/36-finite-emitter-labels.json",
+        "sha256": "55db7ea45eff9ea559563c41609466b89658f74fffff1fbd714acd3088ffaeb1",
+        "size_bytes": 1403
+      },
+      "strict_patch": {
+        "path": "strict/36-0003ac-fex-finite-emitter-labels.patch",
+        "sha256": "e385dbbbb97cbb4c60b0aebf1cfbfd2a73d78bac68d2e0e93c4afb667223a786",
+        "size_bytes": 2782
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 63749,
+          "postimage_sha256": "9b8f5833da351ef55ff4ac56b50a084609c0f9e9e20d4c18ce1cf4af39c27bd0",
+          "preimage_sha256": "1a2bb54337732a79294b0e0f91fae6c77d0619b855d89bfb0d03c7ac29b82514"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/37-0003ad-fex-failed-label-publication-refusal.git.patch",
+        "sha256": "315f6395664a2d00609404c396525c5c67ed4f91300c898e932b136e3f91079f",
+        "size_bytes": 881
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "failed-label-publication-refusal",
+      "order": 37,
+      "source_manifest": {
+        "path": "provenance/37-failed-label-publication-refusal.json",
+        "sha256": "fc7fe2f6c11c664cd1cb99d2a4bc3f6a4cf84e66fe9809e10d5f8e4f6594799e",
+        "size_bytes": 1084
+      },
+      "strict_patch": {
+        "path": "strict/37-0003ad-fex-failed-label-publication-refusal.patch",
+        "sha256": "315f6395664a2d00609404c396525c5c67ed4f91300c898e932b136e3f91079f",
+        "size_bytes": 881
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+          "postimage_bytes": 1367,
+          "postimage_sha256": "4e9f94cc78fda875a6eab2e06483435de2468efb870e3a46097d020f855c1a60",
+          "preimage_sha256": "c545db33f126b094dd653b5d49423280e23ac004fe12166e970b6e67a7356521"
+        },
+        {
+          "path": "FEXCore/Source/Utils/AllocatorHooks.cpp",
+          "postimage_bytes": 9005,
+          "postimage_sha256": "56bedf9486c2f371796a6076f63761285772b1d27512ac187acf368607e2d7a9",
+          "preimage_sha256": "f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 8103,
+          "postimage_sha256": "93b33025721b5e646be49a5bbd601a8f3b1a219084f8d6ddee120e8266037319",
+          "preimage_sha256": "bca179cc6dbc574e0115ed8485bb427f8ad10c473b07c3f069f495c302af7883"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 104834,
+          "postimage_sha256": "29fe869b30e5547861851d346a57b0a978ba8a52d50ece5fae2ebf1b49b13150",
+          "preimage_sha256": "cdf90c8b9feec95690b2c564f2df37a665e5bfb3ed2f44275bb3a6bb839fe598"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+          "postimage_bytes": 6599,
+          "postimage_sha256": "ac5cabe4a257920eb79f91c16ad8b9c539470690b2329f3316749f5ac57cdab4",
+          "preimage_sha256": "c783418b2efcb753669717801bbba64d0a803102c974952cd1715314987b8f97"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 63757,
+          "postimage_sha256": "cb338bead3e47c906972ec6752f6ea3f419e2d4e085b93d98e34ec531a33bdae",
+          "preimage_sha256": "9b8f5833da351ef55ff4ac56b50a084609c0f9e9e20d4c18ce1cf4af39c27bd0"
+        },
+        {
+          "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+          "postimage_bytes": 6143,
+          "postimage_sha256": "b5d318ffc0cd909293f3a80966498952cae206c97851ba2f40fa36e9cd6c5599",
+          "preimage_sha256": "8dbdbe8d3081ea76682f1bb3af543ad6d443c2d5ddbe5e01e8f9d90e154e0dd4"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+          "postimage_bytes": 10508,
+          "postimage_sha256": "ec85db75f30f93c1b209686ab5929f20d3ae9e7949d163a8065cd43369bed603",
+          "preimage_sha256": "5da6baf55895d296742e811e7cdb600a2b6b41fc6f5529023eed1f7c04eb9a10"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 9577,
+          "postimage_sha256": "0211812fd3cc5987cb28e07037ceb0fd4b67dcf26807667506e402076e8042f7",
+          "preimage_sha256": "ecb7a9f4bb1120cfe2781b2992a14d9e6f5b92db0f4bc0c91537ba976649db68"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/38-0003ae-fex-finite-empty-object-backing.git.patch",
+        "sha256": "09c5c28369f074c90c878212f78556707acc850d10a102f802e7ea425e65a92e",
+        "size_bytes": 11963
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-empty-object-backing",
+      "order": 38,
+      "source_manifest": {
+        "path": "provenance/38-finite-empty-object-backing.json",
+        "sha256": "0519573e4a4e4397b643c53f8ffa6c0906cf621f2c3ad56316f7e28f156530ab",
+        "size_bytes": 3527
+      },
+      "strict_patch": {
+        "path": "strict/38-0003ae-fex-finite-empty-object-backing.patch",
+        "sha256": "09c5c28369f074c90c878212f78556707acc850d10a102f802e7ea425e65a92e",
+        "size_bytes": 11963
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/CMakeLists.txt",
+          "postimage_bytes": 11592,
+          "postimage_sha256": "1e362e8a7ee9e89d5d62308979d30ab73d2e658b1d00f612cca59373c0da415f",
+          "preimage_sha256": "7797766c0ca8a1d298a7bdc0ab23667170118feabe891b5d7d13dd6841fb77f4"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/39-0003af-fex-finite-allocator-build-selection.git.patch",
+        "sha256": "7d7293488e59ff7c8f768fbd6a7181562d61383e442ffe6840f26ad5a3d61af4",
+        "size_bytes": 710
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-allocator-build-selection",
+      "order": 39,
+      "source_manifest": {
+        "path": "provenance/39-finite-allocator-build-selection.json",
+        "sha256": "7c344ecd28ca037d12ea1558e55b86e3bba59b6d75e945e7af7dc98b3a99df91",
+        "size_bytes": 1085
+      },
+      "strict_patch": {
+        "path": "strict/39-0003af-fex-finite-allocator-build-selection.patch",
+        "sha256": "7d7293488e59ff7c8f768fbd6a7181562d61383e442ffe6840f26ad5a3d61af4",
+        "size_bytes": 710
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+          "postimage_bytes": 2863,
+          "postimage_sha256": "0238d7dd2d5651cdcf5a46331be45c99bdb3dfeec4961e402d5b59411385fbf4",
+          "preimage_sha256": null
+        },
+        {
+          "path": "FEXCore/Source/Utils/AllocatorHooks.cpp",
+          "postimage_bytes": 6402,
+          "postimage_sha256": "f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f",
+          "preimage_sha256": "56bedf9486c2f371796a6076f63761285772b1d27512ac187acf368607e2d7a9"
+        },
+        {
+          "path": "FEXCore/Source/CMakeLists.txt",
+          "postimage_bytes": 11494,
+          "postimage_sha256": "dfcd2cb0d1406122ae875ac1d0e48bcee35658ae4ca8b2e14a28ca2ed824ce8c",
+          "preimage_sha256": "1e362e8a7ee9e89d5d62308979d30ab73d2e658b1d00f612cca59373c0da415f"
+        },
+        {
+          "path": "FEXCore/include/FEXCore/fextl/memory.h",
+          "postimage_bytes": 1370,
+          "postimage_sha256": "c8fade6eb37b9526e0a6e516cb2f5e39c9ad1d18bb88f398a6d605506c6d2553",
+          "preimage_sha256": "e7f297f0930c2aa771e191d68ce2729dd85afaccf0764e545608289192125a15"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.cpp",
+          "postimage_bytes": 8113,
+          "postimage_sha256": "a64c770f4d41e38bfe912b0afda878996d35d7bd260e03e4db8ab6b0432cf187",
+          "preimage_sha256": "93b33025721b5e646be49a5bbd601a8f3b1a219084f8d6ddee120e8266037319"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+          "postimage_bytes": 10518,
+          "postimage_sha256": "8fec80eef79c9662ef76dd72054ed3d97b11c3c2c9baf2566547b5aafd680657",
+          "preimage_sha256": "ec85db75f30f93c1b209686ab5929f20d3ae9e7949d163a8065cd43369bed603"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/40-0003ag-fex-isolated-finite-object-storage.git.patch",
+        "sha256": "dfc4b7992dff8af2e7606b1fe1b957701124cf8903e3b508331d68bf7d429646",
+        "size_bytes": 9317
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "isolated-finite-object-storage",
+      "order": 40,
+      "source_manifest": {
+        "path": "provenance/40-isolated-finite-object-storage.json",
+        "sha256": "a2dcc525fbed3119d44200a1d02b14362fd91c41cbc91355b542858a5e0252eb",
+        "size_bytes": 2549
+      },
+      "strict_patch": {
+        "path": "strict/40-0003ag-fex-isolated-finite-object-storage.patch",
+        "sha256": "8b008b713b0dc48d74846ed47840dbd0108961c3687c415f4ac4ceb55d58653e",
+        "size_bytes": 9296
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "postimage_bytes": 13901,
+          "postimage_sha256": "c36576d318040bcbadf2864de244ab55c31ce943254fb74434588fbc6c7a36e4",
+          "preimage_sha256": "707469e62af6b4aaf56deeb35481713c96a5935127e36a21d197a33adba3b2f9"
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 76045,
+          "postimage_sha256": "6adabd8ddcb149fe35f50aba400d0fe2a23d2ae5b592df01a05fdbe89119e59c",
+          "preimage_sha256": "3698fba56f4a89b40db7b8d639969fe8aeda43eb365bfcb92a66f14deca0f1ef"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/41-0003ah-fex-metadata-observation.git.patch",
+        "sha256": "8603d45aa1272a55bdca07e3ef360cebb8c8cf2b36e7851ae26c3980d6ac83e5",
+        "size_bytes": 4686
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "metadata-observation",
+      "order": 41,
+      "source_manifest": {
+        "path": "provenance/41-metadata-observation.json",
+        "sha256": "20e8c94e4d664ab3fdf7509034d6d0c22d15f7db8341511529607708185556ac",
+        "size_bytes": 1370
+      },
+      "strict_patch": {
+        "path": "strict/41-0003ah-fex-metadata-observation.patch",
+        "sha256": "8603d45aa1272a55bdca07e3ef360cebb8c8cf2b36e7851ae26c3980d6ac83e5",
+        "size_bytes": 4686
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 76045,
+          "postimage_sha256": "347887b77dbc7ac39b0ded6fd4be55b1f99c620b1dbe82d5bdc63bd8dfddc95b",
+          "preimage_sha256": "6adabd8ddcb149fe35f50aba400d0fe2a23d2ae5b592df01a05fdbe89119e59c"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/42-0003ai-fex-metadata-observer-export.git.patch",
+        "sha256": "22e8be0ba0b91cd1265b2e800189d9e991ee8a3470d36fd53b3ce6c199d02c2e",
+        "size_bytes": 7068
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "metadata-observer-export",
+      "order": 42,
+      "source_manifest": {
+        "path": "provenance/42-metadata-observer-export.json",
+        "sha256": "24da8873ca7bef67edad94d0d64ec8d7bbc5011617448f79b148eddf121be928",
+        "size_bytes": 1068
+      },
+      "strict_patch": {
+        "path": "strict/42-0003ai-fex-metadata-observer-export.patch",
+        "sha256": "22e8be0ba0b91cd1265b2e800189d9e991ee8a3470d36fd53b3ce6c199d02c2e",
+        "size_bytes": 7068
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/Common/CMakeLists.txt",
+          "postimage_bytes": 2104,
+          "postimage_sha256": "5efb5cebe2ea5011ead0cfe3e27b9721e8dc3dde75cbfc5c1a129a89ff693568",
+          "preimage_sha256": "81fa8a1026fa68c026bdd867ad1b98603da17437e464478640528151653cec37"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/43-0003aj-fex-metadata-paired-header-pin.git.patch",
+        "sha256": "4dd5a1e10b824e54c8ded19e0171243569d17a0cad100afc5b1f4d03efa56562",
+        "size_bytes": 802
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "metadata-paired-header-pin",
+      "order": 43,
+      "source_manifest": {
+        "path": "provenance/43-metadata-paired-header-pin.json",
+        "sha256": "33bc28ab9036ef8e31c935c746e48d862df700d70cf2305925f7ac74f7c37870",
+        "size_bytes": 1055
+      },
+      "strict_patch": {
+        "path": "strict/43-0003aj-fex-metadata-paired-header-pin.patch",
+        "sha256": "4dd5a1e10b824e54c8ded19e0171243569d17a0cad100afc5b1f4d03efa56562",
+        "size_bytes": 802
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+          "postimage_bytes": 3171,
+          "postimage_sha256": "4094c7633ea0da4ee032fe223eeea35e8f1fbd68029632833ad9f41ac26091c9",
+          "preimage_sha256": "0238d7dd2d5651cdcf5a46331be45c99bdb3dfeec4961e402d5b59411385fbf4"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 24570,
+          "postimage_sha256": "b9f6e5a180511dbc66e1b1d55abb95c75239f29eda435671a2732878daf9f850",
+          "preimage_sha256": "482b2cdad7991e6a50f1be1d4d71311f79713c2389bd0295b32a2f02b15759f4"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/44-0003ak-fex-dynamic-thread-identity.git.patch",
+        "sha256": "3850946149efef99471718657cc92d8897a2c420826ac6fe972f3b7d430e423c",
+        "size_bytes": 3979
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "dynamic-thread-identity",
+      "order": 44,
+      "source_manifest": {
+        "path": "provenance/44-dynamic-thread-identity.json",
+        "sha256": "5bb733f5766b84bae9eb44c228766d409aac91bb6a6de0ea4de60e20c80bc0e9",
+        "size_bytes": 1481
+      },
+      "strict_patch": {
+        "path": "strict/44-0003ak-fex-dynamic-thread-identity.patch",
+        "sha256": "3850946149efef99471718657cc92d8897a2c420826ac6fe972f3b7d430e423c",
+        "size_bytes": 3979
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+          "postimage_bytes": 14249,
+          "postimage_sha256": "55baf05f090c17655989899704a280963ff3c2b8e44a83c96b4d228fb0e93819",
+          "preimage_sha256": "c36576d318040bcbadf2864de244ab55c31ce943254fb74434588fbc6c7a36e4"
+        },
+        {
+          "path": "Source/Windows/Common/PearFEXMemory.cpp",
+          "postimage_bytes": 77694,
+          "postimage_sha256": "329dafa9becf8505d0e5ca11d1fe19fec318db42de138a99cf2921dd1defafa4",
+          "preimage_sha256": "347887b77dbc7ac39b0ded6fd4be55b1f99c620b1dbe82d5bdc63bd8dfddc95b"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+          "postimage_bytes": 1313,
+          "postimage_sha256": "6e6cedd76fcfc780c27aed1d0bd6c9456118abf2db4d381be9cb5b35b8c876bb",
+          "preimage_sha256": "0de9589adbabca6ff819a9fdbebde26863415eb73cfd8cecb8fd1ce014fb8f12"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 25535,
+          "postimage_sha256": "66a98ae207333c2d3078c3c3cbc4a31b4860f801274061d77c3e045c6d901723",
+          "preimage_sha256": "b9f6e5a180511dbc66e1b1d55abb95c75239f29eda435671a2732878daf9f850"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/45-0003al-fex-checked-owner-preparation.git.patch",
+        "sha256": "ae9b452430660a1aeb65dd76f889a10d7cf5a47a129518553e85bcf55f3d6c8f",
+        "size_bytes": 5428
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "checked-owner-preparation",
+      "order": 45,
+      "source_manifest": {
+        "path": "provenance/45-checked-owner-preparation.json",
+        "sha256": "dbf391e0b1bdacd5d6b551826af27d20216f777593ab96318d1f6acac46684b2",
+        "size_bytes": 2011
+      },
+      "strict_patch": {
+        "path": "strict/45-0003al-fex-checked-owner-preparation.patch",
+        "sha256": "ae9b452430660a1aeb65dd76f889a10d7cf5a47a129518553e85bcf55f3d6c8f",
+        "size_bytes": 5428
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 25537,
+          "postimage_sha256": "4b768a001ea05f13466348a23236de7620d245035c9a56da018180063502648b",
+          "preimage_sha256": "66a98ae207333c2d3078c3c3cbc4a31b4860f801274061d77c3e045c6d901723"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/46-0003am-fex-owner-pid-environment-name.git.patch",
+        "sha256": "bd1506f542bfb4df0a31cd6f4787b7e1e87495d0be38e4b24fa88182df56356e",
+        "size_bytes": 824
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "owner-pid-environment-name",
+      "order": 46,
+      "source_manifest": {
+        "path": "provenance/46-owner-pid-environment-name.json",
+        "sha256": "f93fae1561ccd7129ea2612604e83631dcdafe0b0717e8919aeb4dbe5ad02957",
+        "size_bytes": 1157
+      },
+      "strict_patch": {
+        "path": "strict/46-0003am-fex-owner-pid-environment-name.patch",
+        "sha256": "bd1506f542bfb4df0a31cd6f4787b7e1e87495d0be38e4b24fa88182df56356e",
+        "size_bytes": 824
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+          "postimage_bytes": 1594,
+          "postimage_sha256": "3744392a91e7200b6c0ae6c8f11decf5be5026f5a17b29965100b70529f3ada8",
+          "preimage_sha256": "6e6cedd76fcfc780c27aed1d0bd6c9456118abf2db4d381be9cb5b35b8c876bb"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 25628,
+          "postimage_sha256": "58bf0a0d15a65874e28f083e6eb6d8f03e073970deb63cb56e04f7ce3a6dbfff",
+          "preimage_sha256": "4b768a001ea05f13466348a23236de7620d245035c9a56da018180063502648b"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/47-0003an-fex-prerequisite-observation.git.patch",
+        "sha256": "cf1af0120525bee4b20f3cada8ab30bb91b67553a2fa7ec5ea276c4cbe5c66bb",
+        "size_bytes": 1430
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "prerequisite-observation",
+      "order": 47,
+      "source_manifest": {
+        "path": "provenance/47-prerequisite-observation.json",
+        "sha256": "404a148bd5da58aaaec7ab2ecb072abb931b2c208105f7ed02e9ce8f3e400d54",
+        "size_bytes": 1574
+      },
+      "strict_patch": {
+        "path": "strict/47-0003an-fex-prerequisite-observation.patch",
+        "sha256": "cf1af0120525bee4b20f3cada8ab30bb91b67553a2fa7ec5ea276c4cbe5c66bb",
+        "size_bytes": 1430
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+          "postimage_bytes": 1834,
+          "postimage_sha256": "9a6e7978bf35691562020cee4ce08fc0ca1050e313ba160a6e9777710a905180",
+          "preimage_sha256": "3744392a91e7200b6c0ae6c8f11decf5be5026f5a17b29965100b70529f3ada8"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/48-0003ao-fex-callback-snapshot-bound.git.patch",
+        "sha256": "b1d95f1af24aa2e80a34a05232fe7f85fc7bd1eb6588835b38d49e2d994cfcef",
+        "size_bytes": 883
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "callback-snapshot-bound",
+      "order": 48,
+      "source_manifest": {
+        "path": "provenance/48-callback-snapshot-bound.json",
+        "sha256": "4885c1b1f2c646921a8f4d46ecf15c71b8a6d9b7d8b04addcbd962b105d4d075",
+        "size_bytes": 1238
+      },
+      "strict_patch": {
+        "path": "strict/48-0003ao-fex-callback-snapshot-bound.patch",
+        "sha256": "b1d95f1af24aa2e80a34a05232fe7f85fc7bd1eb6588835b38d49e2d994cfcef",
+        "size_bytes": 883
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+          "postimage_bytes": 26540,
+          "postimage_sha256": "4906d7d58cb7200e4ee537b55ea392394114d633b7b7d1ed787a9d9dd729c008",
+          "preimage_sha256": "58bf0a0d15a65874e28f083e6eb6d8f03e073970deb63cb56e04f7ce3a6dbfff"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/49-0003ap-fex-finite-budget-preflight.git.patch",
+        "sha256": "1e016dec58d50e00117aa7f60326c52e03d56f0540535ff66f889efdd18bff09",
+        "size_bytes": 1451
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-budget-preflight",
+      "order": 49,
+      "source_manifest": {
+        "path": "provenance/49-finite-budget-preflight.json",
+        "sha256": "1fb3a13b83c3ed95dc2210241d6b452ea264101605bae295004c231395ca1b19",
+        "size_bytes": 1235
+      },
+      "strict_patch": {
+        "path": "strict/49-0003ap-fex-finite-budget-preflight.patch",
+        "sha256": "1e016dec58d50e00117aa7f60326c52e03d56f0540535ff66f889efdd18bff09",
+        "size_bytes": 1451
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1753,
+          "postimage_sha256": "4c7f6c7e6e569f4744c4aafd41aae44c1296076f8441c8a1ac574995c036bb31",
+          "preimage_sha256": "232f55707c86c07a1da029c2803edb86419b8e572467e477dc086aa2c5089aec"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/50-0003aq-fex-finite-empty-source-selection.git.patch",
+        "sha256": "275132650a896164d55751f26eb05c38ef23681d6b59d13e6bf095e417950c1e",
+        "size_bytes": 2943
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-empty-source-selection",
+      "order": 50,
+      "source_manifest": {
+        "path": "provenance/50-finite-empty-source-selection.json",
+        "sha256": "a428d541f2112e53470d3997a904bc1fc086dc8bab954f3570738400b5e0c453",
+        "size_bytes": 1287
+      },
+      "strict_patch": {
+        "path": "strict/50-0003aq-fex-finite-empty-source-selection.patch",
+        "sha256": "275132650a896164d55751f26eb05c38ef23681d6b59d13e6bf095e417950c1e",
+        "size_bytes": 2943
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+          "postimage_bytes": 8087,
+          "postimage_sha256": "4703030c454aa3b20d461ce9b41dda7778491c187661d77b7bc28958c06529f4",
+          "preimage_sha256": "b5652700134eb59cc16eb9a5e967eb66444ae947d6d7cd1c8f51ac309b15f5a5"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Context/Context.h",
+          "postimage_bytes": 24603,
+          "postimage_sha256": "dd0d6dfb9fcfc82048616bbc00c16bcd711482511395dd2da5a90680adebdb3b",
+          "preimage_sha256": "e148791d743b743511f9cf67f89b871730317a3179ddb5fcb33e48bfd3f078e0"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 107429,
+          "postimage_sha256": "addf94e06b68b1a60d129e191c448396e3c84168e50e05c6722ffb4bef04b179",
+          "preimage_sha256": "29fe869b30e5547861851d346a57b0a978ba8a52d50ece5fae2ebf1b49b13150"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 93328,
+          "postimage_sha256": "f0bbf4547d49ff8f5fe0a1b1a575faf75a6f3954c9d3acb08d28858da143b336",
+          "preimage_sha256": "87017f86e7e06b874c815b2fc8d6ac40fb2a9b9d5f6e2cabcb0e8fcd577aaf9d"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "4c7f6c7e6e569f4744c4aafd41aae44c1296076f8441c8a1ac574995c036bb31"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 10101,
+          "postimage_sha256": "22a89afa7c581996b61477d5b8ff8e8f1c9ec9d80b6748b5eeb70079c04b528d",
+          "preimage_sha256": "0211812fd3cc5987cb28e07037ceb0fd4b67dcf26807667506e402076e8042f7"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/51-0003ar-fex-finite-native-tail-transfer.git.patch",
+        "sha256": "e1d628feb386e5cc3458a15bfaad6e884c5479ae4f9a559bf2d3e97513cf60ce",
+        "size_bytes": 11218
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-native-tail-transfer",
+      "order": 51,
+      "source_manifest": {
+        "path": "provenance/51-finite-native-tail-transfer.json",
+        "sha256": "50935eef74caf164234cb796b22652c28c97505560e458f2206246948fe044f7",
+        "size_bytes": 2770
+      },
+      "strict_patch": {
+        "path": "strict/51-0003ar-fex-finite-native-tail-transfer.patch",
+        "sha256": "e1d628feb386e5cc3458a15bfaad6e884c5479ae4f9a559bf2d3e97513cf60ce",
+        "size_bytes": 11218
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 93355,
+          "postimage_sha256": "e029e209ac9a69264307d32ee71563626c4f4595bc581d60220602630becfa4a",
+          "preimage_sha256": "f0bbf4547d49ff8f5fe0a1b1a575faf75a6f3954c9d3acb08d28858da143b336"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/52-0003as-fex-finite-transfer-context-type.git.patch",
+        "sha256": "7cb0178503da2bb74c4e0082f0954c5d596ba37c65c823cb106ffb1f071cee2a",
+        "size_bytes": 600
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-transfer-context-type",
+      "order": 52,
+      "source_manifest": {
+        "path": "provenance/52-finite-transfer-context-type.json",
+        "sha256": "44e1009ca59f154f3eb40821882dfa1193e51ee844c73366b1aed09612b69e4c",
+        "size_bytes": 1118
+      },
+      "strict_patch": {
+        "path": "strict/52-0003as-fex-finite-transfer-context-type.patch",
+        "sha256": "7cb0178503da2bb74c4e0082f0954c5d596ba37c65c823cb106ffb1f071cee2a",
+        "size_bytes": 600
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/53-0003at-fex-finite-transfer-source-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-transfer-source-selection",
+      "order": 53,
+      "source_manifest": {
+        "path": "provenance/53-finite-transfer-source-selection.json",
+        "sha256": "14d8da559322a4d6077e4d10c352142531ebb72ecc093123fd4006bede0dd376",
+        "size_bytes": 1234
+      },
+      "strict_patch": {
+        "path": "strict/53-0003at-fex-finite-transfer-source-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+          "postimage_bytes": 107278,
+          "postimage_sha256": "10914dec18d3d18c11a6787ac8fc709eb8b1fb4f5a96f89e93515e6a8f011c2e",
+          "preimage_sha256": "addf94e06b68b1a60d129e191c448396e3c84168e50e05c6722ffb4bef04b179"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/54-0003au-fex-finite-transfer-owner-offsets.git.patch",
+        "sha256": "318774fee0522b2d91d047c96a541f295dec6419465f39fbea843a1da392bd57",
+        "size_bytes": 4721
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-transfer-owner-offsets",
+      "order": 54,
+      "source_manifest": {
+        "path": "provenance/54-finite-transfer-owner-offsets.json",
+        "sha256": "6627588725e3ca7e9815522b16714efc781638fd38f22d22dff6670ee1ea82ce",
+        "size_bytes": 1594
+      },
+      "strict_patch": {
+        "path": "strict/54-0003au-fex-finite-transfer-owner-offsets.patch",
+        "sha256": "318774fee0522b2d91d047c96a541f295dec6419465f39fbea843a1da392bd57",
+        "size_bytes": 4721
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/55-0003av-fex-finite-fixed-transfer-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-fixed-transfer-selection",
+      "order": 55,
+      "source_manifest": {
+        "path": "provenance/55-finite-fixed-transfer-selection.json",
+        "sha256": "b1947faafa6e1f311628423dd3d9fa5298399635d79fc974db7e8f52201691d5",
+        "size_bytes": 1167
+      },
+      "strict_patch": {
+        "path": "strict/55-0003av-fex-finite-fixed-transfer-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+          "postimage_bytes": 7095,
+          "postimage_sha256": "e0d94f250946b10dd0169b9a4e93bb9870b0f30ffb3f000da9e6427df01db9b1",
+          "preimage_sha256": "48d637a0b2b06d13b44788ad143937b121d022d1025f9948839a8f5c88582b15"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 20590,
+          "postimage_sha256": "278a598b5412e4a962a60c3e7d553548e9aa40ea2e94a1974d461d52a33f56c9",
+          "preimage_sha256": "68d767c7b549bab399eb7f885fbbe359be78e0ddd6dc5eb08b1b87f13805651b"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 10327,
+          "postimage_sha256": "789955f2e7d7a02c5f3a6875df4be6e37528a50cccf0e7c08181d1b725597fe8",
+          "preimage_sha256": "22a89afa7c581996b61477d5b8ff8e8f1c9ec9d80b6748b5eeb70079c04b528d"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 97147,
+          "postimage_sha256": "4c1287b482299402300ba7122b414fe18b6537788f6f8a72dc59df47958f240c",
+          "preimage_sha256": "e029e209ac9a69264307d32ee71563626c4f4595bc581d60220602630becfa4a"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/56-0003aw-fex-finite-owned-snapshot-patch.git.patch",
+        "sha256": "5c30da008d5149c78d292cbcc4906a56e12224df87896474f3dc5c22c8899974",
+        "size_bytes": 12141
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-owned-snapshot-patch",
+      "order": 56,
+      "source_manifest": {
+        "path": "provenance/56-finite-owned-snapshot-patch.json",
+        "sha256": "e990aa3e39ca17b7ac58015491c80e33d593f04b9106f26ad84be6fe181d1f68",
+        "size_bytes": 2464
+      },
+      "strict_patch": {
+        "path": "strict/56-0003aw-fex-finite-owned-snapshot-patch.patch",
+        "sha256": "5c30da008d5149c78d292cbcc4906a56e12224df87896474f3dc5c22c8899974",
+        "size_bytes": 12141
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 97147,
+          "postimage_sha256": "5e0c586ebca1fd80bc7a6ebb6aa7d6567c5032e7672f431ca9d634ec9790a9ec",
+          "preimage_sha256": "4c1287b482299402300ba7122b414fe18b6537788f6f8a72dc59df47958f240c"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/57-0003ax-fex-finite-upstream-patch-encoding.git.patch",
+        "sha256": "b95ef33668b6346f8aaeaac2c82df4cebc6c2704521236dfd166d63748b7afea",
+        "size_bytes": 767
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-upstream-patch-encoding",
+      "order": 57,
+      "source_manifest": {
+        "path": "provenance/57-finite-upstream-patch-encoding.json",
+        "sha256": "ecbbf1625c44b624652d2ec862a588405054b70315490dd6f08594d2998b7de9",
+        "size_bytes": 1108
+      },
+      "strict_patch": {
+        "path": "strict/57-0003ax-fex-finite-upstream-patch-encoding.patch",
+        "sha256": "b95ef33668b6346f8aaeaac2c82df4cebc6c2704521236dfd166d63748b7afea",
+        "size_bytes": 767
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/58-0003ay-fex-finite-owned-patch-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-owned-patch-selection",
+      "order": 58,
+      "source_manifest": {
+        "path": "provenance/58-finite-owned-patch-selection.json",
+        "sha256": "fdae9d09a21326a6e27c05d8ff16fd53554c4173338e0512a4b085ddb98e2885",
+        "size_bytes": 1135
+      },
+      "strict_patch": {
+        "path": "strict/58-0003ay-fex-finite-owned-patch-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 97634,
+          "postimage_sha256": "d597c1be986be23465312eacb4a07be2becc2ac6ed8a02b7585aebb42da6cd8c",
+          "preimage_sha256": "5e0c586ebca1fd80bc7a6ebb6aa7d6567c5032e7672f431ca9d634ec9790a9ec"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/59-0003az-fex-finite-patch-checkpoints.git.patch",
+        "sha256": "73e6d1dfc2338924eb07b6940931bac151bba1dcbccf8a1d73062394d3790db4",
+        "size_bytes": 7578
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-patch-checkpoints",
+      "order": 59,
+      "source_manifest": {
+        "path": "provenance/59-finite-patch-checkpoints.json",
+        "sha256": "90117ac7b7bc88f3db468202769bcff30509b3733b588aba5b02deee4e34f999",
+        "size_bytes": 1412
+      },
+      "strict_patch": {
+        "path": "strict/59-0003az-fex-finite-patch-checkpoints.patch",
+        "sha256": "73e6d1dfc2338924eb07b6940931bac151bba1dcbccf8a1d73062394d3790db4",
+        "size_bytes": 7578
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/60-0003ba-fex-finite-checkpoint-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-checkpoint-selection",
+      "order": 60,
+      "source_manifest": {
+        "path": "provenance/60-finite-checkpoint-selection.json",
+        "sha256": "06302cb4de09e24b5433de91edba155087acce370c393f13d80ad60f7d2b0875",
+        "size_bytes": 1158
+      },
+      "strict_patch": {
+        "path": "strict/60-0003ba-fex-finite-checkpoint-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 97705,
+          "postimage_sha256": "c4197e8d5595807dfbf2934597abe99ea7db619feaf0f684d69af3a61674bf08",
+          "preimage_sha256": "d597c1be986be23465312eacb4a07be2becc2ac6ed8a02b7585aebb42da6cd8c"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 20588,
+          "postimage_sha256": "4089547f80c5f0fd0f3e555eed64e299676c8ad7fdbc92f2a2bb0481f3b1e74a",
+          "preimage_sha256": "278a598b5412e4a962a60c3e7d553548e9aa40ea2e94a1974d461d52a33f56c9"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/61-0003bb-fex-finite-rip-pair-expectation.git.patch",
+        "sha256": "9d9ead323a9a18d9b8bb04c58ae4b723999612ffddfdbb7ef4a78fd4db3d534e",
+        "size_bytes": 1452
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-rip-pair-expectation",
+      "order": 61,
+      "source_manifest": {
+        "path": "provenance/61-finite-rip-pair-expectation.json",
+        "sha256": "157cd9d58701b7e25f6ed767579366ed2bd710a5055ae7d354663228c370d5bf",
+        "size_bytes": 1455
+      },
+      "strict_patch": {
+        "path": "strict/61-0003bb-fex-finite-rip-pair-expectation.patch",
+        "sha256": "9d9ead323a9a18d9b8bb04c58ae4b723999612ffddfdbb7ef4a78fd4db3d534e",
+        "size_bytes": 1452
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 11422,
+          "postimage_sha256": "aed7cf60039863f76f20b6caecb1d02ceaef86b5f4531e388cdd001e05d4239f",
+          "preimage_sha256": "789955f2e7d7a02c5f3a6875df4be6e37528a50cccf0e7c08181d1b725597fe8"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/62-0003bc-fex-finite-terminal-lifetime.git.patch",
+        "sha256": "e65980f370e40f51bad5cbaa611680512f318074e7cb57cea19b9c256bc7187f",
+        "size_bytes": 3999
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-terminal-lifetime",
+      "order": 62,
+      "source_manifest": {
+        "path": "provenance/62-finite-terminal-lifetime.json",
+        "sha256": "bc0741a8bbdff91ac152fabbe3dda8cbc49b68d6928c91fc1c8ddfbdd4ff66f4",
+        "size_bytes": 1473
+      },
+      "strict_patch": {
+        "path": "strict/62-0003bc-fex-finite-terminal-lifetime.patch",
+        "sha256": "e65980f370e40f51bad5cbaa611680512f318074e7cb57cea19b9c256bc7187f",
+        "size_bytes": 3999
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/63-0003bd-fex-finite-terminal-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-terminal-selection",
+      "order": 63,
+      "source_manifest": {
+        "path": "provenance/63-finite-terminal-selection.json",
+        "sha256": "b281ab06c0da7d3f470b54710f9030221411108e08f269cd6673e04abfb185a1",
+        "size_bytes": 1154
+      },
+      "strict_patch": {
+        "path": "strict/63-0003bd-fex-finite-terminal-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+          "postimage_bytes": 21519,
+          "postimage_sha256": "ebb44cd2f8007d0c1cb333dcb2e807fda3d94a2491d388fd68cc10fc91589fee",
+          "preimage_sha256": "4709e3803973c52ce017aec4aa9e6d257509e4243aea63048ebdc059def91892"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+          "postimage_bytes": 12417,
+          "postimage_sha256": "a564d8821d5ec0ba92eca440fab1d3aa2c7e4d5efda0af1d7f89e0daf2bbaf21",
+          "preimage_sha256": "aed7cf60039863f76f20b6caecb1d02ceaef86b5f4531e388cdd001e05d4239f"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/64-0003be-fex-stable-link-batch-storage.git.patch",
+        "sha256": "8be2bb46a9bb17f2b16f1a0d494b0b2f1b0de2ea4d6f0273addd87e81e61049a",
+        "size_bytes": 8999
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "stable-link-batch-storage",
+      "order": 64,
+      "source_manifest": {
+        "path": "provenance/64-stable-link-batch-storage.json",
+        "sha256": "98f1225b31d3e06731545e7b8c37ff758de7579da6a489d62f6bed89274c1513",
+        "size_bytes": 1815
+      },
+      "strict_patch": {
+        "path": "strict/64-0003be-fex-stable-link-batch-storage.patch",
+        "sha256": "8be2bb46a9bb17f2b16f1a0d494b0b2f1b0de2ea4d6f0273addd87e81e61049a",
+        "size_bytes": 8999
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/65-0003bf-fex-stable-batch-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "stable-batch-selection",
+      "order": 65,
+      "source_manifest": {
+        "path": "provenance/65-stable-batch-selection.json",
+        "sha256": "9b82df6fb440723d1c5322d607d871a3b65d491f7f0eb36070fb4d4ec05a7b3f",
+        "size_bytes": 1173
+      },
+      "strict_patch": {
+        "path": "strict/65-0003bf-fex-stable-batch-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+          "postimage_bytes": 25051,
+          "postimage_sha256": "b93ddabc0afec2ebbe3a8f9d293e51421dd671328c14ef92b0db782c943704f3",
+          "preimage_sha256": "1026879160ccfb3ce47ec2ff5644982cfb3b8eabd37b4ba89daee594341c0b4e"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 69352,
+          "postimage_sha256": "487196b8abd4ce0f298e54850156a7839f6cf3b194d7b9d20662796bf3668f34",
+          "preimage_sha256": "cb338bead3e47c906972ec6752f6ea3f419e2d4e085b93d98e34ec531a33bdae"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 21310,
+          "postimage_sha256": "efc7a8408cd462542e1153aa58cf2867a7850dad2c1079ca64a20c81d54e5ab9",
+          "preimage_sha256": "4089547f80c5f0fd0f3e555eed64e299676c8ad7fdbc92f2a2bb0481f3b1e74a"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 97807,
+          "postimage_sha256": "3f0c056cab47992ab4794b049ead9f1248f45eb9026542bda785d40498f21678",
+          "preimage_sha256": "c4197e8d5595807dfbf2934597abe99ea7db619feaf0f684d69af3a61674bf08"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/66-0003bg-fex-finite-source-link-cycle.git.patch",
+        "sha256": "089873866944466c2e433034094e830ec4147fdcb1bab66c6f1e6e6abe218ee4",
+        "size_bytes": 10705
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-source-link-cycle",
+      "order": 66,
+      "source_manifest": {
+        "path": "provenance/66-finite-source-link-cycle.json",
+        "sha256": "8dcf26c2bb2689c30ce91d5fa041db45bed998e6c306734b2f75fc72718eba97",
+        "size_bytes": 2411
+      },
+      "strict_patch": {
+        "path": "strict/66-0003bg-fex-finite-source-link-cycle.patch",
+        "sha256": "089873866944466c2e433034094e830ec4147fdcb1bab66c6f1e6e6abe218ee4",
+        "size_bytes": 10705
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/67-0003bh-fex-finite-source-link-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-source-link-selection",
+      "order": 67,
+      "source_manifest": {
+        "path": "provenance/67-finite-source-link-selection.json",
+        "sha256": "ad84345cba1a534d30f967b1d57400fe8ecaacef50f70713918177b3416ab7dc",
+        "size_bytes": 1196
+      },
+      "strict_patch": {
+        "path": "strict/67-0003bh-fex-finite-source-link-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 21305,
+          "postimage_sha256": "7caf518b1f69fe70cc7f1a2719b6c4af8e7d8654e7b4d63e09a71b0ac4da9ad3",
+          "preimage_sha256": "efc7a8408cd462542e1153aa58cf2867a7850dad2c1079ca64a20c81d54e5ab9"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 70401,
+          "postimage_sha256": "c45e0bd8a21b97fd487392d2ef770ff84d038517baf231497410d7b74fd54063",
+          "preimage_sha256": "487196b8abd4ce0f298e54850156a7839f6cf3b194d7b9d20662796bf3668f34"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/68-0003bi-fex-finite-cancel-and-cache-clear.git.patch",
+        "sha256": "46eda3327b7d637d4fd54bfd61013d5a6df3be5d20db72bded7cbaed1c68cd5b",
+        "size_bytes": 6418
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-cancel-and-cache-clear",
+      "order": 68,
+      "source_manifest": {
+        "path": "provenance/68-finite-cancel-and-cache-clear.json",
+        "sha256": "ca519b756693f64c2d55ab0b59823a0a9d5452e36ab2b8df5d47f85955e9f687",
+        "size_bytes": 1752
+      },
+      "strict_patch": {
+        "path": "strict/68-0003bi-fex-finite-cancel-and-cache-clear.patch",
+        "sha256": "46eda3327b7d637d4fd54bfd61013d5a6df3be5d20db72bded7cbaed1c68cd5b",
+        "size_bytes": 6418
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/69-0003bj-fex-finite-cancel-clear-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-cancel-clear-selection",
+      "order": 69,
+      "source_manifest": {
+        "path": "provenance/69-finite-cancel-clear-selection.json",
+        "sha256": "3f09c638dfcbf29c71178c679327023175f968ef2ed5f2b793a6d336b149bc6e",
+        "size_bytes": 1197
+      },
+      "strict_patch": {
+        "path": "strict/69-0003bj-fex-finite-cancel-clear-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 21775,
+          "postimage_sha256": "185d3d17bc3c91d697e4a34429a1e5f1de2230fefa8415d66ed8e55ea2d7c957",
+          "preimage_sha256": "7caf518b1f69fe70cc7f1a2719b6c4af8e7d8654e7b4d63e09a71b0ac4da9ad3"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 102464,
+          "postimage_sha256": "71282da155ea8d6baedccbbab61e618737e42b050b41e2f7f35d4709d22a61ce",
+          "preimage_sha256": "3f0c056cab47992ab4794b049ead9f1248f45eb9026542bda785d40498f21678"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/70-0003bk-fex-finite-unaligned-patch-matrix.git.patch",
+        "sha256": "cbecae93a304751c9d407c584d77fc9a7e1d9436713e7a69ce6f32ae7af8ebef",
+        "size_bytes": 8545
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-unaligned-patch-matrix",
+      "order": 70,
+      "source_manifest": {
+        "path": "provenance/70-finite-unaligned-patch-matrix.json",
+        "sha256": "df7db3edfdc991134f64d9fbb7365241aa97019bc0853a3c441d5ac34bd7cedd",
+        "size_bytes": 1803
+      },
+      "strict_patch": {
+        "path": "strict/70-0003bk-fex-finite-unaligned-patch-matrix.patch",
+        "sha256": "cbecae93a304751c9d407c584d77fc9a7e1d9436713e7a69ce6f32ae7af8ebef",
+        "size_bytes": 8545
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/71-0003bl-fex-finite-patch-matrix-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-patch-matrix-selection",
+      "order": 71,
+      "source_manifest": {
+        "path": "provenance/71-finite-patch-matrix-selection.json",
+        "sha256": "b883e4b96255ab09342c6b58af58cf328a5438fed5cf74d29679a0a98c681e7a",
+        "size_bytes": 1197
+      },
+      "strict_patch": {
+        "path": "strict/71-0003bl-fex-finite-patch-matrix-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 105655,
+          "postimage_sha256": "8a4d1c241929a7919895cf1d56669a7792c5e645c586ec89248f10f805a692e1",
+          "preimage_sha256": "71282da155ea8d6baedccbbab61e618737e42b050b41e2f7f35d4709d22a61ce"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/72-0003bm-fex-finite-buffer-reference-lifetime.git.patch",
+        "sha256": "de926e4e57628cb1fd3621e30f39b5f3b2fb21b3d4bc58045b25e4ac1f16b75e",
+        "size_bytes": 6052
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-buffer-reference-lifetime",
+      "order": 72,
+      "source_manifest": {
+        "path": "provenance/72-finite-buffer-reference-lifetime.json",
+        "sha256": "cefd57fab2e418b5157c275cc66975fd3d75aecd4298c67ba7f92e0ed4856ba0",
+        "size_bytes": 1480
+      },
+      "strict_patch": {
+        "path": "strict/72-0003bm-fex-finite-buffer-reference-lifetime.patch",
+        "sha256": "de926e4e57628cb1fd3621e30f39b5f3b2fb21b3d4bc58045b25e4ac1f16b75e",
+        "size_bytes": 6052
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/73-0003bn-fex-finite-buffer-lifetime-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-buffer-lifetime-selection",
+      "order": 73,
+      "source_manifest": {
+        "path": "provenance/73-finite-buffer-lifetime-selection.json",
+        "sha256": "0b46f1bdf8dab16cb05b40db62c89e975eb9536aa9ebd356931e75697540bf23",
+        "size_bytes": 1200
+      },
+      "strict_patch": {
+        "path": "strict/73-0003bn-fex-finite-buffer-lifetime-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 75259,
+          "postimage_sha256": "ca6ab572cd7758eb6d30f97c61b992f9516ccaeb46179c89769c983fbc581865",
+          "preimage_sha256": "c45e0bd8a21b97fd487392d2ef770ff84d038517baf231497410d7b74fd54063"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+          "postimage_bytes": 25179,
+          "postimage_sha256": "2c00d18da69fd98bd71f11759dfa268ccd8f9bd15bd955b6dbc167894e674ebd",
+          "preimage_sha256": "b93ddabc0afec2ebbe3a8f9d293e51421dd671328c14ef92b0db782c943704f3"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 105763,
+          "postimage_sha256": "df2fdc5b5c0b19471b6714a70066a3b0c9c58f447e69286aa754181d4af4df95",
+          "preimage_sha256": "8a4d1c241929a7919895cf1d56669a7792c5e645c586ec89248f10f805a692e1"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/74-0003bo-fex-finite-prepared-publication.git.patch",
+        "sha256": "fca0ce58db10bd29fec5857551808ef54087c43e426fbfd4ba9c230e8c3dcea1",
+        "size_bytes": 9957
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-prepared-publication",
+      "order": 74,
+      "source_manifest": {
+        "path": "provenance/74-finite-prepared-publication.json",
+        "sha256": "f4fcc2e4cdf2092ed99f3f8fbed3d5cf84a456eae477cc36c53b6fa9f1c44969",
+        "size_bytes": 2068
+      },
+      "strict_patch": {
+        "path": "strict/74-0003bo-fex-finite-prepared-publication.patch",
+        "sha256": "fca0ce58db10bd29fec5857551808ef54087c43e426fbfd4ba9c230e8c3dcea1",
+        "size_bytes": 9957
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 76035,
+          "postimage_sha256": "1d7d865da81c240e42ec7f5e2cd235b42cdd7995b1f2431298f7066f084e392a",
+          "preimage_sha256": "ca6ab572cd7758eb6d30f97c61b992f9516ccaeb46179c89769c983fbc581865"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/75-0003bp-fex-finite-publication-guard-observation.git.patch",
+        "sha256": "6a772e34842ba6b6000f360f166b3f5ca7f824f7c742919519ae33c780b1491b",
+        "size_bytes": 1848
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-publication-guard-observation",
+      "order": 75,
+      "source_manifest": {
+        "path": "provenance/75-finite-publication-guard-observation.json",
+        "sha256": "e15ba5a6195806c3406ab5fb11947df50fa16935eaa3a53190697043d62bc2f2",
+        "size_bytes": 1152
+      },
+      "strict_patch": {
+        "path": "strict/75-0003bp-fex-finite-publication-guard-observation.patch",
+        "sha256": "6a772e34842ba6b6000f360f166b3f5ca7f824f7c742919519ae33c780b1491b",
+        "size_bytes": 1848
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/76-0003bq-fex-finite-publication-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-publication-selection",
+      "order": 76,
+      "source_manifest": {
+        "path": "provenance/76-finite-publication-selection.json",
+        "sha256": "d4925fca0c5ba29c4fa0995fd7b19fa26c8152399b29455083aa566995ec2577",
+        "size_bytes": 1161
+      },
+      "strict_patch": {
+        "path": "strict/76-0003bq-fex-finite-publication-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 76672,
+          "postimage_sha256": "7a0f67acad93a8cf7d553d8fc0ce79763d82830c62447990148f26974d280d9e",
+          "preimage_sha256": "1d7d865da81c240e42ec7f5e2cd235b42cdd7995b1f2431298f7066f084e392a"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/77-0003br-fex-finite-publication-diagnostics.git.patch",
+        "sha256": "fa09a897dc8575157dc7a7fc81b5f1255161f07ac23c6915adef68e3895b54fd",
+        "size_bytes": 5569
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-publication-diagnostics",
+      "order": 77,
+      "source_manifest": {
+        "path": "provenance/77-finite-publication-diagnostics.json",
+        "sha256": "02ddc0f33313907b3d9549d8c5fa128cc0eab9a934ddda97fe7170fb950473db",
+        "size_bytes": 1376
+      },
+      "strict_patch": {
+        "path": "strict/77-0003br-fex-finite-publication-diagnostics.patch",
+        "sha256": "fa09a897dc8575157dc7a7fc81b5f1255161f07ac23c6915adef68e3895b54fd",
+        "size_bytes": 5569
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/78-0003bs-fex-finite-publication-diagnostic-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-publication-diagnostic-selection",
+      "order": 78,
+      "source_manifest": {
+        "path": "provenance/78-finite-publication-diagnostic-selection.json",
+        "sha256": "b2b07acebb960d6a6ce6236011b4c8b9b4a70f7fcab2093e4b436cf9be8add69",
+        "size_bytes": 1172
+      },
+      "strict_patch": {
+        "path": "strict/78-0003bs-fex-finite-publication-diagnostic-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 77507,
+          "postimage_sha256": "9df8fe52de91712ccca11b195e7b5e4ed06a24443c0135a6e64e51684136ef76",
+          "preimage_sha256": "7a0f67acad93a8cf7d553d8fc0ce79763d82830c62447990148f26974d280d9e"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+          "postimage_bytes": 25224,
+          "postimage_sha256": "4ab3c822ea25c9f80ff5a05ee4da61eb1d00f291331e54b191af545c3959e81c",
+          "preimage_sha256": "2c00d18da69fd98bd71f11759dfa268ccd8f9bd15bd955b6dbc167894e674ebd"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/79-0003bt-fex-unchanged-publication-cancellation.git.patch",
+        "sha256": "402b8877a69fe0598e293834fe0b65ac087d1eaadc5e4feb2a6ec41d5f5b5d26",
+        "size_bytes": 4758
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "unchanged-publication-cancellation",
+      "order": 79,
+      "source_manifest": {
+        "path": "provenance/79-unchanged-publication-cancellation.json",
+        "sha256": "00aa7ecb50decbf660b1d556159d8ace827ca9cd0e0f6b24f3e10748ade6648d",
+        "size_bytes": 1768
+      },
+      "strict_patch": {
+        "path": "strict/79-0003bt-fex-unchanged-publication-cancellation.patch",
+        "sha256": "402b8877a69fe0598e293834fe0b65ac087d1eaadc5e4feb2a6ec41d5f5b5d26",
+        "size_bytes": 4758
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/80-0003bu-fex-unchanged-publication-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "unchanged-publication-selection",
+      "order": 80,
+      "source_manifest": {
+        "path": "provenance/80-unchanged-publication-selection.json",
+        "sha256": "a91057ac8149a5fb7d8e29ebb4dd1e2bec855efc69741d27834a3dbf99763796",
+        "size_bytes": 1164
+      },
+      "strict_patch": {
+        "path": "strict/80-0003bu-fex-unchanged-publication-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 80570,
+          "postimage_sha256": "99d6ffa28914b5dcbe0c7b170fdc824dc11d481a50e3a5d4af9996805d978e5c",
+          "preimage_sha256": "9df8fe52de91712ccca11b195e7b5e4ed06a24443c0135a6e64e51684136ef76"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+          "postimage_bytes": 25344,
+          "postimage_sha256": "ba5308e888336459f3787f342e63ae5b08cc2781c96035fb7f3fd221a3991422",
+          "preimage_sha256": "4ab3c822ea25c9f80ff5a05ee4da61eb1d00f291331e54b191af545c3959e81c"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 105872,
+          "postimage_sha256": "2efae98561b4d52a331f1239d8d851bb3000f5fd65aa0793bd9e75dac88f1744",
+          "preimage_sha256": "df2fdc5b5c0b19471b6714a70066a3b0c9c58f447e69286aa754181d4af4df95"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/81-0003bv-fex-finite-backend-buffer-growth.git.patch",
+        "sha256": "a0172b812258ef679222703832ba340605b435898b7cc95d79fdf1beddf1f28e",
+        "size_bytes": 6642
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-backend-buffer-growth",
+      "order": 81,
+      "source_manifest": {
+        "path": "provenance/81-finite-backend-buffer-growth.json",
+        "sha256": "ecb21ad0e8cfb93e6f15d0c813e135a78dee6f760914460194e5ea88550e97a2",
+        "size_bytes": 2007
+      },
+      "strict_patch": {
+        "path": "strict/81-0003bv-fex-finite-backend-buffer-growth.patch",
+        "sha256": "a0172b812258ef679222703832ba340605b435898b7cc95d79fdf1beddf1f28e",
+        "size_bytes": 6642
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "postimage_bytes": 106086,
+          "postimage_sha256": "634d1288107e8c8b7718146e74771c2d83ad5222cc0f1fc20d2b68536e2b71f7",
+          "preimage_sha256": "2efae98561b4d52a331f1239d8d851bb3000f5fd65aa0793bd9e75dac88f1744"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/82-0003bw-fex-finite-snapshot-reference-release.git.patch",
+        "sha256": "6f059aff958e85e8564e5d87c5ac98d54f2c302fd1c0a3fda6c8d7e9ff7004b0",
+        "size_bytes": 734
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-snapshot-reference-release",
+      "order": 82,
+      "source_manifest": {
+        "path": "provenance/82-finite-snapshot-reference-release.json",
+        "sha256": "25e5201acbf25e1284589f9f3a0fbecab1f34fa558714801b36581ac7691d543",
+        "size_bytes": 1132
+      },
+      "strict_patch": {
+        "path": "strict/82-0003bw-fex-finite-snapshot-reference-release.patch",
+        "sha256": "6f059aff958e85e8564e5d87c5ac98d54f2c302fd1c0a3fda6c8d7e9ff7004b0",
+        "size_bytes": 734
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/83-0003bx-fex-finite-backend-growth-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-backend-growth-selection",
+      "order": 83,
+      "source_manifest": {
+        "path": "provenance/83-finite-backend-growth-selection.json",
+        "sha256": "de935a1bb89d5911bfafa112e74a0c9c61f5cfc18e5c2b7323574ea4b6fad236",
+        "size_bytes": 1164
+      },
+      "strict_patch": {
+        "path": "strict/83-0003bx-fex-finite-backend-growth-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "postimage_bytes": 81330,
+          "postimage_sha256": "892e980f8f0149560e9d7ae41ea0c813ce55694431962471a6d6684796f0f02e",
+          "preimage_sha256": "99d6ffa28914b5dcbe0c7b170fdc824dc11d481a50e3a5d4af9996805d978e5c"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+          "postimage_bytes": 21794,
+          "postimage_sha256": "0d90b82ce1e43f59015da6845ced194d7a0cb88b5dde85f2a0a06c34d74cee32",
+          "preimage_sha256": "185d3d17bc3c91d697e4a34429a1e5f1de2230fefa8415d66ed8e55ea2d7c957"
+        },
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1811,
+          "postimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47",
+          "preimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/84-0003by-fex-finite-source-range-invalidation.git.patch",
+        "sha256": "31b95a085f9705de575388bec739da0f658a4f98624107d50ad45a3633d442ac",
+        "size_bytes": 5877
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-source-range-invalidation",
+      "order": 84,
+      "source_manifest": {
+        "path": "provenance/84-finite-source-range-invalidation.json",
+        "sha256": "9a9133b1ad70638513dc18cf67260cc0399ca9691b2106b8b729e60638b2b8f4",
+        "size_bytes": 1756
+      },
+      "strict_patch": {
+        "path": "strict/84-0003by-fex-finite-source-range-invalidation.patch",
+        "sha256": "31b95a085f9705de575388bec739da0f658a4f98624107d50ad45a3633d442ac",
+        "size_bytes": 5877
+      }
+    },
+    {
+      "changes": [
+        {
+          "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+          "postimage_bytes": 1798,
+          "postimage_sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+          "preimage_sha256": "8ffbac9edd740b3480877e4ab93e0557086b57cd094efaa9f7e23df65f4bdd47"
+        }
+      ],
+      "git_derivative": {
+        "path": "git/85-0003bz-fex-finite-range-invalidation-selection.git.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      },
+      "metadata_normalization": "exact_declared_null_preimage_new_file_mode_100644_v1",
+      "name": "finite-range-invalidation-selection",
+      "order": 85,
+      "source_manifest": {
+        "path": "provenance/85-finite-range-invalidation-selection.json",
+        "sha256": "ff017070f5e4d75180b79912c0d1b032edbd972812c1e2fa0d42b545107fd412",
+        "size_bytes": 1168
+      },
+      "strict_patch": {
+        "path": "strict/85-0003bz-fex-finite-range-invalidation-selection.patch",
+        "sha256": "d01f0f5565f315f990f023a8778c67e48aaa94e9be5a4c76748a664e3cd0da16",
+        "size_bytes": 2006
+      }
+    }
+  ],
+  "module_initialization_performed": false,
+  "new_files": [
+    "FEXCore/Source/Interface/Core/PearJITLinkLayout.h",
+    "FEXCore/Source/Interface/Core/PearJITLinkTickets.h",
+    "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+    "FEXCore/Source/Interface/Core/PearJITLinks.h",
+    "FEXCore/Source/Interface/Core/PearJITMetadata.h",
+    "FEXCore/Source/Utils/ArchHelpers/Arm64InstructionConstants.h",
+    "FEXCore/Source/Utils/ArchHelpers/Arm64Preparation.h",
+    "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+    "FEXCore/Source/Utils/PearFEXRetirement.cpp",
+    "FEXCore/include/FEXCore/Config/PearConfigAllocator.h",
+    "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+    "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+    "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+    "FEXCore/include/FEXCore/Utils/PearFEXRetirement.h",
+    "FEXCore/include/FEXCore/Utils/PearSourceGuard.h",
+    "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+    "Source/Windows/Common/PearFEXMemory.cpp",
+    "Source/Windows/PearEmptyInit/CMakeLists.txt",
+    "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+    "Source/Windows/PearEmptyInit/CheckedCRT.h",
+    "Source/Windows/PearEmptyInit/Fixture.cpp",
+    "Source/Windows/PearEmptyInit/Fixture.def",
+    "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+    "Source/Windows/PearEmptyInit/Report.h",
+    "Tests/Windows/PearEmptyInit/caller.cpp"
+  ],
+  "normalization_helper": {
+    "path": "normalization-helper.py",
+    "sha256": "973ce26eed0d012bd6b37df5c2d19ee7f8595096448e5cade20a24344597f8b7",
+    "size_bytes": 6354
+  },
+  "owner_execution_performed": false,
+  "publication_series": {
+    "path": "memory-fex-series.json",
+    "sha256": "0ab62ffcb4131ff71169b8e9d3f969d3db00adef3bb81bc10ba7204cda2147f0",
+    "size_bytes": 140188
+  },
+  "record_kind": "fex_memory_git_derivative_proposal",
+  "reference_scope": "derivatives_root_relative_v1",
+  "retained_source_observations": [
+    {
+      "layer": 3,
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "sha256": "93338457a4d2cc8701f697af97244f58d94ca614251add174ee98f8c4532d113"
+    },
+    {
+      "layer": 11,
+      "path": "FEXCore/include/FEXCore/Utils/CompilerDefs.h",
+      "sha256": "832362e45a28f5dae45f246b946893417592779bf745308f2fde57a836a1ce58"
+    }
+  ],
+  "schema_version": 1,
+  "scope": "source_only",
+  "source_entry_reservation": "source_candidate_unqualified",
+  "stage3_complete": false,
+  "wire_version": 3
+}

@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear selects one private ordinary ARM64 empty-initializer build after source49 finite source/metadata review. This layer is not execution evidence: exact final image, stack/storage, constructor/vtable and current-runtime admission must pass before invocation. No guest dispatch, Module initialization, ABI, lifetime capacity, security permission or 262144-byte ceiling change.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1753,
+      "postimage_sha256": "4c7f6c7e6e569f4744c4aafd41aae44c1296076f8441c8a1ac574995c036bb31",
+      "preimage_sha256": "232f55707c86c07a1da029c2803edb86419b8e572467e477dc086aa2c5089aec"
+    }
+  ],
+  "historical_strict_patch_sha256": "275132650a896164d55751f26eb05c38ef23681d6b59d13e6bf095e417950c1e",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "finite-empty-source-selection",
+  "native_runtime_execution": false,
+  "order": 50,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

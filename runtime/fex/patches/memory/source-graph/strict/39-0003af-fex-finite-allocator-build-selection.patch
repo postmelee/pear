@@ -1,0 +1,14 @@
+diff --git a/FEXCore/Source/CMakeLists.txt b/FEXCore/Source/CMakeLists.txt
+--- a/FEXCore/Source/CMakeLists.txt
++++ b/FEXCore/Source/CMakeLists.txt
+@@ -314,6 +314,10 @@
+ # Meta-library to link jemalloc libraries enabled in the build configuration.
+ # Only needed for targets that run emulation. For others, use JemallocDummy.
+ add_library(JemallocLibs STATIC Utils/AllocatorHooks.cpp)
++if (PEAR_FEX_MEMORY_OWNER)
++  target_compile_definitions(JemallocLibs PRIVATE PEAR_FEX_MEMORY_OWNER=1)
++  target_link_libraries(JemallocLibs PRIVATE fmt::fmt)
++endif()
+ if (ENABLE_FEX_ALLOCATOR)
+   target_compile_definitions(JemallocLibs PRIVATE ENABLE_FEX_ALLOCATOR=1)
+   target_link_libraries(JemallocLibs PUBLIC rpmalloc)

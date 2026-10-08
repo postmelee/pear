@@ -1,0 +1,44 @@
+{
+  "attribution": "Original Pear downstream integration against pinned FEX; existing C++ languages, allocator semantics, compiler policy and upstream notices retained; no upstream submission.",
+  "compilation_performed": false,
+  "empty_source_proof_constants_closed": 12,
+  "empty_target_default_off": true,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/Common/CRT/Misc.cpp",
+      "postimage_bytes": 7341,
+      "postimage_sha256": "8dc06985a8f9b98ff7e4fb2e2221f5746d2f0b9d55d6381516e8a2dc584b1eea",
+      "preimage_sha256": "df6d971e6046bfbd2d884db64b5344514699f2f4abe746b5436aa487861ba3bc"
+    },
+    {
+      "path": "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+      "postimage_bytes": 969,
+      "postimage_sha256": "ec96b961925118ce4878f9b3f7cce314aa75c140bf599234d651f3803a2cea39",
+      "preimage_sha256": null
+    }
+  ],
+  "guest_execution_performed": false,
+  "historical_source_manifest_sha256": "e90f0b7ecad98720094ea771f92aa0269e9bd94952a7a313ec0c41e43e07fee8",
+  "historical_source_primitives": "Author inspection metadata retained as data; only canonical changes prove current source bytes",
+  "historical_strict_patch_sha256": "5ef325bc149a126b8e8dac742fe23521d4869d959be6eae17b6ad44d8d0ec4f5",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "metadata_budget_qualified": false,
+  "name": "checked-environment",
+  "native_runtime_execution": false,
+  "new_qualified_runtime_claim": false,
+  "old_normal_apis_retained": true,
+  "opaque_allocator_and_global_constructor_contracts": "unqualified",
+  "order": 21,
+  "owner_execution_performed": false,
+  "persistent_identity_ledger_added": false,
+  "record_kind": "fex_memory_source_layer",
+  "reporting_corrections_selection_freeze_sha256": "162992de6ae9cbd0b6bf04bfc588c7019fe304cd2a73fd93e48f73425004f0bf",
+  "retained_sources": [],
+  "reviewed_candidate_freeze_sha256": "78a964851beec22aa0c6e2fb137539cb8f19270999c6cbfc6f9a93fe2487bde0",
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

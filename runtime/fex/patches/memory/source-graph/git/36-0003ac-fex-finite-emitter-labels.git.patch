@@ -1,0 +1,77 @@
+diff --git a/CodeEmitter/CodeEmitter/Emitter.h b/CodeEmitter/CodeEmitter/Emitter.h
+--- a/CodeEmitter/CodeEmitter/Emitter.h
++++ b/CodeEmitter/CodeEmitter/Emitter.h
+@@ -550,7 +550,23 @@
+   // The first element is stored separately to avoid allocations for simple cases
+   Reference FirstInst;
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // The finite owner emitter never allocates while executable bytes are writable.
++  // Overflow is sticky and is propagated before dispatcher publication.
++  struct References {
++    Reference Items[16] {};
++    size_t Count {};
++    bool Overflow {};
++    void push_back(const Reference& R) {
++      if (Count==16) { Overflow=true;return; }
++      Items[Count++]=R;
++    }
++    Reference* begin() { return Items; }
++    Reference* end() { return Items+Count; }
++  } Insts;
++#else
+   fextl::vector<Reference> Insts;
++#endif
+ };
+ 
+ /* This `BiDirectionalLabel` struct used for retaining a location for PC-Relative instructions.
+@@ -642,6 +658,9 @@
+ class Emitter : public ARMEmitter::Buffer {
+ public:
+   Emitter() = default;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  bool PearLabelFailure {};
++#endif
+ 
+   Emitter(uint8_t* Base, uint64_t BaseSize)
+     : Buffer(Base, BaseSize) {}
+@@ -805,6 +824,9 @@
+   // This walks all the instructions in the label's vector.
+   // Then backpatching all instructions that have used the label.
+   [[nodiscard]] bool Bind(ForwardLabel* Label) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    if (Label->Insts.Overflow) { PearLabelFailure=true;return false; }
++#endif
+     bool Bound = true;
+     if (Label->FirstInst.Location) {
+       Bound &= Bind(&Label->FirstInst);
+@@ -812,7 +834,9 @@
+     for (auto& Inst : Label->Insts) {
+       Bound &= Bind(&Inst);
+     }
+-
++#ifdef PEAR_FEX_MEMORY_OWNER
++    PearLabelFailure |= !Bound;
++#endif
+     return Bound;
+   }
+ 
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -70,6 +70,15 @@
+   }
+   SetBuffer(Emission.Data(), MAX_DISPATCHER_CODE_SIZE);
+   EmitDispatcher();
++  if (PearLabelFailure) {
++    const Memory::Result Original {PEAR_FEX_UNAVAILABLE,0,0};
++    const auto BeforeAbort=PearToken.Snapshot();
++    const auto Aborted=Emission.Abort();
++    if (!PearToken.CompareUpdate(BeforeAbort,Allocation))
++      Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY,0,0});
++    if (!Aborted) Memory::Retirement::PoisonSourceAdmission(Aborted);
++    return Original;
++  }
+   // Buffer/label bounds are checked before stores in the selected emitter.
+   // An upstream emitter assertion still retains its original failure path.
+   const auto BeforePublish = PearToken.Snapshot();

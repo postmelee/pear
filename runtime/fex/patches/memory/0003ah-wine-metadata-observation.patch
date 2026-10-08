@@ -1,0 +1,215 @@
+diff --git a/include/wine/pear_fex_memory.h b/include/wine/pear_fex_memory.h
+--- a/include/wine/pear_fex_memory.h
++++ b/include/wine/pear_fex_memory.h
+@@ -5,7 +5,8 @@
+ #include <stdint.h>
+ #include <stddef.h>
+ 
+-#define PEAR_FEX_MEMORY_VERSION 2u
++#define PEAR_FEX_MEMORY_VERSION 3u
++#define PEAR_FEX_MEMORY_OBSERVATION_SLOTS 1024u
+ #define PEAR_FEX_MEMORY_RECORD_BYTES 128u
+ #define PEAR_FEX_MEMORY_UNIX_INDEX 10u
+ #define PEAR_FEX_MEMORY_PAGE_BYTES UINT64_C(4096)
+@@ -24,7 +25,7 @@
+     PEAR_FEX_EXECUTOR_REGISTER = 7, PEAR_FEX_EXECUTOR_ENTRY = 8,
+     PEAR_FEX_EXECUTOR_EXIT = 9, PEAR_FEX_CONTINUATION_PIN = 10,
+     PEAR_FEX_CONTINUATION_UNPIN = 11, PEAR_FEX_EXECUTOR_UNREGISTER = 12,
+-    PEAR_FEX_EXECUTOR_HANDOFF = 13, PEAR_FEX_EXECUTOR_RESUME = 14
++    PEAR_FEX_EXECUTOR_HANDOFF = 13, PEAR_FEX_EXECUTOR_RESUME = 14, PEAR_FEX_OBSERVE_METADATA = 15
+ };
+ enum pear_fex_memory_status {
+     PEAR_FEX_OK = 0, PEAR_FEX_INVALID_REQUEST = 1, PEAR_FEX_VERSION_MISMATCH = 2,
+@@ -82,6 +83,24 @@
+     uint32_t lifecycle_state, effective_protection;
+     uint64_t capabilities, reserved0;
+ };
++/* Read-only opcode 15 response; no field grants executable access. */
++struct pear_fex_memory_metadata {
++    uint32_t version, size, status, reserved0, native_error_domain;
++    int32_t native_error_code;
++    uint64_t owner_pid;
++    uint64_t mapping_bytes;
++    uint64_t baseline_mapping_bytes;
++    uint64_t page_bytes;
++    uint64_t leaf_coverage_bytes;
++    uint64_t leaf_backing_bytes;
++    uint64_t baseline_leaves;
++    uint64_t additional_leaves;
++    uint64_t view_block_bytes;
++    uint64_t view_record_bytes;
++    uint64_t available_view_slots;
++    uint64_t fixed_native_bytes;
++    uint64_t reserved1;
++};
+ struct pear_fex_memory_call {
+     struct pear_fex_memory_request request;
+     struct pear_fex_memory_response response;
+@@ -96,6 +115,7 @@
+ #endif
+ PEAR_FEX_ASSERT(sizeof(struct pear_fex_memory_request) == 128, "Pear request size");
+ PEAR_FEX_ASSERT(sizeof(struct pear_fex_memory_response) == 128, "Pear response size");
++PEAR_FEX_ASSERT(sizeof(struct pear_fex_memory_metadata) == 128, "Pear metadata size");
+ PEAR_FEX_ASSERT(sizeof(struct pear_fex_memory_call) == 256, "Pear private transport size");
+ PEAR_FEX_ASSERT(PEAR_FEX_ALIGNOF(struct pear_fex_memory_request) == 8, "Pear request alignment");
+ PEAR_FEX_ASSERT(PEAR_FEX_ALIGNOF(struct pear_fex_memory_response) == 8, "Pear response alignment");
+@@ -142,6 +162,19 @@
+ PEAR_FEX_FIELD(pear_fex_memory_response, effective_protection, 108);
+ PEAR_FEX_FIELD(pear_fex_memory_response, capabilities, 112);
+ PEAR_FEX_FIELD(pear_fex_memory_response, reserved0, 120);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, owner_pid, 24);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, mapping_bytes, 32);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, baseline_mapping_bytes, 40);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, page_bytes, 48);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, leaf_coverage_bytes, 56);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, leaf_backing_bytes, 64);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, baseline_leaves, 72);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, additional_leaves, 80);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, view_block_bytes, 88);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, view_record_bytes, 96);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, available_view_slots, 104);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, fixed_native_bytes, 112);
++PEAR_FEX_FIELD(pear_fex_memory_metadata, reserved1, 120);
+ #undef PEAR_FEX_FIELD
+ #undef PEAR_FEX_ALIGNOF
+ #undef PEAR_FEX_ASSERT
+diff --git a/dlls/ntdll/unix/pear_fex_memory_private.h b/dlls/ntdll/unix/pear_fex_memory_private.h
+--- a/dlls/ntdll/unix/pear_fex_memory_private.h
++++ b/dlls/ntdll/unix/pear_fex_memory_private.h
+@@ -25,6 +25,7 @@
+     /* The wire operation_size is independently fixed at4 by the core. */
+     int (*entry)(uint64_t extent_offset, uint64_t usable_extent_size,
+                  uint64_t entry_offset, uint32_t allocation_class, uint32_t source_role);
++    int (*metadata)(struct pear_fex_memory_metadata *, struct pear_fex_memory_error *);
+ };
+ 
+ /* Initialization binds one immutable backend and real owner process. It does
+@@ -46,4 +47,6 @@
+ int pear_fex_backing_initialize(struct pear_fex_memory_backing *, struct pear_fex_memory_error *);
+ int pear_fex_backing_query(uint64_t, uint64_t, uint32_t, struct pear_fex_memory_error *);
+ int pear_fex_backing_protect(uint64_t, uint64_t, uint32_t, struct pear_fex_memory_error *);
++int pear_fex_backing_metadata(struct pear_fex_memory_metadata *, uint64_t *mapping_base,
++                              struct pear_fex_memory_error *);
+ #endif
+diff --git a/dlls/ntdll/unix/pear_fex_memory.c b/dlls/ntdll/unix/pear_fex_memory.c
+--- a/dlls/ntdll/unix/pear_fex_memory.c
++++ b/dlls/ntdll/unix/pear_fex_memory.c
+@@ -314,7 +314,7 @@
+     case PEAR_FEX_PUBLISH: case PEAR_FEX_ABORT_WRITE: mask = T|E|X|C|S; break;
+     case PEAR_FEX_RETIRE: mask = T|E|X|S; break;
+     case PEAR_FEX_QUERY: mask = T|X|C; break;
+-    case PEAR_FEX_EXECUTOR_REGISTER: mask = 1u<<10; break;
++    case PEAR_FEX_EXECUTOR_REGISTER: case PEAR_FEX_OBSERVE_METADATA: mask = 1u<<10; break;
+     case PEAR_FEX_EXECUTOR_ENTRY: case PEAR_FEX_EXECUTOR_HANDOFF:
+     case PEAR_FEX_EXECUTOR_RESUME: mask = T|E|X|C|O|S; break;
+     case PEAR_FEX_EXECUTOR_EXIT: mask = T|E|X|S; break;
+@@ -430,6 +430,21 @@
+     if (q->owner_pid != owner.backing.owner_pid || q->owner_pid != (uint64_t)getpid())
+     { status = PEAR_FEX_STALE_IDENTITY; goto done; }
+     if (owner.quarantined) { status = PEAR_FEX_QUARANTINED; goto done; }
++    if (q->opcode == PEAR_FEX_OBSERVE_METADATA)
++    {
++        struct pear_fex_memory_metadata metadata = {0};
++        if (q->ec_role != PEAR_FEX_ROLE_NATIVE || !role_valid(q->ec_role) || !owner.backend.metadata)
++        { status = PEAR_FEX_UNAVAILABLE; goto done; }
++        if (owner.backend.metadata(&metadata, &error))
++        { status = PEAR_FEX_NATIVE_FAILURE; goto done; }
++        if (metadata.fixed_native_bytes > UINT64_MAX - sizeof(owner) - sizeof(owner_mutex) - sizeof(owner_condition))
++        { status = PEAR_FEX_CAPACITY; goto done; }
++        metadata.version = PEAR_FEX_MEMORY_VERSION; metadata.size = sizeof(metadata);
++        metadata.owner_pid = owner.backing.owner_pid;
++        metadata.fixed_native_bytes += sizeof(owner) + sizeof(owner_mutex) + sizeof(owner_condition);
++        memcpy(r, &metadata, sizeof(metadata));
++        goto done;
++    }
+     if (q->executor_id && !(x = executor(q->executor_id))) { status = PEAR_FEX_STALE_IDENTITY; goto done; }
+     if (q->allocation_id && !(e = extent(q))) { status = PEAR_FEX_STALE_IDENTITY; goto done; }
+     if (!q->allocation_id && (q->generation || q->extent_offset ||
+diff --git a/dlls/ntdll/unix/pear_pe_arena.c b/dlls/ntdll/unix/pear_pe_arena.c
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -1074,3 +1074,16 @@
+     backing->capabilities = PEAR_FEX_SINGLE_MAP_JIT | PEAR_FEX_OBSERVED_4K;
+     return 0;
+ }
++
++/* Observe existing backing only; unlike initialize this cannot construct MAP_JIT. */
++int pear_fex_backing_metadata(struct pear_fex_memory_metadata *out, uint64_t *mapping_base,
++                              struct pear_fex_memory_error *error)
++{
++    if (!arena.mapping || !arena.interior || arena.owner_pid != getpid())
++    { error->domain = PEAR_FEX_ERROR_ERRNO; error->code = EINVAL; return 1; }
++    *mapping_base = (uintptr_t)arena.mapping;
++    out->mapping_bytes = PEAR_ARENA_MAPPING_BYTES;
++    out->baseline_mapping_bytes = PEAR_ARENA_TOTAL_BYTES + PEAR_ARENA_ALIGNMENT;
++    out->page_bytes = PEAR_ARENA_PAGE_BYTES;
++    return 0;
++}
+diff --git a/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -7704,6 +7704,55 @@
+     server_leave_uninterrupted_section(&virtual_mutex, &sigset);
+     return result;
+ }
++/* Lower-bound available capacity, saturated before any new allocation. */
++static int pear_fex_wine_metadata(struct pear_fex_memory_metadata *out,
++                                  struct pear_fex_memory_error *error)
++{
++    sigset_t sigset;
++    uint64_t base, first, old_last, last, i, available;
++    struct file_view *cursor, *slow, *fast;
++    int result = 1;
++    server_enter_uninterrupted_section(&virtual_mutex, &sigset);
++    if (atomic_load_explicit(&pear_fex_wine_quarantined, memory_order_acquire) ||
++        pear_fex_backing_metadata(out, &base, error)) goto done;
++    out->leaf_coverage_bytes = UINT64_C(1) << (page_shift + pages_vprot_shift);
++    out->leaf_backing_bytes = UINT64_C(1) << pages_vprot_shift;
++    if (!out->mapping_bytes || !out->baseline_mapping_bytes ||
++        out->baseline_mapping_bytes > out->mapping_bytes ||
++        base > UINT64_MAX - out->mapping_bytes) goto invalid;
++    first = base / out->leaf_coverage_bytes;
++    old_last = (base + out->baseline_mapping_bytes - 1) / out->leaf_coverage_bytes;
++    last = (base + out->mapping_bytes - 1) / out->leaf_coverage_bytes;
++    if (last >= pages_vprot_size || last - first > 1) goto invalid;
++    for (i = first; i <= last; ++i) if (!pages_vprot[i]) goto invalid;
++    out->baseline_leaves = old_last - first + 1;
++    /* Charge all extension-only leaves even if some predated the reservation. */
++    out->additional_leaves = last - old_last;
++    if (!view_block_start || !view_block_end || view_block_end < view_block_start ||
++        (uint64_t)(view_block_end - view_block_start) > view_block_size / sizeof(struct file_view)) goto invalid;
++    available = view_block_end - view_block_start;
++    cursor = slow = fast = next_free_view;
++    while (available < PEAR_FEX_MEMORY_OBSERVATION_SLOTS && cursor)
++    {
++        ++available;
++        cursor = *(struct file_view **)cursor;
++        slow = slow ? *(struct file_view **)slow : NULL;
++        fast = fast ? *(struct file_view **)fast : NULL;
++        fast = fast ? *(struct file_view **)fast : NULL;
++        if (slow && slow == fast) goto invalid;
++    }
++    out->available_view_slots = min(available, PEAR_FEX_MEMORY_OBSERVATION_SLOTS);
++    out->view_block_bytes = view_block_size;
++    out->view_record_bytes = sizeof(struct file_view);
++    out->fixed_native_bytes = sizeof(pear_fex_views) + sizeof(pear_fex_wine_backing) + sizeof(pear_fex_wine_quarantined);
++    result = 0;
++    goto done;
++ invalid:
++    pear_fex_nt_error(error, STATUS_INVALID_PARAMETER);
++ done:
++    server_leave_uninterrupted_section(&virtual_mutex, &sigset);
++    return result;
++}
+ static int pear_fex_wine_query(uint64_t offset, uint64_t size, uint32_t protection,
+                                 struct pear_fex_memory_error *error)
+ {
+@@ -8169,7 +8218,7 @@
+ {
+     struct pear_fex_memory_call *call = opaque;
+     const struct pear_fex_memory_backend backend = {pear_fex_wine_initialize, pear_fex_wine_query,
+-        pear_fex_wine_protect, NULL, pear_fex_wine_view, pear_fex_wine_role, pear_fex_wine_entry};
++        pear_fex_wine_protect, NULL, pear_fex_wine_view, pear_fex_wine_role, pear_fex_wine_entry, pear_fex_wine_metadata};
+     struct pear_fex_memory_error error = {0};
+     uint32_t status;
+     if (!call) return STATUS_INVALID_PARAMETER;

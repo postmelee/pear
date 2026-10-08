@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "scope": "fex_component",
+  "base_wine_build_sha256": "16e0c48694d51a1c378de823e54797a0169f44bff1a52cbd21182496b02d7110",
+  "patches": [
+    {
+      "file": "0004a-validated-pe-role-reader.patch",
+      "sha256": "022d14d83b8dbb5e04b54907c90e87f3622d000e12324f1dc4b34f9768b97923",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "preimage_sha256": "e6fc8f13b71cdfa4a72cbdf175e1aa6d26c4fcb0eb83356e1cc545d848899572",
+          "postimage_sha256": "a2bf8f8696333a6e2491b25835d1ed524bb7baa9f0cee355ae057818fe98dcef",
+          "postimage_bytes": 3848
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "preimage_sha256": "e05deb652ea7cf4a9fb23d8ee5fe29b07ac3caf760ae81a26cf80d59f1a29777",
+          "postimage_sha256": "7929b001e082f46f616000dcefdbf58cf0af767b67768dfa4ad412f0528b5560",
+          "postimage_bytes": 60110
+        }
+      ]
+    },
+    {
+      "file": "0004b-select-arm64x-staging.patch",
+      "sha256": "15e7ece5642f3f4b4f57c810aca5434d0f749c71a989640826645ff61e5202a2",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "preimage_sha256": "7929b001e082f46f616000dcefdbf58cf0af767b67768dfa4ad412f0528b5560",
+          "postimage_sha256": "37a7353e51528e6f874186a24354015dc54aec9f066c7e1bba9d997c493b9539",
+          "postimage_bytes": 68472
+        }
+      ],
+      "reuse": "Wine virtual.c apply_arm64x_relocations/update_arm64x_mapping; LGPL-2.1-or-later source semantics, retained Wine notices"
+    },
+    {
+      "file": "0004c-publish-role-aware-images.patch",
+      "sha256": "87a0ba4f71af813a38ff1aca2c7d5e6421f2b693ce8642b1b8337695abbcdb75",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "preimage_sha256": "a2bf8f8696333a6e2491b25835d1ed524bb7baa9f0cee355ae057818fe98dcef",
+          "postimage_sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+          "postimage_bytes": 3897
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "preimage_sha256": "37a7353e51528e6f874186a24354015dc54aec9f066c7e1bba9d997c493b9539",
+          "postimage_sha256": "3af4da71e6e99f18588e6f6b582290c8a7c503bd8313ab6c16ff1be4cedb5c0b",
+          "postimage_bytes": 69026
+        },
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "preimage_sha256": "4c488745dfd30e31cde2980da31e46848414e8b877dd83bd93e5123ed22e7954",
+          "postimage_sha256": "f4949deeeb1e0617ddbabf08c9223003cdc05ffc6a2ea56de0a61077da881533",
+          "postimage_bytes": 302927
+        }
+      ],
+      "reuse": "Existing Wine bitmap/view ownership and Pear page-W^X publication; no alternate bitmap or RWX route"
+    },
+    {
+      "file": "0004d-bind-translator-and-jit-bitmap.patch",
+      "sha256": "41738e682603ecde6e18914b17ff6d02919fd7d85a844636e303a1a6f672835e",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "preimage_sha256": "f4949deeeb1e0617ddbabf08c9223003cdc05ffc6a2ea56de0a61077da881533",
+          "postimage_sha256": "b07b6c830f5bb35fa2972b832ed15702d52b88a7c6f18cf7db42d7b0865c68d4",
+          "postimage_bytes": 305868
+        },
+        {
+          "path": "dlls/ntdll/pear_fex_memory.c",
+          "preimage_sha256": "857baee07e2f0c3e3dd05da2a2a3eb96c5aa9b3d40b242aa511d9b09d83b349d",
+          "postimage_sha256": "a299ce12fd9f79f4944cdfa5c1aa5d4d1ce933edcd65c8ce62f928bcc062b063",
+          "postimage_bytes": 6438
+        },
+        {
+          "path": "dlls/ntdll/ntdll_misc.h",
+          "preimage_sha256": "3bc81abfbd245c5866329d63367d6d6e3e635866d1d6bd3b21324e4ad6abb43f",
+          "postimage_sha256": "31244a2730f977c1228dfcbac4e2e611ec30b31c069ccf71af87a2e2e55f6ed8",
+          "postimage_bytes": 8522
+        },
+        {
+          "path": "dlls/ntdll/signal_arm64ec.c",
+          "preimage_sha256": "8b7814fedfc537c64d692981a2ae6e3bae89fb91d4ff2efe81343f33f513639d",
+          "postimage_sha256": "f740d06191d762008e0a926339a054e032e8b2b89b4ceb7772471c6b7514e010",
+          "postimage_bytes": 108332
+        }
+      ],
+      "reuse": "Wine selected translator load and LdrAddRefDll pin; original Wine EC bitmap, existing Pear owner gate/view identity. No public ABI change."
+    },
+    {
+      "file": "0004e-export-ec-owner-bridge.patch",
+      "sha256": "838d480e11dadd24f8ca6f5c9b7ffe1749bc1e14a937477d9fc19c175a292ba1",
+      "sources": [
+        {
+          "path": "dlls/ntdll/ntdll.spec",
+          "preimage_sha256": "0bfef154483bfd48a20f3ff9f7822bc8cef769ee24e65affd6dede87c80fab81",
+          "postimage_sha256": "73981dd70ec38f032d7d54bb0f91d5142c57e103f287ed2bed242930658e362e",
+          "postimage_bytes": 88253
+        }
+      ]
+    },
+    {
+      "file": "0004g-native-arm64x-selection.patch",
+      "sha256": "1c571ec013fa8c9ed69c9cc7388b6d5af03eda87c18e4951aa137deaf932e87c",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "preimage_sha256": "3af4da71e6e99f18588e6f6b582290c8a7c503bd8313ab6c16ff1be4cedb5c0b",
+          "postimage_sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+          "postimage_bytes": 69534
+        }
+      ],
+      "reuse": "Wine ARM64X native header selection remains ARM64; EC selection uses original dynamic relocation table."
+    },
+    {
+      "file": "0004h-select-first-main-image.patch",
+      "sha256": "f28a3a3673cf19a23c646754d92a0f25b802c344468384ca61b59a08c5b4398c",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "preimage_sha256": "b07b6c830f5bb35fa2972b832ed15702d52b88a7c6f18cf7db42d7b0865c68d4",
+          "postimage_sha256": "9ac8e28115459aea6968a70e9010fb2f11c20b3e214049968e8ea815d9c52702",
+          "postimage_bytes": 306221
+        }
+      ],
+      "reuse": "Wine server-validated image machine before main_image_info initialization; keep existing loader and role parser."
+    },
+    {
+      "file": "0004k-image-publication-checkpoints.patch",
+      "sha256": "8ed26e01889b49564028311c5e7b214ac2846998c04e65211413c9ceb6ed0795",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "preimage_sha256": "9ac8e28115459aea6968a70e9010fb2f11c20b3e214049968e8ea815d9c52702",
+          "postimage_sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+          "postimage_bytes": 306405
+        }
+      ],
+      "reuse": "Existing Wine module trace channel; distinguish image publication/EC registration from server mapping without changing behavior."
+    },
+    {
+      "file": "0004p-native-context-resume-observation.patch",
+      "sha256": "14e4a5d2f39f85ae806f45e830aeddcddca516e567d7c70c46dfe8fa00f943b6",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/signal_arm64.c",
+          "preimage_sha256": "c3ce004e3bae9e86f49e2613fb14bdf54cf055f7293c3a9d0149107bd6dc788a",
+          "postimage_sha256": "ed61e67b9b8789a2c0632ce0a5475c89a8a3bc4d853a405b346aa2c2f35716a9",
+          "postimage_bytes": 96157
+        }
+      ],
+      "reuse": "Observe existing Wine context classification and SIGUSR2 restoration; no change to routing, protection or owner state. Async signal observation uses fixed write only."
+    },
+    {
+      "file": "0004r-ec-readonly-metadata.patch",
+      "sha256": "ca73f1092e51e551aa3a1a75ca7ba7a54cab6e96588835cdfb42e76d7e636a6e",
+      "sources": [
+        {
+          "path": "dlls/ntdll/unix/pear_fex_memory.c",
+          "preimage_sha256": "bd8f4af4af3b63c9062a83984b38ec9192548b8d44f60553d956a989b2d8d66b",
+          "postimage_sha256": "c53f9a2bafe5d9cced3bcc6e1cda8f195175e68f2d2adb04c902a2d77dd72e2b",
+          "postimage_bytes": 41376
+        }
+      ],
+      "reuse": "Existing read-only metadata opcode; admit the actual compiled role through the existing selected-module and backend role checks. No ABI, allocation or permission change."
+    }
+  ],
+  "runtime_qualified": false
+}

@@ -1,0 +1,75 @@
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXMemory.h
+@@ -58,6 +58,12 @@
+   int32_t ErrorCode {};
+   explicit operator bool() const { return Status == PEAR_FEX_OK; }
+ };
++// Read-only owner snapshot, separate from allocation/publication responses.
++Result ObserveMetadata(pear_fex_memory_metadata& Output);
++// OtherBytes is the source-selected PE storage and simultaneous transient bound.
++// It never grants permission and is not a caller-selectable initialization gate.
++Result AssessMetadataBudget(const pear_fex_memory_metadata& Facts, uint64_t ExpectedPID,
++                            uint64_t RequiredViews, uint64_t OtherBytes, uint64_t& Total);
+ // Source ownership only: this move-only handle protects the exact actual
+ // Context/Thread while no NX registry lock is held across owner calls. It is
+ // minted only from the current genuine TEB/binding, never from caller facts.
+diff --git a/Source/Windows/Common/PearFEXMemory.cpp b/Source/Windows/Common/PearFEXMemory.cpp
+--- a/Source/Windows/Common/PearFEXMemory.cpp
++++ b/Source/Windows/Common/PearFEXMemory.cpp
+@@ -133,6 +133,55 @@
+   Q.owner_pid = Configured.load(std::memory_order_acquire) ? OwnerPID : 0;
+   return Q;
+ }
++Result AssessMetadataBudget(const pear_fex_memory_metadata& M, uint64_t ExpectedPID,
++                            uint64_t RequiredViews, uint64_t OtherBytes, uint64_t& Total) {
++  Total=0;
++  if (M.version!=PEAR_FEX_MEMORY_VERSION || M.size!=sizeof(M) || M.status!=PEAR_FEX_OK ||
++      M.reserved0 || M.reserved1 || M.native_error_domain || M.native_error_code ||
++      !ExpectedPID || M.owner_pid!=ExpectedPID || M.mapping_bytes!=UINT64_C(1588985856) ||
++      M.baseline_mapping_bytes!=UINT64_C(1050935296) || M.page_bytes!=4096 ||
++      M.leaf_coverage_bytes!=UINT64_C(4294967296) || M.leaf_backing_bytes!=1048576 ||
++      !M.baseline_leaves || M.baseline_leaves>2 || M.additional_leaves>1 ||
++      M.view_block_bytes!=1048576 || !M.view_record_bytes || M.view_record_bytes>M.view_block_bytes ||
++      M.available_view_slots>PEAR_FEX_MEMORY_OBSERVATION_SLOTS || !M.fixed_native_bytes)
++    return Refuse(PEAR_FEX_INVALID_REQUEST);
++  if (!RequiredViews || RequiredViews>PEAR_FEX_MEMORY_OBSERVATION_SLOTS)
++    return Refuse(PEAR_FEX_INVALID_REQUEST);
++  // A new 1-MiB directory/view block alone exceeds the entire approved cap.
++  if (M.additional_leaves || RequiredViews>M.available_view_slots ||
++      M.fixed_native_bytes>PEAR_FEX_MEMORY_METADATA_BYTES || OtherBytes>PEAR_FEX_MEMORY_METADATA_BYTES)
++    return Refuse(PEAR_FEX_CAPACITY);
++  // Charge full fixed owner/adapter payload plus three boundary pages. Actual
++  // linked placement must independently fit this conservative native bound.
++  const uint64_t Native=((M.fixed_native_bytes+4095)/4096)*4096+3*4096;
++  if (Native>PEAR_FEX_MEMORY_METADATA_BYTES || OtherBytes>PEAR_FEX_MEMORY_METADATA_BYTES-Native)
++    return Refuse(PEAR_FEX_CAPACITY);
++  Total=Native+OtherBytes;
++  return Refuse(PEAR_FEX_OK);
++}
++Result ObserveMetadata(pear_fex_memory_metadata& Output) {
++  Output={};
++  if (!Configured.load(std::memory_order_acquire) || !BridgeDirect || !OwnerPID ||
++      CompiledSourceRole()!=PEAR_FEX_ROLE_NATIVE) return Refuse();
++  auto Q=Request(PEAR_FEX_OBSERVE_METADATA);Q.ec_role=PEAR_FEX_ROLE_NATIVE;
++  pear_fex_memory_response Raw {};
++  const uint32_t Status=CallBridge(&Q,&Raw);
++  pear_fex_memory_metadata M {};memcpy(&M,&Raw,sizeof(M));
++  if (M.version!=PEAR_FEX_MEMORY_VERSION || M.size!=sizeof(M) || M.status!=Status ||
++      Status>PEAR_FEX_QUARANTINED || M.reserved0 || M.reserved1 ||
++      M.native_error_domain>PEAR_FEX_ERROR_MACH || (!M.native_error_domain && M.native_error_code))
++    return Refuse(PEAR_FEX_VERSION_MISMATCH);
++  if (Status!=PEAR_FEX_OK) {
++    pear_fex_memory_metadata Empty {};
++    Empty.version=M.version;Empty.size=M.size;Empty.status=M.status;
++    Empty.native_error_domain=M.native_error_domain;Empty.native_error_code=M.native_error_code;
++    if (memcmp(&Empty,&M,sizeof(M))) return Refuse(PEAR_FEX_VERSION_MISMATCH);
++    return {Status,M.native_error_domain,M.native_error_code};
++  }
++  if (M.owner_pid!=OwnerPID || M.native_error_domain || M.native_error_code)
++    return Refuse(PEAR_FEX_VERSION_MISMATCH);
++  Output=M;return Refuse(PEAR_FEX_OK);
++}
+ static void Target(pear_fex_memory_request& Q, const Allocation& A, bool Epoch, bool State) {
+   Q.allocation_id = A.Token.allocation_id; Q.generation = A.Token.generation;
+   Q.extent_offset = A.Token.extent_offset; Q.extent_size = A.Token.extent_size;

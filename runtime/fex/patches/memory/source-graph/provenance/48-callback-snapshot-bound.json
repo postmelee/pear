@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear narrows the private one-shot callback snapshot from 256 to 16 entries after exact linked-byte inspection found eight original callbacks. Existing bounded walks and typed refusal remain; callback order, targets, owner ABI and lifetime capacities do not change. All twelve initialization proof flags stay false pending complete admission.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+      "postimage_bytes": 1834,
+      "postimage_sha256": "9a6e7978bf35691562020cee4ce08fc0ca1050e313ba160a6e9777710a905180",
+      "preimage_sha256": "3744392a91e7200b6c0ae6c8f11decf5be5026f5a17b29965100b70529f3ada8"
+    }
+  ],
+  "historical_strict_patch_sha256": "b1d95f1af24aa2e80a34a05232fe7f85fc7bd1eb6588835b38d49e2d994cfcef",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "callback-snapshot-bound",
+  "native_runtime_execution": false,
+  "order": 48,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

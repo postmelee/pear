@@ -1,0 +1,19 @@
+diff --git a/Source/Windows/PearEmptyInit/Fixture.cpp b/Source/Windows/PearEmptyInit/Fixture.cpp
+--- a/Source/Windows/PearEmptyInit/Fixture.cpp
++++ b/Source/Windows/PearEmptyInit/Fixture.cpp
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: MIT
+ // Original finite ordinary ARM64 source-init fixture. Its proof selection is
+ // closed by default; build flags and caller-supplied data cannot open it.
++#include <FEXCore/Utils/AllocatorHooks.h>
+ #include "CheckedCRT.h"
+ #include "PearEmptyInitProof.h"
+ #include "Common/Allocator.h"
+@@ -10,7 +11,6 @@
+ #include "CommonTools/DummyHandlers.h"
+ #include <FEXCore/Config/Config.h>
+ #include <FEXCore/Core/Context.h>
+-#include <FEXCore/Utils/AllocatorHooks.h>
+ #include <FEXCore/Utils/PearFEXMemory.h>
+ #include <FEXCore/Utils/PearFEXRetirement.h>
+ #include <atomic>

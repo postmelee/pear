@@ -1,0 +1,61 @@
+{
+  "attribution": "Original Pear checked ordinary data allocation and lookup construction with typed NTSTATUS preservation and failure-retained partial compiler cleanup. No owner ABI, permission or initialization proof gate is changed.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+      "postimage_bytes": 782,
+      "postimage_sha256": "c545db33f126b094dd653b5d49423280e23ac004fe12166e970b6e67a7356521",
+      "preimage_sha256": null
+    },
+    {
+      "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+      "postimage_bytes": 7810,
+      "postimage_sha256": "92224d9361690e95760f24cb9777d14b274843bd9957d4d059ab1e697b24082a",
+      "preimage_sha256": "731269adedb45b84713c68e903d12428201dcd3fdb6b07e2bf13861c123f3a6e"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "postimage_bytes": 21634,
+      "postimage_sha256": "0090e64d66c13d056b64ccfc7a184a72ba03cd68b2d7561856ad1f7b843ebf93",
+      "preimage_sha256": "54cedb292db6d97509992f5a5726b059738618fad93f6530a0b032b34ad9cf16"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "postimage_bytes": 6423,
+      "postimage_sha256": "c1fd5b6d89a7df95f1b0b1dc10a56b4c402ecf0187ffaf3438bbbaecfb22d305",
+      "preimage_sha256": "446fa6397b4aeaad5301c1400d4e29a6eaeb7c1e58a00cdd4c721071d6ce9f35"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 91659,
+      "postimage_sha256": "5703cc0542f83f18aaaf6ce8335e3f81fd8a03ae7a0196b855c602f350796c22",
+      "preimage_sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "postimage_bytes": 24261,
+      "postimage_sha256": "e148791d743b743511f9cf67f89b871730317a3179ddb5fcb33e48bfd3f078e0",
+      "preimage_sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "postimage_bytes": 63729,
+      "postimage_sha256": "1a2bb54337732a79294b0e0f91fae6c77d0619b855d89bfb0d03c7ac29b82514",
+      "preimage_sha256": "6c964dab024d98d44a2e5d2096d1ca41ed28f34c7da58138f0a6fb48ec08715c"
+    }
+  ],
+  "historical_strict_patch_sha256": "c2984243154c8f981a39b657b17987d6e889e4e56cec3bca70ca0646c63a1fd0",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "checked-lookup-construction",
+  "native_runtime_execution": false,
+  "order": 32,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

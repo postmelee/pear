@@ -1,0 +1,25 @@
+{
+  "attribution": "Original Pear compile-visible closed initialization gate; all twelve literal proof selections remain false. No caller or environment override is added.",
+  "compilation_performed": false,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "postimage_bytes": 1613,
+      "postimage_sha256": "232f55707c86c07a1da029c2803edb86419b8e572467e477dc086aa2c5089aec",
+      "preimage_sha256": "a55a96a0cf0ae4930f20f187b74f817c856f01fd954a8ef479b785f8fef69c0c"
+    }
+  ],
+  "historical_strict_patch_sha256": "80da31bfca8c6cf96e14b8a5d4caec504c2a100d781ad5262d336bf27cf9e4d1",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "closed-init-body",
+  "native_runtime_execution": false,
+  "order": 29,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

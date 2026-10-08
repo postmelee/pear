@@ -1,0 +1,56 @@
+{
+  "attribution": "Original Pear downstream integration against pinned FEX; existing C++ languages, allocator semantics, compiler policy and upstream notices retained; no upstream submission.",
+  "compilation_performed": false,
+  "empty_source_proof_constants_closed": 12,
+  "empty_target_default_off": true,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "postimage_bytes": 104331,
+      "postimage_sha256": "a25e3ed07a4f15f2605d462b77d0dc72e5b0661ff4e4ad748ed26743ca2239d5",
+      "preimage_sha256": "83de462ad8c4ee6d024a76debf48a6d89387e2aca8a0a1a20c6fead92921415b"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "postimage_bytes": 89244,
+      "postimage_sha256": "3b7f4b908c9799daa22e1b59af9d6c90c9788c6ffae14d267968f11fdcac7b7e",
+      "preimage_sha256": "45183435d59f032119e1fbe8a3ffa5156c677d22da6cc943dd983ad46e3b19e6"
+    },
+    {
+      "path": "Source/Tools/CommonTools/DummyHandlers.cpp",
+      "postimage_bytes": 2102,
+      "postimage_sha256": "4fddd369e6b194e0fc63ef6c1ae4132ac25e94336a0b6ad9dd1772f46d12040c",
+      "preimage_sha256": "4c4dc902c65b09587f4ee1e965055992d07c56b530eb7315a408d426f0e622b4"
+    },
+    {
+      "path": "Source/Tools/CommonTools/DummyHandlers.h",
+      "postimage_bytes": 1826,
+      "postimage_sha256": "a7bbe3aadf0b2f0b895a546f3ea6409347d60ff431f440d5508de4ae6c266d23",
+      "preimage_sha256": "e5ae9f81564a73441395ad704ee3ed61cb48abb1960ddf5b55c06cb07ca3ea19"
+    }
+  ],
+  "guest_execution_performed": false,
+  "historical_source_manifest_sha256": "cc0eb206d8d05e8ac5f8b1157f4b82ea2cb2d5b1df4f5a1d0e687462ba4ff6fa",
+  "historical_source_primitives": "Author inspection metadata retained as data; only canonical changes prove current source bytes",
+  "historical_strict_patch_sha256": "611ef7dc67b62ffc03515ca805002d019a082bfbe7887dd0f1ae458626629e91",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "metadata_budget_qualified": false,
+  "name": "checked-selected-factories",
+  "native_runtime_execution": false,
+  "new_qualified_runtime_claim": false,
+  "old_normal_apis_retained": true,
+  "opaque_allocator_and_global_constructor_contracts": "unqualified",
+  "order": 22,
+  "owner_execution_performed": false,
+  "persistent_identity_ledger_added": false,
+  "record_kind": "fex_memory_source_layer",
+  "reporting_corrections_selection_freeze_sha256": "162992de6ae9cbd0b6bf04bfc588c7019fe304cd2a73fd93e48f73425004f0bf",
+  "retained_sources": [],
+  "reviewed_candidate_freeze_sha256": "2f50f873e3a0b41c81a9c5a95b5ca32614361fbb973229983fc4ecae4dc89760",
+  "schema_version": 1,
+  "scope": "source_only",
+  "security_permission_changed": false,
+  "stage3_complete": false,
+  "wire_changed": false
+}

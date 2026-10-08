@@ -1,0 +1,26 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -721,7 +721,7 @@
+   }
+   static std::atomic<unsigned> Observations {};
+   if (!Outcome || Observations.fetch_add(1, std::memory_order_relaxed) < 16)
+-    PearInitCheckpoint(Mode == 2 ? "ECGate.exit" : "ECGate.enter", Outcome.Status, Outcome.ErrorDomain, Outcome.ErrorCode);
++    PearInitCheckpoint(Mode == 2 ? "ECGate.exit" : Mode == 1 ? "ECGate.fill" : "ECGate.enter", Outcome.Status, Outcome.ErrorDomain, Outcome.ErrorCode);
+   if (!Outcome) {
+     PearRecordPrimary(Outcome);
+     PearSourceReady.store(false, std::memory_order_release);
+@@ -1021,6 +1021,13 @@
+         static std::atomic<unsigned> Observations {};
+         if (Observations.fetch_add(1, std::memory_order_relaxed) < 8)
+           PearInitCheckpoint("Overcommit.committed", STATUS_SUCCESS);
++        // Private bounded diagnosis of Wine's native/guest resume selection.
++        const auto* PEB = reinterpret_cast<const uint8_t*>(NtCurrentTeb()->ProcessEnvironmentBlock);
++        const auto* Bitmap = *reinterpret_cast<const uint64_t* const*>(PEB + 0x368);
++        const auto Page = NativeContext->Pc >> 12;
++        PearInitCheckpoint("Overcommit.resume-class", Bitmap ? (Bitmap[Page / 64] >> (Page & 63)) & 1 : 2,
++                           NativeContext->ContextFlags, static_cast<int32_t>(NativeContext->Pc));
++        PearInitCheckpoint("Overcommit.syscall-id", static_cast<uint32_t>(WineNtContinueSyscallId));
+         const auto Status = NtContinueNative(NativeContext, false);
+         PearInitCheckpoint("Overcommit.continue-returned", Status);
+         return Status ? Status : STATUS_UNSUCCESSFUL;

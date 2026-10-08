@@ -1,0 +1,53 @@
+{
+  "attribution": "Original Pear downstream integration against pinned FEX; existing upstream allocator, C++ languages, compiler policy and notices retained; no upstream submission.",
+  "compilation_performed": false,
+  "deletion_effectful_body_unchanged": true,
+  "fex_initialization": false,
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.cpp",
+      "postimage_bytes": 7508,
+      "postimage_sha256": "2f5d5dca71f929c1b75172e414966e3d7eafc113377aa7aa667b48c9d67e60c1",
+      "preimage_sha256": "230a8edc3af5b22288776b99d50d5753acf272ae7fd8d4a0d76fb4a085a5bb0b"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "postimage_bytes": 24177,
+      "postimage_sha256": "c5f644f5a31abb808299a7a8417160ac9f6f62ff91942d4910728be1262318ba",
+      "preimage_sha256": "dbea7d44df161fbb7a707f039c5353b03dbcd97c35eb8dbb03bb7eb84b7905bd"
+    }
+  ],
+  "freed_semantics": "selected_source_allocator_call_returned_not_os_reclamation",
+  "historical_source_manifest_sha256": "ca451298a3ffbeddc175c604a9e98469d8f2e44c18a9edf42839d23dd1eb4edb",
+  "historical_strict_patch_sha256": "bbc0b2892195ecf84f91f5e96f3bfb5094cf0428af8cfbeeb5731e863f479a1a",
+  "license": "MIT (FEX source and original Pear additions); existing notices retained",
+  "name": "checked-deletion-access",
+  "native_runtime_execution": false,
+  "old_void_apis_retained": true,
+  "order": 19,
+  "original_failed_build_manifest_sha256": "1e3c871861d3b5d1eb300753946a847387949a9a6ef110e01904feecaca02773",
+  "persistent_ledger_added": false,
+  "private_access_only_repair": true,
+  "record_kind": "fex_memory_source_layer",
+  "retained_sources": [],
+  "reviewed_candidate_freeze_sha256": "1b9ddfb0af0a86fd6ec3c18dd0cd963ee4249bfff12c50d0caeada8025072feb",
+  "root_actual_targeted_compile_diagnostic": {
+    "exit_code": 0,
+    "fex_initialization": false,
+    "full_module_build": false,
+    "module_load": false,
+    "object_sha256": "24c7eb1b15c896c9cac014b8e6f3e47a1041a7752580b6b669f3857a6014733a",
+    "original_failure_log_sha256": "f30f9ad85f32f9fa0283fcd1cdc7d8c8f6e044dff98ad42f9ea66d0521d901c5",
+    "original_failure_sha256": "c0150cb790a1be26ddd25ee051d7cca2c0e94352ba2f8bdbfd87688d9f24aa28",
+    "owner_execution": false,
+    "receipt_sha256": "dbe921fe2174685ec9fffbc9ead5672d5a4ac461405ac86b6b9901051298dbc4",
+    "record_kind": "root_actual_checked_deletion_one_object_diagnostic",
+    "stage3_complete": false,
+    "target": "original ARM64EC Context.cpp compile recipe with exact two-file repair"
+  },
+  "schema_version": 1,
+  "scope": "source_only",
+  "source_data_members_changed": false,
+  "source_lifecycle_public_visibility_changed": false,
+  "stage3_complete": false
+}

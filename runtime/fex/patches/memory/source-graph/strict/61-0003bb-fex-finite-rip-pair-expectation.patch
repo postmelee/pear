@@ -1,0 +1,25 @@
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -1463,7 +1463,8 @@
+   if (Snapshot.Tail.RIP!=0x1000 || Snapshot.Tail.GuestSize!=4 || !Snapshot.Tail.SingleInst ||
+       CTX->GetGuestBlockEntry(Thread)!=0x1000 || !CTX->IsCurrentBlockSingleInst(Thread) ||
+       !CTX->IsAddressInCurrentBlock(Thread,0x1000,1) ||
+-      CTX->RestoreRIPFromHostPC(Thread,Snapshot.BlockBegin+4)!=0x1000) {
++      CTX->RestoreRIPFromHostPC(Thread,Snapshot.BlockBegin)!=0x1000 ||
++      CTX->RestoreRIPFromHostPC(Thread,Snapshot.BlockBegin+4)!=0x1001) {
+     *Output={PEAR_FEX_STALE_IDENTITY,0,0};return;
+   }
+   std::array<uint32_t,13> Instructions {};
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -369,7 +369,7 @@
+     const JITCodeTail Tail{512,0x1000,4,1,sizeof(JITCodeTail),0,true,{0,0,0}};
+     std::memcpy(Write.Data()+64,&Header,sizeof(Header));
+     std::memcpy(Write.Data()+256,&Tail,sizeof(Tail));
+-    // Zero encodes the original decoder's (host delta 0, guest delta 0) pair.
++    // Zero encodes the upstream compact pair (host delta 4, guest delta 1).
+     Write.Data()[256+sizeof(Tail)]=0;
+     const auto Published=Write.Publish();
+     if (!Published) {

@@ -1,0 +1,226 @@
+diff --git a/dlls/ntdll/unix/pear_pe_arena.h b/dlls/ntdll/unix/pear_pe_arena.h
+--- a/dlls/ntdll/unix/pear_pe_arena.h
++++ b/dlls/ntdll/unix/pear_pe_arena.h
+@@ -36,7 +36,8 @@
+     ULONG entry_rva;
+     USHORT machine;
+     enum pear_pe_role role;
+-    ULONG chpe_rva, native_entry_rva;
++    ULONG chpe_rva, native_entry_rva, original_entry_rva;
++    USHORT original_machine;
+ };
+ 
+ extern BOOL pear_pe_arena_enabled(void);
+diff --git a/dlls/ntdll/unix/pear_pe_arena.c b/dlls/ntdll/unix/pear_pe_arena.c
+--- a/dlls/ntdll/unix/pear_pe_arena.c
++++ b/dlls/ntdll/unix/pear_pe_arena.c
+@@ -65,6 +65,7 @@
+     SIZE_T offset, capacity, image_size;
+     ULONGLONG generation, original_base;
+     enum slot_state state;
++    enum pear_pe_role role;
+ };
+ struct pear_dynamic_slot
+ {
+@@ -812,6 +813,8 @@
+     image->original_base = plan->original_base;
+     image->entry_rva = nt->OptionalHeader.AddressOfEntryPoint;
+     image->machine = nt->FileHeader.Machine;
++    image->original_machine = header.FileHeader.Machine;
++    image->original_entry_rva = header.OptionalHeader.AddressOfEntryPoint;
+     *ret = plan;
+     return STATUS_SUCCESS;
+ done:
+@@ -831,7 +834,7 @@
+     for (i = 0; i < plan->page_count; ++i)
+     {
+         if (!(plan->pages[i] & PAGE_USED)) continue;
+-        if (plan->pages[i] & PV_EXEC)
++        if (plan->role != PEAR_PE_ROLE_GUEST_X64 && (plan->pages[i] & PV_EXEC))
+         { if (arena.classes[first + i] == ORDINARY) return FALSE; }
+         else if (arena.classes[first + i] == CODE) return FALSE;
+     }
+@@ -871,6 +874,7 @@
+     ++slot->generation;
+     slot->image_size = plan->size;
+     slot->original_base = plan->original_base;
++    slot->role = plan->role;
+     *ret = slot;
+     *base = arena.interior + slot->offset;
+     *capacity = slot->capacity;
+@@ -948,15 +952,15 @@
+     require_owner();
+     if (slot->generation != generation || slot->state != SLOT_PREPARING || slot->image_size != plan->size || !compatible(slot, plan))
+         return STATUS_INVALID_PARAMETER;
+-    /* Parsing a role does not grant executable publication. The integrated
+-     * loader must connect registration/guest NX ownership before enabling it. */
+-    if (plan->role != PEAR_PE_ROLE_NATIVE) return STATUS_NOT_SUPPORTED;
++    /* The loader completes EC registration before returning an entry. Pure
++     * guest image bytes retain logical PE execution flags but native NX pages. */
++    if (plan->role < PEAR_PE_ROLE_NATIVE || plan->role > PEAR_PE_ROLE_GUEST_X64) return STATUS_NOT_SUPPORTED;
+     if (relocate_staging(plan, (ULONG_PTR)base)) return STATUS_INVALID_PARAMETER;
+     for (i = 0; i < plan->page_count; ++i)
+     {
+         BYTE value = plan->pages[i];
+         if (!(value & PAGE_USED)) continue;
+-        if (!(value & PV_EXEC) && arena.classes[first + i] == VIRGIN)
++        if ((plan->role == PEAR_PE_ROLE_GUEST_X64 || !(value & PV_EXEC)) && arena.classes[first + i] == VIRGIN)
+         {
+             void *actual = mmap(base + i * PAGE, PAGE, PROT_READ | PROT_WRITE,
+                                 MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+@@ -966,7 +970,7 @@
+         else
+         {
+             if (mprotect(base + i * PAGE, PAGE, PROT_READ | PROT_WRITE)) goto failed;
+-            if (value & PV_EXEC) arena.classes[first + i] = CODE;
++            if (plan->role != PEAR_PE_ROLE_GUEST_X64 && (value & PV_EXEC)) arena.classes[first + i] = CODE;
+         }
+         arena.protection[first + i] = PROT_READ | PROT_WRITE;
+         memcpy(base + i * PAGE, plan->staging + i * PAGE, PAGE);
+@@ -975,20 +979,20 @@
+     for (i = 0; i < plan->page_count; ++i)
+     {
+         BYTE value = plan->pages[i];
+-        int protection = (value & PAGE_USED) ? unix_protection(value) : PROT_NONE;
++        int protection = (value & PAGE_USED) ? unix_protection(plan->role == PEAR_PE_ROLE_GUEST_X64 ? value & ~PV_EXEC : value) : PROT_NONE;
+         if ((protection & (PROT_WRITE | PROT_EXEC)) == (PROT_WRITE | PROT_EXEC))
+             pear_pe_arena_fatal("invalid writable executable plan");
+         if (mprotect(base + i * PAGE, PAGE, protection)) goto failed;
+         arena.protection[first + i] = protection;
+         arena.vprot[first + i] = (value & ~PAGE_USED) | ((value & PAGE_USED) ? PV_COMMITTED : 0);
+ #ifdef __APPLE__
+-        if (value & PV_EXEC) sys_icache_invalidate(base + i * PAGE, PAGE);
++        if (plan->role != PEAR_PE_ROLE_GUEST_X64 && (value & PV_EXEC)) sys_icache_invalidate(base + i * PAGE, PAGE);
+ #endif
+     }
+     for (i = 0; i < plan->page_count; ++i)
+     {
+         if (!actual_protection(base + i * PAGE, PAGE, arena.protection[first + i])) goto failed;
+-        if (plan->pages[i] & PV_EXEC) ++code_pages;
++        if (plan->role != PEAR_PE_ROLE_GUEST_X64 && (plan->pages[i] & PV_EXEC)) ++code_pages;
+         else if (plan->pages[i] & PAGE_USED) ++data_pages;
+     }
+     slot->state = SLOT_PUBLISHED;
+@@ -1011,7 +1015,7 @@
+ NTSTATUS pear_pe_slot_protect(struct pear_pe_slot *slot, ULONGLONG generation, const void *pointer, SIZE_T size, BYTE vprot)
+ {
+     SIZE_T offset = (ULONG_PTR)pointer - ((ULONG_PTR)arena.interior + slot->offset), i, first;
+-    int protection = unix_protection(vprot);
++    int protection = unix_protection(slot->role == PEAR_PE_ROLE_GUEST_X64 ? vprot & ~PV_EXEC : vprot);
+     require_owner();
+     if (slot->generation != generation || slot->state != SLOT_PUBLISHED || (offset | size) & (PAGE - 1) || !size ||
+         !extent(offset, size, slot->image_size) || vprot & ~(PV_READ | PV_WRITE | PV_COPY | PV_EXEC | PV_COMMITTED))
+diff --git a/dlls/ntdll/unix/virtual.c b/dlls/ntdll/unix/virtual.c
+--- a/dlls/ntdll/unix/virtual.c
++++ b/dlls/ntdll/unix/virtual.c
+@@ -2018,6 +2018,11 @@
+ {
+     struct wine_rb_entry *entry;
+     struct file_view *other;
++    if (view->protect & VPROT_ARM64EC)
++    {
++        clear_arm64ec_range(view->base, view->size);
++        view->protect &= ~VPROT_ARM64EC;
++    }
+     if (view->pear_owned == 3)
+     {
+         if (pear_dynamic_release( view->pear_dynamic, view->pear_generation ))
+@@ -3633,6 +3638,8 @@
+  *
+  * Map a PE image section into memory.
+  */
++static NTSTATUS pear_register_ec_image(struct file_view *view, const struct pear_pe_image *image);
++
+ static NTSTATUS virtual_map_image( HANDLE mapping, void **addr_ptr, SIZE_T *size_ptr,
+                                    ULONG_PTR limit_low, ULONG_PTR limit_high, ULONG alloc_type,
+                                    struct pe_mapping_info *pe_mapping, USHORT machine,
+@@ -3680,13 +3687,16 @@
+         struct pear_pe_image image;
+         SIZE_T capacity, page;
+         void *base;
++        USHORT selected_machine = machine ? machine : main_image_info.Machine;
++        if (!selected_machine) selected_machine = current_machine;
+         if (offset || alloc_type || shared_fd != -1 ||
+-            (machine && machine != IMAGE_FILE_MACHINE_ARM64) || pe_mapping->image.machine != IMAGE_FILE_MACHINE_ARM64)
++            (selected_machine != IMAGE_FILE_MACHINE_ARM64 && selected_machine != IMAGE_FILE_MACHINE_AMD64) ||
++            (pe_mapping->image.machine != IMAGE_FILE_MACHINE_ARM64 && pe_mapping->image.machine != IMAGE_FILE_MACHINE_AMD64))
+         { status = STATUS_NOT_SUPPORTED; goto done; }
+-        status = pear_pe_plan_read( unix_fd, &plan, &image );
++        status = pear_pe_plan_read_target( unix_fd, selected_machine, &plan, &image );
+         if (status) goto done;
+         if (image.size != size || image.original_base != pe_mapping->image.base ||
+-            image.entry_rva != pe_mapping->image.entry_point || image.machine != pe_mapping->image.machine)
++            image.original_entry_rva != pe_mapping->image.entry_point || image.original_machine != pe_mapping->image.machine)
+         { status = STATUS_INVALID_IMAGE_FORMAT; pear_pe_plan_free( plan ); goto done; }
+         status = pear_initialize_views();
+         if (!status) status = pear_pe_slot_reserve( plan, max( limit_low, (ULONG_PTR)address_space_start ),
+@@ -3704,6 +3714,12 @@
+         if (!status)
+             for (page = 0; page < size; page += page_size)
+                 set_page_vprot( (char *)base + page, page_size, pear_pe_slot_vprot( slot, view->pear_generation, page ));
++        if (!status && image.role == PEAR_PE_ROLE_ARM64EC) status = pear_register_ec_image(view, &image);
++        if (!status)
++        {
++            pe_mapping->image.machine = image.machine;
++            pe_mapping->image.entry_point = image.role == PEAR_PE_ROLE_ARM64EC ? image.native_entry_rva : image.entry_rva;
++        }
+     }
+     else
+     {
+@@ -8029,6 +8045,56 @@
+  * view. It does not grant an EC caller role or qualify hybrid call dispatch. */
+ /* This diagnostic is an explicit finite-suite operation, not an ordinary
+  * native shared-buffer allocation cost or an ARM64EC admission switch. */
++static NTSTATUS pear_register_ec_image(struct file_view *view, const struct pear_pe_image *image)
++{
++    IMAGE_ARM64EC_METADATA metadata;
++    struct pear_fex_memory_error error = {0};
++    SIZE_T start, end, bytes;
++    void *backing;
++    ULONG i;
++    NTSTATUS status;
++    if (view->pear_owned != 2 || image->role != PEAR_PE_ROLE_ARM64EC || !image->chpe_rva ||
++        host_page_size != 4096 || page_size != 4096) return STATUS_NOT_SUPPORTED;
++    if ((status = pear_fex_checked_bitmap_allocate())) return status;
++    if (peb->EcCodeBitMap != arm64ec_view->base) return STATUS_INVALID_PARAMETER;
++    start = ((SIZE_T)view->base >> page_shift) / 8;
++    end = (((SIZE_T)view->base + view->size) >> page_shift) / 8;
++    bytes = ROUND_SIZE(start, end + 1 - start, page_mask);
++    backing = ROUND_ADDR((char *)arm64ec_view->base + start, page_mask);
++    if ((char *)backing < (char *)arm64ec_view->base || bytes > arm64ec_view->size ||
++        (SIZE_T)((char *)backing - (char *)arm64ec_view->base) > arm64ec_view->size - bytes)
++        return STATUS_INVALID_IMAGE_FORMAT;
++    if (!set_vprot(arm64ec_view, backing, bytes, VPROT_READ|VPROT_WRITE|VPROT_COMMITTED) ||
++        pear_fex_bitmap_protection(backing, bytes, PROT_READ|PROT_WRITE, &error)) return STATUS_ACCESS_DENIED;
++    if (!pear_fex_bitmap_bits(view->base, view->size, FALSE)) return STATUS_INVALID_PARAMETER;
++    /* The staged parser validated this metadata and every referenced code range.
++     * Relocation has completed; metadata fields here are RVAs, not guest pointers. */
++    memset(&metadata, 0, sizeof(metadata));
++    memcpy(&metadata, (char *)view->base + image->chpe_rva,
++           offsetof(IMAGE_ARM64EC_METADATA, AuxiliaryIATCopy) + sizeof(ULONG));
++    view->protect |= VPROT_ARM64EC;
++    for (i = 0; i < metadata.CodeMapCount; ++i)
++    {
++        IMAGE_CHPE_RANGE_ENTRY range;
++        void *base;
++        SIZE_T size;
++        memcpy(&range, (char *)view->base + metadata.CodeMap + i * sizeof(range), sizeof(range));
++        if ((range.StartOffset & 3) != 1) continue;
++        base = (char *)view->base + (range.StartOffset & ~3u);
++        size = ROUND_SIZE(base, range.Length, page_mask);
++        base = ROUND_ADDR(base, page_mask);
++        set_arm64ec_range(base, size);
++        if (!pear_fex_bitmap_bits(base, size, TRUE))
++        {
++            clear_arm64ec_range(view->base, view->size);
++            if (!pear_fex_bitmap_bits(view->base, view->size, FALSE)) pear_pe_arena_fatal("EC image rollback");
++            view->protect &= ~VPROT_ARM64EC;
++            return STATUS_ACCESS_DENIED;
++        }
++    }
++    return STATUS_SUCCESS;
++}
++
+ static int pear_fex_bitmap_diagnostics_selected(void)
+ {
+     const char *value = getenv("PEAR_FEX_BITMAP_DIAGNOSTICS");

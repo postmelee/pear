@@ -1,0 +1,980 @@
+diff --git a/FEXCore/Source/CMakeLists.txt b/FEXCore/Source/CMakeLists.txt
+--- a/FEXCore/Source/CMakeLists.txt
++++ b/FEXCore/Source/CMakeLists.txt
+@@ -77,7 +77,7 @@
+ if (PEAR_FEX_MEMORY_OWNER)
+   # The owner-dependent drain belongs to the FEXCore object, not the portable
+   # FEXCore_Base allocation/logger library. No source glob or service swap.
+-  list(APPEND SRCS Utils/PearFEXRetirement.cpp)
++  list(APPEND SRCS Utils/PearFEXRetirement.cpp Interface/Core/PearJITLinks.cpp)
+ endif()
+ 
+ if (ARCHITECTURE_arm64)
+diff --git a/FEXCore/Source/Interface/Context/Context.h b/FEXCore/Source/Interface/Context/Context.h
+--- a/FEXCore/Source/Interface/Context/Context.h
++++ b/FEXCore/Source/Interface/Context/Context.h
+@@ -395,6 +395,9 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   // Every selected guest mutation/invalidation writer records under its
+   // existing exclusive invalidation guard. Missing source hooks remain closed.
++  FEXCore::Utils::PearFEXMemory::Result BeginPearLinkInvalidation(FEXCore::Core::InternalThreadState*) override;
++  FEXCore::Utils::PearFEXMemory::Result FinishPearLinkInvalidation(FEXCore::Core::InternalThreadState*) override;
++  bool PearLinkInvalidationAdmitted() const override;
+   bool RecordPearInvalidation() override;
+   uint64_t GetPearInvalidationRevision() const override { return PearInvalidationRevision.load(std::memory_order_acquire); }
+ private:
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.cpp b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+--- a/FEXCore/Source/Interface/Core/CPUBackend.cpp
++++ b/FEXCore/Source/Interface/Core/CPUBackend.cpp
+@@ -355,6 +355,16 @@
+     for (const auto& Buffer : SignalHandlerCodeBuffers) if (auto Window = Match(Buffer)) return Window;
+     return std::nullopt;
+   }
++  std::optional<FEXCore::Utils::PearFEXMemory::Links::ReservedBarrierTarget> CPUBackend::FindPearReservedBarrierTarget() const {
++    if (!ThreadState || !ThreadState->CTX || !ThreadState->CurrentFrame || ThreadState->CurrentFrame->Thread!=ThreadState ||
++        ThreadState->CPUBackend.get()!=this || !CurrentCodeBuffer) return std::nullopt;
++    const auto A=CurrentCodeBuffer->GetPearSnapshot();
++    if (!A || A.Base || !A.Token.owner_pid || !A.Token.allocation_id || !A.Token.generation || !A.Token.write_epoch ||
++        A.Token.expected_state!=PEAR_FEX_RESERVED_NONE || A.Token.allocation_class!=PEAR_FEX_CLASS_SHARED ||
++        A.Token.ec_role!=PEAR_SOURCE_CODE_ROLE || CurrentCodeBuffer->UsableSize()<16 || !CurrentCodeBuffer->GetBufferBase())
++      return std::nullopt;
++    return FEXCore::Utils::PearFEXMemory::Links::ReservedBarrierTarget{CurrentCodeBuffer,A,ThreadState};
++  }
+   std::optional<FEXCore::Utils::PearFEXMemory::RetainedManagedTarget> CPUBackend::FindPearRetainedTarget(uintptr_t PC) const {
+     const auto Window = FindPearManagedWindow(PC);
+     if (!Window || !ThreadState || !ThreadState->CurrentFrame || ThreadState->CurrentFrame->Thread != ThreadState)
+diff --git a/FEXCore/Source/Interface/Core/CPUBackend.h b/FEXCore/Source/Interface/Core/CPUBackend.h
+--- a/FEXCore/Source/Interface/Core/CPUBackend.h
++++ b/FEXCore/Source/Interface/Core/CPUBackend.h
+@@ -21,6 +21,7 @@
+ #include <span>
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ #include <optional>
++#include <FEXCore/Utils/PearFEXLinks.h>
+ #endif
+ 
+ namespace FEXCore::CPU {
+@@ -161,6 +162,7 @@
+     // The thin target constructor is friend-only. No caller-supplied tuple or
+     // pointer can substitute for this backend's actual retained CodeBuffer.
+     std::optional<FEXCore::Utils::PearFEXMemory::RetainedManagedTarget> FindPearRetainedTarget(uintptr_t PC) const;
++    std::optional<FEXCore::Utils::PearFEXMemory::Links::ReservedBarrierTarget> FindPearReservedBarrierTarget() const;
+ #endif
+ 
+     // Updates the CodeBuffer if needed and returns a reference to the old one.
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -14,6 +14,9 @@
+ #endif
+ #include "Interface/Core/ArchHelpers/Arm64Emitter.h"
+ #include "Interface/Core/LookupCache.h"
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include "Interface/Core/PearJITLinks.h"
++#endif
+ #ifdef PEAR_FEX_MEMORY_OWNER
+ #include <ranges>
+ #include "Interface/Core/PearJITMetadata.h"
+@@ -529,6 +532,7 @@
+   }
+   // This cleanup-only check is source-qualified even when new admission is
+   // poisoned. It must observe matching bootstrap/native-idle before detaching.
++  if (Memory::Links::HasOutstanding(this)) { Outcome={PEAR_FEX_QUARANTINED,0,0}; return false; }
+   Outcome = Memory::CheckBootstrapCleanup(this);
+   if (!Outcome) return false;
+   Dispatcher.reset();
+@@ -1189,6 +1193,13 @@
+       Fresh.Token.allocation_class != PEAR_FEX_CLASS_DISPATCHER || Fresh.Token.ec_role != Gate.Facts.Token.ec_role ||
+       Fresh.Token.write_epoch < Gate.OriginalPinEpoch || Fresh.Token.expected_state != PEAR_FEX_PUBLISHED_RX)
+     return {PEAR_FEX_STALE_IDENTITY, 0, 0};
++  // Keep the exact original D pin/epoch and native resume descriptor until
++  // every source link batch/prepared transaction has completed. A marker is
++  // only a refusal; it does not authorize an owner operation or code read.
++  if (!Memory::Links::EntryAdmissionOpen()) {
++    const auto First=Memory::Links::FirstFailureSnapshot();
++    return !First ? First : Memory::Result{PEAR_FEX_UNAVAILABLE,0,0};
++  }
+   // The original descriptor epoch is retained even if D was safely patched by
+   // another native writer. No RX read occurs between handoff and this ENTRY.
+   const auto Unpinned = Memory::Unpin(Fresh, Gate.Continuation, Gate.OriginalPinEpoch);
+@@ -1518,6 +1529,17 @@
+ }
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
++FEXCore::Utils::PearFEXMemory::Result ContextImpl::BeginPearLinkInvalidation(FEXCore::Core::InternalThreadState* Thread) {
++  // Actual guest mutation must not start until this real retained target guard
++  // succeeds outside every invalidation/lookup/list/ThreadCreation source lock.
++  return FEXCore::CPU::PearJITLinks::BeginBatch(this,Thread);
++}
++FEXCore::Utils::PearFEXMemory::Result ContextImpl::FinishPearLinkInvalidation(FEXCore::Core::InternalThreadState* Thread) {
++  return FEXCore::CPU::PearJITLinks::FinishBatch(this,Thread);
++}
++bool ContextImpl::PearLinkInvalidationAdmitted() const {
++  return FEXCore::Utils::PearFEXMemory::Links::MutationAdmitted(this);
++}
+ bool ContextImpl::RecordPearInvalidation() {
+   auto Revision = PearInvalidationRevision.load(std::memory_order_acquire);
+   while (Revision != UINT64_MAX) {
+@@ -1528,6 +1550,7 @@
+ #endif
+ void ContextImpl::InvalidateCodeBuffersCodeRange(uint64_t Start, uint64_t Length) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
++  LOGMAN_THROW_A_FMT(PearLinkInvalidationAdmitted(),"Pear invalidation has no real pre-lock target write admission");
+   LOGMAN_THROW_A_FMT(RecordPearInvalidation(), "Pear invalidation revision exhausted");
+ #endif
+   FEXCORE_PROFILE_SCOPED("InvalidateCodeBuffersCodeRange");
+@@ -1547,6 +1570,7 @@
+ 
+ void ContextImpl::InvalidateThreadCachedCodeRange(FEXCore::Core::InternalThreadState* Thread, uint64_t Start, uint64_t Length) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
++  LOGMAN_THROW_A_FMT(PearLinkInvalidationAdmitted(),"Pear invalidation has no real pre-lock target write admission");
+   LOGMAN_THROW_A_FMT(RecordPearInvalidation(), "Pear invalidation revision exhausted");
+ #endif
+   LOGMAN_THROW_A_FMT(CodeInvalidationMutex.try_lock() == false, "CodeInvalidationMutex needs to be unique_locked here");
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -365,12 +365,21 @@
+       mov(ARMEmitter::XReg::x0, STATE);
+       mov(ARMEmitter::XReg::x1, ARMEmitter::XReg::lr);
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++      ARMEmitter::ForwardLabel NativeResume;
++      adr(ARMEmitter::XReg::x2,&NativeResume);
++      ldr(ARMEmitter::XReg::x3,STATE_PTR(CpuStateFrame,Pointers.ExitFunctionLink));
++      blr(ARMEmitter::Reg::r3);
++      Bind(&NativeResume);
++      PearExitLinkResumePC=GetCursorAddress<uintptr_t>();
++#else
+       ldr(ARMEmitter::XReg::x2, STATE_PTR(CpuStateFrame, Pointers.ExitFunctionLink));
+       if (!CTX->Config.DisableVixlIndirectCalls) [[unlikely]] {
+         GenerateIndirectRuntimeCall<uintptr_t, void*, void*>(ARMEmitter::Reg::r2);
+       } else {
+         blr(ARMEmitter::Reg::r2);
+       }
++#endif
+ 
+       if (!TMP_ABIARGS) {
+         mov(TMP1, ARMEmitter::XReg::x0);
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+@@ -107,7 +107,7 @@
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   FEXCore::Utils::PearFEXMemory::Allocation GetPearSnapshot() const { return PearToken.Snapshot(); }
+   bool IsPearNativeResume(uintptr_t PC) const {
+-    return PC && (PC == PearCompileResumePC || PC == PearSingleStepResumePC);
++    return PC && (PC == PearCompileResumePC || PC == PearSingleStepResumePC || PC == PearExitLinkResumePC);
+   }
+ #endif
+ protected:
+@@ -124,6 +124,7 @@
+   FEXCore::Utils::PearFEXMemory::TokenState PearToken {};
+   uintptr_t PearCompileResumePC {};
+   uintptr_t PearSingleStepResumePC {};
++  uintptr_t PearExitLinkResumePC {};
+ #endif
+   /**
+    * @name Dispatch Helper functions
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -13,6 +13,9 @@
+ 
+ #include "Interface/Context/Context.h"
+ #include "Interface/Core/LookupCache.h"
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include "Interface/Core/PearJITLinks.h"
++#endif
+ #include "Interface/Core/Dispatcher/Dispatcher.h"
+ #include "Interface/Core/Interpreter/InterpreterOps.h"
+ #include "Interface/Core/JIT/DebugData.h"
+@@ -532,6 +535,7 @@
+   }
+ }
+ 
++#ifndef PEAR_FEX_MEMORY_OWNER
+ static void DirectBlockDelinker(FEXCore::Context::ExitFunctionLinkData* Record, bool Call) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   // An under-lookup-lock callback cannot start a quiescent owner transaction.
+@@ -663,6 +667,100 @@
+   return HostCode;
+ }
+ 
++#else
++uint64_t Arm64JITCore::ExitPearFunctionLink(FEXCore::Core::CpuStateFrame* Frame,
++    FEXCore::Context::ExitFunctionLinkData* Record, uintptr_t ResumePC) {
++  namespace Memory=FEXCore::Utils::PearFEXMemory;
++  auto* Thread=Frame ? Frame->Thread : nullptr;
++  auto* C=Thread ? static_cast<FEXCore::Context::ContextImpl*>(Thread->CTX) : nullptr;
++  LOGMAN_THROW_A_FMT(Thread && C && Thread->CPUBackend && Frame==Thread->CurrentFrame &&
++    Memory::CurrentExecutor() && C->Dispatcher, "Pear linker actual source thread unavailable");
++  const auto Bound=Memory::BindSourceThread(Thread);
++  LOGMAN_THROW_A_FMT(!!Bound, "Pear linker source binding refused: status {}, domain {}, code {}",
++                    Bound.Status,Bound.ErrorDomain,Bound.ErrorCode);
++  const auto Protection=C->Dispatcher->GetPearSnapshot();
++  const auto Window=Thread->CPUBackend->FindPearManagedWindow(reinterpret_cast<uintptr_t>(Record));
++  const auto Retained=Thread->CPUBackend->FindPearRetainedTarget(reinterpret_cast<uintptr_t>(Record));
++  LOGMAN_THROW_A_FMT(Window && Retained && Memory::HasManagedActive(Protection),
++                    "Pear linker record is not an actual retained source target under D");
++  FEXCore::Context::ExitFunctionLinkData Copy {};
++  PearJITLinkLayout::Layout Layout {};
++  std::array<uint8_t,PearJITLinkLayout::THUNK_BYTES> Thunk {};
++  std::array<uint8_t,PearJITLinkLayout::CALLER_BYTES> Caller {};
++  uintptr_t Host {};
++  uint64_t Revision {};
++  {
++    auto Invalidation=GuardSignalDeferringSection<std::shared_lock>(C->CodeInvalidationMutex,Thread);
++    Revision=C->GetPearInvalidationRevision();
++    std::span<uint8_t> RecordBytes {reinterpret_cast<uint8_t*>(&Copy),sizeof(Copy)};
++    const auto Read=Memory::CopyManagedRXUnderGlobalLease(Protection,*Retained,Thread,Window->Offset,RecordBytes);
++    LOGMAN_THROW_A_FMT(!!Read,"Pear linker record snapshot refused: status {}, domain {}, code {}",
++                      Read.Outcome.Status,Read.Outcome.ErrorDomain,Read.Outcome.ErrorCode);
++    LOGMAN_THROW_A_FMT(PearJITLinkLayout::Build(Window->Begin,Window->Size,reinterpret_cast<uintptr_t>(Record),Copy,Layout) &&
++      (C->Config.Is64BitMode() || !(Copy.GuestRIP>>32)),"Pear linker source layout refused");
++    const auto ReadThunk=Memory::CopyManagedRXUnderGlobalLease(Protection,*Retained,Thread,Layout.ThunkOffset,Thunk);
++    const auto ReadCaller=Memory::CopyManagedRXUnderGlobalLease(Protection,*Retained,Thread,Layout.MarkerOffset,Caller);
++    LOGMAN_THROW_A_FMT(!!ReadThunk && !!ReadCaller &&
++      !std::memcmp(Thunk.data()+16,&Copy,sizeof(Copy)),"Pear linker source bytes changed during active snapshot");
++    Host=Thread->LookupCache->FindBlock(Thread,Copy.GuestRIP);
++  }
++  if (Frame->State.flags[X86State::RFLAG_TF_RAW_LOC]) {
++    Frame->State.rip=Copy.GuestRIP;
++    return Frame->Pointers.DispatcherLoopTop;
++  }
++  // Every byte required from Record/caller/thunk is now in bounded NX storage.
++  // This generated D resume label is exact; a synthetic Frame is never used.
++  FEXCore::Context::ContextImpl::PearDispatcherGate Gate {};
++  const auto Handed=C->BeginPearDispatcherGate(Frame,ResumePC,Gate);
++  LOGMAN_THROW_A_FMT(!!Handed,"Pear linker native handoff refused: status {}, domain {}, code {}",
++                    Handed.Status,Handed.ErrorDomain,Handed.ErrorCode);
++  if (!Host) Host=C->CompilePearBlock(Frame,Copy.GuestRIP,0);
++  LOGMAN_THROW_A_FMT(Host && !(Host&3),"Pear linker compiled no admitted target");
++  auto TargetWindow=Thread->CPUBackend->FindPearManagedWindow(Host);
++  const bool SameMap=TargetWindow && TargetWindow->Owner==Window->Owner &&
++    Thread->LookupCache->Shared==Window->Owner->LookupCache.get();
++  if (SameMap) {
++    uint32_t Marker {}; std::memcpy(&Marker,Caller.data(),sizeof(Marker));
++    const auto Encoded=PearJITLinkLayout::Encode(Window->Begin,Layout,Host,Marker);
++    LOGMAN_THROW_A_FMT(PearJITLinkLayout::UnlinkedSourceMatches(Window->Begin,Layout,Encoded,Thunk,Caller),
++                      "Pear linker bytes are not the actual appended pending-thunk/source caller shape");
++    const auto Facts=Window->Owner->GetPearSnapshot();
++    const auto Ticket=PearJITLinks::Prepare(PearJITLinks::SourceDescriptor {Window->Owner,C,Facts,Layout,Encoded,
++                                                                                     Thunk,Caller,Copy.GuestRIP,Host});
++    LOGMAN_THROW_A_FMT(Ticket.has_value(),"Pear finite source link admission refused");
++    // Compile may append into A, but any real guest invalidation since the
++    // original snapshot invalidates this source transaction before any store.
++    const auto Patched=PearJITLinks::PatchPrepared(*Ticket,Thread,Revision);
++    LOGMAN_THROW_A_FMT(!!Patched,"Pear link patch refused: status {}, domain {}, code {}",
++                      Patched.Status,Patched.ErrorDomain,Patched.ErrorCode);
++    {
++      auto Invalidation=GuardSignalDeferringSection<std::shared_lock>(C->CodeInvalidationMutex,Thread);
++      auto Lookup=Thread->LookupCache->AcquireWriteLock();
++      LOGMAN_THROW_A_FMT(C->GetPearInvalidationRevision()==Revision && Thread->LookupCache->Shared==Window->Owner->LookupCache.get(),
++                        "Pear linked source changed before lookup visibility");
++      Thread->LookupCache->AddPearBlockLink(Copy.GuestRIP,Record,*Ticket,Lookup);
++      const auto Committed=PearJITLinks::Commit(*Ticket);
++      LOGMAN_THROW_A_FMT(!!Committed,"Pear source link ticket publication refused: status {}, domain {}, code {}",
++                        Committed.Status,Committed.ErrorDomain,Committed.ErrorCode);
++    }
++  }
++  const auto Resumed=C->FinishPearDispatcherGate(Gate);
++  LOGMAN_THROW_A_FMT(!!Resumed,"Pear linker native resume refused: status {}, domain {}, code {}",
++                    Resumed.Status,Resumed.ErrorDomain,Resumed.ErrorCode);
++  // The source target is revalidated under renewed genuine D protection before
++  // its actual address is returned to the generated br instruction.
++  TargetWindow=Thread->CPUBackend->FindPearManagedWindow(Host);
++  const auto Target=Thread->CPUBackend->FindPearRetainedTarget(Host);
++  std::array<uint8_t,4> TargetWord {};
++  LOGMAN_THROW_A_FMT(TargetWindow && Target,"Pear linked target reference is unavailable after native resume");
++  const auto Observed=Memory::CopyManagedRXUnderGlobalLease(C->Dispatcher->GetPearSnapshot(),*Target,Thread,
++                                                          TargetWindow->Offset,TargetWord);
++  LOGMAN_THROW_A_FMT(!!Observed,"Pear linked target RX observation refused: status {}, domain {}, code {}",
++                    Observed.Outcome.Status,Observed.Outcome.ErrorDomain,Observed.Outcome.ErrorCode);
++  return Host;
++}
++#endif
++
+ void Arm64JITCore::Op_NoOp(const IR::IROp_Header* IROp, IR::Ref Node) {}
+ 
+ Arm64JITCore::Arm64JITCore(FEXCore::Context::ContextImpl* ctx, FEXCore::Core::InternalThreadState* Thread
+@@ -717,7 +815,11 @@
+       Ptrs.SyscallHandlerObj = reinterpret_cast<uint64_t>(CTX->SyscallHandler);
+       Ptrs.SyscallHandlerFunc = PMF.GetVTableEntry(CTX->SyscallHandler);
+     }
++#ifdef PEAR_FEX_MEMORY_OWNER
++    Ptrs.ExitFunctionLink = reinterpret_cast<uintptr_t>(&Arm64JITCore::ExitPearFunctionLink);
++#else
+     Ptrs.ExitFunctionLink = reinterpret_cast<uintptr_t>(&Arm64JITCore::ExitFunctionLink);
++#endif
+     Ptrs.LUDIV = reinterpret_cast<uint64_t>(LUDIV);
+     Ptrs.LDIV = reinterpret_cast<uint64_t>(LDIV);
+     Ptrs.RDRANDFallback = reinterpret_cast<uint64_t>(RDRANDFallback);
+diff --git a/FEXCore/Source/Interface/Core/JIT/JITClass.h b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+--- a/FEXCore/Source/Interface/Core/JIT/JITClass.h
++++ b/FEXCore/Source/Interface/Core/JIT/JITClass.h
+@@ -130,6 +130,9 @@
+   size_t PearPendingSize {};
+ #endif
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  static uint64_t ExitPearFunctionLink(FEXCore::Core::CpuStateFrame*, FEXCore::Context::ExitFunctionLinkData*, uintptr_t ResumePC);
++#endif
+   static uint64_t ExitFunctionLink(FEXCore::Core::CpuStateFrame* Frame, FEXCore::Context::ExitFunctionLinkData* Record);
+ 
+   [[nodiscard]]
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.cpp b/FEXCore/Source/Interface/Core/LookupCache.cpp
+--- a/FEXCore/Source/Interface/Core/LookupCache.cpp
++++ b/FEXCore/Source/Interface/Core/LookupCache.cpp
+@@ -102,6 +102,15 @@
+ }
+ 
+ void GuestToHostMap::ClearCache(const LookupCacheWriteLockToken&) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Preserve every real source link before replacing its map. The native
++  // invalidation batch drains these tickets only after all locks are released.
++  for (const auto& Item:*BlockLinks) {
++    const auto Queued=FEXCore::CPU::PearJITLinks::Queue(Item.second);
++    LOGMAN_THROW_A_FMT(!!Queued,"Pear cache-clear link queue refused: status {}, domain {}, code {}",
++                      Queued.Status,Queued.ErrorDomain,Queued.ErrorCode);
++  }
++#endif
+   // Allocate a new pointer from the BlockLinks pma again.
+   BlockLinks = BlockLinks_pma->new_object<BlockLinksMapType>();
+   // All code is gone, clear the block list
+diff --git a/FEXCore/Source/Interface/Core/LookupCache.h b/FEXCore/Source/Interface/Core/LookupCache.h
+--- a/FEXCore/Source/Interface/Core/LookupCache.h
++++ b/FEXCore/Source/Interface/Core/LookupCache.h
+@@ -1,6 +1,9 @@
+ // SPDX-License-Identifier: MIT
+ #pragma once
+ #include "Interface/Context/Context.h"
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include "Interface/Core/PearJITLinks.h"
++#endif
+ #include <FEXCore/Utils/LogManager.h>
+ #include <FEXCore/Utils/SHMStats.h>
+ #include <FEXCore/Utils/WritePriorityMutex.h>
+@@ -78,7 +81,11 @@
+   //
+   // This makes `BlockLinks` look like a raw pointer that could memory leak, but since it is backed by the MBR, it won't.
+   fextl::pmr::named_monotonic_page_buffer_resource BlockLinks_mbr;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  using BlockLinksMapType=std::pmr::map<BlockLinkTag,FEXCore::CPU::PearJITLinks::Ticket>;
++#else
+   using BlockLinksMapType = std::pmr::map<BlockLinkTag, FEXCore::Context::BlockDelinkerFunc>;
++#endif
+   fextl::unique_ptr<std::pmr::polymorphic_allocator<std::byte>> BlockLinks_pma;
+   BlockLinksMapType* BlockLinks;
+ 
+@@ -117,11 +124,16 @@
+     // Sever any links to this block
+     auto lower = BlockLinks->lower_bound({Address, nullptr});
+     auto upper = BlockLinks->upper_bound({Address, reinterpret_cast<FEXCore::Context::ExitFunctionLinkData*>(UINTPTR_MAX)});
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-    LOGMAN_THROW_A_FMT(lower == upper, "Pear under-lock block delink is unavailable");
+-#endif
+     for (auto it = lower; it != upper; it = BlockLinks->erase(it)) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++      // Only bounded NX ticket copying occurs under lookup locks. A real
++      // source target WriteGuard was admitted before the caller's mutation.
++      const auto Queued=FEXCore::CPU::PearJITLinks::Queue(it->second);
++      LOGMAN_THROW_A_FMT(!!Queued,"Pear delink queue refused: status {}, domain {}, code {}",
++                        Queued.Status,Queued.ErrorDomain,Queued.ErrorCode);
++#else
+       it->second(it->first.HostLink);
++#endif
+     }
+ 
+     // Remove from BlockList
+@@ -152,6 +164,15 @@
+ #endif
+   }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  void AddPearBlockLink(uint64_t GuestDestination,FEXCore::Context::ExitFunctionLinkData* NumericSourceLink,
++                       FEXCore::CPU::PearJITLinks::Ticket T,const LookupCacheWriteLockToken&) {
++    // The actual source JIT minted T and published its observed owner/token.
++    // NumericSourceLink is a lookup key only and is never read beneath locks.
++    const auto Added=BlockLinks->insert({{GuestDestination,NumericSourceLink},T});
++    LOGMAN_THROW_A_FMT(Added.second,"Pear source link key was already registered");
++  }
++#endif
+   bool AddBlockExecutableRange(const std::ranges::input_range auto& Addresses, uint64_t Start, uint64_t Length, const LookupCacheWriteLockToken&) {
+     bool rv = false;
+ 
+@@ -391,6 +412,12 @@
+     Shared->AddBlockLink(GuestDestination, HostLink, delinker, lk);
+   }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  void AddPearBlockLink(uint64_t GuestDestination,FEXCore::Context::ExitFunctionLinkData* NumericSourceLink,
++                       FEXCore::CPU::PearJITLinks::Ticket T,const LookupCacheWriteLockToken& L) {
++    Shared->AddPearBlockLink(GuestDestination,NumericSourceLink,T,L);
++  }
++#endif
+   void ClearCache(const LookupCacheWriteLockToken&);
+   void ClearL2Cache(const LookupCacheBaseLockToken&);
+   void ClearThreadLocalCaches(const LookupCacheWriteLockToken&);
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinkLayout.h b/FEXCore/Source/Interface/Core/PearJITLinkLayout.h
+--- /dev/null
++++ b/FEXCore/Source/Interface/Core/PearJITLinkLayout.h
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: MIT
++// Original Pear finite link layout checks around the retained FEX instruction
++// builders. These helpers only consume/calculate private NX values.
++#pragma once
++#include "Interface/Context/Context.h"
++#include "Interface/Core/ArchHelpers/Arm64Emitter.h"
++#include "Interface/Core/PearJITMetadata.h"
++#include <array>
++#include <algorithm>
++#include <cstring>
++
++namespace FEXCore::CPU::PearJITLinkLayout {
++inline constexpr size_t THUNK_BYTES = 16+sizeof(FEXCore::Context::ExitFunctionLinkData);
++inline constexpr size_t CALLER_BYTES = 12;
++struct Layout {
++  size_t ThunkOffset {}, RecordOffset {}, CallerOffset {}, MarkerOffset {};
++  size_t WriteOffset {}, WriteSize {};
++};
++inline bool Contains(size_t Begin, size_t Size, size_t Offset, size_t Bytes) {
++  return Offset >= Begin && Offset-Begin <= Size && Bytes <= Size-(Offset-Begin);
++}
++inline bool Build(uintptr_t Base, size_t Usable, uintptr_t RecordAddress,
++                  const FEXCore::Context::ExitFunctionLinkData& Record, Layout& Out) {
++  if (!Base || !Usable || Base > UINTPTR_MAX-Usable || RecordAddress < Base ||
++      RecordAddress-Base < 16 || (RecordAddress & 7)) return false;
++  const auto Thunk = RecordAddress-16;
++  uint64_t Caller {};
++  if (!FEXCore::CPU::PearJITMetadata::Advance(Thunk, static_cast<uint64_t>(Record.CallerOffset), Base, Base+Usable, Caller) ||
++      Caller < Base || Caller-Base < 8 || Caller >= Thunk || 4 > Thunk-Caller || (Caller & 3) || (Thunk & 3)) return false;
++  Layout L {.ThunkOffset = Thunk-Base, .RecordOffset = RecordAddress-Base, .CallerOffset = Caller-Base, .MarkerOffset = Caller-Base-8};
++  if (!Contains(0, Usable, L.ThunkOffset, THUNK_BYTES) || !Contains(0, Usable, L.MarkerOffset, CALLER_BYTES)) return false;
++  L.WriteOffset = std::min(L.ThunkOffset, L.MarkerOffset);
++  const auto End = std::max(L.ThunkOffset+THUNK_BYTES, L.MarkerOffset+CALLER_BYTES);
++  L.WriteSize = End-L.WriteOffset;
++  if (!L.WriteSize || L.WriteSize > FEXCore::CPU::PearJITMetadata::MAX_SOURCE_BLOCK_BYTES) return false;
++  Out = L; return true;
++}
++struct Instructions {
++  bool Direct {}, Call {};
++  uint32_t KnownCallMarker {}, PatchedWord {}, RestoreWord {};
++};
++inline Instructions Encode(uintptr_t Base, const Layout& L, uintptr_t HostCode, uint32_t Marker) {
++  Instructions I;
++  ARMEmitter::Emitter Known(reinterpret_cast<uint8_t*>(&I.KnownCallMarker), 4);
++  Known.adr(TMP1, 0xc);
++  const auto Caller = Base+L.CallerOffset, Thunk = Base+L.ThunkOffset;
++  const auto Offset = HostCode/4-Caller/4;
++  I.Direct = ARMEmitter::Emitter::IsInt26(Offset); I.Call = Marker == I.KnownCallMarker;
++  ARMEmitter::Emitter Patched(reinterpret_cast<uint8_t*>(&I.PatchedWord), 4);
++  ARMEmitter::Emitter Restored(reinterpret_cast<uint8_t*>(&I.RestoreWord), 4);
++  if (I.Direct) {
++    if (I.Call) { Patched.bl(Offset); Restored.bl(Thunk/4-Caller/4); }
++    else { Patched.b(Offset); Restored.b(Thunk/4-Caller/4); }
++  } else {
++    // Preserve the actual upstream literal-load and restoration formulas.
++    Patched.ldr(TMP1, Base+L.RecordOffset+offsetof(FEXCore::Context::ExitFunctionLinkData, HostCode)-Thunk);
++    Restored.b(0x2);
++  }
++  return I;
++}
++inline bool UnlinkedSourceMatches(uintptr_t Base,const Layout& L,const Instructions& I,
++                                  const std::array<uint8_t,THUNK_BYTES>& Thunk,
++                                  const std::array<uint8_t,CALLER_BYTES>& Caller) {
++  uint32_t CallerWord {},First {},Second {},Third {},Fourth {},ExpectedCaller {},ExpectedBR {},ExpectedBLR {};
++  std::memcpy(&CallerWord,Caller.data()+8,4);
++  std::memcpy(&First,Thunk.data(),4); std::memcpy(&Second,Thunk.data()+4,4);
++  std::memcpy(&Third,Thunk.data()+8,4); std::memcpy(&Fourth,Thunk.data()+12,4);
++  ARMEmitter::Emitter C(reinterpret_cast<uint8_t*>(&ExpectedCaller),4);
++  if (I.Call) C.bl((Base+L.ThunkOffset)/4-(Base+L.CallerOffset)/4);
++  else C.b((Base+L.ThunkOffset)/4-(Base+L.CallerOffset)/4);
++  ARMEmitter::Emitter BR(reinterpret_cast<uint8_t*>(&ExpectedBR),4); BR.br(TMP1);
++  ARMEmitter::Emitter BLR(reinterpret_cast<uint8_t*>(&ExpectedBLR),4); BLR.blr(TMP1);
++  // Match the actual appended pending-thunk shape before it can mint an owned
++  // descriptor. Literal displacement remains the actual emitted source byte.
++  return CallerWord==ExpectedCaller && First==0x14000002 && Second==ExpectedBR &&
++    (Third&0xff000000)==0x58000000 && Fourth==ExpectedBLR;
++}
++} // namespace FEXCore::CPU::PearJITLinkLayout
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinkTickets.h b/FEXCore/Source/Interface/Core/PearJITLinkTickets.h
+--- /dev/null
++++ b/FEXCore/Source/Interface/Core/PearJITLinkTickets.h
+@@ -0,0 +1,74 @@
++// SPDX-License-Identifier: MIT
++// Original finite NX source ticket bookkeeping. No owner/VM/code permission.
++#pragma once
++#include <array>
++#include <cstddef>
++#include <cstdint>
++#include <optional>
++namespace FEXCore::CPU::PearJITLinks {
++inline constexpr size_t CAPACITY = 64;
++enum class State : uint8_t { Free, Prepared, Linked, Pending, InFlight, Failed };
++// These state functions are also called by finite NX metadata controls. They
++// grant no owner permission, executable pointer, actual descriptor or lifecycle.
++class TicketLedger {
++public:
++  struct Ticket { size_t Index {}; uint64_t Value {}; };
++  std::optional<Ticket> Prepare() {
++    if (Next == UINT64_MAX) { Closed=true; return std::nullopt; }
++    if (Closed || Batch) return std::nullopt;
++    for (const auto& R : Records) if (R.Kind == State::Prepared) return std::nullopt;
++    for (size_t I=0; I<CAPACITY; ++I) if (Records[I].Kind == State::Free) {
++      Records[I] = {++Next, State::Prepared}; return Ticket {I, Next};
++    }
++    Closed = true; return std::nullopt;
++  }
++  bool Commit(Ticket T) { return Transition(T, State::Prepared, State::Linked); }
++  bool CancelPrepared(Ticket T) {
++    if (!Match(T, State::Prepared)) return Close();
++    Records[T.Index] = {}; return true;
++  }
++  bool BeginBatch() {
++    if (Closed || Batch) return false;
++    for (const auto& R : Records) if (R.Kind == State::Prepared || R.Kind == State::InFlight || R.Kind == State::Failed) return false;
++    Batch = true; return true;
++  }
++  bool Queue(Ticket T) {
++    if (!Batch || T.Index>=CAPACITY || Records[T.Index].Value!=T.Value || !T.Value) return Close();
++    if (Records[T.Index].Kind == State::Pending) return true;
++    return Transition(T, State::Linked, State::Pending);
++  }
++  std::optional<Ticket> Take(size_t I) {
++    if (!Batch || I>=CAPACITY || Records[I].Kind != State::Pending) return std::nullopt;
++    Records[I].Kind = State::InFlight; return Ticket {I, Records[I].Value};
++  }
++  bool Complete(Ticket T, bool ObservedPublication) {
++    if (!Match(T, State::InFlight)) return Close();
++    if (!ObservedPublication) { Records[T.Index].Kind = State::Failed; return Close(); }
++    Records[T.Index] = {}; return true;
++  }
++  bool FinishBatch() {
++    if (!Batch || Closed) return false;
++    for (const auto& R : Records) if (R.Kind == State::Pending || R.Kind == State::InFlight || R.Kind == State::Failed) return false;
++    Batch = false; return true;
++  }
++  bool EntryAdmissionOpen() const {
++    if (Closed || Batch) return false;
++    for (const auto& R : Records) if (R.Kind == State::Prepared) return false;
++    return true;
++  }
++  State GetState(size_t I) const { return I<CAPACITY ? Records[I].Kind : State::Failed; }
++  uint64_t GetTicket(size_t I) const { return I<CAPACITY ? Records[I].Value : 0; }
++  size_t Occupied() const { size_t N{}; for (const auto& R:Records) N += R.Kind != State::Free; return N; }
++  bool Close() { Closed=true; return false; }
++private:
++  struct Record { uint64_t Value{}; State Kind{State::Free}; };
++  bool Match(Ticket T, State S) const { return T.Value && T.Index<CAPACITY && Records[T.Index].Value==T.Value && Records[T.Index].Kind==S; }
++  bool Transition(Ticket T, State From, State To) {
++    if (!Match(T, From)) return Close();
++    Records[T.Index].Kind=To; return true;
++  }
++  std::array<Record,CAPACITY> Records {};
++  uint64_t Next {};
++  bool Closed {}, Batch {};
++};
++} // namespace FEXCore::CPU::PearJITLinks
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- /dev/null
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -0,0 +1,292 @@
++// SPDX-License-Identifier: MIT
++// Original finite actual-source link transactions. No engine initialization.
++#include "Interface/Core/PearJITLinks.h"
++#include <FEXCore/Debug/InternalThreadState.h>
++#include "Interface/Core/LookupCache.h"
++#include "Interface/Core/SharedCodeBufferManager.h"
++#include <FEXCore/Utils/LogManager.h>
++#include <mutex>
++#include <new>
++
++namespace FEXCore::CPU::PearJITLinks {
++namespace Memory = FEXCore::Utils::PearFEXMemory;
++struct Registry {
++  struct Slot { std::optional<SourceDescriptor> Source; };
++  struct BatchWrite {
++    Ticket First {};
++    Memory::Allocation Before {}, Transaction {};
++    std::unique_ptr<Memory::WriteGuard> Writer;
++    std::optional<Memory::Links::ReservedBarrierTarget> Reserved;
++  };
++  std::mutex Mutex;
++  TicketLedger Ledger;
++  std::array<Slot,CAPACITY> Slots {};
++  FEXCore::Context::ContextImpl* BatchContext {};
++  FEXCore::Core::InternalThreadState* BatchThread {};
++  uint64_t BatchExecutor {};
++  std::optional<BatchWrite> Held;
++  Memory::Result First {PEAR_FEX_OK,0,0};
++  Memory::Result Poison(Memory::Result E) {
++    if (E) E={PEAR_FEX_UNAVAILABLE,0,0};
++    { std::lock_guard L {Mutex}; Ledger.Close(); if (First) First=E; }
++    return Memory::Retirement::PoisonSourceAdmission(E);
++  }
++  static bool ThreadMatches(FEXCore::Context::ContextImpl* C, FEXCore::Core::InternalThreadState* T) {
++    return C && T && T->CTX==C && T->CPUBackend && T->CurrentFrame && T->CurrentFrame->Thread==T &&
++      Memory::CurrentExecutor() && Memory::CurrentSourceRole()==PEAR_SOURCE_CODE_ROLE;
++  }
++  static bool Identity(const SourceDescriptor& D, const Memory::Allocation& A) {
++    return D && A && A.Base==D.Owner->GetBufferBase() && A.Token.owner_pid==D.OwnerPID &&
++      A.Token.allocation_id==D.AllocationID && A.Token.generation==D.Generation &&
++      A.Token.allocation_class==PEAR_FEX_CLASS_SHARED && A.Token.ec_role==PEAR_SOURCE_CODE_ROLE &&
++      A.Token.expected_state==PEAR_FEX_PUBLISHED_RX && A.Token.write_epoch &&
++      D.Layout.WriteOffset<=D.Owner->UsableSize() && D.Layout.WriteSize<=D.Owner->UsableSize()-D.Layout.WriteOffset;
++  }
++  static std::optional<Memory::Links::ReservedBarrierTarget> ReservedSource(FEXCore::Core::InternalThreadState* T) {
++    return T && T->CPUBackend ? T->CPUBackend->FindPearReservedBarrierTarget() : std::nullopt;
++  }
++  static bool SameReserved(const Memory::Links::ReservedBarrierTarget& T,const Memory::Allocation& A,
++                           const FEXCore::Core::InternalThreadState* Thread) {
++    return T && T.ActualThread==Thread && T.Owner && A && !A.Base &&
++      A.Token.expected_state==PEAR_FEX_RESERVED_NONE && A.Token.ec_role==PEAR_SOURCE_CODE_ROLE &&
++      A.Token.owner_pid==T.Captured.Token.owner_pid && A.Token.allocation_id==T.Captured.Token.allocation_id &&
++      A.Token.generation==T.Captured.Token.generation && A.Token.write_epoch==T.Captured.Token.write_epoch &&
++      A.Token.extent_offset==T.Captured.Token.extent_offset && A.Token.extent_size==T.Captured.Token.extent_size &&
++      A.Token.allocation_class==PEAR_FEX_CLASS_SHARED && T.Owner->UsableSize()>=16 && T.Owner->GetBufferBase();
++  }
++  static uint8_t* ReservedNumericBase(const Memory::Links::ReservedBarrierTarget& T) { return T.Owner->GetBufferBase(); }
++  static Memory::Allocation ReservedSnapshot(const Memory::Links::ReservedBarrierTarget& T) { return T.Owner->GetPearSnapshot(); }
++  Memory::Result AbortReserved(BatchWrite& Work) {
++    const auto Aborted=Work.Writer->Abort();
++    const bool Updated=Work.Reserved->Owner->ComparePearUpdate(Work.Before,Work.Transaction);
++    if (!Aborted) return Poison(Aborted);
++    if (!Updated) return Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    if (Work.Transaction.Base || Work.Transaction.Token.expected_state!=PEAR_FEX_RESERVED_NONE ||
++        Work.Transaction.Token.write_epoch<=Work.Before.Token.write_epoch) return Poison({PEAR_FEX_VERSION_MISMATCH,0,0});
++    return Aborted;
++  }
++  static bool Matches(const SourceDescriptor& D, const Memory::WriteGuard& W) {
++    return W.Matches(D.Layout.ThunkOffset-D.Layout.WriteOffset,D.Thunk) &&
++      W.Matches(D.Layout.MarkerOffset-D.Layout.WriteOffset,D.Caller);
++  }
++  static void Apply(SourceDescriptor& D, Memory::WriteGuard& W, bool Restore) {
++    const auto Word=Restore ? D.Instructions.RestoreWord : D.Instructions.PatchedWord;
++    const auto Offset=D.Instructions.Direct ? D.Layout.CallerOffset : D.Layout.ThunkOffset;
++    if (!Restore && !D.Instructions.Direct) {
++      const auto H=D.Layout.RecordOffset+offsetof(FEXCore::Context::ExitFunctionLinkData,HostCode);
++      // Source-qualified RWNX bytes only. Owner publication supplies the real
++      // cache/protection synchronization after the original instruction formula.
++      std::memcpy(W.Data()+H-D.Layout.WriteOffset,&D.HostDestination,sizeof(D.HostDestination));
++      std::memcpy(D.Thunk.data()+H-D.Layout.ThunkOffset,&D.HostDestination,sizeof(D.HostDestination));
++    }
++    std::memcpy(W.Data()+Offset-D.Layout.WriteOffset,&Word,sizeof(Word));
++    // Source snapshots may overlap at a bounded call/thunk footprint. Keep
++    // every intersecting NX byte consistent with the one actual RWNX store.
++    const auto Refresh=[&](size_t Begin,auto& Bytes) {
++      const auto Start=std::max(Begin,Offset),End=std::min(Begin+Bytes.size(),Offset+sizeof(Word));
++      if (Start<End) std::memcpy(Bytes.data()+Start-Begin,reinterpret_cast<const uint8_t*>(&Word)+Start-Offset,End-Start);
++    };
++    Refresh(D.Layout.MarkerOffset,D.Caller); Refresh(D.Layout.ThunkOffset,D.Thunk);
++  }
++  Memory::Result Publish(SourceDescriptor& D, Memory::Allocation& Before, Memory::Allocation& A, Memory::WriteGuard& W) {
++    const auto P=W.Publish();
++    if (!P) {
++      const auto Aborted=W.Abort();
++      if (!Aborted) LogMan::Msg::EFmt("Pear link abort retained: status {}, domain {}, code {}",
++                                     Aborted.Status,Aborted.ErrorDomain,Aborted.ErrorCode);
++      D.Owner->ComparePearUpdate(Before,A);
++      return Poison(P);
++    }
++    if (!D.Owner->ComparePearUpdate(Before,A)) return Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    return P;
++  }
++  // On a source/expected-byte refusal, no executable bytes are changed. Restore
++  // observed RX publication and its token before keeping the original refusal.
++  Memory::Result RefuseOpen(SourceDescriptor& D, Memory::Allocation& Before, Memory::Allocation& A,
++                            Memory::WriteGuard& W, Memory::Result Original) {
++    const auto Restored=Publish(D,Before,A,W);
++    if (!Restored) LogMan::Msg::EFmt("Pear refused-link RX cleanup retained: status {}, domain {}, code {}",
++                                    Restored.Status,Restored.ErrorDomain,Restored.ErrorCode);
++    return Poison(Original);
++  }
++};
++static_assert(sizeof(Registry)+sizeof(Memory::WriteGuard)+sizeof(void*)<=24576,"Fixed link NX metadata budget");
++namespace {
++// Fixed private NX storage avoids implicit DLL/global teardown owner calls or
++// releasing uncertain actual source refs after the retirement ledger lifetime.
++// Normal native-gate completion explicitly releases every successful record.
++// Failed/pending records remain bounded and retained until process teardown.
++alignas(Registry) std::byte Storage[sizeof(Registry)];
++Registry& StateRegistry() {
++  static Registry* const Address=::new (Storage) Registry;
++  return *Address;
++}
++}
++
++std::optional<Ticket> Prepare(SourceDescriptor D) {
++  auto& R=StateRegistry();
++  std::lock_guard L {R.Mutex};
++  if (!D) return std::nullopt;
++  const auto T=R.Ledger.Prepare();
++  if (!T) return std::nullopt;
++  R.Slots[T->Index].Source.emplace(std::move(D));
++  return T;
++}
++Memory::Result CancelPrepared(Ticket T) {
++  auto& R=StateRegistry();
++  std::optional<SourceDescriptor> Detached;
++  bool Okay {};
++  { std::lock_guard L {R.Mutex};
++    Okay=R.Ledger.CancelPrepared(T);
++    if (Okay) Detached.swap(R.Slots[T.Index].Source);
++  }
++  // Last strong reference/destructor runs after the short metadata lock.
++  return Okay ? Memory::Result{PEAR_FEX_OK,0,0} : R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++}
++Memory::Result Commit(Ticket T) {
++  auto& R=StateRegistry();
++  bool Okay {};
++  { std::lock_guard L {R.Mutex}; Okay=R.Ledger.Commit(T); }
++  return Okay ? Memory::Result{PEAR_FEX_OK,0,0} : R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++}
++Memory::Result PatchPrepared(Ticket T, FEXCore::Core::InternalThreadState* Thread, uint64_t Revision) {
++  auto& R=StateRegistry();
++  std::optional<SourceDescriptor> D;
++  { std::lock_guard L {R.Mutex};
++    if (T.Index<CAPACITY && R.Ledger.GetState(T.Index)==State::Prepared && R.Ledger.GetTicket(T.Index)==T.Value)
++      D=R.Slots[T.Index].Source;
++  }
++  if (!D || !Registry::ThreadMatches(D->SourceContext,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  const auto Bound=Memory::BindSourceThread(Thread); if (!Bound) return R.Poison(Bound);
++  auto Before=D->Owner->GetPearSnapshot(), A=Before;
++  if (!Registry::Identity(*D,A)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  // All invalidation/lookup/list/Latest/ThreadCreation locks are absent here.
++  Memory::WriteGuard W {A,D->Layout.WriteOffset,D->Layout.WriteSize};
++  if (!W) return R.Poison(W.Status());
++  bool Valid {};
++  {
++    auto Invalidation=GuardSignalDeferringSection<std::shared_lock>(D->SourceContext->CodeInvalidationMutex,Thread);
++    auto Lookup=Thread->LookupCache->AcquireWriteLock();
++    const auto Found=Thread->LookupCache->Shared->BlockList.find(D->GuestDestination);
++    Valid=Registry::ThreadMatches(D->SourceContext,Thread) && D->SourceContext->GetPearInvalidationRevision()==Revision &&
++      Thread->LookupCache->Shared==D->Owner->LookupCache.get() && Found!=Thread->LookupCache->Shared->BlockList.end() &&
++      Found->second.HostCode==D->HostDestination && Registry::Matches(*D,W);
++    if (Valid) Registry::Apply(*D,W,false);
++  }
++  if (!Valid) return R.RefuseOpen(*D,Before,A,W,{PEAR_FEX_STALE_IDENTITY,0,0});
++  // Prepared ticket blocks real invalidation preflight and new managed entry
++  // while these locks are released for native publication/token replacement.
++  const auto Published=R.Publish(*D,Before,A,W); if (!Published) return Published;
++  bool Stored {};
++  { std::lock_guard L {R.Mutex};
++    Stored=R.Ledger.GetState(T.Index)==State::Prepared && R.Ledger.GetTicket(T.Index)==T.Value && R.Slots[T.Index].Source.has_value();
++    if (Stored) {
++      R.Slots[T.Index].Source->Thunk=D->Thunk; R.Slots[T.Index].Source->Caller=D->Caller;
++    }
++  }
++  return Stored ? Published : R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++}
++Memory::Result BeginBatch(FEXCore::Context::ContextImpl* C,FEXCore::Core::InternalThreadState* Thread) {
++  auto& R=StateRegistry();
++  if (!Registry::ThreadMatches(C,Thread)) return {PEAR_FEX_STALE_IDENTITY,0,0};
++  const auto Bound=Memory::BindSourceThread(Thread); if (!Bound) return Bound;
++  std::optional<SourceDescriptor> First;
++  auto Reserved=Registry::ReservedSource(Thread);
++  Ticket T {};
++  {
++    std::lock_guard L {R.Mutex};
++    // No link-owned target may use only an actual source reserved current A.
++    // Its real guard/Abort remains distinct from published/callable code.
++    for (size_t I=0;I<CAPACITY;++I) if (R.Ledger.GetState(I)==State::Linked && R.Slots[I].Source &&
++      R.Slots[I].Source->SourceContext==C) { First=R.Slots[I].Source; T={I,R.Ledger.GetTicket(I)}; break; }
++    if ((!First && !Reserved) || !R.Ledger.BeginBatch()) return {PEAR_FEX_UNAVAILABLE,0,0};
++    R.BatchContext=C; R.BatchThread=Thread; R.BatchExecutor=Memory::CurrentExecutor();
++  }
++  Registry::BatchWrite Work; Work.First=T;
++  if (First) {
++    Work.Before=First->Owner->GetPearSnapshot(); Work.Transaction=Work.Before;
++    if (!Registry::Identity(*First,Work.Before)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    Work.Writer=std::make_unique<Memory::WriteGuard>(Work.Transaction,First->Layout.WriteOffset,First->Layout.WriteSize);
++    if (!*Work.Writer) return R.Poison(Work.Writer->Status());
++    if (!Registry::Matches(*First,*Work.Writer)) return R.RefuseOpen(*First,Work.Before,Work.Transaction,*Work.Writer,{PEAR_FEX_STALE_IDENTITY,0,0});
++  } else {
++    Work.Reserved=std::move(Reserved); Work.Before=Registry::ReservedSnapshot(*Work.Reserved); Work.Transaction=Work.Before;
++    if (!Registry::SameReserved(*Work.Reserved,Work.Before,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    Work.Writer=std::make_unique<Memory::WriteGuard>(Work.Transaction,0,16);
++    if (!*Work.Writer) return R.Poison(Work.Writer->Status());
++    if (Work.Writer->Data()!=Registry::ReservedNumericBase(*Work.Reserved)) {
++      const auto Cleanup=R.AbortReserved(Work);
++      if (!Cleanup) LogMan::Msg::EFmt("Pear reserved barrier abort retained: status {}, domain {}, code {}",
++                                     Cleanup.Status,Cleanup.ErrorDomain,Cleanup.ErrorCode);
++      return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    }
++  }
++  // Actual owned RWNX admission has parked every cooperative participant. This
++  // observed target guard, not the marker, precedes the caller's guest mutation.
++  { std::lock_guard L {R.Mutex}; R.Held.emplace(std::move(Work)); }
++  return {PEAR_FEX_OK,0,0};
++}
++Memory::Result Queue(Ticket T) {
++  auto& R=StateRegistry();
++  bool Okay {};
++  { std::lock_guard L {R.Mutex}; Okay=R.BatchContext && R.Held && R.BatchExecutor==Memory::CurrentExecutor() && T.Index<CAPACITY &&
++      R.Slots[T.Index].Source && R.Slots[T.Index].Source->SourceContext==R.BatchContext && R.Ledger.Queue(T); }
++  return Okay ? Memory::Result{PEAR_FEX_OK,0,0} : R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++}
++Memory::Result FinishBatch(FEXCore::Context::ContextImpl* C,FEXCore::Core::InternalThreadState* Thread) {
++  auto& R=StateRegistry();
++  if (!Registry::ThreadMatches(C,Thread)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  std::optional<Registry::BatchWrite> Held;
++  std::optional<SourceDescriptor> First;
++  {
++    std::lock_guard L {R.Mutex};
++    if (R.BatchContext!=C || R.BatchThread!=Thread || R.BatchExecutor!=Memory::CurrentExecutor() || !R.Held)
++      return {PEAR_FEX_STALE_IDENTITY,0,0};
++    Held.swap(R.Held); if (!Held->Reserved) First=R.Slots[Held->First.Index].Source;
++  }
++  if (!First && !Held->Reserved) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  const auto FinishedFirst=Held->Reserved ? R.AbortReserved(*Held) : R.Publish(*First,Held->Before,Held->Transaction,*Held->Writer);
++  Held->Writer.reset();
++  if (!FinishedFirst) return FinishedFirst;
++  for (size_t I=0;I<CAPACITY;++I) {
++    std::optional<Ticket> Taken; std::optional<SourceDescriptor> D;
++    { std::lock_guard L {R.Mutex}; Taken=R.Ledger.Take(I); if (Taken) D=R.Slots[I].Source; }
++    if (!Taken) continue;
++    Memory::Result Outcome {PEAR_FEX_STALE_IDENTITY,0,0};
++    if (D && D->SourceContext==C) {
++      auto Before=D->Owner->GetPearSnapshot(), A=Before;
++      if (Registry::Identity(*D,A)) {
++        Memory::WriteGuard W {A,D->Layout.WriteOffset,D->Layout.WriteSize};
++        if (W) {
++          if (Registry::Matches(*D,W)) { Registry::Apply(*D,W,true); Outcome=R.Publish(*D,Before,A,W); }
++          else Outcome=R.RefuseOpen(*D,Before,A,W,{PEAR_FEX_STALE_IDENTITY,0,0});
++        } else Outcome=W.Status();
++      }
++    }
++    std::optional<SourceDescriptor> Detached; bool Complete {};
++    { std::lock_guard L {R.Mutex}; Complete=R.Ledger.Complete(*Taken,!!Outcome); if (Complete) Detached.swap(R.Slots[I].Source); }
++    if (!Outcome || !Complete) return R.Poison(!Outcome ? Outcome : Memory::Result{PEAR_FEX_STALE_IDENTITY,0,0});
++  }
++  bool Complete {};
++  { std::lock_guard L {R.Mutex};
++    Complete=R.Ledger.FinishBatch();
++    if (Complete) { R.BatchContext=nullptr; R.BatchThread=nullptr; R.BatchExecutor=0; }
++  }
++  return Complete ? Memory::Result{PEAR_FEX_OK,0,0} : R.Poison({PEAR_FEX_UNAVAILABLE,0,0});
++}
++} // namespace FEXCore::CPU::PearJITLinks
++namespace FEXCore::Utils::PearFEXMemory::Links {
++bool EntryAdmissionOpen() { auto& R=FEXCore::CPU::PearJITLinks::StateRegistry(); std::lock_guard L {R.Mutex}; return R.Ledger.EntryAdmissionOpen(); }
++Result FirstFailureSnapshot() { auto& R=FEXCore::CPU::PearJITLinks::StateRegistry(); std::lock_guard L {R.Mutex}; return R.First; }
++bool HasOutstanding(const FEXCore::Context::Context* C) {
++  auto& R=FEXCore::CPU::PearJITLinks::StateRegistry(); std::lock_guard L {R.Mutex};
++  if (R.BatchContext==C) return true;
++  for (const auto& S:R.Slots) if (S.Source && S.Source->SourceContext==C) return true;
++  return false;
++}
++bool MutationAdmitted(const FEXCore::Context::Context* C) {
++  auto& R=FEXCore::CPU::PearJITLinks::StateRegistry(); std::lock_guard L {R.Mutex};
++  return R.BatchContext==C && R.BatchExecutor==CurrentExecutor() && R.Held && R.Held->Writer &&
++    static_cast<bool>(*R.Held->Writer);
++}
++}
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.h b/FEXCore/Source/Interface/Core/PearJITLinks.h
+--- /dev/null
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.h
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: MIT
++// Original bounded source link tickets; actual descriptors are minted only by
++// the retained-source JIT caller, never from arbitrary wire/guest metadata.
++#pragma once
++#include "Interface/Core/PearJITLinkLayout.h"
++#include "Interface/Core/PearJITLinkTickets.h"
++#include <FEXCore/Utils/PearFEXLinks.h>
++#include <FEXCore/Utils/PearFEXRetirement.h>
++#include <array>
++#include <optional>
++
++namespace FEXCore::CPU {
++class Arm64JITCore;
++namespace PearJITLinks {
++struct Registry;
++class SourceDescriptor {
++public:
++  explicit operator bool() const { return Owner && SourceContext && AllocationID && Generation && OwnerPID; }
++private:
++  friend class FEXCore::CPU::Arm64JITCore;
++  friend struct Registry;
++  friend std::optional<TicketLedger::Ticket> Prepare(SourceDescriptor);
++  friend FEXCore::Utils::PearFEXMemory::Result PatchPrepared(TicketLedger::Ticket,FEXCore::Core::InternalThreadState*,uint64_t);
++  friend FEXCore::Utils::PearFEXMemory::Result Queue(TicketLedger::Ticket);
++  friend FEXCore::Utils::PearFEXMemory::Result BeginBatch(FEXCore::Context::ContextImpl*,FEXCore::Core::InternalThreadState*);
++  friend FEXCore::Utils::PearFEXMemory::Result FinishBatch(FEXCore::Context::ContextImpl*,FEXCore::Core::InternalThreadState*);
++  friend bool FEXCore::Utils::PearFEXMemory::Links::HasOutstanding(const FEXCore::Context::Context*);
++  SourceDescriptor(fextl::shared_ptr<CodeBuffer> ActualOwner, FEXCore::Context::ContextImpl* ActualContext,
++                   const FEXCore::Utils::PearFEXMemory::Allocation& ActualPublished,
++                   const PearJITLinkLayout::Layout& ActualLayout, const PearJITLinkLayout::Instructions& Encoded,
++                   const std::array<uint8_t,PearJITLinkLayout::THUNK_BYTES>& ActualThunk,
++                   const std::array<uint8_t,PearJITLinkLayout::CALLER_BYTES>& ActualCaller,
++                   uint64_t ActualGuestDestination, uintptr_t ActualHostDestination)
++    : Owner(std::move(ActualOwner)), SourceContext(ActualContext), AllocationID(ActualPublished.Token.allocation_id),
++      Generation(ActualPublished.Token.generation), OwnerPID(ActualPublished.Token.owner_pid), Layout(ActualLayout),
++      Instructions(Encoded), Thunk(ActualThunk), Caller(ActualCaller), GuestDestination(ActualGuestDestination), HostDestination(ActualHostDestination) {}
++  fextl::shared_ptr<CodeBuffer> Owner;
++  FEXCore::Context::ContextImpl* SourceContext {};
++  uint64_t AllocationID {}, Generation {}, OwnerPID {};
++  PearJITLinkLayout::Layout Layout;
++  PearJITLinkLayout::Instructions Instructions;
++  std::array<uint8_t,PearJITLinkLayout::THUNK_BYTES> Thunk;
++  std::array<uint8_t,PearJITLinkLayout::CALLER_BYTES> Caller;
++  uint64_t GuestDestination {};
++  uintptr_t HostDestination {};
++};
++using Ticket = TicketLedger::Ticket;
++std::optional<Ticket> Prepare(SourceDescriptor);
++FEXCore::Utils::PearFEXMemory::Result PatchPrepared(Ticket, FEXCore::Core::InternalThreadState*, uint64_t SourceRevision);
++FEXCore::Utils::PearFEXMemory::Result Commit(Ticket);
++FEXCore::Utils::PearFEXMemory::Result CancelPrepared(Ticket);
++// Begin before actual guest mutation/locking. This marker is not quiescence;
++// the caller still obtains a real owned target WriteGuard at its native gate.
++FEXCore::Utils::PearFEXMemory::Result BeginBatch(FEXCore::Context::ContextImpl*, FEXCore::Core::InternalThreadState*);
++FEXCore::Utils::PearFEXMemory::Result Queue(Ticket);
++FEXCore::Utils::PearFEXMemory::Result FinishBatch(FEXCore::Context::ContextImpl*, FEXCore::Core::InternalThreadState*);
++} // namespace PearJITLinks
++} // namespace FEXCore::CPU
+diff --git a/FEXCore/include/FEXCore/Core/Context.h b/FEXCore/include/FEXCore/Core/Context.h
+--- a/FEXCore/include/FEXCore/Core/Context.h
++++ b/FEXCore/include/FEXCore/Core/Context.h
+@@ -159,6 +159,9 @@
+   FEX_DEFAULT_VISIBILITY virtual FEXCore::Utils::WritePriorityMutex::Mutex& GetCodeInvalidationMutex() = 0;
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   // Conditional source-integration interface; no stable runtime ABI is added.
++  FEX_DEFAULT_VISIBILITY virtual FEXCore::Utils::PearFEXMemory::Result BeginPearLinkInvalidation(FEXCore::Core::InternalThreadState*) = 0;
++  FEX_DEFAULT_VISIBILITY virtual FEXCore::Utils::PearFEXMemory::Result FinishPearLinkInvalidation(FEXCore::Core::InternalThreadState*) = 0;
++  FEX_DEFAULT_VISIBILITY virtual bool PearLinkInvalidationAdmitted() const = 0;
+   FEX_DEFAULT_VISIBILITY virtual bool RecordPearInvalidation() = 0;
+   FEX_DEFAULT_VISIBILITY virtual uint64_t GetPearInvalidationRevision() const = 0;
+ #endif
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXLinks.h b/FEXCore/include/FEXCore/Utils/PearFEXLinks.h
+--- /dev/null
++++ b/FEXCore/include/FEXCore/Utils/PearFEXLinks.h
+@@ -0,0 +1,27 @@
++// SPDX-License-Identifier: MIT
++// Private paired-source NX observations. No owner permission or wire change.
++#pragma once
++#include <FEXCore/Utils/PearFEXMemory.h>
++namespace FEXCore::Context { class Context; }
++namespace FEXCore::CPU::PearJITLinks { struct Registry; }
++namespace FEXCore::Utils::PearFEXMemory::Links {
++// A source lifetime reference, not permission/quiescence. Only the actual
++// backend can mint it from its actual CurrentCodeBuffer/Thread and token.
++class ReservedBarrierTarget {
++public:
++  explicit operator bool() const { return Owner && ActualThread && Captured && Captured.Token.expected_state==PEAR_FEX_RESERVED_NONE; }
++private:
++  friend class FEXCore::CPU::CPUBackend;
++  friend struct FEXCore::CPU::PearJITLinks::Registry;
++  ReservedBarrierTarget(std::shared_ptr<FEXCore::CPU::CodeBuffer> Source,const Allocation& Facts,
++                        const FEXCore::Core::InternalThreadState* Thread)
++    : Owner(std::move(Source)),Captured(Facts),ActualThread(Thread) {}
++  std::shared_ptr<FEXCore::CPU::CodeBuffer> Owner;
++  Allocation Captured;
++  const FEXCore::Core::InternalThreadState* ActualThread {};
++};
++bool EntryAdmissionOpen();
++Result FirstFailureSnapshot();
++bool HasOutstanding(const FEXCore::Context::Context*);
++bool MutationAdmitted(const FEXCore::Context::Context*);
++}

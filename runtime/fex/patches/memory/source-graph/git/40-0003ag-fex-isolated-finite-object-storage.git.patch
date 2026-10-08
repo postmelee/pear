@@ -1,0 +1,222 @@
+diff --git a/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp b/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp
+new file mode 100644
+--- /dev/null
++++ b/FEXCore/Source/Utils/PearEmptyObjectStorage.cpp
+@@ -0,0 +1,69 @@
++// SPDX-License-Identifier: MIT
++// Original finite ordinary-data storage; original heap provider is unchanged.
++#include <FEXCore/Utils/AllocatorHooks.h>
++#include <FEXCore/Utils/PearSourceGuard.h>
++#include <atomic>
++#include <cstddef>
++#include <cstdint>
++namespace FEXCore::Allocator {
++#ifdef PEAR_FEX_MEMORY_OWNER
++namespace {
++struct alignas(4096) PearEmptyObjectBacking {
++  alignas(16) unsigned char Bytes[8192] {};
++  // Start entries contain the run length; continuation entries use UINT16_MAX.
++  uint16_t Runs[512] {};
++};
++constinit PearEmptyObjectBacking PearEmptyObjects {};
++constinit std::atomic<uintptr_t> PearEmptyObjectThread {0};
++thread_local unsigned char PearEmptyObjectThreadTag;
++uintptr_t PearObjectThread() { return reinterpret_cast<uintptr_t>(&PearEmptyObjectThreadTag); }
++bool ReleasePearMetadataIfOwned(void* P) {
++  const uintptr_t Start=reinterpret_cast<uintptr_t>(PearEmptyObjects.Bytes);
++  const uintptr_t Address=reinterpret_cast<uintptr_t>(P);
++  if (Address<Start || Address-Start>=sizeof(PearEmptyObjects.Bytes)) return false;
++  PEAR_FEX_REQUIRE(PearEmptyObjectThread.load()==PearObjectThread(),"Finite object release thread");
++  PEAR_FEX_REQUIRE((Address-Start)%16==0,"Finite object release alignment");
++  const size_t Index=(Address-Start)/16;
++  const size_t Count=PearEmptyObjects.Runs[Index];
++  PEAR_FEX_REQUIRE(Count && Count<=512-Index,"Finite object release identity");
++  for (size_t I=1;I<Count;++I)
++    PEAR_FEX_REQUIRE(PearEmptyObjects.Runs[Index+I]==UINT16_MAX,"Finite object release extent");
++  for (size_t I=0;I<Count;++I) PearEmptyObjects.Runs[Index+I]=0;
++  return true;
++}
++}
++bool InitializePearEmptyObjectStorage() {
++  uintptr_t Expected=0;
++  return PearEmptyObjectThread.compare_exchange_strong(Expected,PearObjectThread());
++}
++bool ShutdownPearEmptyObjectStorage() {
++  if (PearEmptyObjectThread.load()!=PearObjectThread()) return false;
++  for (const auto Run:PearEmptyObjects.Runs) if (Run) return false;
++  PearEmptyObjectThread.store(0);return true;
++}
++void* AllocatePearMetadataStorage(size_t Alignment,size_t Size) {
++  const uintptr_t Owner=PearEmptyObjectThread.load();
++  if (!Owner) return aligned_alloc(Alignment,Size);
++  if (Owner!=PearObjectThread() || !Size || Size>8192 || !Alignment ||
++      Alignment>16 || (Alignment&(Alignment-1))) return nullptr;
++  const size_t Count=(Size+15)/16;
++  size_t Free=0;
++  for (size_t I=0;I<512;++I) {
++    Free=PearEmptyObjects.Runs[I] ? 0 : Free+1;
++    if (Free!=Count) continue;
++    const size_t Start=I+1-Count;
++    PearEmptyObjects.Runs[Start]=static_cast<uint16_t>(Count);
++    for (size_t J=1;J<Count;++J) PearEmptyObjects.Runs[Start+J]=UINT16_MAX;
++    return PearEmptyObjects.Bytes+16*Start;
++  }
++  return nullptr;
++}
++#endif
++void FreePearMetadataOrHeap(void* ptr) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (ReleasePearMetadataIfOwned(ptr)) return;
++#endif
++  return aligned_free(ptr);
++}
++
++}
+diff --git a/FEXCore/Source/Utils/AllocatorHooks.cpp b/FEXCore/Source/Utils/AllocatorHooks.cpp
+--- a/FEXCore/Source/Utils/AllocatorHooks.cpp
++++ b/FEXCore/Source/Utils/AllocatorHooks.cpp
+@@ -1,9 +1,5 @@
+ // SPDX-License-Identifier: MIT
+ #include <FEXCore/Utils/PrctlUtils.h>
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-#include <FEXCore/Utils/PearSourceGuard.h>
+-#include <atomic>
+-#endif
+ 
+ #ifdef ENABLE_FEX_ALLOCATOR
+ #include <rpmalloc/rpmalloc.h>
+@@ -95,63 +91,7 @@
+ void* aligned_alloc(size_t a, size_t s) {
+   return ::rpaligned_alloc(a, s);
+ }
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-namespace {
+-struct alignas(4096) PearEmptyObjectBacking {
+-  alignas(16) unsigned char Bytes[8192] {};
+-  // Start entries contain the run length; continuation entries use UINT16_MAX.
+-  uint16_t Runs[512] {};
+-};
+-constinit PearEmptyObjectBacking PearEmptyObjects {};
+-constinit std::atomic<uintptr_t> PearEmptyObjectThread {0};
+-thread_local unsigned char PearEmptyObjectThreadTag;
+-uintptr_t PearObjectThread() { return reinterpret_cast<uintptr_t>(&PearEmptyObjectThreadTag); }
+-bool ReleasePearMetadataIfOwned(void* P) {
+-  const uintptr_t Start=reinterpret_cast<uintptr_t>(PearEmptyObjects.Bytes);
+-  const uintptr_t Address=reinterpret_cast<uintptr_t>(P);
+-  if (Address<Start || Address-Start>=sizeof(PearEmptyObjects.Bytes)) return false;
+-  PEAR_FEX_REQUIRE(PearEmptyObjectThread.load()==PearObjectThread(),"Finite object release thread");
+-  PEAR_FEX_REQUIRE((Address-Start)%16==0,"Finite object release alignment");
+-  const size_t Index=(Address-Start)/16;
+-  const size_t Count=PearEmptyObjects.Runs[Index];
+-  PEAR_FEX_REQUIRE(Count && Count<=512-Index,"Finite object release identity");
+-  for (size_t I=1;I<Count;++I)
+-    PEAR_FEX_REQUIRE(PearEmptyObjects.Runs[Index+I]==UINT16_MAX,"Finite object release extent");
+-  for (size_t I=0;I<Count;++I) PearEmptyObjects.Runs[Index+I]=0;
+-  return true;
+-}
+-}
+-bool InitializePearEmptyObjectStorage() {
+-  uintptr_t Expected=0;
+-  return PearEmptyObjectThread.compare_exchange_strong(Expected,PearObjectThread());
+-}
+-bool ShutdownPearEmptyObjectStorage() {
+-  if (PearEmptyObjectThread.load()!=PearObjectThread()) return false;
+-  for (const auto Run:PearEmptyObjects.Runs) if (Run) return false;
+-  PearEmptyObjectThread.store(0);return true;
+-}
+-void* AllocatePearMetadataStorage(size_t Alignment,size_t Size) {
+-  const uintptr_t Owner=PearEmptyObjectThread.load();
+-  if (!Owner) return aligned_alloc(Alignment,Size);
+-  if (Owner!=PearObjectThread() || !Size || Size>8192 || !Alignment ||
+-      Alignment>16 || (Alignment&(Alignment-1))) return nullptr;
+-  const size_t Count=(Size+15)/16;
+-  size_t Free=0;
+-  for (size_t I=0;I<512;++I) {
+-    Free=PearEmptyObjects.Runs[I] ? 0 : Free+1;
+-    if (Free!=Count) continue;
+-    const size_t Start=I+1-Count;
+-    PearEmptyObjects.Runs[Start]=static_cast<uint16_t>(Count);
+-    for (size_t J=1;J<Count;++J) PearEmptyObjects.Runs[Start+J]=UINT16_MAX;
+-    return PearEmptyObjects.Bytes+16*Start;
+-  }
+-  return nullptr;
+-}
+-#endif
+ void aligned_free(void* ptr) {
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-  if (ReleasePearMetadataIfOwned(ptr)) return;
+-#endif
+   return ::rpfree(ptr);
+ }
+ 
+diff --git a/FEXCore/Source/CMakeLists.txt b/FEXCore/Source/CMakeLists.txt
+--- a/FEXCore/Source/CMakeLists.txt
++++ b/FEXCore/Source/CMakeLists.txt
+@@ -78,6 +78,7 @@
+   # The owner-dependent drain belongs to the FEXCore object, not the portable
+   # FEXCore_Base allocation/logger library. No source glob or service swap.
+   list(APPEND SRCS Utils/PearFEXRetirement.cpp Interface/Core/PearJITLinks.cpp)
++  list(APPEND FEXCORE_BASE_SRCS Utils/PearEmptyObjectStorage.cpp)
+ endif()
+ 
+ if (ARCHITECTURE_arm64)
+@@ -314,10 +315,7 @@
+ # Meta-library to link jemalloc libraries enabled in the build configuration.
+ # Only needed for targets that run emulation. For others, use JemallocDummy.
+ add_library(JemallocLibs STATIC Utils/AllocatorHooks.cpp)
+-if (PEAR_FEX_MEMORY_OWNER)
+-  target_compile_definitions(JemallocLibs PRIVATE PEAR_FEX_MEMORY_OWNER=1)
+-  target_link_libraries(JemallocLibs PRIVATE fmt::fmt)
+-endif()
++
+ if (ENABLE_FEX_ALLOCATOR)
+   target_compile_definitions(JemallocLibs PRIVATE ENABLE_FEX_ALLOCATOR=1)
+   target_link_libraries(JemallocLibs PUBLIC rpmalloc)
+diff --git a/FEXCore/include/FEXCore/fextl/memory.h b/FEXCore/include/FEXCore/fextl/memory.h
+--- a/FEXCore/include/FEXCore/fextl/memory.h
++++ b/FEXCore/include/FEXCore/fextl/memory.h
+@@ -5,13 +5,20 @@
+ #include <memory>
+ #include <new>
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++namespace FEXCore::Allocator { void FreePearMetadataOrHeap(void*); }
++#endif
+ namespace fextl {
+ template<class T>
+ struct default_delete : public std::default_delete<T> {
+   void operator()(T* ptr) const {
+     if (ptr) {
+       std::destroy_at(ptr);
++#ifdef PEAR_FEX_MEMORY_OWNER
++      FEXCore::Allocator::FreePearMetadataOrHeap(ptr);
++#else
+       FEXCore::Allocator::aligned_free(ptr);
++#endif
+     }
+   }
+ 
+diff --git a/FEXCore/Source/Interface/Context/Context.cpp b/FEXCore/Source/Interface/Context/Context.cpp
+--- a/FEXCore/Source/Interface/Context/Context.cpp
++++ b/FEXCore/Source/Interface/Context/Context.cpp
+@@ -69,7 +69,7 @@
+   std::destroy_at(Actual); Destroyed=true;
+   Outcome=Memory::SourceLifecycle::Deleted(Actual);
+   if (!Outcome) { Memory::SourceLifecycle::RetainDestroyed(Actual,Outcome); return false; }
+-  FEXCore::Allocator::aligned_free(Actual); Freed=true;
++  FEXCore::Allocator::FreePearMetadataOrHeap(Actual); Freed=true;
+   return true;
+ }
+ void PearContextDeleter::operator()(Context* Actual) const {
+diff --git a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+--- a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
++++ b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+@@ -98,7 +98,7 @@
+   }
+   void deallocate(T* P,size_t Count) {
+     PEAR_FEX_REQUIRE(P==Storage && Count==1,"Code-buffer control allocation identity");
+-    FEXCore::Allocator::aligned_free(P);
++    FEXCore::Allocator::FreePearMetadataOrHeap(P);
+   }
+   template<typename U> bool operator==(const PearControlAllocator<U>& Other) const { return Storage==Other.Storage; }
+ };

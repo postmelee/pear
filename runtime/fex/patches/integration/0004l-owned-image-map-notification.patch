@@ -1,0 +1,56 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1078,10 +1078,40 @@
+ 
+ NTSTATUS NotifyMapViewOfSection(void* Unk1, void* Address, void* Unk2, SIZE_T Size, ULONG AllocType, ULONG Prot) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
+-  return STATUS_NOT_SUPPORTED;
+-#endif
++  if (!PearSourceReady.load(std::memory_order_acquire) || !CTX || !InvalidationTracker || !ImageTracker ||
++      !Address || !Size || reinterpret_cast<uintptr_t>(Address) > UINTPTR_MAX - Size) return STATUS_NOT_SUPPORTED;
++  auto* Thread = GetCPUArea().ThreadState();
++  auto Life = PearMemory::AcquireCurrentSourceLifetime(CTX.get());
++  if (!Life || !Thread || Life.ActualThread() != Thread) return STATUS_NOT_SUPPORTED;
++  // Acquire real source/owner write admission before any source coordination
++  // lock. A mapped range can reuse a prior guest address, so invalidate it too.
++  const auto Admitted = CTX->BeginPearLinkInvalidation(Thread);
++  if (!Admitted) {
++    PearRecordPrimary(Admitted);
++    PearInitCheckpoint("NotifyMapView.admission", Admitted.Status, Admitted.ErrorDomain, Admitted.ErrorCode);
++    return PearFailureStatus(Admitted);
++  }
++  bool Matched {};
++  {
++    std::scoped_lock Lock(ThreadCreationMutex);
++    const auto Found = Threads.find(GetCurrentThreadId());
++    Matched = Found != Threads.end() && Found->second == Thread;
++    if (Matched) {
++      InvalidationTracker->InvalidateAlignedInterval(reinterpret_cast<uint64_t>(Address), Size, false);
++      HandleImageMap(reinterpret_cast<uint64_t>(Address));
++    }
++  }
++  // Publication/abort may wait; finish only after releasing source locks.
++  const auto Finished = CTX->FinishPearLinkInvalidation(Thread);
++  if (!Finished) {
++    PearRecordPrimary(Finished);
++    PearInitCheckpoint("NotifyMapView.finish", Finished.Status, Finished.ErrorDomain, Finished.ErrorCode);
++    return PearFailureStatus(Finished);
++  }
++  const auto Result = Matched ? STATUS_SUCCESS : STATUS_NOT_SUPPORTED;
++  PearInitCheckpoint("NotifyMapView.complete", Result);
++  return Result;
++#else
+ 
+   if (!InvalidationTracker || !GetCPUArea().ThreadState()) {
+     return STATUS_SUCCESS;
+@@ -1094,6 +1124,7 @@
+ 
+ 
+   return STATUS_SUCCESS;
++#endif
+ }
+ 
+ void NotifyUnmapViewOfSection(void* Address, BOOL After, NTSTATUS Status) {

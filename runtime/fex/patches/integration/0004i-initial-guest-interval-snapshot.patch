@@ -1,0 +1,133 @@
+diff --git a/Source/Windows/Common/InvalidationTracker.h b/Source/Windows/Common/InvalidationTracker.h
+--- a/Source/Windows/Common/InvalidationTracker.h
++++ b/Source/Windows/Common/InvalidationTracker.h
+@@ -22,7 +22,8 @@
+  */
+ class InvalidationTracker {
+ public:
+-  InvalidationTracker(FEXCore::Context::Context& CTX, const std::unordered_map<DWORD, FEXCore::Core::InternalThreadState*>& Threads);
++  InvalidationTracker(FEXCore::Context::Context& CTX, const std::unordered_map<DWORD, FEXCore::Core::InternalThreadState*>& Threads,
++                      uint64_t BootstrapGuestAddress = 0, uint64_t BootstrapGuestSize = 0);
+   void HandleMemoryProtectionNotification(uint64_t Address, uint64_t Size, ULONG Prot);
+   void HandleProcessExecuteFlagsChange(ULONG Flags);
+   void HandleImageMap(std::string_view Name, uint64_t Address);
+@@ -42,6 +43,7 @@
+   FEXCore::HLE::ExecutableRangeInfo QueryExecutableRange(uint64_t Address);
+ 
+ private:
++  void UpdateProtectionIntervals(uint64_t Address, uint64_t Size, ULONG Prot, bool Invalidate);
+   void DetectMonoBackpatcherBlock(FEXCore::Core::InternalThreadState* Thread, uint64_t HostPC);
+   void DisableSMCDetection();
+   void InvalidateIntervalInternal(uint64_t Address, uint64_t Size);
+diff --git a/Source/Windows/Common/InvalidationTracker.cpp b/Source/Windows/Common/InvalidationTracker.cpp
+--- a/Source/Windows/Common/InvalidationTracker.cpp
++++ b/Source/Windows/Common/InvalidationTracker.cpp
+@@ -7,13 +7,20 @@
+ #include <FEXCore/Config/Config.h>
+ #include <FEXCore/Debug/InternalThreadState.h>
+ #include "InvalidationTracker.h"
++#include <FEXCore/Utils/PearSourceGuard.h>
+ #include <windef.h>
+ #include <winternl.h>
+ 
+ namespace FEX::Windows {
+-InvalidationTracker::InvalidationTracker(FEXCore::Context::Context& CTX, const std::unordered_map<DWORD, FEXCore::Core::InternalThreadState*>& Threads)
++InvalidationTracker::InvalidationTracker(FEXCore::Context::Context& CTX, const std::unordered_map<DWORD, FEXCore::Core::InternalThreadState*>& Threads,
++                                         uint64_t BootstrapGuestAddress, uint64_t BootstrapGuestSize)
+   : CTX {CTX}
+   , Threads {Threads} {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // ProcessInit owns this initial snapshot before any translated thread exists.
++  // There are no translated blocks to invalidate; do not invent a JIT writer.
++  PEAR_FEX_REQUIRE(Threads.empty(), "Initial interval snapshot requires no guest threads");
++#endif
+   FEX_CONFIG_OPT(SMCChecks, SMCCHECKS);
+   SMCDetectionDisabled = (SMCChecks == FEXCore::Config::CONFIG_SMC_NONE);
+ 
+@@ -23,11 +30,18 @@
+   while (VirtualQuery(reinterpret_cast<LPCVOID>(Address), &Info, sizeof(Info))) {
+     uint64_t BaseAddress = reinterpret_cast<uint64_t>(Info.BaseAddress);
+     if (Info.State == MEM_COMMIT) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++      UpdateProtectionIntervals(BaseAddress, Info.RegionSize, Info.Protect, false);
++#else
+       HandleMemoryProtectionNotification(BaseAddress, Info.RegionSize, Info.Protect);
++#endif
+     }
+ 
+     Address = BaseAddress + Info.RegionSize;
+   }
++  // The return instruction is guest data kept NX in the native address space.
++  // Seed its logical guest permission as part of the same initial snapshot.
++  if (BootstrapGuestSize) UpdateProtectionIntervals(BootstrapGuestAddress, BootstrapGuestSize, PAGE_EXECUTE_READ, false);
+ }
+ 
+ static bool ProtHasExec(ULONG Prot) {
+@@ -44,6 +58,10 @@
+ }
+ 
+ void InvalidationTracker::HandleMemoryProtectionNotification(uint64_t Address, uint64_t Size, ULONG Prot) {
++  UpdateProtectionIntervals(Address, Size, Prot, true);
++}
++
++void InvalidationTracker::UpdateProtectionIntervals(uint64_t Address, uint64_t Size, ULONG Prot, bool Invalidate) {
+   const auto AlignedBase = Address & FEXCore::Utils::FEX_PAGE_MASK;
+   const auto AlignedSize = (Address - AlignedBase + Size + FEXCore::Utils::FEX_PAGE_SIZE - 1) & FEXCore::Utils::FEX_PAGE_MASK;
+ 
+@@ -78,7 +96,7 @@
+     return false;
+   }();
+ 
+-  if (NeedsInvalidate) {
++  if (NeedsInvalidate && Invalidate) {
+     // IntervalsLock cannot be held during invalidation
+     InvalidateIntervalInternal(AlignedBase, AlignedSize);
+   }
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -801,27 +801,31 @@
+   CTX->InitCore();
+ #endif
+   Exception::HandlerConfig.emplace(*CTX);
+-  InvalidationTracker.emplace(*CTX, Threads);
+-  ImageTracker.emplace(*CTX, false);
+-
+-  auto MainModule = reinterpret_cast<__TEB*>(NtCurrentTeb())->Peb->ImageBaseAddress;
+-  HandleImageMap(reinterpret_cast<uint64_t>(MainModule), true);
+-
+-  HandleImageMap(NtDllBase);
+-
+-  CPUFeatures.emplace(*CTX);
+-
+-#ifdef PEAR_FEX_MEMORY_OWNER
+-  // x64 RET is guest instruction data. It is never host ARM64EC code or EC registered.
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Allocate guest-only return data before the initial interval snapshot.
+   X64ReturnInstr = ::VirtualAlloc(nullptr, FEXCore::Utils::FEX_PAGE_SIZE,
+       MEM_COMMIT | MEM_RESERVE | MEM_TOP_DOWN, PAGE_READWRITE);
+   if (!X64ReturnInstr) { PearCleanupPartialContext(STATUS_NO_MEMORY); return STATUS_NO_MEMORY; }
++  *reinterpret_cast<uint8_t*>(X64ReturnInstr) = 0xc3;
++  InvalidationTracker.emplace(*CTX, Threads, reinterpret_cast<uint64_t>(X64ReturnInstr), FEXCore::Utils::FEX_PAGE_SIZE);
+ #else
++  InvalidationTracker.emplace(*CTX, Threads);
++#endif
++  ImageTracker.emplace(*CTX, false);
++
++  auto MainModule = reinterpret_cast<__TEB*>(NtCurrentTeb())->Peb->ImageBaseAddress;
++  HandleImageMap(reinterpret_cast<uint64_t>(MainModule), true);
++
++  HandleImageMap(NtDllBase);
++
++  CPUFeatures.emplace(*CTX);
++
++#ifndef PEAR_FEX_MEMORY_OWNER
+   X64ReturnInstr = ::VirtualAlloc(nullptr, FEXCore::Utils::FEX_PAGE_SIZE, MEM_COMMIT | MEM_TOP_DOWN, PAGE_EXECUTE_READWRITE);
+-#endif
+   InvalidationTracker->HandleMemoryProtectionNotification(reinterpret_cast<uint64_t>(X64ReturnInstr), FEXCore::Utils::FEX_PAGE_SIZE,
+                                                           PAGE_EXECUTE_READ);
+   *reinterpret_cast<uint8_t*>(X64ReturnInstr) = 0xc3;
++#endif
+ 
+   const uintptr_t KiUserExceptionDispatcherFFS = reinterpret_cast<uintptr_t>(GetProcAddress(NtDll, "KiUserExceptionDispatcher"));
+   Exception::KiUserExceptionDispatcher = NtDllRedirectionLUT[KiUserExceptionDispatcherFFS - NtDllBase] + NtDllBase;

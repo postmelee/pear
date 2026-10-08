@@ -1,0 +1,127 @@
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1507,10 +1507,71 @@
+ 
+ NTSTATUS ThreadTerm(HANDLE Thread, LONG ExitCode) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // Delivered/source notification behavior is unqualified in this profile.
+-  PearSourceStatus.store(STATUS_NOT_SUPPORTED, std::memory_order_release);
+-  return STATUS_NOT_SUPPORTED;
+-#endif
++  if (!CTX || !PearSourceReady.load(std::memory_order_acquire)) return STATUS_NOT_SUPPORTED;
++  if (!FEX::Windows::ValidateHandleAccess(Thread, THREAD_TERMINATE)) return STATUS_ACCESS_DENIED;
++  THREAD_BASIC_INFORMATION Info {};
++  if (const auto Status = NtQueryInformationThread(Thread, ThreadBasicInformation, &Info, sizeof(Info), nullptr); Status) return Status;
++  if (reinterpret_cast<uintptr_t>(Info.ClientId.UniqueThread) != GetCurrentThreadId()) return STATUS_NOT_SUPPORTED;
++  const auto CPUArea = GetCPUArea();
++  if (!CPUArea.Area) return STATUS_NOT_SUPPORTED;
++  auto* State = CPUArea.ThreadState();
++  {
++    std::scoped_lock Lock(ThreadCreationMutex);
++    const auto It = Threads.find(GetCurrentThreadId());
++    if (It == Threads.end()) return !State && !CPUArea.StateFrame() ? STATUS_SUCCESS : STATUS_NOT_SUPPORTED;
++    if (!State || It->second != State || CPUArea.StateFrame() != State->CurrentFrame || CPUArea.Area->InSimulation)
++      return STATUS_NOT_SUPPORTED;
++  }
++  {
++    auto Life = PearMemory::AcquireCurrentSourceLifetime(CTX.get());
++    if (!Life || Life.ActualThread() != State) return STATUS_NOT_SUPPORTED;
++  }
++  const auto StackLimit = CPUArea.EmulatorStackLimit(), StackBase = CPUArea.EmulatorStackBase();
++  const auto CurrentSP = reinterpret_cast<uintptr_t>(__builtin_frame_address(0));
++  if (!StackLimit || StackLimit >= StackBase || (CurrentSP >= StackLimit && CurrentSP < StackBase)) return STATUS_NOT_SUPPORTED;
++  ScopedCallbackDisable Disable;
++  {
++    // Remove from the original tracker under its mutex, then release that
++    // mutex before source closure/owner waits. Failed cleanup retains backing.
++    std::scoped_lock Lock(ThreadCreationMutex);
++    const auto It = Threads.find(GetCurrentThreadId());
++    if (It == Threads.end() || It->second != State) return STATUS_NOT_SUPPORTED;
++    Threads.erase(It);
++    if (StatAllocHandler) StatAllocHandler->DeallocateSlot(State->ThreadStats);
++  }
++  auto Failed = [&](const PearMemory::Result& Outcome) {
++    PearRecordPrimary(Outcome);
++    PearSourceReady.store(false, std::memory_order_release);
++    const auto Status = PearFailureStatus(Outcome);
++    PearSourceStatus.store(Status, std::memory_order_release);
++    PearInitCheckpoint("ThreadTerm.refused", Outcome.Status, Outcome.ErrorDomain, Outcome.ErrorCode);
++    return Status;
++  };
++  PearMemory::Result Outcome {};
++  if (!CTX->PreparePearThreadCleanup(State, Outcome)) return Failed(Outcome);
++  // Reuse upstream frontend/GDT/call-ret/CRT ownership and ordering. Check
++  // native releases instead of discarding VirtualFree failures.
++  const auto CallRet = FEX::Windows::CallRetStack::GetInfoThread(State);
++  void* Base = reinterpret_cast<void*>(CallRet.AllocationBase); SIZE_T Bytes {};
++  if (const auto Status = NtFreeVirtualMemory(NtCurrentProcess(), &Base, &Bytes, MEM_RELEASE); Status)
++    return Failed({PEAR_FEX_NATIVE_FAILURE, PEAR_FEX_ERROR_NTSTATUS, static_cast<int32_t>(Status)});
++  State->CallRetStackBase = nullptr;
++  Base = reinterpret_cast<void*>(StackLimit); Bytes = 0;
++  if (const auto Status = NtFreeVirtualMemory(NtCurrentProcess(), &Base, &Bytes, MEM_RELEASE); Status)
++    return Failed({PEAR_FEX_NATIVE_FAILURE, PEAR_FEX_ERROR_NTSTATUS, static_cast<int32_t>(Status)});
++  delete GetFrontendThreadData(State); State->FrontendPtr = nullptr;
++  delete[] State->CurrentFrame->State.segment_arrays[FEXCore::Core::CPUState::SEGMENT_ARRAY_INDEX_GDT];
++  CPUArea.ThreadState() = nullptr; CPUArea.StateFrame() = nullptr;
++  CPUArea.DispatcherLoopTopEnterEC() = 0; CPUArea.DispatcherLoopTopEnterECFillSRA() = 0;
++  CPUArea.Area->SuspendDoorbell = nullptr;
++  CPUArea.EmulatorStackLimit() = 0; CPUArea.EmulatorStackBase() = 0;
++  bool Destroyed {}, Freed {};
++  if (!CTX->DestroyPearThreadChecked(State, Outcome, Destroyed, Freed) || !Destroyed || !Freed) return Failed(Outcome);
++  FEX::Windows::DeinitCRTThread();
++  PearInitCheckpoint("ThreadTerm.complete", STATUS_SUCCESS);
++  return STATUS_SUCCESS;
++#else
++
+ 
+   if (!FEX::Windows::ValidateHandleAccess(Thread, THREAD_TERMINATE)) {
+     return STATUS_ACCESS_DENIED;
+@@ -1566,6 +1627,7 @@
+   }
+ 
+   return STATUS_SUCCESS;
++#endif
+ }
+ 
+ BOOLEAN BTCpu64IsProcessorFeaturePresent(UINT Feature) {
+diff --git a/FEXCore/include/FEXCore/Utils/PearFEXLinks.h b/FEXCore/include/FEXCore/Utils/PearFEXLinks.h
+--- a/FEXCore/include/FEXCore/Utils/PearFEXLinks.h
++++ b/FEXCore/include/FEXCore/Utils/PearFEXLinks.h
+@@ -46,5 +46,8 @@
+ bool EntryAdmissionOpen();
+ Result FirstFailureSnapshot();
+ bool HasOutstanding(const FEXCore::Context::Context*);
++// Thread cleanup excludes shared code descriptors, which own Context/buffer
++// references but no ThreadState pointer. Actual entry/batch references block it.
++bool HasOutstanding(const FEXCore::Context::Context*, const FEXCore::Core::InternalThreadState*);
+ bool MutationAdmitted(const FEXCore::Context::Context*);
+ }
+diff --git a/FEXCore/Source/Interface/Core/PearJITLinks.cpp b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -382,6 +382,12 @@
+   for (const auto& S:R.Slots) if (S.Source && S.Source->SourceContext==C) return true;
+   return false;
+ }
++bool HasOutstanding(const FEXCore::Context::Context* C, const FEXCore::Core::InternalThreadState* T) {
++  auto& R=FEXCore::CPU::PearJITLinks::StateRegistry(); std::lock_guard L {R.Mutex};
++  if (R.BatchContext==C && R.BatchThread==T) return true;
++  for (const auto& E:R.Entries) if (E.Context==C && E.Thread==T) return true;
++  return false;
++}
+ bool MutationAdmitted(const FEXCore::Context::Context* C) {
+   auto& R=FEXCore::CPU::PearJITLinks::StateRegistry(); std::lock_guard L {R.Mutex};
+   return R.BatchContext==C && R.BatchExecutor==CurrentExecutor() && R.Held && R.Held->Writer &&
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -643,7 +643,7 @@
+   if (!ContextHold) { Outcome={PEAR_FEX_UNAVAILABLE,0,0}; return false; }
+   // Close by exact recorded identity before dereferencing any caller Thread.
+   Outcome=Memory::SourceLifecycle::CloseThread(this,Thread); if (!Outcome) return false;
+-  if (!Thread || Thread->CTX != this || Thread->CurrentFrame->Thread != Thread || Memory::Links::HasOutstanding(this)) {
++  if (!Thread || Thread->CTX != this || Thread->CurrentFrame->Thread != Thread || Memory::Links::HasOutstanding(this,Thread)) {
+     Outcome={PEAR_FEX_STALE_IDENTITY,0,0}; return false;
+   }
+   Outcome=Memory::CheckThreadCleanup(Thread); if (!Outcome) return false;

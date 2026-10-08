@@ -1,0 +1,818 @@
+diff --git a/FEXCore/include/FEXCore/Utils/AllocatorHooks.h b/FEXCore/include/FEXCore/Utils/AllocatorHooks.h
+--- a/FEXCore/include/FEXCore/Utils/AllocatorHooks.h
++++ b/FEXCore/include/FEXCore/Utils/AllocatorHooks.h
+@@ -47,6 +47,9 @@
+ 
+ #ifdef _WIN32
+ inline void* VirtualAlloc(void* Base, size_t Size, bool Execute = false, bool Commit = true) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (Execute) return nullptr;
++#endif
+   // Allocate top-down to avoid polluting the lower VA space, as even on 64-bit some programs (i.e. LuaJIT) require allocations below 4GB.
+   DWORD Flags = (Commit ? MEM_COMMIT : 0) | MEM_RESERVE | MEM_TOP_DOWN;
+ #ifdef ARCHITECTURE_arm64ec
+@@ -63,6 +66,9 @@
+ }
+ 
+ inline void* VirtualAlloc(size_t Size, bool Execute = false, bool Commit = true) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (Execute) return nullptr;
++#endif
+   return VirtualAlloc(nullptr, Size, Execute, Commit);
+ }
+ 
+@@ -81,6 +87,9 @@
+ }
+ 
+ inline bool VirtualProtect(void* Ptr, size_t Size, ProtectOptions options) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if ((options & ProtectOptions::Exec) == ProtectOptions::Exec) return false;
++#endif
+   DWORD prot {PAGE_NOACCESS};
+ 
+   if (options == ProtectOptions::None) {
+@@ -114,10 +123,16 @@
+ // All commit parameters are ignored here, they are unnecessary as Linux supports overcommit
+ 
+ inline void* VirtualAlloc(size_t Size, bool Execute = false, bool Commit = true) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (Execute) return nullptr;
++#endif
+   return FEXCore::Allocator::mmap(nullptr, Size, PROT_READ | PROT_WRITE | (Execute ? PROT_EXEC : 0), MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ }
+ 
+ inline void* VirtualAlloc(void* Base, size_t Size, bool Execute = false, bool Commit = true) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if (Execute) return nullptr;
++#endif
+   return FEXCore::Allocator::mmap(Base, Size, PROT_READ | PROT_WRITE | (Execute ? PROT_EXEC : 0), MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ }
+ 
+@@ -128,6 +143,9 @@
+   ::madvise(reinterpret_cast<void*>(Ptr), Size, MADV_DONTNEED);
+ }
+ inline bool VirtualProtect(void* Ptr, size_t Size, ProtectOptions options) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  if ((options & ProtectOptions::Exec) == ProtectOptions::Exec) return false;
++#endif
+   int prot {PROT_NONE};
+   if ((options & ProtectOptions::Read) == ProtectOptions::Read) {
+     prot |= PROT_READ;
+diff --git a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h
+--- a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h
++++ b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.h
+@@ -8,22 +8,39 @@
+ #pragma once
+ 
+ #include <FEXCore/fextl/memory.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearFEXMemory.h>
++#include <FEXCore/Utils/PearFEXRetirement.h>
++#endif
+ #include <FEXCore/Utils/MathUtils.h>
+ #include <FEXCore/Utils/SignalScopeGuards.h>
+ #include <FEXCore/Utils/TypeDefines.h>
+ 
+ #include <cstddef>
+ #include <cstdint>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <mutex>
++#endif
+ 
+ namespace FEXCore {
+ struct GuestToHostMap;
+ }
+ 
+ namespace FEXCore::CPU {
++#ifdef PEAR_FEX_MEMORY_OWNER
++#ifdef ARCHITECTURE_arm64ec
++inline constexpr uint32_t PEAR_SOURCE_CODE_ROLE = PEAR_FEX_ROLE_ARM64EC;
++#else
++inline constexpr uint32_t PEAR_SOURCE_CODE_ROLE = PEAR_FEX_ROLE_NATIVE;
++#endif
++#endif
+ struct CodeBuffer {
+   fextl::unique_ptr<GuestToHostMap> LookupCache;
+ 
+   CodeBuffer(size_t Size, bool ShouldBeNamed);
++#ifdef PEAR_FEX_MEMORY_OWNER
++  static fextl::shared_ptr<CodeBuffer> CreatePear(size_t, bool, FEXCore::Utils::PearFEXMemory::Result&);
++#endif
+   CodeBuffer(const CodeBuffer&) = delete;
+   CodeBuffer& operator=(const CodeBuffer&) = delete;
+   CodeBuffer(CodeBuffer&& oth) = delete;
+@@ -36,13 +53,23 @@
+   struct CodeBufferAllocation {
+     const uint8_t* BufferBase;
+     uint8_t* BufferAllocationOffset;
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CodeBuffer* Owner;
++#endif
+   };
+ 
+   CodeBufferAllocation AtomicAllocateBuffer(size_t Size) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    // An exhausted or overflowing request never wraps a metadata pointer.
++    if (!Size || Size > UsableSize() || Size > SIZE_MAX - 15) return {};
++#endif
+     Size = FEXCore::AlignUp(Size, 16);
+     LOGMAN_THROW_A_FMT(reinterpret_cast<uintptr_t>(CodeBufferOffset.load()) % 16 == 0, "Buffer needs to always be 16B aligned!");
+ 
+     auto ExpectedOffset = CodeBufferOffset.load(std::memory_order_relaxed);
++#ifdef PEAR_FEX_MEMORY_OWNER
++    if (ExpectedOffset > CodeBufferEnd || Size > static_cast<size_t>(CodeBufferEnd - ExpectedOffset)) return {};
++#endif
+     auto DesiredOffset = ExpectedOffset + Size;
+ 
+     if (DesiredOffset > CodeBufferEnd) {
+@@ -51,6 +78,9 @@
+     }
+ 
+     while (!CodeBufferOffset.compare_exchange_strong(ExpectedOffset, DesiredOffset)) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++      if (ExpectedOffset > CodeBufferEnd || Size > static_cast<size_t>(CodeBufferEnd - ExpectedOffset)) return {};
++#endif
+       DesiredOffset = ExpectedOffset + Size;
+ 
+       if (DesiredOffset > CodeBufferEnd) {
+@@ -63,6 +93,9 @@
+     return {
+       .BufferBase = Ptr,
+       .BufferAllocationOffset = ExpectedOffset,
++#ifdef PEAR_FEX_MEMORY_OWNER
++      .Owner = this,
++#endif
+     };
+   }
+ 
+@@ -91,9 +124,22 @@
+     return Ptr;
+   }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Allocation GetPearSnapshot() const { return PearToken.Snapshot(); }
++  const FEXCore::Utils::PearFEXMemory::TokenState& GetPearTokenState() const { return PearToken; }
++  bool ComparePearUpdate(const FEXCore::Utils::PearFEXMemory::Allocation& Expected,
++                         const FEXCore::Utils::PearFEXMemory::Allocation& Next) {
++    return PearToken.CompareUpdate(Expected, Next);
++  }
++#endif
++
+ private:
+-  uint8_t* Ptr;
+-  uint8_t* CodeBufferEnd;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result InitializePear();
++  FEXCore::Utils::PearFEXMemory::TokenState PearToken {};
++#endif
++  uint8_t* Ptr {};
++  uint8_t* CodeBufferEnd {};
+   size_t AllocatedSize; // including guard page; see UsableSize()
+ 
+   // Code buffer allocation information.
+@@ -117,6 +163,11 @@
+   // Get the CodeBuffer that was most recently allocated.
+   // This is the only CodeBuffer that data may be written to.
+   fextl::shared_ptr<CodeBuffer> GetLatest();
++#ifdef PEAR_FEX_MEMORY_OWNER
++  fextl::shared_ptr<CodeBuffer> GetPearLatest(FEXCore::Utils::PearFEXMemory::Result&);
++  // Construction failure only, while its actual binding remains alive.
++  void DetachPearLatest();
++#endif
+ 
+   // Allocate a new CodeBuffer with geometric growth up to an internal maximum.
+   // Subsequent calls to GetLatest will point to the returned buffer.
+@@ -130,8 +181,16 @@
+ 
+ private:
+   fextl::shared_ptr<CodeBuffer> Latest;
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Holds only shared_ptr copies/exchanges. Never construct, wait, invoke
++  // callbacks or destroy an old owner generation while this mutex is held.
++  std::mutex PearLatestMutex;
++#endif
+ 
+   fextl::shared_ptr<CodeBuffer> AllocateNew(size_t Size);
++#ifdef PEAR_FEX_MEMORY_OWNER
++  fextl::shared_ptr<CodeBuffer> AllocatePearNew(size_t, FEXCore::Utils::PearFEXMemory::Result&);
++#endif
+ 
+   bool NameJITBuffers {true};
+ };
+diff --git a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+--- a/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
++++ b/FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp
+@@ -6,6 +6,9 @@
+ #include <FEXCore/Utils/AllocatorHooks.h>
+ #include <FEXCore/Utils/LogManager.h>
+ #include <FEXCore/Utils/MathUtils.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <utility>
++#endif
+ 
+ #ifndef _WIN32
+ #include <FEXCore/Utils/PrctlUtils.h>
+@@ -18,6 +21,10 @@
+ 
+ CodeBuffer::CodeBuffer(size_t Size, bool ShouldBeNamed)
+   : AllocatedSize(Size) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // The source factory performs observed owner operations and returns their
++  // exact Result. This constructor creates no hidden executable allocation.
++#else
+   Ptr = static_cast<uint8_t*>(FEXCore::Allocator::VirtualAlloc(Size, true));
+   LOGMAN_THROW_A_FMT(!!Ptr, "Couldn't allocate code buffer");
+ 
+@@ -35,14 +42,66 @@
+   // Huge-pages reduce the amount of iTLB misses dramatically when it works.
+   FEXCore::Allocator::VirtualTHPControl(Ptr, Size, FEXCore::Allocator::THPControl::Enable);
+ 
++#endif
++
++#ifndef PEAR_FEX_MEMORY_OWNER
+   LookupCache = fextl::make_unique<GuestToHostMap>();
+-
+   CodeBufferEnd = Ptr + UsableSize();
+   CodeBufferOffset = Ptr;
+-}
++#endif
++}
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++FEXCore::Utils::PearFEXMemory::Result CodeBuffer::InitializePear() {
++  namespace Memory = FEXCore::Utils::PearFEXMemory;
++  if (!Memory::Retirement::AdmissionOpen()) return Memory::Retirement::FirstFailureSnapshot().Outcome;
++  if (!Memory::CurrentExecutor() || Memory::CurrentSourceRole() != PEAR_SOURCE_CODE_ROLE)
++    return {PEAR_FEX_UNAVAILABLE, 0, 0};
++  auto Allocation = Memory::Reserve(AllocatedSize, PEAR_FEX_CLASS_SHARED, PEAR_SOURCE_CODE_ROLE);
++  if (!Allocation) return {Allocation.Status, Allocation.ErrorDomain, Allocation.ErrorCode};
++  const auto Empty = GetPearSnapshot();
++  if (!ComparePearUpdate(Empty, Allocation)) return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY, 0, 0});
++  Memory::WriteGuard InitialWindow {Allocation, 0, 16};
++  if (!InitialWindow) {
++    const auto Original = InitialWindow.Status();
++    Memory::Retirement::PoisonSourceAdmission(Original);
++    return Original;
++  }
++  auto* LearnedBase = InitialWindow.Data();
++  const auto BeforeAbort = GetPearSnapshot();
++  const auto Aborted = InitialWindow.Abort();
++  if (!ComparePearUpdate(BeforeAbort, Allocation)) return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY, 0, 0});
++  if (!Aborted) { Memory::Retirement::PoisonSourceAdmission(Aborted); return Aborted; }
++  if (!LearnedBase || Allocation.Base || Allocation.Token.expected_state != PEAR_FEX_RESERVED_NONE)
++    return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_VERSION_MISMATCH, 0, 0});
++  Ptr = LearnedBase;
++  LookupCache = fextl::make_unique<GuestToHostMap>();
++  CodeBufferEnd = Ptr + UsableSize();
++  CodeBufferOffset = Ptr;
++  return {PEAR_FEX_OK, 0, 0};
++}
++fextl::shared_ptr<CodeBuffer> CodeBuffer::CreatePear(size_t Size, bool Named, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  auto Buffer = fextl::make_shared<CodeBuffer>(Size, Named);
++  Outcome = Buffer->InitializePear();
++  // A failed shell's destructor retains any exact detached allocation facts;
++  // no unchecked pointer or partially initialized LookupCache is published.
++  return Outcome ? Buffer : fextl::shared_ptr<CodeBuffer> {};
++}
++#endif
+ 
+ CodeBuffer::~CodeBuffer() {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // A last shared_ptr release can occur beneath an upstream list/lookup or
++  // ThreadCreation lock. Detach only NX facts here; the native gate performs
++  // the exact owner retirement after all source locks have been released.
++  const auto Facts = GetPearSnapshot();
++  if (!Facts.Token.allocation_id) return;
++  const auto Detached = FEXCore::Utils::PearFEXMemory::Retirement::EnqueueDetached(Facts);
++  if (!Detached) LogMan::Msg::EFmt("Pear code-buffer retirement enqueue refused: status {}, domain {}, code {}",
++                                  Detached.Status, Detached.ErrorDomain, Detached.ErrorCode);
++#else
+   FEXCore::Allocator::VirtualFree(Ptr, AllocatedSize);
++#endif
+ }
+ 
+ SharedCodeBufferManager::SharedCodeBufferManager() {
+@@ -57,6 +116,10 @@
+ }
+ 
+ fextl::shared_ptr<CodeBuffer> SharedCodeBufferManager::AllocateNew(size_t Size) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result Outcome;
++  return AllocatePearNew(Size, Outcome);
++#else
+ #ifndef _WIN32
+   // MDWE (Memory-Deny-Write-Execute) is a new Linux 6.3 feature.
+   // It's equivalent to systemd's `MemoryDenyWriteExecute` but implemented entirely in the kernel.
+@@ -80,22 +143,59 @@
+ #endif
+ 
+   auto Buffer = fextl::make_shared<CodeBuffer>(Size, NameJITBuffers);
+-
+   Latest = Buffer;
+-
+   OnCodeBufferAllocated(Buffer);
+-
+   return Buffer;
+-}
++#endif
++}
++#ifdef PEAR_FEX_MEMORY_OWNER
++fextl::shared_ptr<CodeBuffer> SharedCodeBufferManager::AllocatePearNew(size_t Size, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  auto Buffer = CodeBuffer::CreatePear(Size, NameJITBuffers, Outcome);
++  if (!Buffer) return {};
++  fextl::shared_ptr<CodeBuffer> Previous;
++  {
++    std::scoped_lock Lock {PearLatestMutex};
++    Previous = std::exchange(Latest, Buffer);
++  }
++  OnCodeBufferAllocated(Buffer);
++  Previous.reset();
++  return Buffer;
++}
++fextl::shared_ptr<CodeBuffer> SharedCodeBufferManager::GetPearLatest(FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  namespace Memory = FEXCore::Utils::PearFEXMemory;
++  if (!Memory::Retirement::AdmissionOpen()) { Outcome = Memory::Retirement::FirstFailureSnapshot().Outcome; return {}; }
++  if (Memory::CurrentSourceRole() != PEAR_SOURCE_CODE_ROLE) { Outcome = {PEAR_FEX_UNAVAILABLE, 0, 0}; return {}; }
++  fextl::shared_ptr<CodeBuffer> Snapshot;
++  { std::scoped_lock Lock {PearLatestMutex}; Snapshot = Latest; }
++  if (Snapshot) { Outcome = {PEAR_FEX_OK, 0, 0}; return Snapshot; }
++  return AllocatePearNew(INITIAL_CODE_SIZE, Outcome);
++}
++void SharedCodeBufferManager::DetachPearLatest() {
++  fextl::shared_ptr<CodeBuffer> Detached;
++  { std::scoped_lock Lock {PearLatestMutex}; Detached = std::exchange(Latest, {}); }
++  Detached.reset();
++}
++#endif
+ 
+ fextl::shared_ptr<CodeBuffer> SharedCodeBufferManager::GetLatest() {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result Outcome;
++  return GetPearLatest(Outcome);
++#else
+   if (!Latest) {
+     AllocateNew(INITIAL_CODE_SIZE);
+   }
+   return Latest;
++#endif
+ }
+ 
+ fextl::shared_ptr<CodeBuffer> SharedCodeBufferManager::StartLargerCodeBuffer() {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  const auto Current = GetLatest();
++  if (!Current) return {};
++  const auto Size = std::min<size_t>(Current->TotalAllocationSize()*2, MAX_CODE_SIZE);
++  return AllocateNew(Size);
++#else
+   if (!Latest) {
+     // Allocate initial CodeBuffer and return it
+     return GetLatest();
+@@ -104,6 +204,7 @@
+   auto NewCodeBufferSize = GetLatest()->TotalAllocationSize();
+   NewCodeBufferSize = std::min<size_t>(NewCodeBufferSize * 2, MAX_CODE_SIZE);
+   return AllocateNew(NewCodeBufferSize);
++#endif
+ }
+ 
+ fextl::shared_ptr<CodeBuffer> SharedCodeBufferManager::StartMaximalCodeBuffer() {
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h
+@@ -6,6 +6,12 @@
+ 
+ #include <FEXCore/Config/Config.h>
+ #include <FEXCore/fextl/memory.h>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/PearFEXMemory.h>
++#ifdef VIXL_SIMULATOR
++#error Pear owner source hooks require the selected native dispatcher.
++#endif
++#endif
+ 
+ #include <array>
+ #include <cstddef>
+@@ -36,6 +42,9 @@
+ class Dispatcher final : public Arm64Emitter {
+ public:
+   static fextl::unique_ptr<Dispatcher> Create(FEXCore::Context::ContextImpl* CTX);
++#ifdef PEAR_FEX_MEMORY_OWNER
++  static fextl::unique_ptr<Dispatcher> CreatePear(FEXCore::Context::ContextImpl*, FEXCore::Utils::PearFEXMemory::Result&);
++#endif
+ 
+   Dispatcher(FEXCore::Context::ContextImpl* ctx);
+   ~Dispatcher();
+@@ -47,11 +56,45 @@
+   void ExecuteJITCallback(FEXCore::Core::CpuStateFrame* Frame, uint64_t RIP);
+ #else
+   void ExecuteDispatch(FEXCore::Core::CpuStateFrame* Frame) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT(FEXCore::Utils::PearFEXMemory::Retirement::AdmissionOpen(), "Pear source retirement admission is closed");
++    const auto Facts = GetPearSnapshot();
++    const auto Base = reinterpret_cast<uintptr_t>(Facts.Base);
++    const auto Address = reinterpret_cast<uintptr_t>(DispatchPtr);
++    LOGMAN_THROW_A_FMT(Facts && Facts.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
++                      Facts.Token.allocation_class == PEAR_FEX_CLASS_DISPATCHER && Address >= Base &&
++                      Address-Base < Facts.Token.extent_size && !(Address & 3), "Pear dispatcher entry range unavailable");
++    const auto Entered = FEXCore::Utils::PearFEXMemory::Enter(Facts, Address-Base);
++    LOGMAN_THROW_A_FMT(!!Entered, "Pear dispatcher entry refused: status {}, domain {}, code {}",
++                      Entered.Status, Entered.ErrorDomain, Entered.ErrorCode);
++#endif
+     DispatchPtr(Frame, false);
++#ifdef PEAR_FEX_MEMORY_OWNER
++    const auto Exited = FEXCore::Utils::PearFEXMemory::Exit(Facts);
++    LOGMAN_THROW_A_FMT(!!Exited, "Pear dispatcher native return refused: status {}, domain {}, code {}",
++                      Exited.Status, Exited.ErrorDomain, Exited.ErrorCode);
++#endif
+   }
+ 
+   void ExecuteJITCallback(FEXCore::Core::CpuStateFrame* Frame, uint64_t RIP) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT(FEXCore::Utils::PearFEXMemory::Retirement::AdmissionOpen(), "Pear source retirement admission is closed");
++    const auto Facts = GetPearSnapshot();
++    const auto Base = reinterpret_cast<uintptr_t>(Facts.Base);
++    const auto Address = reinterpret_cast<uintptr_t>(CallbackPtr);
++    LOGMAN_THROW_A_FMT(Facts && Facts.Token.expected_state == PEAR_FEX_PUBLISHED_RX &&
++                      Facts.Token.allocation_class == PEAR_FEX_CLASS_DISPATCHER && Address >= Base &&
++                      Address-Base < Facts.Token.extent_size && !(Address & 3), "Pear dispatcher entry range unavailable");
++    const auto Entered = FEXCore::Utils::PearFEXMemory::Enter(Facts, Address-Base);
++    LOGMAN_THROW_A_FMT(!!Entered, "Pear dispatcher entry refused: status {}, domain {}, code {}",
++                      Entered.Status, Entered.ErrorDomain, Entered.ErrorCode);
++#endif
+     CallbackPtr(Frame, RIP);
++#ifdef PEAR_FEX_MEMORY_OWNER
++    const auto Exited = FEXCore::Utils::PearFEXMemory::Exit(Facts);
++    LOGMAN_THROW_A_FMT(!!Exited, "Pear dispatcher native return refused: status {}, domain {}, code {}",
++                      Exited.Status, Exited.ErrorDomain, Exited.ErrorCode);
++#endif
+   }
+ #endif
+ 
+@@ -61,15 +104,27 @@
+ 
+   SignalDelegatorConfig MakeSignalDelegatorConfig() const;
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Allocation GetPearSnapshot() const { return PearToken.Snapshot(); }
++  bool IsPearNativeResume(uintptr_t PC) const {
++    return PC && (PC == PearCompileResumePC || PC == PearSingleStepResumePC);
++  }
++#endif
+ protected:
+   FEXCore::Context::ContextImpl* CTX;
+ 
+   using AsmDispatch = void (*)(FEXCore::Core::CpuStateFrame* Frame, bool SingleInst);
+   using JITCallback = void (*)(FEXCore::Core::CpuStateFrame* Frame, uint64_t RIP);
+ 
+-  AsmDispatch DispatchPtr;
+-  JITCallback CallbackPtr;
++  AsmDispatch DispatchPtr {};
++  JITCallback CallbackPtr {};
+ private:
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result InitializePear();
++  FEXCore::Utils::PearFEXMemory::TokenState PearToken {};
++  uintptr_t PearCompileResumePC {};
++  uintptr_t PearSingleStepResumePC {};
++#endif
+   /**
+    * @name Dispatch Helper functions
+    * @{ */
+@@ -114,6 +169,9 @@
+   uint64_t F64FPREM1HandlerAddress {};
+ 
+   void EmitDispatcher();
++#ifdef PEAR_FEX_MEMORY_OWNER
++  void RegisterDispatcherSymbols();
++#endif
+   uint64_t GenerateABICall(FallbackABI ABI);
+ 
+   // Inline softfloat conversion emitters - avoid FPCR save/restore overhead
+diff --git a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+--- a/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
++++ b/FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp
+@@ -37,19 +37,88 @@
+ constexpr size_t MAX_DISPATCHER_CODE_SIZE = FEXCore::Utils::FEX_PAGE_SIZE * 4;
+ 
+ Dispatcher::Dispatcher(FEXCore::Context::ContextImpl* ctx)
++#ifdef PEAR_FEX_MEMORY_OWNER
++  : Arm64Emitter(ctx, nullptr, 0)
++#else
+   : Arm64Emitter(ctx, FEXCore::Allocator::VirtualAlloc(MAX_DISPATCHER_CODE_SIZE, true), MAX_DISPATCHER_CODE_SIZE)
++#endif
+   , CTX {ctx} {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // CreatePear performs observed owner construction and returns the original
++  // native error. This shell cannot expose an unpublished generated pointer.
++#else
+   EmitDispatcher();
+-
+   FEXCore::Allocator::VirtualName("FEXMem_Misc", reinterpret_cast<void*>(GetBufferBase()), MAX_DISPATCHER_CODE_SIZE);
++#endif
+ }
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++FEXCore::Utils::PearFEXMemory::Result Dispatcher::InitializePear() {
++  namespace Memory = FEXCore::Utils::PearFEXMemory;
++  if (!Memory::Retirement::AdmissionOpen()) return Memory::Retirement::FirstFailureSnapshot().Outcome;
++  if (!Memory::CurrentExecutor()) return {PEAR_FEX_UNAVAILABLE, 0, 0};
++  auto Allocation = Memory::Reserve(MAX_DISPATCHER_CODE_SIZE, PEAR_FEX_CLASS_DISPATCHER, PEAR_SOURCE_CODE_ROLE);
++  if (!Allocation) return {Allocation.Status, Allocation.ErrorDomain, Allocation.ErrorCode};
++  const auto Empty = PearToken.Snapshot();
++  if (!PearToken.CompareUpdate(Empty, Allocation))
++    return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY, 0, 0});
++  Memory::WriteGuard Emission {Allocation, 0, MAX_DISPATCHER_CODE_SIZE};
++  if (!Emission) {
++    const auto Original = Emission.Status();
++    Memory::Retirement::PoisonSourceAdmission(Original);
++    return Original;
++  }
++  SetBuffer(Emission.Data(), MAX_DISPATCHER_CODE_SIZE);
++  EmitDispatcher();
++  // Buffer/label bounds are checked before stores in the selected emitter.
++  // An upstream emitter assertion still retains its original failure path.
++  const auto BeforePublish = PearToken.Snapshot();
++  const auto Published = Emission.Publish();
++  if (!Published) {
++    const auto Aborted = Emission.Abort();
++    if (!PearToken.CompareUpdate(BeforePublish, Allocation))
++      Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY, 0, 0});
++    if (!Aborted) Memory::Retirement::PoisonSourceAdmission(Aborted);
++    return Published;
++  }
++  if (!PearToken.CompareUpdate(BeforePublish, Allocation))
++    return Memory::Retirement::PoisonSourceAdmission({PEAR_FEX_STALE_IDENTITY, 0, 0});
++  RegisterDispatcherSymbols();
++  return Published;
++}
++fextl::unique_ptr<Dispatcher> Dispatcher::CreatePear(FEXCore::Context::ContextImpl* CTX, FEXCore::Utils::PearFEXMemory::Result& Outcome) {
++  auto Candidate = fextl::make_unique<Dispatcher>(CTX);
++  Outcome = Candidate->InitializePear();
++  return Outcome ? std::move(Candidate) : fextl::unique_ptr<Dispatcher> {};
++}
++#endif
++
+ Dispatcher::~Dispatcher() {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  const auto Facts = PearToken.Snapshot();
++  if (!Facts.Token.allocation_id) return;
++  const auto Detached = FEXCore::Utils::PearFEXMemory::Retirement::EnqueueDetached(Facts);
++  if (!Detached) LogMan::Msg::EFmt("Pear dispatcher retirement enqueue refused: status {}, domain {}, code {}",
++                                  Detached.Status, Detached.ErrorDomain, Detached.ErrorCode);
++#else
+   auto BufferSize = GetBufferSize();
+   if (BufferSize) {
+     FEXCore::Allocator::VirtualFree(GetBufferBase(), BufferSize);
+   }
++#endif
+ }
++
++#ifdef PEAR_FEX_MEMORY_OWNER
++void Dispatcher::RegisterDispatcherSymbols() {
++  if (CTX->Config.BlockJITNaming()) {
++    fextl::string Name = fextl::fmt::format("Dispatch_{}", FHU::Syscalls::gettid());
++    CTX->Symbols.RegisterNamedRegion(reinterpret_cast<void*>(DispatchPtr), End - reinterpret_cast<uint64_t>(DispatchPtr), Name);
++  }
++  if (CTX->Config.GlobalJITNaming()) {
++    CTX->Symbols.RegisterJITSpace(reinterpret_cast<void*>(DispatchPtr), End - reinterpret_cast<uint64_t>(DispatchPtr));
++  }
++}
++#endif
+ 
+ void Dispatcher::EmitDispatcher() {
+   // Don't modify TMP3 since it contains our RIP once the block doesn't exist
+@@ -328,6 +397,16 @@
+       mov(ARMEmitter::XReg::x1, STATE);
+       // x2 contains guest RIP
+       mov(ARMEmitter::XReg::x3, 0);
++#ifdef PEAR_FEX_MEMORY_OWNER
++      // The native ABI receives the actual generated return-PC label explicitly;
++      // no compiler return-address intrinsic or caller-controlled PC is used.
++      ARMEmitter::ForwardLabel l_PearResume;
++      adr(ARMEmitter::XReg::x4, &l_PearResume);
++      ldr(ARMEmitter::XReg::x5, &l_CompileBlock);
++      blr(ARMEmitter::XReg::x5); // { CTX, Frame, RIP, MaxInst, ResumePC }
++      (void)Bind(&l_PearResume);
++      PearCompileResumePC = GetCursorAddress<uintptr_t>();
++#else
+       ldr(ARMEmitter::XReg::x4, &l_CompileBlock);
+ 
+       if (!CTX->Config.DisableVixlIndirectCalls) [[unlikely]] {
+@@ -335,6 +414,7 @@
+       } else {
+         blr(ARMEmitter::Reg::r4); // { CTX, Frame, RIP, MaxInst }
+       }
++#endif
+ 
+       // Result is now in x0
+       if (!TMP_ABIARGS) {
+@@ -361,6 +441,15 @@
+       ldr(ARMEmitter::XReg::x0, &l_CTX);
+       mov(ARMEmitter::XReg::x1, STATE);
+       // x2 contains guest RIP
++#ifdef PEAR_FEX_MEMORY_OWNER
++      ARMEmitter::ForwardLabel l_PearResume;
++      mov(ARMEmitter::XReg::x3, 1);
++      adr(ARMEmitter::XReg::x4, &l_PearResume);
++      ldr(ARMEmitter::XReg::x5, &l_CompileSingleStep);
++      blr(ARMEmitter::XReg::x5); // { CTX, Frame, RIP, MaxInst=1, ResumePC }
++      (void)Bind(&l_PearResume);
++      PearSingleStepResumePC = GetCursorAddress<uintptr_t>();
++#else
+       ldr(ARMEmitter::XReg::x4, &l_CompileSingleStep);
+ 
+       if (!CTX->Config.DisableVixlIndirectCalls) [[unlikely]] {
+@@ -368,6 +457,7 @@
+       } else {
+         blr(ARMEmitter::Reg::r4); // { CTX, Frame, RIP }
+       }
++#endif
+ 
+       // Result is now in x0
+       if (!TMP_ABIARGS) {
+@@ -656,17 +746,25 @@
+   (void)Bind(&l_Sleep);
+   dc64(reinterpret_cast<uint64_t>(SleepThread));
+   (void)Bind(&l_CompileBlock);
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::MemberFunctionToPointerCast PMFCompileBlock(&FEXCore::Context::ContextImpl::CompilePearFromDispatcher);
++#else
+   FEXCore::Utils::MemberFunctionToPointerCast PMFCompileBlock(&FEXCore::Context::ContextImpl::CompileBlock);
++#endif
+   dc64(PMFCompileBlock.GetConvertedPointer());
+   (void)Bind(&l_CompileSingleStep);
+ 
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::MemberFunctionToPointerCast PMFCompileSingleStep(&FEXCore::Context::ContextImpl::CompilePearFromDispatcher);
++#else
+   FEXCore::Utils::MemberFunctionToPointerCast PMFCompileSingleStep(&FEXCore::Context::ContextImpl::CompileSingleStep);
++#endif
+   dc64(PMFCompileSingleStep.GetConvertedPointer());
+ 
+   Start = reinterpret_cast<uint64_t>(DispatchPtr);
+   End = GetCursorAddress<uint64_t>();
++#ifndef PEAR_FEX_MEMORY_OWNER
+   ClearICache(reinterpret_cast<void*>(DispatchPtr), End - reinterpret_cast<uint64_t>(DispatchPtr));
+-
+   if (CTX->Config.BlockJITNaming()) {
+     fextl::string Name = fextl::fmt::format("Dispatch_{}", FHU::Syscalls::gettid());
+     CTX->Symbols.RegisterNamedRegion(reinterpret_cast<void*>(DispatchPtr), End - reinterpret_cast<uint64_t>(DispatchPtr), Name);
+@@ -674,6 +772,8 @@
+   if (CTX->Config.GlobalJITNaming()) {
+     CTX->Symbols.RegisterJITSpace(reinterpret_cast<void*>(DispatchPtr), End - reinterpret_cast<uint64_t>(DispatchPtr));
+   }
++
++#endif
+ 
+ #ifdef VIXL_DISASSEMBLER
+   if (Disassemble() & FEXCore::Config::Disassemble::DISPATCHER) {
+@@ -2758,7 +2858,12 @@
+ }
+ 
+ fextl::unique_ptr<Dispatcher> Dispatcher::Create(FEXCore::Context::ContextImpl* CTX) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++  FEXCore::Utils::PearFEXMemory::Result Outcome;
++  return CreatePear(CTX, Outcome);
++#else
+   return fextl::make_unique<Dispatcher>(CTX);
++#endif
+ }
+ 
+ } // namespace FEXCore::CPU
+diff --git a/CodeEmitter/CodeEmitter/Buffer.h b/CodeEmitter/CodeEmitter/Buffer.h
+--- a/CodeEmitter/CodeEmitter/Buffer.h
++++ b/CodeEmitter/CodeEmitter/Buffer.h
+@@ -4,6 +4,9 @@
+ #include <cstdint>
+ #include <cstring>
+ #include <type_traits>
++#ifdef PEAR_FEX_MEMORY_OWNER
++#include <FEXCore/Utils/LogManager.h>
++#endif
+ 
+ namespace ARMEmitter {
+ class Buffer {
+@@ -17,6 +20,11 @@
+   }
+ 
+   void SetBuffer(uint8_t* Base, uint64_t BaseSize) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT((Base || !BaseSize) && BaseSize <= SIZE_MAX &&
++                      (!Base || reinterpret_cast<uintptr_t>(Base) <= UINTPTR_MAX - BaseSize),
++                      "Pear emitter buffer geometry is invalid");
++#endif
+     BufferBase = Base;
+     CurrentOffset = BufferBase;
+     Size = BaseSize;
+@@ -25,6 +33,9 @@
+   template<typename T>
+   requires (std::is_trivially_copyable_v<T>)
+   void dcn(const T& Data) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CheckRange(CurrentOffset, sizeof(Data));
++#endif
+     std::memcpy(CurrentOffset, &Data, sizeof(Data));
+     CurrentOffset += sizeof(Data);
+   }
+@@ -42,17 +53,30 @@
+   }
+ 
+   void EmitString(const char* String) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT(String, "Pear emitter string is unavailable");
++#endif
+     const auto StringLength = strlen(String);
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CheckRange(CurrentOffset, StringLength);
++#endif
+     memcpy(CurrentOffset, String, StringLength);
+     CurrentOffset += StringLength;
+   }
+ 
+   void Align(size_t Size = 4) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT(Size && !(Size & (Size - 1)), "Pear emitter alignment is invalid");
++    CheckRange(CurrentOffset, 0);
++#endif
+     // Align the buffer to provided size.
+     auto CurrentAlignment = reinterpret_cast<uint64_t>(CurrentOffset) & (Size - 1);
+     if (!CurrentAlignment) {
+       return;
+     }
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CheckRange(CurrentOffset, Size - CurrentAlignment);
++#endif
+     std::memset(CurrentOffset, 0, Size - CurrentAlignment);
+     CurrentOffset += Size - CurrentAlignment;
+   }
+@@ -67,7 +91,12 @@
+   }
+ 
+   size_t GetCursorOffset() const {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CheckRange(CurrentOffset, 0);
++    return static_cast<size_t>(reinterpret_cast<uintptr_t>(CurrentOffset) - reinterpret_cast<uintptr_t>(BufferBase));
++#else
+     return static_cast<size_t>(CurrentOffset - BufferBase);
++#endif
+   }
+ 
+   uint8_t* GetBufferBase() const {
+@@ -75,10 +104,16 @@
+   }
+ 
+   void CursorIncrement(size_t Size) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CheckRange(CurrentOffset, Size);
++#endif
+     CurrentOffset += Size;
+   }
+ 
+   void SetCursorOffset(size_t Offset) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT(Offset <= Size && (BufferBase || !Offset), "Pear emitter cursor is outside its buffer");
++#endif
+     CurrentOffset = BufferBase + Offset;
+   }
+ 
+@@ -88,10 +123,26 @@
+ 
+   template<typename T>
+   size_t GetCursorOffsetFromAddress(const T* Address) const {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    CheckRange(Address, 0);
++    return static_cast<size_t>(reinterpret_cast<uintptr_t>(Address) - reinterpret_cast<uintptr_t>(BufferBase));
++#else
+     return static_cast<size_t>(reinterpret_cast<const uint8_t*>(Address) - BufferBase);
++#endif
+   }
+ 
+ protected:
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // Used before every source emitter write and label read/backpatch. A numeric
++  // check cannot grant permissions; callers still need the owner WriteGuard.
++  void CheckRange(const void* Pointer, size_t Bytes) const {
++    const auto Base = reinterpret_cast<uintptr_t>(BufferBase);
++    const auto Address = reinterpret_cast<uintptr_t>(Pointer);
++    const bool Empty = !Base && !Address && !Size && !Bytes;
++    const bool Fits = Base && Address >= Base && Address - Base <= Size && Bytes <= Size - (Address - Base);
++    LOGMAN_THROW_A_FMT(Empty || Fits, "Pear emitter read/write exceeds its source buffer");
++  }
++#endif
+ 
+   uint8_t* BufferBase;
+   uint8_t* CurrentOffset;
+diff --git a/CodeEmitter/CodeEmitter/Emitter.h b/CodeEmitter/CodeEmitter/Emitter.h
+--- a/CodeEmitter/CodeEmitter/Emitter.h
++++ b/CodeEmitter/CodeEmitter/Emitter.h
+@@ -656,6 +656,11 @@
+   }
+ 
+   [[nodiscard]] bool Bind(const ForwardLabel::Reference* Label) {
++#ifdef PEAR_FEX_MEMORY_OWNER
++    LOGMAN_THROW_A_FMT(Label, "Pear emitter label is unavailable");
++    CheckRange(Label->Location, Label->Type == ForwardLabel::InstType::LONG_ADDRESS_GEN ? 12 : 4);
++    CheckRange(GetCursorAddress<uint8_t*>(), 0);
++#endif
+     uint8_t* CurrentAddress = GetCursorAddress<uint8_t*>();
+     // Patch up the instructions
+     switch (Label->Type) {
