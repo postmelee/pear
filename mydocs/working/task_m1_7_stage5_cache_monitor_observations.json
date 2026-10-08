@@ -1,0 +1,80 @@
+{
+  "actual_probe": {
+    "control_sha256": "34bcc0aee0fdc48ab50885621a61d77692d47d655008ad57757205b1e4295008",
+    "four_commands": [
+      {
+        "actual_exit_code": 0,
+        "air_sha256": "abd3ad9a7dc34eb473cffea8e8e1c9faa215974632c95dc423ce7dee590fa23d",
+        "elapsed_ms": 388,
+        "record_sha256": "b0d9ed229d0448ad343203bb7260c82a46aaef5ed7bf4ab8494005a676474bd5",
+        "source": "src/airconv/shaders/air_msad.metal",
+        "whole_air_bytes_equal_to_original_recipe": true
+      },
+      {
+        "actual_exit_code": 0,
+        "air_sha256": "222300ed4d0ccbb020b1686faa7444a1a40a4de8d267170480d590053356087f",
+        "elapsed_ms": 41,
+        "record_sha256": "1115b197812939e307ceead5eefaceb69cbb63ff1bf652d8fe5c1cd565fdfc8a",
+        "source": "src/airconv/shaders/air_samplepos.metal",
+        "whole_air_bytes_equal_to_original_recipe": true
+      },
+      {
+        "actual_exit_code": 0,
+        "air_sha256": "363f6c985218ee70c4c87892fda5022e2110790b980a8c05528b886f061d6e89",
+        "elapsed_ms": 106,
+        "record_sha256": "eeb56678e9f188636c0f7a2cac3a78acf6ba2e3630d8bb4ba519da497422d107",
+        "source": "src/airconv/shaders/air_tessellation.metal",
+        "whole_air_bytes_equal_to_original_recipe": true
+      },
+      {
+        "actual_exit_code": 0,
+        "air_sha256": "0797a00022dab03881dd8d1e7ff35c0488713c049564525d2099569c7024f206",
+        "elapsed_ms": 959,
+        "record_sha256": "0eebfb7f6a1366783fdbd26af7210611c5541fc8ac1f5977c722afea59968bc7",
+        "source": "src/dxmt/dxmt_command.metal",
+        "whole_air_bytes_equal_to_original_recipe": true
+      }
+    ],
+    "monitor_samples": 1264,
+    "observed_transient_alias_count": 80,
+    "passed": true,
+    "resource_count": 379,
+    "resources_before_equal_after": true
+  },
+  "date": "2026-10-04",
+  "exact_failed_alias_path_recovered": false,
+  "old_failure": "pair_monitor_unlisted_alias",
+  "original_build3_record_sha256": "66a3f1840d20343efd5a242f9c1506bfa9e2b1cab5d48ba7c23d7c9e49800333",
+  "original_build4_failure_sha256": "847bd57214948c94200d134fd07a622a5e1e4d0574b7765fb7b48ac673f95358",
+  "private_archive": {
+    "compressed_bytes_before_dedup": 341147718,
+    "dedup_receipt_sha256": "d25b3f4d7bd33749dba4871a019a070cb71976f215bfd0e8e8c3a407510d0765",
+    "distinct_compressed_payloads": 1354,
+    "logical_retired_bytes": 6197280768,
+    "observed_free_change_during_dedup": 170430464,
+    "receipt_sha256": "45ec720c5ad8fda9e988199ad2af6c598c3e3bb31ed5bc991a5daf975a05da3a",
+    "retired_builtin_files": 4104,
+    "shared_compressed_bytes": 170585644,
+    "shared_payload_count": 684,
+    "unique_physical_reclamation_attributed": false
+  },
+  "qualifications": {
+    "FEX_initialization": false,
+    "current_candidate_native_pairing": false,
+    "game_execution": false,
+    "ordinary_user_distribution": false,
+    "raw_product_comparison": false,
+    "stage5_complete": false,
+    "two_current_constructor_builds": false
+  },
+  "record_kind": "partial_deterministic_cache_monitor_observations",
+  "regression": {
+    "optional_private_input_skips": 8,
+    "passed": true,
+    "stderr_sha256": "0ce2f5bcbe669c430180b1f790c132e076d5c1d5fee306f0e2367d9df06e3c46",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 514
+  },
+  "schema_version": 1,
+  "scope": "compiler_cache_accounting_only"
+}

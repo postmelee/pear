@@ -18,6 +18,8 @@ Reference the task plan's applicable specifications/scoped rules, reuse rational
 
 Each Stage's Verification section must define inputs, required tools/platform versions, settings, expected outcomes and evidence to retain. Record availability checked during planning or `Not checked`, plus planned checks that may remain unavailable. Commands below are planned work; performed results belong in stage reports.
 
+For each reused result, name its input/revision identity and supported claim, the existing check and relevant false-success case, and the changes requiring revalidation. Distinguish reused evidence from checks to execute in this Stage; do not waive approved required checks.
+
 ## Document Location Check
 
 Confirm that the actual Stage artifact locations match the "Document Location Judgment" in the task plan. If no document is created, moved, or edited, write `Not applicable` and explain why.

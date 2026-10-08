@@ -198,3 +198,42 @@ DXMT's current contribution policy rejects AI/LLM-authored or coauthored contrib
 6. **Establish controlled comparison measurements.** Deliver raw non-sensitive measurements and a reproducible protocol; no comparative efficiency claim without comparable data.
 
 Open questions remain: whether the selected macOS Wine/FEX source and signing path can be reproduced and distributed; which Steam helpers are required on that path; whether graphics ABI and shader conversion remain correct under ARM64EC; and which hardware/OS combinations pass. These are milestone gates, not details to postpone until after announcing game support.
+
+
+## October 4, 2026: Downstream build and native boundary follow-up
+
+The earlier source audit above remains a record of its original observations.
+Task #7 subsequently built the pinned DXMT revision
+`7c8dee1c2d73415301ceb7d1fa810861cef4cd67` with native LLVM 15.0.7,
+the selected LLVM-MinGW cross compiler and Pear's source-built Wine roles.
+The [DXMT contributor guide](../development/dxmt-build.md) records exact inputs,
+source supplements, commands, notices and remaining reconstruction gates.
+
+The downstream typed bridge replaces the copied private Wine window layout.
+The historical [Stage 4 report](../../mydocs/working/task_m1_7_stage4.md)
+records 39 passing ordinary ARM64/native cases, balanced physical view/layer
+lifetimes and explicit captured Metal diagnostic review on that particular
+artifact. Four ARM64X Windows graphics DLLs were constructed and inspected;
+they were not executed by that native fixture. FEX initialization, translated
+D3D11, real rendering, Steam and Megabonk remain unqualified.
+
+Deterministic reconstruction is a separate gate. Earlier output differences
+were rejected without binary normalization. The current source recipe fixes
+compilation directories and shader input transport and handles narrowly checked
+compiler cache locks. Four actual shader compilations matched their original
+AIR bytes; that compiler result is not a shader workload or renderer result.
+Two current complete builds, strict unsigned comparison and fresh native
+execution on their final candidate remain required. Historical execution cannot
+be transferred to changed runtime bytes or signing identities.
+
+
+## October 5, 2026: Final component reconstruction
+
+The [Stage 5 report](../../mydocs/working/task_m1_7_stage5.md) records a complete
+2,878-entry exact unsigned comparison, a separately reconstructed ARM64 loader
+reservation correction and two source-bound 39-case ordinary native runs with
+reviewed diagnostics and physical cleanup. The loader correction resolves the
+captured low-address Foundation failure class for this selected route. It does
+not turn the compiled ARM64X DLLs into executed translated Direct3D evidence.
+#5/#6 and #8 retain their CPU and graphics execution qualifications; Steam,
+Megabonk, performance and ordinary-user distribution remain unqualified.

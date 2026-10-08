@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "record_kind": "dxmt_graphics_patch_series",
+  "scope": "typed_native_metal_pairing",
+  "baselines": {
+    "wine": {
+      "commit": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+      "prior_series_sha256": "39371f21f25cf153437fd523951be9f938cc1161bed5c4ef923583c74c89d086",
+      "prior_source_manifest_sha256": "2c0c861669f9fd8853f8899eaeb08b18207b0cf26b34dae9efe707919e447bc7"
+    },
+    "dxmt": {
+      "commit": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67"
+    }
+  },
+  "patches": [
+    {
+      "component": "wine",
+      "path": "wine/0001-typed-metal-lease.patch",
+      "sha256": "244654459ec2734a5bf47f409537345b173de849d44b1e5fe280f938fd21057e",
+      "license": "LGPL-2.1-or-later (integration); MIT original private header/fixtures retain notices",
+      "provenance": "Original Pear graphics-only supplement against pinned unmodified inputs and retained historical Wine source. Native fixture headers copied unchanged from selected DXMT.",
+      "changes": [
+        {
+          "path": "dlls/winemac.drv/Makefile.in",
+          "before_sha256": "4ceac5825201e79344f5fd7c085530eeaaa5a67df0fe8cdc71ac74a437fe9ab0",
+          "after_sha256": "ecddb1449e51f8345e5cae78b764f7bb116054f027e95f2426ff655f24f0fa4a",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "dlls/winemac.drv/cocoa_window.m",
+          "before_sha256": "c0e76d138b4970d735fed4b28bd01413756403a724a8c9878b408af799aa8655",
+          "after_sha256": "287724940e792c7af070135aad4ce8663a4ae02bf54be26969f5279a8a7522c0",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "dlls/winemac.drv/macdrv.h",
+          "before_sha256": "d03c2bbd9c473dac187587cf805492a02527a93dbd25ac3394746951decd6b95",
+          "after_sha256": "c1ab92b1ef140b82ce71442d8c8a7c6fe73530db6688976f262fc3414233b9ec",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "dlls/winemac.drv/macdrv_main.c",
+          "before_sha256": "5aecdce66843f72eb442d11578bb056401c83f3c43060a46cfca39809ed19944",
+          "after_sha256": "f3f5d3a5d39b9526be82106065e3ac1e722757802006485451bea6d11c20ba67",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "dlls/winemac.drv/pear_dxmt/winemetal.h",
+          "before_sha256": null,
+          "after_sha256": "0602671b1a3dd3994dfa12492ec1dfb4001e02534f2b7429949eea840ec8940c",
+          "mode": "100644",
+          "payload_file": "tests/dxmt/pairing/upstream/winemetal.h",
+          "payload_sha256": "0602671b1a3dd3994dfa12492ec1dfb4001e02534f2b7429949eea840ec8940c"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_dxmt/winemetal_thunks.h",
+          "before_sha256": null,
+          "after_sha256": "c424046b565f99e0b99cf8aa95c28008c64d5812dd1c0d6d15753aab76445215",
+          "mode": "100644",
+          "payload_file": "tests/dxmt/pairing/upstream/winemetal_thunks.h",
+          "payload_sha256": "c424046b565f99e0b99cf8aa95c28008c64d5812dd1c0d6d15753aab76445215"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_macdrv_metal_v1.h",
+          "before_sha256": null,
+          "after_sha256": "7a19ce6b49c19ab7603ff875d6e9d92ababa92dd1202fb3c912f02c2f6e5275d",
+          "mode": "100644",
+          "payload_file": "runtime/dxmt/patches/include/pear_macdrv_metal_v1.h",
+          "payload_sha256": "7a19ce6b49c19ab7603ff875d6e9d92ababa92dd1202fb3c912f02c2f6e5275d"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_metal_bridge.m",
+          "before_sha256": null,
+          "after_sha256": "91456e806a763242603454cdb63ba71acdb3e7cf06ef59bd7a2eb09369c2bf87",
+          "mode": "100644",
+          "payload_file": "runtime/dxmt/patches/payloads/pear_metal_bridge.m",
+          "payload_sha256": "91456e806a763242603454cdb63ba71acdb3e7cf06ef59bd7a2eb09369c2bf87"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_metal_control.c",
+          "before_sha256": null,
+          "after_sha256": "b3b7838d7aa1e5728dfc568ab1b7f73edf95b0e199491ce24fd2bd4dbd19432c",
+          "mode": "100644",
+          "payload_file": "tests/dxmt/pairing/pairing_control.c",
+          "payload_sha256": "b3b7838d7aa1e5728dfc568ab1b7f73edf95b0e199491ce24fd2bd4dbd19432c"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_metal_pairing.m",
+          "before_sha256": null,
+          "after_sha256": "a5224ea8da15172b1d5597f17955564f546da8269d6be21b1b66ff8471aa2d77",
+          "mode": "100644",
+          "payload_file": "tests/dxmt/pairing/pairing_native.m",
+          "payload_sha256": "a5224ea8da15172b1d5597f17955564f546da8269d6be21b1b66ff8471aa2d77"
+        },
+        {
+          "path": "dlls/winemac.drv/pear_metal_protocol.h",
+          "before_sha256": null,
+          "after_sha256": "64354b4685d66a22e7c565b20f30a1386bfa7e22c0220de9219ff78a9dbece91",
+          "mode": "100644",
+          "payload_file": "tests/dxmt/pairing/protocol.h",
+          "payload_sha256": "64354b4685d66a22e7c565b20f30a1386bfa7e22c0220de9219ff78a9dbece91"
+        },
+        {
+          "path": "dlls/winemac.drv/unixlib.h",
+          "before_sha256": "fa5b6dd79f04bf0aad74e032398a26773b8bba7267ee0607a791a614354f2443",
+          "after_sha256": "54bcf19a48355409cb8c770bdab0a011914aef8195c37a14d8aeba46b0f99bdc",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "dlls/winemac.drv/window.c",
+          "before_sha256": "6f4c8879161c7a231e562b26d16852bc1a1048b9a431a018cfbd2b9399fc2533",
+          "after_sha256": "de2443efcfbb8d067540a90d555c5819b233601be791ef943294eb50fae09305",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "dlls/winemac.drv/winemac.drv.spec",
+          "before_sha256": "c5eb7b6098795cc4aa185cee6f64fdff7f5a9dc716df963c0c68c577e7d7a2ae",
+          "after_sha256": "593d9d7e1ed438a7b6352b9e0c0fedd102037f927a4ce52d980b4a737daef1a5",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        }
+      ]
+    },
+    {
+      "component": "dxmt",
+      "path": "dxmt/0001-consume-typed-metal-lease.patch",
+      "sha256": "4afcd5ac752b8caa8547430b9f760816c5c218af949fd88326745ec879114918",
+      "license": "LGPL-2.1-or-later (integration); MIT original private header/fixtures retain notices",
+      "provenance": "Original Pear graphics-only supplement against pinned unmodified inputs and retained historical Wine source. Native fixture headers copied unchanged from selected DXMT.",
+      "changes": [
+        {
+          "path": "src/winemetal/unix/pear_dxmt_metal_proxy.h",
+          "before_sha256": null,
+          "after_sha256": "63218576d4e46c11cc8bc17dfd0c8b3179135c4d7758584dae229a2df7beeec0",
+          "mode": "100644",
+          "payload_file": "runtime/dxmt/patches/payloads/pear_dxmt_metal_proxy.h",
+          "payload_sha256": "63218576d4e46c11cc8bc17dfd0c8b3179135c4d7758584dae229a2df7beeec0"
+        },
+        {
+          "path": "src/winemetal/unix/pear_macdrv_metal_v1.h",
+          "before_sha256": null,
+          "after_sha256": "7a19ce6b49c19ab7603ff875d6e9d92ababa92dd1202fb3c912f02c2f6e5275d",
+          "mode": "100644",
+          "payload_file": "runtime/dxmt/patches/include/pear_macdrv_metal_v1.h",
+          "payload_sha256": "7a19ce6b49c19ab7603ff875d6e9d92ababa92dd1202fb3c912f02c2f6e5275d"
+        },
+        {
+          "path": "src/winemetal/unix/winemetal_unix.c",
+          "before_sha256": "784a4ae87ecd2f164bc893cec43452f91de830ec7b5c02bb9c8d568be0dfb769",
+          "after_sha256": "24b588b1234a2072ac7bb9832bb838dd06ada7b424af173b1bf7172195098d7a",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        },
+        {
+          "path": "src/winemetal/winemetal_thunks.c",
+          "before_sha256": "715d015ca94a3a72d7b4dab0dd9254f423cdf9ee7886ca2dde319c9a30328a07",
+          "after_sha256": "8aad868d813600769508b83a741eb4c767b806d7541f3c6ac9d47661e00e310d",
+          "mode": "100644",
+          "payload_file": null,
+          "payload_sha256": null
+        }
+      ]
+    }
+  ]
+}

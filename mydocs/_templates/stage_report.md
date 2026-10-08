@@ -26,6 +26,8 @@ Context used: {applicable specifications/scoped rules, approved reuse decision a
 
 Execution context: {actual tool/platform versions and availability, relevant settings, input/test identity and whether this was source review, a fixture, host or game execution. Separate diagnostics from performance runs.}
 
+Evidence reuse: {identify prior input/revision-bound evidence and its unchanged claim scope, or `None`; list changes that invalidated prior evidence and the checks actually repeated. Reused results are not newly executed checks and do not replace approved required checks.}
+
 Command run:
 
 ```bash
