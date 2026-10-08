@@ -3,7 +3,7 @@
 Issue: [#5](https://github.com/postmelee/pear/issues/5)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Task scope: [task plan](task_m1_5.md)
-Updated: October 7, 2026. State: Stages 3/4/5 completed locally; Stage 6 fresh reconstruction awaits continuation.
+Updated: October 8, 2026. State: Stages 3/4/5 completed locally; Stage 6 fresh reconstruction approved and in progress.
 
 ## Authority and approved direction
 
@@ -25,6 +25,34 @@ implementing Stage 5, maximizing upstream reuse. Stage 5 is approved after the
 Stage 3/4 completion reports and local commits; Stage 6 keeps its later checkpoint.
 No GitHub publication, Issue
 closure, game support or general distribution is authorized by this continuation.
+
+## October 8 reuse-document coordination
+
+The requester authorized issue/development-document updates from the reviewed
+reuse investigation and handoff to this implementation session. The coordinator
+supplied an exact two-document patch and location judgment; this authorizes the
+documentation adoption below. The source conversation subsequently clarified
+that the requester also explicitly directed the next planned work: Stage 6 fresh
+paired reconstruction and required final checks. This clarification resolves the
+earlier coordinator caution; it authorizes no owner redesign, publication, merge,
+Issue closure or project-license choice. Historical passing reports remain unchanged.
+
+| Artifact | Approved existing location | Location judgment |
+|---|---|---|
+| Upstream function/component and license review | `docs/research/platform-reuse.md` | Extend the existing contributor-facing reuse record; no duplicate research page |
+| Diagnostic overlap and acceptance sequence | `docs/delivery-plan.md` | Keep the single roadmap; preserve all M1 criteria and dependency tables |
+| Adoption and current implementation state | This plan and the existing integration checkpoint | Internal task record, preserving historical stage reports |
+
+Retain the passing FEX/Wine/DXMT path and original implementation languages.
+Before new blocking boundary code, compare FEX/Hangover/Madeira functions and
+complete dependency sets, then record adopt/adapt/reject with a concrete reason.
+The current owner is reviewable; replacement requires a demonstrated macOS
+benefit and its own reviewed scope. Do not revive the historical 256 KiB limit.
+Use existing Madeira ASM-to-PE tooling as a #6 review candidate, DXMT `tests/dx11`
+for #8, and DepotDownloader/SteamKit2 for acquisition before new equivalents.
+GPL/LGPL reuse is a valid reviewed option with component-specific obligations.
+Diagnostic game startup and helper architecture inspection do not waive final
+CPU/graphics/Steam/game qualification or imply a supported release.
 
 ## Read first; retrieve history only when needed
 

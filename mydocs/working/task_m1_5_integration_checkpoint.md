@@ -363,3 +363,29 @@ All 24 integration patches independently replay over 15 files. Eight completed
 synthetic prefixes were removed after process checks; receipts/logs/runtime
 inputs/templates and failures remain. Stage 5 is complete locally; Stage 6 fresh
 reconstruction still requires continuation. No GitHub write or Issue closure.
+
+## Reviewed reuse guidance adopted — October 8
+
+The authorized documentation handoff was applied to the existing platform reuse
+record and single delivery plan, after recording their location judgment in the
+implementation plan. This is a documentation checkpoint, not Stage 6 execution.
+The original M1 completion criteria, core backlog, proposed M2 and independent
+CPU-engine sections remain byte-identical to the Stage 5 commit. Runtime source
+and historical stage reports are unchanged.
+
+The coordinator updated Issue bodies #5, #6, #8, #9 and #11. Independent readback
+matched all five delivered bodies and confirmed unchanged titles, states and
+milestones. Local documentation bytes match the reviewed patch; relative links
+and whitespace checks passed. No runtime regression was repeated for prose-only
+changes. Private verification receipts are retained in
+`/private/tmp/pear-task5-reuse-integration-20261008`.
+
+Reuse decisions preserve the existing FEX/Wine/DXMT languages and passing owner,
+require complete upstream dependency and license review before new boundary
+code, and identify existing CPU, graphics and acquisition tools for later tasks.
+They do not impose the old 256 KiB prototype limit, waive qualification gates,
+choose Pear's license or authorize a runtime rewrite. Stage 6 fresh reconstruction
+was subsequently confirmed as authorized by the source conversation's explicit
+human instruction to continue the planned next work. The earlier approval-wait
+interpretation is superseded; fresh reconstruction and required checks may proceed.
+This local documentation commit does not publish runtime code or close Issue #5.
