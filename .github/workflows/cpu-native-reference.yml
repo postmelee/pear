@@ -79,6 +79,8 @@ jobs:
           BUILD_ROOT: ${{ runner.temp }}/pear-cpu-build
           RESULT_ROOT: ${{ runner.temp }}/pear-cpu-results
         run: |
+          git -c core.autocrlf=false checkout-index --force -- tests/cpu/ordering.c tests/cpu/ordering.asm
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -B tools/cpu/ordering.py native --build "$env:BUILD_ROOT" --output "$env:RESULT_ROOT"
           exit $LASTEXITCODE
       - name: Preserve complete or failed native observations

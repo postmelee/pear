@@ -112,7 +112,7 @@ def native(build_root,output):
     require(not output.exists(),'output_exists');output.mkdir(parents=True)
     result=dict(scope='ordering_native_reference',passed=False)
     try:
-        built=admit_ordering_build(build_root);result['host']=native_host()
+        result['host']=native_host();built=admit_ordering_build(build_root)
         result['build_sha256']=digest((build_root/'build.json').read_bytes())
         stdout=output/'stdout';stderr=output/'stderr';start=time.monotonic()
         with stdout.open('xb') as out,stderr.open('xb') as err:
@@ -128,6 +128,9 @@ def native(build_root,output):
         events=[decode(line) for line in stdout.read_bytes().splitlines() if line.strip()]
         result['assessment']=assess(events,built['iterations'],built['rounds'],child.returncode)
         result['passed']=True
+    except Exception as exc:
+        result['error']=dict(type=type(exc).__name__,code=str(exc) if isinstance(exc,ValueError) else 'native_execution_error')
+        raise
     finally:
         (output/'results.json').write_bytes(canonical(result))
     print(json.dumps(result))

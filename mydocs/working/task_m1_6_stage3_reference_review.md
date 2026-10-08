@@ -22,3 +22,9 @@ Local calibration passed only after correcting a stale shared JIT target. Its
 32,768-pair qualification result. Two original failures are preserved privately.
 Stage 3 completion still requires the actual native/Pear comparison and affected
 lifecycle regressions; no game, i386, universal concurrency or distribution claim.
+
+The first remote attempt (37756093282) failed before guest execution because
+Windows checkout converted the two original source files to CRLF. Keep strict
+source hashes; materialize those two tracked fixture files with autocrlf disabled
+from the runner's index before admission. No PE bytes or expected outcomes change.
+Native capture also retains an explicit admission-error record on failure.
