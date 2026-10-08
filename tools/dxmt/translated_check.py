@@ -54,8 +54,14 @@ def device(run,runtime):
     value=read(runtime/'runtime.json');r,raw=boundary(run,runtime,value)
     need(r['fixture_id']=='device' and r['fixture_sha256']==value['fixtures']['device']['sha256'],'translated_fixture_binding')
     modules=terminal(raw[('loader','stdout')]);stderr=raw[('loader','stderr')]
+    backend(run,runtime,value,r,raw,modules)
+    return dict(passed=True,scope='translated_device_only',run_ref=fact(run/'case.json'),runtime_ref=fact(runtime/'runtime.json'),
+                no_rosetta_in_observed_processes_and_images=True,complete_late_load_coverage=False,game_qualified=False)
+
+def backend(run,runtime,value,r,raw,modules):
+    stderr=raw[('loader','stderr')]
     loader=next(x for x in r['launches'] if x['role']=='loader')
-    need(loader['argv'][-1]==str(runtime/value['fixtures']['device']['path']),'translated_fixture_launch')
+    need(loader['argv'][-1]==str(runtime/value['fixtures'][r['fixture_id']]['path']),'translated_fixture_launch')
     pid=r['processes']['loader']['identity']['pid']
     for marker in ('Metal API Validation Enabled','Metal GPU Validation Enabled'):
         need(re.search(rb'wine\['+str(pid).encode()+rb':\d+\] '+marker.encode(),stderr) is not None,'translated_validation_unobserved')
@@ -73,8 +79,6 @@ def device(run,runtime):
         expected=str((runtime/signing.PAYLOAD/'lib/wine/aarch64-unix'/name).resolve())
         need(any(str(Path(e['path']).resolve())==expected for e in images),'translated_backend_image_missing')
     need(any('/Metal.framework/' in e['path'] for e in images),'translated_metal_unobserved')
-    return dict(passed=True,scope='translated_device_only',run_ref=fact(run/'case.json'),runtime_ref=fact(runtime/'runtime.json'),
-                no_rosetta_in_observed_processes_and_images=True,complete_late_load_coverage=False,game_qualified=False)
 
 def stage_one(index_path):
     from tools.dxmt.translated_runtime import admit_build
@@ -116,12 +120,16 @@ def stage_one(index_path):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run',type=Path)
     p.add_argument('--runtime',type=Path);p.add_argument('--require-stage',type=int)
-    p.add_argument('--qualification',type=Path)
+    p.add_argument('--qualification',type=Path);p.add_argument('--pairing',type=Path)
     a=p.parse_args()
     if a.qualification:
         need(a.require_stage==1,'translated_stage_not_implemented')
         v=stage_one(a.qualification.resolve())
     else:
-        need(a.run is not None and a.runtime is not None and a.require_stage is None,'translated_stage_requires_full_index')
-        v=device(a.run.resolve(),a.runtime.resolve());save(a.run/'device-assessment.json',v)
+        need(a.run is not None and a.runtime is not None and a.require_stage in (None,2),'translated_stage_requires_full_index')
+        if a.require_stage==2:
+            from tools.dxmt.translated_render_check import verify
+            v=verify(a.run.resolve(),a.runtime.resolve(),a.pairing.resolve() if a.pairing else None);save(a.run/'rendering-assessment.json',v)
+        else:
+            v=device(a.run.resolve(),a.runtime.resolve());save(a.run/'device-assessment.json',v)
     print(json.dumps(v))

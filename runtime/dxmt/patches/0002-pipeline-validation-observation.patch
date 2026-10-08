@@ -1,0 +1,32 @@
+--- a/src/winemetal/unix/winemetal_unix.c
++++ b/src/winemetal/unix/winemetal_unix.c
+@@ -390,6 +390,14 @@
+       info->fail_on_binary_archive_miss ? MTLPipelineOptionFailOnBinaryArchiveMiss : MTLPipelineOptionNone;
+   params->ret_pso =
+       (obj_handle_t)[device newComputePipelineStateWithDescriptor:descriptor options:options reflection:nil error:&err];
++  // Query the actual created pipeline, without changing its descriptor or policy.
++  if (getenv("PEAR_METAL_PIPELINE_OBSERVE") && params->ret_pso) {
++    if (@available(macOS 15.0, *)) {
++      id<MTLComputePipelineState> pipeline = (id<MTLComputePipelineState>)params->ret_pso;
++      fprintf(stderr, "PEAR_METAL_PIPELINE kind=compute validation=%ld function=%s\n",
++              (long)pipeline.shaderValidation, [descriptor.computeFunction.name UTF8String]);
++    }
++  }
+   params->ret_error = (obj_handle_t)err;
+   if (!err && info->binary_archive_for_serialization) {
+     [(id<MTLBinaryArchive>)info->binary_archive_for_serialization addComputePipelineFunctionsWithDescriptor:descriptor
+@@ -575,6 +583,14 @@
+                                                                                               options:options
+                                                                                            reflection:nil
+                                                                                                 error:&err];
++  // Query the actual created pipeline, without changing its descriptor or policy.
++  if (getenv("PEAR_METAL_PIPELINE_OBSERVE") && params->ret_pso) {
++    if (@available(macOS 15.0, *)) {
++      id<MTLRenderPipelineState> pipeline = (id<MTLRenderPipelineState>)params->ret_pso;
++      fprintf(stderr, "PEAR_METAL_PIPELINE kind=render validation=%ld function=%s\n",
++              (long)pipeline.shaderValidation, [descriptor.vertexFunction.name UTF8String]);
++    }
++  }
+   params->ret_error = (obj_handle_t)err;
+   if (!err && info->binary_archive_for_serialization) {
+     [(id<MTLBinaryArchive>)info->binary_archive_for_serialization addRenderPipelineFunctionsWithDescriptor:descriptor

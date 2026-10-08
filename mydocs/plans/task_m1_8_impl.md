@@ -3,7 +3,7 @@
 Task plan: [task_m1_8.md](task_m1_8.md), approved October 8, 2026.
 GitHub Issue: [#8](https://github.com/postmelee/pear/issues/8)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: Stage 1 complete; Stage 2 awaiting explicit continuation.
+Status: Stages 1 and 2 complete; Stage 3 awaiting explicit continuation.
 
 ## Stage Overview
 
@@ -168,6 +168,14 @@ shader build/source identities. Use source-built `d3dcompiler_47` after its path
 admitted; otherwise select a separately justified redistributable shader route
 within the approved source/tool constraints. No commercial-runtime extraction.
 
+Stage 2 keeps `translated.cpp` and its build producer unchanged. The new
+`translated_rendering.cpp`, embedded `translated.hlsl` and fixture-only runtime
+overlay stay inside the approved test/tool roots. Existing Wine/FEX/DXMT bytes
+are reused; signature-only changes are checked against the Stage 1 parent.
+This preserves the scope of Stage 1 CPU/native evidence without rerunning it
+for a fixture-only addition. D3DCompile setup was reviewed against pinned DXMT
+`tests/dx11/dx11_triangle.cpp`; all new fixtures/shaders are original MIT code.
+
 Freeze these small cases before running them:
 
 | Case | Operation | Independent expected outcome |
@@ -188,17 +196,78 @@ record current pipeline instrumentation and review stderr/system evidence if
 needed. Do not require an unrelated GPU capture when readback and diagnostics
 already decide correctness. Reduce any required failure before patching.
 
+### Pipeline instrumentation observation
+
+`rendering2` and `rendering3` produced correct results and actual loader API/GPU
+validation banners. Neither retained system logs nor a loader-PID-scoped live
+`log stream` exposed the documented pipeline UIDs. Do not infer individual
+pipeline instrumentation from the launch environment or banners alone.
+
+Inside the approved native DXMT integration scope, add an independently hashed
+`runtime/dxmt/patches/0002-pipeline-validation-observation.patch`, built by
+`tools/dxmt/translated_pipeline_build.py`. Immediately after the two existing
+pipeline factories return, query their public read-only `shaderValidation`
+property, guarded by macOS availability and the explicit observation setting.
+The SDK's `MTLShaderValidationEnabled` value is 1. Preserve descriptors, functions,
+resource ownership and exception behavior. Record function names and actual
+state; disabled/unknown state fails qualification. Source-built archives and
+all unchanged objects are reused; only one native object and winemetal are linked.
+These are existing approved `runtime/dxmt/patches/` and `tools/dxmt/` locations,
+not a new public contract or product-documentation destination.
+
+The final overlay may now change winemetal code for this observation, but every
+CPU/loader/Wine PE/FEX byte must still match Stage 1 (signature fields excepted).
+Repeat the native 39-case pairing oracle and translated device check on this
+candidate, alongside rendering. CPU/ordering evidence retains its unchanged-code
+scope; no new CPU qualification follows. Pipeline state and selected Apple
+system diagnostics must be bound to the actual loader PID and input receipts.
+
+### First-run reduction
+
+`rendering1` compiled all four shaders and read the buffer correctly, then raised
+`EXCEPTION_DATATYPE_MISALIGNMENT` in compiler-generated guest pattern construction:
+`movw $0x47ff,-0x10(%rdx)`, with RDX ending in `0xaaf`, crossing a 16-byte boundary.
+The current owned exception path does not implement delivered unaligned repair;
+upstream's raw JIT-writing handler is intentionally disabled in this profile.
+This is a real CPU limitation, not a Metal result or a repaired failure.
+
+Use the same declared texture bytes as immutable compile-time data to isolate
+Stage 2's upload/sampling operations. No expected values, TSO policy, exception
+handling or native runtime bytes change. Preserve the original PE/run and carry
+unaligned repair as a blocking game-readiness follow-up; do not infer general
+x64 instruction support from a bounded rendering pass. A delivered repair would
+need source snapshot/quiescence integration and affected CPU regression checks.
+
 ### Verification
 
 ```sh
-python3 -B -m tools.dxmt.translated_run --runtime "$PEAR_GRAPHICS_RUNTIME" --suite rendering --output .build/task8/rendering1
-python3 -B -m tools.dxmt.translated_check --run .build/task8/rendering1 --require-stage 2
+python3 -B -m tools.dxmt.translated_run --runtime .build/task8/render-runtime4 --reuse "$PEAR_GRAPHICS_REPO" --suite rendering --output .build/task8/rendering5
+python3 -B -m tools.dxmt.translated_run --runtime .build/task8/render-runtime4 --reuse "$PEAR_GRAPHICS_REPO" --suite device --output .build/task8/device8
+python3 -B -m tools.dxmt.translated_check --run .build/task8/device8 --runtime .build/task8/render-runtime4
+python3 -B - <<'PAIRING'
+from pathlib import Path
+import fcntl
+from tools.dxmt.translated_pairing import run, verify
+r = Path('.build/task8').resolve()
+reuse = Path(__import__('os').environ['PEAR_GRAPHICS_REPO'])
+with open('/private/tmp/pear-native-compilation.lock', 'a+') as lock:
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    run(r/'render-runtime4', r/'pairing6', reuse, r/'device8')
+    print(verify(r/'render-runtime4', r/'pairing6'))
+PAIRING
+python3 -B -m tools.dxmt.translated_check --run .build/task8/rendering5 --runtime .build/task8/render-runtime4 --pairing .build/task8/pairing6 --require-stage 2
 python3 -B -m unittest discover -s tests/dxmt -p 'test_translated_results.py'
 git diff --check
 ```
 
-Use the newly built exact fixture/shader payload and matching signed runtime;
-preparation reuses Stage 1 commands with fresh output paths. Expected: all five
+Preparation uses `translated_render_build --parent .build/task8/build3`,
+`translated_pipeline_build --parent .build/task8/build3`, and
+`translated_render_runtime --parent .build/task8/runtime7 --build .build/task8/render-build2
+--stage1 .build/task8/stage1/stage.json --pipeline-build .build/task8/pipeline-build3`,
+each with the fresh output directory selected above. The graphics-repository
+variable names the retained #7 worktree; paths are private, not distribution inputs.
+The final overlay recalculates signed dependency closures at its actual location;
+earlier copied parent closures were not sufficient final metadata. Expected: all five
 cases complete and match, actual backend/policy admitted, no required validation
 error, original errors retained, authorization and owned cleanup pass. No frame
 rate or power conclusion. Commit: `Task #8 Stage 2: qualify translated rendering and readback`.

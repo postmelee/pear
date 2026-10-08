@@ -36,6 +36,10 @@ def run(runtime,output,reuse,case_id,sync_diagnostic=False,memory_diagnostic=Fal
         from tools.dxmt.translated_fex import admit_build as admit_fex
         need(fact(value['fex_correction_ref']['path'])==value['fex_correction_ref'],'translated_fex_runtime_ref')
         admit_fex(Path(value['fex_correction_ref']['path']).parent)
+    if 'rendering_overlay' in value:
+        from tools.dxmt.translated_render_runtime import admit as admit_rendering
+        admit_rendering(runtime)
+    need(case_id!='rendering' or 'rendering_overlay' in value,'rendering_runtime_required')
     fixture=value['fixtures'][case_id]
     need(H((runtime/fixture['path']).read_bytes())==fixture['sha256'],'cpu_fixture_changed')
     value['entrypoints']['fixture_pe']=fixture['path']
@@ -66,6 +70,10 @@ def run(runtime,output,reuse,case_id,sync_diagnostic=False,memory_diagnostic=Fal
         env=supervisor.environment(work/'work',prefix,nonce,os.environ.get('HOME'))
         env['WINEDEBUG']='-all,+loaddll,+seh,+module'
         env.update(METAL_ENV)
+        if case_id=='rendering':
+            env.update(PEAR_METAL_PIPELINE_OBSERVE='1',MTL_SHADER_VALIDATION_DUMP_PIPELINES='1',MTL_SHADER_VALIDATION_DEFAULT_STATE='all',
+                       MTL_SHADER_VALIDATION_ENABLE_ERROR_REPORTING='1',MTL_SHADER_VALIDATION_GLOBAL_MEMORY='1',
+                       MTL_SHADER_VALIDATION_TEXTURE_USAGE='1')
         if sync_diagnostic:env['WINEDEBUG']='-all,+loaddll,+seh,+sync,+thread'
         if memory_diagnostic:env['WINEDEBUG']='-all,+virtual,+module,+seh'
         paths={k:runtime/v for k,v in value['entrypoints'].items()}
