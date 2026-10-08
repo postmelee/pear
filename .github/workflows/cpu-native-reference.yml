@@ -1,0 +1,96 @@
+name: Task 6 native x64 CPU reference
+
+'on':
+  push:
+    branches: [codex/publish-task6]
+    paths:
+      - '.github/workflows/cpu-native-reference.yml'
+      - 'tools/cpu/**'
+      - 'tools/wine/common.py'
+      - 'tests/cpu/**'
+      - 'tests/fex/guest_*.c'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: task6-native-reference
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build pinned assembler and prepare cross compiler
+        shell: bash
+        env:
+          TOOL_ROOT: ${{ runner.temp }}/pear-cpu-tools
+        run: |
+          set -euo pipefail
+          mkdir "$TOOL_ROOT"
+          cd "$TOOL_ROOT"
+          curl --fail --location --retry 2 --max-time 120 -o nasm.tar.xz https://www.nasm.us/pub/nasm/releasebuilds/3.02/nasm-3.02.tar.xz
+          echo '87336eba53b4acfe917424ab5d500d2b0054d9f5148d35c2273ccf2cfb712f0d  nasm.tar.xz' | sha256sum -c -
+          tar -xf nasm.tar.xz
+          cd nasm-3.02
+          ./configure CFLAGS=-O2
+          make -j2 nasm
+          cd "$TOOL_ROOT"
+          curl --fail --location --retry 2 --max-time 180 -o llvm.tar.xz https://github.com/mstorsjo/llvm-mingw/releases/download/20260908/llvm-mingw-20260908-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo '2258c745e3155870c80793f3e8c80b28fbde11b9ff73c4c78783635b3440b092  llvm.tar.xz' | sha256sum -c -
+          tar -xf llvm.tar.xz
+      - name: Check result refusal behavior and build exact PE inputs
+        shell: bash
+        env:
+          TOOL_ROOT: ${{ runner.temp }}/pear-cpu-tools
+          BUILD_ROOT: ${{ runner.temp }}/pear-cpu-build
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest discover -s tests/cpu -p 'test_ordering_results.py' -v
+          python3 -B tools/cpu/ordering.py build --iterations 2048 --rounds 4 --output "$BUILD_ROOT" --nasm "$TOOL_ROOT/nasm-3.02/nasm" --clang "$TOOL_ROOT/llvm-mingw-20260908-ucrt-ubuntu-22.04-x86_64/bin/clang"
+          python3 -B tools/cpu/ordering.py build --iterations 64 --rounds 2 --output "$BUILD_ROOT/calibration" --nasm "$TOOL_ROOT/nasm-3.02/nasm" --clang "$TOOL_ROOT/llvm-mingw-20260908-ucrt-ubuntu-22.04-x86_64/bin/clang"
+      - name: Retain exact redistributable PEs and corresponding source
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: task6-ordering-pe
+          path: ${{ runner.temp }}/pear-cpu-build
+          if-no-files-found: error
+          retention-days: 14
+
+  reference:
+    needs: build
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: task6-ordering-pe
+          path: ${{ runner.temp }}/pear-cpu-build
+      - name: Observe native architecture and run the exact ordering PE
+        shell: pwsh
+        env:
+          BUILD_ROOT: ${{ runner.temp }}/pear-cpu-build
+          RESULT_ROOT: ${{ runner.temp }}/pear-cpu-results
+        run: |
+          git -c core.autocrlf=false checkout-index --force -- tests/cpu/ordering.c tests/cpu/ordering.asm
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B tools/cpu/ordering.py native --build "$env:BUILD_ROOT/calibration" --output "$env:RESULT_ROOT/calibration"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B tools/cpu/ordering.py native --build "$env:BUILD_ROOT" --output "$env:RESULT_ROOT/qualification"
+          exit $LASTEXITCODE
+      - name: Preserve complete or failed native observations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: task6-ordering-results
+          path: ${{ runner.temp }}/pear-cpu-results
+          if-no-files-found: error
+          retention-days: 14

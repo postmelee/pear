@@ -1,0 +1,31 @@
+--- a/FEXCore/Source/Interface/Core/PearJITLinks.cpp
++++ b/FEXCore/Source/Interface/Core/PearJITLinks.cpp
+@@ -186,13 +186,13 @@
+   }
+   auto Life=Memory::AcquireCurrentSourceLifetime(D ? D->SourceContext : nullptr);
+   if (!D || !Life || Life.ActualThread()!=Thread || !Registry::ThreadMatches(D->SourceContext,Thread))
+-    return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++    { LogMan::Msg::EFmt("Pear link refusal: source identity"); return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0}); }
+   const auto Bound=Memory::BindSourceThread(Thread); if (!Bound) return R.Poison(Bound);
+   auto Before=D->Owner->GetPearSnapshot(), A=Before;
+-  if (!Registry::Identity(*D,A)) return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0});
++  if (!Registry::Identity(*D,A)) { LogMan::Msg::EFmt("Pear link refusal: allocation identity"); return R.Poison({PEAR_FEX_STALE_IDENTITY,0,0}); }
+   // All invalidation/lookup/list/Latest/ThreadCreation locks are absent here.
+   Memory::WriteGuard W {A,D->Layout.WriteOffset,D->Layout.WriteSize};
+-  if (!W) return R.Poison(W.Status());
++  if (!W) { LogMan::Msg::EFmt("Pear link refusal: write guard status {}",W.Status().Status); return R.Poison(W.Status()); }
+   bool Valid {};
+   {
+     auto Invalidation=GuardSignalDeferringSection<std::shared_lock>(D->SourceContext->CodeInvalidationMutex,Thread);
+@@ -201,6 +201,11 @@
+     Valid=Registry::ThreadMatches(D->SourceContext,Thread) && D->SourceContext->GetPearInvalidationRevision()==Revision &&
+       Thread->LookupCache->Shared==D->Owner->LookupCache.get() && Found!=Thread->LookupCache->Shared->BlockList.end() &&
+       Found->second.HostCode==D->HostDestination && Registry::Matches(*D,W);
++    if (!Valid) LogMan::Msg::EFmt("Pear link validation thread={} revision={} map={} found={} host={} bytes={} guest={:x}",
++      Registry::ThreadMatches(D->SourceContext,Thread),D->SourceContext->GetPearInvalidationRevision()==Revision,
++      Thread->LookupCache->Shared==D->Owner->LookupCache.get(),Found!=Thread->LookupCache->Shared->BlockList.end(),
++      Found!=Thread->LookupCache->Shared->BlockList.end() && Found->second.HostCode==D->HostDestination,
++      Registry::Matches(*D,W),D->GuestDestination);
+     if (Valid) Registry::Apply(*D,W,false);
+   }
+   if (!Valid) return R.RefuseOpen(*D,Before,A,W,{PEAR_FEX_STALE_IDENTITY,0,0});

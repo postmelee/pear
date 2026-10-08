@@ -1,0 +1,368 @@
+{
+  "cases": [
+    {
+      "evidence": {
+        "arm64_image_events": 16437,
+        "authorization_before_after": true,
+        "case_sha256": "0c4992cba224c5515658517459523e281ea01767cf58dbfbc0c4103c04756387",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "zero-extension",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "dad0b0cabcd7838e451ab771a5027335bbbcdc0c5ce1237789d24fc30b7bf26f",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "carry-widths",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "f7eda4b4fc6de6fba3e1aea3c2090c0306936a3b6b8948903b8611de9d3378ff",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "xor-flags",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "ccfe395b244d25d619924e7eae8f022c0f0888a56284b61ecbcb3716a8a69a1f",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "zero-shift-flags",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "896380ab11e9d5f3f8cc0a199b21f8c6243a566a9a6f7d30641accb31ab2b1bb",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "cmpxchg-eax",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "27bade0659dd4389e0fdc913daab2963399df002b3f87c1f4bceaff3a79fb837",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "xadd-widths",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "3ca87d1f50db630da27ac9277ce0e279745a3d351975f046f33c7dac10e952cc",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "packed-float-add",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "9b506d2b391dad1e8fa723cc0674d18c53ee428edfda33a3e7c18402ebe0d7cd",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "scalar-double-add",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "3ec89fe30aff897f5c19ceef3a3550289dc81373425dd11039d70346224b93d9",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "float-to-integer",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "385c4f38bd4706d85c95f0ce9de30e2593a3feb5bfd3333f7f0ef9e698bcb2ff",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "configured-memory",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "a05a6a37531f301e6af601bb4eb6cd253a582989308b24af489aab8b8200ca7a",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "absolute-displacement",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "0bc9f279e927eb536bfddb2285766eb8d36165e7219a94a62a9bc6603b643062",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "avx-lane-preservation",
+      "status": "unsupported_not_exposed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16437,
+        "authorization_before_after": true,
+        "case_sha256": "cd715f5079433965e1515b82f8bdc03a2272adbe558597f1c9fb2c047054d2d0",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "api-callback",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "adf295ef6899b1c0bb885e9d354c328042b53aaf4b53aa7ecb0008c30b23d2b8",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "tls-thread",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "d819a67e5ac2f2110468106c5833efb1ab930b88d86c44043a7252ec353e2662",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "guest-fault-guard",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "eab123bb4fadd541d8e5f94b81ec9bdb58f3b0a0cc7b392fe774484b572c3cf8",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "code-invalidation",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "1ba90473bf73b7b75401f9806277cf1612728c5ba3e898a85d1f07334dc07695",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "suspend-context",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "3a2ee7d0af0aa1764334e00451988df2fcaba783dacfcbec3a5e04e07d3eb639",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "abi-state",
+      "status": "passed"
+    },
+    {
+      "evidence": {
+        "arm64_image_events": 16439,
+        "authorization_before_after": true,
+        "case_sha256": "8eb13654202cbbe075fe99183ab5a8d7b34b070c557288119e119966ea99003f",
+        "cleanup_complete": true,
+        "late_load_coverage_complete": false,
+        "runtime_sha256": "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+        "sentinel_survived": true,
+        "translation_observations": 41
+      },
+      "id": "seh-unwind",
+      "status": "passed"
+    }
+  ],
+  "checked_worker_retirements": 8,
+  "component_identity": {
+    "fex_build_sha256": "d2a20605cabd9501fe2ce36e1acfb66b5f553d11cebfd2f2d6572920923a7f88",
+    "fex_dll_sha256": "2925abaafea4d4c3293c30e778629208b507d9690e7d2b128e9b500733608364",
+    "fixture_bundle_sha256": [
+      "00d444592a45b4afbda83c79805d4d8939cdedab27972af3c6ea0488845a98fe",
+      "4995218b3a4d502aa5fbf35291a990047e38b6531bd2390b41db986e38215bd2"
+    ],
+    "input_receipts": {
+      "fex": "d2a20605cabd9501fe2ce36e1acfb66b5f553d11cebfd2f2d6572920923a7f88",
+      "fixture": "4d183f1764d53b8752e53c13cda77e00fcda005bf6880fb4e32fe335ca8d3739",
+      "linked": "d2a20605cabd9501fe2ce36e1acfb66b5f553d11cebfd2f2d6572920923a7f88",
+      "paired": "f590ffab548efbc06a9f53486e93212431fb1c7f6fd32dd6f17e9962171e56e1"
+    },
+    "native_code_origins": 40,
+    "same_authorization": true,
+    "same_runtime_configuration": true
+  },
+  "corpus_sha256": "c6ad9b39b475d1dbd7f0fbe377c50022a11d32d7b08e967e684b2250d1d593f9",
+  "game_qualified": false,
+  "isa_comparison_sha256": "ec488f672152e690a9c8c49ec41e0abe763951322665fe174f939c0fab109711",
+  "native_references": [
+    {
+      "build_sha256": "77a734c951322789ef364de84b830ed803798e93f8da65311a1bbe9bb13293f3",
+      "head_sha": "03ebc15bac561cc36e6403b178b6cf11d479c1cb",
+      "results_sha256": "f4034a541ef48e6e31d125c75ef10b831eb06c357be2ce89e49f7192bb8e5a03",
+      "run_id": 37729128660
+    },
+    {
+      "build_sha256": "ec5a0852b361b6bc5fb5e4d4b890c1224889fb43c26bf3eb3357a2d39981d3e0",
+      "head_sha": "ba5658add1d412701ea0769af4d66777a9d4da33",
+      "results_sha256": "5200f307557ea83d5f2ac929f5da432c771d7d2bf67d30e75069abd33014ef3a",
+      "run_id": 37757016708
+    }
+  ],
+  "ordering": {
+    "actual_policy_records": 9,
+    "forbidden_outcomes": 0,
+    "hardware_tso_supported": false,
+    "iterations_per_mode": 2048,
+    "rounds": 4,
+    "simultaneous_participants": 3,
+    "software_tso": {
+      "memcpy": true,
+      "scalar": true,
+      "vector": true
+    }
+  },
+  "ordering_comparison_sha256": "76b7417aabbc325e15fd901ce4d8b62bbf9f14c3563c0f6523c3a583eb575de0",
+  "ordering_pairs_per_host": 32768,
+  "passed": true,
+  "passed_cases": 18,
+  "qualification_sha256": "e3f4cb3e695155fbdbe6a43ea39fe530b04c240ed015e8316b5733a03f6b12aa",
+  "retention": {
+    "ci_artifact_days": 14,
+    "current": [
+      "stage3-fex3",
+      "stage3-regression-runtime1",
+      "stage3-qualification-runtime1",
+      "stage3-qualification-run1",
+      "cpu-s3reg-*",
+      "stage4-candidate.json",
+      "stage4-qualification",
+      "native-build3",
+      "native-results3",
+      "stage3-native-pe3",
+      "stage3-native-results3"
+    ],
+    "dependency_worktrees": "Retain #1/#5/#7 inputs for downstream integration.",
+    "prefixes": "Completed owned synthetic prefixes removed after cleanup admission.",
+    "root": ".build/task6/",
+    "unique_failures": "See Stage 2 and Stage 3 retention records; preserved."
+  },
+  "reuse": {
+    "new_instruction_cases": 12,
+    "rebuilt_components": 0,
+    "reused_boundary_cases": 7,
+    "reused_ordering_run": true
+  },
+  "schema_version": 1,
+  "scope": "declared_x64_cpu_qualification",
+  "stage4_complete": true,
+  "unperformed": [
+    "complete late-loaded image coverage",
+    "Steam",
+    "D3D11 integration",
+    "Megabonk gameplay",
+    "independent Mac reproduction",
+    "ordinary-user distribution"
+  ],
+  "unsupported": [
+    "AVX exposure",
+    "i386/WoW64 execution"
+  ],
+  "unsupported_cases": [
+    "avx-lane-preservation"
+  ],
+  "worker_lifetimes": 8
+}

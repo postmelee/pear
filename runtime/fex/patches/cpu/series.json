@@ -1,0 +1,20 @@
+{
+  "patch": "0001-private-staging-label-references.patch",
+  "files": [
+    {
+      "path": "CodeEmitter/CodeEmitter/Emitter.h",
+      "before": "42795591aeda8ba80b6f9eafbddd5393b0e2f9c571c94acc2ca1b2f0c7fe5f13",
+      "after": "080edca22cba5563e40188fd5cbf97c8d7c7cfee5fbc23713b453a74359c0243"
+    },
+    {
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "before": "c72725e02cccef4196b1803eda1c774f98ed21cbf3b2959a8bac77edcc7a0685",
+      "after": "415dc26f1b8dbff1ccfc11e42d011df4733e49897ac8f3a1a37325b4dc7608b1"
+    },
+    {
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "before": "a7d57e1d3d7eb60981ae28c1960cb4a5ed82f1fa91a2fd4f1577d4ae099f8162",
+      "after": "beacee12f4ca4ff4ae5d25cea4cf600cb0fbddf0dc052e3048d990725cc3ae56"
+    }
+  ]
+}

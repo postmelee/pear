@@ -1,0 +1,104 @@
+diff --git a/CodeEmitter/CodeEmitter/Emitter.h b/CodeEmitter/CodeEmitter/Emitter.h
+--- a/CodeEmitter/CodeEmitter/Emitter.h
++++ b/CodeEmitter/CodeEmitter/Emitter.h
+@@ -551,14 +551,19 @@
+   Reference FirstInst;
+ 
+ #ifdef PEAR_FEX_MEMORY_OWNER
+-  // The finite owner emitter never allocates while executable bytes are writable.
+-  // Overflow is sticky and is propagated before dispatcher publication.
++  // Direct owner emission stays allocation-free. Private NX JIT staging may
++  // reuse the upstream vector for additional references before publication.
+   struct References {
+     Reference Items[16] {};
+     size_t Count {};
+     bool Overflow {};
+-    void push_back(const Reference& R) {
+-      if (Count==16) { Overflow=true;return; }
++    fextl::vector<Reference> Extra;
++    void push_back(const Reference& R, bool PrivateNX = false) {
++      if (Count==16) {
++        if (PrivateNX) Extra.push_back(R);
++        else Overflow=true;
++        return;
++      }
+       Items[Count++]=R;
+     }
+     Reference* begin() { return Items; }
+@@ -660,6 +665,30 @@
+   Emitter() = default;
+ #ifdef PEAR_FEX_MEMORY_OWNER
+   bool PearLabelFailure {};
++  // Only the existing checked private staging path enables vector growth.
++  // Reset the permission whenever the emitter changes its destination.
++  void SetBuffer(uint8_t* Base, uint64_t BaseSize) {
++    Buffer::SetBuffer(Base, BaseSize);
++    PearPrivateLabels = false;
++    PearLabelReferences = 0;
++  }
++  void SetPrivateStagingBuffer(uint8_t* Base, uint64_t BaseSize) {
++    SetBuffer(Base, BaseSize);
++    PEAR_FEX_REQUIRE(Base && BaseSize >= 4, "Pear private label buffer is unavailable");
++    PearPrivateLabels = true;
++  }
++private:
++  bool PearPrivateLabels {};
++  size_t PearLabelReferences {};
++  void AddLocationToLabel(ForwardLabel* Label, ForwardLabel::Reference&& Location) {
++    CheckRange(Location.Location, 4);
++    PEAR_FEX_REQUIRE(PearLabelReferences < GetBufferSize()/4,
++                     "Pear label references exceed the instruction buffer");
++    ++PearLabelReferences;
++    if (!Label->FirstInst.Location) Label->FirstInst = Location;
++    else Label->Insts.push_back(Location, PearPrivateLabels);
++  }
++public:
+ #endif
+ 
+   Emitter(uint8_t* Base, uint64_t BaseSize)
+@@ -826,6 +855,8 @@
+   [[nodiscard]] bool Bind(ForwardLabel* Label) {
+ #ifdef PEAR_FEX_MEMORY_OWNER
+     if (Label->Insts.Overflow) { PearLabelFailure=true;return false; }
++    PEAR_FEX_REQUIRE(PearPrivateLabels || Label->Insts.Extra.empty(),
++                     "Pear direct emitter received private label storage");
+ #endif
+     bool Bound = true;
+     if (Label->FirstInst.Location) {
+@@ -835,6 +866,7 @@
+       Bound &= Bind(&Inst);
+     }
+ #ifdef PEAR_FEX_MEMORY_OWNER
++    for (auto& Inst : Label->Insts.Extra) Bound &= Bind(&Inst);
+     PearLabelFailure |= !Bound;
+ #endif
+     return Bound;
+diff --git a/FEXCore/Source/Interface/Core/JIT/JIT.cpp b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+--- a/FEXCore/Source/Interface/Core/JIT/JIT.cpp
++++ b/FEXCore/Source/Interface/Core/JIT/JIT.cpp
+@@ -1367,7 +1367,13 @@
+     return Value >= Base && Value-Base <= UsableBufferRange && Bytes <= UsableBufferRange-(Value-Base);
+   };
+ #endif
++#ifdef PEAR_FEX_MEMORY_OWNER
++  // CompileCode already rejects an active owner writer. The allocator above
++  // supplies the existing ordinary NX staging buffer; publication is later.
++  SetPrivateStagingBuffer(TempCodeBuffer, UsableBufferRange);
++#else
+   SetBuffer(TempCodeBuffer, UsableBufferRange);
++#endif
+ 
+   ThreadState->JITGuardPage = reinterpret_cast<uintptr_t>(TempCodeBuffer) + UsableBufferRange;
+   ThreadState->JITGuardOverflowArgument = FEXCore::ToUnderlying(RestartOptions::Control::NeedsLargerJITSpace);
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -779,7 +779,7 @@
+   // Retain upstream fatal behavior but make its first bounded source reason
+   // observable even when the default general logging policy is silent.
+   LogMan::Msg::InstallHandler([](LogMan::DebugLevels Level,const char* Message) {
+-    if (Level!=LogMan::ERROR) return;
++    if (Level!=LogMan::ERROR && Level!=LogMan::ASSERT) return;
+     const auto Output=reinterpret_cast<int (*)(const char*)>(GetProcAddress(GetModuleHandleW(L"ntdll.dll"),"__wine_dbg_output"));
+     if (Output) { char Text[768]; snprintf(Text,sizeof(Text),"Pear FEX error: %.640s\n",Message); Output(Text); }
+   });
