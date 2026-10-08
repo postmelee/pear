@@ -1,0 +1,56 @@
+--- a/Source/Windows/Common/WinAPI/Alloc.cpp
++++ b/Source/Windows/Common/WinAPI/Alloc.cpp
+@@ -55,11 +55,21 @@
+ #endif
+ 
+ namespace {
++#if defined(_M_ARM64EC) && defined(PEAR_FEX_MEMORY_OWNER)
++MEM_ADDRESS_REQUIREMENTS MakeWOW64AddressReqs() {
++  // These wrappers serve FEX's private CRT/allocators, not guest VirtualAlloc.
++  // Follow the upstream low-VA preservation policy with an explicit bound:
++  // a 512 MiB rpmalloc slab can otherwise fall below 4 GiB on Wine/macOS.
++  MEM_ADDRESS_REQUIREMENTS Reqs {};
++  Reqs.LowestStartingAddress=reinterpret_cast<void*>(UINT64_C(0x100000000));
++  return Reqs;
++}
++#endif
+ NTSTATUS AllocateVirtualChecked(void*& lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect) {
+   NTSTATUS Status;
+-#ifndef _M_ARM64EC
++#if !defined(_M_ARM64EC) || defined(PEAR_FEX_MEMORY_OWNER)
+   if (!lpAddress) {
+-    // Add address requirements for WOW64 to limit allocations to outside the 32-bit user address space
++    // Keep anonymous translator allocations outside the low guest address space.
+     MEM_EXTENDED_PARAMETER ExtParam {};
+     MEM_ADDRESS_REQUIREMENTS AddrReq = MakeWOW64AddressReqs();
+ 
+@@ -70,7 +80,7 @@
+   } else {
+ #endif
+     Status = NtAllocateVirtualMemory(NtCurrentProcess(), &lpAddress, 0, &dwSize, flAllocationType, flProtect);
+-#ifndef _M_ARM64EC
++#if !defined(_M_ARM64EC) || defined(PEAR_FEX_MEMORY_OWNER)
+   }
+ #endif
+   return Status;
+@@ -121,9 +131,9 @@
+                (HANDLE Process, void* BaseAddress, SIZE_T Size, ULONG AllocationType, ULONG PageProtection,
+                 MEM_EXTENDED_PARAMETER* ExtendedParameters, ULONG ParameterCount)) {
+   NTSTATUS Status;
+-#ifndef _M_ARM64EC
++#if !defined(_M_ARM64EC) || defined(PEAR_FEX_MEMORY_OWNER)
+   if (!BaseAddress) {
+-    // Add address requirements for WOW64 to limit allocations to outside the 32-bit user address space
++    // Keep anonymous translator allocations outside the low guest address space.
+     auto* NewExtParams = reinterpret_cast<MEM_EXTENDED_PARAMETER*>(alloca((ParameterCount + 1) * sizeof(MEM_EXTENDED_PARAMETER)));
+     if (ExtendedParameters && ParameterCount > 0) {
+       memcpy(NewExtParams, ExtendedParameters, ParameterCount * sizeof(MEM_EXTENDED_PARAMETER));
+@@ -140,7 +150,7 @@
+ #endif
+     Status = NtAllocateVirtualMemoryEx(Process ? Process : NtCurrentProcess(), &BaseAddress, &Size, AllocationType, PageProtection,
+                                        ExtendedParameters, ParameterCount);
+-#ifndef _M_ARM64EC
++#if !defined(_M_ARM64EC) || defined(PEAR_FEX_MEMORY_OWNER)
+   }
+ #endif
+   if (Status) {

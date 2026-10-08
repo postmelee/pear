@@ -1,0 +1,23 @@
+--- a/dlls/ntdll/pear_fex_memory.c
++++ b/dlls/ntdll/pear_fex_memory.c
+@@ -42,9 +42,17 @@
+ }
+ static BOOL memory_admitted_caller(void *return_address)
+ {
+-    void *owner = NULL;
+-    return memory_translator_module && RtlPcToFileHeader(return_address, &owner) &&
+-           owner == memory_translator_module;
++    MEMORY_BASIC_INFORMATION info;
++    SIZE_T actual = 0;
++    /* The translator is already pinned by pear_fex_bind_module. Memory
++     * callbacks may run under the process heap lock, so they must not acquire
++     * the loader lock through RtlPcToFileHeader. Query Wine's existing image
++     * allocation identity instead; no new module or caller is admitted. */
++    if (!memory_translator_module || !return_address ||
++        NtQueryVirtualMemory(NtCurrentProcess(), return_address, MemoryBasicInformation,
++                             &info, sizeof(info), &actual)) return FALSE;
++    return actual == sizeof(info) && info.State == MEM_COMMIT && info.Type == MEM_IMAGE &&
++           info.AllocationBase == memory_translator_module;
+ }
+ 
+ static uint32_t memory_reply_failure(struct pear_fex_memory_response *response,

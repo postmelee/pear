@@ -1,0 +1,10 @@
+{
+  "patch": "0003-high-private-allocations.patch",
+  "files": [
+    {
+      "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+      "before": "47aac01580b1e1a03ea6e3ad5fd2c9df709dd55ed849cabc3bd9bc53cca7b631",
+      "after": "319e789426f98f4a607e8f6ab7b063f824b36661ae3c3f663c36503b84463681"
+    }
+  ]
+}

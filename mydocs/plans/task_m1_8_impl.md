@@ -3,7 +3,7 @@
 Task plan: [task_m1_8.md](task_m1_8.md), approved October 8, 2026.
 GitHub Issue: [#8](https://github.com/postmelee/pear/issues/8)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan awaiting approval; no Stage 1 implementation yet.
+Status: Stage 1 complete; Stage 2 awaiting explicit continuation.
 
 ## Stage Overview
 
@@ -140,10 +140,15 @@ python3 -B -m tools.dxmt.translated_inputs --cpu-repo "$PEAR_TASK6_REPO" --wine-
 python3 -B -m tools.dxmt.translated_build --inputs .build/task8/inputs1 --output .build/task8/build1
 python3 -B -m tools.dxmt.translated_runtime --build .build/task8/build1 --output .build/task8/runtime1
 python3 -B -m tools.dxmt.translated_run --runtime .build/task8/runtime1 --suite device --output .build/task8/device1
-python3 -B -m tools.dxmt.translated_check --run .build/task8/device1 --require-stage 1
+python3 -B -m tools.dxmt.translated_check --run "$PEAR_DEVICE_RUN" --runtime "$PEAR_GRAPHICS_RUNTIME"
+python3 -B -m tools.dxmt.translated_check --qualification "$PEAR_STAGE1_INDEX" --require-stage 1
 python3 -B -m unittest discover -s tests/dxmt -p 'test_translated_*.py'
 git diff --check
 ```
+
+The implemented stage index names the selected runtime/device/native-pairing runs
+and full CPU/ordering run set after the core corrections. The standalone device
+command is intentionally insufficient for stage completion.
 
 The stage checker requires the separate current native-pairing and CPU regression
 records described above, not flags declaring them passed. Preserve original errors,
@@ -289,9 +294,22 @@ are committed together: `Task #8 Stage 4 + final report: record translated D3D11
 - All verification commands above are planned; no GPU/guest test ran while writing
   this document. Worktree source changes start only after implementation approval.
 
+## Current Integration Investigation
+
+See [Stage 1 investigation notes](../working/task_m1_8_stage1_notes.md) for
+construction results, preserved failures and pending gates. The existing Stage 1
+repair authorization and core-change revalidation rule apply; no new owner ABI,
+permissions, tool installation or stage transition is introduced.
+
 ## Approval Request
 
 Approve this implementation plan and Stage 1: apply the existing graphics bridge
 in an isolated Wine construction, assemble/sign the combined candidate and verify
 actual x64 device creation/backend selection plus the affected native/CPU checks.
 Later stages retain their explicit continuation checkpoints.
+
+## Stage 1 Authorization
+
+On October 8, 2026, the requester explicitly continued after implementation-plan
+review. The planned source integration, development signing and bounded Stage 1
+execution are authorized. Later stages retain their continuation checkpoints.
