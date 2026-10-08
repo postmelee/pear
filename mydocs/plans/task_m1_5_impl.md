@@ -207,7 +207,7 @@ space and bounded growth before starting. Keep current needed outputs, original
 input caches and unique failure records. Remove only completed disposable
 prefixes or reproducible duplicated payloads after checking no process/reference
 needs them; record what remains reproducible. Do not touch other projects.
-No upload/push is authorized; sensitive diagnostics remain private.
+Publication of source and reviewed reports is authorized by the October 8 finalization request below; sensitive diagnostics remain private.
 
 ## Document locations and approval
 
@@ -230,3 +230,10 @@ Update this checkpoint only for a meaningful change in outcome or next blocker.
 Put experiment detail in private bounded records, with sanitized stage summaries.
 Use `Task #5 Stage N: summary` commits when the corresponding stage is complete.
 Do not mark a stage complete merely to enable the next experiment.
+
+## October 8 finalization authorization
+
+The requester explicitly directed #5 final report/PR preparation, review, merge
+and Issue completion, followed by #6 execution. This supersedes earlier local-only
+publication restrictions for #5. All six stages are complete. The final report
+owns acceptance and publication checks; historical stage reports remain unchanged.
