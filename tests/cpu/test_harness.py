@@ -2,9 +2,11 @@
 """Synthetic refusal checks; these do not execute or qualify guest instructions."""
 import copy
 import unittest
+import tempfile
+import struct
 from pathlib import Path
 
-from tools.cpu.results import assess_records, canonical, digest, decode
+from tools.cpu.results import assess_records, canonical, digest, decode, admit_build
 from tools.cpu.generate import reservations, assembly
 
 REPO=Path(__file__).resolve().parents[2]
@@ -37,6 +39,17 @@ class HarnessTests(unittest.TestCase):
 
     def rejected(self,reason):
         with self.assertRaisesRegex(ValueError,reason):self.assess()
+
+    def test_windows_line_endings_do_not_change_contract_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            pe=bytearray(96);pe[:2]=b'MZ';struct.pack_into('<I',pe,60,64);pe[64:70]=b'PE\0\0\x64\x86'
+            for row in self.build['cases']:
+                row.update(path=row['id']+'.exe',sha256=digest(pe));(root/row['path']).write_bytes(pe)
+            raw=canonical(self.manifest).replace(b'\n',b'\r\n')
+            self.assertEqual(len(admit_build(self.manifest,raw,self.build,root)),19)
+            changed=copy.deepcopy(self.manifest);changed['version']=999
+            with self.assertRaisesRegex(ValueError,'build_manifest'):admit_build(changed,canonical(changed),self.build,root)
 
     def test_complete_declared_results(self):
         self.assertEqual(len(self.assess()),19)

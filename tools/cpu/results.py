@@ -48,7 +48,7 @@ def fixture_ids(manifest):
 
 def admit_build(manifest, manifest_raw, build, root):
     require(build['scope']=='cpu_pe_build' and build['passed'] is True,'build_status')
-    require(build['manifest_sha256']==digest(manifest_raw),'build_manifest')
+    require(manifest==decode(manifest_raw) and build['manifest_sha256']==digest(canonical(manifest)), 'build_manifest')
     ids=fixture_ids(manifest)
     require([r['id'] for r in build['cases']]==ids,'build_case_set')
     for row in build['cases']:

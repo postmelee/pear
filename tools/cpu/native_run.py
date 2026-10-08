@@ -30,12 +30,13 @@ def native_host():
 
 
 def run(build_root, manifest_path, output):
-    host=native_host()
-    manifest=read(manifest_path);build_raw=(build_root/'build.json').read_bytes();build=decode(build_raw)
-    admit_build(manifest,manifest_path.read_bytes(),build,build_root)
     require(not output.exists(),'output_exists');output.mkdir(parents=True)
-    result=dict(scope='cpu_native_results',complete=False,completed_count=0,build_sha256=digest(build_raw),host=host,cases=[],cpu_qualified=False)
+    result=dict(scope='cpu_native_results',complete=False,completed_count=0,host=None,cases=[],cpu_qualified=False)
     try:
+        result['host']=native_host()
+        manifest=read(manifest_path);build_raw=(build_root/'build.json').read_bytes();build=decode(build_raw)
+        result.update(build_sha256=digest(build_raw),manifest_input_sha256=digest(manifest_path.read_bytes()))
+        admit_build(manifest,manifest_path.read_bytes(),build,build_root)
         for row in build['cases']:
             exe=(build_root/row['path']).resolve()
             require(digest(exe.read_bytes())==row['sha256'],'binary_changed_before_run')
@@ -60,6 +61,9 @@ def run(build_root, manifest_path, output):
         checked=assess_records(manifest,build_raw,result,'native')
         result['passed']=all(r['status']=='passed' for r in checked.values())
         result['coverage']=checked
+    except Exception as exc:
+        result['error']=dict(type=type(exc).__name__,code=str(exc) if isinstance(exc,ValueError) else 'native_execution_error')
+        raise
     finally:
         (output/'results.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
     return 0 if result.get('passed') else 1
