@@ -19,7 +19,7 @@ def inventory(root):
     return rows
 
 
-def build(prior,output):
+def build(prior,output,policy=False,link=False,target=False):
     need(output.parent==REPO/'.build/task6' and not output.exists(),'fresh_cpu_fex_build')
     need(shutil.disk_usage(REPO).free>=4*1024**3,'cpu_fex_storage')
     receipts=admit_pair(prior);base=prior/'.build/task5/stage6-fex1';original=read(base/'build.json')
@@ -51,6 +51,20 @@ def build(prior,output):
         run('patch',['/usr/bin/patch','-d',str(output/'source'),'-p1','-i',str(REPO/PATCH)])
         for row in series['files']:
             need(digest((output/'source'/row['path']).read_bytes())==row['after'],'patch_postimage')
+        for key,enabled,filename in [('policy',policy,'0002-observe-effective-thread-policy.patch'),('link',link,'0003-link-validity.patch'),('target',target,'0004-current-shared-link-target.patch')]:
+            if not enabled: continue
+            supplement=PATCH.parent/filename
+            series_path=PATCH.parent/(key+'-series.json')
+            supplement_series=read(REPO/series_path)
+            need(supplement_series['patch']==filename,'supplement_name')
+            for row in supplement_series['files']:
+                need(digest((output/'source'/row['path']).read_bytes())==row['before'],'supplement_preimage')
+            run(key+'-check',['/usr/bin/patch','--dry-run','-d',str(output/'source'),'-p1','-i',str(REPO/supplement)])
+            run(key,['/usr/bin/patch','-d',str(output/'source'),'-p1','-i',str(REPO/supplement)])
+            for row in supplement_series['files']:
+                need(digest((output/'source'/row['path']).read_bytes())==row['after'],'supplement_postimage')
+            record[key+'_patch_sha256']=digest((REPO/supplement).read_bytes())
+            record[key+'_series_sha256']=digest((REPO/series_path).read_bytes())
         record['patch_series_sha256']=digest((REPO/PATCH.parent/'series.json').read_bytes())
         sources=dict(source=inventory(output/'source'),wire=inventory(output/'wire'))
         (output/'inputs.json').write_bytes(encoded(sources));record['inputs_sha256']=digest((output/'inputs.json').read_bytes())
@@ -79,14 +93,25 @@ def admit_correction(root,receipts):
          record['baseline_receipts']==receipts,'correction_pair')
     need(record['patch_path']==str(PATCH) and record['patch_sha256']==digest((REPO/PATCH).read_bytes()),'correction_patch')
     need(record.get('patch_series_sha256')==digest((REPO/PATCH.parent/'series.json').read_bytes()),'correction_series')
-    for row in read(REPO/PATCH.parent/'series.json')['files']:
+    final_images={row['path']:row for row in read(REPO/PATCH.parent/'series.json')['files']}
+    for key,filename in [('policy','0002-observe-effective-thread-policy.patch'),('link','0003-link-validity.patch'),('target','0004-current-shared-link-target.patch')]:
+        if key+'_patch_sha256' not in record: continue
+        need(record[key+'_patch_sha256']==digest((REPO/PATCH.parent/filename).read_bytes()),'supplement_patch_changed')
+        series_path=REPO/PATCH.parent/(key+'-series.json')
+        need(record[key+'_series_sha256']==digest(series_path.read_bytes()),'supplement_series_changed')
+        final_images.update({row['path']:row for row in read(series_path)['files']})
+    for row in final_images.values():
         need(digest((root/'source'/row['path']).read_bytes())==row['after'],'correction_patch_not_applied')
     need(record['producer_sha256']==digest((root/'producer.py').read_bytes()),'correction_producer_changed')
     need(record['inputs_sha256']==digest((root/'inputs.json').read_bytes()),'correction_inputs_changed')
     need(read(root/'inputs.json',limit=64*1024**2)==dict(source=inventory(root/'source'),wire=inventory(root/'wire')),'correction_source_changed')
     for command in record['commands']:
         need(command['exit_code']==0 and digest((root/command['log']).read_bytes())==command['log_sha256'],'correction_command')
-    need([c['id'] for c in record['commands']]==['clone-source','clone-wire','patch-check','patch','arm64ec.configure','arm64ec.build','strip'],'correction_recipe')
+    expected=['clone-source','clone-wire','patch-check','patch']
+    for key in ('policy','link','target'):
+        if key+'_patch_sha256' in record: expected+=[key+'-check',key]
+    expected+=['arm64ec.configure','arm64ec.build','strip']
+    need([c['id'] for c in record['commands']]==expected,'correction_recipe')
     need(digest((root/'deployment.dll').read_bytes())==record['dll_sha256'],'correction_binary_changed')
     return dict(path=str(root),build_sha256=digest((root/'build.json').read_bytes()),dll_sha256=record['dll_sha256'],
                 patch_sha256=record['patch_sha256'],source_inputs_sha256=record['inputs_sha256'],
@@ -96,6 +121,9 @@ def admit_correction(root,receipts):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('prior-repo','output'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument("--observe-policy",action="store_true")
+    p.add_argument("--link-diagnostic",action="store_true")
+    p.add_argument("--link-correction",action="store_true")
     a=p.parse_args()
     with open('/private/tmp/pear-native-compilation.lock','a+') as lock:
-        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB);build(a.prior_repo.resolve(),a.output.absolute())
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB);build(a.prior_repo.resolve(),a.output.absolute(),a.observe_policy,a.link_diagnostic,a.link_correction)

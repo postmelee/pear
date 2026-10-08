@@ -1,0 +1,10 @@
+{
+  "patch": "0003-link-validity.patch",
+  "files": [
+    {
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+      "before": "5ba8c1451a95927c79e8d29fc825f0aba03df4f329e308999139416cd5447bbd",
+      "after": "a7e526ee00b1aad02c753dfb75dcc9380892494db77cb5b28abce53608b48b3e"
+    }
+  ]
+}

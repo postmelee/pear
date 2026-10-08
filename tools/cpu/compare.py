@@ -103,5 +103,13 @@ def compare(manifest_path, build_root, reference, candidate_path, output):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
-    for name in ('manifest','build','reference','candidate','output'):p.add_argument('--'+name,type=Path,required=True)
-    a=p.parse_args();compare(a.manifest,a.build,a.reference,a.candidate,a.output)
+    for name in ('manifest','reference','candidate','output'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--build',type=Path)
+    a=p.parse_args()
+    if read(a.candidate).get('scope')=='ordering_candidate':
+        from tools.cpu.ordering import compare as ordering_compare
+        require(read(a.manifest)==read(REPO/'tests/cpu/corpus.json'),'ordering_corpus_contract')
+        ordering_compare(a.reference,a.candidate,a.output)
+    else:
+        require(a.build is not None,'cpu_build_required')
+        compare(a.manifest,a.build,a.reference,a.candidate,a.output)

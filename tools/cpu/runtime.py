@@ -39,7 +39,11 @@ def prepare(prior_repo, signing_source, build_root, output, correction=None):
     need(shutil.disk_usage(REPO).free>=4*1024**3,'cpu_runtime_storage')
     manifest_path=REPO/'tests/cpu/corpus.json';manifest=read(manifest_path)
     build_raw=(build_root/'build.json').read_bytes();built=read(build_root/'build.json')
-    admit_build(manifest,manifest_path.read_bytes(),built,build_root)
+    if built.get('scope')=='cpu_ordering_build':
+        from tools.cpu.ordering import admit_ordering_build
+        admit_ordering_build(build_root)
+    else:
+        admit_build(manifest,manifest_path.read_bytes(),built,build_root)
     receipts=admit_pair(prior_repo)
     corrected=None
     if correction:

@@ -3,7 +3,7 @@
 Task plan: [task_m1_6.md](task_m1_6.md), approved October 8, 2026.
 GitHub Issue: [#6](https://github.com/postmelee/pear/issues/6)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
-Status: implementation plan approved; Stages 1 and 2 completed locally; Stage 3 awaits explicit continuation.
+Status: implementation plan approved; Stages 1 and 2 completed locally; Stage 3 authorized and in progress.
 
 ## Stage Overview
 
@@ -314,3 +314,52 @@ returning zero. That failed preparation and its stopped runtime remain failures.
 Stage 2 is complete locally: 18 native-matching Pear cases, one explicitly
 unsupported AVX case and zero required failures. The [Stage 2 report](../working/task_m1_6_stage2.md)
 and sanitized observations own the final identities, failures and retained limits.
+
+## Stage 3 Continuation and Reuse Decision
+
+The requester explicitly continued after the Stage 2 report. Stage 3 is now
+authorized. Keep all new implementation in the already approved `tests/cpu/`,
+`tools/cpu/` and `runtime/fex/patches/cpu/` locations; no official document moves.
+Pinned FEX's `0F_C0_Atomic64.asm` covers single-thread unaligned operations, and
+`MultiInst_TSO.json` covers generated instruction counts; neither supplies a
+Windows two-worker ordering oracle. Adapt Pear's existing CreateThread/TLS/join
+fixture and reuse FEX's actual Context policy getters. Add original MIT assembly
+for aligned locked RMW, message passing, plain store buffering and fenced store
+buffering, with epoch synchronization outside measured operations. Plain SB 00
+is allowed and need not occur. Record worker IDs, outcome counts and normal joins.
+
+Calibration uses 64 iterations per case and two sequential pairs of workers.
+Qualification counts will be frozen after calibration. Each run retains the
+existing 180-second owned supervisor bound. Log effective scalar/vector/memcpy
+policy at actual FEX thread creation, then map its state address to the Windows
+thread ID at publication. This changes observation only, with no owner ABI or
+hardware-TSO permission change. Preserve the Stage 2 candidate and records.
+
+### Stage 3 Required-path Link Correction
+
+The first 64-iteration calibration failed in `ExitPearFunctionLink`, before
+completing an ordering round. Diagnostic reproduction kept every owner guard and
+showed thread/revision/map/entry/bytes valid but a different shared target address.
+FEX's upstream shared map permits replacement while a thread-local L1 hit can
+still name an older retained block. Reuse `GuestToHostMap::FindBlock` with its
+read-lock token under the existing source mutation turn before minting a link.
+Also require the source write epoch to match the pre-handoff RX snapshot: absence
+of waiting in `Contended()` does not exclude an earlier peer publication. Preserve
+the existing indirect path on epoch changes; do not relax `PatchPrepared`,
+publication, invalidation, retention, signing or owner wire checks. The correction
+and diagnostic have separate ordered source/patch identities. Calibration remains
+failed until actual corrected execution and complete counts are observed.
+
+### Frozen Stage 3 Qualification Budget
+
+Corrected calibration completed 64 iterations per mode across two worker pairs
+(512 measured pairs), exit 42, in 7,228 ms including cold-prefix execution. All
+five participant lifetimes had actual scalar/vector/memcpy TSO enabled; owned
+cleanup and sentinel checks passed. The qualification budget is frozen before
+execution: 2,048 iterations per mode, four sequential worker pairs (32,768
+measured pairs), at most three concurrent participants, 45 seconds per round,
+120 seconds for native capture and the unchanged 180-second Pear supervisor.
+Two prior failed calibration records remain failures. The existing reference
+workflow will run only this new exact PE; unchanged 19-PE native results are
+reused from Stage 2. This remains the approved branch-only reference harness,
+ordinary runners, pinned tools, read-only token and 14-day artifact retention.
