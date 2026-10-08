@@ -1,0 +1,109 @@
+{
+  "assessment": {
+    "sha256": "7571f72ef9f6fec08f0ba04d034c40a70e5ccce982a252f5b173cfb75b989b8e",
+    "size_bytes": 44053
+  },
+  "checks": {
+    "diff_check": true,
+    "governance_documents": 25,
+    "governance_local_targets": 241,
+    "portable_passed": 29
+  },
+  "complete_late_load_coverage": false,
+  "distribution_qualified": false,
+  "evidence": {
+    "cpu_dependencies": {
+      "sha256": "851be9fd9c2163b333639669d2b3d77a3e2f79d1f7dfd717bcb82ecb4b43f432",
+      "size_bytes": 1110
+    },
+    "device": {
+      "sha256": "d0a7f13795c9b0d3528eddd98802a426c99b0d0c4becff76795665ba1f7166eb",
+      "size_bytes": 8781213
+    },
+    "pairing": {
+      "sha256": "beb98d6edff01dc5e6e7ee73bb647f4888a1eb7fcadaf838102ef7e61d812a36",
+      "size_bytes": 5102
+    },
+    "presentation": {
+      "sha256": "78e446ea3ab7512f7fbe1996d84b31f7241734ccf336489573b579746bf64d58",
+      "size_bytes": 4244874
+    },
+    "rendering": {
+      "sha256": "7392e17beff7ecdeb9f0bcbd959b51f3f3f4743b295b2212ace26a31d849adc0",
+      "size_bytes": 4025959
+    },
+    "runtime": {
+      "sha256": "f90b2a601f556595a07b38bfa695def75b7f1def9bb1018e7dacb73bf7444f5f",
+      "size_bytes": 2335415
+    }
+  },
+  "game_diagnostic": {
+    "authorization_before_after": true,
+    "case": {
+      "sha256": "f338096add41814b6331a413fc7694d0659d3256f1a91bed3c8404ee04a06002",
+      "size_bytes": 4127458
+    },
+    "cleanup_complete": true,
+    "configured_max_image_bytes": 38993920,
+    "elapsed_with_cleanup_ms": 125113,
+    "first_runtime_refusal_branch": "not instrumented",
+    "game_assembly_mapping_status": "c00000bb",
+    "launch_deadline_seconds": 120,
+    "original_files_unchanged": true,
+    "outcome": "timeout",
+    "pe_size_of_image": 57647104,
+    "player_log_bytes": 0,
+    "producer": {
+      "sha256": "212ae0ba2dbbbc0c84343b09f56d28e6b1099028e09987febeaa1c435e2a3499",
+      "size_bytes": 10026
+    },
+    "runtime_unchanged": true,
+    "scalar_repair_records": 51,
+    "sentinel_survived": true,
+    "static_image_size_gate": "rejects this image",
+    "stderr": {
+      "sha256": "4a634958cd9dc1ab9fab74d6e09d4976a2faa330a13f720d72b9f3b14bb3925f",
+      "size_bytes": 648476
+    },
+    "steam_account_flow": "unperformed",
+    "unity_initialization_observed": true
+  },
+  "game_qualified": false,
+  "passed": true,
+  "performance_qualified": false,
+  "replay": true,
+  "required_native_reexecutions": 0,
+  "results": {
+    "cpu_pass": 18,
+    "cpu_unsupported_not_exposed": [
+      "avx-lane-preservation"
+    ],
+    "device": true,
+    "device_window_cycles": 3,
+    "native_images": 41,
+    "native_pairing": 39,
+    "ordering_pairs": 32768,
+    "physical_created": 9,
+    "physical_destroyed": 9,
+    "readbacks": 7,
+    "rendering_cases": 5,
+    "surface_controls": 23,
+    "visible_frames": 18
+  },
+  "retention": {
+    "duplicate_game_files_removed": 69,
+    "failure_logs_prefix_and_originals_retained": true,
+    "logical_bytes": 522734781,
+    "physical_reclaimed_bytes": "not measured",
+    "record": {
+      "sha256": "7e7a2dc12f0c65fa7e2d9639240ecb54c8e195a93073582960212100bbfe243f",
+      "size_bytes": 427
+    }
+  },
+  "runtime": {
+    "sha256": "f90b2a601f556595a07b38bfa695def75b7f1def9bb1018e7dacb73bf7444f5f",
+    "size_bytes": 2335415
+  },
+  "scope": "bounded_translated_d3d11_correctness",
+  "stage": 4
+}

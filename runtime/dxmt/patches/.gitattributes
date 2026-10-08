@@ -2,3 +2,4 @@
 # Keep normal whitespace checks for the surrounding original source files.
 wine/*.patch -whitespace
 dxmt/*.patch -whitespace
+*.patch -whitespace

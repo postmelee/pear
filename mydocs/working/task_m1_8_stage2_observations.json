@@ -1,0 +1,191 @@
+{
+  "cases": 5,
+  "cleanup": {
+    "logical_bytes": 2527676856,
+    "original_failure_and_selected_evidence_retained": true,
+    "superseded_prefixes_removed": 3
+  },
+  "compiler_dependencies": {
+    "kernel32.dll": "f0aad19bb17db978f0aa98cc4401d6c0796f9c1f724800a646f298bd514df041",
+    "ntdll.dll": "6cbb26ca14b81411465cac79e77480c861ad1a0e98cf19d9706dfb32015c2989",
+    "ucrtbase.dll": "af18d2df54bbc2ef7e7844c59fb2451320ea843ef6ee641c3f41dc1032e8d163",
+    "wined3d.dll": "089ba213a605b836ee9f15d9f425a24a32cb62bc7be6fec547b9812d94c6321e"
+  },
+  "evidence": {
+    "assessment": {
+      "sha256": "95aebe5e01ea14734832ccd10434a6850b2012154de546ce61d439d0a0f31a43",
+      "size_bytes": 5762
+    },
+    "cleanup": {
+      "sha256": "259cd19c33c4400daebfd084c748e60b9f9d81189bfe6983631844a8f49a77b1",
+      "size_bytes": 585
+    },
+    "device": {
+      "sha256": "ae5b1d3c0bb10b3e25a6cd668c9e62dc4e66cff13f04a9fb9ca7c8cbc985c8a0",
+      "size_bytes": 8781158
+    },
+    "failed_original": {
+      "sha256": "96453619247f31fb5e8ac0cc0027a8ba2f6d73caa8e02f88a1ef6fb9eb4d4ad1",
+      "size_bytes": 8974105
+    },
+    "fixture_build": {
+      "sha256": "bb0ea5e4cca5aa82884e36f7657110a48e8372076662cfd3200facb7c62d6c34",
+      "size_bytes": 2617
+    },
+    "native_pairing": {
+      "sha256": "f757742ec256472c22b97359260089428bff0fb887c8c7e6bc3260e622abe3cf",
+      "size_bytes": 3731384
+    },
+    "original_fixture": {
+      "sha256": "40f5c39a5cabe5b5ac6f7833b2c17d09707cb0880c7e37ada915b022243ed1f1",
+      "size_bytes": 537088
+    },
+    "pipeline_build": {
+      "sha256": "230c47af4a8a61ead0c86348529c6f120d521a28f554dce60624968938004fe4",
+      "size_bytes": 482400
+    },
+    "rendering": {
+      "sha256": "6a949a0975124465f48e9bb442feff91cf1a065ca6ecc01daa45e2e0eb212a1d",
+      "size_bytes": 8825248
+    },
+    "runtime": {
+      "sha256": "02b151e3cfbf62e910d45eca2ac3cbc6a69479f3d89a4430dc7540153eadf34c",
+      "size_bytes": 2298168
+    }
+  },
+  "host": {
+    "chip": "Apple M4 Pro",
+    "macos": "26.5.2 (25F84)",
+    "xcode": "26.6 (17F113)"
+  },
+  "issue": 8,
+  "limitations": {
+    "complete_late_load_coverage": false,
+    "full_game_qualified": false,
+    "media_prefix_error": "missing optional winegstreamer dependency in cold-prefix initialization; media support not qualified",
+    "ordinary_user_distribution": false,
+    "pipeline_uid_logging": "unavailable in inspected logs; actual read-only pipeline property used instead",
+    "presentation_qualified": false,
+    "translated_physical_teardown_qualified": false
+  },
+  "observed_image_events": 17061,
+  "observed_native_process_events": 41,
+  "original_failure": {
+    "code": "0x80000002",
+    "fixed": false,
+    "fixture_rva": "0x1bb2",
+    "instruction": "movw $0x47ff,-0x10(%rdx)",
+    "meaning": "16-byte-boundary-crossing guest word store is not repaired by the admitted exception path",
+    "outcome": "timeout after unhandled datatype misalignment",
+    "reduction": "identical texture upload bytes are now compile-time constants"
+  },
+  "passed": true,
+  "pipelines": {
+    "all_observed_enabled": true,
+    "fixture_compute": [
+      "cs_eb8fa085_9069ca78e7450a285173431b3e52c5c25299e473"
+    ],
+    "fixture_render": [
+      "vs_b176a990_d68856551ac5f524770480744c4605d1bfb64fa2",
+      "vs_b176a990_d68856551ac5f524770480744c4605d1bfb64fa2",
+      "vs_b176a990_d68856551ac5f524770480744c4605d1bfb64fa2",
+      "vs_b176a990_d68856551ac5f524770480744c4605d1bfb64fa2"
+    ],
+    "observed_pipeline_count": 25
+  },
+  "readbacks": {
+    "blend": {
+      "checked_elements": 4096,
+      "format": "rgba8",
+      "height": 64,
+      "row_pitch": 256,
+      "sha256": "0c252c700fcdbd3e2ecc5fa375b8a192d9ecc4d869efc3d0ab5e23a0ce1ae279",
+      "width": 64
+    },
+    "buffer": {
+      "checked_elements": 64,
+      "format": "uint32",
+      "height": 1,
+      "row_pitch": 256,
+      "sha256": "801dbea886068c127142b1289a4607bfbb9711a5072ed528bd7ba5cf48c7e287",
+      "width": 64
+    },
+    "compute": {
+      "checked_elements": 64,
+      "format": "uint32",
+      "height": 1,
+      "row_pitch": 256,
+      "sha256": "2c87f43d39b62ac7fd77ed7d89ddb0a45d4cc61a1a4b33c20cac98dab74240c9",
+      "width": 64
+    },
+    "depth": {
+      "checked_elements": 4096,
+      "format": "rgba8",
+      "height": 64,
+      "row_pitch": 256,
+      "sha256": "0bcc07de1631aa0395013f35790f719bd754f61e4bb2847a86fdc2365d3d8d63",
+      "width": 64
+    },
+    "raster": {
+      "checked_elements": 3584,
+      "format": "rgba8",
+      "height": 64,
+      "row_pitch": 256,
+      "sha256": "e15352f461a472ea701db5f7ba963ac25004a1aced97e7c35cd4aa31ebcec7ef",
+      "width": 64
+    },
+    "texture_copy": {
+      "checked_elements": 64,
+      "format": "rgba8",
+      "height": 8,
+      "row_pitch": 32,
+      "sha256": "ed1c5e7e018d1d120f54a9ced8db86352af25c9b3ace0d38dfdf0fa8d98d5f5c",
+      "width": 8
+    },
+    "texture_sample": {
+      "checked_elements": 64,
+      "format": "rgba8",
+      "height": 8,
+      "row_pitch": 32,
+      "sha256": "ed1c5e7e018d1d120f54a9ced8db86352af25c9b3ace0d38dfdf0fa8d98d5f5c",
+      "width": 8
+    }
+  },
+  "scope": "five_bounded_translated_d3d11_cases",
+  "shaders": {
+    "sample_image": {
+      "profile": "ps_5_0",
+      "sha1": "30d408185a3aa0530a7ed9551f786f3ee0c65115",
+      "sha256": "5a1e979065916d594223ba5b25e6b0d82f758f3838900ae284415bbcd0ca2333",
+      "size_bytes": 668
+    },
+    "solid": {
+      "profile": "ps_5_0",
+      "sha1": "f194e917d9c8fee6c18517ec0c4de432047ee070",
+      "sha256": "69ffcc9754f92531623e5974ff93024deea77a3dd47a49a74cf9fbd06332c156",
+      "size_bytes": 716
+    },
+    "transform": {
+      "profile": "cs_5_0",
+      "sha1": "eb8fa085c43a9b06b4f351ae1dbcaa5a1b7a8942",
+      "sha256": "2c719d0f171af4a5f29618d93e1cefd448127501fff16c0d69450a89687a98dd",
+      "size_bytes": 932
+    },
+    "vertex": {
+      "profile": "vs_5_0",
+      "sha1": "b176a99004ee6b0fc963e59b6ddf3a49cb30ac40",
+      "sha256": "8123cdb1596aa817f13c57cc69ba505bac6c67053f417aa114403bb7a8795f1a",
+      "size_bytes": 1004
+    }
+  },
+  "signed_native_arm64_images": 41,
+  "source_reuse": {
+    "cpu_code_unchanged": true,
+    "cpu_corpus_reexecuted": false,
+    "native_pairing_reexecuted_cases": 39,
+    "native_winemetal_observation_changed": true,
+    "ordering_reexecuted": false,
+    "stage1_commit": "b049adf"
+  },
+  "stage": 2
+}

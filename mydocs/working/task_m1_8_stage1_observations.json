@@ -1,0 +1,67 @@
+{
+  "issue": 8,
+  "stage": 1,
+  "scope": "finite_translated_device_and_affected_regressions",
+  "passed": true,
+  "device": true,
+  "native_pairing_cases": 39,
+  "cpu_passed": 18,
+  "cpu_unsupported": [
+    "avx-lane-preservation"
+  ],
+  "ordering_pairs": 32768,
+  "ordering_workers": 8,
+  "current_native_images": 41,
+  "no_rosetta_in_observed_processes_and_images": true,
+  "complete_late_load_coverage": false,
+  "rendering_qualified": false,
+  "game_qualified": false,
+  "distribution_qualified": false,
+  "native_prefix_setup": "initialized synthetic clone; optional XDG menu autorun disabled",
+  "artifacts": [
+    {
+      "artifact_id": "inputs1/inputs.json",
+      "sha256": "96dca37f75a1587de447040237e2417f65bf98bfdbe141c65063f7f8983cad85"
+    },
+    {
+      "artifact_id": "build3/build.json",
+      "sha256": "1ba8ac8b92ba72ef54b85ef3a02d973660eb5168d89c5eaa393d085363f2dc90"
+    },
+    {
+      "artifact_id": "owner1/build.json",
+      "sha256": "a527ae148854f4d6b4f06cbde1a1fc946610f281e43343207a88f45914de5833"
+    },
+    {
+      "artifact_id": "fex3/build.json",
+      "sha256": "5dbf5f0ef582fcc35c4aa36c2b2b5e1ac6f09ee73e1318ebcfef6552884b30b3"
+    },
+    {
+      "artifact_id": "runtime7/runtime.json",
+      "sha256": "e4a612ab83306fe9714da4545bf15dce5e7b521f0991d0ef42a531abb62de84c"
+    },
+    {
+      "artifact_id": "device7/case.json",
+      "sha256": "6b434ba8b5691853cc5045120b2f4b2a1db4f3ad6d3e4f6020ece4eabbd75270"
+    },
+    {
+      "artifact_id": "pairing5/run/case.json",
+      "sha256": "88672e62d69f506681f5c074217238cb627a4b7607b263a056da13d81087aba8"
+    },
+    {
+      "artifact_id": "cpu7.json",
+      "sha256": "fa6e56bc337824fd354c29390f422b0c286cc106a802641e886d28486c8f1456"
+    },
+    {
+      "artifact_id": "ordering7.json",
+      "sha256": "808d3af58c8e2a37f8dc2706509c85b54ca324606bdc364029a288c9b80a5684"
+    },
+    {
+      "artifact_id": "stage1/stage.json",
+      "sha256": "59cb2b155a77a834d12f524c2dcd00d59313fa35b0b84164019b8c2118333946"
+    },
+    {
+      "artifact_id": "stage1/portable-checks.json",
+      "sha256": "ab9bab8e394360472c6c3cc014d7343f05f869938cc66e61360911f0c2a8b42e"
+    }
+  ]
+}

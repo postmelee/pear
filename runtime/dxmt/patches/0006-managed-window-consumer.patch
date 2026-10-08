@@ -1,0 +1,59 @@
+--- a/src/winemetal/unix/pear_dxmt_metal_proxy.h
++++ b/src/winemetal/unix/pear_dxmt_metal_proxy.h
+@@ -1,17 +1,17 @@
+ /* Original Pear source integration. SPDX-License-Identifier: LGPL-2.1-or-later. */
+-#include "pear_macdrv_metal_v1.h"
++#include "pear_macdrv_metal_v2.h"
+ #include <pthread.h>
+ #include <string.h>
+-static const struct pear_macdrv_metal_v1 *pear_driver;
++static const struct pear_macdrv_metal_v2 *pear_driver;
+ static pthread_once_t pear_driver_once=PTHREAD_ONCE_INIT;
+ static void pear_resolve_driver(void)
+ {
+-    pear_metal_get_interface get=(pear_metal_get_interface)dlsym(RTLD_DEFAULT,"pear_macdrv_metal_v1_get_interface");
+-    const struct pear_macdrv_metal_v1 *table=NULL;
+-    if(!get || get(PEAR_METAL_VERSION,sizeof(*table),PEAR_METAL_FEATURES,&table) || !table) return;
+-    if(table->version!=PEAR_METAL_VERSION || table->bytes!=sizeof(*table) ||
+-       (table->features & PEAR_METAL_FEATURES)!=PEAR_METAL_FEATURES ||
+-       !table->acquire || !table->query || !table->release || !table->with_layer) return;
++    pear_metal_v2_get_interface get=(pear_metal_v2_get_interface)dlsym(RTLD_DEFAULT,"pear_macdrv_metal_v2_get_interface");
++    const struct pear_macdrv_metal_v2 *table=NULL;
++    if(!get || get(PEAR_METAL_V2_VERSION,sizeof(*table),PEAR_METAL_V2_FEATURES,&table) || !table) return;
++    if(table->version!=PEAR_METAL_V2_VERSION || table->bytes!=sizeof(*table) ||
++       (table->features & PEAR_METAL_V2_FEATURES)!=PEAR_METAL_V2_FEATURES ||
++       !table->acquire || !table->query || !table->release || !table->with_layer || !table->acquire_window) return;
+     pear_driver=table;
+ }
+ @interface PearDXMTMetalLease : NSObject { @public uint64_t token; }
+@@ -36,7 +36,7 @@
+     uint64_t token=0;
+     params->ret_view=params->ret_layer=0;
+     pthread_once(&pear_driver_once,pear_resolve_driver);
+-    if(!pear_driver || pear_driver->acquire(params->hwnd,params->device,&token) || !token) return STATUS_UNSUCCESSFUL;
++    if(!pear_driver || pear_driver->acquire_window(params->hwnd,params->device,&token) || !token) return STATUS_UNSUCCESSFUL;
+     lease=[[PearDXMTMetalLease alloc] init];
+     if(!lease) { pear_driver->release(token); return STATUS_UNSUCCESSFUL; }
+     lease->token=token;
+--- a/src/winemetal/unix/pear_macdrv_metal_v2.h
++++ b/src/winemetal/unix/pear_macdrv_metal_v2.h
+@@ -0,0 +1,19 @@
++/* Original Pear private native driver contract. SPDX-License-Identifier: MIT. */
++#ifndef PEAR_MACDRV_METAL_V2_H
++#define PEAR_MACDRV_METAL_V2_H
++#include "pear_macdrv_metal_v1.h"
++#define PEAR_METAL_V2_VERSION 2u
++#define PEAR_METAL_V2_FEATURES UINT64_C(15)
++struct pear_macdrv_metal_v2 {
++    uint32_t version, bytes;
++    uint64_t features;
++    int32_t (*acquire)(uint64_t, uint64_t, uint64_t *);
++    int32_t (*query)(uint64_t, struct pear_metal_query_v1 *);
++    int32_t (*release)(uint64_t);
++    int32_t (*with_layer)(uint64_t, pear_metal_layer_operation, void *);
++    int32_t (*acquire_window)(uint64_t, uint64_t, uint64_t *);
++};
++typedef int32_t (*pear_metal_v2_get_interface)(uint32_t,uint32_t,uint64_t,const struct pear_macdrv_metal_v2 **);
++_Static_assert(sizeof(struct pear_macdrv_metal_v2)==56,"native v2 table size");
++_Static_assert(offsetof(struct pear_macdrv_metal_v2,acquire_window)==48,"native v2 table tail");
++#endif

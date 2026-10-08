@@ -1,0 +1,6 @@
+{
+  "patch": "0005-fex-caller-without-loader-lock.patch",
+  "path": "dlls/ntdll/pear_fex_memory.c",
+  "before": "a299ce12fd9f79f4944cdfa5c1aa5d4d1ce933edcd65c8ce62f928bcc062b063",
+  "after": "99050d8e45e52f93ef05180ed6c41e43adba7f9d1e273eafbcabda7dbe2beb6f"
+}

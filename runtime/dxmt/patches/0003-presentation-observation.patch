@@ -1,0 +1,96 @@
+--- /dev/null
++++ b/src/winemetal/unix/pear_present_observation.h
+@@ -0,0 +1,43 @@
++/* Original Pear finite observation, reusing #7 witnesses. SPDX-License-Identifier: MIT. */
++#import <objc/runtime.h>
++static unsigned long pear_present_sequence;
++static unsigned long pear_life_created[3],pear_life_dead[3];
++static char pear_life_keys[3];
++static int pear_present_observing(void) { const char *p=getenv("PEAR_PRESENT_OBSERVE");return p && !strcmp(p,"1"); }
++@interface PearPresentWitness : NSObject { unsigned kind; unsigned long number; }
++- (id)initWithKind:(unsigned)value;
++@end
++@implementation PearPresentWitness
++- (id)initWithKind:(unsigned)value {
++    self=[super init];if(self) { kind=value;number=__atomic_add_fetch(pear_life_created+kind,1,__ATOMIC_RELAXED);
++        fprintf(stderr,"PEAR_PRESENT_LIFE action=create kind=%u number=%lu\n",kind,number); }return self;
++}
++- (void)dealloc {
++    __atomic_add_fetch(pear_life_dead+kind,1,__ATOMIC_RELAXED);
++    fprintf(stderr,"PEAR_PRESENT_LIFE action=destroy kind=%u number=%lu\n",kind,number);[super dealloc];
++}
++@end
++static void pear_present_witness(id object,unsigned kind) {
++    if(!object || kind>=3) return;
++    if(!objc_getAssociatedObject(object,pear_life_keys+kind)) {
++        PearPresentWitness *w=[[PearPresentWitness alloc] initWithKind:kind];
++        objc_setAssociatedObject(object,pear_life_keys+kind,w,OBJC_ASSOCIATION_RETAIN_NONATOMIC);[w release];
++    }
++}
++static void pear_present_layer(void *context,uint64_t value) {
++    (void)context;CAMetalLayer *layer=(CAMetalLayer*)(uintptr_t)value;
++    id view=layer.delegate;
++    if(![view isKindOfClass:NSClassFromString(@"WineMetalView")]) return;
++    pear_present_witness(view,0);pear_present_witness(layer,1);
++}
++static void pear_present_observe(id<MTLCommandBuffer> command,id<MTLDrawable> drawable) {
++    if(!pear_present_observing()) return;
++    unsigned long sequence=__atomic_add_fetch(&pear_present_sequence,1,__ATOMIC_RELAXED);
++    fprintf(stderr,"PEAR_PRESENT_SUBMIT sequence=%lu drawable=%lu\n",sequence,(unsigned long)drawable.drawableID);
++    [drawable addPresentedHandler:^(id<MTLDrawable> value) {
++        fprintf(stderr,"PEAR_PRESENT_DISPLAY sequence=%lu drawable=%lu time=%.9f\n",sequence,(unsigned long)value.drawableID,value.presentedTime);
++    }];
++    [command addCompletedHandler:^(id<MTLCommandBuffer> value) {
++        fprintf(stderr,"PEAR_PRESENT_GPU sequence=%lu status=%lu error=%ld\n",sequence,(unsigned long)value.status,(long)(value.error?value.error.code:0));
++    }];
++}
+--- a/src/winemetal/unix/winemetal_unix.c
++++ b/src/winemetal/unix/winemetal_unix.c
+@@ -16,6 +16,7 @@
+ typedef int NTSTATUS;
+ #define STATUS_SUCCESS 0
+ #define STATUS_UNSUCCESSFUL 0xC0000001
++#include "pear_present_observation.h"
+ #include "pear_dxmt_metal_proxy.h"
+ 
+ void
+@@ -1320,6 +1321,7 @@
+ static NTSTATUS
+ _MTLCommandBuffer_presentDrawable(void *obj) {
+   struct unixcall_generic_obj_obj_noret *params = obj;
++  pear_present_observe((id<MTLCommandBuffer>)params->handle,(id<MTLDrawable>)params->arg);
+   [(id<MTLCommandBuffer>)params->handle presentDrawable:(id<MTLDrawable>)params->arg];
+   return STATUS_SUCCESS;
+ }
+@@ -1327,6 +1329,7 @@
+ static NTSTATUS
+ _MTLCommandBuffer_presentDrawableAfterMinimumDuration(void *obj) {
+   struct unixcall_generic_obj_obj_double_noret *params = obj;
++  pear_present_observe((id<MTLCommandBuffer>)params->handle,(id<MTLDrawable>)params->arg0);
+   [(id<MTLCommandBuffer>)params->handle presentDrawable:(id<MTLDrawable>)params->arg0
+                                    afterMinimumDuration:params->arg1];
+   return STATUS_SUCCESS;
+@@ -3096,6 +3099,13 @@
+     struct unixcall_generic_obj_obj_ret *params=call->params,local=*params;
+     local.handle=layer;
+     
++    if(pear_present_observing()) {
++        CAMetalLayer *observed=(CAMetalLayer*)(uintptr_t)layer;
++        NSView *view=(NSView*)observed.delegate;NSWindow *window=view.window;
++        fprintf(stderr,"PEAR_PRESENT_WINDOW window=%ld width=%lu height=%lu visible=%d title=%d main=%d\n",
++            (long)window.windowNumber,(unsigned long)observed.drawableSize.width,(unsigned long)observed.drawableSize.height,
++            window.visible,[window.title isEqualToString:@"Pear Presentation"],pthread_main_np());
++    }
+     call->result=_pear_raw_MetalLayer_nextDrawable(&local);
+     if(local.ret) [(id)(uintptr_t)local.ret retain];
+     local.handle=params->handle; *params=local;
+--- a/src/winemetal/unix/pear_dxmt_metal_proxy.h
++++ b/src/winemetal/unix/pear_dxmt_metal_proxy.h
+@@ -40,6 +40,7 @@
+     lease=[[PearDXMTMetalLease alloc] init];
+     if(!lease) { pear_driver->release(token); return STATUS_UNSUCCESSFUL; }
+     lease->token=token;
++    if(pear_present_observing()) { pear_present_witness(lease,2);pear_driver->with_layer(token,pear_present_layer,NULL); }
+     params->ret_view=params->ret_layer=(obj_handle_t)(uintptr_t)lease;
+     return STATUS_SUCCESS;
+ }

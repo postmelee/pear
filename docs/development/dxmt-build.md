@@ -287,3 +287,167 @@ and fixture evidence. #7 has not executed FEX or qualified #5's memory budget.
 Direct3D/device/resource/shader/swapchain/rendering qualification. No additional
 native matrix is required merely to copy this handoff; test actual integration
 changes and newly observed failures.
+
+## Translated D3D11 qualification — October 9, 2026
+
+Task #8 qualifies a finite x64 D3D11 suite through the combined ARM64 Wine/FEX,
+ARM64X DXMT and native Metal path. The [final report](../../mydocs/report/task_m1_8_report.md)
+and [Stage 3 evidence](../../mydocs/working/task_m1_8_stage3.md) distinguish this
+from #7's ordinary ARM64 pairing and from Steam/game qualification. The measured
+host is M4 Pro, macOS 26.5.2 (25F84), Xcode 26.6 (17F113), using the existing
+Wine Loader development profile with normal macOS security protections.
+
+| Final-candidate scope | Result |
+|---|---|
+| Device and selected renderer | D3D11 feature level 11_0; actual DXMT D3D11/DXGI, winemetal, FEX and Metal observed |
+| Rendering | Five cases / seven independent buffer, texture, raster, depth, blend and compute readbacks |
+| Presentation | 18 individually captured, alternating-color frames; three device/window cycles with 64x64 -> 96x80 -> 64x64 resize |
+| Completion/lifetime | 18 drawable callbacks and GPU completions; nine native view/layer/proxy creations and deallocations; zero final leases/attachments |
+| Native integration | Original 39 pairing assertions and 23 managed-surface controls |
+| CPU integration | Exact original 2-byte and 8-byte scalar-fault PEs recover; 18 CPU comparisons pass, AVX remains unexposed/unsupported; 32,768 finite ordering pairs pass |
+
+The final receipt hash is
+`f90b2a601f556595a07b38bfa695def75b7f1def9bb1018e7dacb73bf7444f5f`.
+Its 41 native images have ARM64 dependency/signature evidence. Observed processes
+and images are Rosetta-free; complete late-loaded process/module coverage remains
+#10. This record does not qualify a game, ordinary-user distribution, other hosts,
+performance or power. Sixteen of 18 drawable callback timestamps were zero despite
+independent matching frame images. Visible output is established by those images;
+frame timing is unqualified. Do not use these instrumented runs for benchmarks.
+
+### Construction and evidence dependencies
+
+Retain the pinned #4/#5/#6 Wine/FEX/tool inputs and #7's second reconstructed
+native graphics candidate. Follow their linked guides first. #8 preserves upstream
+C/C++/Objective-C and HLSL; the Python adapters reuse existing admission, signing,
+process ownership, CPU reference and pairing readers. No commercial runtime or
+Rosetta is an execution dependency of the measured fixture route.
+
+The constructor chain below names modules under `tools.dxmt`. Each has `--help`;
+all output directories must be new children of `.build/task8`. Source, build,
+compiler, patch, payload and producer hashes are admitted before reuse. Existing
+private profile references must still be valid; successful past signing does not
+grant current authorization. Run native work serially under the shared lock used
+by the commands. Do not edit dependency worktrees or overwrite failed outputs.
+
+| Order | Constructor | Inputs / output role |
+|---|---|---|
+| 1 | `translated_inputs`, `translated_build` | Completed #6 CPU/#7 graphics and Wine/tool repositories; combined Wine driver and device fixture |
+| 2 | `translated_owner`, `translated_fex`, `translated_runtime` | PE ntdll VM identity and high-address FEX allocations; signed combined base |
+| 3 | `translated_render_build`, `translated_pipeline_build`, `translated_render_runtime` | Rendering fixture and actual pipeline validation observation; requires the base Stage 1 record |
+| 4 | `translated_present_build`, `translated_present_native`, `translated_present_runtime` | Presentation fixture, Wine/Metal observation and signed overlay |
+| 5 | `translated_repair_build`, `translated_repair_runtime` | Delivered scalar repair on the preceding FEX; original faulting fixtures retained unchanged |
+| 6 | `translated_surface_native`, `translated_frames_build`, `translated_surface_runtime` | Managed surface v2, finite controls, per-frame visible fixture and final signed candidate |
+
+V1 remains available to the explicit native regression fixture. The real DXMT
+swapchain requires v2 and uses Wine's managed surface lifetime; Wine private
+structure offsets are not a public ABI. The scalar repair uses the upstream
+preparation algorithm with Pear's owner-controlled writable/executable publication
+and checked re-entry. Unsupported repair families retain their prior fault path.
+
+These adapters currently require retained, identity-bound build trees and original
+failure fixtures. Their receipts preserve exact commands and source snapshots.
+They are a developer reproduction path, not a relocatable one-command clean-machine
+bootstrap. Fresh independent assembly and release authorization remain #13; do not
+replace the retained original failures with newly aligned fixtures or edit receipts
+to make a different artifact pass.
+
+### Execute a newly constructed candidate
+
+Set `runtime` to the new signed candidate directory and `graphics_repo` to the
+retained #7 checkout; set `cpu_repo` to the retained #6 checkout. The following examples use fresh output names. The first
+run creates a synthetic prefix; subsequent runs clone that same-candidate prefix.
+They never reuse Steam credentials or personal saves.
+
+```sh
+python3 -B -m tools.dxmt.translated_run --runtime "$runtime" --reuse "$graphics_repo" --suite device --output .build/task8/final-device
+python3 -B -m tools.dxmt.translated_check --runtime "$runtime" --run .build/task8/final-device
+# Pairing exposes a Python entry point; preserve the same native-work lock.
+export runtime graphics_repo
+python3 -B - <<'PYPAIR'
+import fcntl, os
+from pathlib import Path
+from tools.dxmt.translated_pairing import run, verify
+runtime = Path(os.environ['runtime']).resolve()
+output = Path('.build/task8/final-pairing').absolute()
+with open('/private/tmp/pear-native-compilation.lock', 'a+') as lock:
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    run(runtime, output, Path(os.environ['graphics_repo']).resolve(),
+        Path('.build/task8/final-device').resolve())
+    verify(runtime, output)
+PYPAIR
+python3 -B -m tools.dxmt.translated_run --runtime "$runtime" --reuse "$graphics_repo" --suite rendering-original --seed .build/task8/final-device --output .build/task8/final-render
+python3 -B -m tools.dxmt.translated_run --runtime "$runtime" --reuse "$graphics_repo" --suite presentation-original --seed .build/task8/final-device --output .build/task8/final-original-present
+python3 -B -m tools.dxmt.translated_run --runtime "$runtime" --reuse "$graphics_repo" --suite presentation-frames --seed .build/task8/final-device --output .build/task8/final-present
+python3 -B -m tools.dxmt.translated_regression --runtime "$runtime" --cpu-repo "$cpu_repo" --reuse "$graphics_repo" --suite corpus --name final --seed .build/task8/final-device --output .build/task8/final-cpu.json
+python3 -B -m tools.dxmt.translated_regression --runtime "$runtime" --cpu-repo "$cpu_repo" --reuse "$graphics_repo" --suite ordering --name final --seed .build/task8/final-device --output .build/task8/final-ordering.json
+```
+
+The pairing and full declared CPU/ordering commands bind the exact Windows x64
+references. Both are
+required for a CPU-changing candidate. Preserve the original-PE recovery record
+and bind the corpus/ordering/original-presentation references in the Stage 3
+`repaired_stage3_dependencies` index. This is a private evidence index, not the
+manager's product contract. The [Stage 3 report](../../mydocs/working/task_m1_8_stage3.md)
+records the measured candidate's commands and finite limitations.
+
+API/shader validation is enabled before device creation; declared fixture
+pipelines are checked for actual instrumentation. Capture observes only the
+owned fixture window. Leave it visible during the bounded individual-frame run.
+A missing image, silent backend replacement, incomplete cleanup or required
+validation error fails qualification. Log banners alone are insufficient.
+
+### Replay existing final evidence
+
+The Stage 4 index has `scope: translated_graphics_stage4`, `stage: 4`, and exactly
+six `references`. Each reference is a private `{path, sha256, size_bytes}` file
+fact made by `tools.dxmt.translated_inputs.fact`:
+
+| Reference key | Referenced file |
+|---|---|
+| `runtime` | Final `runtime.json` |
+| `device` | Same-candidate device `case.json` |
+| `presentation` | Same-candidate individual-frame `case.json` |
+| `pairing` | Native pairing `result.json` (parent contains `run/case.json`) |
+| `rendering` | Original rendering PE's recovered `case.json` |
+| `cpu_dependencies` | Full repaired Stage 3 dependency index |
+
+```sh
+python3 -B -m tools.dxmt.translated_check --qualification "$PEAR_GRAPHICS_QUALIFICATION" --require-stage 4
+python3 -B -m unittest discover -s tests/dxmt -p 'test_translated_*.py'
+python3 -B tools/check_governance.py
+git diff --check
+```
+
+The replay reopens raw streams, native references, readbacks and all 18 images;
+it admits the signed candidate and its construction chain and recomputes the CPU,
+ordering and original-failure checks. It does not launch tests or accept a saved
+`passed` flag as proof. Changed inputs require affected execution again. Retain raw
+private evidence while consumers need replay; the committed allowlist has hashes
+and outcomes, not credentials, profiles, game files, raw captures or private paths.
+
+### Optional owned-game startup diagnosis
+
+`translated_game_diagnostic` reuses the existing owned APISession/bootstrap,
+authorization, output bounds, timeout, cleanup and sentinel protocol. It verifies
+69 original files against the owner's depot snapshot, clones only those files and
+a synthetic prefix, and uses an isolated home. The final runtime is unchanged.
+Run with `--runtime`, `--reuse`, `--seed`, `--game`, `--snapshot` and a fresh
+`--output` under `.build/task8`; inspect `--help` for the argument interface.
+The 120-second startup uses D3D11 and a 960x540 window and retains private logs.
+Normal Steam checks remain enabled; no app-id override, API stub, authenticated
+prefix or save import is used. An account requirement is a diagnostic outcome,
+not permission to bypass Steam. This does not implement #11's official login flow
+or #12's gameplay/save qualification.
+
+The October 9 diagnostic reached Unity initialization and recorded 51 successful
+scalar-alignment repairs. Loading `GameAssembly.dll` then returned
+`STATUS_NOT_SUPPORTED` (`0xc00000bb`) from image mapping. The bounded run timed
+out in that failure path; cleanup, sentinel survival, original-file integrity and
+before/after authorization passed. No menu or gameplay was qualified, and the
+normal Steam account path was not reached/verified. The next focused investigation
+is the PE mapping admission of the unchanged game DLL; static inspection finds a required image size of 57,647,104 bytes above the
+configured 38,993,920-byte per-image maximum. That check rejects this DLL. The
+first runtime refusal branch has not yet been instrumented; resizing the arena
+requires reviewing its memory budget and relocation/publication bounds together. This game diagnosis does not invalidate the distinct
+finite D3D11 fixture results.

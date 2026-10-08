@@ -1,0 +1,35 @@
+--- a/dlls/winemac.drv/pear_metal_bridge.m
++++ b/dlls/winemac.drv/pear_metal_bridge.m
+@@ -9,6 +9,16 @@
+ #import <Metal/Metal.h>
+ #import <QuartzCore/CAMetalLayer.h>
+ #include <string.h>
++#include <stdio.h>
++#include <stdlib.h>
++static void pear_present_counts(const char *action,int32_t status)
++{
++    const char *flag=getenv("PEAR_PRESENT_OBSERVE");
++    uint64_t leases=0,attachments=0;
++    if(!flag || strcmp(flag,"1")) return;
++    pear_macdrv_metal_counts(&leases,&attachments);
++    fprintf(stderr,"PEAR_PRESENT_REGISTRY action=%s status=%d leases=%llu attachments=%llu\n",action,status,(unsigned long long)leases,(unsigned long long)attachments);
++}
+ struct pear_binding {
+     uint64_t hwnd, generation;
+     WineContentView *client;
+@@ -128,6 +138,7 @@
+             if(client) [(id)client release];
+         } @catch(NSException *exception) { (void)exception;status=PEAR_METAL_NATIVE_EXCEPTION; }
+     }});
++    pear_present_counts("acquire",status);
+     return status;
+ }
+ static int32_t query(uint64_t token,struct pear_metal_query_v1 *out)
+@@ -170,6 +181,7 @@
+             }
+         } @catch(NSException *exception) { (void)exception; status=PEAR_METAL_NATIVE_EXCEPTION; }
+     }});
++    pear_present_counts("release",status);
+     return status;
+ }
+ static int32_t with_layer(uint64_t token,pear_metal_layer_operation operation,void *context)

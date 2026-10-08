@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "scope": "bounded_translated_d3d11_correctness",
+  "game_qualification": false,
+  "provenance": {
+    "fixture": "Original Pear MIT fixture; D3D11 device setup reviewed against DXMT tests/dx11/dx11_triangle.cpp",
+    "dxmt_revision": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+    "native_oracle": "Unchanged tools/dxmt/run_pairing.py 39-case native bridge/lifetime oracle",
+    "cpu_oracles": "Unchanged #6 corpus (19 PE fixtures) and ordering fixture, with exact native x64 references"
+  },
+  "stage1": {
+    "device": {
+      "guest_machine": "x86_64",
+      "driver_type": "hardware",
+      "feature_level": "11_0",
+      "required_modules": [
+        "d3d11.dll",
+        "dxgi.dll",
+        "winemetal.dll"
+      ],
+      "required_native_backend": [
+        "winemac.so",
+        "winemetal.so",
+        "Metal.framework"
+      ],
+      "expected_exit": 42,
+      "timeout_seconds": 180,
+      "success_requires_actual_route_and_owned_cleanup": true
+    },
+    "regressions": [
+      "native-pairing-39",
+      "cpu-corpus-19",
+      "ordering-32768-pairs"
+    ]
+  },
+  "future_cases": {
+    "buffer": "Exact declared uint32 sequence after update/copy/map",
+    "texture": "Row-pitch-aware 8x8 RGBA8 upload/copy and point sampling",
+    "raster": "Analytic 64x64 RGBA8 interior and clear regions, excluding edges",
+    "depth_blend": "LESS depth/write and half-alpha blend; maximum one UNORM unit/channel",
+    "compute": "Exact declared uint32 transform",
+    "presentation": "Three cycles of two presents each at 64x64, 96x80 and 64x64: 18 presents"
+  },
+  "stage2": {
+    "version": 1,
+    "readbacks": {
+      "buffer": {
+        "count": 64,
+        "expected": "i * 0x010203 + 5"
+      },
+      "texture_copy": {
+        "size": [
+          8,
+          8
+        ],
+        "rgba": "[x*17+3, y*19+5, (x+y)*11+7, 255]"
+      },
+      "texture_sample": {
+        "size": [
+          8,
+          8
+        ],
+        "filter": "point",
+        "uv": "SV_Position.xy / 8",
+        "expected": "same as texture_copy"
+      },
+      "raster": {
+        "size": [
+          64,
+          64
+        ],
+        "viewport": [
+          16,
+          16,
+          32,
+          32
+        ],
+        "inside": [
+          0,
+          255,
+          0,
+          255
+        ],
+        "clear": [
+          17,
+          34,
+          51,
+          255
+        ],
+        "excluded_edge": "inside bounding box [14,49]^2 except interior [18,45]^2"
+      },
+      "depth": {
+        "size": [
+          64,
+          64
+        ],
+        "compare": "LESS",
+        "write": "ALL",
+        "draws": [
+          [
+            1,
+            0,
+            0,
+            1,
+            0.25
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0.75
+          ]
+        ],
+        "rgba": [
+          255,
+          0,
+          0,
+          255
+        ]
+      },
+      "blend": {
+        "size": [
+          64,
+          64
+        ],
+        "overlay": [
+          0,
+          0,
+          1,
+          0.5,
+          0.1
+        ],
+        "rgb": "source*0.5 + destination*0.5",
+        "alpha": "source alpha",
+        "rgba": [
+          128,
+          0,
+          128,
+          128
+        ],
+        "tolerance": 1
+      },
+      "compute": {
+        "count": 64,
+        "input": "i ^ 0xa5",
+        "expected": "input * 3 + 7",
+        "groups": 4,
+        "threads_per_group": 16
+      }
+    },
+    "formats": {
+      "textures": "DXGI_FORMAT_R8G8B8A8_UNORM",
+      "depth": "DXGI_FORMAT_D32_FLOAT",
+      "integers": "uint32 little endian"
+    },
+    "shader_compiler": "source-built Wine d3dcompiler_47.dll, D3DCOMPILE_ENABLE_STRICTNESS, shader model 5.0",
+    "case_count": 5,
+    "physical_teardown_qualified": false
+  }
+}
