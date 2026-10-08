@@ -11,6 +11,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "native_bridge.h"
+extern int pear_state_fixture(int argc, char **argv);
 extern int pear_original_main(int argc, char **argv);
 static void delay_ms(unsigned ms) {
     struct timespec wait = {(time_t)(ms / 1000), (long)(ms % 1000) * 1000000};
@@ -45,6 +46,7 @@ int main(int argc, char **argv) {
         if (!end || *end || fd < 3 || fd > 1024 || fchdir((int)fd)) return 61;
         close((int)fd); unsetenv("PEAR_FIXTURE_WORK_FD");
     } else return 62;
+    if (argc > 1 && !strcmp(argv[1], "state")) return pear_state_fixture(argc, argv);
     if (argc > 1 && (!strcmp(argv[1], "early_eof") || !strcmp(argv[1], "final_burst") || !strcmp(argv[1], "detached_helper"))) {
         char *mode = argv[1]; argv[1] = "trace_only";
         int traced = pear_original_main(argc, argv); argv[1] = mode;

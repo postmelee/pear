@@ -74,7 +74,8 @@ def build(output, require_empty=False, rust_tests=False):
     child_object=output/'original-child.o'
     run(['xcrun','clang',*flags,'-Dmain=pear_original_main','-c',original.EXPERIMENT/'fixtures/child.c','-o',child_object])
     wrapper=output/'bin/fixture-entry'
-    run(['xcrun','clang',*flags,'-I',original.EXPERIMENT/'fixtures',REPO/'tests/manager/fixtures/supervision_entry.c',child_object,bridge,'-lproc','-o',wrapper])
+    run(['xcrun','clang',*flags,'-I',original.EXPERIMENT/'fixtures',REPO/'tests/manager/fixtures/supervision_entry.c',child_object,REPO/'tests/manager/fixtures/state.c',bridge,'-lproc','-o',wrapper])
+    run(['xcrun','clang',*flags,'-DPEAR_STATE_VARIANT=2','-I',original.EXPERIMENT/'fixtures',REPO/'tests/manager/fixtures/supervision_entry.c',child_object,REPO/'tests/manager/fixtures/state.c',bridge,'-lproc','-o',output/'bin/fixture-entry-next'])
     rust_env = {'CARGO_TARGET_DIR':str(output / 'rust'), 'RUSTC':str(Path.home() / '.cargo/bin/rustc'),
                 'PEAR_MANAGER_TEST_FIXTURE':str(child), 'CARGO_ENCODED_RUSTFLAGS':'\x1f'.join(['-C','link-arg='+str(bridge),'-C','link-arg=-lproc'])}
     common = ['--manifest-path',REPO / 'manager/Cargo.toml','--locked','--offline','--release','--target','aarch64-apple-darwin']
@@ -89,10 +90,10 @@ def build(output, require_empty=False, rust_tests=False):
     signature = subprocess.run(['codesign','-d','--verbose=2',binary],capture_output=True,text=True,timeout=10)
     if signature.returncode: raise RuntimeError('signature inspection failed')
     extra_binaries = {}
-    for name in ('fixture-child','fixture-entry'):
+    for name in ('fixture-child','fixture-entry','fixture-entry-next'):
         binary_path=output/'bin'/name
         extra_binaries[name]={'sha256':original.digest(binary_path),'slices':run(['lipo','-archs',binary_path]),'dependencies':run(['otool','-L',binary_path])}
-    for name, source in [('pear-manager','pear-manager'), ('activation_probe','examples/activation_probe')]:
+    for name, source in [('pear-manager','pear-manager'), ('activation_probe','examples/activation_probe'), ('state_probe','examples/state_probe')]:
         destination=output/'bin'/name
         shutil.copy2(output/'rust/aarch64-apple-darwin/release'/source,destination)
         slices_extra=run(['lipo','-archs',destination])
@@ -110,10 +111,10 @@ def build(output, require_empty=False, rust_tests=False):
             if run(['lipo','-archs',path]) != 'arm64': raise ValueError('fixture not native')
             run(['codesign','--verify',path])
             extra_binaries[str(path.relative_to(output))]={'sha256':original.digest(path),'slices':'arm64','dependencies':run(['otool','-L',path]),'load_commands':run(['otool','-l',path])}
-    inputs = [path for group in ('manager','tests/manager','tests/contracts','runtime/contracts')
+    inputs = [path for group in ('manager','tests/manager','tests/contracts','runtime/contracts','profiles','tests/profiles')
               for path in (REPO / group).rglob('*') if path.is_file() and '__pycache__' not in path.parts]
     inputs += [original.EXPERIMENT / path for path in ('build.py','run_cases.py','fixtures/cases.json','fixtures/native_bridge.c','fixtures/native_bridge.h','fixtures/child.c','rust/src/main.rs','rust/src/supervisor_tests.rs','rust/src/json.rs','rust/Cargo.toml','rust/Cargo.lock')]
-    metadata = {'version':1,'stage':3,'fixture_only':True,'runtime_eligible':False,'toolchains':versions,
+    metadata = {'version':1,'stage':4,'fixture_only':True,'runtime_eligible':False,'toolchains':versions,
                 'sources':{str(path.relative_to(REPO)):original.digest(path) for path in sorted(set(inputs))},
                 'binaries':{'foundation':{'sha256':original.digest(binary),'slices':slices,'size_bytes':binary.stat().st_size,
                     'file':run(['file',binary]),'dependencies':run(['otool','-L',binary]),'signature_inspection':signature.stderr}},
@@ -134,7 +135,7 @@ def main():
     args=parser.parse_args()
     try:
         build(args.output,args.require_empty,args.rust_tests)
-        print(json.dumps({'build':'passed','stage':3,'runtime_eligible':False}))
+        print(json.dumps({'build':'passed','stage':4,'runtime_eligible':False}))
         return 0
     except (OSError,ValueError,RuntimeError,subprocess.SubprocessError):
         print(json.dumps({'build':'failed','reason':'input_or_build_failure','runtime_eligible':False}))

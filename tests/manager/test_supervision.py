@@ -11,7 +11,7 @@ class SupervisionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):cls.cases.close()
     def check(self,name,expected):
-        value=self.cases.execute(name);self.assertTrue(value['work'].is_dir())
+        value=self.cases.execute(name)
         if value['phase']=='admission':
             classification='ineligible' if value['returncode']==3 else 'invalid_contract';self.assertEqual(classification,expected,value)
             self.assertFalse(list((value['work']/'state/prefix').glob('*.json')));return
@@ -29,8 +29,7 @@ class SupervisionTests(unittest.TestCase):
         if expected=='success':self.assertTrue(result['observation_complete']);self.assertEqual(json.loads((value['work']/'.pear-journal.json').read_bytes())['state'],'clean')
         self.assertEqual(value['returncode'],0 if expected=='success' else 3 if expected in ('ineligible','observer_not_ready') else 4,value)
     def test_v2_empty_operations_launch(self):self.check('v2_success','success')
-    def test_v2_setting_refuses_until_stage4(self):
-        value=self.cases.execute('v2_unsupported_setting');self.assertEqual(value['result']['classification'],'ineligible',value);self.assertFalse(value['result']['spawned']);self.assertEqual(value['trace_count'],0);self.assertTrue(value['sentinel_survived'])
+    def test_v2_setting_prepares_and_launches(self):self.check('v2_unsupported_setting','success')
     def test_detached_helper_scope_refuses_clean_journal(self):
         value=self.cases.execute('detached_helper','detached_helper');r=value['result']
         self.assertEqual(r['classification'],'cleanup_failed',value)

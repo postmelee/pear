@@ -10,7 +10,10 @@ fn execute() -> Result<()> {
     require(!args.is_empty(), "cli_misuse")?;
     let command = args[0].as_str();
     require(
-        ["inspect", "evaluate", "activate", "launch"].contains(&command),
+        [
+            "inspect", "evaluate", "activate", "launch", "prepare", "status", "recover",
+        ]
+        .contains(&command),
         "cli_misuse",
     )?;
     require(args.len() % 2 == 1, "cli_misuse")?;
@@ -20,6 +23,32 @@ fn execute() -> Result<()> {
             options.insert(pair[0].as_str(), pair[1].as_str()).is_none(),
             "cli_misuse",
         )?;
+    }
+    if ["prepare", "status", "recover"].contains(&command) {
+        let (reason, error) = match pear_manager::state::command(command, &options) {
+            Ok(reason) => (reason, None),
+            Err(error) => (error.code, Some(error)),
+        };
+        println!(
+            "{{\"diagnostic_version\":1,\"phase\":\"{}\",\"reason\":\"{}\",\"runtime_eligible\":false,\"native_error\":{}}}",
+            command,
+            reason,
+            error
+                .as_ref()
+                .and_then(|e| e.errno)
+                .map_or("null".into(), |n| n.to_string())
+        );
+        std::process::exit(if let Some(error) = error {
+            if error.code == "cli_misuse" {
+                2
+            } else if error.errno.is_some() || error.code == "context_commit_uncertain" {
+                4
+            } else {
+                3
+            }
+        } else {
+            0
+        });
     }
     if command == "launch" {
         let outcome = match pear_manager::launch::run(&options) {

@@ -1,4 +1,4 @@
-//! Selected immutable payload plus private manual context; preparation is a later stage.
+//! Launch a prepared context with its retained immutable selection and prefix lease.
 use crate::{
     activation::{Admitted, version_lease},
     contract::Bundle,
@@ -40,54 +40,22 @@ pub fn run(options: &BTreeMap<&str, &str>) -> Result<Outcome> {
     )?;
     let state = Root::open(get("--state-root")?)?;
     state.private()?;
-    let selection = state.json("selection.json")?;
-    selection.keys(&[
-        "selection_version",
-        "bundle_root",
-        "request",
-        "request_sha256",
-        "artifact_sha256",
-        "policy_sha256",
-        "root_device",
-        "root_inode",
-        "media_sha256",
-    ])?;
-    require(
-        selection.get("selection_version")?.i()? == 1
-            && selection.get("request")?.s()? == get("--request")?,
-        "selection_changed",
-    )?;
-    let root = Root::open(selection.get("bundle_root")?.s()?)?;
-    let request = get("--request")?;
-    let q = root.json(request)?;
-    let bundle = Bundle::inspect(root, request, q.get("record_context")?.s()?)?;
-    let path = get("--policy")?;
-    let (parent, name) = path.rsplit_once('/').ok_or(Error::code("invalid_path"))?;
-    let (bytes, hash, _) = Root::open(parent)?.read_record(name, 262144)?;
-    let admitted = Admitted::new(bundle, request, &json::parse(&bytes)?, &hash)?;
-    admitted.matches_selection(&selection)?;
+    let selection = crate::state::selection(&state, get("--context-id")?)?;
+    let admitted = load(&selection, get("--request")?, get("--policy")?)?;
     let _version_lease = version_lease(&state, &admitted)?;
     let profile = admitted.profile()?;
-    require(
-        profile.get("operations")?.a()?.is_empty(),
-        "unsupported_operations",
-    )?;
+    crate::profile::validate(profile)?;
     let context = Context::open(
         &state,
         get("--context-id")?,
         admitted.request_digest(),
         admitted.request_record()?.get("run_id")?.s()?,
     )?;
+    context.matches(admitted.request_record()?, profile)?;
+    crate::profile::check(&context.root, admitted.request_record()?, profile)?;
     let work = context.work_descriptor()?;
     let work_fd = work.as_raw_fd();
-    // Descriptor identity and all supplied roots are validated before the wrapper can
-    // enter this explicit private work directory. No arbitrary cwd executable lookup.
-    for name in ["runtime", "prefix", "saves", "cache", "logs"] {
-        let directory = context
-            .root
-            .directory(admitted.request_record()?.get("roots")?.get(name)?.s()?)?;
-        Root { file: directory }.private()?;
-    }
+    let bindings = context.bindings(admitted.request_record()?)?;
     let mut command = admitted.fixture_command()?;
     for arg in profile.get("arguments")?.a()? {
         command.arg(arg.s()?);
@@ -96,11 +64,35 @@ pub fn run(options: &BTreeMap<&str, &str>) -> Result<Outcome> {
         command.env(pair.get("key")?.s()?, pair.get("value")?.s()?);
     }
     command.env("PEAR_FIXTURE_WORK_FD", work_fd.to_string());
+    let mut descriptors = vec![work_fd];
+    for (name, file) in &bindings {
+        command.env(
+            format!("PEAR_FIXTURE_{}_FD", name.to_uppercase()),
+            file.as_raw_fd().to_string(),
+        );
+        descriptors.push(file.as_raw_fd());
+    }
+    command.env(
+        "WINEPREFIX",
+        format!(
+            "{}/contexts/{}/{}",
+            get("--state-root")?,
+            get("--context-id")?,
+            admitted
+                .request_record()?
+                .get("roots")?
+                .get("prefix")?
+                .s()?
+        ),
+    );
+
     unsafe {
         command.pre_exec(move || {
-            let flags = libc::fcntl(work_fd, libc::F_GETFD);
-            if flags < 0 || libc::fcntl(work_fd, libc::F_SETFD, flags & !libc::FD_CLOEXEC) != 0 {
-                return Err(std::io::Error::last_os_error());
+            for fd in &descriptors {
+                let flags = libc::fcntl(*fd, libc::F_GETFD);
+                if flags < 0 || libc::fcntl(*fd, libc::F_SETFD, flags & !libc::FD_CLOEXEC) != 0 {
+                    return Err(std::io::Error::last_os_error());
+                }
             }
             Ok(())
         });
@@ -111,7 +103,7 @@ pub fn run(options: &BTreeMap<&str, &str>) -> Result<Outcome> {
     let mut peer = Session::new(
         fd,
         admitted.request_record()?,
-        request,
+        get("--request")?,
         admitted.request_digest(),
         &context.capture,
     )?;
@@ -136,4 +128,30 @@ pub fn failure(error: Error) -> Outcome {
     );
     outcome.native_error = error.errno;
     outcome
+}
+
+pub(crate) fn load(selection: &json::J, request: &str, path: &str) -> Result<Admitted> {
+    selection.keys(&[
+        "selection_version",
+        "bundle_root",
+        "request",
+        "request_sha256",
+        "artifact_sha256",
+        "policy_sha256",
+        "root_device",
+        "root_inode",
+        "media_sha256",
+    ])?;
+    require(
+        selection.get("selection_version")?.i()? == 1 && selection.get("request")?.s()? == request,
+        "selection_changed",
+    )?;
+    let root = Root::open(selection.get("bundle_root")?.s()?)?;
+    let q = root.json(request)?;
+    let bundle = Bundle::inspect(root, request, q.get("record_context")?.s()?)?;
+    let (parent, name) = path.rsplit_once('/').ok_or(Error::code("invalid_path"))?;
+    let (bytes, hash, _) = Root::open(parent)?.read_record(name, 262144)?;
+    let admitted = Admitted::new(bundle, request, &json::parse(&bytes)?, &hash)?;
+    admitted.matches_selection(selection)?;
+    Ok(admitted)
 }

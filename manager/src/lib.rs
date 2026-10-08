@@ -12,6 +12,7 @@ pub mod encoding;
 pub mod launch;
 pub mod observer;
 pub mod policy;
+pub mod profile;
 pub mod state;
 pub mod supervisor;
 mod tools;

@@ -5,7 +5,7 @@ GitHub Issue: [#9](https://github.com/postmelee/pear/issues/9)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task9`
 Date: October 8, 2026 (Asia/Seoul)
-Status: implementation plan and Stage 1 approved on October 8, 2026 through an authorized relay, including the three review supplements below. Commands and artifacts below define the approved stages; actual Stage 1 results are in its report, and later-stage execution remains planned. Stage 1 is implemented and verified; see the [Stage 1 report](../working/task_m1_9_stage1.md). Stage 2 was explicitly approved on October 9, 2026 and is implemented and verified; see the [Stage 2 report](../working/task_m1_9_stage2.md). Stage 3 was explicitly approved by the requester on October 9, 2026 and is implemented and verified; see the [Stage 3 report](../working/task_m1_9_stage3.md). Stage 4 awaits explicit continuation.
+Status: implementation plan and Stage 1 approved on October 8, 2026 through an authorized relay, including the three review supplements below. Commands and artifacts below define the approved stages; actual Stage 1 results are in its report, and later-stage execution remains planned. Stage 1 is implemented and verified; see the [Stage 1 report](../working/task_m1_9_stage1.md). Stage 2 was explicitly approved on October 9, 2026 and is implemented and verified; see the [Stage 2 report](../working/task_m1_9_stage2.md). Stage 3 was explicitly approved by the requester on October 9, 2026 and is implemented and verified; see the [Stage 3 report](../working/task_m1_9_stage3.md). Stage 4 was explicitly approved on October 9, 2026 and is implemented and verified; see the [Stage 4 report](../working/task_m1_9_stage4.md). Stage 5 awaits explicit continuation.
 
 ## Context and Authorization
 
@@ -391,3 +391,5 @@ On October 8, 2026 the requester instructed the originating chat to convey the r
 On October 9, 2026 the requester explicitly instructed this chat to proceed, authorizing Stage 2 under the supplemented plan. Stage 3 remains a separate checkpoint.
 
 - October 9, 2026: after reviewing the Stage 2 completion, the requester explicitly instructed this chat to proceed, authorizing Stage 3 under the existing supplemented plan. Stage 4 remains a separate checkpoint.
+
+On October 9, 2026 the requester explicitly continued after the Stage 3 report and commit, authorizing Stage 4 implementation, verification, reporting and bundled commit. Stage 5 remains a separate checkpoint.

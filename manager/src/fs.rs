@@ -237,7 +237,7 @@ pub fn check_mutable(
             if m.is_dir() {
                 scan(child, depth + 1, count, immutable)?;
             } else {
-                require(m.is_file(), "not_regular_file")?;
+                require(m.is_file() && m.nlink() == 1, "not_regular_or_aliased_file")?;
             }
         }
         Ok(())

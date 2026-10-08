@@ -51,6 +51,7 @@ pub struct Config {
     pub timeout: u64,
     pub limit: usize,
 }
+#[derive(Debug)]
 pub struct Outcome {
     pub classification: &'static str,
     pub spawned: bool,
@@ -123,10 +124,8 @@ fn native_host() -> bool {
     (r == 0 && len == 4 && translated == 0)
         || (r != 0 && std::io::Error::last_os_error().raw_os_error() == Some(libc::ENOENT))
 }
-fn identity(pid: i32) -> R<(u64, u64)> {
-    let (mut sec, mut usec) = (0, 0);
-    ensure(unsafe { pear_process_identity(pid, &mut sec, &mut usec) } == 0)?;
-    Ok((sec, usec))
+fn identity(pid: i32) -> std::io::Result<(u64, u64)> {
+    crate::native::process_identity(pid)
 }
 fn exited(pid: i32) -> R<bool> {
     let mut info = unsafe { std::mem::zeroed::<libc::siginfo_t>() };
@@ -228,6 +227,10 @@ fn supervise_with_signal(
     outcome.spawned = true;
     outcome.cleanup = "failed";
     let observed = identity(pid);
+    outcome.native_error = observed
+        .as_ref()
+        .err()
+        .and_then(|error| error.raw_os_error());
     let group = unsafe { libc::getpgid(pid) } == pid || exited(pid) == Ok(true);
     let mut stdout = Some(child.stdout.take().expect("owned pipe"));
     let mut stderr = Some(child.stderr.take().expect("owned pipe"));
@@ -310,10 +313,27 @@ fn supervise_with_signal(
     // Even a rapidly exiting leader cannot have its PID/PGID reused here.
     // After the owned group signal, reap the leader promptly: waiting for orphan
     // kernel records to disappear first can itself delay their reparenting/reap.
-    let identity_ok = exited(pid) == Ok(true)
-        || observed
-            .as_ref()
-            .is_ok_and(|old| identity(pid).is_ok_and(|now| now == *old));
+    let cleanup_started = Instant::now();
+    // Darwin may stop exposing proc_pidinfo before WNOWAIT exposes the exit.
+    // Keep the reservation and wait briefly for one of the original proofs;
+    // never turn this transient identity gap into a direct-only group cleanup.
+    let mut check_identity = || {
+        if exited(pid) == Ok(true) {
+            return true;
+        }
+        match identity(pid) {
+            Ok(now) => observed.as_ref().is_ok_and(|old| *old == now),
+            Err(error) => {
+                outcome.native_error = error.raw_os_error().or(outcome.native_error);
+                false
+            }
+        }
+    };
+    let mut identity_ok = check_identity();
+    while !identity_ok && cleanup_started.elapsed() < Duration::from_millis(250) {
+        std::thread::sleep(Duration::from_millis(2));
+        identity_ok = check_identity();
+    }
     let signal_result = if group && identity_ok {
         signal_owned(-pid, libc::SIGKILL)
     } else {
@@ -325,12 +345,12 @@ fn supervise_with_signal(
         None
     };
     outcome.native_error = signal_error.or(outcome.native_error);
-    let cleanup_started = Instant::now();
     let mut reserved_only = only_reserved_leader(pid);
     // Darwin can briefly retain a killed orphan's group entry. Preserve the
-    // original EPERM and the leader reservation; only accept the original
+    // original EPERM and the leader reservation; an exit still becoming visible
+    // must also receive the bounded recheck. Only accept the original
     // zombie-leader exception after a fresh bounded enumeration confirms it.
-    if signal_error == Some(libc::EPERM) && exited(pid) == Ok(true) {
+    if signal_error == Some(libc::EPERM) {
         while !reserved_only && cleanup_started.elapsed() < Duration::from_millis(250) {
             std::thread::sleep(Duration::from_millis(2));
             reserved_only = only_reserved_leader(pid);
@@ -344,6 +364,13 @@ fn supervise_with_signal(
         || (signal_error == Some(libc::EPERM) && reserved_only))
         && group
         && identity_ok;
+    #[cfg(test)]
+    if !cleanup_ok {
+        eprintln!(
+            "owned cleanup diagnostic: group={group} identity_ok={identity_ok} observed={observed:?} exited={:?} signal_result={signal_result} error={signal_error:?}",
+            exited(pid)
+        );
+    }
     let mut ready = false;
     while cleanup_started.elapsed() < Duration::from_secs(2) {
         if out.drain(&mut stdout, cfg.limit).is_err() || err.drain(&mut stderr, cfg.limit).is_err()
@@ -507,6 +534,11 @@ pub fn run(mut command: Command, cfg: &Config, peer: &mut Session, journal: &Con
     }
     if cancelled() {
         return Outcome::new("cancelled", native);
+    }
+    if let Err(error) = journal.validate() {
+        let mut result = Outcome::new("context_replaced", native);
+        result.native_error = error.errno;
+        return result;
     }
     command
         .stdin(Stdio::null())

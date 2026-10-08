@@ -150,7 +150,7 @@ fn setup_failure(failed_call: usize) {
         "owned descendant must retain the pipes at injection"
     );
     assert!(injected_at.unwrap().elapsed() < Duration::from_secs(2));
-    assert_eq!(outcome.classification, "internal_error");
+    assert_eq!(outcome.classification, "internal_error", "{outcome:?}");
     assert!(outcome.spawned && outcome.reaped);
     assert_eq!(outcome.cleanup, "passed");
     assert_eq!(

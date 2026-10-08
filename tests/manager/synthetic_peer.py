@@ -12,7 +12,7 @@ def reference(record,path):return {'ref_type':'record','path':path,'record_kind'
 class Peer:
     def __init__(self,mode='normal'):
         self.client,self.server=socket.socketpair();self.server.settimeout(.1);self.client.setsockopt(socket.SOL_SOCKET,socket.SO_SNDBUF,1024)
-        self.mode=mode;self.stop=threading.Event();self.events=[];self.error=None;self.ready_sent=threading.Event();self.hello_seen=threading.Event();self.thread=threading.Thread(target=self.run,daemon=True)
+        self.release_ready=threading.Event();self.mode=mode;self.stop=threading.Event();self.events=[];self.error=None;self.ready_sent=threading.Event();self.hello_seen=threading.Event();self.thread=threading.Thread(target=self.run,daemon=True)
     def start(self):self.thread.start()
     def close(self):
         self.stop.set();self.client.close()
@@ -59,6 +59,7 @@ class Peer:
             if self.mode=='stale_capture':packet['capture_id']='old-capture'
             if self.mode=='wrong_run':ready['run_id']='old-run'
             if self.mode=='wrong_sequence':ready['sequence']=1
+            if self.mode=='hold_ready':self.release_ready.wait(1.2)
             self.send(packet);self.events.append(ready);self.ready_sent.set()
             if self.mode=='after_ready_no_read':self.stop.wait(4);return
             if self.mode=='after_ready_partial':self.server.sendall(b'\0\0');self.stop.wait(4);return

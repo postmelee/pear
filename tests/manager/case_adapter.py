@@ -35,15 +35,23 @@ class Cases:
             if experiment_build.digest(REPO/path)!=digest:raise AssertionError('stale build source '+path)
         factory=self.root/'factory';(factory/'bin').mkdir(parents=True);shutil.copy2(BUILD/'bin/fixture-entry',factory/'bin/fixture-child');shutil.copy2(BUILD/'build.json',factory/'build.json')
         for case in [c for c in [*CORPUS['cases'],*extra] if only is None or c['id'] in only]:
+            shutil.copy2(BUILD/'bin'/case.get('entry_binary','fixture-entry'),factory/'bin/fixture-child')
             name=case['id'];source=self.source/name;clean={**case,'mutation':None};experiment_cases.create_bundle(source,factory,clean);f=reconstruct(source)
             original=(source/'blobs/source.tar').read_bytes();buffer=io.BytesIO(original)
             with tarfile.open(fileobj=buffer,mode='a') as tar:
-                for relative,archive_name in [('tests/manager/fixtures/supervision_entry.c','supervision_entry.c'),('manager/native/bridge.c','manager_bridge.c'),('manager/native/bridge.h','manager_bridge.h')]:
+                for relative,archive_name in [('tests/manager/fixtures/supervision_entry.c','supervision_entry.c'),('tests/manager/fixtures/state.c','state.c'),('manager/native/bridge.c','manager_bridge.c'),('manager/native/bridge.h','manager_bridge.h')]:
                     data=(REPO/relative).read_bytes();info=tarfile.TarInfo(archive_name);info.size=len(data);info.mtime=0;info.mode=0o644;tar.addfile(info,io.BytesIO(data))
             (source/'blobs/source.tar').write_bytes(buffer.getvalue());rewrite(source,f,'lock',lambda v:v['components'][0]['source']['content']['digest'].update(value=experiment_build.digest(source/'blobs/source.tar')))
-            config_path=source/'blobs/build-config.json';config=json.loads(config_path.read_bytes());config.update(source_sha256=experiment_build.digest(source/'blobs/source.tar'),wrapper_sha256=experiment_build.digest(REPO/'tests/manager/fixtures/supervision_entry.c'),manager_bridge_sha256=experiment_build.digest(REPO/'manager/native/bridge.c'));config_path.write_bytes(encoded(config));rewrite(source,f,'lock',lambda v:v['components'][0]['build_context']['configuration']['digest'].update(value=experiment_build.digest(config_path)))
+            config_path=source/'blobs/build-config.json';config=json.loads(config_path.read_bytes());config.update(entry_variant=case.get('entry_binary','fixture-entry'),source_sha256=experiment_build.digest(source/'blobs/source.tar'),wrapper_sha256=experiment_build.digest(REPO/'tests/manager/fixtures/supervision_entry.c'),manager_bridge_sha256=experiment_build.digest(REPO/'manager/native/bridge.c'));config_path.write_bytes(encoded(config));rewrite(source,f,'lock',lambda v:v['components'][0]['build_context']['configuration']['digest'].update(value=experiment_build.digest(config_path)))
             experiment_cases.apply_mutation(source,f,case['mutation'])
             if case.get('schema_version')==2:upgrade_fixture(source,f);f=reconstruct(source)
+            if case.get('profile_file'):
+                public=json.loads((REPO/case['profile_file']).read_bytes())
+                rewrite(source,f,'profile',lambda value:value.update(public))
+            if case.get('profile_change'):rewrite(source,f,'profile',case['profile_change'])
+            if case.get('roots'):
+                rewrite(source,f,'request',lambda value:value.update(roots=case['roots']))
+                for path in case['roots'].values():(source/path).mkdir(parents=True,exist_ok=True)
             selected=policy(f)
             if case['mutation']=='untrusted_executable_digest':selected['approved_record_digests']=[]
             policy_path=self.root/(name+'-policy.json');policy_path.write_bytes(encoded(selected))
@@ -64,12 +72,14 @@ class Cases:
         if self.mounted:self.tool(['/usr/bin/hdiutil','detach',str(self.mount)]);self.mounted=False
         (self.retained/'results.json').write_text(json.dumps({'build_receipt_sha256':experiment_build.digest(BUILD/'build.json'),'corpus_sha256':experiment_build.digest(REPO/'experiments/manager/fixtures/cases.json'),'results':self.results},indent=2)+'\n');self.tmp.cleanup()
     def state(self):
-        state=self.root/('state-'+uuid.uuid4().hex);state.mkdir(mode=0o700);work=state/'contexts/default';work.mkdir(parents=True,mode=0o700)
-        for name in ('runtime','prefix','saves','cache','logs'):(work/'state'/name).mkdir(parents=True,mode=0o700)
+        state=self.root/('state-'+uuid.uuid4().hex);state.mkdir(mode=0o700);work=state/'contexts/default';pass
         return state,work
-    def activate(self,name,state):
+    def activate(self,name,state,prepare=True):
         item=self.entries[name]
-        return subprocess.run([str(BINARY),'activate','--bundle-root',str(item['root']),'--entry','records/request.json','--context',item['case']['oracle_context'],'--state-root',str(state),'--policy',str(item['policy'])],capture_output=True,timeout=10)
+        result=subprocess.run([str(BINARY),'activate','--bundle-root',str(item['root']),'--entry','records/request.json','--context',item['case']['oracle_context'],'--state-root',str(state),'--policy',str(item['policy'])],capture_output=True,timeout=10)
+        if result.returncode==0 and prepare and not (state/'contexts/default/.pear-context.json').exists():
+            result=subprocess.run([str(BINARY),'prepare','--state-root',str(state),'--profile','records/profile.json','--context-id','default','--policy',str(item['policy'])],capture_output=True,timeout=10)
+        return result
     def spawn(self,name,state,peer,timeout=None):
         item=self.entries[name];fd=peer.client.fileno();peer.work=state/'contexts/default';peer.start()
         args=[str(BINARY),'launch','--state-root',str(state),'--request','records/request.json','--policy',str(item['policy']),'--context-id','default','--observer-fd',str(fd),'--timeout-ms',str(timeout or item['case']['timeout_ms']),'--output-limit','4096']
