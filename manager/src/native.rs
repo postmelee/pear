@@ -86,3 +86,13 @@ pub fn mount_info(file: &impl AsFd) -> io::Result<(u64, i32, i32)> {
     })?;
     Ok((flags, fsid0, fsid1))
 }
+
+pub fn sha256_bytes(bytes: &[u8]) -> io::Result<[u8; 32]> {
+    unsafe extern "C" {
+        fn pear_sha256_bytes(data: *const u8, size: usize, digest: *mut u8) -> i32;
+    }
+    let mut digest = [0; 32];
+    // SAFETY: borrowed byte slice and fixed caller-owned output; no pointer retained.
+    checked(unsafe { pear_sha256_bytes(bytes.as_ptr(), bytes.len(), digest.as_mut_ptr()) })?;
+    Ok(digest)
+}

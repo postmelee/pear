@@ -1,7 +1,7 @@
-//! Stage 2 command surface. No runtime launch command exists before supervision approval.
+//! Native inspection, activation and foreground fixture supervision.
 use pear_manager::{
     contract::Bundle,
-    fs::{require, Error, Result, Root},
+    fs::{Error, Result, Root, require},
     json::J,
 };
 use std::collections::BTreeMap;
@@ -10,7 +10,7 @@ fn execute() -> Result<()> {
     require(!args.is_empty(), "cli_misuse")?;
     let command = args[0].as_str();
     require(
-        ["inspect", "evaluate", "activate"].contains(&command),
+        ["inspect", "evaluate", "activate", "launch"].contains(&command),
         "cli_misuse",
     )?;
     require(args.len() % 2 == 1, "cli_misuse")?;
@@ -20,6 +20,13 @@ fn execute() -> Result<()> {
             options.insert(pair[0].as_str(), pair[1].as_str()).is_none(),
             "cli_misuse",
         )?;
+    }
+    if command == "launch" {
+        let outcome = match pear_manager::launch::run(&options) {
+            Ok(outcome) => outcome,
+            Err(error) => pear_manager::launch::failure(error),
+        };
+        std::process::exit(outcome.emit());
     }
     let allowed = if command == "activate" {
         vec![
@@ -70,18 +77,33 @@ fn execute() -> Result<()> {
         let admitted = pear_manager::activation::Admitted::new(b, entry, p, &policy_hash)?;
         let state = Root::open(get("--state-root")?)?;
         pear_manager::activation::activate(&state, &admitted, root, entry)?;
-        println!("{{\"diagnostic_version\":1,\"phase\":\"activation\",\"reason\":\"selection_committed\",\"runtime_eligible\":false}}");
+        println!(
+            "{{\"diagnostic_version\":1,\"phase\":\"activation\",\"reason\":\"selection_committed\",\"runtime_eligible\":false}}"
+        );
     } else {
         let codes = pear_manager::encoding::encode(&J::Arr(
             codes.iter().take(32).map(|c| J::Str((*c).into())).collect(),
         ));
-        println!("{{\"record_valid\":true,\"eligible\":{},\"outcome_codes\":{},\"record_count\":{},\"evaluation_only\":true}}",codes=="[]",codes,b.records.len());
+        println!(
+            "{{\"record_valid\":true,\"eligible\":{},\"outcome_codes\":{},\"record_count\":{},\"evaluation_only\":true}}",
+            codes == "[]",
+            codes,
+            b.records.len()
+        );
     }
     Ok(())
 }
 fn main() {
+    std::panic::set_hook(Box::new(|_| {}));
+    if pear_manager::supervisor::install_cancellation().is_err() {
+        std::process::exit(4);
+    }
     if let Err(e) = execute() {
-        println!("{{\"record_valid\":false,\"eligible\":false,\"outcome_codes\":[\"{}\"],\"native_error\":{},\"evaluation_only\":true}}",e.code,e.errno.map_or("null".into(),|n|n.to_string()));
+        println!(
+            "{{\"record_valid\":false,\"eligible\":false,\"outcome_codes\":[\"{}\"],\"native_error\":{},\"evaluation_only\":true}}",
+            e.code,
+            e.errno.map_or("null".into(), |n| n.to_string())
+        );
         std::process::exit(if e.code == "cli_misuse" {
             2
         } else if [

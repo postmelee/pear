@@ -69,3 +69,8 @@ int32_t pear_mount_info(int32_t fd, uint64_t *flags, int32_t *fsid0, int32_t *fs
     *flags = info.f_flags; *fsid0 = info.f_fsid.val[0]; *fsid1 = info.f_fsid.val[1];
     return 0;
 }
+int32_t pear_sha256_bytes(const uint8_t *data, size_t size, uint8_t *digest) {
+    if (!data || !digest || size > 256 * 1024) return EINVAL;
+    memset(digest, 0, CC_SHA256_DIGEST_LENGTH);
+    return CC_SHA256(data, (CC_LONG)size, digest) ? 0 : EIO;
+}

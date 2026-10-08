@@ -2,7 +2,7 @@
 //! No download, installer, general dynamic-loading support, or real-runtime grant.
 use crate::{
     contract::Bundle,
-    fs::{self, require, Error, Identity, Result, Root},
+    fs::{self, Error, Identity, Result, Root, require},
     json::{self, J},
     native, tools,
 };
@@ -338,6 +338,27 @@ impl Admitted {
             media,
         })
     }
+    pub(crate) fn request_record(&self) -> Result<&J> {
+        self.bundle.request(&self.request)
+    }
+    pub(crate) fn request_digest(&self) -> &str {
+        &self.bundle.hashes[&self.request]
+    }
+    pub(crate) fn profile(&self) -> Result<&J> {
+        self.bundle
+            .target(self.request_record()?.get("profile")?, "game_profile")
+    }
+    pub(crate) fn matches_selection(&self, s: &J) -> Result<()> {
+        require(
+            s.get("request_sha256")?.s()? == self.request_digest()
+                && s.get("artifact_sha256")?.s()? == self.artifact_digest
+                && s.get("policy_sha256")?.s()? == self.policy_digest
+                && s.get("root_device")?.s()? == self.root_identity.device.to_string()
+                && s.get("root_inode")?.s()? == self.root_identity.inode.to_string()
+                && s.get("media_sha256")?.s()? == fs::hex(&self.media.digest),
+            "selection_changed",
+        )
+    }
     pub fn revalidate(&self) -> Result<()> {
         require(
             readonly(&self.bundle.root)? == self.mount
@@ -364,7 +385,7 @@ impl Admitted {
         Ok(cmd)
     }
 }
-fn private_file(root: &Root, name: &str) -> Result<File> {
+pub(crate) fn private_file(root: &Root, name: &str) -> Result<File> {
     let fd = unsafe {
         libc::openat(
             root.file.as_raw_fd(),

@@ -1,7 +1,7 @@
 //! Closed contract consumers adapted from #3 shape/Bundle traversal and the v1 oracle.
 use crate::{
-    fs::{self, require, Error, Result, Root},
-    json::{ensure, parse, J, R},
+    fs::{self, Error, Result, Root, require},
+    json::{J, R, ensure, parse},
     native,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -38,11 +38,7 @@ fn array(v: &J, min: usize, max: usize) -> R<&[J]> {
     Ok(a)
 }
 fn optional(v: &J, f: impl FnOnce(&J) -> R<()>) -> R<()> {
-    if *v == J::Null {
-        Ok(())
-    } else {
-        f(v)
-    }
+    if *v == J::Null { Ok(()) } else { f(v) }
 }
 fn ids(v: &J, min: usize) -> R<()> {
     let a = array(v, min, 64)?;
@@ -427,7 +423,7 @@ pub fn timestamp(s: &str) -> R<i64> {
     t.tm_sec = sec;
     Ok(unsafe { libc::timegm(&mut t) } as i64)
 }
-fn shape(v: &J, version: i64) -> R<()> {
+pub(crate) fn shape(v: &J, version: i64) -> R<()> {
     let kind = v.get("record_kind")?.s()?;
     let mut keys = vec![
         "record_kind",

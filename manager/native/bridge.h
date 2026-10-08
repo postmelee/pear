@@ -18,3 +18,4 @@ int32_t pear_mount_info(int32_t fd, uint64_t *flags, int32_t *fsid0, int32_t *fs
 }
 #endif
 #endif
+int32_t pear_sha256_bytes(const uint8_t *data, size_t size, uint8_t *digest);
