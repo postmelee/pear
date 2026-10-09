@@ -5,7 +5,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task44`
 Date: October 10, 2026 (Asia/Seoul)
 Base: `942bd816913d8792c55f821fdc2ad309b1b85daf` (master, including PR #43)
-Status: Read-only research and Issue registration are approved. The requester continued with task start; this task plan and its document locations are presented for review. No runtime implementation or native experiment is approved by this plan.
+Status: Task plan, research scope and document locations approved by the requester's explicit continuation after `1a1d6b8` on October 10, 2026. The detailed research implementation plan is prepared for review and Stage 1 continuation. No runtime implementation or native experiment is approved.
 
 ## Purpose
 
