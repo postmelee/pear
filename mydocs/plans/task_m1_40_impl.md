@@ -10,8 +10,11 @@ Stage 1 is complete; the [Stage 1 report](../working/task_m1_40_stage1.md) recor
 the exact native origin and proposed 64 MiB budget. Stage 2 and the 64 MiB
 per-image bound were approved by explicit requester continuation on October 9,
 2026. Stage 2 is complete; the [Stage 2 report](../working/task_m1_40_stage2.md)
-records 27 passing tests and native/guest loader execution. Stage 3 awaits
-continuation.
+records 27 passing tests and native/guest loader execution. Stage 3 was approved
+by explicit requester continuation on October 9, 2026 and is complete.
+The [Stage 3 report](../working/task_m1_40_stage3.md) records initialization,
+regressions and the explicit #11 startup handoff. Stage 4 awaits continuation.
+Stage 3 uses new `image_initialization_*` adapters to preserve frozen producers.
 Frozen Stage 1 producers remain unchanged; correction adapters use the
 `image_admission_correction_*` module prefix with the same planned CLI modes.
 #10 (`4773150`) and #11 (`62f7430`) remain separate integration dependencies.
@@ -239,3 +242,24 @@ reported honestly. Preserve read-only dependency worktrees and #10/#11 outputs.
 
 Approve this implementation plan and Stage 1 diagnostic implementation/execution.
 The task plan approval is already recorded and is not being requested again.
+
+
+## Stage 3 Coordination Clarification
+
+The October 9 coordination review was checked against #11's task plan at
+`09ea427`: #11 owns normal game startup through a responsive menu and Steamworks,
+including necessary game-start compatibility corrections. Hand off the observed
+post-attach initialization stall to that owner; #12 retains combat, input/audio
+and save/relaunch qualification. #40 continues to own this loader/arena correction
+and its required regression evidence. Consumers inspect retained inputs read-only
+and create separate experimental outputs; neither another source tree mutation
+nor qualification of an experimental candidate is implied.
+
+Preserve existing exact-byte runner producers and the in-progress matrix. Do not
+add another full runner copy for a diagnostic flag. The next concrete cleanup
+location is `image_initialization_run.py` / `image_initialization_trace_run.py`:
+new execution should use a reviewed callable with separate candidate admission
+and a fixed diagnostic allowlist, recording common code and selected settings in
+its input closure. This is a narrow follow-up, not a new protocol or engine.
+Do not retroactively claim that historical runs qualify that future adapter or
+rebuild Wine merely to refactor Python. Current Stage 3 execution is not restarted.
