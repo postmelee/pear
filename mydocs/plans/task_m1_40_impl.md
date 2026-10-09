@@ -13,7 +13,9 @@ per-image bound were approved by explicit requester continuation on October 9,
 records 27 passing tests and native/guest loader execution. Stage 3 was approved
 by explicit requester continuation on October 9, 2026 and is complete.
 The [Stage 3 report](../working/task_m1_40_stage3.md) records initialization,
-regressions and the explicit #11 startup handoff. Stage 4 awaits continuation.
+regressions and the explicit #11 startup handoff. Stage 4 was approved by explicit
+requester continuation on October 9, 2026 and completed after midnight on
+October 10. The final report and PR draft await publication approval.
 Stage 3 uses new `image_initialization_*` adapters to preserve frozen producers.
 Frozen Stage 1 producers remain unchanged; correction adapters use the
 `image_admission_correction_*` module prefix with the same planned CLI modes.
@@ -216,8 +218,9 @@ Recompute final assessment from raw matching inputs with the #40 checker in
 and whitespace checks. Documentation-only edits require no new native matrix.
 
 ```sh
-python3 -B -m tools.wine.image_admission_check --qualification .build/task40/qualification.json --verify-only
-python3 -B -m unittest discover -s tests/wine -p 'test_image_admission*.py'
+python3 -B -m tools.wine.image_initialization_qualification --index .build/task40/stage3-index.json --verify-only
+PEAR_IMAGE_ADMISSION_BUILD=.build/task40/diagnostic-build2 PEAR_IMAGE_CORRECTION_BUILD=.build/task40/correction-build1 python3 -B -m unittest discover -s tests/wine -p 'test_image_admission*.py' -v
+python3 -B -m unittest discover -s tests/wine -p test_image_initialization.py -v
 python3 -B tools/check_governance.py
 git diff --check
 ```
@@ -263,3 +266,16 @@ and a fixed diagnostic allowlist, recording common code and selected settings in
 its input closure. This is a narrow follow-up, not a new protocol or engine.
 Do not retroactively claim that historical runs qualify that future adapter or
 rebuild Wine merely to refactor Python. Current Stage 3 execution is not restarted.
+
+
+## Stage 4 Execution Clarification
+
+Use the implemented Stage 3 qualification command above instead of the planning
+placeholder `image_admission_check --qualification`. The explicit diagnostic and
+correction build variables select actual composed parser sources and prevent
+native prerequisites being silently skipped. This updates command names to the
+completed implementation without removing checks or adding runtime scope.
+Only `docs/development/wine-host.md` needs an official guide change: #40 changes
+Wine admission, not FEX code, ABI or reconstruction. Preserve `fex-host.md` and
+its historical CPU claims. Stage 4 replays existing native evidence and reruns
+only the required portable/parser checks; it does not repeat game execution.

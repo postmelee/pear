@@ -4,8 +4,9 @@ GitHub Issue: [#40](https://github.com/postmelee/pear/issues/40)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Work branch: `codex/task40`
 Planning date: October 9, 2026 (Asia/Seoul)
-Status: task plan, scope and document locations approved on October 9, 2026 by
-the requester's explicit continuation; detailed implementation plan awaits approval.
+Status: task plan, scope and document locations approved on October 9, 2026.
+All four approved implementation stages are complete as of October 10, 2026;
+final report and PR draft prepared, publication and merge pending.
 
 ## Purpose
 
