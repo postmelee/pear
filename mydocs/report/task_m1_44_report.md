@@ -84,6 +84,16 @@ A fresh fetch confirmed `origin/master` remains `942bd816913d8792c55f821fdc2ad30
 
 Native execution, compilation, signing, parser replay, bridge construction, account operations, game/Steam launch and runtime regression suites were unperformed in this documentation-only task. The existing documentation/portable CI does not qualify those behaviors.
 
+### Publication-time #11 evidence update
+
+After Stage 3 and the initial final-report commit, #11 explicitly shared its approved D1 observation receipt and D2 proposal. Read-only hashes: `task_m1_11_d1_observations.json` = `38ba55182c143d77357881843dcb9ca04ac9e9559cf34b7a6a8144313ad2900b`; its current implementation plan = `1fdd490d2f51b812560a712cb6403be1cd19974b360fb6fe7bace6179636c03d`; research note = `e121c6176a6951ba0713fa9f44570ad9745747f2ed700477d76494626531d555`. These are named peer-worktree receipts, not files available in this PR or fresh #44 execution.
+
+The two valid D1 runs report 46 successful Wine commits with RW committed post-state. Revisited L1 addresses have become reserved again before the next fault; continuous failed recommit is not supported by those observations. The intervening decommit caller and total cost remain unmeasured. Earlier diagnostic attempts are preserved separately, including wrong selected DLL and an added-import failure. Menu and Steamworks remain unconfirmed; complete required architecture qualification remains false.
+
+An owned ARM64 loader sample reports the dispatcher Resume/PinnedMatches path and selected PE ntdll memcmp/memcpy leaves. Sharing a path with Dock does not establish a common cause, and the intrusive sample is not a benchmark. #11 identifies selected PE ntdll SHA-256 `6cbb26ca14b81411465cac79e77480c861ad1a0e98cf19d9706dfb32015c2989`, with retained aarch64/ARM64EC string-object compile commands lacking optimization flags. The causal share of startup delay is unknown.
+
+D2 is #11's **proposed, unapproved and unimplemented** isolated same-source `dlls/ntdll/string.o` comparison with `-O2` for the two PE architectures. Preserve Wine memcpy overlap behavior, exact #40-based preimages and all affected qualification before adoption. #44 will not independently edit those selected preimages. No memory ABI, guard/pin relaxation, new permission or #44 implementation follows from this handoff. The research investment decision is unchanged; Stage 1-3 records retain their historical observation dates.
+
 ## Residual Risks and Follow-up Work
 
 ### Residual Risks
