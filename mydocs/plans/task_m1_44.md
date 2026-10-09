@@ -5,7 +5,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task44`
 Date: October 10, 2026 (Asia/Seoul)
 Base: `942bd816913d8792c55f821fdc2ad309b1b85daf` (master, including PR #43)
-Status: Task plan, research scope and document locations approved by the requester's explicit continuation after `1a1d6b8` on October 10, 2026. The detailed research implementation plan is prepared for review and Stage 1 continuation. No runtime implementation or native experiment is approved.
+Status: The requester approved the detailed research plan and Stage 1 only by explicit continuation after `1aaf86e` on October 10, 2026. Stage 1 research is verified and reported in [task_m1_44_stage1.md](../working/task_m1_44_stage1.md). Stage 2 requires explicit continuation after the Stage 1 report/commit. Runtime/bridge implementation and native experiments remain unapproved.
 
 ## Purpose
 
@@ -170,3 +170,7 @@ At each document stage, run `python3 -B tools/check_governance.py` and `git diff
 Approve this three-stage research scope, reuse/comparison criteria, ownership boundaries, document locations and verification plan. The next workflow artifact is the detailed research implementation plan; runtime/bridge implementation and proposed native experiments remain excluded. Already authorized read-only investigation is not being reclassified as a new execution grant.
 
 After approval, `task_m1_44_impl.md` will define research-stage artifacts, verification commands and commit messages in detail. Each research stage will be verified, reported and committed before its explicit continuation request. PR publication, merge and Issue closure retain their later approvals.
+
+## Stage 1 Evidence Update
+
+The [Stage 1 research note](../tech/task_m1_44_reuse.md) and [observation ledger](../working/task_m1_44_stage1_observations.json) preserve 115 matching source identities, retained parser evidence and the newly shared #11 step2a/component/bootstrap receipts. The selected Valve service is statically i386; its actual necessity is not demonstrated before the no-account Dock failure. The earlier missing-component observation is superseded only for selected-file identity. #11 owns independent direct-game x64 startup diagnosis. Before any later overlapping implementation, record exact files/preimages in the order accepted #40 baseline -> separately reviewed #11 correction if applicable -> separately approved #44 correction; no correction is implemented here. #11 execution remains independent of this comparison.

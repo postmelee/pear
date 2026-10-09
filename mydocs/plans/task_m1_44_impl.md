@@ -5,7 +5,7 @@ GitHub Issue: [#44](https://github.com/postmelee/pear/issues/44)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task44`; base: `942bd816913d8792c55f821fdc2ad309b1b85daf`
 Date: October 10, 2026 (Asia/Seoul)
-Status: The requester approved the task plan and document locations by explicit continuation after `1a1d6b8`. This detailed research plan is proposed for review and Stage 1 continuation. No formal research stage is reported complete here.
+Status: The requester approved the detailed research plan and Stage 1 only by explicit continuation after `1aaf86e` on October 10, 2026. Stage 1 research is verified and reported in [task_m1_44_stage1.md](../working/task_m1_44_stage1.md). Stage 2 requires explicit continuation after the Stage 1 report/commit. Runtime/bridge implementation and native experiments remain unapproved.
 
 ## Context and Evidence Rules
 
@@ -196,3 +196,7 @@ Stage commits use the messages above and bundle that stage's research note/obser
 ## Approval Request
 
 Approve this detailed three-stage research plan and begin **Stage 1 only**: establish the exact retained input ledger and Dock/helper versus bootstrap/desktop requirement matrix, verify static evidence and document unknowns. Later stage continuation and any runtime/bridge implementation or native experiment remain separate decisions.
+
+## Stage 1 Evidence Update
+
+The [Stage 1 research note](../tech/task_m1_44_reuse.md) and [observation ledger](../working/task_m1_44_stage1_observations.json) preserve 115 matching source identities, retained parser evidence and the newly shared #11 step2a/component/bootstrap receipts. The selected Valve service is statically i386; its actual necessity is not demonstrated before the no-account Dock failure. The earlier missing-component observation is superseded only for selected-file identity. #11 owns independent direct-game x64 startup diagnosis. Before any later overlapping implementation, record exact files/preimages in the order accepted #40 baseline -> separately reviewed #11 correction if applicable -> separately approved #44 correction; no correction is implemented here. #11 execution remains independent of this comparison.
