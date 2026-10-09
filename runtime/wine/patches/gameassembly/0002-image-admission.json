@@ -1,0 +1,15 @@
+{
+  "kind": "pear_image_admission_correction_patch",
+  "license": "MIT",
+  "ordered_after": "0001-admission-diagnostics.patch",
+  "patch_sha256": "dd0717923230d2bb9db6c359824300dee4b277b0c3254dee4454a5fdde34acfd",
+  "max_image_bytes": 67108864,
+  "arena_geometry_changed": false,
+  "changes": [
+    {
+      "path": "dlls/ntdll/unix/pear_pe_arena.h",
+      "before_sha256": "89ef518c0dc4008dd2392e6291082260028685005034c9079d20d7bd14422e34",
+      "after_sha256": "dccb37fd2f3506ac95539f8c084860f426b338976862e734b6e307df87a228a3"
+    }
+  ]
+}

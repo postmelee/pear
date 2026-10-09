@@ -1,0 +1,11 @@
+--- a/dlls/ntdll/unix/pear_pe_arena.h
++++ b/dlls/ntdll/unix/pear_pe_arena.h
+@@ -17,7 +17,7 @@
+ #define PEAR_ARENA_FEX_DISPATCHER_OFFSET (PEAR_ARENA_FEX_SHARED_OFFSET + PEAR_FEX_MEMORY_SHARED_BYTES + PEAR_FEX_MEMORY_SEPARATOR_BYTES)
+ #define PEAR_ARENA_MAPPING_BYTES (PEAR_ARENA_FEX_DISPATCHER_OFFSET + PEAR_FEX_MEMORY_DISPATCHER_BYTES + PEAR_ARENA_ALIGNMENT)
+ _Static_assert(PEAR_ARENA_MAPPING_BYTES == UINT64_C(1588985856), "Approved single-MAP_JIT geometry");
+-#define PEAR_ARENA_MAX_IMAGE_BYTES ((SIZE_T)38993920)
++#define PEAR_ARENA_MAX_IMAGE_BYTES ((SIZE_T)67108864)
+ #define PEAR_ARENA_MAX_SLOTS 756u
+ /* Two simultaneously owned copies of the original relocation fixture. */
+ #define PEAR_ARENA_RELOCATION_COPIES 2u

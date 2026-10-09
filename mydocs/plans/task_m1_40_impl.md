@@ -7,7 +7,14 @@ Branch: `codex/task40`; base: `29f04a3daa028cb8e52e06af9ee74d15c7cbe11e`
 Status: task and implementation plans approved October 9, 2026; Stage 1
 implementation and diagnostic execution authorized by explicit continuation.
 Stage 1 is complete; the [Stage 1 report](../working/task_m1_40_stage1.md) records
-the exact native origin and proposed 64 MiB budget. Stage 2 awaits approval.
+the exact native origin and proposed 64 MiB budget. Stage 2 and the 64 MiB
+per-image bound were approved by explicit requester continuation on October 9,
+2026. Stage 2 is complete; the [Stage 2 report](../working/task_m1_40_stage2.md)
+records 27 passing tests and native/guest loader execution. Stage 3 awaits
+continuation.
+Frozen Stage 1 producers remain unchanged; correction adapters use the
+`image_admission_correction_*` module prefix with the same planned CLI modes.
+#10 (`4773150`) and #11 (`62f7430`) remain separate integration dependencies.
 
 ## Context and Reuse
 
