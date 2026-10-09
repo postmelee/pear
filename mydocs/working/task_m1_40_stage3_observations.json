@@ -1,0 +1,74 @@
+{
+  "apple_guidance": {
+    "expert": "using-metal-validation",
+    "revision": "4f42344c90be22112f46becc3fb9687f423f2f88",
+    "source_sha256": "b9b7a2b44903105de6049d74f4f94a08ddf0e4c2899c6271e45c2517ed48c39b"
+  },
+  "build_sha256": "2669cf597681ba30c96bcb73395c132c71c53db3951732741b5171a1a1f89878",
+  "complete_process_module_coverage": false,
+  "cpu": {
+    "cases": 19,
+    "passed": 18,
+    "unsupported_not_exposed": [
+      "avx-lane-preservation"
+    ]
+  },
+  "diagnostic_source_commit": "8487781",
+  "game": {
+    "app": 3405340,
+    "authorization_before_after": true,
+    "deadline_seconds": 120,
+    "depot": 3405342,
+    "elapsed_ms": [
+      125121,
+      125111
+    ],
+    "gameassembly_sha256": "4350a7ae25ba7aec35677c213fdceabbb638676bb00ab59131d7d9c37b6e3d9e",
+    "gameplay_qualified": false,
+    "gc_finalizer_started": true,
+    "manifest": "446680890915713051",
+    "menu_qualified": false,
+    "metadata_open_succeeded": true,
+    "next_owner_issue": 11,
+    "original_files_unchanged": true,
+    "outcome": "timeout",
+    "owned_cleanup": true,
+    "process_attach_return": 1,
+    "published_relocations": 429566,
+    "root_cause": "unresolved",
+    "sentinel_survived": true,
+    "steamworks_qualified": false
+  },
+  "graphics": {
+    "device": true,
+    "native_controls": 39,
+    "original_scalar_recoveries": 2,
+    "physical_objects_created": 9,
+    "physical_objects_destroyed": 9,
+    "positive_presentation_timestamps": 1,
+    "readbacks": 7,
+    "render_cases": 5,
+    "surface_controls": 23,
+    "timing_qualified": false,
+    "visible_frames": 18,
+    "zero_presentation_timestamps": 17
+  },
+  "issue": 40,
+  "m1_qualified": false,
+  "ordering": {
+    "measured_pairs": 32768,
+    "passed": true,
+    "worker_lifetimes": 8
+  },
+  "ordinary_user_distribution": false,
+  "passed": true,
+  "portable_checks": {
+    "passed": 4,
+    "skipped": 0
+  },
+  "qualification_sha256": "8fe4b084ee3cd99935062377a22ce5ac897cdd8160ac71e3edc7d83e2e650ff2",
+  "runtime_sha256": "d6d053e73eb0a7625177e1901936efeed4ee7eddadd9e822a0094398e8505808",
+  "runtime_source_commit": "7ef56cd",
+  "scope": "gameassembly_initialization_and_finite_regression",
+  "stage": 3
+}

@@ -1,6 +1,6 @@
 # Wine host development
 
-For the later source-matched FEX/ARM64EC/x64 integration, see the [FEX CPU development guide](fex-host.md). Its October 8 fresh-pair results are separate from the original native-only component and limitations recorded below.
+For the later source-matched FEX/ARM64EC/x64 integration, see the [FEX CPU development guide](fex-host.md). Its October 8 fresh-pair results are separate from the original native-only component and limitations recorded below. The [October 9 large-image correction](#october-9-2026-gameassembly-image-admission) records the later GameAssembly initialization result and its remaining startup limit.
 
 Status: experimental component work under [Issue #4](https://github.com/postmelee/pear/issues/4). The [Stage 1 input/toolchain checks](../../mydocs/working/task_m1_4_stage1.md) and [Stage 2 native bootstrap](../../mydocs/working/task_m1_4_stage2.md) passed on the recorded host. The [Stage 3 original ARM64 Windows API/ABI fixtures](../../mydocs/working/task_m1_4_stage3.md) and [Stage 4 finite thread, memory and exception checks](../../mydocs/working/task_m1_4_stage4.md) also passed. The [Stage 5 finite Win32/Cocoa callback and teardown checks](../../mydocs/working/task_m1_4_stage5.md) passed on the same development host. Historical Stage 2 stopped before PE entry; general Windows application support, Rosetta-free Megabonk and an end-user release remain development goals.
 
@@ -353,3 +353,88 @@ finite verification. #5 must integrate and revalidate affected low mappings,
 MAP_JIT and metadata admission on its combined candidate; #7 does not qualify
 FEX, translated context or its allocation budget. Earlier #4 observations remain
 historical and are not retroactively expanded by this correction.
+
+
+## October 9, 2026: GameAssembly image admission
+
+[Task #40](../../mydocs/report/task_m1_40_report.md) corrects the first observed
+GameAssembly refusal on the integrated ARM64 Wine/FEX/DXMT candidate. Exact-file
+tracing identified `pear_pe_plan_read_target`'s image-size check (`parser.return08`,
+`STATUS_NOT_SUPPORTED`). The owned DLL's 57,647,104-byte image exceeded the old
+38,993,920-byte ceiling. The ordered [diagnostic supplement](../../runtime/wine/patches/gameassembly/0001-admission-diagnostics.json)
+and [capacity correction](../../runtime/wine/patches/gameassembly/0002-image-admission.json)
+retain Wine C, upstream validation and the existing memory owner. They follow the
+selected integrated source; do not add them blindly to the historical #4 series.
+
+| Bound | Corrected configuration |
+|---|---|
+| Per-image admission | 67,108,864 bytes (64 MiB); the next 4 KiB step rejects |
+| PE interior / image slots | 1,050,345,472 bytes / 756; unchanged |
+| Dynamic region | Eight 64 KiB slots; unchanged |
+| Integrated MAP_JIT reservation | 1,588,985,856 bytes; unchanged virtual reservation, not resident memory |
+| Required image / aligned slot | 57,647,104 / 57,671,680 bytes |
+| Maximum temporary payload estimate | 100,679,768 bytes; excludes allocator overhead and other process allocations |
+
+The correction increases neither the aggregate arena nor FEX geometry. Section,
+relocation, staging, retirement-generation and native/guest page rules remain in
+force. Guest x64 image pages are data for FEX, not native executable pages. Finite
+native and guest fixtures verify required-size and ceiling attach/call/unload/
+reuse, relocation, over-limit refusal and cleanup after rejected attachment.
+
+### Reconstruct and inspect the recorded component
+
+Use retained, admitted source/tool/runtime receipts; a fresh checkout alone is
+insufficient. The original #8 final candidate carries native ntdll from #5's
+`stage6-wine3`, not #8's earlier native object directory. The input reader follows
+that origin. A control relink verifies it before compiling only `pear_pe_arena.o`
+and `virtual.o`; the builder rejects a changed header-consumer set. Final #8 FEX,
+scalar-repair and graphics overlays stay intact. The runtime constructor replaces
+ntdll and re-signs the native closure with current development authorization.
+A new signed artifact requires new affected execution evidence.
+
+Set `PEAR_TASK8_REPO` to the preserved #8 checkout with its exact build, final
+runtime, seed and original owned-game failure. Its source/tool and #5/#6/#7
+references must remain available. Existing constructors bind those receipts and
+owned game hashes; they are not a portable installer. Use fresh immediate children
+of `.build/task40`, retain failures and serialize builds through the shared lock:
+
+```sh
+python3 -B -m tools.wine.image_admission_inputs --baseline-repo "$PEAR_TASK8_REPO" --output .build/task40/inputs-new
+python3 -B -m tools.wine.image_admission_correction_build --inputs .build/task40/inputs-new --mode correction --output .build/task40/build-new
+python3 -B -m tools.wine.image_admission_correction_runtime --inputs .build/task40/inputs-new --build .build/task40/build-new --output .build/task40/runtime-new
+```
+
+For retained Stage 3 evidence, use its frozen producer/checker sources and local
+index. This recomputes the recorded initialization and CPU/ordering/graphics
+assessment without launching the game or repeating the native matrix:
+
+```sh
+python3 -B -m tools.wine.image_initialization_qualification --index .build/task40/stage3-index.json --verify-only
+```
+
+The [Stage 2](../../mydocs/working/task_m1_40_stage2.md) and
+[Stage 3](../../mydocs/working/task_m1_40_stage3.md) reports contain fixture and
+execution commands and exact input hashes. The current coordinator intentionally
+uses the recorded Stage 3 layout; it is not a generic replay service. Changing
+source, settings or candidate bytes invalidates affected observations. Keep
+original producers immutable; future diagnostic options should use a reviewed
+shared callable and fixed settings with complete source/configuration bindings,
+not another full runner copy. Independent clean-machine assembly remains #13.
+
+### Qualified progress and downstream boundary
+
+On M4 Pro/macOS 26.5.2 (25F84), the unchanged September 27 snapshot's DLL returns
+successfully from `PROCESS_ATTACH`; subsequent traces prove a successful IL2CPP
+metadata read-open and GC finalizer startup. The same candidate passes 18 declared
+CPU cases (AVX remains unsupported), finite ordering, native graphics controls,
+render/readback, 18 visible frames and the original scalar-recovery fixtures.
+These observations do not establish complete IL2CPP initialization or game support.
+
+Both game observations reach the 120-second deadline after that next phase;
+owned cleanup succeeds. The later startup cause is unresolved, and the GC thread
+name alone does not diagnose a deadlock. #11 owns the post-attach investigation,
+normal Steam startup and responsive menu; #12 owns gameplay and save/relaunch.
+Complete process/module coverage remains #10. Presentation timing, performance,
+power, M1 and ordinary-user distribution remain unqualified. Preserve private
+failed-game contexts, graphics prefixes and the immutable candidate for consumers;
+keep proprietary files, credentials, profiles and raw diagnostics out of Git.

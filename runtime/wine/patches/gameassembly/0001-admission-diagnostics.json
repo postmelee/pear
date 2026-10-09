@@ -1,0 +1,72 @@
+{
+  "kind": "pear_image_admission_diagnostic_patch",
+  "diagnostic_only": true,
+  "patch_sha256": "5defcf93a5edeb089d673285f8bb232453804c9c80c15daab01e4c715bb4edb4",
+  "changes": [
+    {
+      "path": "dlls/ntdll/unix/pear_pe_arena.c",
+      "before_sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+      "after_sha256": "4b91a66df05791bba2d454dd5c3c2131a3dffea339f9608db29c9ed68457d6de"
+    },
+    {
+      "path": "dlls/ntdll/unix/pear_pe_arena.h",
+      "before_sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+      "after_sha256": "89ef518c0dc4008dd2392e6291082260028685005034c9079d20d7bd14422e34"
+    },
+    {
+      "path": "dlls/ntdll/unix/virtual.c",
+      "before_sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "after_sha256": "624b909228b6e3329355b0d8cde2a60bd98c6fa84f7f2cc2d59a0118e05d15f4"
+    }
+  ],
+  "parser_returns": [
+    {
+      "phase": "parser.return01",
+      "expression": "STATUS_NOT_SUPPORTED"
+    },
+    {
+      "phase": "parser.return02",
+      "expression": "status"
+    },
+    {
+      "phase": "parser.return03",
+      "expression": "status"
+    },
+    {
+      "phase": "parser.return04",
+      "expression": "status"
+    },
+    {
+      "phase": "parser.return05",
+      "expression": "status"
+    },
+    {
+      "phase": "parser.return06",
+      "expression": "STATUS_NOT_SUPPORTED"
+    },
+    {
+      "phase": "parser.return07",
+      "expression": "STATUS_NOT_SUPPORTED"
+    },
+    {
+      "phase": "parser.return08",
+      "expression": "STATUS_NOT_SUPPORTED"
+    },
+    {
+      "phase": "parser.return09",
+      "expression": "status"
+    },
+    {
+      "phase": "parser.return10",
+      "expression": "STATUS_NO_MEMORY"
+    },
+    {
+      "phase": "parser.return11",
+      "expression": "STATUS_SUCCESS"
+    },
+    {
+      "phase": "parser.return12",
+      "expression": "status"
+    }
+  ]
+}

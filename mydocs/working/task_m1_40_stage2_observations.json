@@ -1,0 +1,192 @@
+{
+  "issue": 40,
+  "stage": 2,
+  "passed": true,
+  "scope": "redistributable_large_image_loader_fixtures",
+  "game_qualified": false,
+  "host": {
+    "architecture": "arm64",
+    "macos": "26.5.2",
+    "build": "25F84",
+    "xcode": "26.6",
+    "xcode_build": "17F113"
+  },
+  "max_image_bytes": 67108864,
+  "required_image_bytes": 57647104,
+  "next_alignment_bytes": 67112960,
+  "pe_interior_bytes": 1050345472,
+  "map_jit_bytes": 1588985856,
+  "geometry_changed": false,
+  "tests": {
+    "count": 27,
+    "passed": 27,
+    "skipped": 0,
+    "log_sha256": "32b3d93cef46827129d406e16cd7d64e33b409033dd855820354c8d6a81e88e6"
+  },
+  "build_sha256": "2669cf597681ba30c96bcb73395c132c71c53db3951732741b5171a1a1f89878",
+  "runtime_sha256": "d6d053e73eb0a7625177e1901936efeed4ee7eddadd9e822a0094398e8505808",
+  "fixtures_sha256": "6d0cc42926221c1c375f136eac2074c07093b49e14fe394560b38be93bd50d6a",
+  "native_images": 41,
+  "patches": [
+    {
+      "name": "0001-admission-diagnostics.patch",
+      "sha256": "5defcf93a5edeb089d673285f8bb232453804c9c80c15daab01e4c715bb4edb4"
+    },
+    {
+      "name": "0002-image-admission.patch",
+      "sha256": "dd0717923230d2bb9db6c359824300dee4b277b0c3254dee4454a5fdde34acfd"
+    }
+  ],
+  "execution": [
+    {
+      "role": "aarch64",
+      "passed": true,
+      "checks": 8,
+      "elapsed_ms": 6813,
+      "run_sha256": "9ec25f34fad288701deed08c5c1fa76e0eb7da9beaec69ce9d05b9b5fd7d2829",
+      "assessment_sha256": "2e4e7abf845f9934587fac2ec80a9ca7b1deef8fe071eca1de0d26ddd9be129f",
+      "publications": [
+        {
+          "capacity": 57671680,
+          "code_pages": 1,
+          "data_pages": 4,
+          "relocations": 0,
+          "reused": false,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 1
+        },
+        {
+          "capacity": 57671680,
+          "code_pages": 1,
+          "data_pages": 4,
+          "relocations": 0,
+          "reused": true,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 2
+        },
+        {
+          "capacity": 57671680,
+          "code_pages": 1,
+          "data_pages": 14068,
+          "relocations": 2,
+          "reused": true,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 3
+        },
+        {
+          "capacity": 57671680,
+          "code_pages": 1,
+          "data_pages": 14068,
+          "relocations": 2,
+          "reused": true,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 4
+        },
+        {
+          "capacity": 67108864,
+          "code_pages": 1,
+          "data_pages": 14068,
+          "relocations": 2,
+          "reused": false,
+          "size": 67108864,
+          "slot": 6,
+          "slot_generation": 1
+        },
+        {
+          "capacity": 67108864,
+          "code_pages": 1,
+          "data_pages": 14068,
+          "relocations": 2,
+          "reused": true,
+          "size": 67108864,
+          "slot": 6,
+          "slot_generation": 2
+        }
+      ],
+      "authorization_before_after": true,
+      "owned_cleanup": true,
+      "sentinel_survived": true,
+      "observed_host_and_images_arm64": true,
+      "complete_late_load_coverage": false
+    },
+    {
+      "role": "x86_64",
+      "passed": true,
+      "checks": 8,
+      "elapsed_ms": 4474,
+      "run_sha256": "43fde59553490b45b905210582a2dd8b830f19bb407007fa53b72e683ff39a91",
+      "assessment_sha256": "e1e5b5887aa56f550b0a0b89898c9302e464e90afdee64b802ac4fab5ffc00b8",
+      "publications": [
+        {
+          "capacity": 57671680,
+          "code_pages": 0,
+          "data_pages": 5,
+          "relocations": 0,
+          "reused": false,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 1
+        },
+        {
+          "capacity": 57671680,
+          "code_pages": 0,
+          "data_pages": 5,
+          "relocations": 0,
+          "reused": true,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 2
+        },
+        {
+          "capacity": 57671680,
+          "code_pages": 0,
+          "data_pages": 14069,
+          "relocations": 2,
+          "reused": true,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 3
+        },
+        {
+          "capacity": 57671680,
+          "code_pages": 0,
+          "data_pages": 14069,
+          "relocations": 2,
+          "reused": true,
+          "size": 57647104,
+          "slot": 5,
+          "slot_generation": 4
+        },
+        {
+          "capacity": 67108864,
+          "code_pages": 0,
+          "data_pages": 14069,
+          "relocations": 2,
+          "reused": false,
+          "size": 67108864,
+          "slot": 6,
+          "slot_generation": 1
+        },
+        {
+          "capacity": 67108864,
+          "code_pages": 0,
+          "data_pages": 14069,
+          "relocations": 2,
+          "reused": true,
+          "size": 67108864,
+          "slot": 6,
+          "slot_generation": 2
+        }
+      ],
+      "authorization_before_after": true,
+      "owned_cleanup": true,
+      "sentinel_survived": true,
+      "observed_host_and_images_arm64": true,
+      "complete_late_load_coverage": false
+    }
+  ]
+}
