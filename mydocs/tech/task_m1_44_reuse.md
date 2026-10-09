@@ -2,7 +2,7 @@
 
 GitHub Issue: [#44](https://github.com/postmelee/pear/issues/44)
 Date: October 10, 2026 (Asia/Seoul)
-Scope: Stages 1 and 2, read-only research; Stage 3 investment decision and experiment proposal remain pending.
+Scope: Three-stage read-only research, including investment decision and conditional experiment proposal; no runtime implementation or experiment execution.
 
 ## Research Background
 
@@ -209,16 +209,207 @@ Consequently this inspected path is **not an unchanged drop-in candidate within 
 
 Stage 2 supplies this bounded comparison before any substantial loader/memory/ABI recommendation. Stage 3 may turn the precise remaining evidence gaps into a minimum experiment proposal after continuation approval. It does not turn the bridge comparison into a new #11 gate, select a new low-address ABI, authorize a bridge build, or waive a demonstrated required helper.
 
+### Stage 3 dated context and investment decision
+
+The requester approved Stage 3 after `2833306`; this is an investment/experiment proposal, not implementation permission. The [Stage 3 observations](../working/task_m1_44_stage3_observations.json) bind 23 input files, the October 10 public #44/#11/#10 Issue snapshots and the peer checkpoints. The previous ledgers/reports match committed bytes; their source conclusions are reused without another source-wide hash sweep or runtime replay.
+
+At this decision checkpoint #11 remains at `504f19d964ce948d770043349af7fa7d75500662` and #10 at `37395ee04abd55ec67faa2e1b381f30ab47a9be4`. #11's sanitized direct-stall receipt (`9303466d8b248abda52d025bc3cd0be520a1f0003176d6093a5e805d453d9ee5`) records no new game execution. It attributes repeated native resumes in the two retained direct-game timeout runs to `LookupCache::AddL1Entry`, with no source-guard/illegal-instruction record in those runs. Fault address/access type, commit post-state and forward progress remain missing. The receipt explicitly does not establish the same cause as Dock's `FinishPearDispatcherGate` refusal. This is receipt-level reuse, not #44 binary/debugger verification. The latest available #10 Stage 2 report qualifies declared process fixtures; it expressly leaves module storage/content binding, runtime hooks and complete coverage unperformed. None of these updates changes the historical Stage 1/2 evidence.
+
+**Recommendation:** continue #11's selected-route work and its independently owned x64 diagnosis. Do not begin a broad WoW64 implementation or adopt the inspected bridge based on the current evidence. No i386 helper's required execution is yet demonstrated on the selected Dock/game route; its necessity remains unknown, not absent. If #11 demonstrates a required i386 helper, its unsupported execution becomes a blocker for that phase, and the preferred reuse direction is a separately reviewed targeted correction using existing Wine C and FEX C++/assembly. The installer alone is not that trigger.
+
+The bounded native-bridge comparison is complete for this research decision. It finds useful wrapper/conversion source and a concrete incompatibility in the current entry mechanism, plus missing game/session/host-closure evidence. It does not establish that every bridge is impossible or that WoW64 is cheaper. A bridge implementation is deferred pending a scope-compatible entry review; full official Windows bootstrap/desktop is a separately chosen capability. This is a scope and evidence judgment, not a measured engineering-cost estimate.
+
+The nearest useful additional evidence is **E0**, obtained through #11's existing ownership, without another #44 runner. The smallest conditional *new host diagnostic* is **E1**, after its concrete fixture/authorization review. E2-E4 describe later gates for an actually justified i386 correction; they are not a combined implementation request. E5 and E6 are alternatives with separate investment decisions. Failure or absence of an alternative does not suspend #11 or waive a required helper.
+
+### Conditional minimum experiment proposal
+
+All entries below are **design proposals only**. There is no newly executable diagnostic, PE32 adapter, i386 runtime candidate or compatible native-bridge candidate in this task. Current tool/source paths identify reuse points, not runnable commands for the proposed cases. Approval must select a concrete experiment and its source/input/run contract; it does not approve the entire sequence by implication.
+
+Common prerequisites for any later native execution are exact source/ordered patch, generator/fixture, compiler/SDK, candidate/binary and selected dependency identities; an owned isolated run directory; current per-executable signing/provisioning authorization under normal macOS protections; actual supervision and observation interfaces; before/after input integrity; and a component-specific build/storage budget with cleanup and retention. Do not infer executable authorization from a parent's entitlement or an old successful signature. Account operations retain the owner's explicit scope and real Steam flow.
+
+The Stage 3 read-only filesystem check observed 17,643,073,536 available bytes. This is a transient availability value, not a build-space estimate. Native compiler/SDK/dependency readiness, new executable authorization and an independent native i386 reference were **not checked**. No native lock was inspected or acquired. Future native work must coordinate `/private/tmp/pear-native-compilation.lock` without stealing/deleting it and remeasure disk/headroom before acquisition/build. Numeric run/output bounds must be selected in each reviewed producer contract; no future command is fabricated here.
+
+#### E0 — Attribute a required helper on the selected Dock route
+
+Priority: Nearest useful evidence; reuse owner work, not a new #44 runner. Owner: #11 with #10 observation contracts.
+
+Claim: Whether an exact i386 process is required by the selected game phase, rather than merely installed.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | Owner-selected original Dock/client/game/prerequisite identities and invocation phase; current no-account failure cannot prove later absence. A separately approved next #11 run, existing APISession/supervisor ownership and the actual available #10 coverage contract. Do not repeat current failures only to restate them; consume new owner evidence when available. |
+| Exact inputs / unresolved selection | Dock origin x64 SHA-256 a3762fdfb90b962f67e09ae5f3f61df8e1b700c9d52c7d5c08e3bf9e5bb8c3b7 Selected SteamService.exe SHA-256 72a406a6a2d3e282ab4b468ed8bfadf171fdd03a97969d6214a5da6fdb8dbd03 (i386); its necessity is unknown. Exact owner-selected Wine services.exe and game CEG/prerequisite manifest are still missing, not inferred from paths. |
+| Command/interface status | Consume #11 sanitized selected-component/launch receipts through its reviewed existing adapters. No new callable or command is selected by #44. |
+| Positive observations | Bind phase, parent/process instance, exact helper bytes/machine and the required action to observed invocation and its outcome. Record complete required-set coverage if concluding that a phase uses no i386 helper; an earlier failure cannot support that conclusion. |
+| Refusal controls | Missing process/module interval, unselected helper or incomplete prerequisite/CEG evidence -> unknown, never x64-only success. A required helper that cannot run -> blocker for that phase; no skip, service-disable shortcut or fake readiness. Helper exit zero without SCM readiness is insufficient. |
+| Resource bounds | Owner-approved finite run/output limits and measured selected closure; no additional #44 native work. |
+| Cleanup | Only the actual owner may reap its child/process group; preserve pre-existing SCM/client processes and unrelated sentinel. Keep failures and cleanup gaps. |
+| Retained evidence | Allowlisted file hashes, phase/parent/required classification, coverage gaps and outcome; no account/session identifiers or raw private traces. |
+| Decision unlocked | If required i386 execution is demonstrated, prepare targeted FEX/Wine contracts E1-E4 for review. Otherwise retain unknowns and continue #11 without a broad WoW64 gate. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+#### E1 — Isolated low-address ordinary host-NX feasibility
+
+Priority: Smallest conditional host diagnostic; design approval first. Owner: Separately assigned runtime/host owner coordinated with #11.
+
+Claim: Whether a bounded low identity-address data reservation can coexist with Pear on the selected host without replacing unowned mappings.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | A reviewed original C fixture and allocator/query adapter, exact source/compiler/SDK/executable hashes, per-executable current authorization, reviewed run contract. One existing high MAP_JIT owner remains unchanged; no second JIT owner or adopted guest-offset ABI. Select actual usable aligned addresses from availability; do not assume 0x00400000 or any hint is free. |
+| Exact inputs / unresolved selection | Original redistributable NX-only host fixture; no Steam or game input. Selected macOS/architecture/page geometry, actual mapping/protection query results, candidate reservation policy and source identity. |
+| Command/interface status | Design work: a new bounded case using existing owned native supervision/authorization primitives. tools/wine/pe_arena_probe.py contains executable/fault modes and is not this diagnostic or an approved command. |
+| Positive observations | Reserve at most 64 MiB aggregate ordinary host-NX data below 0x80000000 with checked end/size/alignment; query actual RW/NX, write/read owned bytes and release. Observe unchanged high-owner base/identity/generation/protection before/after when a high owner is present; standalone host success without it has the narrower claim only. Exercise bounded owned reservation reuse and clean rollback without changing unowned mappings. |
+| Refusal controls | Owned occupied-range control must fail without replacement and preserve its sentinel bytes; never MAP_FIXED over unowned memory. Invalid alignment, range overflow, unavailable range, budget exhaustion and injected partial setup failure yield explicit error plus cleanup. Protection query unavailable -> unknown/refused; do not execute data or deliberately fault native code to establish NX. Busy/stale domain or generation request is rejected; no release of another owner. |
+| Resource bounds | Proposed initial <=64 MiB aggregate low reservation/commit including control ranges, below 2 GiB; one owned child per case, at most 12 declared cases, 10 seconds per child and 256 KiB output per case. Supervisory termination/drain limits must be bound to the reviewed owner contract. This is not measured Steam capacity. |
+| Cleanup | Release only owned ranges after readers/writers retire; query release, preserve unowned sentinel and high owner; retain original failure if cleanup also fails. |
+| Retained evidence | Source/binary/candidate hash, actual queried intervals/protections, OS errors, conflict/refusal and before/after ownership/cleanup receipts. |
+| Decision unlocked | Pass establishes only host feasibility. Failure at one tested layout does not prove all low-address designs impossible. Neither outcome authorizes E2 or a memory ABI. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+#### E2 — PE32 parser plus actual Wine owner mapping at admitted low bases
+
+Priority: Conditional after concrete owner/PE32 design approval. Owner: One shared Wine loader owner; accepted #40 baseline first.
+
+Claim: Whether exact PE32 semantics and canonical Wine bookkeeping work in the proposed candidate, including original fixed-base images.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | E1 is a feasibility input, not integrated admission. Review owner/base/role/domain/generation/32-bit fields, publication, rollback, low range and cleanup first. Construct the accepted #40 ordered source and recheck any later accepted #11 overlapping patch preimages. Review a PE32 extension to existing parser/fixture machinery; current tests/wine/test_pe_arena.py materializes older publication/cookie patches, so do not call it proof of the final composed candidate. |
+| Exact inputs / unresolved selection | New original redistributable PE32 relocatable fixture with source/build/hash receipt, imports, known load-config/cookie layout and four-byte canary-surrounded targets. Original fixed-base, non-LAA, relocation-stripped fixture; two genuinely available admitted low bases for the relocatable fixture. Unchanged SteamSetup.exe 2380800 bytes, SHA-256 7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb, preferred base 0x00400000, only for separately approved original-image parsing/admission; never add synthetic relocations. Existing original PE32+/ARM64X and #40 required/ceiling/beyond/failed-attach controls. |
+| Command/interface status | Design work: extend existing parser and image-admission tooling against the actual composed candidate; no ready PE32 CLI exists here. Split parser-only results from actual Wine reserve/map/protect/query/free/unmap results. |
+| Positive observations | At two admitted low bases, HIGHLOW changes exactly four bytes to the expected value and preserves adjacent canaries; image/import/load-config addresses remain representable. Validate PE32 security-cookie pointer width and complete field/directory bounds, initialized value and legal storage protection; retain PE32+ eight-byte controls. Fixed-base fixture loads only at its available preferred base within non-LAA limits; actual Wine views/server and owner records agree through reserve/commit/protect/query/unmap/release. Unchanged #40 64 MiB image bound and high owner stay valid; parser pass alone does not claim guest execution. |
+| Refusal controls | Malformed/truncated optional header, directory or load config; incorrect field width; unsupported relocation type; malformed/duplicate/overlapping relocations; target overflow/out-of-image or metadata overlap -> precise refusal. Relocation arithmetic follows reviewed Windows 32-bit semantics; distinguish legal modulo arithmetic from invalid mapped address/size overflow, with independent expected values. Occupied preferred address for relocation-stripped/non-LAA fixture -> refuse without relocation or overwrite; preserve the occupying mapping. Failure after reserve/map/prepare/publication/attach rolls back only owned state and preserves canonical VM error plus cleanup status. |
+| Resource bounds | Proposed parser-only limits: fixture <=8 MiB, 5 seconds and 256 KiB output per case. Actual loader cases: initial low budget <=64 MiB, 20 seconds and 1 MiB output per child, with the reviewed owner cleanup contract. Bound case manifest and measured build/disk budget before execution; do not apply fixture file caps to proprietary installer/desktop capacity. |
+| Cleanup | All successful and refused paths retire source/translation references before range reuse; no stale view, published mapping, handle or owner record remains. |
+| Retained evidence | Exact composed-source/patch preimages, producer/fixture hashes, parser statuses, field/canary bytes and actual Wine/owner before-after events. |
+| Decision unlocked | Only complete mapping/cleanup evidence permits proposing i386 guest entry. Original installer execution remains a later separate route test. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+#### E3 — Original i386 execution and lifecycle fixtures
+
+Priority: Conditional after admitted source/owner and a reviewed WoW64 adapter. Owner: FEX/Wine runtime owner; coordinate #6 and #42 boundaries.
+
+Claim: Whether i386 dispatch, Windows ABI and lifetime semantics work beyond initial CPU entry.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | Actual i386 builtin ntdll/import closure, native wow64/wow64win/CPU module and complete host target identities. Preserve unsupported guards until each concrete implementation/contract is approved; no wholesale removal. Redistributable original i386 fixtures and independent same-byte native x86 reference where meaningful; reference host availability is not checked. A native x86 CPU Windows WoW64 reference must identify its actual architecture. |
+| Exact inputs / unresolved selection | Fixed fixture source/assembler/compiler/oracle bytes and expected event sequences; no proprietary files. Final Wine/FEX candidate, thread/context/exception/notification producer identities, affected #6 reference receipts. |
+| Command/interface status | Design work: reuse the current CPU capture/comparison and owned Wine/FEX supervision machinery with separately reviewed i386 cases/adapter. Existing x64 command results are not i386 qualification. |
+| Positive observations | Exit/syscall and Unix-call return values, calling convention/stack cleanup, 32-bit register/address/handle semantics. Two-thread GDT/FS/TLS isolation and join/retirement; repeat thread creation without stale identities. Handled guest exception and resumption with expected registers/flags and x87/XMM state; original unaligned guest access including the reviewed boundary case. Guest->host->guest callback and nested/re-entrant return; required cross-thread callback behavior with actual thread identity and buffer lifetime. Dirty/protect/free/map/unmap invalidation, rewrite/retranslation, unload and same-address reuse under a new generation; no stale compiled link or active callback released early. |
+| Refusal controls | Unsupported context/segment/ISA behavior stays unsupported; AVX/XSTATE is #42, not silently exposed. Foreign/stale thread or generation, busy retirement, callback after release and invalid notification pairing -> attributable refusal without host fatal fault. Missing native reference, wrong fixture/candidate hash, incomplete callback/exception event or lost observer interval -> unqualified. Do not substitute native fatal-fault/no-TEB routes or aligned/static fixture successes for original guest cases. |
+| Resource bounds | Proposed initial per-case bound: 20 seconds and 4 MiB combined output per owned child, two guest workers for thread/TLS/callback cases, finite declared iteration counts. Separate affected existing ordering regression retains its original 32768-pair scope. Review measured candidate/build space before any native work. |
+| Cleanup | Drain callbacks and invalidate links before unload; join/reap owned children/threads, balance handles/leases and preserve unrelated processes and original failures. |
+| Retained evidence | Original fixture hashes, independent reference environment/oracles, per-case comparison and refusals, actual native/guest module identities, lifecycle and cleanup receipts. |
+| Decision unlocked | Pass qualifies only the named i386 fixture set on that candidate; it does not qualify Steam desktop or an actual required helper. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+#### E4 — Execute only a demonstrated required original i386 helper
+
+Priority: Conditional #11 integration, not broad desktop admission. Owner: #11 with accepted runtime correction and #10 coverage.
+
+Claim: Whether the actual required helper completes its function and preserves the genuine game/client session.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | E0 identifies required helper/phase and unchanged original bytes; E2/E3 plus all affected regressions qualify the new candidate. Review actual process/service supervision and per-executable authorization; existing manager may not own a pre-existing SCM/service. Any real account action requires the owner current approval and existing authentication path, not inherited downloader login. |
+| Exact inputs / unresolved selection | Exact selected helper, dependencies, invocation arguments and required readiness/outcome predicate from #11 receipts. Normal selected Dock/client/game context and candidate hashes; actual service binary selection rather than system32/path inference. |
+| Command/interface status | Extend/reuse the reviewed #11 route adapter under its owner. No duplicated auth client, observer, supervisor or full runner. |
+| Positive observations | Required helper action and readiness succeed with attributable original process/module closure, return and cleanup. Normal genuine Valve launch leads to the owning-account App ID session and required original-game API/callback outcomes; retain failed/unknown phases separately. |
+| Refusal controls | Exit-zero-only, DLL-load-only, global-user-only, launch-only or menu-only evidence does not establish complete Steamworks. Unavailable entitlement/session or disconnect yields real failure; never forge success, add supported steam_appid.txt or alter game/Valve bytes. Any required Rosetta host component or coverage gap blocks Rosetta-free qualification. |
+| Resource bounds | Owner-selected finite helper/run/output bounds and measured dependency/prefix storage, preserved original files and saves. |
+| Cleanup | Only owned process/service instances stopped/reaped; preserve pre-existing client/SCM, original files and account state; record unresolved cleanup. |
+| Retained evidence | Sanitized required-phase outcomes, module/slice/translation coverage and ownership/session assertion results without identifiers, tokens or tickets. |
+| Decision unlocked | Success addresses the named helper route only. Other desktop i386 components remain a separate capability. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+#### E5 — Reconsider existing native bridge only after a compatible entry review
+
+Priority: Deferred alternative; not the next runtime implementation recommendation. Owner: Separately approved bridge evaluation with #11/#10 contracts.
+
+Claim: Whether reusable existing wrappers can support unchanged Windows-game semantics through an entirely Rosetta-free genuine native Steam session.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | First present a source-level entry design that does not rewrite Valve/game images or modify installed Steam/CrossOver, and passes Pear source/lifetime contracts. None is selected here. Pin complete build/SDK/header/Unix-call dependencies and file-specific terms; reconcile NotProton Wine 2df1ee... with Pear, retain upstream languages. Read-only inventory of explicitly selected non-authenticated native client/helper/library bytes may screen architecture, but cannot substitute dynamic complete required closure. A later execution scope must authorize its exact fixtures/client/account operations and original game selection separately. |
+| Exact inputs / unresolved selection | NotProton c3a49486c14cdf6b9716e2e7ac55286aa537fcf1 and Proton 164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca wrappers/conversions; full dependency closure remains missing. Actual original game interface versions, callback IDs/layouts and session requirements, not just the representative Apps008/SteamClient021/LobbyCreated example. |
+| Command/interface status | No runnable bridge command is proposed: existing detour/compat_run/build scripts are outside the approved adoption scope. After a compatible design, separately review source build, layout/callback fixture, then original-game session experiments. |
+| Positive observations | Source-built selected ARM64 host components and Windows wrappers match their pinned ABI/layout tests, including callback payload and asynchronous result lifetime. Original game reaches real ownership/session methods; callback polling, nested/thread return, shutdown/disconnect/reconnect and call-result failure behave correctly. Every required actual Steam/helper/bridge/Wine/FEX native process/library is observed on ARM64 without Rosetta for the required interval; no incomplete late-load coverage. |
+| Refusal controls | Valve image rewrite or commercial installed-binary dependency -> outside candidate scope, not a passing experiment. Wrong/unsupported interface, layout, late callback, shutdown race, failed call result or genuine entitlement/session failure -> real refusal, not success substitute. Native launcher, ARM64 SDK slice, successful init or downloader authentication alone -> insufficient. Required Intel-only host component or unobserved required interval -> route not qualified. |
+| Resource bounds | Source-first review before full acquisition/build; enumerate missing artifacts and measured disk/time/output bounds. No cost estimate inferred from macOS Steam availability. |
+| Cleanup | Own only isolated evaluation artifacts/processes; no installed-client patches; preserve originals/account state, release pipes/users/callback buffers and retain failures. |
+| Retained evidence | Complete candidate and client pins, real interface/layout results, sanitized session outcomes, process/module closure, dependency notices and update regression checklist. |
+| Decision unlocked | Only new compatible-entry plus measured evidence reopens route comparison. Current source availability does not justify adopting or claiming this route easier. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+#### E6 — Official Windows bootstrap and desktop qualification
+
+Priority: Independent capability; defer unless separately requested. Owner: Separately scoped Steam desktop/WoW64 task.
+
+Claim: Whether the full original mixed-bitness installer/update/login/desktop route works.
+
+| Field | Proposed requirement |
+|---|---|
+| Admission prerequisites | Explicit decision to invest in desktop capability independently of #11. Original fixed-base installer admission, i386 lifecycle qualification, selected complete mixed-bitness dependencies and reviewed authenticated execution scope. |
+| Exact inputs / unresolved selection | Unchanged installer hash from E2 and exact selected steam.exe/service/web-helper/client versions and bytes. |
+| Command/interface status | No desktop implementation or execution command is selected by #44. Reuse existing owned supervision and Steam authentication interfaces after design review. |
+| Positive observations | Original bootstrap/install/update/startup and genuine sign-in/game launch complete with full required module/child observation. |
+| Refusal controls | Fixed-base conflict, unsupported helper/ABI or required Rosetta process remains a route failure; no binary edits or bypass of services/ownership. |
+| Resource bounds | Separately measured full desktop storage/memory/build/run budget; the 64 MiB diagnostic is not a product limit. |
+| Cleanup | Isolated owned prefix/runtime with account/save preservation and owned-process cleanup; original inputs unchanged. |
+| Retained evidence | Sanitized selected-build identity, per-phase outcomes, full required closure and update/recovery evidence. |
+| Decision unlocked | Desktop success/failure has its own scope and does not retroactively impose its installer requirements on Dock. |
+
+Status: **Proposed, not performed; implementation and execution require separate approval.**
+
+### Shared owners, exact preimages and evidence invalidation
+
+| Shared boundary | Accepted or inspected input | Required order / ownership |
+|---|---|---|
+| Integrated Wine arena | Master `942bd816913d8792c55f821fdc2ad309b1b85daf` includes #40. `0001-admission-diagnostics` followed by `0002-image-admission`; Stage 2 ledger records all patch hashes and before/after values. After both: `pear_pe_arena.c` = `4b91a66df05791bba2d454dd5c3c2131a3dffea339f9608db29c9ed68457d6de`; header = `dccb37fd2f3506ac95539f8c084860f426b338976862e734b6e307df87a228a3`; `virtual.c` = `624b909228b6e3329355b0d8cde2a60bd98c6fa84f7f2cc2d59a0118e05d15f4`. These are accepted patch metadata postimages, not newly materialized sources. | Preserve 64 MiB image correction and unchanged arena geometry. A future correction must compare actual materialized preimages, never apply an older composed file over accepted changes. One source owner for common Wine loader/owner work. |
+| FEX WoW64 adapter | Retained `Source/Windows/WOW64/Module.cpp` SHA-256 `4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221`, manifest `2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb`. | Historical composed preimage only. Bind any approved patch to the accepted full series and actual source bytes. Do not remove unsupported paths without implementing and qualifying their paired contracts. |
+| Shared FEX memory/entry | Retained `Source/Windows/ARM64EC/Module.cpp` = `8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9`; `Source/Windows/Common/OvercommitTracker.h` = `cb0d569bd1f9189160da36fd3f74af510e6a4016072bc0c76859923ae45bfea7`; `FEXCore/Source/Interface/Core/Core.cpp` = `037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518`. | #11 owns current x64 direct-startup investigation, including LookupCache/overcommit/resume. No #11 correction is selected or integrated by #44. Order is accepted #40 baseline -> separately reviewed overlapping #11 correction if any -> separately approved #44 correction. Recalculate exact postimages after any accepted change. |
+| Build/patch series | `runtime/fex/patches/integration/{series,fex-series}.json` and #40 patch metadata are hash-bound in Stage 3 inputs. | These are provenance dependencies, not approval to rebuild. Recheck materialization order, per-file attribution and source/ABI changes before future work. Retain upstream languages and component licenses/contribution rules. |
+| Route and observation | #11 exact selected Dock/client/helper/game receipts; #10 final accepted process/module and registration contracts, not its incomplete Stage 2 coverage. | #11 owns authentication, normal launch, menu/Steamworks; #9 owns supervision and #10 observation. Reuse their accepted APIs rather than duplicate them. No implementation dependency on all #44 research. |
+| ISA and graphics | #42 owns AVX/XSTATE; #6/#8/#40 remain finite existing qualification scopes. | Do not explain a timeout as AVX/GC/Steam failure without attribution. Apply affected regressions and relevant Apple guidance only to later approved native/graphics work. |
+
+A changed input, fixture, producer, compiler/SDK, configuration, patch order or runtime artifact invalidates the affected build/execution claim. A changed source/client/API version invalidates the affected static/bridge comparison. Rebind the final candidate and rerun affected gates; do not carry a pass merely because a filename is unchanged. An independent native reference can be reused only when its exact fixture/capture/oracle inputs and claim scope remain valid. Missing process/module or account evidence cannot be repaired by document checks.
+
+For a later shared loader/memory/ABI change, preserve the full **affected** regression obligations: #6's 18 supported CPU cases against original independent references, explicit AVX unsupported/not-exposed result and 32,768 ordering pairs with policy/retirement checks; #40's parser/loader/cleanup and 64 MiB required/ceiling/beyond/failed-attach cases plus its original limited GameAssembly initialization claim; and #8's native 39/v2 surface 23 controls, device, five rendering cases/seven readbacks, 18 individual visible frames with resize/teardown, both unchanged original scalar-fault fixtures and balanced physical lifetime. Do not substitute two boundary cases or a rebuilt fixture for the original corpus/failure bytes. Reuse unaffected evidence with unchanged inputs; no native suite was run merely for this documentation proposal.
+
+References for these obligations: [#6 CPU comparison](../working/task_m1_6_stage2.md), [#6 reference review](../working/task_m1_6_stage3_reference_review.md), [#8 Stage 3](../working/task_m1_8_stage3.md), [#40 Stage 3](../working/task_m1_40_stage3.md). Full candidate regression is distinct from #10 complete runtime architecture coverage and original-game Steamworks qualification.
+
+### Research acceptance map and final-report handoff
+
+The following maps the seven #44 acceptance criteria. **Satisfied** means the bounded research artifact is complete with explicit limits, not that the proposed runtime behavior passed. This prepares the evidence mapping for the later final-report/publication procedure; no Issue checkbox, PR or closure is changed here.
+
+| Criterion | Research result | Evidence and remaining runtime boundary |
+|---|---|---|
+| AC1 — Separate route requirements | Satisfied | Stage 1 route/phase matrix and byte-bound selected i386 service versus installer; actual helper necessity/closure unknown. |
+| AC2 — Limited existing bridge comparison before substantial changes | Satisfied | Stage 2 all five criteria and representative call/callback return path; existing-entry incompatibility, original-game session and full required host closure remain explicit. E5 records conditions for reconsideration. |
+| AC3 — Reuse and missing function/dependency contracts | Satisfied | Wine/FEX source/refusal matrix covers PE32/fixed-base, address/context/exception/thread/mutation and retirement; E1-E3 name corresponding future observations without suppressing guards. |
+| AC4 — Provenance, terms, owners and invalidation | Satisfied | Stage 1/2 source and notice pins, Stage 3 input/preimage/ownership table and invalidation policy. No blanket license/distribution or upstream contribution approval. |
+| AC5 — Concrete minimum experiments | Satisfied | E0-E6 each identify claim, known/missing inputs, interface availability, positive/refusal results, authority, resources, cleanup and evidence. E1 is the smallest conditional new host diagnostic. None executed. |
+| AC6 — Precise #11 impact | Satisfied | No required i386 execution demonstrated yet; installed i386 bytes alone do not block. A demonstrated required unsupported helper blocks its affected phase. No bridge/desktop completion gate added. |
+| AC7 — Reviewable decision/continuation | Satisfied | Retain independent #11 work, prefer conditional targeted Wine/FEX reuse, defer existing bridge adoption and independently scope desktop support. Research review/publication and any experiment/implementation are distinct decisions. |
+
 ## Decisions
 
 - Preserve two Windows route scopes and the independent #11 Dock minimum validation. No universally required i386 Dock helper is demonstrated by the Stage 1 inputs; this is **unknown necessity**, not evidence that i386 can be omitted.
 - Reuse the matching historical source/parser evidence within its recorded scope. Do not repeat the known parser refusal or execute peer adapters merely to recover it.
-- Carry actual conditional services and prerequisite ownership boundaries into later source comparison and future selected-input checks.
-- Retain Wine C and FEX C++/assembly as candidates for any later justified i386 work. Review pinned existing native bridge contracts before substantial shared-runtime investment.
+- Carry actual conditional services and prerequisite ownership boundaries into E0/E4; #11 remains the route owner.
+- Retain Wine C and FEX C++/assembly for a separately approved required-helper correction. The bounded native-bridge review is complete; it supports conditional reuse of wrappers, not adoption of its existing entry. Broad desktop work is separately scoped.
 
 ## Non-decisions / Deferred Items
 
-- WoW64 implementation, low-memory owner design, fixed-base admission and ABI changes are unapproved. Stage 2 records source contracts above; Stage 3 makes the investment/experiment proposal.
+- WoW64 implementation, low-memory owner design, fixed-base admission and ABI changes are unapproved. Stages 2 and 3 record source contracts and conditional experiment proposals above; none is implemented or executed.
 - No actual selected helper closure, Megabonk CEG/prerequisite requirement, original-game Steamworks success or full Rosetta-free path has been measured here.
 - NotProton actual-game feasibility, comparative effort and full distribution/build closure remain open; Stage 2 records the targeted file-specific license/build review and existing-entry incompatibility. Existing Wine LGPL, FEX MIT plus no-AI-upstream-contribution rule, Dock GPL/exception/runtime notices and NotProton component-specific GPL/BSD/Steamworks SDK terms are preserved from the plan; no blanket license or distribution clearance is asserted.
 - #40's merged correction precedes later shared-loader work; accepted #10 observer interfaces and #11 actual route inputs must be rechecked before integration. AVX/XSTATE remains #42.

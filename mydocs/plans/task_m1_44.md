@@ -5,7 +5,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task44`
 Date: October 10, 2026 (Asia/Seoul)
 Base: `942bd816913d8792c55f821fdc2ad309b1b85daf` (master, including PR #43)
-Status: The requester approved Stage 2 by explicit continuation after Stage 1 commit `79986eb` on October 10, 2026. Stage 2 source comparison is complete; its verification and report are recorded in [task_m1_44_stage2.md](../working/task_m1_44_stage2.md). Stage 3 requires explicit continuation after the Stage 2 report/commit. Runtime/bridge implementation and native experiments remain unapproved.
+Status: The requester approved Stage 3 by explicit continuation after `2833306` on October 10, 2026. All three read-only research stages are complete; the investment decision, conditional experiments and acceptance map are recorded in [task_m1_44_stage3.md](../working/task_m1_44_stage3.md). Final-report/publication procedure, runtime/bridge implementation and native experiments require their separate continuation/approval.
 
 ## Purpose
 
@@ -178,3 +178,7 @@ The [Stage 1 research note](../tech/task_m1_44_reuse.md) and [observation ledger
 ## Stage 2 Evidence Update
 
 The [source comparison](../tech/task_m1_44_reuse.md) and [Stage 2 ledger](../working/task_m1_44_stage2_observations.json) bind Wine/FEX reusable functions, all inspected owner-mode WoW64 refusal groups, and a representative native Steam API/callback return path to pinned sources. Existing NotProton entry patches ntdll and rewrites mapped Valve client exports/entry/data, so it is not a drop-in within the approved scope; generated wrappers and conversions remain separable candidates. Original-game interface/session coverage, all required Rosetta-free host components and full build closure remain unperformed. No bridge/WoW64 implementation or native experiment follows. Stage 3 may propose the minimum missing evidence after explicit continuation; #11 remains independent.
+
+## Stage 3 Evidence Update
+
+The [decision and conditional experiment proposal](../tech/task_m1_44_reuse.md) and [Stage 3 observations](../working/task_m1_44_stage3_observations.json) map all seven research acceptance criteria. Continue #11 independently; no actual required i386 Dock helper is demonstrated yet. If one is demonstrated, prefer separately reviewed targeted Wine/FEX reuse. E1 is the smallest conditional new low-address NX diagnostic; E2-E4 retain subsequent loader/i386/helper gates. Existing bridge adoption remains deferred pending a compatible entry design (E5); full desktop is a separate investment (E6). No native experiment or implementation ran. The final-report evidence mapping is ready, but its later publication procedure does not start automatically.
