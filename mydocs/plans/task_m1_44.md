@@ -5,7 +5,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task44`
 Date: October 10, 2026 (Asia/Seoul)
 Base: `942bd816913d8792c55f821fdc2ad309b1b85daf` (master, including PR #43)
-Status: The requester approved Stage 3 by explicit continuation after `2833306` on October 10, 2026. All three read-only research stages are complete; the investment decision, conditional experiments and acceptance map are recorded in [task_m1_44_stage3.md](../working/task_m1_44_stage3.md). Final-report/publication procedure, runtime/bridge implementation and native experiments require their separate continuation/approval.
+Status: All three read-only research stages are complete. The requester approved the final-report and research-document PR publication procedure after `ecabcfa` on October 10, 2026. See [final report](../report/task_m1_44_report.md). Merge, Issue closure, runtime/bridge implementation and native experiments remain separate decisions.
 
 ## Purpose
 
