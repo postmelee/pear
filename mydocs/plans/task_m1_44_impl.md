@@ -5,7 +5,7 @@ GitHub Issue: [#44](https://github.com/postmelee/pear/issues/44)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 Branch: `codex/task44`; base: `942bd816913d8792c55f821fdc2ad309b1b85daf`
 Date: October 10, 2026 (Asia/Seoul)
-Status: The requester approved the detailed research plan and Stage 1 only by explicit continuation after `1aaf86e` on October 10, 2026. Stage 1 research is verified and reported in [task_m1_44_stage1.md](../working/task_m1_44_stage1.md). Stage 2 requires explicit continuation after the Stage 1 report/commit. Runtime/bridge implementation and native experiments remain unapproved.
+Status: The requester approved Stage 2 by explicit continuation after Stage 1 commit `79986eb` on October 10, 2026. Stage 2 source comparison is complete; its verification and report are recorded in [task_m1_44_stage2.md](../working/task_m1_44_stage2.md). Stage 3 requires explicit continuation after the Stage 2 report/commit. Runtime/bridge implementation and native experiments remain unapproved.
 
 ## Context and Evidence Rules
 
@@ -200,3 +200,7 @@ Approve this detailed three-stage research plan and begin **Stage 1 only**: esta
 ## Stage 1 Evidence Update
 
 The [Stage 1 research note](../tech/task_m1_44_reuse.md) and [observation ledger](../working/task_m1_44_stage1_observations.json) preserve 115 matching source identities, retained parser evidence and the newly shared #11 step2a/component/bootstrap receipts. The selected Valve service is statically i386; its actual necessity is not demonstrated before the no-account Dock failure. The earlier missing-component observation is superseded only for selected-file identity. #11 owns independent direct-game x64 startup diagnosis. Before any later overlapping implementation, record exact files/preimages in the order accepted #40 baseline -> separately reviewed #11 correction if applicable -> separately approved #44 correction; no correction is implemented here. #11 execution remains independent of this comparison.
+
+## Stage 2 Evidence Update
+
+The [source comparison](../tech/task_m1_44_reuse.md) and [Stage 2 ledger](../working/task_m1_44_stage2_observations.json) bind Wine/FEX reusable functions, all inspected owner-mode WoW64 refusal groups, and a representative native Steam API/callback return path to pinned sources. Existing NotProton entry patches ntdll and rewrites mapped Valve client exports/entry/data, so it is not a drop-in within the approved scope; generated wrappers and conversions remain separable candidates. Original-game interface/session coverage, all required Rosetta-free host components and full build closure remain unperformed. No bridge/WoW64 implementation or native experiment follows. Stage 3 may propose the minimum missing evidence after explicit continuation; #11 remains independent.
