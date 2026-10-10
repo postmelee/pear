@@ -33,6 +33,7 @@ description: |
      - Residual risks
      - Impact on next Stage
      - Approval request for next stage or PR stage
+   - Fill **Artifact Disposition** using the [artifact retention procedure](../../manual/artifact_retention_guide.md): reconcile actual outcomes, remaining consumers, recovery dependencies and deferred cleanup. Include it in fallback reports; small tasks may summarize text outputs with reasoned Not applicable for material storage.
 3. Check changes.
    ```bash
    git status --short
