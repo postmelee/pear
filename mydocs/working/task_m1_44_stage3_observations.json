@@ -1,0 +1,590 @@
+{
+  "task": 44,
+  "stage": 3,
+  "scope": "read_only_research",
+  "inspection_utc": "2026-10-09T16:20:41.764173+00:00",
+  "base_commit": "28333069b2f967375c8888f9bff35dbfa5ca6db2",
+  "inputs": [
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_44_stage1.md",
+      "sha256": "dfcd77d0a44fe77bc12edf21556fd7e17ca91b1785aea68a0a83cbcd8bef6b3b",
+      "size_bytes": 10107,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_44_stage1_observations.json",
+      "sha256": "a2e2815599e0dabec3494e3c9bbf4459941401a8530a0ff87907f2a710a88167",
+      "size_bytes": 69754,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_44_stage2.md",
+      "sha256": "7fe94aca5230f02dba17aa1108669b546c962be58e07e8b893f994fcbe1731ac",
+      "size_bytes": 9210,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_44_stage2_observations.json",
+      "sha256": "ca3ba8ec2f76fec656cddac5fcf48dd501af82070f7bc484deea6631b5411f1c",
+      "size_bytes": 90314,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_6_stage2.md",
+      "sha256": "d752f49799d4fd74781609a78380d373ac734c99bc23cfa3bc58591a44faa235",
+      "size_bytes": 10794,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_6_stage3_reference_review.md",
+      "sha256": "2ae4f95821375ef468aa37a02be8730e61e6419cea4ef9b1ec4644139e7342e0",
+      "size_bytes": 1940,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_8_stage3.md",
+      "sha256": "60ba47b4e4e15042ac3f885e6e9ee760261e12ec0d1badbd08f4fe7c514cb246",
+      "size_bytes": 10836,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_40_stage3.md",
+      "sha256": "e5df9d902befac295a0f9bd2a1a484331d1c92fa7b377f71ca72563f46aae70c",
+      "size_bytes": 12500,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/report/task_m1_40_report.md",
+      "sha256": "61209e7853af3d6bda824c33b6d59bca374bc33cff9f95ca7f53651346634d18",
+      "size_bytes": 9709,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tests/wine/test_pe_arena.py",
+      "sha256": "56d60a7ff263f07957b1b156f58784ac2724759d77224ef0e8d79ba358d800ee",
+      "size_bytes": 19721,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tools/wine/pe_arena_probe.py",
+      "sha256": "1656597ed17f6790dd7fccafb9abbc1c60ab39655f7eedc5b546119a76bb1d32",
+      "size_bytes": 48509,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tests/wine/fixtures/pe_arena_native.c",
+      "sha256": "9ecba29acd56c2957cf80deaaacb5d670e5e821fcc637a9fcd7744691dffffe3",
+      "size_bytes": 37898,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tools/wine/image_admission_fixtures.py",
+      "sha256": "086f0d009dc4b89e64d47930395efe4eb35b25617ac71e6f107694ab50814411",
+      "size_bytes": 3065,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tools/wine/image_admission_check.py",
+      "sha256": "f9670644f4afc8c53cdb93582d274c78088e7fa8bfd640ddf6baec6782da81ad",
+      "size_bytes": 4829,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tools/cpu/compare.py",
+      "sha256": "2989c8b72d988d8f5998679658099a4189ca212fe7ce488d0640c82a3cbb9c05",
+      "size_bytes": 8010,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tools/cpu/ordering.py",
+      "sha256": "015ca52073a404faa9ed9a9b247c6abada89df48ef647d2128d729ed585446ee",
+      "size_bytes": 13863,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "tools/wine/image_initialization_qualification.py",
+      "sha256": "e72413f08a1bfb263397778551f4cbf25b7c046ad8716876455cbdbbcec05e55",
+      "size_bytes": 3045,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "runtime/fex/patches/integration/fex-series.json",
+      "sha256": "84ef083d120c69ce36bb3ef5d495da08a7d733a52c05009568915c6cbaf90f9c",
+      "size_bytes": 24533,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "runtime/fex/patches/integration/series.json",
+      "sha256": "24258ef84adfe9588ec165a22c61f9826f4a3a44ed3523490b499c808f882c57",
+      "size_bytes": 7983,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "runtime/wine/patches/gameassembly/0001-admission-diagnostics.json",
+      "sha256": "aa5eedb27ea058f9b17594491c8e2556cedb22e04c7b890ead25eed31e5d5d2f",
+      "size_bytes": 1918,
+      "matches_head": true
+    },
+    {
+      "owner": "task44",
+      "path": "runtime/wine/patches/gameassembly/0002-image-admission.json",
+      "sha256": "ff17e4a175d52eae1fd96026ec74474fdfa6fcd55428e8860a6c478cad3ca162",
+      "size_bytes": 542,
+      "matches_head": true
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/working/task_m1_11_direct_stall_observations.json",
+      "sha256": "9303466d8b248abda52d025bc3cd0be520a1f0003176d6093a5e805d453d9ee5",
+      "size_bytes": 3864
+    },
+    {
+      "owner": "task10",
+      "path": "mydocs/working/task_m1_10_stage2.md",
+      "sha256": "12ba7cea6b44c3f1d3eaf83c3144fa4ead0a42678a4277c06f451043473040aa",
+      "size_bytes": 11585
+    }
+  ],
+  "issues": [
+    {
+      "number": 44,
+      "state": "OPEN",
+      "title": "Investigate 32-bit Steam requirements and FEX WoW64 integration on Darwin",
+      "url": "https://github.com/postmelee/pear/issues/44",
+      "snapshot": ".build/task44/stage3-intake1/issue44.json",
+      "sha256": "3c251e0990b9d969d8c714364239451fb9c28a584498092fdab3fa5a3ebe814f"
+    },
+    {
+      "number": 11,
+      "state": "OPEN",
+      "title": "[P11] Validate Megabonk startup and Dock-backed Steamworks",
+      "url": "https://github.com/postmelee/pear/issues/11",
+      "snapshot": ".build/task44/stage3-intake1/issue11.json",
+      "sha256": "26de716b97aa6e5d868d1fa3b4b6be36475183d3888719096822300078e40fed"
+    },
+    {
+      "number": 10,
+      "state": "OPEN",
+      "title": "[P10] Collect complete process and module evidence of Rosetta independence",
+      "url": "https://github.com/postmelee/pear/issues/10",
+      "snapshot": ".build/task44/stage3-intake1/issue10.json",
+      "sha256": "02add826cf6899d96335f7b68ad97a2fd64eb36db983e1c4dead353a7c3eafb4"
+    }
+  ],
+  "owner_checkpoints": {
+    "task10": {
+      "head": "37395ee04abd55ec67faa2e1b381f30ab47a9be4"
+    },
+    "task11": {
+      "head": "504f19d964ce948d770043349af7fa7d75500662"
+    }
+  },
+  "new_peer_context": {
+    "task11": {
+      "receipt_sha256": "9303466d8b248abda52d025bc3cd0be520a1f0003176d6093a5e805d453d9ee5",
+      "new_game_execution": false,
+      "direct_outcomes": [
+        "timeout",
+        "timeout"
+      ],
+      "source_guard_counts": [
+        0,
+        0
+      ],
+      "mapped_function": "FEXCore::LookupCache::AddL1Entry",
+      "same_cause_as_dock": "not established; observed stopping signatures differ",
+      "missing_observations": [
+        "fault address and access type at repeated L1 store",
+        "L1 base/mask/generation and whether each fault is same address",
+        "commit result and post-query state/protection",
+        "whether native resume preserves effective address and makes progress"
+      ],
+      "menu_success": false,
+      "steamworks_success": false,
+      "claim": "Receipt-level reuse only; payloads and producer not rerun or copied."
+    },
+    "task10": {
+      "latest_available_report": "Stage 2 process-fixture qualification; report says module event storage/content binding and runtime hooks unperformed",
+      "complete_runtime_module_coverage": false
+    }
+  },
+  "availability": {
+    "python": "Python 3.14.4",
+    "git": "git version 2.53.0",
+    "filesystem_available_bytes_at_inspection": 17643073536,
+    "native_compiler_sdk_dependencies": "not_checked_for_new_candidate",
+    "execution_authorization": "not_checked_for_future_executables",
+    "lock": "not_inspected_or_acquired",
+    "low_NX_fixture": "not_implemented_or_run_under_task44",
+    "PE32_admission_adapter": "not_implemented_or_run_under_task44",
+    "i386_runtime_candidate": "not_built_or_admitted",
+    "native_bridge_candidate": "existing_entry_out_of_scope_no_compatible_candidate_selected",
+    "native_x86_reference": "not_checked_or_obtained",
+    "disk_estimate_for_native_build": "not_measured; future component-specific estimate and headroom required"
+  },
+  "reuse": {
+    "stage2_sources_and_anchors": "Reuse unchanged committed Stage 2 ledger and source review; no redundant source-wide check",
+    "stage1_runtime_receipts": "Historical scope only; no fresh execution",
+    "runtime_eligible": false
+  },
+  "implementation_authorized": false,
+  "native_experiments_performed": false,
+  "runtime_eligible": false,
+  "intake_reader": {
+    "path": ".build/task44/stage3-intake1/intake.py",
+    "sha256": "0215c91723f3fd1b4552f26048fe5975b394363938e989d7135124379d991521"
+  },
+  "experiments": [
+    {
+      "id": "E0",
+      "title": "Attribute a required helper on the selected Dock route",
+      "priority": "Nearest useful evidence; reuse owner work, not a new #44 runner",
+      "owner": "#11 with #10 observation contracts",
+      "claim": "Whether an exact i386 process is required by the selected game phase, rather than merely installed.",
+      "prerequisites": [
+        "Owner-selected original Dock/client/game/prerequisite identities and invocation phase; current no-account failure cannot prove later absence.",
+        "A separately approved next #11 run, existing APISession/supervisor ownership and the actual available #10 coverage contract.",
+        "Do not repeat current failures only to restate them; consume new owner evidence when available."
+      ],
+      "inputs": [
+        "Dock origin x64 SHA-256 a3762fdfb90b962f67e09ae5f3f61df8e1b700c9d52c7d5c08e3bf9e5bb8c3b7",
+        "Selected SteamService.exe SHA-256 72a406a6a2d3e282ab4b468ed8bfadf171fdd03a97969d6214a5da6fdb8dbd03 (i386); its necessity is unknown.",
+        "Exact owner-selected Wine services.exe and game CEG/prerequisite manifest are still missing, not inferred from paths."
+      ],
+      "interface": "Consume #11 sanitized selected-component/launch receipts through its reviewed existing adapters. No new callable or command is selected by #44.",
+      "positive": [
+        "Bind phase, parent/process instance, exact helper bytes/machine and the required action to observed invocation and its outcome.",
+        "Record complete required-set coverage if concluding that a phase uses no i386 helper; an earlier failure cannot support that conclusion."
+      ],
+      "refusal": [
+        "Missing process/module interval, unselected helper or incomplete prerequisite/CEG evidence -> unknown, never x64-only success.",
+        "A required helper that cannot run -> blocker for that phase; no skip, service-disable shortcut or fake readiness.",
+        "Helper exit zero without SCM readiness is insufficient."
+      ],
+      "resources": "Owner-approved finite run/output limits and measured selected closure; no additional #44 native work.",
+      "cleanup": "Only the actual owner may reap its child/process group; preserve pre-existing SCM/client processes and unrelated sentinel. Keep failures and cleanup gaps.",
+      "retention": "Allowlisted file hashes, phase/parent/required classification, coverage gaps and outcome; no account/session identifiers or raw private traces.",
+      "decision": "If required i386 execution is demonstrated, prepare targeted FEX/Wine contracts E1-E4 for review. Otherwise retain unknowns and continue #11 without a broad WoW64 gate.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    },
+    {
+      "id": "E1",
+      "title": "Isolated low-address ordinary host-NX feasibility",
+      "priority": "Smallest conditional host diagnostic; design approval first",
+      "owner": "Separately assigned runtime/host owner coordinated with #11",
+      "claim": "Whether a bounded low identity-address data reservation can coexist with Pear on the selected host without replacing unowned mappings.",
+      "prerequisites": [
+        "A reviewed original C fixture and allocator/query adapter, exact source/compiler/SDK/executable hashes, per-executable current authorization, reviewed run contract.",
+        "One existing high MAP_JIT owner remains unchanged; no second JIT owner or adopted guest-offset ABI.",
+        "Select actual usable aligned addresses from availability; do not assume 0x00400000 or any hint is free."
+      ],
+      "inputs": [
+        "Original redistributable NX-only host fixture; no Steam or game input.",
+        "Selected macOS/architecture/page geometry, actual mapping/protection query results, candidate reservation policy and source identity."
+      ],
+      "interface": "Design work: a new bounded case using existing owned native supervision/authorization primitives. tools/wine/pe_arena_probe.py contains executable/fault modes and is not this diagnostic or an approved command.",
+      "positive": [
+        "Reserve at most 64 MiB aggregate ordinary host-NX data below 0x80000000 with checked end/size/alignment; query actual RW/NX, write/read owned bytes and release.",
+        "Observe unchanged high-owner base/identity/generation/protection before/after when a high owner is present; standalone host success without it has the narrower claim only.",
+        "Exercise bounded owned reservation reuse and clean rollback without changing unowned mappings."
+      ],
+      "refusal": [
+        "Owned occupied-range control must fail without replacement and preserve its sentinel bytes; never MAP_FIXED over unowned memory.",
+        "Invalid alignment, range overflow, unavailable range, budget exhaustion and injected partial setup failure yield explicit error plus cleanup.",
+        "Protection query unavailable -> unknown/refused; do not execute data or deliberately fault native code to establish NX.",
+        "Busy/stale domain or generation request is rejected; no release of another owner."
+      ],
+      "resources": "Proposed initial <=64 MiB aggregate low reservation/commit including control ranges, below 2 GiB; one owned child per case, at most 12 declared cases, 10 seconds per child and 256 KiB output per case. Supervisory termination/drain limits must be bound to the reviewed owner contract. This is not measured Steam capacity.",
+      "cleanup": "Release only owned ranges after readers/writers retire; query release, preserve unowned sentinel and high owner; retain original failure if cleanup also fails.",
+      "retention": "Source/binary/candidate hash, actual queried intervals/protections, OS errors, conflict/refusal and before/after ownership/cleanup receipts.",
+      "decision": "Pass establishes only host feasibility. Failure at one tested layout does not prove all low-address designs impossible. Neither outcome authorizes E2 or a memory ABI.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    },
+    {
+      "id": "E2",
+      "title": "PE32 parser plus actual Wine owner mapping at admitted low bases",
+      "priority": "Conditional after concrete owner/PE32 design approval",
+      "owner": "One shared Wine loader owner; accepted #40 baseline first",
+      "claim": "Whether exact PE32 semantics and canonical Wine bookkeeping work in the proposed candidate, including original fixed-base images.",
+      "prerequisites": [
+        "E1 is a feasibility input, not integrated admission. Review owner/base/role/domain/generation/32-bit fields, publication, rollback, low range and cleanup first.",
+        "Construct the accepted #40 ordered source and recheck any later accepted #11 overlapping patch preimages.",
+        "Review a PE32 extension to existing parser/fixture machinery; current tests/wine/test_pe_arena.py materializes older publication/cookie patches, so do not call it proof of the final composed candidate."
+      ],
+      "inputs": [
+        "New original redistributable PE32 relocatable fixture with source/build/hash receipt, imports, known load-config/cookie layout and four-byte canary-surrounded targets.",
+        "Original fixed-base, non-LAA, relocation-stripped fixture; two genuinely available admitted low bases for the relocatable fixture.",
+        "Unchanged SteamSetup.exe 2380800 bytes, SHA-256 7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb, preferred base 0x00400000, only for separately approved original-image parsing/admission; never add synthetic relocations.",
+        "Existing original PE32+/ARM64X and #40 required/ceiling/beyond/failed-attach controls."
+      ],
+      "interface": "Design work: extend existing parser and image-admission tooling against the actual composed candidate; no ready PE32 CLI exists here. Split parser-only results from actual Wine reserve/map/protect/query/free/unmap results.",
+      "positive": [
+        "At two admitted low bases, HIGHLOW changes exactly four bytes to the expected value and preserves adjacent canaries; image/import/load-config addresses remain representable.",
+        "Validate PE32 security-cookie pointer width and complete field/directory bounds, initialized value and legal storage protection; retain PE32+ eight-byte controls.",
+        "Fixed-base fixture loads only at its available preferred base within non-LAA limits; actual Wine views/server and owner records agree through reserve/commit/protect/query/unmap/release.",
+        "Unchanged #40 64 MiB image bound and high owner stay valid; parser pass alone does not claim guest execution."
+      ],
+      "refusal": [
+        "Malformed/truncated optional header, directory or load config; incorrect field width; unsupported relocation type; malformed/duplicate/overlapping relocations; target overflow/out-of-image or metadata overlap -> precise refusal.",
+        "Relocation arithmetic follows reviewed Windows 32-bit semantics; distinguish legal modulo arithmetic from invalid mapped address/size overflow, with independent expected values.",
+        "Occupied preferred address for relocation-stripped/non-LAA fixture -> refuse without relocation or overwrite; preserve the occupying mapping.",
+        "Failure after reserve/map/prepare/publication/attach rolls back only owned state and preserves canonical VM error plus cleanup status."
+      ],
+      "resources": "Proposed parser-only limits: fixture <=8 MiB, 5 seconds and 256 KiB output per case. Actual loader cases: initial low budget <=64 MiB, 20 seconds and 1 MiB output per child, with the reviewed owner cleanup contract. Bound case manifest and measured build/disk budget before execution; do not apply fixture file caps to proprietary installer/desktop capacity.",
+      "cleanup": "All successful and refused paths retire source/translation references before range reuse; no stale view, published mapping, handle or owner record remains.",
+      "retention": "Exact composed-source/patch preimages, producer/fixture hashes, parser statuses, field/canary bytes and actual Wine/owner before-after events.",
+      "decision": "Only complete mapping/cleanup evidence permits proposing i386 guest entry. Original installer execution remains a later separate route test.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    },
+    {
+      "id": "E3",
+      "title": "Original i386 execution and lifecycle fixtures",
+      "priority": "Conditional after admitted source/owner and a reviewed WoW64 adapter",
+      "owner": "FEX/Wine runtime owner; coordinate #6 and #42 boundaries",
+      "claim": "Whether i386 dispatch, Windows ABI and lifetime semantics work beyond initial CPU entry.",
+      "prerequisites": [
+        "Actual i386 builtin ntdll/import closure, native wow64/wow64win/CPU module and complete host target identities.",
+        "Preserve unsupported guards until each concrete implementation/contract is approved; no wholesale removal.",
+        "Redistributable original i386 fixtures and independent same-byte native x86 reference where meaningful; reference host availability is not checked. A native x86 CPU Windows WoW64 reference must identify its actual architecture."
+      ],
+      "inputs": [
+        "Fixed fixture source/assembler/compiler/oracle bytes and expected event sequences; no proprietary files.",
+        "Final Wine/FEX candidate, thread/context/exception/notification producer identities, affected #6 reference receipts."
+      ],
+      "interface": "Design work: reuse the current CPU capture/comparison and owned Wine/FEX supervision machinery with separately reviewed i386 cases/adapter. Existing x64 command results are not i386 qualification.",
+      "positive": [
+        "Exit/syscall and Unix-call return values, calling convention/stack cleanup, 32-bit register/address/handle semantics.",
+        "Two-thread GDT/FS/TLS isolation and join/retirement; repeat thread creation without stale identities.",
+        "Handled guest exception and resumption with expected registers/flags and x87/XMM state; original unaligned guest access including the reviewed boundary case.",
+        "Guest->host->guest callback and nested/re-entrant return; required cross-thread callback behavior with actual thread identity and buffer lifetime.",
+        "Dirty/protect/free/map/unmap invalidation, rewrite/retranslation, unload and same-address reuse under a new generation; no stale compiled link or active callback released early."
+      ],
+      "refusal": [
+        "Unsupported context/segment/ISA behavior stays unsupported; AVX/XSTATE is #42, not silently exposed.",
+        "Foreign/stale thread or generation, busy retirement, callback after release and invalid notification pairing -> attributable refusal without host fatal fault.",
+        "Missing native reference, wrong fixture/candidate hash, incomplete callback/exception event or lost observer interval -> unqualified.",
+        "Do not substitute native fatal-fault/no-TEB routes or aligned/static fixture successes for original guest cases."
+      ],
+      "resources": "Proposed initial per-case bound: 20 seconds and 4 MiB combined output per owned child, two guest workers for thread/TLS/callback cases, finite declared iteration counts. Separate affected existing ordering regression retains its original 32768-pair scope. Review measured candidate/build space before any native work.",
+      "cleanup": "Drain callbacks and invalidate links before unload; join/reap owned children/threads, balance handles/leases and preserve unrelated processes and original failures.",
+      "retention": "Original fixture hashes, independent reference environment/oracles, per-case comparison and refusals, actual native/guest module identities, lifecycle and cleanup receipts.",
+      "decision": "Pass qualifies only the named i386 fixture set on that candidate; it does not qualify Steam desktop or an actual required helper.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    },
+    {
+      "id": "E4",
+      "title": "Execute only a demonstrated required original i386 helper",
+      "priority": "Conditional #11 integration, not broad desktop admission",
+      "owner": "#11 with accepted runtime correction and #10 coverage",
+      "claim": "Whether the actual required helper completes its function and preserves the genuine game/client session.",
+      "prerequisites": [
+        "E0 identifies required helper/phase and unchanged original bytes; E2/E3 plus all affected regressions qualify the new candidate.",
+        "Review actual process/service supervision and per-executable authorization; existing manager may not own a pre-existing SCM/service.",
+        "Any real account action requires the owner current approval and existing authentication path, not inherited downloader login."
+      ],
+      "inputs": [
+        "Exact selected helper, dependencies, invocation arguments and required readiness/outcome predicate from #11 receipts.",
+        "Normal selected Dock/client/game context and candidate hashes; actual service binary selection rather than system32/path inference."
+      ],
+      "interface": "Extend/reuse the reviewed #11 route adapter under its owner. No duplicated auth client, observer, supervisor or full runner.",
+      "positive": [
+        "Required helper action and readiness succeed with attributable original process/module closure, return and cleanup.",
+        "Normal genuine Valve launch leads to the owning-account App ID session and required original-game API/callback outcomes; retain failed/unknown phases separately."
+      ],
+      "refusal": [
+        "Exit-zero-only, DLL-load-only, global-user-only, launch-only or menu-only evidence does not establish complete Steamworks.",
+        "Unavailable entitlement/session or disconnect yields real failure; never forge success, add supported steam_appid.txt or alter game/Valve bytes.",
+        "Any required Rosetta host component or coverage gap blocks Rosetta-free qualification."
+      ],
+      "resources": "Owner-selected finite helper/run/output bounds and measured dependency/prefix storage, preserved original files and saves.",
+      "cleanup": "Only owned process/service instances stopped/reaped; preserve pre-existing client/SCM, original files and account state; record unresolved cleanup.",
+      "retention": "Sanitized required-phase outcomes, module/slice/translation coverage and ownership/session assertion results without identifiers, tokens or tickets.",
+      "decision": "Success addresses the named helper route only. Other desktop i386 components remain a separate capability.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    },
+    {
+      "id": "E5",
+      "title": "Reconsider existing native bridge only after a compatible entry review",
+      "priority": "Deferred alternative; not the next runtime implementation recommendation",
+      "owner": "Separately approved bridge evaluation with #11/#10 contracts",
+      "claim": "Whether reusable existing wrappers can support unchanged Windows-game semantics through an entirely Rosetta-free genuine native Steam session.",
+      "prerequisites": [
+        "First present a source-level entry design that does not rewrite Valve/game images or modify installed Steam/CrossOver, and passes Pear source/lifetime contracts. None is selected here.",
+        "Pin complete build/SDK/header/Unix-call dependencies and file-specific terms; reconcile NotProton Wine 2df1ee... with Pear, retain upstream languages.",
+        "Read-only inventory of explicitly selected non-authenticated native client/helper/library bytes may screen architecture, but cannot substitute dynamic complete required closure.",
+        "A later execution scope must authorize its exact fixtures/client/account operations and original game selection separately."
+      ],
+      "inputs": [
+        "NotProton c3a49486c14cdf6b9716e2e7ac55286aa537fcf1 and Proton 164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca wrappers/conversions; full dependency closure remains missing.",
+        "Actual original game interface versions, callback IDs/layouts and session requirements, not just the representative Apps008/SteamClient021/LobbyCreated example."
+      ],
+      "interface": "No runnable bridge command is proposed: existing detour/compat_run/build scripts are outside the approved adoption scope. After a compatible design, separately review source build, layout/callback fixture, then original-game session experiments.",
+      "positive": [
+        "Source-built selected ARM64 host components and Windows wrappers match their pinned ABI/layout tests, including callback payload and asynchronous result lifetime.",
+        "Original game reaches real ownership/session methods; callback polling, nested/thread return, shutdown/disconnect/reconnect and call-result failure behave correctly.",
+        "Every required actual Steam/helper/bridge/Wine/FEX native process/library is observed on ARM64 without Rosetta for the required interval; no incomplete late-load coverage."
+      ],
+      "refusal": [
+        "Valve image rewrite or commercial installed-binary dependency -> outside candidate scope, not a passing experiment.",
+        "Wrong/unsupported interface, layout, late callback, shutdown race, failed call result or genuine entitlement/session failure -> real refusal, not success substitute.",
+        "Native launcher, ARM64 SDK slice, successful init or downloader authentication alone -> insufficient.",
+        "Required Intel-only host component or unobserved required interval -> route not qualified."
+      ],
+      "resources": "Source-first review before full acquisition/build; enumerate missing artifacts and measured disk/time/output bounds. No cost estimate inferred from macOS Steam availability.",
+      "cleanup": "Own only isolated evaluation artifacts/processes; no installed-client patches; preserve originals/account state, release pipes/users/callback buffers and retain failures.",
+      "retention": "Complete candidate and client pins, real interface/layout results, sanitized session outcomes, process/module closure, dependency notices and update regression checklist.",
+      "decision": "Only new compatible-entry plus measured evidence reopens route comparison. Current source availability does not justify adopting or claiming this route easier.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    },
+    {
+      "id": "E6",
+      "title": "Official Windows bootstrap and desktop qualification",
+      "priority": "Independent capability; defer unless separately requested",
+      "owner": "Separately scoped Steam desktop/WoW64 task",
+      "claim": "Whether the full original mixed-bitness installer/update/login/desktop route works.",
+      "prerequisites": [
+        "Explicit decision to invest in desktop capability independently of #11.",
+        "Original fixed-base installer admission, i386 lifecycle qualification, selected complete mixed-bitness dependencies and reviewed authenticated execution scope."
+      ],
+      "inputs": [
+        "Unchanged installer hash from E2 and exact selected steam.exe/service/web-helper/client versions and bytes."
+      ],
+      "interface": "No desktop implementation or execution command is selected by #44. Reuse existing owned supervision and Steam authentication interfaces after design review.",
+      "positive": [
+        "Original bootstrap/install/update/startup and genuine sign-in/game launch complete with full required module/child observation."
+      ],
+      "refusal": [
+        "Fixed-base conflict, unsupported helper/ABI or required Rosetta process remains a route failure; no binary edits or bypass of services/ownership."
+      ],
+      "resources": "Separately measured full desktop storage/memory/build/run budget; the 64 MiB diagnostic is not a product limit.",
+      "cleanup": "Isolated owned prefix/runtime with account/save preservation and owned-process cleanup; original inputs unchanged.",
+      "retention": "Sanitized selected-build identity, per-phase outcomes, full required closure and update/recovery evidence.",
+      "decision": "Desktop success/failure has its own scope and does not retroactively impose its installer requirements on Dock.",
+      "execution_status": "proposed_not_performed",
+      "implementation_approval": "required_separately"
+    }
+  ],
+  "decision": {
+    "recommendation": "Keep #11 selected-route observation and its current x64 diagnosis independent. Do not begin broad WoW64 or adopt the existing bridge. If a required i386 helper is demonstrated, prefer a separately reviewed targeted Wine/FEX correction and the staged E1-E4 evidence.",
+    "required_i386_dock_helper_demonstrated": false,
+    "actual_helper_necessity": "unknown_not_absent",
+    "smallest_conditional_new_host_experiment": "E1; no implementation approved",
+    "bridge_investment": "E5 deferred pending compatible entry; bounded source comparison already complete",
+    "desktop_investment": "E6 separately scoped, not an M1/Dock blanket gate",
+    "effort_ranking": "No measured comparative cost; scope/information-value judgment only",
+    "stage3_authorization": "Explicit continuation after commit 2833306; research and proposal only",
+    "publication_authorized": false
+  },
+  "acceptance": [
+    {
+      "id": "AC1",
+      "criterion": "Two-route input/status matrix",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "Stage 1 route/phase matrix and selected component receipts; i386 service necessity remains unknown."
+    },
+    {
+      "id": "AC2",
+      "criterion": "Bounded bridge comparison before broad runtime proposal",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "Stage 2 five criteria plus E5 covers call/callback, genuine session, every required host architecture, dependency and maintenance gaps."
+    },
+    {
+      "id": "AC3",
+      "criterion": "Function/dependency and missing-contract matrix",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "Stage 2 Wine/FEX matrix; E1-E3 preserve PE32/fixed-base/context/exception/mutation/retirement gaps and guards."
+    },
+    {
+      "id": "AC4",
+      "criterion": "Pins, terms, owners and invalidation",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "Stage 1/2 ledgers, Stage 3 integration/regression map; no blanket distribution or upstream contribution approval."
+    },
+    {
+      "id": "AC5",
+      "criterion": "Concrete minimum experiment proposal",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "E0-E6 specify exact known inputs and unresolved prerequisites, interface status, positive/refusal outcomes, resources, cleanup and retention; none executed."
+    },
+    {
+      "id": "AC6",
+      "criterion": "Which requirement blocks #11",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "No required i386 execution yet demonstrated; selected service i386 is static only. A demonstrated unsupported helper blocks its affected phase; comparison is not a new gate."
+    },
+    {
+      "id": "AC7",
+      "criterion": "Reviewable continuation decision",
+      "research_result": "satisfied_with_explicit_limits",
+      "evidence": "Stage 3 decision and acceptance map ready for final report/publication review; no runtime qualification or implementation authorization."
+    }
+  ],
+  "evidence_invalidation": [
+    "Input/fixture/compiler/SDK/config/patch/generator change invalidates affected source/build/run claim. Rebind candidate and rerun affected gates.",
+    "Source/pin changes invalidate the affected static comparison; original-game/interface/client updates invalidate affected bridge/route behavior.",
+    "Reuse independent native reference only if same fixture/capture/oracle inputs and scope remain valid.",
+    "Missing runtime proof remains unknown, not a document-check pass."
+  ],
+  "regressions": {
+    "cpu": "Full affected #6: 18 supported cases against original independent native reference; AVX unsupported/not exposed; 32768 ordering pairs with original policy and retirements.",
+    "loader": "Affected #40 parser/loader/64MiB bound/ARM64X and PE32+ controls, fixed/relocatable mapping, original GameAssembly attach claim, failure rollback/cleanup; do not require menu as old #40 claim.",
+    "graphics": "Affected #8 native 39 and v2 surface 23 controls, device, five rendering cases/seven readbacks, 18 individually visible frames with resize/teardown, both exact original scalar fault fixtures and balanced physical lifetime. Select Apple tooling only when later approved graphics work requires it.",
+    "scope": "Execute on final integrated candidate when affected; reuse unchanged independent inputs without redundant rebuild. No suites run in Stage 3."
+  },
+  "verification": {
+    "planned_commands": [
+      "python3 -B -m json.tool mydocs/working/task_m1_44_stage3_observations.json > /dev/null",
+      "python3 -B tools/check_governance.py",
+      "git diff --check",
+      "git diff --name-only"
+    ],
+    "status": "Planned commands and pre-report scoped checks passed; post-report results retained with the stage report.",
+    "proposal_bounds": "New E1-E3 numeric bounds are proposed run limits, not observed results or a limit on user work; owner review remains required.",
+    "reader": {
+      "path": ".build/task44/stage3-verification1/verify.py",
+      "sha256": "802010f23aa51300111c7d538f906da678c66b006464147e0bfff7f07a7d506d"
+    },
+    "pre_report": {
+      "inputs_sha256_checked": 23,
+      "issue_snapshots_checked": 3,
+      "acceptance_criteria": 7,
+      "experiment_records": 7,
+      "existing_local_links": 37,
+      "pending_report_links": 2,
+      "stage1_stage2_unchanged": true,
+      "other_board_rows_unchanged": true
+    }
+  },
+  "shared_order": [
+    "Accepted #40 diagnostic/correction metadata and actual composed source preimages",
+    "Any separately reviewed overlapping #11 correction, if one is accepted; none selected here",
+    "Separately approved #44 correction with actual postimage/preimage checks"
+  ],
+  "final_report_handoff": "Seven-criterion acceptance map prepared; final-report/publication procedure not automatically started by Stage 3 approval."
+}

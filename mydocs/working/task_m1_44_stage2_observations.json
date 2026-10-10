@@ -1,0 +1,2206 @@
+{
+  "schema_version": 1,
+  "task": 44,
+  "stage": 2,
+  "scope": "read_only_research",
+  "inspection_utc": "2026-10-09T16:10:09.104150+00:00",
+  "runtime_eligible": false,
+  "guest_execution": "unperformed",
+  "build": "unperformed",
+  "stage1": {
+    "commit": "79986eb14ec187a1b0188383d2662bcb8be5fbf5",
+    "ledger_sha256": "a2e2815599e0dabec3494e3c9bbf4459941401a8530a0ff87907f2a710a88167",
+    "snapshot_comparisons": 115,
+    "mismatches": 0,
+    "claim": "Source identities rechecked; historical execution results reused without replay."
+  },
+  "method": {
+    "files": [
+      {
+        "snapshot": ".build/task44/source-review/stage2-pear1/method/pear-task44-fetch.py",
+        "sha256": "9b0823ba9c3372a0b1b1591b6c9b01be8942aa7fdc11673782e6e8e405052677",
+        "size_bytes": 1482
+      },
+      {
+        "snapshot": ".build/task44/source-review/stage2-pear1/method/pear-task44-notproton-tree.json",
+        "sha256": "f631beefe2c8cce2474b686c0d844c281f43fefca09f8ecaa180d51eaf2ec0fd",
+        "size_bytes": 68621
+      },
+      {
+        "snapshot": ".build/task44/source-review/stage2-pear1/method/pear-task44-proton-tree.json",
+        "sha256": "5142f665214c407da69f0dea6dd5d02e500d65595263bfb6742c3ebede0990b9",
+        "size_bytes": 978314
+      },
+      {
+        "snapshot": ".build/task44/source-review/stage2-pear1/method/pear-task44-stage2-snapshot.py",
+        "sha256": "0250a97cf8070522f31a8650ea64f0810b73d517686ffd6598c285e5e0554fab",
+        "size_bytes": 5582
+      }
+    ],
+    "python": "Python 3.14.4",
+    "git": "git version 2.53.0",
+    "gh": "gh version 2.89.0 (2026-03-26)",
+    "read": "O_NOFOLLOW, regular file, 1 MiB chunks, 8 MiB per file, fstat before/after; acquired files checked against immutable tree Git blob and size plus SHA-256",
+    "executed_upstream_code": false
+  },
+  "sources": [
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "README.md",
+      "git_blob": "5d0647634ec5f6d0fd26d51e586bc61f7f16c412",
+      "size_bytes": 1232,
+      "sha256": "83453c815767832632d8e0595f1d6732a2f18fbb816f8ce49bc0fba70b02bcad",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/README.md",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/README.md",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "NOTICE",
+      "git_blob": "9c8bb03f4be01e78b6b186f89eb0c19e2f94ec09",
+      "size_bytes": 1305,
+      "sha256": "6af9f5747de31e03f8fcd430c3863bc060325a01dd708d9ec11d15baa37d3cde",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/NOTICE",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/NOTICE",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "LICENSE.lsteamclient",
+      "git_blob": "16381609e554316fb80378b6965056d0ab19dab6",
+      "size_bytes": 7435,
+      "sha256": "80fda9147f8ee707cd18d1d6d71b307063fa3a02057a7c789de47f7c003510f1",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/LICENSE.lsteamclient",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/LICENSE.lsteamclient",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "LICENSE.steam-shim",
+      "git_blob": "d7531fcad63d45383163d132b69ccabeaba123f1",
+      "size_bytes": 1511,
+      "sha256": "3df3b1723e04307176b7ffe1f424514d5f871d03d2c2f668652bc8b6dfcd72af",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/LICENSE.steam-shim",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/LICENSE.steam-shim",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "lsteamclient/fetch.sh",
+      "git_blob": "b69cf72a0bac5fd14756ece4070ca32c664a9586",
+      "size_bytes": 3340,
+      "sha256": "b6a5d8b9fa155842bc6afbd7d579f19464b5810f102fa6d41e38adbecc66b789",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/lsteamclient/fetch.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/fetch.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "lsteamclient/build.sh",
+      "git_blob": "d47ac421bc731220efe36adb9d1e67faf7fbb810",
+      "size_bytes": 10574,
+      "sha256": "19f6530fffb39762a87f8a1e338911d0840755b4e4e7186f43b905ee2c1404c4",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/lsteamclient/build.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/build.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "lsteamclient/steamclient_main.c",
+      "git_blob": "86db794ed4d58a6e365cf04717ecc176ec59705f",
+      "size_bytes": 22296,
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/lsteamclient/steamclient_main.c",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "lsteamclient/unixlib.cpp",
+      "git_blob": "944ee886979ddd191aee3b2971493bd2e80da704",
+      "size_bytes": 55273,
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/lsteamclient/unixlib.cpp",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "lsteamclient/unix_steam_input_manual.cpp",
+      "git_blob": "97886a4b55d7283780fdbd04204ff12b352a773f",
+      "size_bytes": 11219,
+      "sha256": "3f9e3390a9c4b060a367a312d61f84fc3690141ef34811484b3c21481d7583a7",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/lsteamclient/unix_steam_input_manual.cpp",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unix_steam_input_manual.cpp",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "steam-shim/steam.cpp",
+      "git_blob": "3e79005b1ada6b154f6c5be0aba8334c9eba2e5f",
+      "size_bytes": 59366,
+      "sha256": "037a833ef5a21e4be8665a35c65b9a7bcd81c317bf32272c29c822bf82a70970",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/steam-shim/steam.cpp",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/steam.cpp",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "steam-shim/build.sh",
+      "git_blob": "2187bfa06e2f6af007dca7529c19959edd3f372d",
+      "size_bytes": 3700,
+      "sha256": "9e1d6935f7ea1fb12b71099ac4d709ad9be2071a84a9711c2be83708f72ebefa",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/steam-shim/build.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/build.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "steam-shim/fetch-headers.sh",
+      "git_blob": "728f6f048b460e95ff1827c731a812a7214117a0",
+      "size_bytes": 3213,
+      "sha256": "06c5e2be9f461af3dd8442c40ce6786ef6edbe94ba6dd5511fbe684d445f9a3d",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/steam-shim/fetch-headers.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/fetch-headers.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "steam-shim/Makefile.in",
+      "git_blob": "f18827df16dbdd69b4fdb1503a57182c16092356",
+      "size_bytes": 809,
+      "sha256": "e81489e33418f28dd75b4e6b91dd0e72981981e9290feae8d8cd08c9d0c7adca",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/steam-shim/Makefile.in",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/Makefile.in",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "bridge/fetch-valve.sh",
+      "git_blob": "cf222d35c499d8eead8a46413ceafaefe8720645",
+      "size_bytes": 4178,
+      "sha256": "6d3e6e80cd53ad1c7669b35a0e5cc0b8172e9d6f04c840bb1e6bd41f1b4b719b",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/bridge/fetch-valve.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/bridge/fetch-valve.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "bridge/setup-wine-tree.sh",
+      "git_blob": "06c86a47458af442782834ade769fd24ddc806f8",
+      "size_bytes": 5261,
+      "sha256": "3a47c90f5a234c7694bfd2b16fb5d2ba7b65777915cc5f2630a8cc047a5a901b",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/bridge/setup-wine-tree.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/bridge/setup-wine-tree.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "bridge/register-components.diff",
+      "git_blob": "d6e340b9bb019a5241a8c82834d8a0e1b6f33093",
+      "size_bytes": 3784,
+      "sha256": "6fa9a6d0f6ba2069602f6028f18acd58d1435c9eb31ba84b9de4760668c7fe49",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/bridge/register-components.diff",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/bridge/register-components.diff",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "Makefile",
+      "git_blob": "3f5cbd7ee20805ed64abb4dc39f43e600e368755",
+      "size_bytes": 22077,
+      "sha256": "161f0fc1506dfb3f64021ed0948549b9b2dee4f18445436fe8a231170aa7dc57",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/Makefile",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/Makefile",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "ntdll-patch/detour.c",
+      "git_blob": "6c7583194d2c1d87c3a03d92755e19843bd9d1ee",
+      "size_bytes": 5346,
+      "sha256": "077f60f4ba249f75991646d4df97001bc1aeaf152d27dfa3167fa2750680dabf",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/ntdll-patch/detour.c",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour.c",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "ntdll-patch/detour32.c",
+      "git_blob": "24f66b870739168115cde153725873bd58676e84",
+      "size_bytes": 7737,
+      "sha256": "d2eb89aa57e7360f71011a46dbe0abecf5a1675fbba4885fd96b3aef0e62c4ad",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/ntdll-patch/detour32.c",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour32.c",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "ntdll-patch/resolve.py",
+      "git_blob": "26b7abf8781eaa06ede3ac71b02b1baf15fb0a80",
+      "size_bytes": 35215,
+      "sha256": "475060cacf994d1658e190afe03edbc414374accfc88e536bac458cfda53cb81",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/ntdll-patch/resolve.py",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/resolve.py",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "ntdll-patch/build-ntdll.sh",
+      "git_blob": "ebde30a1cf602fdbd8b5049ff05de6ea81991399",
+      "size_bytes": 6622,
+      "sha256": "e9e1dc1928202fa795db95d2ef64c3e5b238aa832c130aa9ac36b5716e277c07",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/ntdll-patch/build-ntdll.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/build-ntdll.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "dylib/feats/compat_run.sh",
+      "git_blob": "427488403547bbeff08068ade9dea8a5874747fe",
+      "size_bytes": 27739,
+      "sha256": "960615078712f1b2017ecdc41fa6098fc2fba7cd13fdf19c23113274877d1b2f",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/dylib/feats/compat_run.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/dylib/feats/compat_run.sh",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "dylib/hooks/hook_compat.c",
+      "git_blob": "1dcfa3e3330fe7a922bd344f07a29f615dff6691",
+      "size_bytes": 9394,
+      "sha256": "1418d5c8abc986a89707569ae648860b3fd432d5c2ce0d8a3afc7bbd6560b01a",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/dylib/hooks/hook_compat.c",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/dylib/hooks/hook_compat.c",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "app/Sources/NotProtonApp/Model/SupportedRunner.swift",
+      "git_blob": "af7e20133db07d1f7f9a31f3a4d27a296bd06a8c",
+      "size_bytes": 4721,
+      "sha256": "40307b21952406be032f46b549a30ae57f92dea6129d0bc4558f6e3dcc3568a8",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/app/Sources/NotProtonApp/Model/SupportedRunner.swift",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/app/Sources/NotProtonApp/Model/SupportedRunner.swift",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "ntdll-patch/shim64.S",
+      "git_blob": "1345ad50c15354deaae4c819fcc1ca1784fc8687",
+      "size_bytes": 1683,
+      "sha256": "13f0553981148439651e6116a9dc3a70473ff423aa61ef22e4101c2d05c5ec20",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/ntdll-patch/shim64.S",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/shim64.S",
+      "match": true
+    },
+    {
+      "repo": "NotProtonNot/NotProton",
+      "revision": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+      "path": "ntdll-patch/build64.sh",
+      "git_blob": "e9b1dfabf38ff8fb2ad356c7407484800225d05c",
+      "size_bytes": 2706,
+      "sha256": "bf85d6027bb9bc1a7f07cca363400aa7b4845a20167f6810fff75c870a0df143",
+      "url": "https://github.com/NotProtonNot/NotProton/blob/c3a49486c14cdf6b9716e2e7ac55286aa537fcf1/ntdll-patch/build64.sh",
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/build64.sh",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/steamclient_private.h",
+      "git_blob": "cf8cef156daf2fce9eddd24a4f39f8ff60e78ce0",
+      "size_bytes": 1230,
+      "sha256": "fe753c4ca0d929ed6c17fdac12c194ec5e2357bc70587587d3add1eb171130dd",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/steamclient_private.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/steamclient_private.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/unix_private.h",
+      "git_blob": "78e128bc08fc98d4035c3d7d585db1aede3a6e7f",
+      "size_bytes": 7865,
+      "sha256": "eeed0a059861936f196f97912089d14ff27f2551be624cb45e687f6ca944bbbf",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/unix_private.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unix_private.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/unixlib.h",
+      "git_blob": "b96e3e6f314087d9964faac80e2786ce78568ed2",
+      "size_bytes": 11914,
+      "sha256": "38c2e08e098694ea8a76e949b950a9c9b91fb379172470fd089497871e174787",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/unixlib.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/Makefile.in",
+      "git_blob": "a3239f5237a858591cb2ca914962d5ae6bd742ee",
+      "size_bytes": 12120,
+      "sha256": "94035e57becedf8d982dd5b39c8e77647230e63e25284d94681740bee2abd757",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/Makefile.in",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/Makefile.in",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/lsteamclient.spec",
+      "git_blob": "23361d7217bc91b19fb6103d555ac03c9981357f",
+      "size_bytes": 2416,
+      "sha256": "b50dfa66485c9aa99018915e16401c350da68a315580adcd226efe9146ca6cc3",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/lsteamclient.spec",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/lsteamclient.spec",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/cppISteamApps_STEAMAPPS_INTERFACE_VERSION008.cpp",
+      "git_blob": "bd2239aca8e2e1509632cb6bab8fad10220dc6da",
+      "size_bytes": 34693,
+      "sha256": "664efdf186d559e87c9791446f60406dd52aaeb3b18841eec887729d3fa1c860",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/cppISteamApps_STEAMAPPS_INTERFACE_VERSION008.cpp",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamApps_STEAMAPPS_INTERFACE_VERSION008.cpp",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/cppISteamClient_SteamClient021.cpp",
+      "git_blob": "9e1b72e73cadc7ab75d9b1b0fad5962b98c3dbe6",
+      "size_bytes": 37657,
+      "sha256": "0cd1c30498c58802eea4348f43965487d65f29b4a96b8e9725d78f72bce4b708",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/cppISteamClient_SteamClient021.cpp",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamClient_SteamClient021.cpp",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/cppISteamUser_SteamUser023.cpp",
+      "git_blob": "887908e103d5cbb6212b5016c0aab68c8176133e",
+      "size_bytes": 29855,
+      "sha256": "2f876b2beca8948d058d1d0a4138c35fc66dd8cac000067283e78a9ed90b4ff3",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/cppISteamUser_SteamUser023.cpp",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamUser_SteamUser023.cpp",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/winISteamApps.c",
+      "git_blob": "f5e83a01a3a44e9f46993ac6433708d32fa4ff88",
+      "size_bytes": 109796,
+      "sha256": "9925860d35b29cbf9010a4e092d2b0b1cca66133acfd4e561984bb91a8d71aaf",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/winISteamApps.c",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/winISteamApps.c",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/winISteamClient.c",
+      "git_blob": "e3799bdc9f7ed2db48011bcc52be10bd1533b095",
+      "size_bytes": 368266,
+      "sha256": "36a267e4bb3e290eee5f29f0fbbee3cec6bb344681edcb6091a3e62be186be50",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/winISteamClient.c",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/winISteamClient.c",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/unixlib_generated.cpp",
+      "git_blob": "e9ccb0e36e10c323b0d8746f9cf43938d5c31262",
+      "size_bytes": 1735177,
+      "sha256": "1c4b2ff9ed646c2a650bf0b828f6a602373ffeba64a6819d5334a0caa227fdaa",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/unixlib_generated.cpp",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.cpp",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/unixlib_generated.h",
+      "git_blob": "9c5cdb5ea7bdad63a1633c31e7586c3a93f26b7b",
+      "size_bytes": 2957275,
+      "sha256": "eced0e9a6bdaf4ad11b4f575b0e60a7a54f6a31c2ca7a8a61992cca11f779e15",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/unixlib_generated.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/gen_wrapper.py",
+      "git_blob": "e1b528f9f77017347d51f8ff60d455e90c7f3d8b",
+      "size_bytes": 63557,
+      "sha256": "ae07c835c225a765c8d69791191e0405c8066bdd456442caf17b6a06463898a8",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/gen_wrapper.py",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/gen_wrapper.py",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/LICENSE",
+      "git_blob": "16381609e554316fb80378b6965056d0ab19dab6",
+      "size_bytes": 7435,
+      "sha256": "80fda9147f8ee707cd18d1d6d71b307063fa3a02057a7c789de47f7c003510f1",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/LICENSE",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/LICENSE",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/steamworks_sdk_142/steam_api.h",
+      "git_blob": "7134d2020619aa9c04ccc2d8594c3095ee03951c",
+      "size_bytes": 17616,
+      "sha256": "bb175d4d47ac85373620b8fc5602e75da1698ef55c6eb18c243cb2ea9485b57f",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/steamworks_sdk_142/steam_api.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/steamworks_sdk_142/steam_api.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/steamclient_generated.c",
+      "git_blob": "4a4c083bf8cda8c0b68a4dc82fcc01d9e6fbf1e5",
+      "size_bytes": 23080,
+      "sha256": "3b06a32fb66e8dcc10c4e02135fe3775a59b39951d3c8ccd5f97b9f50a69adfa",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/steamclient_generated.c",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/steamclient_generated.c",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/steamclient_generated.h",
+      "git_blob": "78f812780dd215f7c92c025158e547574ff1abe3",
+      "size_bytes": 19560,
+      "sha256": "10d38ce432beb9207bf931402a875623ae4706a5a921dc696780ee217a27b4d0",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/steamclient_generated.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/steamclient_generated.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/steamclient_structs.h",
+      "git_blob": "fec3621166949d574ce9952b35ee6c29af4f01eb",
+      "size_bytes": 4061,
+      "sha256": "8a8a761d5c5ace2e041043ba8756875e50ab63af16fa3410da36e678d659e688",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/steamclient_structs.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/steamclient_structs.h",
+      "match": true
+    },
+    {
+      "repo": "ValveSoftware/Proton",
+      "revision": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "path": "lsteamclient/steamclient_structs_generated.h",
+      "git_blob": "7cae86e7f67ba3667ad0fde02453dd2aff4115b7",
+      "size_bytes": 355427,
+      "sha256": "b193d004f55886175079931683c072e676245e98353ad524a3078ffb97185633",
+      "url": "https://github.com/ValveSoftware/Proton/blob/164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca/lsteamclient/steamclient_structs_generated.h",
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/steamclient_structs_generated.h",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/WOW64/Module.cpp",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/WOW64/Module.cpp",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "size_bytes": 49398,
+      "expected_sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/ARM64EC/Module.cpp",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/ARM64EC/Module.cpp",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9",
+      "size_bytes": 81435,
+      "expected_sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/Common/InvalidationTracker.cpp",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/Common/InvalidationTracker.cpp",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/Common/InvalidationTracker.cpp",
+      "sha256": "2f6c3c801da432fe3a8a1529df013690f1a261cb87f1c5b3d6ca013aa84a001c",
+      "size_bytes": 15176,
+      "expected_sha256": "2f6c3c801da432fe3a8a1529df013690f1a261cb87f1c5b3d6ca013aa84a001c",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/Common/InvalidationTracker.h",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/Common/InvalidationTracker.h",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/Common/InvalidationTracker.h",
+      "sha256": "bddbd92cbee13eb5709fd84e1bd47e29de665192c3ed05fd9e3ecf2ef23298ba",
+      "size_bytes": 3454,
+      "expected_sha256": "bddbd92cbee13eb5709fd84e1bd47e29de665192c3ed05fd9e3ecf2ef23298ba",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/Common/OvercommitTracker.h",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/Common/OvercommitTracker.h",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/Common/OvercommitTracker.h",
+      "sha256": "cb0d569bd1f9189160da36fd3f74af510e6a4016072bc0c76859923ae45bfea7",
+      "size_bytes": 3223,
+      "expected_sha256": "cb0d569bd1f9189160da36fd3f74af510e6a4016072bc0c76859923ae45bfea7",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/Common/CallRetStack.h",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/Common/CallRetStack.h",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/Common/CallRetStack.h",
+      "sha256": "a11fd59bd62186bc6ddcd4c9a37d660c425c3828276be1f78d98b76a31f203ce",
+      "size_bytes": 2668,
+      "expected_sha256": "a11fd59bd62186bc6ddcd4c9a37d660c425c3828276be1f78d98b76a31f203ce",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/Common/ImageTracker.cpp",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/Common/ImageTracker.cpp",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/Common/ImageTracker.cpp",
+      "sha256": "8794b016a8e728ec6efbbd65fb0e634a8b4528443b3392700cd6d62c3c7472c9",
+      "size_bytes": 12209,
+      "expected_sha256": "8794b016a8e728ec6efbbd65fb0e634a8b4528443b3392700cd6d62c3c7472c9",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/Source/Windows/Common/ImageTracker.h",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/Source/Windows/Common/ImageTracker.h",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/Common/ImageTracker.h",
+      "sha256": "6848db5f0abb784e89a1fbb07b3c64370a2ab97b5cc7d900d4e89ced7e5c9e88",
+      "size_bytes": 2245,
+      "expected_sha256": "6848db5f0abb784e89a1fbb07b3c64370a2ab97b5cc7d900d4e89ced7e5c9e88",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_fex",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/repair-build1/source/FEXCore/Source/Interface/Core/Core.cpp",
+        "manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb"
+      },
+      "path": "fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "size_bytes": 116664,
+      "expected_sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_wine",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/build3/source/dlls/ntdll/unix/pear_pe_arena.c",
+        "expected_from": "stage1 checks"
+      },
+      "path": "wine/dlls/ntdll/unix/pear_pe_arena.c",
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/pear_pe_arena.c",
+      "sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+      "size_bytes": 69534,
+      "expected_sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_wine",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/build3/source/dlls/ntdll/unix/pear_pe_arena.h",
+        "expected_from": "stage1 checks"
+      },
+      "path": "wine/dlls/ntdll/unix/pear_pe_arena.h",
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/pear_pe_arena.h",
+      "sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+      "size_bytes": 3897,
+      "expected_sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+      "match": true
+    },
+    {
+      "kind": "retained_composed_wine",
+      "origin": {
+        "owner": "task8",
+        "path": ".build/task8/build3/source/dlls/ntdll/unix/virtual.c",
+        "expected_from": "stage1 checks"
+      },
+      "path": "wine/dlls/ntdll/unix/virtual.c",
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "size_bytes": 306405,
+      "expected_sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "match": true
+    },
+    {
+      "kind": "integrated_pear_patch",
+      "origin": {
+        "owner": "task44",
+        "git_head": "79986eb14ec187a1b0188383d2662bcb8be5fbf5",
+        "path": "runtime/wine/patches/gameassembly/0001-admission-diagnostics.json"
+      },
+      "path": "integrated/runtime/wine/patches/gameassembly/0001-admission-diagnostics.json",
+      "snapshot": ".build/task44/source-review/stage2-pear1/integrated/runtime/wine/patches/gameassembly/0001-admission-diagnostics.json",
+      "sha256": "aa5eedb27ea058f9b17594491c8e2556cedb22e04c7b890ead25eed31e5d5d2f",
+      "size_bytes": 1918,
+      "expected_sha256": "aa5eedb27ea058f9b17594491c8e2556cedb22e04c7b890ead25eed31e5d5d2f",
+      "match": true
+    },
+    {
+      "kind": "integrated_pear_patch",
+      "origin": {
+        "owner": "task44",
+        "git_head": "79986eb14ec187a1b0188383d2662bcb8be5fbf5",
+        "path": "runtime/wine/patches/gameassembly/0001-admission-diagnostics.patch"
+      },
+      "path": "integrated/runtime/wine/patches/gameassembly/0001-admission-diagnostics.patch",
+      "snapshot": ".build/task44/source-review/stage2-pear1/integrated/runtime/wine/patches/gameassembly/0001-admission-diagnostics.patch",
+      "sha256": "5defcf93a5edeb089d673285f8bb232453804c9c80c15daab01e4c715bb4edb4",
+      "size_bytes": 9043,
+      "expected_sha256": "5defcf93a5edeb089d673285f8bb232453804c9c80c15daab01e4c715bb4edb4",
+      "match": true
+    },
+    {
+      "kind": "integrated_pear_patch",
+      "origin": {
+        "owner": "task44",
+        "git_head": "79986eb14ec187a1b0188383d2662bcb8be5fbf5",
+        "path": "runtime/wine/patches/gameassembly/0002-image-admission.json"
+      },
+      "path": "integrated/runtime/wine/patches/gameassembly/0002-image-admission.json",
+      "snapshot": ".build/task44/source-review/stage2-pear1/integrated/runtime/wine/patches/gameassembly/0002-image-admission.json",
+      "sha256": "ff17e4a175d52eae1fd96026ec74474fdfa6fcd55428e8860a6c478cad3ca162",
+      "size_bytes": 542,
+      "expected_sha256": "ff17e4a175d52eae1fd96026ec74474fdfa6fcd55428e8860a6c478cad3ca162",
+      "match": true
+    },
+    {
+      "kind": "integrated_pear_patch",
+      "origin": {
+        "owner": "task44",
+        "git_head": "79986eb14ec187a1b0188383d2662bcb8be5fbf5",
+        "path": "runtime/wine/patches/gameassembly/0002-image-admission.patch"
+      },
+      "path": "integrated/runtime/wine/patches/gameassembly/0002-image-admission.patch",
+      "snapshot": ".build/task44/source-review/stage2-pear1/integrated/runtime/wine/patches/gameassembly/0002-image-admission.patch",
+      "sha256": "dd0717923230d2bb9db6c359824300dee4b277b0c3254dee4454a5fdde34acfd",
+      "size_bytes": 723,
+      "expected_sha256": "dd0717923230d2bb9db6c359824300dee4b277b0c3254dee4454a5fdde34acfd",
+      "match": true
+    }
+  ],
+  "checks": {
+    "external_files": 45,
+    "external_source_bytes": 6116736,
+    "composed_fex_files": 9,
+    "composed_wine_files": 3,
+    "integrated_patch_files": 4,
+    "expected_mismatches": 0,
+    "all_source_review_material_bytes": 11687940,
+    "aggregate_limit_bytes": 67108864
+  },
+  "integrated_patch_order": {
+    "0001-admission-diagnostics": {
+      "kind": "pear_image_admission_diagnostic_patch",
+      "diagnostic_only": true,
+      "patch_sha256": "5defcf93a5edeb089d673285f8bb232453804c9c80c15daab01e4c715bb4edb4",
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.c",
+          "before_sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+          "after_sha256": "4b91a66df05791bba2d454dd5c3c2131a3dffea339f9608db29c9ed68457d6de"
+        },
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "before_sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+          "after_sha256": "89ef518c0dc4008dd2392e6291082260028685005034c9079d20d7bd14422e34"
+        },
+        {
+          "path": "dlls/ntdll/unix/virtual.c",
+          "before_sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+          "after_sha256": "624b909228b6e3329355b0d8cde2a60bd98c6fa84f7f2cc2d59a0118e05d15f4"
+        }
+      ],
+      "parser_returns": [
+        {
+          "phase": "parser.return01",
+          "expression": "STATUS_NOT_SUPPORTED"
+        },
+        {
+          "phase": "parser.return02",
+          "expression": "status"
+        },
+        {
+          "phase": "parser.return03",
+          "expression": "status"
+        },
+        {
+          "phase": "parser.return04",
+          "expression": "status"
+        },
+        {
+          "phase": "parser.return05",
+          "expression": "status"
+        },
+        {
+          "phase": "parser.return06",
+          "expression": "STATUS_NOT_SUPPORTED"
+        },
+        {
+          "phase": "parser.return07",
+          "expression": "STATUS_NOT_SUPPORTED"
+        },
+        {
+          "phase": "parser.return08",
+          "expression": "STATUS_NOT_SUPPORTED"
+        },
+        {
+          "phase": "parser.return09",
+          "expression": "status"
+        },
+        {
+          "phase": "parser.return10",
+          "expression": "STATUS_NO_MEMORY"
+        },
+        {
+          "phase": "parser.return11",
+          "expression": "STATUS_SUCCESS"
+        },
+        {
+          "phase": "parser.return12",
+          "expression": "status"
+        }
+      ]
+    },
+    "0002-image-admission": {
+      "kind": "pear_image_admission_correction_patch",
+      "license": "MIT",
+      "ordered_after": "0001-admission-diagnostics.patch",
+      "patch_sha256": "dd0717923230d2bb9db6c359824300dee4b277b0c3254dee4454a5fdde34acfd",
+      "max_image_bytes": 67108864,
+      "arena_geometry_changed": false,
+      "changes": [
+        {
+          "path": "dlls/ntdll/unix/pear_pe_arena.h",
+          "before_sha256": "89ef518c0dc4008dd2392e6291082260028685005034c9079d20d7bd14422e34",
+          "after_sha256": "dccb37fd2f3506ac95539f8c084860f426b338976862e734b6e307df87a228a3"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Targeted source selection, not whole Proton baseline digest verification or a complete build dependency closure.",
+    "Composed task8 sources precede task40 patches; patch metadata/source reviewed separately, not applied or built.",
+    "Actual game Steamworks interfaces/calls, ownership, session and required Rosetta-free module closure are unknown.",
+    "No new proprietary bytes, account state, runtime execution or native lock access."
+  ],
+  "source_anchors": [
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_wow64_syscall.c",
+      "sha256": "73fc84aedc5dcf1bb438f74eb6ce12e595d2a7276530b0a8efb28d2525a2f86e",
+      "symbol_or_literal": "get_cpu_dll_name",
+      "lines": [
+        907,
+        909,
+        1011
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_wow64_syscall.c",
+      "sha256": "73fc84aedc5dcf1bb438f74eb6ce12e595d2a7276530b0a8efb28d2525a2f86e",
+      "symbol_or_literal": "process_init",
+      "lines": [
+        982,
+        984,
+        1490
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_wow64_syscall.c",
+      "sha256": "73fc84aedc5dcf1bb438f74eb6ce12e595d2a7276530b0a8efb28d2525a2f86e",
+      "symbol_or_literal": "PtrToUlong",
+      "lines": [
+        173,
+        174,
+        244,
+        245,
+        255,
+        280,
+        281,
+        282,
+        880,
+        1047,
+        1048,
+        1071,
+        1090,
+        1092,
+        1106,
+        1107,
+        1350,
+        1372,
+        1374,
+        1433,
+        1438,
+        1461,
+        1463
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_ntdll_unix_loader.c",
+      "sha256": "b4adcaab240ecca26305f212894597b6250a253f181f0861ba67e7a3376d24fa",
+      "symbol_or_literal": "load_wow64_ntdll",
+      "lines": [
+        1792,
+        1794,
+        1867
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "HandleSyscallImpl",
+      "lines": [
+        428,
+        468
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "BTCpuProcessInit",
+      "lines": [
+        501
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "BTCpuThreadInit",
+      "lines": [
+        585
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "BTCpuThreadTerm",
+      "lines": [
+        623
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "BTCpuProcessTerm",
+      "lines": [
+        583
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "BTCpuSimulateImpl",
+      "lines": [
+        703,
+        710
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "BTCpuResetToConsistentState",
+      "lines": [
+        725,
+        803,
+        804
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "LoadStateFromWowContext",
+      "lines": [
+        203,
+        359
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "symbol_or_literal": "StoreWowContextFromState",
+      "lines": [
+        255,
+        304,
+        339
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-docs_WOW64.md",
+      "sha256": "6dd48b8cdafb70ab39f1cb38eb26cb90f08031bf7408fbfc17bd6a06e6c1295e",
+      "symbol_or_literal": "guest window",
+      "lines": [
+        20,
+        25,
+        27,
+        169
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "5069042af07341f6e2947b4fcb84799743340d9ee3c151a62b2bb26af675b22e",
+      "symbol_or_literal": "CONFIG_GUEST32BASE",
+      "lines": [
+        297,
+        1181
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuProcessInit",
+      "lines": [
+        616
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuThreadInit",
+      "lines": [
+        785
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuProcessTerm",
+      "lines": [
+        777
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuThreadTerm",
+      "lines": [
+        910
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuGetBopCode",
+      "lines": [
+        967
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "__wine_get_unix_opcode",
+      "lines": [
+        977
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuGetContext",
+      "lines": [
+        987
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuSetContext",
+      "lines": [
+        997
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuSimulateImpl",
+      "lines": [
+        1020,
+        1027
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuSuspendLocalThread",
+      "lines": [
+        1043
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuResetToConsistentStateImpl",
+      "lines": [
+        1054,
+        1145
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuResetToConsistentState",
+      "lines": [
+        1054,
+        1138,
+        1145
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuFlushInstructionCache2",
+      "lines": [
+        1152
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuFlushInstructionCacheHeavy",
+      "lines": [
+        1163
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyMemoryDirty",
+      "lines": [
+        1174
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyMemoryAlloc",
+      "lines": [
+        1185
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyMemoryProtect",
+      "lines": [
+        1203
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyMemoryFree",
+      "lines": [
+        1220
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyMapViewOfSection",
+      "lines": [
+        1237
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyUnmapViewOfSection",
+      "lines": [
+        1249
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyReadFile",
+      "lines": [
+        1267
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuNotifyProcessExecuteFlagsChange",
+      "lines": [
+        1286
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuIsProcessorFeaturePresent",
+      "lines": [
+        1297
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "symbol_or_literal": "BTCpuUpdateProcessorInformation",
+      "lines": [
+        1307
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9",
+      "symbol_or_literal": "PearMemoryNotification",
+      "lines": [
+        1165,
+        1227,
+        1248,
+        1268,
+        1339
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9",
+      "symbol_or_literal": "NotifyMapViewOfSection",
+      "lines": [
+        1286
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9",
+      "symbol_or_literal": "PearInvalidateGuestRange",
+      "lines": [
+        1359,
+        1383,
+        1397,
+        1411,
+        1427
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9",
+      "symbol_or_literal": "NotifyReadFile",
+      "lines": [
+        1423
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "symbol_or_literal": "EnterPearEC",
+      "lines": [
+        95,
+        227
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "symbol_or_literal": "ExitPearEC",
+      "lines": [
+        117,
+        189,
+        233
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "symbol_or_literal": "DestroyPearThreadChecked",
+      "lines": [
+        1049,
+        1082
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "symbol_or_literal": "BeginPearLinkInvalidation",
+      "lines": [
+        2172
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/fex/FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518",
+      "symbol_or_literal": "FinishPearLinkInvalidation",
+      "lines": [
+        2177
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "symbol_or_literal": "process_relocation_block",
+      "lines": [
+        3195,
+        3199,
+        3466,
+        4272
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "symbol_or_literal": "map_image_view",
+      "lines": [
+        3577,
+        3581,
+        3734,
+        3748
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "symbol_or_literal": "virtual_map_image",
+      "lines": [
+        3637,
+        3643,
+        3851,
+        4120,
+        4154
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "symbol_or_literal": "set_protection",
+      "lines": [
+        2217,
+        2221,
+        4468,
+        5566,
+        5963
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "symbol_or_literal": "NtFreeVirtualMemory",
+      "lines": [
+        4568,
+        4574,
+        4580,
+        4595,
+        5802,
+        5805
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/virtual.c",
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "symbol_or_literal": "NtQueryVirtualMemory",
+      "lines": [
+        6532,
+        6535
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-pear1/wine/dlls/ntdll/unix/pear_pe_arena.c",
+      "sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+      "symbol_or_literal": "pear_pe_plan_read_target",
+      "lines": [
+        666,
+        834
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "CreateInterface",
+      "lines": [
+        395,
+        397,
+        401
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "load_steamclient",
+      "lines": [
+        366,
+        400,
+        494,
+        518,
+        578,
+        588,
+        624,
+        633,
+        639
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "create_win_interface",
+      "lines": [
+        285,
+        402
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "get_mem_from_steamclient_dll",
+      "lines": [
+        105,
+        233,
+        265
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "execute_pending_callbacks",
+      "lines": [
+        405,
+        520,
+        559
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "Steam_BGetCallback",
+      "lines": [
+        503,
+        505,
+        523
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "Steam_FreeLastCallback",
+      "lines": [
+        489,
+        491,
+        499,
+        552
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "Steam_GetAPICallResult",
+      "lines": [
+        563,
+        566,
+        579
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/steamclient_main.c",
+      "sha256": "9c0762a90c3d32abf1a1f953da913913618acb138cabf1f4bca8628a0d3d4ab0",
+      "symbol_or_literal": "last_callback_data",
+      "lines": [
+        487,
+        496,
+        497,
+        532
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_init(",
+      "lines": [
+        780
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_CreateInterface",
+      "lines": [
+        888,
+        1362
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_Steam_BGetCallback",
+      "lines": [
+        334,
+        1364
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_callback_message_receive",
+      "lines": [
+        356,
+        1365
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_Steam_FreeLastCallback",
+      "lines": [
+        390,
+        1366
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_Steam_GetAPICallResult",
+      "lines": [
+        397,
+        1363
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "callback_len_utow",
+      "lines": [
+        34,
+        347,
+        375
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "alloc_callback_wtou",
+      "lines": [
+        402,
+        1273
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "convert_callback_utow",
+      "lines": [
+        363,
+        409,
+        1305
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "steamclient_next_callback",
+      "lines": [
+        301,
+        1360
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "queue_vtable_callback",
+      "lines": [
+        52,
+        73,
+        93,
+        115,
+        136
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/unixlib.cpp",
+      "sha256": "e219bba2d8af9f0ac9cbdae60bf1bc176b446cd3d89d4322bc06f29e99c323a1",
+      "symbol_or_literal": "STEAM_COMPAT_CLIENT_INSTALL_PATH",
+      "lines": [
+        796,
+        797
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/winISteamApps.c",
+      "sha256": "9925860d35b29cbf9010a4e092d2b0b1cca66133acfd4e561984bb91a8d71aaf",
+      "symbol_or_literal": "winISteamApps_STEAMAPPS_INTERFACE_VERSION008_BIsSubscribedApp",
+      "lines": [
+        1471,
+        1565,
+        1915
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/winISteamClient.c",
+      "sha256": "36a267e4bb3e290eee5f29f0fbbee3cec6bb344681edcb6091a3e62be186be50",
+      "symbol_or_literal": "winISteamClient_SteamClient021_GetISteamApps",
+      "lines": [
+        7275,
+        7507,
+        7869
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamClient_SteamClient021.cpp",
+      "sha256": "0cd1c30498c58802eea4348f43965487d65f29b4a96b8e9725d78f72bce4b708",
+      "symbol_or_literal": "ISteamClient_SteamClient021_GetISteamApps",
+      "lines": [
+        278,
+        280,
+        287,
+        289
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamApps_STEAMAPPS_INTERFACE_VERSION008.cpp",
+      "sha256": "664efdf186d559e87c9791446f60406dd52aaeb3b18841eec887729d3fa1c860",
+      "symbol_or_literal": "ISteamApps_STEAMAPPS_INTERFACE_VERSION008_BIsSubscribedApp",
+      "lines": [
+        116,
+        118,
+        125,
+        127
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.h",
+      "sha256": "eced0e9a6bdaf4ad11b4f575b0e60a7a54f6a31c2ca7a8a61992cca11f779e15",
+      "symbol_or_literal": "struct ISteamApps_STEAMAPPS_INTERFACE_VERSION008_BIsSubscribedApp_params",
+      "lines": [
+        1460
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamUser_SteamUser023.cpp",
+      "sha256": "2f876b2beca8948d058d1d0a4138c35fc66dd8cac000067283e78a9ed90b4ff3",
+      "symbol_or_literal": "ISteamUser_SteamUser023_BLoggedOn",
+      "lines": [
+        26,
+        28,
+        35,
+        37
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/cppISteamUser_SteamUser023.cpp",
+      "sha256": "2f876b2beca8948d058d1d0a4138c35fc66dd8cac000067283e78a9ed90b4ff3",
+      "symbol_or_literal": "ISteamUser_SteamUser023_GetSteamID",
+      "lines": [
+        44,
+        46,
+        53,
+        55
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unix_private.h",
+      "sha256": "eeed0a059861936f196f97912089d14ff27f2551be624cb45e687f6ca944bbbf",
+      "symbol_or_literal": "struct callback_def",
+      "lines": [
+        62,
+        70,
+        71
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unix_private.h",
+      "sha256": "eeed0a059861936f196f97912089d14ff27f2551be624cb45e687f6ca944bbbf",
+      "symbol_or_literal": "w_callback_len",
+      "lines": [
+        66,
+        76
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unix_private.h",
+      "sha256": "eeed0a059861936f196f97912089d14ff27f2551be624cb45e687f6ca944bbbf",
+      "symbol_or_literal": "u_callback_len",
+      "lines": [
+        67,
+        76
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.cpp",
+      "sha256": "1c4b2ff9ed646c2a650bf0b828f6a602373ffeba64a6819d5334a0caa227fdaa",
+      "symbol_or_literal": "u64_LobbyCreated_t_123::operator w64_LobbyCreated_t_123",
+      "lines": [
+        20489
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.cpp",
+      "sha256": "1c4b2ff9ed646c2a650bf0b828f6a602373ffeba64a6819d5334a0caa227fdaa",
+      "symbol_or_literal": "{ 513, 165, 16, 12",
+      "lines": [
+        28446,
+        28558,
+        28668
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.cpp",
+      "sha256": "1c4b2ff9ed646c2a650bf0b828f6a602373ffeba64a6819d5334a0caa227fdaa",
+      "symbol_or_literal": "const struct callback_def callback_data[]",
+      "lines": [
+        28440,
+        28662
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib_generated.cpp",
+      "sha256": "1c4b2ff9ed646c2a650bf0b828f6a602373ffeba64a6819d5334a0caa227fdaa",
+      "symbol_or_literal": "ISteamApps_STEAMAPPS_INTERFACE_VERSION008_BIsSubscribedApp",
+      "lines": [
+        135,
+        6696
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-proton1/lsteamclient/unixlib.h",
+      "sha256": "38c2e08e098694ea8a76e949b950a9c9b91fb379172470fd089497871e174787",
+      "symbol_or_literal": "STEAMCLIENT_CALL",
+      "lines": [
+        431
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour.c",
+      "sha256": "077f60f4ba249f75991646d4df97001bc1aeaf152d27dfa3167fa2750680dabf",
+      "symbol_or_literal": "setup_trampolines",
+      "lines": [
+        102,
+        171
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour.c",
+      "sha256": "077f60f4ba249f75991646d4df97001bc1aeaf152d27dfa3167fa2750680dabf",
+      "symbol_or_literal": "WM_DLLBASE",
+      "lines": [
+        37,
+        163
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour.c",
+      "sha256": "077f60f4ba249f75991646d4df97001bc1aeaf152d27dfa3167fa2750680dabf",
+      "symbol_or_literal": "WM_FLAGS",
+      "lines": [
+        38,
+        173
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour.c",
+      "sha256": "077f60f4ba249f75991646d4df97001bc1aeaf152d27dfa3167fa2750680dabf",
+      "symbol_or_literal": "detour_build_module",
+      "lines": [
+        156
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/ntdll-patch/detour.c",
+      "sha256": "077f60f4ba249f75991646d4df97001bc1aeaf152d27dfa3167fa2750680dabf",
+      "symbol_or_literal": "0x40 /*RWX*/",
+      "lines": [
+        114
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/steam.cpp",
+      "sha256": "037a833ef5a21e4be8665a35c65b9a7bcd81c317bf32272c29c822bf82a70970",
+      "symbol_or_literal": "steam_client_init",
+      "lines": [
+        154,
+        161,
+        168,
+        175,
+        182,
+        189,
+        198,
+        1796,
+        1804
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/steam.cpp",
+      "sha256": "037a833ef5a21e4be8665a35c65b9a7bcd81c317bf32272c29c822bf82a70970",
+      "symbol_or_literal": "steam_client_shutdown",
+      "lines": [
+        207,
+        1825
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/steam.cpp",
+      "sha256": "037a833ef5a21e4be8665a35c65b9a7bcd81c317bf32272c29c822bf82a70970",
+      "symbol_or_literal": "SteamGameId",
+      "lines": [
+        1486,
+        1783
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/steam.cpp",
+      "sha256": "037a833ef5a21e4be8665a35c65b9a7bcd81c317bf32272c29c822bf82a70970",
+      "symbol_or_literal": "run_process",
+      "lines": [
+        1237,
+        1839,
+        1909
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/fetch.sh",
+      "sha256": "b6a5d8b9fa155842bc6afbd7d579f19464b5810f102fa6d41e38adbecc66b789",
+      "symbol_or_literal": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+      "lines": [
+        20
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/lsteamclient/fetch.sh",
+      "sha256": "b6a5d8b9fa155842bc6afbd7d579f19464b5810f102fa6d41e38adbecc66b789",
+      "symbol_or_literal": "b286df1df46a70d9e2cc674676afcc6e08b1a56ce472e5add0932b86940657bf",
+      "lines": [
+        27
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/bridge/setup-wine-tree.sh",
+      "sha256": "3a47c90f5a234c7694bfd2b16fb5d2ba7b65777915cc5f2630a8cc047a5a901b",
+      "symbol_or_literal": "2df1ee28039cf84776eb1421ed90bd154cebb65f",
+      "lines": [
+        27
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/fetch-headers.sh",
+      "sha256": "06c5e2be9f461af3dd8442c40ce6786ef6edbe94ba6dd5511fbe684d445f9a3d",
+      "symbol_or_literal": "f51d87ecf8f7903e859b0aa4d617ff1e5f33db5a",
+      "lines": [
+        28
+      ]
+    },
+    {
+      "snapshot": ".build/task44/source-review/stage2-notproton1/steam-shim/fetch-headers.sh",
+      "sha256": "06c5e2be9f461af3dd8442c40ce6786ef6edbe94ba6dd5511fbe684d445f9a3d",
+      "symbol_or_literal": "015230dc0f78a543032dea0907f6c97304b25ca3",
+      "lines": [
+        29
+      ]
+    }
+  ],
+  "upstream_sources_reused": [
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/Module.cpp",
+      "file": "FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "size_bytes": 33596,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/BTInterface.h",
+      "file": "FEX-Source_Windows_WOW64_BTInterface.h",
+      "sha256": "3bc1c5f08e00ed29ce4c2de519fe5e2716419f1a25f2b1b5b58646b1857e4a5a",
+      "size_bytes": 2077,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_BTInterface.h"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/CMakeLists.txt",
+      "file": "FEX-Source_Windows_WOW64_CMakeLists.txt",
+      "sha256": "7ded9799dbe6e8b7e45cc02f31d35135fe04c8e5e29e5b01013034472a5076fc",
+      "size_bytes": 688,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_CMakeLists.txt"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/libwow64fex.def",
+      "file": "FEX-Source_Windows_WOW64_libwow64fex.def",
+      "sha256": "b2894fe31fc6dc2f9914a37728303c9f135e55693c96cbe9dcb77c26246c4a24",
+      "size_bytes": 613,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_libwow64fex.def"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/LICENSE",
+      "file": "FEX-LICENSE",
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee",
+      "size_bytes": 1094,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-LICENSE"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/CONTRIBUTING.md",
+      "file": "FEX-CONTRIBUTING.md",
+      "sha256": "0965cc62eb051f931dde53234d69e837d4f500e4a2437cf27d893a735c5206e1",
+      "size_bytes": 37,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-CONTRIBUTING.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AndreRH/hangover/56e385b7ff490edd281b288f420677093563560b/README.md",
+      "file": "hangover-README.md",
+      "sha256": "5c07579b4ffff4ac344ece5691a6699c8da4a0e0c80ee0b12f546c334f0dc7a2",
+      "size_bytes": 5379,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/hangover-README.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AndreRH/hangover/56e385b7ff490edd281b288f420677093563560b/LICENSE",
+      "file": "hangover-LICENSE",
+      "sha256": "20c17d8b8c48a600800dfd14f95d5cb9ff47066a9641ddeab48dc54aec96e331",
+      "size_bytes": 26526,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/hangover-LICENSE"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/docs/WOW64.md",
+      "file": "Madeira-docs_WOW64.md",
+      "sha256": "6dd48b8cdafb70ab39f1cb38eb26cb90f08031bf7408fbfc17bd6a06e6c1295e",
+      "size_bytes": 20330,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-docs_WOW64.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/build/fex-wow64/build.sh",
+      "file": "Madeira-build_fex-wow64_build.sh",
+      "sha256": "e24c64e7c94f01d2c79c296d38679c57e42614d0ca1b045d0df4cfbf40937ebf",
+      "size_bytes": 1281,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-build_fex-wow64_build.sh"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/docs/LICENSING.md",
+      "file": "Madeira-docs_LICENSING.md",
+      "sha256": "222000b14d0025d03342201ffc450b7b97f42a20516e38c66ece5f3f0d6698ee",
+      "size_bytes": 7572,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-docs_LICENSING.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/CONTRIBUTING.md",
+      "file": "Madeira-CONTRIBUTING.md",
+      "sha256": "daa3ede66379f29023ec089db74ce7ef18d1ed219e20d0cc98148dafe1e99a33",
+      "size_bytes": 1249,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-CONTRIBUTING.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/Source/Windows/WOW64/Module.cpp",
+      "file": "willfaust_FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "5069042af07341f6e2947b4fcb84799743340d9ee3c151a62b2bb26af675b22e",
+      "size_bytes": 101900,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_Module.cpp"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/LICENSE-MADEIRA.md",
+      "file": "willfaust_FEX-LICENSE-MADEIRA.md",
+      "sha256": "5a6a95e9e25f0c61d253f79a53d24eee5e8a0bad305ed56e67d5a29a7e18696f",
+      "size_bytes": 3764,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-LICENSE-MADEIRA.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/Source/Windows/WOW64/IosTeb.h",
+      "file": "willfaust_FEX-Source_Windows_WOW64_IosTeb.h",
+      "sha256": "e94fee5143d552e64e6f5edf392db3fe16a768e2b8477c5cabec3f43132ffc31",
+      "size_bytes": 2382,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_IosTeb.h"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/Source/Windows/WOW64/IosMonoBridge.cpp",
+      "file": "willfaust_FEX-Source_Windows_WOW64_IosMonoBridge.cpp",
+      "sha256": "238079d533efd1d4a00009002cbb04e57da2e8633e0e850df9500b2a7b76bac9",
+      "size_bytes": 7837,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_IosMonoBridge.cpp"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/wine-mirror/wine/4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf/dlls/wow64/syscall.c",
+      "file": "wine-mirror_wine-dlls_wow64_syscall.c",
+      "sha256": "73fc84aedc5dcf1bb438f74eb6ce12e595d2a7276530b0a8efb28d2525a2f86e",
+      "size_bytes": 63979,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_wow64_syscall.c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/wine-mirror/wine/4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf/dlls/ntdll/unix/loader.c",
+      "file": "wine-mirror_wine-dlls_ntdll_unix_loader.c",
+      "sha256": "b4adcaab240ecca26305f212894597b6250a253f181f0861ba67e7a3376d24fa",
+      "size_bytes": 71074,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_ntdll_unix_loader.c"
+    }
+  ],
+  "wow64_contract_groups": [
+    {
+      "exports": [
+        "BTCpuGetBopCode",
+        "__wine_get_unix_opcode",
+        "BTCpuSimulateImpl"
+      ],
+      "observed": "Explicit owner-mode refusal/null dispatch",
+      "missing": "Admitted 32-bit source/dispatch identity, low address semantics, syscall and callback entry/return"
+    },
+    {
+      "exports": [
+        "BTCpuGetContext",
+        "BTCpuSetContext",
+        "BTCpuSuspendLocalThread",
+        "BTCpuResetToConsistentStateImpl",
+        "BTCpuResetToConsistentState"
+      ],
+      "observed": "Explicit unsupported or false",
+      "missing": "i386 context/exception/suspend/re-entry and safe actual owner leases"
+    },
+    {
+      "exports": [
+        "BTCpuFlushInstructionCache2",
+        "BTCpuFlushInstructionCacheHeavy",
+        "BTCpuNotifyMemoryDirty"
+      ],
+      "observed": "Explicit unsupported status and void return",
+      "missing": "Writer/source-lifetime admission and affected-thread/translation invalidation"
+    },
+    {
+      "exports": [
+        "BTCpuNotifyMemoryAlloc",
+        "BTCpuNotifyMemoryProtect",
+        "BTCpuNotifyMemoryFree"
+      ],
+      "observed": "Explicit unsupported status and void return",
+      "missing": "32-bit range/identity, before-after pairing, success/failure and release/decommit lifetime"
+    },
+    {
+      "exports": [
+        "BTCpuNotifyMapViewOfSection",
+        "BTCpuNotifyUnmapViewOfSection",
+        "BTCpuNotifyReadFile",
+        "BTCpuNotifyProcessExecuteFlagsChange"
+      ],
+      "observed": "Explicit unsupported; map returns status, others record status",
+      "missing": "Image/source lifecycle, async memory writes, unmap/DEP and canonical bookkeeping"
+    },
+    {
+      "exports": [
+        "BTCpuProcessTerm",
+        "BTCpuThreadTerm"
+      ],
+      "observed": "Explicit unsupported status and void return",
+      "missing": "Checked outstanding callback/link/thread and process retirement"
+    }
+  ],
+  "bridge_criteria": {
+    "original_windows_calls": {
+      "status": "source_trace_only_original_game_endpoint_unknown",
+      "representative": "SteamClient021 -> Apps008 -> BIsSubscribedApp; uint32 AppID and uint64 native interface handle; int8 result returned separately from NTSTATUS",
+      "unknown": [
+        "Actual original steam_api64 interface versions",
+        "Complete game API coverage",
+        "Actual return values"
+      ]
+    },
+    "callbacks_lifetime": {
+      "status": "representative_source_trace_only",
+      "representative": {
+        "callback": 513,
+        "name": "LobbyCreated_t",
+        "sdk_table_row": 165,
+        "windows_bytes": 16,
+        "unix_bytes": 12,
+        "direction": "native Unix 12 -> Windows 16",
+        "older_row": "16 -> 16"
+      },
+      "review_edges": [
+        "Global PE last_callback_data",
+        "Unknown ID raw copy and mismatched-size fallback",
+        "Manual polling/result calls select non-WoW64 conversion flag",
+        "Separately allocated call-result conversion buffer only freed on success in inspected function",
+        "FEX re-entry, concurrent polling, nested callbacks and unload unperformed"
+      ]
+    },
+    "ownership_session": {
+      "status": "genuine_source_forwarding_only",
+      "observed": [
+        "Native BIsSubscribedApp return, not constant true",
+        "Native BLoggedOn/GetSteamID forwards",
+        "Shim creates pipe/connects global user",
+        "Shim initialization failure still permits later launch",
+        "Setup connection closes before child launch"
+      ],
+      "unknown": [
+        "Owning account",
+        "Original-game connection",
+        "App ID and normal launch context",
+        "Session continuity and consuming callbacks"
+      ]
+    },
+    "rosetta_free_closure": {
+      "status": "unperformed",
+      "required": [
+        "Selected native Steam and helpers/libraries",
+        "Wine/FEX/ntdll host components",
+        "lsteamclient Unix library and its dependencies",
+        "Actual selected slices and late-loaded modules"
+      ],
+      "not_sufficient": [
+        "ARM64 launcher",
+        "ARM64 SDK slice",
+        "ARM64 build option",
+        "Early FEX runner declaration"
+      ]
+    },
+    "maintenance": {
+      "status": "source_coupling_identified_not_costed",
+      "incompatibility": "Existing path patches ntdll and rewrites mapped Valve DLL exports/entry/data; conflicts current no-Valve-rewriting scope",
+      "reuse_candidates": [
+        "Generated interface wrappers",
+        "Layout/callback conversions",
+        "Source-build organization"
+      ],
+      "missing": [
+        "Compatible entry mechanism",
+        "Complete build dependency and licensing review",
+        "Current selected client/SDK/Wine/FEX regression evidence"
+      ]
+    }
+  },
+  "build_dependencies": {
+    "notproton": "c3a49486c14cdf6b9716e2e7ac55286aa537fcf1",
+    "proton": "164e0ccd2ea2b1ec2e5d08dc97f65b184c2539ca",
+    "declared_proton_baseline_digest": "b286df1df46a70d9e2cc674676afcc6e08b1a56ce472e5add0932b86940657bf",
+    "full_baseline_digest_verified": false,
+    "wine_build": "2df1ee28039cf84776eb1421ed90bd154cebb65f",
+    "openvr_headers": "f51d87ecf8f7903e859b0aa4d617ff1e5f33db5a",
+    "wine_headers": "015230dc0f78a543032dea0907f6c97304b25ca3",
+    "header_dependency_payloads_verified": false,
+    "terms": {
+      "lsteamclient": "Steamworks SDK license; NotProton and Proton license files same SHA-256",
+      "steam_shim": "BSD-3-Clause plus SDK/OpenVR/Wine header terms",
+      "notproton_bulk": "NOTICE declares GPLv3",
+      "fex": "MIT; separate no-AI upstream contribution policy retained",
+      "wine": "LGPL; no blanket redistribution clearance"
+    }
+  },
+  "false_success_review": {
+    "i386_installer_implies_universal_wow64": "rejected",
+    "x64_dock_implies_no_i386_helpers": "rejected",
+    "static_helper_presence_implies_required_execution": "rejected",
+    "native_steam_exists_implies_working_bridge": "rejected",
+    "init_or_dll_load_only_implies_steamworks": "rejected",
+    "child_launch_only_implies_live_session": "rejected",
+    "menu_only_implies_steamworks": "rejected",
+    "callback_only_implies_ownership": "rejected",
+    "sdk_arm64_slice_implies_rosetta_free_closure": "rejected",
+    "downloader_login_implies_original_game_session": "rejected",
+    "dispatch_ntstatus_zero_implies_subscription": "rejected",
+    "source_hash_match_implies_build_or_runtime_pass": "rejected"
+  },
+  "integration_boundary": {
+    "task11": "Independent Dock minimum execution and direct-game x64 startup diagnosis continue; no new bridge gate",
+    "order": [
+      "accepted task40 patches",
+      "separately reviewed overlapping task11 correction if applicable",
+      "separately approved task44 correction if needed"
+    ],
+    "task10": "Final accepted complete process/module observer remains needed for qualification",
+    "task42": "ISA/XSTATE remains separate",
+    "implementation_authorized": false,
+    "experiment_authorized": false,
+    "stage3_authorized": false
+  },
+  "verification": {
+    "source_anchor_records": 105,
+    "source_anchor_literals_present": true,
+    "claim_review": "manual function/caller/dependency review recorded in research note",
+    "document_checks": "See Stage 2 report and retained stage2-verification1 outputs; runtime checks unperformed.",
+    "initial_anchor_failure": {
+      "artifact": ".build/task44/stage2-verification1/observations_attempt1.txt",
+      "script_sha256": "8456794f00b708ff9dc537317027ac78dc7aef3f26f05ca7937970982809bb70",
+      "finding": "FEX_GUEST32BASE literal was absent in Madeira design note; corrected claim and anchor to actual CONFIG_GUEST32BASE in pinned module and guest-window design note. No source digest changed.",
+      "corrected_script": ".build/task44/stage2-verification1/observations.py",
+      "corrected_script_sha256": "8389e3bd3342d5163d574ff79fadf49fc1c4fc329c0b803028c2981e07effb8c"
+    }
+  }
+}

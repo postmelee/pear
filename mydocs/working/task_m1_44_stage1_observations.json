@@ -1,0 +1,1715 @@
+{
+  "schema_version": 1,
+  "task": 44,
+  "stage": 1,
+  "scope": "read_only_research",
+  "inspection_utc": "2026-10-09T15:50:13.424606+00:00",
+  "runtime_eligible": false,
+  "guest_execution": "unperformed",
+  "stage_complete": true,
+  "method": {
+    "reader": ".build/task44/stage1-intake1/inspect_stage1_v2.py",
+    "reader_sha256": "2225af92b1dcf105565aa4165e82ae05d2fa3aefdef0720864b443408334ad58",
+    "python": "3.14.4",
+    "git": "git version 2.53.0",
+    "os": "Darwin",
+    "machine": "arm64",
+    "hash_chunk_bytes": 1048576,
+    "max_input_bytes": 8388608,
+    "public_snapshot_limit_bytes": 67108864,
+    "stable_read": "O_NOFOLLOW; regular file; fstat size/device/inode/mtime/ctime before and after; bounded reads",
+    "compiler_identity": "historical receipt only; no current compiler qualification"
+  },
+  "owner_checkpoints": {
+    "task11": {
+      "head": "504f19d964ce948d770043349af7fa7d75500662",
+      "branch": "codex/task11"
+    },
+    "task40": {
+      "head": "c692099724c2065114ec431b694240a1b2ddef7e",
+      "branch": ""
+    },
+    "task44": {
+      "head": "1aaf86e9c7f8223bd5f1e4f250b1112d12e31b6d",
+      "branch": "codex/task44"
+    },
+    "task10": {
+      "head": "37395ee04abd55ec67faa2e1b381f30ab47a9be4",
+      "branch": "codex/task10"
+    }
+  },
+  "comparisons": {
+    "upstream_count": 18,
+    "dock_count": 97,
+    "dock_repo_counts": {
+      "125hz/madeira-dock": 36,
+      "willfaust/madeira-dock": 37,
+      "willfaust/Madeira": 15,
+      "FEX-Emu/FEX": 3,
+      "willfaust/FEX": 3,
+      "willfaust/wine": 3
+    },
+    "expected_digest_count": 131,
+    "mismatch_count": 0,
+    "mismatches": [],
+    "public_snapshot_bytes": 1909310,
+    "copied_source_count": 115,
+    "copied_proprietary_bytes": 0,
+    "retained_public_snapshot_bytes_all_attempts": 3818620,
+    "peer_receipt_digest_comparisons": 3
+  },
+  "checks": [
+    {
+      "owner": "task11",
+      "path": "mydocs/working/task_m1_11_stage1_observations.json",
+      "size_bytes": 15203,
+      "sha256": "c7085846f35734d4a3b20488114dc6ae99a370720d25eafe367e21cc95ceef99",
+      "group": "context"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/working/task_m1_11_stage2_diagnostic.json",
+      "size_bytes": 3057,
+      "sha256": "76e814cdbf5ed3438dc103fa88cc68b09369bd9d29204bfdbfe555799e3751e4",
+      "group": "context"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/working/task_m1_11_stage2_reuse_observations.json",
+      "size_bytes": 29165,
+      "sha256": "f99bfcfdd35f8d89e7bd9373dacd112416a0d68bc84949ce1427dd95ef9d8b8c",
+      "group": "context"
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/parser",
+      "size_bytes": 51848,
+      "sha256": "198061096a92b3bafab933cd175e9772a214caebbc120f1ba4fbb66133f70396",
+      "group": "parser_identity",
+      "expected_sha256": "198061096a92b3bafab933cd175e9772a214caebbc120f1ba4fbb66133f70396",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/producer.py",
+      "size_bytes": 6886,
+      "sha256": "a9f72cc8186b3564cc56b995742b9a1e7c27f8983dd2f421710ab531246ef571",
+      "group": "parser_identity",
+      "expected_sha256": "a9f72cc8186b3564cc56b995742b9a1e7c27f8983dd2f421710ab531246ef571",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": "tests/wine/test_pe_arena.py",
+      "size_bytes": 19721,
+      "sha256": "56d60a7ff263f07957b1b156f58784ac2724759d77224ef0e8d79ba358d800ee",
+      "group": "parser_identity",
+      "expected_sha256": "56d60a7ff263f07957b1b156f58784ac2724759d77224ef0e8d79ba358d800ee",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/main.c",
+      "size_bytes": 796,
+      "sha256": "02df1ff2612125a48c84eda2c1c2ab6330efd6338cad1df44b56c118b94f59b8",
+      "group": "parser_identity",
+      "expected_sha256": "02df1ff2612125a48c84eda2c1c2ab6330efd6338cad1df44b56c118b94f59b8",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/observation.json",
+      "size_bytes": 2237,
+      "sha256": "6fe01a1ebea773f61f535168b6d8442b46e465e47b4de530eedfcbc29c7d635f",
+      "group": "parser_identity",
+      "expected_sha256": "6fe01a1ebea773f61f535168b6d8442b46e465e47b4de530eedfcbc29c7d635f",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": "experiments/steam/pe32_admission.py",
+      "size_bytes": 6886,
+      "sha256": "a9f72cc8186b3564cc56b995742b9a1e7c27f8983dd2f421710ab531246ef571",
+      "group": "parser_identity",
+      "expected_sha256": "a9f72cc8186b3564cc56b995742b9a1e7c27f8983dd2f421710ab531246ef571",
+      "match": true
+    },
+    {
+      "owner": "task8",
+      "path": ".build/task8/build3/build.json",
+      "size_bytes": 9717,
+      "sha256": "1ba8ac8b92ba72ef54b85ef3a02d973660eb5168d89c5eaa393d085363f2dc90",
+      "group": "parser_build_identity",
+      "expected_sha256": "1ba8ac8b92ba72ef54b85ef3a02d973660eb5168d89c5eaa393d085363f2dc90",
+      "match": true
+    },
+    {
+      "owner": "task8",
+      "path": ".build/task8/build3/objects/include/config.h",
+      "size_bytes": 27171,
+      "sha256": "6cc7215a7cea5dd5c5685d717c06a1a2db61fc09b39f73d7a605a53d84893dba",
+      "group": "parser_build_identity",
+      "expected_sha256": "6cc7215a7cea5dd5c5685d717c06a1a2db61fc09b39f73d7a605a53d84893dba",
+      "match": true
+    },
+    {
+      "owner": "task8",
+      "path": ".build/task8/build3/source/dlls/ntdll/unix/pear_pe_arena.c",
+      "size_bytes": 69534,
+      "sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+      "group": "parser_source",
+      "expected_sha256": "dac7ddfd6422e26cf5fb953e504d271a28f8ca88a6c32151033ae445a98f9bf0",
+      "match": true
+    },
+    {
+      "owner": "task8",
+      "path": ".build/task8/build3/source/dlls/ntdll/unix/pear_pe_arena.h",
+      "size_bytes": 3897,
+      "sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+      "group": "parser_source",
+      "expected_sha256": "e3c0899b84d7bf380524ad0c0710940156fac367ebc77b33442952679adb01a5",
+      "match": true
+    },
+    {
+      "owner": "task8",
+      "path": ".build/task8/build3/source/dlls/ntdll/unix/virtual.c",
+      "size_bytes": 306405,
+      "sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "group": "parser_source",
+      "expected_sha256": "5fee79839c1a91573a9e0d67b9ef9ac6a89f137d712a9772ba5248eff31fb370",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/arm64.pe",
+      "size_bytes": 2048,
+      "sha256": "60a75d27a5d2ccd139a8db171d90c0758ab6218e41ec4d4766d173581c4d4c86",
+      "group": "parser_input",
+      "expected_sha256": "60a75d27a5d2ccd139a8db171d90c0758ab6218e41ec4d4766d173581c4d4c86",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/arm64/stdout",
+      "size_bytes": 11,
+      "sha256": "81233d953ac332e2c25767ff4092e5eeb34f0799a0caf003a61d95062e0b4f27",
+      "group": "parser_output"
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/x64.pe",
+      "size_bytes": 2048,
+      "sha256": "36b52ad2bcb2bc70eda7a240b0d179be6ff7643e355dab98927a45a9f6f04b9a",
+      "group": "parser_input",
+      "expected_sha256": "36b52ad2bcb2bc70eda7a240b0d179be6ff7643e355dab98927a45a9f6f04b9a",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/x64/stdout",
+      "size_bytes": 11,
+      "sha256": "81233d953ac332e2c25767ff4092e5eeb34f0799a0caf003a61d95062e0b4f27",
+      "group": "parser_output"
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/i386.pe",
+      "size_bytes": 2048,
+      "sha256": "25d1de6dca01efd7bfd0398b804ec1eb2080dcdbfabd1e90738920f88a2873cf",
+      "group": "parser_input",
+      "expected_sha256": "25d1de6dca01efd7bfd0398b804ec1eb2080dcdbfabd1e90738920f88a2873cf",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/i386/stdout",
+      "size_bytes": 11,
+      "sha256": "e58e189a701f4cd9c55dd7b67e7a7a768d058e2d7ff8c08ffe4ad621c1ab06f9",
+      "group": "parser_output"
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage1-acquisition2/payload/SteamSetup.exe",
+      "size_bytes": 2380800,
+      "sha256": "7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb",
+      "group": "parser_input",
+      "expected_sha256": "7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": ".build/task11/stage2-parser1/steam_setup/stdout",
+      "size_bytes": 11,
+      "sha256": "e58e189a701f4cd9c55dd7b67e7a7a768d058e2d7ff8c08ffe4ad621c1ab06f9",
+      "group": "parser_output"
+    },
+    {
+      "owner": "task40",
+      "path": ".build/task40/correction-runtime1/runtime.json",
+      "size_bytes": 2345441,
+      "sha256": "d6d053e73eb0a7625177e1901936efeed4ee7eddadd9e822a0094398e8505808",
+      "group": "task40_receipt",
+      "expected_sha256": "d6d053e73eb0a7625177e1901936efeed4ee7eddadd9e822a0094398e8505808",
+      "match": true
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/working/task_m1_11_stage1.md",
+      "size_bytes": 8900,
+      "sha256": "d650b1b4f84eb36cc10b559e6b6988bd9b69a3459fd40127f114b02b9428ec9b",
+      "group": "context",
+      "git_status_at_inspection": "clean"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/working/task_m1_11_priority_20261010.json",
+      "size_bytes": 3226,
+      "sha256": "0db278965af8fdb55f1f7fcf013a24298b13f86eeb56e83477271784ed7d9925",
+      "group": "context",
+      "git_status_at_inspection": "?? mydocs/working/task_m1_11_priority_20261010.json"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/plans/task_m1_11.md",
+      "size_bytes": 9961,
+      "sha256": "43d482ebbdd328bf13a2f2e5643646973d4d91a68e246823d7299d31900f2d02",
+      "group": "context",
+      "git_status_at_inspection": "M mydocs/plans/task_m1_11.md"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/plans/task_m1_11_impl.md",
+      "size_bytes": 14774,
+      "sha256": "97888c038d05120ecf578aa5cc1c355a87557fd14927a29ffd4427ea7d802513",
+      "group": "context",
+      "git_status_at_inspection": "M mydocs/plans/task_m1_11_impl.md"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/plans/archives/20261009/task_m1_11.md",
+      "size_bytes": 38001,
+      "sha256": "c8ef4991e5df8cafefaa2ab991221d76ed99388e0dba33ce198564c56d55c4b8",
+      "group": "context",
+      "git_status_at_inspection": "?? mydocs/plans/archives/20261009/task_m1_11.md"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/plans/archives/20261009/task_m1_11_impl.md",
+      "size_bytes": 55545,
+      "sha256": "b023083be0b2ac644d84aae36fd6400216a7c7e38784d83d1c33b1dd7e54906d",
+      "group": "context",
+      "git_status_at_inspection": "?? mydocs/plans/archives/20261009/task_m1_11_impl.md"
+    },
+    {
+      "owner": "task11",
+      "path": "mydocs/tech/task_m1_11_reuse.md",
+      "size_bytes": 46021,
+      "sha256": "72d08934bbde647acebb1bc38948135844d61d08d2e1a0145b270b68ff8b6997",
+      "group": "context",
+      "git_status_at_inspection": "M mydocs/tech/task_m1_11_reuse.md"
+    },
+    {
+      "owner": "task44",
+      "path": "docs/research/graphics-and-game-integration.md",
+      "size_bytes": 25863,
+      "sha256": "9bdfe7a0106cf235ef06476fc511ffa5532968853534f79efb226d883e1f17a8",
+      "group": "integrated_context"
+    },
+    {
+      "owner": "task44",
+      "path": "docs/research/platform-reuse.md",
+      "size_bytes": 11729,
+      "sha256": "4007b780778c7e31c569c82bd0175069185f69ea92cd476362f410f14787d819",
+      "group": "integrated_context"
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/working/task_m1_40_stage3.md",
+      "size_bytes": 12500,
+      "sha256": "e5df9d902befac295a0f9bd2a1a484331d1c92fa7b377f71ca72563f46aae70c",
+      "group": "integrated_context"
+    },
+    {
+      "owner": "task44",
+      "path": "mydocs/report/task_m1_40_report.md",
+      "size_bytes": 9709,
+      "sha256": "61209e7853af3d6bda824c33b6d59bca374bc33cff9f95ca7f53651346634d18",
+      "group": "integrated_context"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/Module.cpp",
+      "file": "FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "578b882f0ee829cbbd4a875bd81b7752ed7488b460852688803c1bd840b4a2b8",
+      "size_bytes": 33596,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_Module.cpp"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/BTInterface.h",
+      "file": "FEX-Source_Windows_WOW64_BTInterface.h",
+      "sha256": "3bc1c5f08e00ed29ce4c2de519fe5e2716419f1a25f2b1b5b58646b1857e4a5a",
+      "size_bytes": 2077,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_BTInterface.h"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/CMakeLists.txt",
+      "file": "FEX-Source_Windows_WOW64_CMakeLists.txt",
+      "sha256": "7ded9799dbe6e8b7e45cc02f31d35135fe04c8e5e29e5b01013034472a5076fc",
+      "size_bytes": 688,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_CMakeLists.txt"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/Source/Windows/WOW64/libwow64fex.def",
+      "file": "FEX-Source_Windows_WOW64_libwow64fex.def",
+      "sha256": "b2894fe31fc6dc2f9914a37728303c9f135e55693c96cbe9dcb77c26246c4a24",
+      "size_bytes": 613,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-Source_Windows_WOW64_libwow64fex.def"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/LICENSE",
+      "file": "FEX-LICENSE",
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee",
+      "size_bytes": 1094,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-LICENSE"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FEX-Emu/FEX/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/CONTRIBUTING.md",
+      "file": "FEX-CONTRIBUTING.md",
+      "sha256": "0965cc62eb051f931dde53234d69e837d4f500e4a2437cf27d893a735c5206e1",
+      "size_bytes": 37,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/FEX-CONTRIBUTING.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AndreRH/hangover/56e385b7ff490edd281b288f420677093563560b/README.md",
+      "file": "hangover-README.md",
+      "sha256": "5c07579b4ffff4ac344ece5691a6699c8da4a0e0c80ee0b12f546c334f0dc7a2",
+      "size_bytes": 5379,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/hangover-README.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AndreRH/hangover/56e385b7ff490edd281b288f420677093563560b/LICENSE",
+      "file": "hangover-LICENSE",
+      "sha256": "20c17d8b8c48a600800dfd14f95d5cb9ff47066a9641ddeab48dc54aec96e331",
+      "size_bytes": 26526,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/hangover-LICENSE"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/docs/WOW64.md",
+      "file": "Madeira-docs_WOW64.md",
+      "sha256": "6dd48b8cdafb70ab39f1cb38eb26cb90f08031bf7408fbfc17bd6a06e6c1295e",
+      "size_bytes": 20330,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-docs_WOW64.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/build/fex-wow64/build.sh",
+      "file": "Madeira-build_fex-wow64_build.sh",
+      "sha256": "e24c64e7c94f01d2c79c296d38679c57e42614d0ca1b045d0df4cfbf40937ebf",
+      "size_bytes": 1281,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-build_fex-wow64_build.sh"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/docs/LICENSING.md",
+      "file": "Madeira-docs_LICENSING.md",
+      "sha256": "222000b14d0025d03342201ffc450b7b97f42a20516e38c66ece5f3f0d6698ee",
+      "size_bytes": 7572,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-docs_LICENSING.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/Madeira/48f976429c189f8396e23d251d8a82f43c705922/CONTRIBUTING.md",
+      "file": "Madeira-CONTRIBUTING.md",
+      "sha256": "daa3ede66379f29023ec089db74ce7ef18d1ed219e20d0cc98148dafe1e99a33",
+      "size_bytes": 1249,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/Madeira-CONTRIBUTING.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/Source/Windows/WOW64/Module.cpp",
+      "file": "willfaust_FEX-Source_Windows_WOW64_Module.cpp",
+      "sha256": "5069042af07341f6e2947b4fcb84799743340d9ee3c151a62b2bb26af675b22e",
+      "size_bytes": 101900,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_Module.cpp"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/LICENSE-MADEIRA.md",
+      "file": "willfaust_FEX-LICENSE-MADEIRA.md",
+      "sha256": "5a6a95e9e25f0c61d253f79a53d24eee5e8a0bad305ed56e67d5a29a7e18696f",
+      "size_bytes": 3764,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-LICENSE-MADEIRA.md"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/Source/Windows/WOW64/IosTeb.h",
+      "file": "willfaust_FEX-Source_Windows_WOW64_IosTeb.h",
+      "sha256": "e94fee5143d552e64e6f5edf392db3fe16a768e2b8477c5cabec3f43132ffc31",
+      "size_bytes": 2382,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_IosTeb.h"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/willfaust/FEX/3bec2ac498bf78156ab47c0c194b0e8cb2849756/Source/Windows/WOW64/IosMonoBridge.cpp",
+      "file": "willfaust_FEX-Source_Windows_WOW64_IosMonoBridge.cpp",
+      "sha256": "238079d533efd1d4a00009002cbb04e57da2e8633e0e850df9500b2a7b76bac9",
+      "size_bytes": 7837,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/willfaust_FEX-Source_Windows_WOW64_IosMonoBridge.cpp"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/wine-mirror/wine/4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf/dlls/wow64/syscall.c",
+      "file": "wine-mirror_wine-dlls_wow64_syscall.c",
+      "sha256": "73fc84aedc5dcf1bb438f74eb6ce12e595d2a7276530b0a8efb28d2525a2f86e",
+      "size_bytes": 63979,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_wow64_syscall.c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/wine-mirror/wine/4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf/dlls/ntdll/unix/loader.c",
+      "file": "wine-mirror_wine-dlls_ntdll_unix_loader.c",
+      "sha256": "b4adcaab240ecca26305f212894597b6250a253f181f0861ba67e7a3376d24fa",
+      "size_bytes": 71074,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/upstream/wine-mirror_wine-dlls_ntdll_unix_loader.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": ".gitignore",
+      "sha256": "567d46bb7291a1d995eb0bb897e092779e3f57dcbaecafb1415e2c290e5d0290",
+      "size_bytes": 130,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/.gitignore"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "AGENTS.md",
+      "sha256": "958171913e1402c975681368ced6c27df49a25c5a301dc689c4d4222f72499a2",
+      "size_bytes": 2563,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/AGENTS.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "COPYING",
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+      "size_bytes": 35150,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/COPYING"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "LICENSE",
+      "sha256": "573e83208bb72d9abf8d77112977a19390db5c4d77bb184930a278068b635c06",
+      "size_bytes": 1481,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/LICENSE"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "LICENSE-EXCEPTION.md",
+      "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+      "size_bytes": 3840,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/LICENSE-EXCEPTION.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "README.md",
+      "sha256": "cd2cfc99156e70dc8563f7d501f087001c366a88c601d05b84785907d1ad6f1f",
+      "size_bytes": 18372,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/README.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "THIRD-PARTY-NOTICES.md",
+      "sha256": "030ac74b2d7c931f9534ea49911c770130b72033d99b154e739e3573838c8e55",
+      "size_bytes": 1957,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/THIRD-PARTY-NOTICES.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "docs/CLIENT_LAYOUTS.md",
+      "sha256": "3f7991568c3775ff69c8671bfd8550d3e38af7409ac53957ebaddb9164cf9710",
+      "size_bytes": 6519,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/docs/CLIENT_LAYOUTS.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "docs/HANDOFF.md",
+      "sha256": "f89231c6239d0e74825fcf6828c75b483fa3e52ef5b34a3af2c5f73690bbaf04",
+      "size_bytes": 26827,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/docs/HANDOFF.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "docs/HISTORY.md",
+      "sha256": "40e728a4ab948872f2a1d74583a2af94e26ef0d62e7cafbed6505b4458be15a0",
+      "size_bytes": 15604,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/docs/HISTORY.md"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "notices/LLVM.txt",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "size_bytes": 15141,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/notices/LLVM.txt"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "notices/MinGW-w64-runtime.txt",
+      "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+      "size_bytes": 12155,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/notices/MinGW-w64-runtime.txt"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/auth.c",
+      "sha256": "6e0f157c8519d559e86ac9ad7d112e235c24f5bffa098e920e9ec5c9efa16ca3",
+      "size_bytes": 4038,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/auth.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/auth.h",
+      "sha256": "8532527843b0c97e71e0e4e227e050b9f3163b35667e68f977c7898ba6466054",
+      "size_bytes": 1222,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/auth.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/client_layout.c",
+      "sha256": "2227fa3d5959996711d7da011f689d79fd43680a5364b55783682d9b35f19f57",
+      "size_bytes": 1413,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/client_layout.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/client_layout.h",
+      "sha256": "a3605b882a696f8598fe77e7ea889fb7407ea442f61107bd34495bc827d19a79",
+      "size_bytes": 799,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/client_layout.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/launch.c",
+      "sha256": "a19347fc17d83257b03e8425042ac906107b4eb7fd2ef28f326c39bb0fc347b0",
+      "size_bytes": 20044,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/launch.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/launch.h",
+      "sha256": "329c64d08c15b1fbd659d3abed6c2c61ca977f517c383d035317b7819c3d8005",
+      "size_bytes": 493,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/launch.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/main.c",
+      "sha256": "8a5ad1ca5b6ec112f76cdbcc2406b47faa6f8ae9350cb18437f90460c9aa01de",
+      "size_bytes": 14177,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/main.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/probe.c",
+      "sha256": "3d234820ca18512beba25d79a9107a1e849a9d5f60063319d7084c760304d79f",
+      "size_bytes": 2725,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/probe.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/probe.h",
+      "sha256": "cec0b723cc1a706241dca24a7055d9af043e3648aa07967987bfd096a1c83a3c",
+      "size_bytes": 1762,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/probe.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/scm.c",
+      "sha256": "a6ba90f2cdb210bf23e70e999a7f333482b85055711e9a66f0d43d88cd38194d",
+      "size_bytes": 14130,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/scm.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/scm.h",
+      "sha256": "09fd042b67fde826487cc3d07c950fd05bf8cb1aa7e482d4dfdbda27747f7941",
+      "size_bytes": 1331,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/scm.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/session.c",
+      "sha256": "c09274411fde0014845db0da9d9945484bbccfd337c041f7d5a49858c92e21dc",
+      "size_bytes": 13235,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/session.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/session.h",
+      "sha256": "66ae97421e19a959ff43e9670544855022fb0d8be41d656e0d63528a4d9eff9f",
+      "size_bytes": 441,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/session.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/validation.c",
+      "sha256": "cfee125f38eb60574c69ffc435b7d210d96196ae3a12f5780023f4ce96a7e166",
+      "size_bytes": 7500,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/validation.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "src/validation.h",
+      "sha256": "51d838b5fd83109cc11e63f1715c156f262910470ebd64ce22a1f9ca7cd4bd71",
+      "size_bytes": 4601,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/src/validation.h"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tests/test-auth.c",
+      "sha256": "17ab99a434f6c69dd57986105d3eb4e0e212d93eb520119b275f6a2d47a77e66",
+      "size_bytes": 4474,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tests/test-auth.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tests/test-client_layout.c",
+      "sha256": "51d260f1126b83cb322e253fe947336ccfc7f069f24c9296de9831129b5eb70b",
+      "size_bytes": 1652,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tests/test-client_layout.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tests/test-probe.c",
+      "sha256": "94803ab084f511ecd7864895aeae495bb79d0061d980700172c2cb0e7b80884b",
+      "size_bytes": 3548,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tests/test-probe.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tests/test-validation.c",
+      "sha256": "4c125788dd460bceafe43c7b58fff2facdd8ed37ffda27be1394ef0a0682d535",
+      "size_bytes": 8708,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tests/test-validation.c"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tools/build.sh",
+      "sha256": "8cd80bfe35485d050dcbd4325202c762623aa1284401460c0b4fa3e350e22cad",
+      "size_bytes": 1994,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tools/build.sh"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tools/check-client-layout.py",
+      "sha256": "aedfaf2a9bd88f365a0b0f8a439522f5a3bb2d7bb0fa2f4b92d37e5ba1ed3a25",
+      "size_bytes": 3665,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tools/check-client-layout.py"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tools/check-privacy.py",
+      "sha256": "2de6b733f7f9f83111d807e60b0332db8ebdcc4c0683ee2e6d9a01445256b4b1",
+      "size_bytes": 7485,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tools/check-privacy.py"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tools/check.sh",
+      "sha256": "f9b46aab3498ff2aab26e3e0e697ffa8fafe3399ad649c15b41514a10f118d5f",
+      "size_bytes": 904,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tools/check.sh"
+    },
+    {
+      "repo": "125hz/madeira-dock",
+      "revision": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "path": "tools/test-invalid-handoff.ps1",
+      "sha256": "dfb7a6dbb421efc54d233ea67539cef15081016a6ce612a7e3e40b8e3ac77d60",
+      "size_bytes": 2021,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/origin/tools/test-invalid-handoff.ps1"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": ".gitignore",
+      "sha256": "567d46bb7291a1d995eb0bb897e092779e3f57dcbaecafb1415e2c290e5d0290",
+      "size_bytes": 130,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/.gitignore"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "AGENTS.md",
+      "sha256": "958171913e1402c975681368ced6c27df49a25c5a301dc689c4d4222f72499a2",
+      "size_bytes": 2563,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/AGENTS.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "COPYING",
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+      "size_bytes": 35150,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/COPYING"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "LICENSE",
+      "sha256": "573e83208bb72d9abf8d77112977a19390db5c4d77bb184930a278068b635c06",
+      "size_bytes": 1481,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/LICENSE"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "LICENSE-EXCEPTION.md",
+      "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+      "size_bytes": 3840,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/LICENSE-EXCEPTION.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "README.md",
+      "sha256": "84eb2f645b833dfc95371917610f45dbfb537ca5054092eddb509e5127255c3b",
+      "size_bytes": 20375,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/README.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "THIRD-PARTY-NOTICES.md",
+      "sha256": "030ac74b2d7c931f9534ea49911c770130b72033d99b154e739e3573838c8e55",
+      "size_bytes": 1957,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/THIRD-PARTY-NOTICES.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "docs/CLIENT_LAYOUTS.md",
+      "sha256": "8aa40357463d7c50abcc9240a4520416786e4cb658b817c04424ee4d4e61258d",
+      "size_bytes": 7408,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/docs/CLIENT_LAYOUTS.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "docs/HANDOFF.md",
+      "sha256": "b108435f5225884def0117b990ac9e718b040a044e5d3ecc09ef05db9dc32316",
+      "size_bytes": 27994,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/docs/HANDOFF.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "docs/HISTORY.md",
+      "sha256": "40e728a4ab948872f2a1d74583a2af94e26ef0d62e7cafbed6505b4458be15a0",
+      "size_bytes": 15604,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/docs/HISTORY.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "docs/OFFLINE.md",
+      "sha256": "866579d9a2d3574a66933f1be1c8000e8e19d99fe72ef9424ab8119b899eed10",
+      "size_bytes": 4218,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/docs/OFFLINE.md"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "notices/LLVM.txt",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "size_bytes": 15141,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/notices/LLVM.txt"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "notices/MinGW-w64-runtime.txt",
+      "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f",
+      "size_bytes": 12155,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/notices/MinGW-w64-runtime.txt"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/auth.c",
+      "sha256": "6e0f157c8519d559e86ac9ad7d112e235c24f5bffa098e920e9ec5c9efa16ca3",
+      "size_bytes": 4038,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/auth.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/auth.h",
+      "sha256": "8532527843b0c97e71e0e4e227e050b9f3163b35667e68f977c7898ba6466054",
+      "size_bytes": 1222,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/auth.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/client_layout.c",
+      "sha256": "345f1baa7b96d990faaf7a9b0c8d801e1194d1b9a0761c7893191e94693cb80a",
+      "size_bytes": 1489,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/client_layout.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/client_layout.h",
+      "sha256": "75bac90f7b113d09237fee61e9781b20b00bcf8a2da4ddfc5a38416ac1fb76a7",
+      "size_bytes": 1144,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/client_layout.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/launch.c",
+      "sha256": "6a3a9fd77ff8672a85be941cfa1ff6fce3dfe01b724129b3ee452bb306a1e789",
+      "size_bytes": 20855,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/launch.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/launch.h",
+      "sha256": "329c64d08c15b1fbd659d3abed6c2c61ca977f517c383d035317b7819c3d8005",
+      "size_bytes": 493,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/launch.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/main.c",
+      "sha256": "b33fe8f74cc73ed7fe838c5def52a6a02065172abb7d2000ddbc468087dfce3b",
+      "size_bytes": 14238,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/main.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/probe.c",
+      "sha256": "3d234820ca18512beba25d79a9107a1e849a9d5f60063319d7084c760304d79f",
+      "size_bytes": 2725,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/probe.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/probe.h",
+      "sha256": "cec0b723cc1a706241dca24a7055d9af043e3648aa07967987bfd096a1c83a3c",
+      "size_bytes": 1762,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/probe.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/scm.c",
+      "sha256": "a6ba90f2cdb210bf23e70e999a7f333482b85055711e9a66f0d43d88cd38194d",
+      "size_bytes": 14130,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/scm.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/scm.h",
+      "sha256": "09fd042b67fde826487cc3d07c950fd05bf8cb1aa7e482d4dfdbda27747f7941",
+      "size_bytes": 1331,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/scm.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/session.c",
+      "sha256": "bcf24ed4ad6f5fb8dfcd6cf398a15c232cc84c5325263484df06f8d2df8f4942",
+      "size_bytes": 20402,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/session.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/session.h",
+      "sha256": "66ae97421e19a959ff43e9670544855022fb0d8be41d656e0d63528a4d9eff9f",
+      "size_bytes": 441,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/session.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/validation.c",
+      "sha256": "206fa8c5683b6eb155ef825d0f2b6b387e6ea9133ee4041ea6e5eec362084e0a",
+      "size_bytes": 8466,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/validation.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "src/validation.h",
+      "sha256": "f9dce9b91c0a777461d77639d6c586833d547239e78032001eaaa738b3f37ad0",
+      "size_bytes": 4900,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/src/validation.h"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tests/test-auth.c",
+      "sha256": "17ab99a434f6c69dd57986105d3eb4e0e212d93eb520119b275f6a2d47a77e66",
+      "size_bytes": 4474,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tests/test-auth.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tests/test-client_layout.c",
+      "sha256": "54528c6ec9830befc9cb7c2b79f3e641123e3177f39eddb18731f0bdfb8e9665",
+      "size_bytes": 2194,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tests/test-client_layout.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tests/test-probe.c",
+      "sha256": "94803ab084f511ecd7864895aeae495bb79d0061d980700172c2cb0e7b80884b",
+      "size_bytes": 3548,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tests/test-probe.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tests/test-validation.c",
+      "sha256": "c463ca07caaff5cf76f84865c744b9d6d51f29c3a701fe11100adba3c067f5fd",
+      "size_bytes": 10294,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tests/test-validation.c"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tools/build.sh",
+      "sha256": "8cd80bfe35485d050dcbd4325202c762623aa1284401460c0b4fa3e350e22cad",
+      "size_bytes": 1994,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tools/build.sh"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tools/check-client-layout.py",
+      "sha256": "c3278bccadab25d7041cdc9c47e03efcaf506085e1775bb24c282b53cc6f0409",
+      "size_bytes": 4233,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tools/check-client-layout.py"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tools/check-privacy.py",
+      "sha256": "2de6b733f7f9f83111d807e60b0332db8ebdcc4c0683ee2e6d9a01445256b4b1",
+      "size_bytes": 7485,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tools/check-privacy.py"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tools/check.sh",
+      "sha256": "f9b46aab3498ff2aab26e3e0e697ffa8fafe3399ad649c15b41514a10f118d5f",
+      "size_bytes": 904,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tools/check.sh"
+    },
+    {
+      "repo": "willfaust/madeira-dock",
+      "revision": "72558e416a390f3669457930f09a389e54f49556",
+      "path": "tools/test-invalid-handoff.ps1",
+      "sha256": "dfb7a6dbb421efc54d233ea67539cef15081016a6ce612a7e3e40b8e3ac77d60",
+      "size_bytes": 2021,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fork/tools/test-invalid-handoff.ps1"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "docs/MADEIRA_DOCK.md",
+      "sha256": "f8f71989fe6224f201a40e366b9927f1f8ad234a5cebc491364053d09be8fc56",
+      "size_bytes": 30673,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/docs/MADEIRA_DOCK.md"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "docs/WOW64.md",
+      "sha256": "6dd48b8cdafb70ab39f1cb38eb26cb90f08031bf7408fbfc17bd6a06e6c1295e",
+      "size_bytes": 20330,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/docs/WOW64.md"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "docs/LICENSING.md",
+      "sha256": "222000b14d0025d03342201ffc450b7b97f42a20516e38c66ece5f3f0d6698ee",
+      "size_bytes": 7572,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/docs/LICENSING.md"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "LICENSE",
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+      "size_bytes": 35150,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/LICENSE"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "LICENSE-EXCEPTION.md",
+      "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+      "size_bytes": 3840,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/LICENSE-EXCEPTION.md"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/MadeiraDock.swift",
+      "sha256": "1c2be994a160b8a98368c94d032f4aa49ccac7d4dcf1fd302087bf33aeb25175",
+      "size_bytes": 36832,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/MadeiraDock.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/DockInstallers.swift",
+      "sha256": "2eef93f431df747d3c5afefab6e73ee0081cd0d35d8d81bd710bf7285c836cf6",
+      "size_bytes": 45841,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/DockInstallers.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/SteamRuntime.swift",
+      "sha256": "ec069431eb295a5610ae1beacc40ddcf57033dc55e6f3f4f566e620998d7df6a",
+      "size_bytes": 17602,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/SteamRuntime.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/SwiftSteam/SteamSignIn.swift",
+      "sha256": "c95b55a7517bc0eaf53caba5a6b8a226b2e8351a5f7182ba70b9971893f4c13e",
+      "size_bytes": 9839,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/SwiftSteam/SteamSignIn.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift",
+      "sha256": "f325b9a465a13a52f833fd4e6a41b10af0e71852af47ad1b7cd3b3eba8cf67f2",
+      "size_bytes": 3207,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift",
+      "sha256": "29e022d509c6db284ec1332b645b5f61371856a3b502d75dfe5a59d0b8e9996a",
+      "size_bytes": 3507,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift",
+      "sha256": "05fbca74eb8dc515daefdf0878cc7532b894b7c5403437d74599e00e1dca9dc3",
+      "size_bytes": 9599,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "app/Madeira/SwiftSteam/Auth/SteamQRAuth.swift",
+      "sha256": "a3a700e0187093504e8387314687ed2e136e4a8b3850df9a0d3fc34b1078acd5",
+      "size_bytes": 6182,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/app/Madeira/SwiftSteam/Auth/SteamQRAuth.swift"
+    },
+    {
+      "repo": "FEX-Emu/FEX",
+      "revision": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "path": "Source/Windows/Common/OvercommitTracker.h",
+      "sha256": "446f0c1ab57d3a65fb6840eea8327a82583c2dab1e04b8347f04f56c0a7b6b23",
+      "size_bytes": 1828,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fex-upstream/Source/Windows/Common/OvercommitTracker.h"
+    },
+    {
+      "repo": "FEX-Emu/FEX",
+      "revision": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "path": "Source/Windows/Common/InvalidationTracker.cpp",
+      "sha256": "a1ed5939fbaa007153ed71a3e26f8c5a6523b9ea891c4d95ed64e763069f2dbe",
+      "size_bytes": 14150,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fex-upstream/Source/Windows/Common/InvalidationTracker.cpp"
+    },
+    {
+      "repo": "FEX-Emu/FEX",
+      "revision": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "b6e9a6da61b5c89476f41c3b2b774231bd3da3e11c14fc55a1c1c4330e9c7ea0",
+      "size_bytes": 45279,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fex-upstream/Source/Windows/ARM64EC/Module.cpp"
+    },
+    {
+      "repo": "willfaust/FEX",
+      "revision": "3bec2ac498bf78156ab47c0c194b0e8cb2849756",
+      "path": "Source/Windows/Common/OvercommitTracker.h",
+      "sha256": "446f0c1ab57d3a65fb6840eea8327a82583c2dab1e04b8347f04f56c0a7b6b23",
+      "size_bytes": 1828,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fex-madeira/Source/Windows/Common/OvercommitTracker.h"
+    },
+    {
+      "repo": "willfaust/FEX",
+      "revision": "3bec2ac498bf78156ab47c0c194b0e8cb2849756",
+      "path": "Source/Windows/Common/InvalidationTracker.cpp",
+      "sha256": "7ae564ccbea7de7e1a9c238be4696275812e75393f045d9eab90dc106d150db9",
+      "size_bytes": 41113,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fex-madeira/Source/Windows/Common/InvalidationTracker.cpp"
+    },
+    {
+      "repo": "willfaust/FEX",
+      "revision": "3bec2ac498bf78156ab47c0c194b0e8cb2849756",
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "f929af53a002a8186ba92e81cac401f7db1fa7432083f88f5d55b656fe7623be",
+      "size_bytes": 108367,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/fex-madeira/Source/Windows/ARM64EC/Module.cpp"
+    },
+    {
+      "repo": "willfaust/wine",
+      "revision": "257f271cfffed9f22f7987cac53bc00095d092fe",
+      "path": "dlls/ntdll/loader.c",
+      "sha256": "2c37e04bab1974bbd712158170ce0279e2cbe1d03b1e8387bc1d27b7cfc857ea",
+      "size_bytes": 243566,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/wine-madeira/dlls/ntdll/loader.c"
+    },
+    {
+      "repo": "willfaust/wine",
+      "revision": "257f271cfffed9f22f7987cac53bc00095d092fe",
+      "path": "dlls/ntdll/unix/loader.c",
+      "sha256": "9c16e681f554fb423483eff23f89f028da4b40179c02c0667506cf4722b6669a",
+      "size_bytes": 74802,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/wine-madeira/dlls/ntdll/unix/loader.c"
+    },
+    {
+      "repo": "willfaust/wine",
+      "revision": "257f271cfffed9f22f7987cac53bc00095d092fe",
+      "path": "dlls/ntdll/unix/virtual.c",
+      "sha256": "7ba75c4523acd89c8408dfa749cd70cd3c51d3b0c18d4daacb8f7ce605f0043a",
+      "size_bytes": 248876,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/wine-madeira/dlls/ntdll/unix/virtual.c"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": ".gitmodules",
+      "sha256": "c11db29187070478871de8ef66603ec5fc769bacc093cd48f970ed6fb41f2417",
+      "size_bytes": 410,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/.gitmodules"
+    },
+    {
+      "repo": "willfaust/Madeira",
+      "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+      "path": "build/madeira-dock/build.sh",
+      "sha256": "d6e1842a9a155a7fac7b260e826888470c6a8a514578604001444552cf98bc27",
+      "size_bytes": 2639,
+      "match": true,
+      "snapshot": ".build/task44/source-review/stage1-retained2/dock/madeira/build/madeira-dock/build.sh"
+    }
+  ],
+  "parser": {
+    "cases": [
+      {
+        "case": "arm64",
+        "target": "aa64",
+        "recorded_status_and_plan": "00000000 1",
+        "recorded_exit_code": 0,
+        "input_matches": true,
+        "retained_stdout_matches": true,
+        "claim": "historical native parser only; no rerun"
+      },
+      {
+        "case": "x64",
+        "target": "8664",
+        "recorded_status_and_plan": "00000000 1",
+        "recorded_exit_code": 0,
+        "input_matches": true,
+        "retained_stdout_matches": true,
+        "claim": "historical native parser only; no rerun"
+      },
+      {
+        "case": "i386",
+        "target": "014c",
+        "recorded_status_and_plan": "c00000bb 0",
+        "recorded_exit_code": 0,
+        "input_matches": true,
+        "retained_stdout_matches": true,
+        "claim": "historical native parser only; no rerun"
+      },
+      {
+        "case": "steam_setup",
+        "target": "014c",
+        "recorded_status_and_plan": "c00000bb 0",
+        "recorded_exit_code": 0,
+        "input_matches": true,
+        "retained_stdout_matches": true,
+        "claim": "historical native parser only; no rerun"
+      }
+    ],
+    "observation_cases_equal_diagnostic": true,
+    "reexecuted": false,
+    "claim": "i386 refused before file parsing; ARM64/x64 synthetic acceptance at retained parser only"
+  },
+  "installer": {
+    "scope": "static_headers_only",
+    "size_bytes": 2380800,
+    "sha256": "7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb",
+    "machine_hex": "0x14c",
+    "optional_magic_hex": "0x10b",
+    "characteristics_hex": "0x10f",
+    "large_address_aware": false,
+    "relocations_stripped": true,
+    "image_base_hex": "0x00400000",
+    "dll_characteristics_hex": "0x8540",
+    "dynamic_base": true,
+    "base_relocation_directory_rva_size": [
+      0,
+      0
+    ],
+    "size_of_image": 483328,
+    "publisher_signature": "unverified",
+    "guest_execution": "unperformed",
+    "imports": "not decoded by this reader"
+  },
+  "unknowns": [
+    {
+      "claim": "actual required Dock i386 helper execution, Wine services.exe identity and Megabonk prerequisite/CEG set",
+      "status": "unknown",
+      "reason": "New shared receipt identifies the selected Valve service as i386; necessity before the observed Dock failure was not demonstrated. Selected-file facts are preserved in peer_update; initial inspection had no selected component receipt."
+    },
+    {
+      "claim": "complete required Rosetta-free host closure for either route",
+      "status": "unperformed"
+    },
+    {
+      "claim": "original Megabonk Steamworks/ownership/session success",
+      "status": "unperformed"
+    },
+    {
+      "claim": "native Steam bridge feasibility and maintenance comparison",
+      "status": "deferred_to_stage2"
+    }
+  ],
+  "stage_complete_meaning": "Stage 1 bounded research and artifact verification only; not runtime or whole-task completion.",
+  "peer_update": {
+    "scope": "reuse_of_shared_sanitized_peer_receipts",
+    "reader_sha256": "ab8838420883d08b4d3e2390379cb862179e0892f7552cb25827327dff8b687e",
+    "checks": [
+      {
+        "owner": "task11",
+        "path": "mydocs/working/task_m1_11_step2a_observations.json",
+        "sha256": "1ff43a33cd839ecd62c8b62244d1ea2c04db315df206fe32e1678c8f9b3ad2f5",
+        "expected_sha256": "1ff43a33cd839ecd62c8b62244d1ea2c04db315df206fe32e1678c8f9b3ad2f5",
+        "size_bytes": 59014,
+        "match": true
+      },
+      {
+        "owner": "task11",
+        "path": ".build/task11/dock-components2/components.json",
+        "sha256": "608b6cc1ffc44e3f343b091993baaba4bd94b004056817879b5a8e3a884e4119",
+        "expected_sha256": "608b6cc1ffc44e3f343b091993baaba4bd94b004056817879b5a8e3a884e4119",
+        "size_bytes": 48084,
+        "match": true
+      },
+      {
+        "owner": "task11",
+        "path": ".build/task11/dock-bootstrap1/assessment.json",
+        "sha256": "4e9ba560c76006cedea1e7ef602722fc494af6b3566b27e3134c71b9345004ff",
+        "expected_sha256": "4e9ba560c76006cedea1e7ef602722fc494af6b3566b27e3134c71b9345004ff",
+        "size_bytes": 704,
+        "match": true
+      }
+    ],
+    "package_count": 3,
+    "file_count": 59,
+    "inventory_receipts_equal": true,
+    "bootstrap_assessment_equal": true,
+    "dock": {
+      "source_pin": "7fc8e4d1b5ede349c89b3c155b203a8bf455f5bb",
+      "sha256": "a3762fdfb90b962f67e09ae5f3f61df8e1b700c9d52c7d5c08e3bf9e5bb8c3b7",
+      "architecture": "x64",
+      "compiler_sha256": "c9b86311ade81d53235c93fafabdf98328d094de344ea9a9038e0dab6695ee9f",
+      "host_sanitizer_suites_passed": 4
+    },
+    "selected_components": [
+      {
+        "architecture": "i386",
+        "certificate_table_present": true,
+        "delay_imports": [
+          "VERSION.dll"
+        ],
+        "format": "pe",
+        "host_translation": "unobserved",
+        "hybrid_execution": "unobserved",
+        "imports": [
+          "KERNEL32.dll",
+          "USER32.dll",
+          "ADVAPI32.dll",
+          "SHELL32.dll",
+          "ole32.dll",
+          "OLEAUT32.dll",
+          "WS2_32.dll",
+          "SHLWAPI.dll",
+          "WINTRUST.dll",
+          "PSAPI.DLL",
+          "bcrypt.dll"
+        ],
+        "machine": 332,
+        "optional_magic": 267,
+        "path": "bin/SteamService.exe",
+        "publisher_signature": "unverified",
+        "required_on_route": "unknown",
+        "sha256": "72a406a6a2d3e282ab4b468ed8bfadf171fdd03a97969d6214a5da6fdb8dbd03",
+        "size_bytes": 2950296,
+        "size_of_image": 3489792
+      },
+      {
+        "architecture": "x64",
+        "certificate_table_present": true,
+        "delay_imports": [],
+        "format": "pe",
+        "host_translation": "unobserved",
+        "hybrid_execution": "unobserved",
+        "imports": [
+          "KERNEL32.dll",
+          "USER32.dll",
+          "GDI32.dll",
+          "ADVAPI32.dll",
+          "SHELL32.dll",
+          "ole32.dll",
+          "OLEAUT32.dll",
+          "WS2_32.dll",
+          "SHLWAPI.dll",
+          "WINMM.dll",
+          "CRYPT32.dll",
+          "IPHLPAPI.DLL",
+          "imagehlp.dll",
+          "PSAPI.DLL",
+          "VERSION.dll",
+          "SETUPAPI.dll",
+          "tier0_s64.dll",
+          "vstdlib_s64.dll",
+          "MSWSOCK.dll",
+          "bcrypt.dll",
+          "Secur32.dll"
+        ],
+        "machine": 34404,
+        "optional_magic": 523,
+        "path": "steamclient64.dll",
+        "publisher_signature": "unverified",
+        "required_on_route": "unknown",
+        "sha256": "71b391fe9f3e2006cbc81a5c75eef3eb4186012deabfdb2c8b7e8d4850ecf640",
+        "size_bytes": 25546904,
+        "size_of_image": 25931776
+      },
+      {
+        "architecture": "x64",
+        "certificate_table_present": true,
+        "delay_imports": [],
+        "format": "pe",
+        "host_translation": "unobserved",
+        "hybrid_execution": "unobserved",
+        "imports": [
+          "KERNEL32.dll",
+          "USER32.dll",
+          "ADVAPI32.dll",
+          "SHELL32.dll",
+          "PSAPI.DLL"
+        ],
+        "machine": 34404,
+        "optional_magic": 523,
+        "path": "tier0_s64.dll",
+        "publisher_signature": "unverified",
+        "required_on_route": "unknown",
+        "sha256": "af89cb6e94b20a5660d8f33427460fcd3b5e43e16b13372321d09cebab1288b8",
+        "size_bytes": 429720,
+        "size_of_image": 1687552
+      },
+      {
+        "architecture": "x64",
+        "certificate_table_present": true,
+        "delay_imports": [],
+        "format": "pe",
+        "host_translation": "unobserved",
+        "hybrid_execution": "unobserved",
+        "imports": [
+          "KERNEL32.dll",
+          "USER32.dll",
+          "tier0_s64.dll"
+        ],
+        "machine": 34404,
+        "optional_magic": 523,
+        "path": "vstdlib_s64.dll",
+        "publisher_signature": "unverified",
+        "required_on_route": "unknown",
+        "sha256": "9bb287b195f0a246f68ea462371178d9a2ebc23b03df295606ef189910aee2d2",
+        "size_bytes": 486040,
+        "size_of_image": 790528
+      },
+      {
+        "architecture": "i386",
+        "certificate_table_present": true,
+        "delay_imports": [],
+        "format": "pe",
+        "host_translation": "unobserved",
+        "hybrid_execution": "unobserved",
+        "imports": [
+          "KERNEL32.dll",
+          "USER32.dll",
+          "GDI32.dll",
+          "ADVAPI32.dll",
+          "SHELL32.dll",
+          "ole32.dll",
+          "OLEAUT32.dll",
+          "COMCTL32.dll",
+          "PSAPI.DLL",
+          "VERSION.dll",
+          "CRYPT32.dll",
+          "WS2_32.dll",
+          "WSOCK32.dll",
+          "bcrypt.dll"
+        ],
+        "machine": 332,
+        "optional_magic": 267,
+        "path": "steam.exe",
+        "publisher_signature": "unverified",
+        "required_on_route": "unknown",
+        "sha256": "1d2fbcc0402dc5a1f64b2e1d924e6e38e1dd76197c0246ddf89094fb86fda915",
+        "size_bytes": 4718744,
+        "size_of_image": 5279744
+      }
+    ],
+    "bootstrap": {
+      "scope": "no_account_dock_bootstrap",
+      "passed": false,
+      "markers": {
+        "public-client021-present=1": true,
+        "engine005-present=1": true,
+        "global-user-created=1": false,
+        "bootstrap-result=0": false,
+        "shutdown-complete=1": false,
+        "probe-result=0": false
+      },
+      "first_source_guard": "Pear FEX assertion: JIT.cpp:777 ExitPearFunctionLink: Pear source guard refused: status 6, domain 0, code 0",
+      "loader_exit_code": 2,
+      "cleanup_passed": true,
+      "account_access": false,
+      "login_qualified": false,
+      "ownership_qualified": false,
+      "game_qualified": false,
+      "steamworks_qualified": false,
+      "case_sha256": "987debb295a8a9323964319a01c065006e97ac24c86a3d3a9845ff9d8606c42a",
+      "runtime_sha256": "d6d053e73eb0a7625177e1901936efeed4ee7eddadd9e822a0094398e8505808",
+      "elapsed_including_cleanup_ms": 35767,
+      "authorization_before_after_passed": true,
+      "runtime_unchanged": true,
+      "source_payload_unchanged": true,
+      "registered_instrumented_process_count": 11,
+      "registered_hello_cpu_type": 16777228,
+      "registered_hello_translation_value": 0,
+      "registered_hello_translation_error": 0,
+      "coverage_limit": "registered instrumented processes; not complete #10 late-load/module qualification",
+      "executed_producer_sha256": "1fd42a0a7287f92df0468aaec523e7bb96ab7004fb303098ab2ee59d3528429a"
+    },
+    "first_refusal_source": {
+      "status": 6,
+      "meaning": "PEAR_FEX_STALE_IDENTITY",
+      "first_guard": "JIT.cpp:777 ExitPearFunctionLink",
+      "call": "ContextImpl::FinishPearDispatcherGate",
+      "secondary_guard": "Module.cpp:747 PearECGate / ECGate.fill",
+      "source_manifest_sha256": "2ffc47a300c2c1ca3dd0a36bd40bc7e4c95a455278b7c8fcf47ea739b04e94cb",
+      "files": [
+        {
+          "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+          "sha256": "3c5b3a28a6525e4eeb230b00d5616dc56e6dc229de6ab8111f0fdab339f6389d"
+        },
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "sha256": "037fc86f0ec46c5e9d89bbf44c617409dd4d663fbe4b7aea774a7c5e014a3518"
+        },
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "sha256": "8ef07e19ea8da75fe5af4dd9f2733ebc27c2161667b48112fcf25fd75dfbbca9"
+        }
+      ],
+      "failed_predicate": "unknown; multiple returns share the status"
+    },
+    "required_i386_helper": "not demonstrated before this failure; SteamService.exe statically i386, later necessity unknown",
+    "claim_limit": "Receipt hashes and agreement checked by #44; payload hashes, static imports, builds and execution outcomes are reused #11 observations, not new #44 execution or full closure qualification."
+  },
+  "inspection_history": [
+    {
+      "attempt": 1,
+      "reader_sha256": "fe82a8ad8aa6b270fc9a362933794535504d2ec4fd7787335f4ffe4fe2cbc039",
+      "result": "failed",
+      "reason": "Reader compared experiment producer.py to fixture_producer_sha256; wrong semantic mapping, not a changed peer artifact.",
+      "retained_result": ".build/task44/stage1-intake1/checks1/inspection.json"
+    },
+    {
+      "attempt": 2,
+      "reader_sha256": "2225af92b1dcf105565aa4165e82ae05d2fa3aefdef0720864b443408334ad58",
+      "result": "passed",
+      "correction": "producer.py uses experiment_sha256; tests/wine/test_pe_arena.py uses fixture_producer_sha256; both matched.",
+      "retained_result": ".build/task44/stage1-intake1/checks2/inspection.json"
+    }
+  ],
+  "false_inferences_rejected": [
+    "i386 installer implies universal broad WoW64 requirement",
+    "x64 Dock implies all helpers x64",
+    "installed or acquired helper implies required execution",
+    "target-first parser refusal validates PE32 or executes guest",
+    "dated installed inventory identifies current selected client",
+    "start-services exit zero proves SCM readiness",
+    "macOS Steam or ARM64 SDK slice proves functioning Rosetta-free bridge",
+    "selected i386 service causes the observed x64 Dock guard without execution evidence"
+  ]
+}
