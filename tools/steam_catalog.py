@@ -94,10 +94,16 @@ def fetch_catalog(key, *, fetch_page=read_page, now=None):
             require(isinstance(app, dict) and valid_id(app.get('appid')),
                     'Invalid Steam App ID.')
             require(app['appid'] > cursor, 'Steam pagination repeated or reordered an App ID.')
-            require(valid_name(app.get('name')), 'Invalid Steam game name.')
+            raw_name = app.get('name', '')
+            require(isinstance(raw_name, str) and len(raw_name) <= 4096, 'Invalid Steam game name.')
+            name = ' '.join(''.join(char if ord(char) >= 32 and not 127 <= ord(char) <= 159 else ' ' for char in raw_name).split())
             cursor = app['appid']
+            # Unnamed store entries are not useful search results; still advance the cursor.
+            if not name:
+                continue
+            require(valid_name(name), 'Invalid Steam game name.')
             # Explicit field projection: ignore every other API field.
-            games.append({'app_id': str(cursor), 'name': app['name'].strip()})
+            games.append({'app_id': str(cursor), 'name': name})
         require(len(games) <= MAX_GAMES, 'Steam catalog exceeds entry limit.')
         if not more:
             require(bool(games), 'Steam returned an empty catalog; keep the previous snapshot.')

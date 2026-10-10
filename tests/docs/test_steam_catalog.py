@@ -98,7 +98,7 @@ class SteamCatalogTests(unittest.TestCase):
         trials = [{}, page([]), page([], more_results=True, last_appid=0),
                   page([{'appid': 10, 'name': 'One'}, {'appid': 10, 'name': 'Duplicate'}]),
                   page([{'appid': True, 'name': 'Bad'}]), page([{'appid': 4294967296, 'name': 'Bad'}]),
-                  page([{'appid': 10, 'name': ''}]), page([{'appid': 10, 'name': 'Bad\nname'}]),
+                  page([{'appid': 10, 'name': ''}]), page([{'appid': 10, 'name': None}]),
                   page([{'appid': 10, 'name': 'One'}], more_results=True, last_appid=11),
                   page([{'appid': 10, 'name': 'One'}], more_results='true')]
         for trial in trials:
@@ -137,3 +137,9 @@ class SteamCatalogTests(unittest.TestCase):
             link.symlink_to(path)
             with self.assertRaises(steam.CatalogError):
                 steam.write_snapshot(self.snapshot(), link)
+
+    def test_unnamed_entries_and_store_whitespace_are_normalized(self):
+        data = steam.fetch_catalog(KEY, now=STAMP, fetch_page=lambda *_: page([
+            {'appid': 1}, {'appid': 2, 'name': ''},
+            {'appid': 3, 'name': '  Synthetic\tgame\nname  '}]))
+        self.assertEqual(data['games'], [{'app_id': '3', 'name': 'Synthetic game name'}])
