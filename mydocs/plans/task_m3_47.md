@@ -4,7 +4,8 @@ GitHub Issue: [#47](https://github.com/postmelee/pear/issues/47)
 Milestone: [M3 — Rosetta-based Megabonk Preview](https://github.com/postmelee/pear/milestone/3)
 Branch: `codex/task47`
 Planning date: October 10, 2026 (Asia/Seoul)
-Status: Issue registration and task-start approved; task plan awaiting approval.
+Status: Task plan approved by explicit requester continuation on October 10, 2026;
+implementation plan and Stage 1 awaiting approval.
 
 ## Purpose
 
@@ -157,8 +158,8 @@ it. Read new code area's scoped rules before designing changes there.
 
 ## Document Location Judgment
 
-The following location judgment is proposed for task-plan approval. No official
-product document is changed by task-start.
+The following location judgment was approved with the task plan. No official
+product document is changed during planning.
 
 | File | Classification | Audience | Selected Location | Alternative Location | Reason |
 |---|---|---|---|---|---|
@@ -288,8 +289,8 @@ available, leave the unmet clean-delivery criterion explicit.
 
 ## Approval Request
 
-Approve the scope, reuse-first design, document locations, three tentative stages
-and verification criteria. Task-start authorization covered only the isolated
-checkout, daily board and this task plan; no product changes or execution occurred.
-After approval, `task_m3_47_impl.md` will define concrete Stage artifacts,
-verification commands and commit messages for review before implementation.
+The requester approved this scope, reuse-first design, document locations, three
+tentative stages and verification criteria by explicit continuation in this chat.
+The [implementation plan](task_m3_47_impl.md) now defines concrete Stage artifacts,
+verification methods and commit messages for review before Stage 1. No product
+changes or runtime execution occurred during planning.
