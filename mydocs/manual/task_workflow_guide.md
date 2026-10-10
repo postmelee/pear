@@ -63,6 +63,10 @@ After lifecycle judgment is approved and actual file changes begin, apply this m
 14. After PR merge, close the Issue and finalize the daily task board state.
 15. Clean up the merged `publish/task{issue_number}` remote branch and reproducible local byproducts.
 
+## Artifact Lifecycle Checkpoints
+
+Use the [artifact retention procedure](artifact_retention_guide.md) as the canonical policy. Task plans record **Artifact Lifecycle**, stage reports reconcile **Artifact Disposition**, and final reports carry **Retention Handoff**. Before post-merge worktree removal, revisit that handoff against ignored evidence and current downstream consumers. The existing templates and task-start/stage/final/merge skills carry these checkpoints; small tasks may give reasoned Not applicable for material storage. Existing approvals and required verification remain unchanged.
+
 ## Work Rules
 
 - The task requester decides when work starts and ends. Agents do not propose ending work or impose time limits on their own.

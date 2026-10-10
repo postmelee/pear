@@ -37,6 +37,12 @@ Pear is an open-source platform under development for running owned Windows game
 - Keep proprietary game files, Steam credentials, authenticated prefixes, saves, private signing material and private diagnostics out of Git and release artifacts.
 - Preserve macOS security protections. Use documented signing and provisioning authorization; successful signing alone does not establish permission or distribution qualification.
 
+## Artifact retention
+
+- Before substantial builds or runs, plan reusable exact inputs, output roots, owners/consumers, peak storage and release conditions using the [artifact retention procedure](mydocs/manual/artifact_retention_guide.md). Keep immutable inputs separate from disposable per-run state; record the reason for a full runtime copy.
+- At stage and merge handoffs, release verified disposable outputs within the authorized scope. Preserve required evidence, private state, ignored worktree dependencies and recovery archives until their recorded release conditions are met; mark unavailable or restore-required bytes explicitly.
+- Report logical/allocated sizes separately from measured filesystem free-space changes. Small documentation-only tasks may give reasoned Not applicable for material storage planning.
+
 ## Scoped rules and procedures
 
 | Work | Read when applicable |

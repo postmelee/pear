@@ -47,6 +47,7 @@ description: |
 5. Create task plan: `mydocs/plans/task_m{milestone}_{N}.md`.
    - Use central template `mydocs/_templates/task_plan.md`.
    - Only if the template cannot be read, use these fallback sections: purpose / background / scope included and excluded / design direction / expected changed files / tentative stages of 3-6 stages / verification plan / risks / approval request.
+   - Fill **Artifact Lifecycle** using the [artifact retention procedure](../../manual/artifact_retention_guide.md), including reusable inputs, material output roots, owners/consumers, identity/recovery needs, release events and peak-space/copy decisions. Use reasoned Not applicable for small tasks; include this field even when using the fallback format.
 6. Verify changes.
    ```bash
    git status --short

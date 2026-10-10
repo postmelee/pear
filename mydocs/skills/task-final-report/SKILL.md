@@ -32,6 +32,7 @@ description: |
      - Verification results by acceptance criterion
      - Residual risks and follow-up work
      - Approval request to task requester
+   - Fill **Retention Handoff** using the [artifact retention procedure](../../manual/artifact_retention_guide.md), including remaining owners/consumers, release events, ignored evidence, recovery references and cleanup limitations. Include it in fallback reports; use reasoned Not applicable for material storage in small tasks.
 3. Update daily task board: #{N} row in `mydocs/orders/{yyyymmdd}.md`.
    - Use output format from `mydocs/_templates/orders.md`.
    - Set status to `Done` and include `Done: HH:mm` in notes.

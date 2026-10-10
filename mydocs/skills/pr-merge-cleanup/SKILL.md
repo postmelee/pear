@@ -41,7 +41,8 @@ description: |
    ```bash
    git push origin --delete publish/task{N} 2>&1 || echo "already deleted"
    ```
-5. Remove the separate worktree if one was used.
+5. Reconcile the final report's **Retention Handoff** with current consumers using the [artifact retention procedure](../../manual/artifact_retention_guide.md). Inspect ignored/untracked evidence and recovery stores before removing or archiving a separate worktree; an app/Git snapshot alone does not establish their preservation. Verify required material is preserved or retain the worktree with its owner and release condition. Record the actual disposition and deferred cleanup.
+   - Run the removal commands only when the dependency and preservation checks permit removal within the authorized scope. Use the host's managed-worktree lifecycle when applicable.
    ```bash
    git worktree remove ../{repo}-task{N}
    git worktree prune
@@ -59,7 +60,7 @@ description: |
 - `gh pr view {number}` shows `state == MERGED`.
 - `git branch -vv | grep local/task{N}` has no output if the branch was deleted.
 - `git ls-remote origin publish/task{N}` has empty output.
-- `git worktree list` does not include the cleaned worktree.
+- `git worktree list` excludes a removed worktree, or the retained worktree has a recorded owner, dependency/recovery reason and release condition.
 - `git branch --show-current` is `master`.
 
 ## Never Do
