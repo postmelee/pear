@@ -36,7 +36,7 @@ class Opener:
 
 class SteamCatalogTests(unittest.TestCase):
     def snapshot(self):
-        return steam.fetch_catalog(KEY, now=STAMP, fetch_page=lambda *_: page([
+        return steam.fetch_catalog(KEY, now=STAMP, fetch_page=lambda key, cursor: page([]) if cursor else page([
             {'appid': 10, 'name': 'Synthetic game <one>', 'unknown_private_field': 'discard'},
             {'appid': 20, 'name': '합성 게임 two'}]))
 
@@ -46,9 +46,9 @@ class SteamCatalogTests(unittest.TestCase):
             calls.append(cursor)
             return (page([{'appid': 10, 'name': 'One', 'extra': 'discard'}],
                          more_results=True, last_appid=10) if cursor == 0 else
-                    page([{'appid': 20, 'name': 'Two'}], more_results=False))
+                    page([{'appid': 20, 'name': 'Two'}]) if cursor == 10 else page([]))
         data = steam.fetch_catalog(KEY, fetch_page=fetch, now=STAMP)
-        self.assertEqual(calls, [0, 10])
+        self.assertEqual(calls, [0, 10, 20])
         self.assertEqual(data['games'], [{'app_id': '10', 'name': 'One'}, {'app_id': '20', 'name': 'Two'}])
         self.assertEqual(set(data), {'schema_version', 'source', 'fetched_at', 'games'})
         self.assertNotIn(KEY, json.dumps(data))
@@ -99,8 +99,7 @@ class SteamCatalogTests(unittest.TestCase):
                   page([{'appid': 10, 'name': 'One'}, {'appid': 10, 'name': 'Duplicate'}]),
                   page([{'appid': True, 'name': 'Bad'}]), page([{'appid': 4294967296, 'name': 'Bad'}]),
                   page([{'appid': 10, 'name': ''}]), page([{'appid': 10, 'name': None}]),
-                  page([{'appid': 10, 'name': 'One'}], more_results=True, last_appid=11),
-                  page([{'appid': 10, 'name': 'One'}], more_results='true')]
+                  {'response': {'error': 'synthetic error'}}]
         for trial in trials:
             with self.subTest(trial=trial), self.assertRaises(steam.CatalogError):
                 steam.fetch_catalog(KEY, fetch_page=lambda *_: trial)
@@ -139,7 +138,16 @@ class SteamCatalogTests(unittest.TestCase):
                 steam.write_snapshot(self.snapshot(), link)
 
     def test_unnamed_entries_and_store_whitespace_are_normalized(self):
-        data = steam.fetch_catalog(KEY, now=STAMP, fetch_page=lambda *_: page([
+        data = steam.fetch_catalog(KEY, now=STAMP, fetch_page=lambda key, cursor: page([]) if cursor else page([
             {'appid': 1}, {'appid': 2, 'name': ''},
             {'appid': 3, 'name': '  Synthetic\tgame\nname  '}]))
         self.assertEqual(data['games'], [{'app_id': '3', 'name': 'Synthetic game name'}])
+
+    def test_short_pages_without_continuation_flags_are_not_truncated(self):
+        calls = []
+        def fetch(key, cursor):
+            calls.append(cursor)
+            return page([{'appid': cursor + 1, 'name': 'Synthetic'}]) if cursor < 3 else {'response': {}}
+        data = steam.fetch_catalog(KEY, fetch_page=fetch, now=STAMP)
+        self.assertEqual([g['app_id'] for g in data['games']], ['1', '2', '3'])
+        self.assertEqual(calls, [0, 1, 2, 3])

@@ -86,10 +86,8 @@ def fetch_catalog(key, *, fetch_page=read_page, now=None):
         require(isinstance(page, dict) and isinstance(page.get('response'), dict),
                 'Invalid Steam response envelope.')
         response = page['response']
-        apps = response.get('apps')
+        apps = response.get('apps', [] if not response else None)
         require(isinstance(apps, list) and len(apps) <= PAGE_SIZE, 'Invalid Steam app page.')
-        more = response.get('more_results', False)
-        require(type(more) is bool, 'Invalid Steam continuation flag.')
         for app in apps:
             require(isinstance(app, dict) and valid_id(app.get('appid')),
                     'Invalid Steam App ID.')
@@ -105,14 +103,14 @@ def fetch_catalog(key, *, fetch_page=read_page, now=None):
             # Explicit field projection: ignore every other API field.
             games.append({'app_id': str(cursor), 'name': name})
         require(len(games) <= MAX_GAMES, 'Steam catalog exceeds entry limit.')
-        if not more:
+        # The documented contract is last_appid pagination; do not depend on
+        # optional/undocumented continuation flags or assume a short page is final.
+        if not apps:
             require(bool(games), 'Steam returned an empty catalog; keep the previous snapshot.')
             snapshot = {'schema_version': 1, 'source': SOURCE,
                         'fetched_at': now or datetime.now(timezone.utc).isoformat(timespec='seconds'),
                         'games': games}
             return validate_snapshot(snapshot)
-        require(bool(apps) and response.get('last_appid') == cursor,
-                'Invalid Steam pagination cursor.')
     raise CatalogError('Steam pagination limit reached; no snapshot written.')
 
 
