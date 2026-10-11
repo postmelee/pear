@@ -38,6 +38,12 @@ limited to M4 Pro/macOS 26.5.2.
 | Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Signed app/CLI: official login, Megabonk installation, Steamworks and menu/input verified on one Mac; public distribution pending |
 | Rosetta-free runtime (M1) | Run owned Windows Megabonk with every required host process and library free of Rosetta | Under development; no player-ready native preview |
 
+On October 11, an experimental ARM64 Wine/FEX/DXMT configuration reached the
+Megabonk main menu, and manual menu input was confirmed. Gameplay entry failed
+during loading. Verification of Rosetta independence across all required host
+processes and libraries, Steamworks integration and gameplay qualification remain
+pending. Follow [the native integration work (#11)](https://github.com/postmelee/pear/issues/11).
+
 Megabonk is the first validation game. Selecting another game in Steam does not
 establish compatibility. [Recorded results](docs/compatibility/records.md) retain
 failed, unknown and untested outcomes as well as successes. Menu interaction is

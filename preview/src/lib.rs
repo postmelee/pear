@@ -90,10 +90,17 @@ fn text(path: &Path, limit: u64) -> Result<String> {
     need(s.len() as u64 <= limit, "File exceeds size limit.")?;
     Ok(s)
 }
-pub fn verify(path: &Path, artifact: Artifact) -> Result<()> {
+fn artifact_matches(path: &Path, artifact: Artifact) -> Result<bool> {
     let f = plain_file(path)?;
+    need(f.metadata()?.is_file(), "Expected a regular artifact file.")?;
+    if f.metadata()?.len() != artifact.size {
+        return Ok(false);
+    }
     let (digest, size) = sha256(&f, artifact.size)?;
-    need(size == artifact.size && hex(&digest) == artifact.sha,
+    Ok(size == artifact.size && hex(&digest) == artifact.sha)
+}
+pub fn verify(path: &Path, artifact: Artifact) -> Result<()> {
+    need(artifact_matches(path, artifact)?,
          "Download verification failed. No installation was activated; retry with the pinned artifact.")
 }
 fn write_new(path: &Path, bytes: &[u8]) -> Result<()> {
@@ -182,43 +189,66 @@ impl Session {
         Ok(Self { root, _lock: lock })
     }
     fn archive(&self, artifact: Artifact, supplied: Option<&Path>) -> Result<PathBuf> {
+        self.archive_with(artifact, supplied, |download| {
+            run(
+                Command::new("/usr/bin/curl")
+                    .args([
+                        "--fail",
+                        "--location",
+                        "--silent",
+                        "--show-error",
+                        "--proto",
+                        "=https",
+                        "--proto-redir",
+                        "=https",
+                        "--retry",
+                        "2",
+                        "--connect-timeout",
+                        "30",
+                        "--max-time",
+                        "1800",
+                        "--output",
+                    ])
+                    .arg(download)
+                    .arg(artifact.url),
+                1810,
+            )
+        })
+    }
+    // The operation seam keeps failure tests on the real cache/verification transaction.
+    // Production always supplies the HTTPS curl operation above.
+    fn archive_with(
+        &self,
+        artifact: Artifact,
+        supplied: Option<&Path>,
+        download_into: impl FnOnce(&Path) -> Result<()>,
+    ) -> Result<PathBuf> {
         if let Some(path) = supplied {
             verify(path, artifact)?;
             return Ok(path.canonicalize()?);
         }
         let cache = self.root.join("cache");
         let final_path = cache.join(artifact.name);
-        if final_path.exists() {
-            verify(&final_path, artifact)?;
-            return Ok(final_path);
+        let cached = match fs::symlink_metadata(&final_path) {
+            Ok(_) => true,
+            Err(error) if error.kind() == io::ErrorKind::NotFound => false,
+            Err(error) => return Err(error.into()),
+        };
+        if cached {
+            if artifact_matches(&final_path, artifact)? {
+                return Ok(final_path);
+            }
+            need(!artifact.url.is_empty(),
+                 "Cached download is damaged and no public runtime download is available. Supply its pinned archive with --runtime-archive PATH; private data was kept.")?;
+            // Only an owned, regular cache file with a known digest/length mismatch.
+            // I/O errors and links return above; installed runtimes/private state are untouched.
+            fs::remove_file(&final_path)?;
         }
         need(!artifact.url.is_empty(),
              "This development candidate has no public runtime download yet. Supply its pinned archive with --runtime-archive PATH.")?;
         let scratch = Stage::new(&cache)?;
         let download = scratch.path.join(artifact.name);
-        run(
-            Command::new("/usr/bin/curl")
-                .args([
-                    "--fail",
-                    "--location",
-                    "--silent",
-                    "--show-error",
-                    "--proto",
-                    "=https",
-                    "--proto-redir",
-                    "=https",
-                    "--retry",
-                    "2",
-                    "--connect-timeout",
-                    "30",
-                    "--max-time",
-                    "1800",
-                    "--output",
-                ])
-                .arg(&download)
-                .arg(artifact.url),
-            1810,
-        )?;
+        download_into(&download)?;
         verify(&download, artifact)?;
         fs::rename(download, &final_path)?;
         Ok(final_path)
@@ -240,16 +270,27 @@ impl Session {
         self.space(3 * 1024 * 1024 * 1024)?;
         notify("Checking and installing the Pear runtime…");
         let archive = self.archive(RUNTIME, supplied)?;
+        self.install_runtime(&archive, |archive, stage| {
+            // Only this exact reviewed archive is passed to tar, after hash verification.
+            run(
+                Command::new("/usr/bin/tar")
+                    .arg("-xf")
+                    .arg(archive)
+                    .arg("-C")
+                    .arg(stage),
+                180,
+            )
+        })
+    }
+    // Own the staging directory until every check and marker write succeeds.
+    fn install_runtime(
+        &self,
+        archive: &Path,
+        extract_into: impl FnOnce(&Path, &Path) -> Result<()>,
+    ) -> Result<PathBuf> {
+        let dest = self.root.join("runtimes").join(RUNTIME_ID);
         let stage = Stage::new(&self.root.join("runtimes"))?;
-        // Only this exact reviewed archive is passed to tar, after hash verification.
-        run(
-            Command::new("/usr/bin/tar")
-                .arg("-xf")
-                .arg(&archive)
-                .arg("-C")
-                .arg(&stage.path),
-            180,
-        )?;
+        extract_into(archive, &stage.path)?;
         let lib = stage.path.join("Libraries");
         need(
             lib.join("Wine/bin/wine").is_file()
@@ -857,3 +898,6 @@ mod tests {
         run(&mut Command::new("/usr/bin/true"), 1).unwrap();
     }
 }
+
+#[cfg(test)]
+mod recovery_tests;

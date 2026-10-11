@@ -6,7 +6,7 @@ Milestone: M3 — Rosetta-based Megabonk Preview
 Branch: `codex/task47`
 Date: October 10, 2026 (Asia/Seoul)
 Status: task and implementation plans approved by explicit continuation in this
-chat; Stage 1 complete on October 11, 2026; Stage 2 awaiting continuation.
+chat; Stage 1 complete on October 11, 2026; Stage 2 approved and in progress.
 
 ## Context and Approval Record
 
@@ -1476,3 +1476,397 @@ the pinned unified patch. Their exact bytes must remain unchanged for provenance
 and package identity. The closure adds .gitattributes entries for these 27 exact
 paths only; Pear code/documents keep whitespace validation. Recheck the staged
 diff and preserve the source-kit and runtime pins after this metadata correction.
+
+
+## Stage 2 execution approval and concrete test design
+
+The requester explicitly continued after Stage 1 commit 2c59711. Start with
+isolated synthetic failure cases and leave the accepted app/runtime bytes intact.
+Reuse the existing Session/Stage transaction, verification, storage and prefix
+ownership code. No new download library, recovery subsystem or native manager
+admission change is selected. The reviewed Whisky installer removes the existing
+runtime before extraction; retain Pear's staged activation instead of importing it.
+
+Current source inspection shows archive acquisition and tar extraction are bound
+to absolute system tools, so deterministic interruption tests need a private
+source seam. In preview/src/lib.rs, factor only the existing transaction boundaries
+into private helpers accepting the download/extraction operation. Production
+wrappers still use pinned artifacts, curl HTTPS arguments and tar unchanged.
+Test-only fixtures exercise the real verification/rename/cleanup path with tiny
+owned files; do not weaken signature or hash admission. Add recovery cases in
+preview/src/recovery_tests.rs and use the existing temporary-directory owner.
+
+Cover failed partial download/retry, truncated/missing inputs, failed partial
+extraction/retry and existing installation reuse, insufficient-space admission,
+compatible partial-prefix resume and unknown-prefix refusal. Assert private save
+sentinels and previous ready markers are unchanged on each failure. Explicitly
+record seam results separately from real signed CLI interruption and app retry.
+
+Run locked/offline preview Cargo tests with the existing task47 cargo target,
+then the 34 Python packaging/runtime tests, governance and diff checks. Incremental
+unit-test compilation is a small developer-only operation; no Wine, GPU or private
+prefix is started. Retain logs under .build/task47/stage2/unit; keep the Stage 1
+sealed app/runtime unchanged. Expected incremental test output below 100 MiB and
+synthetic scratch below 2 MiB; preserve exact inputs and remove owned fixture
+scratch on exit. Rebuild/sign/notarize any changed app later in an admitted interval.
+
+Actual CLI retry/extraction uses a separate disposable root, the same immutable
+archive, at most about 2 GiB additional space and no authenticated state. Request
+fresh shared-host coordination before that run. Actual app repeat/save restoration
+uses the existing same-runtime task47 private environment only after normal exit
+and verified local backup; Steam Cloud interactions and restoration are not yet
+qualified. No backup is uploaded or committed. Do not downgrade a live prefix.
+
+
+Stage 2 discovered a retry usability gap: a corrupt cached archive is rejected
+but retained, so the app's Retry repeats the same error. Correct only that cache
+path in preview/src/lib.rs. Separate digest/length mismatch from I/O/type errors;
+a verified supplied archive remains preferred. When a regular cached artifact
+mismatches and its pinned HTTPS download exists, discard only that bad cached
+file and use the same staged download/verification. Preserve malformed links,
+unreadable inputs and unpublished-runtime cache rather than silently replacing
+unknown state. Never touch runtimes/private data. Regression tests must cover
+successful retry, failed replacement without activation, offline/unpublished
+preservation and unrelated-file survival. Rebuild/sign the changed app later;
+Stage 1 sealed candidate stays intact.
+
+
+## October 11 native checkpoint README clarification
+
+The coordinator relayed the requester's explicit instruction to preserve #47's
+README changes while distinguishing the native menu achievement from unfinished
+verification. The approved location is the existing root README's two-track
+overview, with a public Issue #11 link; no new product document or roadmap is
+created. Preserve M3 availability, installation, recovery and license guidance.
+This documentation-only change requires no runtime execution or artifact copy.
+
+Evidence reviewed: #11 D32 checkpoint SHA256
+c6f451bc8e40a82cffcff93442841d5f6791c779b112eb82fd7b4db3aec1189c
+and #12 handoff SHA256
+d89fc291a05d24a1d2c8eb2e6c6408ceb92971b087701278cb5fd16732d64891.
+The experiment reached the main menu and manual input was confirmed; gameplay
+entry failed during loading. Full required host/library Rosetta independence,
+Steamworks integration and gameplay qualification remain pending. The M3 signed
+Steam result does not establish M1 success. Check governance, links and whitespace.
+
+
+October 12 Stage 2 actual CLI recovery passed: interrupted extraction never
+activated partial files; retry/reuse succeeded; changed runtime content was
+refused and restored exact bytes passed. Synthetic state was removed after
+process/handle checks; real private state was untouched. Retain receipts under
+.build/task47/stage2/cli-recovery-v1. This used frozen Stage 1 CLI bytes.
+
+Build the changed cache-retry source as a separate app-v4 candidate under
+.build/task47/stage2, using the existing build/package scripts, cargo target and
+authorized Developer ID. Keep the runtime pin, signed-v2 archive and loader
+entitlements unchanged. Peak additional output is budgeted at 512 MiB with
+3 GiB start headroom. Record exact source inputs before/after; preserve Stage 1
+app and all private state. New app/CLI need new notarization and affected GUI
+checks; previous notarization does not qualify changed executables. No public
+upload or final release is part of this preparation.
+
+
+## October 12 removal/reinstall preservation check
+
+The requester explicitly continued after actual save restoration and normal
+GUI shutdown. Use a disposable Applications directory and a sibling synthetic
+Application Support directory under .build/task47/stage2/removal-v1. Copy only
+the exact notarized app-v4 bundle (no Wine/runtime/prefix copy). Verify its file,
+mode and symlink inventory and signature, remove this trial copy, reinstall the
+same app, and compare the data sentinel inventory at every boundary. Run only
+the bundled CLI help and a missing-archive check against that synthetic root
+to verify the reinstalled executable reopens retained owned state and refuses
+the missing input. No GUI, Wine, network download or real private state is used.
+This is a lightweight filesystem/CLI check, not a fresh game relaunch proof.
+
+Budget: at most 64 MiB of disposable app/synthetic data and small receipts, with
+256 MiB start headroom. Preserve immutable app-v4 and all existing runtime/save
+inputs. After process completion and no scratch handles, remove only this new
+trial's scratch tree; retain the script, inventories, command outcomes and sizes.
+Logical/stat-allocated sizes and measured free-space change remain separate.
+Existing approved mydocs/working observation and plan locations are reused; no
+public user guide or product-documentation location change is made here.
+S2-download's actual interrupted network/GUI retry and S2-removal's post-reinstall
+GUI observation remain pending unless independently exercised; source seam and
+CLI outcomes must not silently replace those approved observations.
+
+
+## October 12 combined manual-verification request
+
+The requester wants the remaining interrupted-download GUI retry and actual
+post-reinstall launch performed together, without disturbing other work, and is
+willing to provide measured active gameplay. Root confirms there is no current
+#47 GUI grant; the first ready D33 native-control interval has priority. Prepare
+exact readiness before any new app/Wine/Steam/game execution. A request for a
+slot is not admission and does not depend on Issue #11 being complete.
+
+Reuse unchanged notarized app-v4. For actual HTTPS interruption, target the
+pinned official SteamSetup.exe (2,380,800 bytes, SHA256
+7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb)
+through the existing shared archive routine in a disposable unauthenticated
+state. The runtime URL remains unset; do not describe this as an actual runtime
+network-download test or invent a release URL. Use only a process-scoped
+CURL_HOME/.curlrc transfer-rate limit, documented by curl, to make cancellation
+observable. Preserve TLS and pinned hash checks, original HOME and global network
+settings. Close the trial Pear window normally after partial bytes are observed;
+verify child exit, absent cache activation and scratch cleanup; reopen the same
+app to retry, verify the pinned final cache and actual Steam login screen. No
+login or proprietary game is needed in this disposable state.
+
+This disposable setup requires its own runtime extraction and prefix: the full
+runtime copy is justified by isolated preparation and cleanup; it must not share
+mutable authentication/game state or write through runtime links. Plan at most
+6 GiB additional space including Steam self-update, require 8 GiB free at
+admission, and recheck actual space before extraction. Preserve the immutable
+runtime archive. Retain only sanitized receipts after normal client shutdown,
+owned PID/birth and handle verification; delete only unauthenticated scratch
+once the recorded release conditions hold.
+
+Then reinstall an exact copy of the app in a task-owned Applications location
+and open the existing same-runtime #47 environment. Verify original app inventory
+and signature, real Steam library, normal Megabonk launch and retained settings.
+The requester can record active gameplay duration, excluding menu/pause time,
+and observe audio/input before normal save/exit/relaunch. Such evidence remains
+bound to this exact candidate; it does not approve a Stage 3 transition or final
+public-delivery claims. Existing authentication, games and both save backups
+remain retained. No new heavy run is started by this planning update.
+
+GitHub macOS CI is suitable for independent package/CLI and failure-path checks,
+not automatically the ordinary-player qualification: hosted images include
+developer tools. A separately recorded clean standard-user setup or separate
+Apple Silicon Mac is the preferred interactive route; record existing system-wide
+Rosetta, tools and security configuration and do not equate a fresh prefix with
+a clean environment. No user account, paid runner, workflow or public upload is
+created by this research.
+
+References reviewed October 12, 2026:
+- https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+- https://docs.github.com/en/actions/reference/runners/larger-runners
+- https://docs.github.com/en/actions/concepts/runners/github-hosted-runners
+- https://curl.se/docs/manpage.html
+
+
+## October 12 Stage 2 closure plan and same-Mac clean setup proposal
+
+Requested planning scope: finish Stage 2 without silently promoting synthetic
+evidence or adding Stage 3 gates. No account creation, OS installation, GUI run,
+new signing, publication or stage transition is performed by this plan update.
+The existing implementation plan remains the authoritative location; no new
+product document is introduced.
+
+### Stage 2 closure sequence
+
+1. Freeze app-v4, its bundled CLI, signed-v2 runtime and corresponding source
+   identities. Reconcile every S2 case with exact existing evidence. Reuse
+   unchanged observations; distinguish the frozen Stage 1 CLI extraction trial
+   from changed app-v4 source tests. In particular, explicitly resolve whether
+   the observed failed same-runtime transaction/recovery satisfies S2-update;
+   never claim a different-runtime migration or general updater was tested.
+   If the existing record misses a required assertion, add only that bounded
+   disposable check before closure.
+2. Obtain a fresh coordinated slot with exact inputs, private-state ownership,
+   process supervision, free-space admission and normal-release checks. The
+   current #11 D33 interval takes priority; no need to wait for all of Issue #11.
+3. Perform S2-download using unchanged app-v4 and the pinned official Steam
+   installer in disposable state, following the preceding process-local rate
+   limit/cancellation plan. Require partial download observed, no activated
+   partial artifact, normal Pear shutdown with child cleanup, successful GUI
+   reopen/retry, final pinned bytes and visible Steam login. Preserve HTTPS.
+   This qualifies the shared acquisition path for the Steam installer; final
+   hosted runtime download is a separate release-path check after URL wiring.
+4. Reinstall the unchanged app copy, retaining the existing separate #47 state.
+   Require exact bundle/signature identity, normal Steam library, owned game
+   launch, preserved settings/progress and normal game/client/app shutdown.
+   Combine S2-removal's actual relaunch with the compatible recovery check where
+   valid. Do not repeat already-qualified actual save restoration merely for
+   counting tests; preserve baseline and changed-save backups.
+5. Reconcile the complete eight-case matrix: S2-download/install/invalid/space/
+   repeat/update/save/removal. Required unavailable or failed observations stay
+   open. Run governance and diff checks, affected focused tests only if inputs
+   changed, verify that no private data is staged, write the Stage 2 report
+   through the stage-report procedure, and commit source plus report together.
+   Request Stage 3 continuation only after this completion gate passes.
+
+Success means setup failure is recoverable and reinstall/recovery preserves
+state for the declared candidate. It does not mean a public download, every game,
+Cloud synchronization or Rosetta-free support is qualified. Retention remains
+the preceding 6 GiB peak/8 GiB admission proposal for disposable setup; avoid
+concurrent full copies and retain all authenticated data. Actual free space must
+be rechecked because other work shares the volume.
+
+### Same-Mac clean setup (Stage 3 proposal, not a Stage 2 blocker)
+
+The approved S3-clean criterion already allows a recorded clean OS/test-user
+setup; a second physical Mac is not compulsory. Recommend a new standard macOS
+user for the first practical pass. The requester creates its password directly
+in System Settings. Do not use Guest, migrate account data, sign into iCloud,
+copy developer shell configuration, or adopt another user's Pear/Steam prefix.
+Record prior app/runtime/cache absence, system-wide Rosetta/developer tools,
+security settings and hardware/macOS identity. Existing system-wide tools and
+trust state are shared, so report this as a fresh-user setup on the same Mac.
+
+Use final distributable bytes obtained through the intended browser delivery
+route. Open through Finder with normal protections and preserved quarantine;
+require no developer environment overrides, build tool installation, credentials
+copying or security bypass. Install into a location supported for a standard
+user, prepare fresh runtime/Steam state, sign in directly to official Steam and
+download the owned game. Record loaded runtime dependencies to detect accidental
+use of Homebrew, a developer checkout or another user's files. A static source
+inspection or restricted PATH alone cannot establish their absence.
+
+After startup, the requester can perform measured 20-minute active gameplay,
+excluding menus/pauses, check input/audio, save, exit and relaunch in this same
+clean-user session. This can combine S3-clean, S3-play and S3-resume on identical
+final bytes once Stage 3 is authorized. Preserve original-user login/saves;
+Steam Cloud behavior remains explicit rather than assumed. Schedule a dedicated
+interval: fast user switching does not stop other users' processes and all
+users still share GPU/memory/disk. Do not reboot or log out active work sessions.
+
+A stronger optional route is fresh compatible macOS on a separate APFS volume
+or external SSD, without Migration Assistant or developer tools. It preserves
+the original OS when correctly installed to the separate target, but needs a
+backup, sufficient storage and coordinated reboot. Current observed free space
+is only about 14 GiB; no internal second-OS installation is planned. An external
+SSD is preferable if this stronger check becomes necessary. This still tests
+the same physical hardware and does not establish broad Mac compatibility.
+
+Account creation, volume changes and reboot are separate future user actions,
+not authorized execution from this planning request. GitHub CI can supplement
+package and failure-path checks, but its developer-preconfigured runner is not
+a substitute for the recorded interactive clean-user/clean-OS flow.
+
+Apple references reviewed October 12, 2026:
+- https://support.apple.com/en-gb/guide/mac-help/mchl3e281fc9/26/mac/26
+- https://support.apple.com/en-ca/118282
+
+## October 12 authorized independent supervisor preparation
+
+The requester, through the explicitly authorized coordinator, requested concrete
+Stage 2 execution supervision and small independent tests while D33 retains
+actual-play priority. Add an operator-only Python driver at
+preview/validation/stage2_supervisor.py and focused standard-library tests at
+preview/test_stage2_supervisor.py. This is not app/runtime product code and does
+not change Wine/FEX, signatures or the final candidate. Reuse the existing
+Stage 2 grant/hash/shared-lock and normal Steam shutdown patterns, fixing the
+previous transient-tccd ownership error by baseline identity classification.
+
+The driver will require an exact single-use Root grant and current assignment,
+verify input hashes and output absence, hold the shared lock, and accept only
+allowlisted phase commands through a task-local request queue. GUI window close
+and human visual observations remain operator actions, never inferred from a
+process exit. Track PID birth/executable identity, distinguish pre-existing OS
+services from newly observed owned processes, and require zero owned identities
+and zero app/state handles before release. On failed checks stop new launches;
+retain private state and allow normal shutdown/release only. No broad kill,
+security bypass, real-account mutation, automatic retry loop or Stage 3 work.
+
+Prepare exact argv, runtime environment, per-command limits, monitored output/log
+limits and manual observation criteria before submitting readiness. Small tests
+use temporary synthetic files and injected process/handle snapshots, never the
+shared lock, real GUI, Wine, runtime build or private data. Budget under 20 MiB
+and one short Python test run; remove fixtures on completion. Retain driver,
+tests, ready manifest and sanitized evidence through Stage 2 review. Keep an
+explicit pending report outline in existing observation JSON until completion;
+do not write a completed Stage 2 report while required GUI checks remain pending.
+
+
+## October 12 cloud preparation with unchanged qualification gates
+
+The requester chose cloud development with locally downloaded candidate testing,
+explicitly retaining interrupted-download GUI retry, actual post-reinstall app
+execution and all mandatory pre-release checks. This changes execution locations,
+not the approved acceptance matrix or stage progression. This plan extension is
+Issue-specific workflow material in this existing plan; no product-document move
+or second roadmap is introduced.
+
+Reuse preview/build.sh, package.py, runtime input pins, existing source tests and
+notarization procedures. Keep the current signed runtime immutable when its
+recorded inputs remain valid. Do not rebuild Wine merely to move development.
+Cloud coding handles source, website/document and portable checks. A macOS CI
+runner handles the existing Apple-tool-dependent build/sign/package checks;
+Swift/AppKit, native smoke builds and actual macOS process/handle supervision
+cannot be qualified by Linux fixture success. Actual GUI/game observations remain
+on the requester's Mac under the existing shared-resource admission policy.
+
+Before cloud handoff, preserve current uncommitted Stage 2 changes in an explicitly
+identified source checkpoint without claiming Stage 2 completion. Transfer only
+reviewed source and approved immutable artifacts. Do not upload the entire .build
+folder, private prefixes, game data, saves, diagnostic logs, local Keychain or
+signing private keys. Hosted signing requires separately authorized credential
+provisioning; existing local certificate permission is not cloud-key-export
+permission. Local absolute-path ready/grant manifests remain local evidence and
+are not portable cloud execution instructions.
+
+| Required evidence | Execution location and retained boundary |
+|---|---|
+| S2-download | Local GUI: interrupt an owned download, close/reopen and retry; no partial activation, pinned successful bytes. Current SteamSetup case remains distinct from the final hosted-runtime delivery path. |
+| S2-install/invalid/space/update | Preserve all eight-case matrix criteria and approved exact-source seam allowances. Portable mocks may run in cloud; actual macOS installer/CLI evidence and unresolved update-scope reconciliation remain explicit. |
+| S2-repeat/save | Reuse unchanged exact-input observations; rerun affected checks if CI output, runtime, configuration or current client/game invalidates them. Preserve current and restored local saves. |
+| S2-removal | Locally remove/reinstall the candidate app without removing state; actually open the reinstalled GUI, Steam and game and confirm retained progress. An offline file-copy test alone does not close this case. |
+| Final package/security | macOS CI verifies final app/CLI/runtime identity, signatures, notarization and applicable tickets/assessments; local browser-download/Finder first-open under normal protections remains mandatory. |
+| S3-play/resume/clean | After Stage 2 completion and Stage 3 approval: measured 20-minute active play, input/audio, save/quit/reload and recorded second clean setup. Same-Mac fresh user is an explicitly bounded option, not a new bottle or a CI build VM equivalent. |
+| Licensing and publication | Matching source/patches/locks/build instructions and notices, package allowlist and private-data audit, accurate user instructions/download links and final publication/visibility authorization remain required. |
+
+Candidate CI must upload reviewable private/test artifacts without automatically
+publishing a user-ready release. Bind each test record to source revision,
+app/CLI/runtime digests, package SHA-256, toolchain and host/client/game context.
+The existing package.py --release checks do not consume human GUI qualification;
+a future publication workflow must separately require reviewed local evidence
+for the exact candidate. A green build or Apple acceptance alone cannot pass it.
+Promote the tested final package bytes without rebuilding; rebuilding, resigning,
+stapling, changing the runtime URL or repackaging creates a new candidate identity
+and requires the applicable package/security/delivery and behavior revalidation.
+Do not blanket-repeat unaffected evidence or inherit invalidated evidence.
+
+Cloud setup and CI implementation are preparation work, not an implicit Stage 3
+start or public release. Audit/pin the available macOS SDK/toolchain and storage
+before running builds, configure approved artifact access without exposing private
+state, and keep credentials out of PR jobs. Existing #11 no-fallback first-play
+priority remains unchanged; no heavy local run is started by this planning work.
+Only real local GUI/game sessions require the local execution slot; cloud jobs
+must use their own runner and output roots rather than a local self-hosted runner.
+
+Storage for this plan-only change is negligible; no runtime copies or cloud
+artifacts are created. Before actual CI execution, record per-job peak storage,
+exact immutable runtime/source inputs, candidate retention through local review,
+artifact access and release conditions. Preserve the currently submitted local
+supervisor readiness bytes and all recovery backups.
+
+
+### Authorized cloud handoff implementation, October 12
+
+The requester explicitly continued this plan. Prepare a candidate-only workflow
+at .github/workflows/preview-candidate.yml, portable test entry
+preview/ci_checks.py, and task-specific handoff instructions at
+mydocs/working/task_m3_47_cloud_handoff.md. Reuse pinned checkout/upload actions
+already used in this repository and preview/build.sh/package.py rather than
+introducing a replacement build system. The new workflow has contents:read only,
+no signing secrets, no releases/Pages mutation and no Wine/Steam/game execution.
+Its ad-hoc-signed output is not an ordinary-user test release. Prepare hosted
+signing only after separately approved credential provisioning.
+
+Use the existing codex/task47 local branch and codex/publish-task47 remote branch
+for an explicitly incomplete Stage 2 cloud handoff checkpoint, without opening
+a completion PR or merging master. Push this reviewed source checkpoint to the
+existing private repository to make it available to cloud tasks and trigger the
+bounded CI build; do not claim Stage 2 complete. Include existing task-owned
+recovery changes after checking their diff, preserving immutable prior evidence.
+
+One Linux portable-check job (10 minutes maximum) and one macOS 26 ARM64 app/CLI
+build job (30 minutes maximum) use GitHub-hosted runners, never this Mac. Pin Rust
+1.94.1 and select Xcode 26.5 explicitly; record actual SDK, compiler and runner
+image. Mismatched prerequisites fail rather than silently switching. Allow about
+3 GiB tool/dependency/target scratch plus 1 GiB uncertainty, require 6 GiB initial
+free space, and retain only app/CLI ZIPs, checksums and sanitized build provenance
+for 14 days as private Actions artifacts. Runtime/archive/source-kit inputs stay
+local unchanged for now; no full runtime copies or builds are needed. Scratch is
+released with the hosted job; preserve/download the selected candidate and its
+receipts before expiration when it is needed for subsequent signing/review.
+Local Python fixtures remain below 20 MiB and clean up their own temporary state.
+
+Verification: strict non-skipped Python discovery, existing packaging/runtime
+boundary fixtures, actionlint for workflow syntax, governance and git diff checks;
+then inspect actual hosted job outcomes/artifact manifest. A hosted build failure
+is fixed only in the affected preparation path. No new local heavy slot is used.
+The local supervisor readiness and 16 frozen inputs are unchanged; cloud output
+requires its own candidate identity and future local test admission.

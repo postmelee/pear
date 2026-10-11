@@ -1,0 +1,180 @@
+{
+  "task": 47,
+  "stage": 2,
+  "status": "in progress",
+  "approved_by": "Requester explicit continuation after Stage 1 commit 2c59711",
+  "baseline_commit": "2c59711",
+  "source_inputs": {
+    "preview/src/lib.rs": "c7809aba381c66eb3858e99cc722fa61c0c839a10ede3c4564aae7e3de6d670e",
+    "preview/src/recovery_tests.rs": "e00d40d0e5d9b0f8fbafc26c7b936635e903c666b7b087b8303a98ac1fafecfc",
+    "preview/src/runtime_pin.rs": "accb37405d4c8435a60b684babec32bd7f7c5fa71a456334c1c3532f00f92113"
+  },
+  "synthetic_tests": {
+    "rust": {
+      "passed": 21,
+      "new_recovery_cases": 8,
+      "log": ".build/task47/stage2/unit/rust.log",
+      "log_sha256": "5c14faab85a5149b6f9ebb30fa30f718fcaee754b6abed4bf32d267f76690f73"
+    },
+    "python": {
+      "passed": 34,
+      "log": ".build/task47/stage2/unit/python.log",
+      "log_sha256": "fd203a060c7ca663637ae4a7de9be0666be2f2c3e98c3bacb4ab44c95672f4c7"
+    }
+  },
+  "case_scope": {
+    "S2-download": "Partial/error/hash rejection/retry and valid-cache reuse pass in source seam; actual GUI/network interruption pending",
+    "S2-install": "Source seam and frozen signed CLI actual extraction interruption/retry/reuse passed; no partial activation; scratch removed",
+    "S2-invalid": "Truncated/wrong/missing inputs rejected; verified supplied input preferred; damaged regular cache retries only with a pinned URL; links, offline cache and unrelated files preserved",
+    "S2-space": "Real statvfs insufficient-space branch passes with impossible requirement; no full filesystem or actual quota test",
+    "S2-update": "Failed same-runtime transaction preserves prior installation and private sentinel; migration/update rollback is not qualified",
+    "S2-repeat": "New notarized app-v4 reopened same runtime/authenticated state twice; both normal Steam game launch requests succeeded; fresh Steam initialization and requester input/normal exit confirmed.",
+    "S2-save": "Passed same-host local restoration: requester changed sniper enabled to disabled, normally exited; changed state retained; baseline eight files restored while Cloud off and no prefix handles; new game process loaded enabled state and normal input; requester normally exited. Requester confirmed Steam Cloud reenabled afterward; synchronization and cross-device recovery are not separately qualified.",
+    "S2-removal": "Passed offline disposable app removal/reinstall: separate synthetic state unchanged at every boundary; exact app inventory/signature retained; reinstalled CLI opens retained owned state and rejects absent archive. Actual post-reinstall GUI/runtime/game launch remains pending."
+  },
+  "limitations": [
+    "Synthetic setup-failure cases and frozen Stage 1 CLI trials retain their recorded scopes; they do not prove all failure paths in app-v4.",
+    "New app-v4 actual repeated Steam/game launch and local save restore are verified on the same host; no second clean Mac or final public delivery qualification.",
+    "S2-removal offline preservation passed, while post-reinstall GUI remains pending; actual network interruption and filesystem quota exhaustion have not been performed.",
+    "Steam Cloud setting was restored by the requester; full synchronization and cross-device recovery were not separately qualified.",
+    "No new heavy/UI run before fresh coordination."
+  ],
+  "private_state_modified": true,
+  "public_release": false,
+  "signed_cli_trial": {
+    "status": "passed",
+    "whole_release": ".build/task47/stage2/cli-recovery-v1/whole-release.json",
+    "sha256": "b10cf0b32e595594d546a7d71045d28565c30cb24ec28fb922d812d8e82aa1e8",
+    "scope": "Frozen Stage1 CLI actual interruption/retry/reuse/tamper refusal/restore; no Wine, Steam, GUI or game",
+    "synthetic_state_removed": true
+  },
+  "private_backup": {
+    "manifest_sha256": "7ecf455d23c23d4d6cdfc23a6d973409b927b5af9584f7f36d267d410f317adc",
+    "files": 8,
+    "bytes": 68813,
+    "original_modified": false
+  },
+  "new_app_candidate": {
+    "build_whole_release": ".build/task47/stage2/app-v4/build-whole-release.json",
+    "build_receipt_sha256": "065e1234eed27cd76d76806830c93dadfa446c225e6a04ad1a276bf5c45659c1",
+    "app_notarization": {
+      "message": "Successfully received submission info",
+      "createdDate": "2026-10-11T15:13:20.680Z",
+      "name": "Pear-0.1.0-preview.1-macos-arm64.zip",
+      "id": "4a4a2c9a-c184-4658-98ff-1e0698f5cf9a",
+      "status": "Accepted"
+    },
+    "cli_notarization": {
+      "message": "Successfully received submission info",
+      "name": "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip",
+      "status": "Accepted",
+      "id": "6364ec68-960d-49c0-be8a-57c58c942d97",
+      "createdDate": "2026-10-11T15:13:56.506Z"
+    },
+    "policy_checks_sha256": "7a4bf8b3ed7ec17989c84f85128f5055a9a7a685d3eae0de44031cf00ffe5dec",
+    "policy_checks": "All seven passed: staple, staple validation, deep strict signature, Gatekeeper, distribution, CLI notarization, CLI help",
+    "gui": "Passed repeated app/Steam/game launch and actual local save restoration; normal Steam/Pear exit and independent owned-process/handle/lock release verified. Steam Cloud setting restored.",
+    "gui_whole_release": {
+      "path": ".build/task47/stage2/app-v4/gui-validation/whole-release.json",
+      "sha256": "4cc396d9b2eed1a9a59ae11fdb72c73d8b997f3c06ae386e83e379c4c9b2583a",
+      "released": true,
+      "scope": "Two same-host launches; requester visual/input/normal-exit confirmations; actual local backup restore; no timed gameplay claim"
+    }
+  },
+  "private_state_preservation": "Local baseline restored; changed-current and earlier baseline retained privately; no authentication/game installation reset",
+  "removal_trial": {
+    "result": ".build/task47/stage2/removal-v1/result.json",
+    "result_sha256": "2fc066650f80cb71ef1ba31536dc1daaa48f62f830538b5d692558850d79415c",
+    "script_sha256": "6d7fdbb372a3d5c5f3234e88374e44d5c85c2d6b259ab2d74640108e5f86d87a",
+    "private_state_accessed": false,
+    "scratch_removed": true,
+    "removed_logical_bytes": 6237185,
+    "removed_stat_allocated_bytes": 6311936,
+    "measured_free_delta_bytes": 6336512,
+    "scope": "Disposable bundle and synthetic state only; no Wine/Steam/game launched"
+  },
+  "remaining_stage2": [
+    "Actual owned SteamSetup download interruption followed by GUI reopen/retry, using the pinned official 2380800-byte installer; exact ready manifest prepared, execution requires new grant.",
+    "Post-reinstall GUI/runtime reuse observation under fresh coordination; no active GUI grant.",
+    "Reconcile S2-update and source-seam boundaries against the required scenario matrix before any Stage 2 completion report."
+  ],
+  "closure_preparation": {
+    "integrity_receipt": ".build/task47/stage2/closure-preparation-v1/integrity.json",
+    "integrity_sha256": "e3789d9658d0a1a24bc6cb5aad15b7cc90a9e981ac8d86ddb9169a3778c96045",
+    "network_target_receipt": ".build/task47/stage2/closure-preparation-v1/network-target.json",
+    "network_target_sha256": "8d5c10e84fba65690179bf20a35e5c34980f16622b7d13178365567b08b41927",
+    "procedure": ".build/task47/stage2/closure-preparation-v1/gui-procedure.json",
+    "procedure_sha256": "e3b050b508d56cdb78aee7f2ae6f184a462622fdf5aa10fb3a17fe28021c26f9",
+    "runtime_archive_matches_pin": true,
+    "app_and_source_unchanged": true,
+    "new_execution": false,
+    "S2_update_audit": "Exact current source test invalid_layout_and_failed_replacement_keep_previous_runtime_and_private_state covers partial transaction failure and activation refusal with previous inventory/private sentinel preserved. Real Stage1 CLI tamper/refusal/exact restoration is supporting evidence only. No general updater or different-runtime migration exists or is qualified; final case reconciliation remains explicit."
+  },
+  "supervisor_preparation": {
+    "status": "prepared-not-executed",
+    "driver": {
+      "path": "preview/validation/stage2_supervisor.py",
+      "sha256": "456416ed2101d1e734787dd24d6c3bf674d0b728211f67813e42a0fe74bcce33",
+      "size_bytes": 17778
+    },
+    "tests": {
+      "path": "preview/test_stage2_supervisor.py",
+      "sha256": "2dc1d509e4316cbb4665d0da33e18f5e64add71841c8e8073c853c2a9a648c62",
+      "size_bytes": 7652
+    },
+    "unit_log": {
+      "path": ".build/task47/stage2/supervisor-preparation-v1/unit.log",
+      "sha256": "32784d11131f8daf9f96ecdb956858bd11c809819f0e138b978bdf8757746474",
+      "size_bytes": 2622
+    },
+    "unit_tests_passed": 17,
+    "ready": {
+      "path": ".build/task47/stage2/supervisor-preparation-v1/ready.json",
+      "sha256": "4d4baa9da182a9ff0faa0db5129c51ac32c8783be019fae0d6614e0b3163a83e",
+      "size_bytes": 22016
+    },
+    "operation_id": "task47-stage2-supervised-gui-v1",
+    "input_validation": "Passed exact input hashes and complete app inventory; no execution",
+    "runtime_or_gui_started": false,
+    "shared_lock_acquired": false,
+    "private_state_accessed_by_tests": false,
+    "grant_required": true,
+    "budget_scope": "Sampled output/log/free-space thresholds; not hard OS quotas. Threshold failures stop new launches and preserve ownership for normal cleanup.",
+    "initial_test_fixture_corrections": "Two initial fixture errors corrected: temporary path canonicalization and synthetic supervisor PID; all 17 cases then passed."
+  },
+  "report_outline": {
+    "status": "draft-outline-only; required GUI observations pending",
+    "completed": [
+      "Pinned app-v4 and CLI notarization and package policy checks",
+      "Repeated same-host Steam/game launch and actual local save restoration",
+      "Source recovery seams, signed CLI interruption/refusal/retry and offline synthetic removal preservation",
+      "Operator supervision preparation and 17 synthetic tests"
+    ],
+    "pending": [
+      "Actual owned network interruption and GUI retry",
+      "Actual reinstalled app Steam/game reuse",
+      "Final scenario scope reconciliation and independent execution release"
+    ],
+    "claim_limits": [
+      "No general updater or different-runtime migration qualification",
+      "No timed 20-minute gameplay or fresh-user Stage 3 qualification",
+      "No public delivery qualification or public release performed"
+    ],
+    "report_destination_after_completion": "mydocs/working/task_m3_47_stage2.md"
+  },
+  "cloud_preparation": {
+    "status": "source prepared; hosted execution pending",
+    "workflow": ".github/workflows/preview-candidate.yml",
+    "handoff": "mydocs/working/task_m3_47_cloud_handoff.md",
+    "portable_tests": 51,
+    "skipped": 0,
+    "skip_negative_control": "passed: intentionally skipped suite returns failure",
+    "actionlint": "passed after correcting job-level runner context to step GITHUB_ENV",
+    "runtime_or_gui_started": false,
+    "private_credentials_transferred": false,
+    "cloud_environment_created": false,
+    "stage2_complete": false,
+    "candidate_scope": "Ad-hoc signed app/CLI only; no runtime, no notarization, no public release",
+    "portable_log_sha256": "1e421b676afe0450e79d0251323828dbd604b57d7ea1f9ec045306737ac318ed"
+  }
+}
