@@ -236,6 +236,31 @@
       "preview/sign_candidate.py",
       "preview/test_sign_candidate.py"
     ],
-    "synthetic_claim": "Refusal of private payloads, wrong/dirty source, prior-output overwrite, non-Accepted receipts; temporary output cleanup and input preservation; success still requires both tickets and package-policy checks."
+    "synthetic_claim": "Refusal of private payloads, wrong/dirty source, prior-output overwrite, non-Accepted receipts; temporary output cleanup and input preservation; success still requires both tickets and package-policy checks.",
+    "hosted_run": "https://github.com/postmelee/pear/actions/runs/38166760208",
+    "hosted_result": "58 Python fixtures passed; existing Rust recovery test failed (20/21). Sign job skipped; no credentials present.",
+    "recovery_followup": "Explicit Session unlock and deterministic duplicated-descriptor regression prepared; fresh hosted verification pending. Existing frozen local candidate is unchanged; future changed app requires new local admission."
+  },
+  "public_source_review_20261012": {
+    "remote_branches": 3,
+    "history_blobs": 2100,
+    "bytes_scanned": 60777999,
+    "selected_secret_pattern_matches": 0,
+    "credential_filename_matches": 0,
+    "historical_blobs_with_personal_paths": 19,
+    "artifact_count": 16,
+    "master_missing": [
+      "LICENSE",
+      "docs/rosetta-preview.md",
+      "docs/development/preview-release.md",
+      ".github/workflows/preview-candidate.yml"
+    ],
+    "scope": "Bounded pattern scan only; no complete publication/privacy audit claim",
+    "remaining": [
+      "Current Issues/PR/Discussions and Actions log/artifact review",
+      "Default-branch license and public-entry alignment",
+      "Final visibility authorization"
+    ],
+    "visibility_change_performed": false
   }
 }

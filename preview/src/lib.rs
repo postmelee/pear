@@ -143,6 +143,14 @@ pub struct Session {
     pub root: PathBuf,
     _lock: File,
 }
+impl Drop for Session {
+    fn drop(&mut self) {
+        // A concurrently spawned child can briefly retain the open description
+        // until exec even with CLOEXEC. Session owns the lock, not that child.
+        // SAFETY: the owned file stays live until after this destructor.
+        unsafe { libc::flock(self._lock.as_raw_fd(), libc::LOCK_UN) };
+    }
+}
 impl Session {
     pub fn open(path: &Path) -> Result<Self> {
         need(path.is_absolute(), "State path must be absolute.")?;
@@ -686,6 +694,22 @@ mod tests {
     use std::os::unix::fs::symlink;
     fn scratch() -> Stage {
         Stage::new(&std::env::temp_dir()).unwrap()
+    }
+    #[test]
+    fn session_drop_releases_lock_despite_a_duplicated_descriptor() {
+        let owner = scratch();
+        let root = owner.path.join("state");
+        let session = Session::open(&root).unwrap();
+        // Model the shared open description retained between another thread's
+        // fork and exec, without a timing-dependent real process race.
+        let duplicate = session._lock.try_clone().unwrap();
+        assert!(Session::open(&root).is_err());
+        drop(session);
+        let reopened = Session::open(&root).unwrap();
+        drop(duplicate);
+        assert!(Session::open(&root).is_err());
+        drop(reopened);
+        assert!(Session::open(&root).is_ok());
     }
     #[test]
     fn owned_state_reopens_and_rejects_concurrent_session() {

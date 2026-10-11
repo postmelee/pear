@@ -1920,3 +1920,17 @@ Resume existing read-only publication inventory; do not change visibility or
 provision secrets until the reviewed final-action approval and protection checks.
 58 portable fixtures, actionlint and governance passed; actual hosted signing is
 unperformed. No local build/runtime/game was started.
+
+
+Hosted run 38166760208 passed 58 Python fixtures but failed one existing Rust
+recovery reopen test (20/21 passed) with a retained Session lock. Inspecting its
+close/reopen boundary identified a shared-open-description lifetime risk during
+concurrent child spawning. A disposable local fcntl control demonstrated that
+closing the original descriptor retains the lock while its duplicate is live;
+explicit unlock permits reacquisition. Add explicit Session Drop unlock and a
+Rust duplicate-descriptor regression covering concurrent exclusion, reopen and
+survival of the new owner's lock after the old duplicate closes. Do not hide the
+failure by serializing or skipping tests. Verify the changed core in hosted CI;
+this changes the future app/CLI identity, so the prior local frozen candidate is
+historical evidence and a newly signed candidate needs fresh local admission.
+No existing signed bytes, retained private state or local ready files are mutated.
