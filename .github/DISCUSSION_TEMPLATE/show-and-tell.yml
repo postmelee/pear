@@ -1,0 +1,114 @@
+title: "[Game report] "
+body:
+  - type: markdown
+    attributes:
+      value: "Report observed behavior, including failures. This is a community report, not a support certification. Do not attach game files, account details, QR codes, saves, whole prefixes or raw logs."
+  - type: input
+    id: game
+    attributes:
+      label: Steam store URL or App ID
+      description: The numeric App ID identifies the game; its official name is checked before publication.
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Test date (YYYY-MM-DD)
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Pear, runtime and game versions
+      description: Include Pear release or commit, component versions, Steam/game build and settings. Write unknown for values you cannot find.
+    validations:
+      required: true
+  - type: dropdown
+    id: path
+    attributes:
+      label: Execution path
+      options:
+        - Rosetta Preview
+        - Rosetta-free development setup (claim needs process and library evidence)
+        - Unknown
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Mac chip, memory and macOS version
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Furthest observed behavior
+      options:
+        - Failed before game launch
+        - Launched but unusable
+        - Menu visible and interactive
+        - Active gameplay (describe duration and limits below)
+        - Regression from an earlier configuration
+    validations:
+      required: true
+  - type: input
+    id: play_minutes
+    attributes:
+      label: Active play minutes
+      description: Enter measured active gameplay minutes, or Not measured.
+    validations:
+      required: true
+  - type: dropdown
+    id: input
+    attributes:
+      label: Input
+      options:
+        - Not tested
+        - Observed
+        - Failed
+    validations:
+      required: true
+  - type: dropdown
+    id: audio
+    attributes:
+      label: Audio
+      options:
+        - Not tested
+        - Observed
+        - Failed
+    validations:
+      required: true
+  - type: dropdown
+    id: save_reload
+    attributes:
+      label: Save / reload
+      options:
+        - Not tested
+        - Observed
+        - Failed
+    validations:
+      required: true
+  - type: dropdown
+    id: recovery
+    attributes:
+      label: Recovery
+      options:
+        - Not tested
+        - Observed
+        - Failed
+    validations:
+      required: true
+  - type: textarea
+    id: observations
+    attributes:
+      label: Settings, steps and observations
+      description: Describe settings, exact steps, symptoms, game-specific limits and any workaround. Write Not recorded where appropriate.
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Before submitting
+      options:
+        - label: I used a legitimately owned game and removed private data. I understand this public report may be summarized in reviewed Pear records with a link here.
+          required: true

@@ -52,7 +52,13 @@ Reuse existing projects with attribution, identifiable revisions and their licen
 
 FEX's [contribution policy reviewed on September 28, 2026](https://github.com/FEX-Emu/FEX/blob/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/CONTRIBUTING.md) prohibits AI/ML/LLM code contributions. Do not submit AI-generated Pear code upstream to FEX or obscure its origin to evade that rule. Choosing optional AI assistance for other Pear work does not override this restriction, ownership rights, technical review or any other upstream policy.
 
-Pear's own product-license choice remains unresolved before public release. The MIT attribution for the installed Hyper-Waterfall framework does not choose a license for Pear or relicense reused components.
+Original Pear code is licensed under [GPL-3.0-or-later](../LICENSE), except where
+a file or directory specifies separate terms. Contributions to that code must be
+available under those terms, preserving copyright and upstream attribution.
+Existing MIT/LGPL/GPL notices and additional permissions remain in force; the
+Hyper-Waterfall framework retains its MIT attribution. Do not replace upstream
+terms with Pear's root license. The [Preview component record](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/preview/THIRD_PARTY_NOTICES.md)
+tracks the separate runtime source/notice work for the candidate.
 
 ## Documentation changes
 

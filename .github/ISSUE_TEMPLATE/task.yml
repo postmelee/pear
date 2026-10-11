@@ -1,5 +1,5 @@
-name: Hyper-Waterfall Task
-description: Create a tracked task that can be used as the next AI work prompt.
+name: Maintainer task (Hyper-Waterfall)
+description: Internal planned work; players should use the bug form or Discussions.
 title: "Task: "
 body:
   - type: markdown

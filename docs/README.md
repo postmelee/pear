@@ -2,6 +2,18 @@
 
 `docs/` is Pear's official root for product, technical and contributor documentation. The [delivery plan](delivery-plan.md) is the single roadmap and completion-criteria reference; the root [README](../README.md) provides a short project overview. The [architecture](architecture.md) defines the intended runtime. These requirements do not establish completed implementation or qualified support.
 
+## Preview and contribution entry points
+
+The Rosetta Preview is under qualification in [Issue #47](https://github.com/postmelee/pear/issues/47).
+There is no public app download yet. These guides are pinned to the reviewed
+Preview source while its implementation remains outside the integration branch:
+
+- Learn the first-use flow: [official Steam session](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/rosetta-preview.md#app-experience).
+- Complete a task: [report a game result](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/compatibility/README.md#submit-a-result) or [make a first contribution](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/development/getting-started.md).
+- Look up facts: [record meanings](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/compatibility/README.md#read-the-records) and [Preview CLI/data reference](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/rosetta-preview.md#optional-cli).
+- Understand the direction: [Rosetta-free contribution path](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/development/rosetta-free.md), [architecture](architecture.md) and [delivery plan](delivery-plan.md).
+
+
 ## Start here
 
 - [Delivery plan](delivery-plan.md): Phase 1-5, technical M1, proposed ordinary-user M2, independent R1 and acceptance dependencies.
