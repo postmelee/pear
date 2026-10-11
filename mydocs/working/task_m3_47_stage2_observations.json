@@ -198,7 +198,7 @@
     "provenance_sha256": "fe0aa1c3b200576a055a40a9f7e100104b886c1e136419f4d7e05be8ab94f689",
     "candidate_not_for_normal_security_user_testing": true,
     "cloud_environment": {
-      "name": "Pear Preview \u00b7 Issue 47",
+      "name": "Pear Preview · Issue 47",
       "published": true,
       "visibility": "Only me",
       "source_checkpoint": "c8c7e25739f59c22c9fce5f66b90dcb84f3edd99",
@@ -239,7 +239,33 @@
     "synthetic_claim": "Refusal of private payloads, wrong/dirty source, prior-output overwrite, non-Accepted receipts; temporary output cleanup and input preservation; success still requires both tickets and package-policy checks.",
     "hosted_run": "https://github.com/postmelee/pear/actions/runs/38166760208",
     "hosted_result": "58 Python fixtures passed; existing Rust recovery test failed (20/21). Sign job skipped; no credentials present.",
-    "recovery_followup": "Explicit Session unlock and deterministic duplicated-descriptor regression prepared; fresh hosted verification pending. Existing frozen local candidate is unchanged; future changed app requires new local admission."
+    "recovery_followup": "Explicit Session unlock and duplicated-descriptor regression verified in hosted run 38167091034. Existing frozen local candidate is unchanged; changed app requires new local admission.",
+    "hosted_recovery_fix": {
+      "source_revision": "e27e002e4745cd1dbd7ac1b7245ac154e589711a",
+      "run": "https://github.com/postmelee/pear/actions/runs/38167091034",
+      "result": "success",
+      "python_tests_per_platform": 58,
+      "platforms": [
+        "Ubuntu",
+        "macOS ARM64"
+      ],
+      "rust_tests": 22,
+      "skipped_or_ignored": 0,
+      "signing_job": "skipped; approved SHA unset; no credentials provisioned",
+      "downloaded_archives": {
+        "Pear-0.1.0-preview.1-macos-arm64.zip": {
+          "size": 5291542,
+          "sha256": "75394e3eb6b7007cd1c9894f01507968fceb745c747e457b3971d4de020213cc"
+        },
+        "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+          "size": 335662,
+          "sha256": "fe3e5530a5105c3c7ffe27c75c8e6eb29553edcccc224c85c7a41cac6b9b14dd"
+        }
+      },
+      "all_manifest_hashes_verified": true,
+      "local_execution": false,
+      "distribution_qualified": false
+    }
   },
   "public_source_review_20261012": {
     "remote_branches": 3,
@@ -257,10 +283,19 @@
     ],
     "scope": "Bounded pattern scan only; no complete publication/privacy audit claim",
     "remaining": [
-      "Current Issues/PR/Discussions and Actions log/artifact review",
+      "Final current-ref scan (history snapshot predates e27e002)",
+      "Actions logs/artifact contents and historical personal-path disclosure review",
       "Default-branch license and public-entry alignment",
       "Final visibility authorization"
     ],
-    "visibility_change_performed": false
+    "visibility_change_performed": false,
+    "github_surface_scan": {
+      "issues_and_prs": 49,
+      "issue_comments": 2,
+      "pr_review_comments": 0,
+      "discussions": 4,
+      "selected_secret_pattern_matches": 0,
+      "claim": "Bounded scan, not complete prose/privacy review"
+    }
   }
 }

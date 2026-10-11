@@ -1934,3 +1934,27 @@ failure by serializing or skipping tests. Verify the changed core in hosted CI;
 this changes the future app/CLI identity, so the prior local frozen candidate is
 historical evidence and a newly signed candidate needs fresh local admission.
 No existing signed bytes, retained private state or local ready files are mutated.
+
+
+### Hosted recovery fix and publication preparation receipt
+
+Source e27e002e4745cd1dbd7ac1b7245ac154e589711a passed hosted run
+[38167091034](https://github.com/postmelee/pear/actions/runs/38167091034):
+58 Python tests on each Ubuntu/macOS job and 22 Rust tests, with zero skips or
+ignored tests. App and CLI packaging succeeded; both downloaded archive sizes
+and SHA-256 values match the package manifest. Signing correctly remained skipped.
+These are ad hoc candidates, not Developer ID/notarized distribution evidence.
+The explicit Session unlock changes app/CLI source identity. The old local frozen
+readiness record describes only its old bytes; a newly signed candidate needs
+fresh readiness and local execution/recovery qualification. No local GUI started.
+
+Publication preparation scanned 2,100 historical blobs from the three remote refs
+at the recorded snapshot (before e27e002), plus 49 Issues/PRs, two issue comments
+and four Discussions. Selected credential patterns had no matches; this is not a
+complete security/privacy review. Nineteen historical blobs contain personal
+absolute paths. Current-ref, Actions log/artifact content and disclosure review
+remain. master lacks the approved GPL license and Preview entry/release documents
+that exist on this task branch. Align the public default-branch entry separately
+without merging unfinished Stage 2 solely to unlock CI. The owner has asked about
+public feasibility, not authorized visibility conversion. Keep secrets absent and
+the approved signing SHA unset until effective reviewer protection is verified.
