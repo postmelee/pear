@@ -218,6 +218,8 @@ jobs:
               quiet('/usr/bin/security', 'import', str(certificate), '-P', os.environ['PEAR_CERTIFICATE_PASSWORD'],
                     '-k', str(keychain), '-T', '/usr/bin/codesign')
               quiet('/usr/bin/security', 'set-key-partition-list', '-S', 'apple-tool:,apple:', '-s', '-k', password, str(keychain))
+              # Match the hosted macOS recipe: codesign needs search-list admission.
+              quiet('/usr/bin/security', 'list-keychains', '-d', 'user', '-s', str(keychain))
               quiet('/usr/bin/xcrun', 'notarytool', 'store-credentials', 'pear-ci-notary', '--keychain', str(keychain),
                     '--apple-id', os.environ['PEAR_NOTARY_APPLE_ID'], '--team-id', 'XH6JHKYXV8',
                     '--password', os.environ['PEAR_NOTARY_PASSWORD'])

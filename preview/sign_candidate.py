@@ -14,6 +14,14 @@ def run(*args):
     return subprocess.check_output([str(a) for a in args], text=True).strip()
 
 
+def verify_identity(identity, keychain):
+    identities = run('/usr/bin/security', 'find-identity', '-v', '-p',
+                     'codesigning', keychain)
+    fingerprints = re.findall(r'^\s*\d+\)\s+([0-9A-Fa-f]{40})\s', identities, re.M)
+    if identity.upper() not in {value.upper() for value in fingerprints}:
+        raise ValueError('Approved certificate is not a valid code-signing identity in the temporary keychain.')
+
+
 def accepted_submission(archive, profile, keychain):
     receipt = json.loads(run('/usr/bin/xcrun', 'notarytool', 'submit', archive,
                              '--keychain-profile', profile, '--keychain', keychain,
@@ -43,6 +51,7 @@ def sign_candidate(app, output, identity, keychain, profile, revision, team):
     output = output.resolve()
     if output == packages.REPO or app == output or app in output.parents:
         raise ValueError('Select a separate output directory.')
+    verify_identity(identity, keychain)
     run('/usr/bin/codesign', '--verify', '--deep', '--strict', app)
     # Staging is outside both the input app and final output; failures cannot
     # overwrite an earlier candidate or leave a success-looking package behind.

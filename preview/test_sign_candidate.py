@@ -52,6 +52,16 @@ class CandidateSigningTests(unittest.TestCase):
                     self.invoke(app, out, keychain)
             self.assertEqual((out / 'keep').read_text(), 'prior candidate')
 
+    def test_exact_valid_identity_required(self):
+        with patch.object(s, 'run', return_value='  1) ' + IDENTITY.upper() + ' "Synthetic Developer ID"'):
+            s.verify_identity(IDENTITY, Path('temporary.keychain-db'))
+        for output in ('0 valid identities found',
+                       '  1) ' + 'c' * 40 + ' "Different identity"',
+                       'Diagnostic text mentioning ' + IDENTITY):
+            with self.subTest(output=output), patch.object(s, 'run', return_value=output):
+                with self.assertRaisesRegex(ValueError, 'not a valid code-signing identity'):
+                    s.verify_identity(IDENTITY, Path('temporary.keychain-db'))
+
     def test_notary_requires_acceptance_and_valid_receipt(self):
         for receipt in [{'id': SUBMISSION, 'status': 'Invalid'},
                         {'id': SUBMISSION, 'status': 'In Progress'},
@@ -71,6 +81,8 @@ class CandidateSigningTests(unittest.TestCase):
             calls = []
             def command(*args):
                 calls.append(args)
+                if 'find-identity' in args:
+                    return '  1) ' + IDENTITY + ' "Synthetic Developer ID"'
                 if args[:4] == ('git', '-C', s.packages.REPO, 'rev-parse'):
                     return REV
                 if 'notarytool' in args:
@@ -91,6 +103,8 @@ class CandidateSigningTests(unittest.TestCase):
             before = {str(p.relative_to(app)): p.read_bytes() for p in app.rglob('*') if p.is_file()}
             submitted = []
             def command(*args):
+                if 'find-identity' in args:
+                    return '  1) ' + IDENTITY + ' "Synthetic Developer ID"'
                 if args[:4] == ('git', '-C', s.packages.REPO, 'rev-parse'):
                     return REV
                 if 'notarytool' in args:
@@ -114,6 +128,8 @@ class CandidateSigningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp); app, keychain = self.fixture(root)
             def command(*args):
+                if 'find-identity' in args:
+                    return '  1) ' + IDENTITY + ' "Synthetic Developer ID"'
                 if args[:4] == ('git', '-C', s.packages.REPO, 'rev-parse'):
                     return REV
                 if 'notarytool' in args:

@@ -343,3 +343,16 @@ Attempt 2 passed both portable fixtures and the hosted macOS app/CLI build.
 GitHub now reports Approved Developer ID candidate as waiting, with pending
 environment pear-preview-signing and owner approval available. No signing job
 has started; the owner was directed to Review deployments on the run page.
+
+
+### Hosted attempt 2 failure and repair
+
+Owner approved the protected job. Credential import and notary credential
+validation passed, but codesign reported no identity found before submitting
+anything to Apple notarization. Always-cleanup passed; no signed artifact uploaded.
+Removed PEAR_SIGNING_APPROVED_SHA after the failed run. Add the missing temporary
+user keychain search-list setup from GitHub's official hosted certificate recipe
+and require the exact valid signing identity before signing. No local identity,
+private export, app runtime code or entitlements changed. Portable tests: 59
+passed, zero skipped; actionlint, governance and whitespace passed. The repair
+requires another hosted run with owner approval before claiming success.

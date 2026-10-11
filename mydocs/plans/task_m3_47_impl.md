@@ -2102,3 +2102,18 @@ Attempt 2 passed both portable fixtures and the hosted macOS app/CLI build.
 GitHub now reports Approved Developer ID candidate as waiting, with pending
 environment pear-preview-signing and owner approval available. No signing job
 has started; the owner was directed to Review deployments on the run page.
+
+
+### Hosted identity discovery correction
+
+Attempt 2 imported the encrypted identity and validated dedicated notary
+credentials successfully, then codesign failed with no identity found before any
+notary submission. Always-cleanup passed and no signed artifact was uploaded.
+The approved SHA was removed. Inspecting GitHub's official macOS certificate
+recipe found the missing user keychain-search-list setup. Apply that step only
+inside the disposable hosted signing runner, retaining exact certificate selection
+and current trust policy. Add an early valid code-signing identity check and
+portable acceptance/refusal cases. No local Keychain, app runtime source, Wine,
+entitlements or private export changes. Actual success still requires a fresh
+owner-reviewed CI run; this is a repair within approved Stage 2 signing scope.
+Source: https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/sign-xcode-applications

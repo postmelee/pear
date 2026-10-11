@@ -377,8 +377,28 @@
     "candidate_sha": "e27e002e4745cd1dbd7ac1b7245ac154e589711a",
     "run_url": "https://github.com/postmelee/pear/actions/runs/38167091034",
     "attempt": 2,
-    "signing": "Waiting for required owner approval in GitHub; both preceding jobs passed in attempt 2",
+    "signing": "Attempt 2 failed before notarization: codesign no identity found; credentials provisioned and always-cleanup passed; approved SHA removed",
     "public_player_release": false,
     "local_gui_started": false
+  },
+  "hosted_identity_discovery_repair": {
+    "previous_run": "https://github.com/postmelee/pear/actions/runs/38167091034/attempts/2",
+    "failure": "codesign: no identity found before notarization",
+    "credential_provisioning": "passed",
+    "credential_cleanup": "passed",
+    "signed_artifact_uploaded": false,
+    "changes": [
+      "Add disposable hosted signing keychain to user search list following GitHub recipe",
+      "Require exact valid code-signing identity before codesign"
+    ],
+    "verification": {
+      "portable_tests": 59,
+      "skipped": 0,
+      "actionlint": "passed",
+      "governance": "37 documents, 354 targets",
+      "whitespace": "passed"
+    },
+    "actual_signing_after_fix": "pending owner-approved hosted run",
+    "local_keychain_changed": false
   }
 }
