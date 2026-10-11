@@ -2212,3 +2212,14 @@ without any post-close accessibility call. An orphan owned steamwebhelper and
 Wine services remained; whole-session cleanup and independent return are pending.
 Do not promote normal Steam/main exit to successful full-process cleanup. Reuse
 these game observations within the unchanged CI candidate scope only.
+
+Cleanup follow-up: the coordinator verified exact ownership and permitted one
+SIGTERM to the orphan steamwebhelper only. Immediate PID/birth/executable/prefix
+and no-live-game checks passed; after that signal all owned Wine services exited.
+The guard used abort-release rather than claiming normal full-session success.
+Independent process/handle/flock checks confirmed full resource return (49 tracked
+lifetimes plus owner absent); receipt SHA-256
+eb80d8aa8b08fd7b558cb9728f3e1f81746640ce8113795bcc6f5018714066c9.
+Existing private state and failed trial are retained, no GUI reacquisition or
+extra launch occurred. Reinstall success and abnormal helper cleanup remain
+separate observations; Stage 2 matrix/closure review is still pending.

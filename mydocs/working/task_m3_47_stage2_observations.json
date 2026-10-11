@@ -30,14 +30,14 @@
     "S2-update": "Failed same-runtime transaction preserves prior installation and private sentinel; migration/update rollback is not qualified",
     "S2-repeat": "New notarized app-v4 reopened same runtime/authenticated state twice; both normal Steam game launch requests succeeded; fresh Steam initialization and requester input/normal exit confirmed.",
     "S2-save": "Passed same-host local restoration: requester changed sniper enabled to disabled, normally exited; changed state retained; baseline eight files restored while Cloud off and no prefix handles; new game process loaded enabled state and normal input; requester normally exited. Requester confirmed Steam Cloud reenabled afterward; synchronization and cross-device recovery are not separately qualified.",
-    "S2-removal": "Passed candidate-specific app copy removal/reinstall, signature/runtime checks, actual Steam library and normal Megabonk launch. Requester confirmed menu/input/prior progression and normal game exit on signed CI 0f712b9 candidate. Full session cleanup remains pending: Steam main and Pear exited but an owned orphan steamwebhelper and Wine services remain."
+    "S2-removal": "Passed candidate-specific app copy removal/reinstall, signature/runtime checks, actual Steam library and normal Megabonk launch. Requester confirmed menu/input/prior progression and normal game exit on signed CI 0f712b9. Steam main/Pear exited; an orphan owned steamwebhelper required one scoped SIGTERM, after which all owned services/handles exited. Normal full-session shutdown is not qualified."
   },
   "limitations": [
     "Synthetic setup-failure cases and frozen Stage 1 CLI trials retain their recorded scopes; they do not prove all failure paths in app-v4.",
     "New app-v4 actual repeated Steam/game launch and local save restore are verified on the same host; no second clean Mac or final public delivery qualification.",
     "Steam Cloud setting was restored by the requester; full synchronization and cross-device recovery were not separately qualified.",
     "No new heavy/UI run before fresh coordination.",
-    "CI 0f712b9 reinstall user flow passed; orphan helper cleanup is unresolved and is not counted as normal full-session termination. Filesystem quota exhaustion remains unperformed."
+    "CI 0f712b9 reinstall user flow passed, but normal full-session shutdown did not: one owned orphan steamwebhelper needed SIGTERM. Guard used abort-release and resources were independently returned. Filesystem quota exhaustion remains unperformed."
   ],
   "private_state_modified": true,
   "public_release": false,
@@ -94,8 +94,7 @@
     "scope": "Disposable bundle and synthetic state only; no Wine/Steam/game launched"
   },
   "remaining_stage2": [
-    "Complete and independently verify owned orphan helper/guard/handle/lock cleanup for the reinstall interval; retain abnormal termination details if required.",
-    "Reconcile the full Stage 2 scenario matrix and candidate/source-seam boundaries before a Stage 2 completion report."
+    "Reconcile the full Stage 2 matrix and candidate/source-seam boundaries, including the abnormal orphan Steam helper cleanup, before a Stage 2 completion report."
   ],
   "closure_preparation": {
     "integrity_receipt": ".build/task47/stage2/closure-preparation-v1/integrity.json",
@@ -461,8 +460,15 @@
     "Steam_library": "requester confirmed",
     "menu_input_progression_normal_game_exit": "requester confirmed",
     "Steam_main_and_Pear_exit": "observed",
-    "whole_session_release": false,
+    "whole_session_release": true,
     "evidence_root": ".build/task47/stage2/reinstall-ci-0f712b9-r1",
-    "scope": "Same-host Rosetta Preview, not no-Rosetta qualification, clean-user delivery or measured gameplay"
+    "scope": "Same-host Rosetta Preview, not no-Rosetta qualification, clean-user delivery or measured gameplay",
+    "normal_full_session_exit": false,
+    "cleanup": "One identity-checked SIGTERM to owned orphan steamwebhelper; all remaining services subsequently exited; no forced game termination",
+    "independent_release": {
+      "path": ".build/task47/stage2/reinstall-ci-0f712b9-r1/independent-release.json",
+      "sha256": "eb80d8aa8b08fd7b558cb9728f3e1f81746640ce8113795bcc6f5018714066c9",
+      "tracked_lifetimes_checked": 49
+    }
   }
 }
