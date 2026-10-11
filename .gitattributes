@@ -1,0 +1,29 @@
+# Preserve exact upstream notice bytes and unified-diff context whitespace.
+# These pinned inputs are hash-checked; Pear source keeps normal whitespace checks.
+preview/licenses/rust-BSD-2-Clause.txt -whitespace
+preview/licenses/rust-COPYRIGHT-library.html -whitespace
+preview/licenses/rust-GPL-2.0-only.txt -whitespace
+preview/licenses/rust-NCSA.txt -whitespace
+preview/licenses/wine-11.0-LGPL-2.1.txt -whitespace
+preview/licenses/wine-11.0-LICENSE.txt -whitespace
+preview/patches/steam-inprocess.patch -whitespace
+preview/runtime-notices/dxmt/DXBCParser/BlobContainer.h -whitespace
+preview/runtime-notices/dxmt/DXBCParser/DXBCUtils.cpp -whitespace
+preview/runtime-notices/dxmt/DXBCParser/ShaderBinary.h -whitespace
+preview/runtime-notices/dxmt/DXBCParser/d3d12tokenizedprogramformat.hpp -whitespace
+preview/runtime-notices/dxmt/LLVM-15.0.7-LICENSE.TXT -whitespace
+preview/runtime-notices/dxmt/nvapi-License.txt -whitespace
+preview/runtime-notices/gmp/COPYING.LESSERv3 -whitespace
+preview/runtime-notices/gnutls/README.md -whitespace
+preview/runtime-notices/libunistring/COPYING.LIB -whitespace
+preview/runtime-notices/moltenvk/SPIRV-Headers-LICENSE -whitespace
+preview/runtime-notices/nettle/README -whitespace
+preview/runtime-notices/toolchain/GCC-15.2.0-COPYING.RUNTIME -whitespace
+preview/runtime-notices/toolchain/LLVM-21.1.8-llvm-LICENSE.TXT -whitespace
+preview/runtime-notices/toolchain/mingw-dxmt-COPYING.MinGW-w64-runtime-COPYING.MinGW-w64-runtime.txt -whitespace
+preview/runtime-notices/toolchain/mingw-w64-COPYING -whitespace
+preview/runtime-notices/toolchain/mingw-wine-COPYING.MinGW-w64-runtime-COPYING.MinGW-w64-runtime.txt -whitespace
+preview/runtime-notices/wine/COPYING.LIB -whitespace
+preview/runtime-notices/wine/LICENSE -whitespace
+preview/runtime-notices/wine/libs/lcms2/COPYING -whitespace
+preview/runtime-notices/wine/libs/tiff/COPYRIGHT -whitespace

@@ -24,8 +24,13 @@ jobs:
           python-version: '3.12'
       - name: Check documentation governance
         run: python3 tools/check_governance.py
-      - name: Test the governance checker
+      - name: Check reviewed compatibility records
+        run: python3 tools/compatibility.py --check
+      - name: Test documentation and catalog tooling
         run: python3 -m unittest discover -s tests/docs -p 'test_*.py' -v
+
+      - name: Test Steam game identity matching
+        run: node --test tests/docs/test_steam_search.cjs
 
   portable-verifiers:
     name: Portable verifier (${{ matrix.suite }})

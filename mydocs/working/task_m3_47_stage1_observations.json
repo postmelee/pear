@@ -1,0 +1,2501 @@
+{
+  "date": "2026-10-10",
+  "scope": "stage1_in_progress_not_qualification",
+  "source_revision": "305da2143bf6f73ac5b261303c7e7e957c23a227",
+  "source_files": [
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "a707d13225a9de4055451edf167f238a0cb9df89f754bd60c5dcf869903b3dc1"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "Whisky/Views/Setup/WhiskyWineDownloadView.swift",
+      "sha256": "f28de7a651ba0eb2ff5b4f314874b3e51caf8b281fa68c8f06c4e195e9ad4893"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Steam/SteamLauncher.swift",
+      "sha256": "7bc3170c09979e2f760c247e015ece46b75522b18286bf24eef6ed0fe5532f3f"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Utils/DistributionConfig.swift",
+      "sha256": "e047ee45b370af2699edb34ffddf6275499db8051c5e3b9ba478f9781c299458"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Utils/ResumableDownloadSupport.swift",
+      "sha256": "3fdac738ffaf222d6c0eea1101617b3bb0d20b4bc4783073724d2115928ddffc"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Utils/ResumableDownloader.swift",
+      "sha256": "5879bf2b1eaee427b6e9d7734f81f94dbbc909b1fc8dfaad3c73d334c308a5a7"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/Bottle.swift",
+      "sha256": "c6897642f3b4fd190221eee206914374647cb29818dc5e92f032f9c90dc6f5dd"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/BottleData.swift",
+      "sha256": "6e8cba66f988cb0b2dcfde2f6771517a83c0a655f7455915db5a62f11b180075"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/BottleGraphicsConfig.swift",
+      "sha256": "f30e75e22b2f57b980d014e6d1c3bb239ba44e7af5a5bf50db84d925a1080f09"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/BottleLauncherConfig.swift",
+      "sha256": "abe5822b717072749d0c188b7b51611348567efc9eadc74e0d3665b0a78df9aa"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/BottleOperations.swift",
+      "sha256": "54faae15bacff3ea400e6ca4b228a62bed1baaf24371e822dceefda39aa0d2d2"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/BottleSettings.swift",
+      "sha256": "06167ca1ffc451e5888d4e5575d42fd50516727e06780dc857a4dd215bfd785b"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Whisky/BottleWineConfig.swift",
+      "sha256": "e6ffaa19e1f743b7e6cfe41ded0acf5fc63115220bc1acf8667d8122f9e50fe0"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/WhiskyWine/WhiskyWineInstaller.swift",
+      "sha256": "5b7d10d6cc820f3e27ded177eefdd855966a6b2f084d02b1219b7a6823978827"
+    },
+    {
+      "path": "WhiskyKit/Sources/WhiskyKit/Wine/Wine.swift",
+      "sha256": "4c7cc86ae5324c69fc28f26979f488d22b3abd1bc4e6f74d1aa91dfddb71f8cc"
+    },
+    {
+      "path": "dist/pages/WhiskyWineVersion.plist",
+      "sha256": "1f8a2fa431ad8c1c521cfd37dfd7deac1e22d68821edd0478b0f450f625932dd"
+    },
+    {
+      "path": "docs/DEPENDENCIES.md",
+      "sha256": "505b2077be7e0a0438658eb50ce74b5bcfa714ba28bc79a452d76b7c184a6738"
+    },
+    {
+      "path": "docs/SteamCompatibility.md",
+      "sha256": "01a8ea1bdbe43e16207967600720ec101bcaf8c076deb27d1d527ad52418594e"
+    },
+    {
+      "path": "live-WhiskyWineVersion.plist",
+      "sha256": "1f8a2fa431ad8c1c521cfd37dfd7deac1e22d68821edd0478b0f450f625932dd"
+    },
+    {
+      "path": "WhiskyCmd/Main.swift",
+      "sha256": "6855dd87d44b71c3a52a5efeb2fbb72b1ed6f9ff09cb89f284a2a0b440261b49"
+    }
+  ],
+  "artifacts": {
+    "gui": {
+      "version": "3.7.0",
+      "sha256": "8232b3b96be09b56e8f4e6b091c34a89c74b27c63ccfce92aa8ffe6ce3fbfee2",
+      "size": 10753689,
+      "dmg_checksum": "passed",
+      "codesign_deep_strict": "passed",
+      "gatekeeper": "accepted_Notarized_Developer_ID",
+      "team_id": "Z7JS58F8U3",
+      "cdhash": "26a7dbb679471c4463a87916ec5875f597456f95"
+    },
+    "runtime": {
+      "version": "3.1.1",
+      "wine": "11.0_historical_component_record",
+      "dxmt": "0.80",
+      "sha256": "01f3a1b43b98065fe20c529c1023b61dd79a6d2ad93bba6040865f646481ccf3",
+      "size": 332438526,
+      "expanded_regular_bytes": 866066635,
+      "gui_install": "completed",
+      "installed_regular_files_compared": 4787,
+      "regular_file_differences": 0,
+      "symlink_inventory": "not_yet_compared"
+    },
+    "steam_installer": {
+      "origin": "https://cdn.fastly.steamstatic.com/client/installer/SteamSetup.exe",
+      "sha256": "7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb",
+      "machine": "PE32_i386",
+      "authenticode_trust": "unverified",
+      "gui_invocation": "started",
+      "install_complete": false
+    }
+  },
+  "host": {
+    "macos": "26.5.2",
+    "build": "25F84",
+    "operator_arch": "arm64",
+    "rosetta": "GUI_reports_installed",
+    "free_space_observations_gib": [
+      18,
+      20
+    ]
+  },
+  "isolation": {
+    "prior_whisky_app_found": false,
+    "prior_fork_runtime_found": false,
+    "runtime_processes_at_initial_check": 0,
+    "fresh_task_owned_bottle": true,
+    "bottle_windows": "Windows_10",
+    "graphics_selection": "dxmt",
+    "sync_selection": "msync",
+    "telemetry_opt_in": false
+  },
+  "cases": {
+    "S1-identity": "partial_pass_regular_runtime_bytes_match",
+    "S1-isolation": "new_task_bottle_created",
+    "S1-security": "Developer_ID_app_notarized_stapled_signature_Gatekeeper_and_syspolicy_passed_on_build_host; CLI_explicit_notarized_requirement_passed; clean_browser_delivery_unperformed",
+    "S1-steam": "passed_fresh_official_login_automatic_owned_install_no_install_click",
+    "S1-play": "passed_fresh_automatic_normal_Steam_launch_Steam_initialized_and_requester_confirmed_responsive_menu"
+  },
+  "user_steering": "Authorized small shared setup/login/launch tool with command and double-click entries; Rust core and thin Swift window after reviewing existing manager decision.",
+  "historical_cli_finding": "acquire.py uses DepotDownloader -qr for content acquisition only; run_wine_experiment.py starts Steam separately and directly launches game with steam_appid.txt.",
+  "completion": {
+    "stage1": true,
+    "steam_login": true,
+    "normal_play": true,
+    "game_steamworks": true,
+    "distribution": false
+  },
+  "cleanup": {
+    "request": "Remove unneeded prior installs to recover storage",
+    "removed": [
+      "task-installed Whisky 3.7.0 app",
+      "task-installed duplicate Libraries 3.1.1",
+      "task-created unfinished empty Wine bottle",
+      "Whisky 3.7.0 DMG after unmount"
+    ],
+    "preserved": [
+      "verified Libraries archive",
+      "official Steam installer",
+      "original experiments and private state",
+      "other worktrees",
+      "small sanitized source/evidence records"
+    ],
+    "steam_or_game_data_in_removed_bottle": false,
+    "free_bytes_before": 24842063872,
+    "free_bytes_after": 26070204416,
+    "observed_free_delta_bytes": 1228140544
+  },
+  "updated_date": "2026-10-11",
+  "preview_tool": {
+    "status": "development_candidate_not_game_or_distribution_qualification",
+    "sources": {
+      "preview/Cargo.lock": "0ca383237971fb05d39b7c4b4a8752498aa46a3e62fe4ea3b98da4d546b37b08",
+      "preview/Cargo.toml": "310c000f35b17356aa476d54dd285a44df0ad5b7ae2b0f54ae85079d7cec52d3",
+      "preview/Launcher.swift": "a61fa49cc9caab062e490fb7366d39b82f0520708ae7bf691b81df3cb7f7e6a8",
+      "preview/build.rs": "3269017f860cb2768f14a388ad4c022726003848760fb1839d1ad8095c564990",
+      "preview/build.sh": "ed88037111d924dd89b6f7cff4a6905f07757764fd8b68f32d92fd7ee3d7b332",
+      "preview/package.py": "6f655d2d20a61c50490bd9c1f070968a05a8c9d12104ec87774e172b0ca3a7e7",
+      "preview/src/lib.rs": "ecaa63a7d850c3805b447b411cbccfef1d2a5ef71932d41ca8e6c03392e598a0",
+      "preview/src/main.rs": "ebc16daa8657d6df1b3d60399ba452a8ab5ee54aabc2f52ac469a339dc79fec9",
+      "preview/test_package.py": "68740674cc46d250e3da460b1d8acb389896f106356805e6097d5a5fe8bdc195"
+    },
+    "language": "Rust core; Swift AppKit presentation only",
+    "dependency": {
+      "libc": "0.2.186",
+      "archive_sha256": "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66",
+      "extracted_regular_files_compared": 360
+    },
+    "functional_tests": {
+      "passed": 9,
+      "failed": 0,
+      "scope": [
+        "corrupt artifact refusal",
+        "private root isolation",
+        "duplicate-session exclusion",
+        "manifest completeness",
+        "runtime mutation/escape detection",
+        "DXMT replacement preserves symlink target",
+        "child timeout/reaping and unrelated-process survival",
+        "private state preservation",
+        "bounded pre-manifest install retries and exactly one launch"
+      ]
+    },
+    "real_setup": "passed_fresh_private_root_using_verified_cached_artifacts",
+    "repeat_setup": "passed_no_download_or_reinstall",
+    "app_window": "observed_via_accessibility",
+    "steam_login_screen": "confirmed_by_requester",
+    "steam_login": "requester_reported_complete",
+    "post_login_install_request": "sent",
+    "game_install": "passed_automatic_fresh_login",
+    "normal_play": "passed_automatic_fresh_login_requester_confirmed_menu",
+    "steamworks": "original_Player_log_Steam_initialized",
+    "local_signing": "Developer_ID_with_hardened_runtime_timestamp_and_accepted_notarization; see release_preparation",
+    "failed_attempts": [
+      "First offline build lacked locked libc cache; fetched checksum-locked 0.2.186 then verified all extracted regular files",
+      "Initial compile required explicit widening of Darwin free-space block count",
+      "Initial app wrapper lacked a sealed resource envelope; build now applies a local ad-hoc seal; separate copied bundle deep strict verification passed",
+      "Wine UI accessibility timed out; requester confirmed login screen and completed login",
+      "Packaging heredoc lacked terminator; corrected and separately rechecked without changing running Steam state"
+    ],
+    "continuation": "Automatic app_install retries before manifest; no Enter or Continue action",
+    "install_dialog": "Historical install URI dialog superseded by automatic app_install flow",
+    "interaction_acceptance": "manual_Steam_installation_not_accepted_as_final_user_experience",
+    "automation_gap": "Fresh-prefix one-login automatic installation and launch verified; repeat-launch recovery and distribution remain separate gates",
+    "initial_local_signing": "ad_hoc_resource_seal_only_not_Developer_ID_or_notarization"
+  },
+  "official_command_verification": {
+    "command": [
+      "steam.exe",
+      "-console",
+      "+app_install",
+      "3405340"
+    ],
+    "result": "download_completed_without_requested_GUI_install_click",
+    "download_bytes": 179240512,
+    "staged_bytes": 522734781,
+    "build_id": "21750826",
+    "state_flags": "4",
+    "normal_launch": "Steam -applaunch 3405340 by existing shared core",
+    "game_steamworks": "original Player.log contains Steam initialized; no matched initialization-failure marker",
+    "menu": "requester_confirmed_visible_and_responsive",
+    "game_exit": "requester_reported_normal_exit; process_absence_confirmed",
+    "steam_appid_file_present": false,
+    "identities": {
+      "steam.exe": {
+        "size": 5775512,
+        "sha256": "48ea0576865d2dfda26001b7b210c3f7559d46e647424cd11704eb1ea842fe5a"
+      },
+      "steamclient64.dll": {
+        "size": 26328216,
+        "sha256": "caba4826aa3501039d095aee1843a6bfb270fb43a3ab4455b2d6733223579fee"
+      },
+      "steamapps/common/Megabonk/Megabonk.exe": {
+        "size": 667648,
+        "sha256": "e2fa5120fbf41837891e0ca372210865b0edd3826abdb0e36d263b0f40fd5f01"
+      }
+    }
+  },
+  "fresh_login_verification": {
+    "date": "2026-10-11",
+    "setup": "New private prefix without copied account or game data; APFS clone of verified immutable runtime only; same host, not second clean-machine qualification",
+    "entry": "Pear Preview.app from package-check output; invokes shared Rust core",
+    "user_actions": "Official Steam login only; requester confirmed automatic game launch and responsive menu without installation click",
+    "initial_steam_update": "Observed by requester before login; not a repeated-install requirement",
+    "manifest": {
+      "appid": "3405340",
+      "StateFlags": "4",
+      "buildid": "21750826",
+      "depot": "3405342",
+      "depot_manifest": "446680890915713051",
+      "download_bytes": 179240512,
+      "staged_bytes": 522734781
+    },
+    "console": {
+      "app_install_command_count": 2,
+      "unknown_command_count": 0
+    },
+    "player_log": {
+      "Steam initialized": true,
+      "SteamAPI_Init() failed": false,
+      "Exception": false,
+      "renderer": "Apple M4 Pro",
+      "api": "Direct3D 11.0 [level 11.1]"
+    },
+    "process_observation": "Megabonk.exe and UnityCrashHandler64.exe observed; lsof showed selected Wine winemetal.so, DXMT game shader cache and Rosetta runtime mappings",
+    "steam_appid_file_present": false,
+    "client_and_game_identity": "Matches baseline official_command_verification identities",
+    "game_steam_api64_sha256": "1add7f151fa644870a735ae86e68d1f019f296130d8e7c0a7ed3ecc7482dccbc",
+    "app_executable_sha256": "32c60a46c91f91a288e64b0691f90cc2bfda25330f933d21b9387a3c1e08192f",
+    "bundled_core_sha256": "501cca68f8f8f14e9c23de463e859fb96392a0818dc15c199cedffc74d356c46",
+    "security": {
+      "codesign_deep_strict": "passed",
+      "signature": "ad_hoc_no_TeamIdentifier",
+      "gatekeeper_assessment": "sandbox internal error; actual host retry rejected, exit 3",
+      "protections_disabled": true,
+      "macos_protections_disabled": false,
+      "cef_sandbox_disabled_by_runtime": true,
+      "correction": "Later dummy probe and historical webhelper log establish runtime-injected --no-sandbox; earlier blanket false was incomplete."
+    },
+    "limitations": [
+      "Not a Steam-client-free route; DepotDownloader is not invoked",
+      "Fresh same-host prefix does not establish clean-machine delivery",
+      "Sustained gameplay, actual save restoration and recovery gates remain unperformed",
+      "Stage 1 completion is not claimed while selected-app security gate remains unresolved"
+    ],
+    "ui_preference": "Requester accepts visible Steam windows; no window-hiding change requested"
+  },
+  "release_preparation": {
+    "date": "2026-10-11",
+    "status": "notarized_stapled_local_candidate_not_public_release",
+    "entry": "Default app and CLI open official Windows Steam library; Megabonk is an explicit optional verification command",
+    "app_observation": "Accessibility status request completed; requester confirmed Steam library visible without automatic Megabonk launch",
+    "cli_observation": "Signed CLI Steam entry exited 0; runtime reused; no downloading/installing phase; prefix.ready, steam.ready and game manifest hashes unchanged",
+    "checks": {
+      "rust_tests": 9,
+      "package_boundary_tests": 4,
+      "cli_help_and_invalid_input_cases": 4,
+      "documentation_tests": 35,
+      "governance": "29 documents, 283 local targets passed",
+      "git_diff_check": "passed",
+      "archive_crc_and_private_payload_checks": "passed",
+      "post_notarization_documentation_tests": 35,
+      "post_notarization_governance": "29 documents, 283 local targets passed",
+      "post_notarization_git_diff_check": "passed"
+    },
+    "signing": {
+      "owner_authorized": true,
+      "kind": "Developer ID Application",
+      "team": "XH6JHKYXV8",
+      "hardened_runtime": true,
+      "secure_timestamp": true,
+      "entitlement_exceptions": false,
+      "app_and_nested_cli_codesign": "passed"
+    },
+    "notarization": {
+      "status": "Accepted_app_and_CLI",
+      "profile": "pear-notary",
+      "preflight_history": [
+        "Profile initially absent",
+        "Requester encountered 401 then 403; accepted agreement and later registered credentials successfully",
+        "Authenticated history request succeeded; unrelated submission details not retained in repository"
+      ],
+      "submissions": {
+        "app": {
+          "jobId": "6ff3b575-fcc6-45ff-954d-91ebbdfa87bd",
+          "status": "Accepted",
+          "statusCode": 0,
+          "archiveFilename": "Pear-0.1.0-preview.1-macos-arm64.zip",
+          "sha256": "de971bee897aa304017adc0b7805794b0dbfa62b8c4fe09505b29b658a7825e6",
+          "uploadDate": "2026-10-10T16:11:43.562Z",
+          "issues": null,
+          "ticket_contents": [
+            {
+              "path": "Pear-0.1.0-preview.1-macos-arm64.zip/Pear Preview.app",
+              "digestAlgorithm": "SHA-256",
+              "cdhash": "4e87065f014c0b00a3638c4e308884200479f027",
+              "arch": "arm64"
+            },
+            {
+              "path": "Pear-0.1.0-preview.1-macos-arm64.zip/Pear Preview.app/Contents/MacOS/PearPreview",
+              "digestAlgorithm": "SHA-256",
+              "cdhash": "4e87065f014c0b00a3638c4e308884200479f027",
+              "arch": "arm64"
+            },
+            {
+              "path": "Pear-0.1.0-preview.1-macos-arm64.zip/Pear Preview.app/Contents/Resources/pear-preview",
+              "digestAlgorithm": "SHA-256",
+              "cdhash": "8484961e1ac22dd5651ae298c2f1064a81fc95ee",
+              "arch": "arm64"
+            }
+          ]
+        },
+        "cli": {
+          "jobId": "79c0d68e-ecec-428e-ba40-ccd1b5f57ef8",
+          "status": "Accepted",
+          "statusCode": 0,
+          "archiveFilename": "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip",
+          "sha256": "4b832a12c6340cdf7facddbf7f0dd177316f5b02fd23322f8f1e0ac0476b68ca",
+          "uploadDate": "2026-10-10T16:11:57.162Z",
+          "issues": null,
+          "ticket_contents": [
+            {
+              "path": "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip/pear-preview/pear-preview",
+              "digestAlgorithm": "SHA-256",
+              "cdhash": "8484961e1ac22dd5651ae298c2f1064a81fc95ee",
+              "arch": "arm64"
+            }
+          ]
+        }
+      },
+      "app_staple": "staple_and_validate_passed",
+      "app_gatekeeper": "accepted_source_Notarized_Developer_ID",
+      "app_syspolicy_check": "all_pre_distribution_checks_passed",
+      "cli_spctl_attempt": "exit_3_the_code_is_valid_but_does_not_seem_to_be_an_app",
+      "cli_correct_product_type_check": "codesign --verify --strict -R=notarized --check-notarization; exit_0_explicit_requirement_satisfied",
+      "verification_reference": "https://developer.apple.com/forums/thread/130560",
+      "original_submitted_packages": {
+        "Pear-0.1.0-preview.1-macos-arm64.zip": {
+          "sha256": "de971bee897aa304017adc0b7805794b0dbfa62b8c4fe09505b29b658a7825e6",
+          "size": 344605
+        },
+        "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+          "sha256": "4b832a12c6340cdf7facddbf7f0dd177316f5b02fd23322f8f1e0ac0476b68ca",
+          "size": 314357
+        }
+      },
+      "archive_round_trip": "CRC, all hashes, app signature/staple/Gatekeeper/syspolicy, CLI notarization/help all passed after extracting final candidate ZIPs",
+      "cli_repack_content": "Every regular ZIP entry matches original submitted CLI archive byte-for-byte; archive metadata changed",
+      "qualification_scope": "Same build host; no clean-machine or browser-download claim; protections unchanged"
+    },
+    "packages": {
+      "Pear-0.1.0-preview.1-macos-arm64.zip": {
+        "sha256": "d3255e07035cfa5312ec30fa68317fac52cc229ab8cd97cc3bfdc928cf89bae6",
+        "size": 346274
+      },
+      "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+        "sha256": "87aa455a8ffc1627d89f2d5377abdd53726429891f7c6ec9c1d2340e30d78586",
+        "size": 314357
+      }
+    },
+    "source_and_visibility": {
+      "repository": "private",
+      "visibility_change": "not_performed",
+      "product_license": "GPL-3.0-or-later adopted; existing separate terms preserved",
+      "history_pattern_audit": "1877 locally available origin-history blobs, 52228983 bytes, no matching selected key/token patterns; not a complete security review",
+      "github_surface_pattern_review": {
+        "issue_and_pr_bodies": 49,
+        "issue_comments": 2,
+        "review_comments": 0,
+        "selected_secret_pattern_matches": 0,
+        "detected_github_attachment_links": 0,
+        "limitations": "Bounded text pattern review, not a complete secret audit; final current-ref inventory and visibility approval still required"
+      },
+      "personal_paths": "Six of seven historical matched file paths contain synthetic test placeholders; one old task plan contains a real local home path, to be included in final publication review."
+    },
+    "remaining": [
+      "Exact external runtime component provenance, notices and corresponding-source obligations; Pear product license adopted",
+      "Required recovery, save, sustained-gameplay and clean-distribution qualification",
+      "Current-ref/GitHub visibility review and final public-transition approval",
+      "Stage completion report and commit remain unperformed while required gates are incomplete"
+    ],
+    "current_candidate": "license_review.licensed_candidate; preceding release_preparation notary/package fields describe the pre-license candidate"
+  },
+  "license_review": {
+    "date": "2026-10-11",
+    "status": "GPL-3.0-or-later adopted by requester; runtime distribution closure pending",
+    "source_revision": "9d953b29a429666b74e0746e9d257bdf02e108f3",
+    "scope": "Current uncommitted Task #47 preview and pinned external runtime; selected existing repository license boundaries. Not a whole-history copyright certification.",
+    "proposal": {
+      "license": "GPL-3.0-or-later",
+      "applies_to": "New/original Pear code whose copyright holders authorize this choice and that has no separate existing license",
+      "exclusions": "Existing SPDX/file/directory licenses, upstream code and notices, Hyper-Waterfall MIT materials, Valve Steam, Apple software and owned games retain their terms",
+      "adopted": true,
+      "root_license_created": true,
+      "approval": "Requester selected GPL-3.0-or-later in this thread on 2026-10-11"
+    },
+    "pear_binary": {
+      "rust": "1.94.1 (e408947bfd200af42db322daf0fadfe7e26d3bd1)",
+      "direct_external_crate": "libc 0.2.186 (MIT OR Apache-2.0)",
+      "local_dependency": "pear-manager and unchanged native bridge",
+      "rust_library_notices": "Full toolchain library attribution and license texts retained unchanged; all-target notice inventory is not proof every dependency is linked",
+      "dynamic_dependencies": "otool -L: macOS system frameworks/Swift libraries for the app; libSystem and system libiconv for CLI",
+      "wine_boundary": "Separate process; Wine and Whisky GUI/WhiskyKit code are not linked into the Pear binaries",
+      "runtime_payload_bundled": false
+    },
+    "runtime": {
+      "archive_sha256": "01f3a1b43b98065fe20c529c1023b61dd79a6d2ad93bba6040865f646481ccf3",
+      "archive_bytes": 332438526,
+      "regular_files": 4787,
+      "standard_notice_filename_scan": [
+        {
+          "path": "Libraries/DXMT/LICENSE",
+          "sha256": "6b928413c6308c106f3e0080bd94b6427b56d587d400fd40e6cbfbab7d9c4ae1"
+        }
+      ],
+      "scan_pattern": "case-insensitive basename contains license/licence, copying, copyright, notice or authors",
+      "scan_limit": "Filename scan does not establish absence of embedded notices or prove upstream noncompliance",
+      "dylib_regular_count": 39,
+      "dylib_symlink_count": 55,
+      "dylib_files": [
+        "Libraries/Wine/lib/libMacportsLegacySupport.dylib",
+        "Libraries/Wine/lib/libMacportsLegacySystem.B.dylib",
+        "Libraries/Wine/lib/libMoltenVK.dylib",
+        "Libraries/Wine/lib/libSDL2-2.0.0.dylib",
+        "Libraries/Wine/lib/libbrotlicommon.1.1.0.dylib",
+        "Libraries/Wine/lib/libbrotlidec.1.1.0.dylib",
+        "Libraries/Wine/lib/libbrotlienc.1.1.0.dylib",
+        "Libraries/Wine/lib/libbz2.1.0.8.dylib",
+        "Libraries/Wine/lib/libcharset.1.dylib",
+        "Libraries/Wine/lib/libexslt.0.dylib",
+        "Libraries/Wine/lib/libffi.8.dylib",
+        "Libraries/Wine/lib/libfreetype.6.dylib",
+        "Libraries/Wine/lib/libgmp.10.dylib",
+        "Libraries/Wine/lib/libgmpxx.4.dylib",
+        "Libraries/Wine/lib/libgnutls.30.dylib",
+        "Libraries/Wine/lib/libgnutlsxx.30.dylib",
+        "Libraries/Wine/lib/libhogweed.6.9.dylib",
+        "Libraries/Wine/lib/libiconv.2.dylib",
+        "Libraries/Wine/lib/libicudata.76.1.dylib",
+        "Libraries/Wine/lib/libicui18n.76.1.dylib",
+        "Libraries/Wine/lib/libicuio.76.1.dylib",
+        "Libraries/Wine/lib/libicutest.76.1.dylib",
+        "Libraries/Wine/lib/libicutu.76.1.dylib",
+        "Libraries/Wine/lib/libicuuc.76.1.dylib",
+        "Libraries/Wine/lib/libidn2.0.dylib",
+        "Libraries/Wine/lib/libinotify.0.dylib",
+        "Libraries/Wine/lib/libintl.8.dylib",
+        "Libraries/Wine/lib/liblz4.1.10.0.dylib",
+        "Libraries/Wine/lib/liblzma.5.dylib",
+        "Libraries/Wine/lib/libnettle.8.9.dylib",
+        "Libraries/Wine/lib/libp11-kit.0.dylib",
+        "Libraries/Wine/lib/libpcap.1.10.5.dylib",
+        "Libraries/Wine/lib/libpng16.16.dylib",
+        "Libraries/Wine/lib/libtasn1.6.dylib",
+        "Libraries/Wine/lib/libunistring.5.dylib",
+        "Libraries/Wine/lib/libxml2.2.dylib",
+        "Libraries/Wine/lib/libxslt.1.dylib",
+        "Libraries/Wine/lib/libz.1.3.1.dylib",
+        "Libraries/Wine/lib/libzstd.1.5.6.dylib"
+      ],
+      "all_auxiliary_exact_sources_resolved": false,
+      "version_observations": {
+        "libgnutls": "embedded string 3.8.7; not a complete provenance mapping",
+        "libpng": "embedded string 1.6.45; not a complete provenance mapping",
+        "MoltenVK": "project version unresolved; Mach-O current_version 1.0.0 is not accepted as project version"
+      },
+      "additional_components": "Wine Mono/Gecko and other .so/PE/managed modules need inventory beyond these dylibs",
+      "wine_terms": "LGPL-2.1-or-later plus component-specific terms",
+      "dxmt_0_80_terms": "MIT; runtime license digest matches pinned upstream v0.80",
+      "assembly_limit": "Whisky script repacks prebuilt v3.0.0 plus DXMT 0.80; it is not the complete Wine and helper source build recipe",
+      "gcenx_overlay": "092031f7b987a1f1047f263ff3bfd4e1c9c850ee Portfile is a source lead, not proven to have built the published archive"
+    },
+    "repository": {
+      "tracked_files_with_spdx": 191,
+      "cpu_runner": {
+        "file": "tests/cpu/runner.c",
+        "license": "GPL-3.0-or-later",
+        "upstream": "willfaust/Madeira",
+        "revision": "48f976429c189f8396e23d251d8a82f43c705922",
+        "source_license_hashes_match_tests_cpu_manifest": true,
+        "exception": "Madeira section 7 additional permission for specified Apple libraries, adopted 2026-09-24; preserve attribution and any relied-on permission for the adapted code. It grants no rights over Apple or unrelated Wine code.",
+        "included_in_preview_binary": false
+      },
+      "existing_terms": "MIT Pear fixtures, LGPL Wine/DXMT integration material, FEX MIT and Hyper-Waterfall MIT remain separately licensed",
+      "public_source_gap": "GPLv3 text added at root; later-version/scope notices and unchanged Madeira additional permission retained. Complete third-party closure remains under review.",
+      "spdx_scan_limit": "Marker-text scan includes documentation and patches; not a component-license classification"
+    },
+    "primary_source_receipts": [
+      {
+        "file": "whisky-assembly.sh",
+        "endpoint": "repos/frankea/Whisky/contents/scripts/assemble-runtime.sh?ref=305da2143bf6f73ac5b261303c7e7e957c23a227",
+        "sha256": "97fadd2a8493455e541863b133d6097be47aac91e7d9b03b87a209932300b0e9",
+        "bytes": 7773
+      },
+      {
+        "file": "gcenx-11.0_1-README.md",
+        "endpoint": "repos/Gcenx/macOS_Wine_builds/contents/README.md?ref=11.0_1",
+        "sha256": "802938812d0fbbc1b29f506af5eff4340b7eb502fd5ec748fd011689b95d55e5",
+        "bytes": 2868
+      },
+      {
+        "file": "wine-11.0-LICENSE",
+        "endpoint": "repos/wine-mirror/wine/contents/LICENSE?ref=wine-11.0",
+        "sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+        "bytes": 824
+      },
+      {
+        "file": "wine-11.0-COPYING.LIB",
+        "endpoint": "repos/wine-mirror/wine/contents/COPYING.LIB?ref=wine-11.0",
+        "sha256": "3e2613524d7bdafb80a91192b34cec81ed0204f65ecf27df2cdc0ea98a22a06c",
+        "bytes": 26443
+      },
+      {
+        "file": "dxmt-0.80-LICENSE",
+        "endpoint": "repos/3Shain/dxmt/contents/LICENSE?ref=v0.80",
+        "sha256": "6b928413c6308c106f3e0080bd94b6427b56d587d400fd40e6cbfbab7d9c4ae1",
+        "bytes": 1065
+      },
+      {
+        "file": "gcenx-Portfile",
+        "endpoint": "repos/Gcenx/macports-wine/contents/emulators/wine-stable/Portfile?ref=092031f7b987a1f1047f263ff3bfd4e1c9c850ee",
+        "sha256": "47f730338c66268566e1d130ce5ca98217adfbf7b9755b6b3a982dc97cb008a1",
+        "bytes": 6992,
+        "scope": "public source lead, not established exact published runtime build input"
+      },
+      {
+        "file": "madeira-LICENSE",
+        "endpoint": "repos/willfaust/Madeira/contents/LICENSE?ref=48f976429c189f8396e23d251d8a82f43c705922",
+        "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "bytes": 35150
+      },
+      {
+        "file": "madeira-LICENSE-EXCEPTION.md",
+        "endpoint": "repos/willfaust/Madeira/contents/LICENSE-EXCEPTION.md?ref=48f976429c189f8396e23d251d8a82f43c705922",
+        "sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+        "bytes": 3840
+      }
+    ],
+    "remaining": [
+      "Public source/download accessibility tied to the final committed release, with preserved component notices and any required dependency sources.",
+      "Complete external runtime source, patch, build-script and notice correspondence; do not mirror the unresolved aggregate.",
+      "Required recovery/save, sustained gameplay and clean browser-delivery qualification.",
+      "Stage report/commit and final repository visibility/release approval."
+    ],
+    "actions": "Owner-approved GPL-3.0-or-later applied; upstream terms preserved; separate app/CLI candidates rebuilt, signed, notarized and verified. No public release or runtime changes.",
+    "licensed_candidate": {
+      "date": "2026-10-11",
+      "status": "notarized_local_candidate; public release not qualified",
+      "app_path": ".build/task47/release-candidate-gpl/Pear Preview.app",
+      "package_directory": ".build/task47/packages-gpl-notarized-candidate",
+      "notarization": {
+        "app": {
+          "id": "a4eefa0b-2a70-4d66-9cf5-ea83210a65bd",
+          "status": "Accepted",
+          "status_code": 0,
+          "issues": null
+        },
+        "cli": {
+          "id": "b493b3aa-de84-4a6f-9490-f3769501028d",
+          "status": "Accepted",
+          "status_code": 0,
+          "issues": null
+        }
+      },
+      "packages": [
+        {
+          "name": "Pear-0.1.0-preview.1-macos-arm64.zip",
+          "bytes": 359749,
+          "sha256": "717652d6a82beddb7cc92a56585883762d298d0cf4b1c7e7d7428912b928807a"
+        },
+        {
+          "name": "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip",
+          "bytes": 327659,
+          "sha256": "1e7f4bbd50af73214fddea33dd1328c4f080c1795632ece1e9a32deb9ea37919"
+        }
+      ],
+      "security_checks": {
+        "deep_strict_signature": "passed",
+        "app_staple": "passed",
+        "app_gatekeeper": "accepted Notarized Developer ID",
+        "app_syspolicy_distribution": "passed",
+        "cli_notarized_requirement": "passed",
+        "extracted_cli_help": "passed",
+        "app_and_standalone_cli_identical": true
+      },
+      "license_checks": {
+        "root_gpl_sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "app_and_cli_zip_license_matches_source": true,
+        "app_and_cli_zip_component_notice_matches_source": true,
+        "canonical_madeira_permission_sha256": "534f059c2e9fe5de1acde82b920651b77ea3b4253f86837a3d6a81f54a5bdbbc",
+        "both_cargo_packages": "GPL-3.0-or-later"
+      },
+      "tests": {
+        "rust": 9,
+        "package": 4,
+        "documentation": 35,
+        "governance_documents": 29,
+        "governance_local_targets": 288,
+        "whitespace": "passed"
+      },
+      "source_inputs_sha256": {
+        "LICENSE": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+        "manager/Cargo.lock": "8893880643ac9dbae2e31c84c58799d49a0859340a83a76f51e01674a2cb5c9a",
+        "manager/Cargo.toml": "f8759d27a55fd120ecc4c788ecca68971f0f360517e43ae280c3d5cd1ac73ca1",
+        "manager/native/bridge.c": "a1b6cb9e8a099470f0ba8949eb6b4ea8eec97d90877f1bb670df5643ab565730",
+        "manager/native/bridge.h": "e4c6ba683213684bddcf1ce813316a3ddb4174eb3363e48af0b6e9b2377f65fb",
+        "manager/src/activation.rs": "98d4960c20c7aae89ed187bb36889752237d17e87cc008b69cf20f7b1ee13b2a",
+        "manager/src/contract.rs": "188787931b3b91f9bd82871593795ae012ca9b24cef7716d9c2027ac43ad1c83",
+        "manager/src/diagnostics.rs": "3a76ae7da12ea94b64318a5af98cc66fb8f7b76ee58872671fd223d5f3e78bac",
+        "manager/src/encoding.rs": "2f624890f44a895376dc61d0d0ff8ed9f932f944621f2e03b10b6b5edfe1a96e",
+        "manager/src/fs.rs": "95423fd07cfd6f5031011eb4c056c796c440022db8e4706f9b22f86dcaddc862",
+        "manager/src/json.rs": "a98c777d8e2b2aa3c287cfb1792206d52c1794e99b9ad1631e15810ab222d8de",
+        "manager/src/launch.rs": "b022db2b8492afbe4e93f6a5c1680dff20c1257c653724519e66d78b57be04dd",
+        "manager/src/lib.rs": "6713adacb21d8a0d18c452aa671476a8e61db68cc62ce527b19860945cc26368",
+        "manager/src/main.rs": "dd6d5145087586582595491edc4332ea7aa7b14c779715ad95613b4075ae7a46",
+        "manager/src/native.rs": "37e06ed0a0e2b7dd50ad106302d7a1fc8e6e15ba0d55aa6bea000f5ddb587d7a",
+        "manager/src/observer.rs": "84063e0cf1d48b3450cd1d03df68e7f73e7700477798e3cbb1443084fd8ccb53",
+        "manager/src/policy.rs": "a10f4a3938f651eeda02ab27b0776ae60f501d6e7ab03cacb3c69affca87ec44",
+        "manager/src/profile.rs": "915b0e634b42361860f25e5efef133306ca9d02dce071c1b088af6cfb68bb04a",
+        "manager/src/state.rs": "b945ae7445136f28499d37c8a43a16c262d89fd3e65c95ef23fbf7923b6f31ee",
+        "manager/src/supervisor.rs": "3cea56c8c1cd3683124a7e98d01ac9ef28f4b7ebd7b6007686843c33f05f4995",
+        "manager/src/supervisor_tests.rs": "78586540f1b7477dfa28c38e1787e77a873dc3be3fef33b49882d4d42b6f1913",
+        "manager/src/tools.rs": "7f17240ea7144c047ff1e256dd6f44f87648184e3439d1c4e21dc44c2d48b9e5",
+        "preview/Cargo.lock": "0ca383237971fb05d39b7c4b4a8752498aa46a3e62fe4ea3b98da4d546b37b08",
+        "preview/Cargo.toml": "3f16d2ecdfb28f8607842fdc34e213ee0d3ca8033e9ba49c4e23e455145fe592",
+        "preview/Launcher.swift": "a61fa49cc9caab062e490fb7366d39b82f0520708ae7bf691b81df3cb7f7e6a8",
+        "preview/THIRD_PARTY_NOTICES.md": "2486f6859258cea79ba677299a300b067b404f600b64a3a0bd812c7675e27e6a",
+        "preview/build.rs": "3269017f860cb2768f14a388ad4c022726003848760fb1839d1ad8095c564990",
+        "preview/build.sh": "ed88037111d924dd89b6f7cff4a6905f07757764fd8b68f32d92fd7ee3d7b332",
+        "preview/licenses/libc-LICENSE-APACHE.txt": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "preview/licenses/libc-LICENSE-MIT.txt": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e",
+        "preview/licenses/rust-Apache-2.0.txt": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+        "preview/licenses/rust-BSD-2-Clause.txt": "f32fb3b417a194167cfad068223fc975ba96c5960513a10f66a3c28720aec1df",
+        "preview/licenses/rust-CC-BY-SA-4.0.txt": "23ee78c8bae49cf08ea2f0c84945c66b987ebe4520881fb51b3dad4fb43d07c2",
+        "preview/licenses/rust-COPYRIGHT-library.html": "af70aaabed1b73e872f14f9130db37e09f3f4d73a5f7c598b9173697a5d2729f",
+        "preview/licenses/rust-GCC-exception-3.1.txt": "a3966c9410ef94a1efbfa9ec04e9c1994026a70623fbf0885ce36737bfba3b54",
+        "preview/licenses/rust-GPL-2.0-only.txt": "54b212ba1f97f6948fa5486239ab505dd820b02e50cbfd296b4062c8609a70af",
+        "preview/licenses/rust-GPL-3.0-or-later.txt": "05315fce6c35f79b8a35454828995fa26336f235895ac64557abc028f4ffcea2",
+        "preview/licenses/rust-ISC.txt": "0ff61769b238634e042ab759dddfd104a8e69d091e3600ae3410e401a6164381",
+        "preview/licenses/rust-LLVM-exception.txt": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e",
+        "preview/licenses/rust-MIT.txt": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+        "preview/licenses/rust-NCSA.txt": "39cb0234065c92b9e6cee3830cbb52b1aa289aa8fe9ba2e66730fec5cf05c630",
+        "preview/licenses/rust-OFL-1.1.txt": "8eea8287e5876b539670cadb82e99f9a7afddec6f6730811be1daf25d2e9bcfd",
+        "preview/licenses/rust-Unicode-3.0.txt": "f5062c9a188d81dfe66b56db4182dcf9e4b17c0d9b0d311a8e20b3a1b075c443",
+        "preview/package.py": "6f655d2d20a61c50490bd9c1f070968a05a8c9d12104ec87774e172b0ca3a7e7",
+        "preview/src/lib.rs": "ecaa63a7d850c3805b447b411cbccfef1d2a5ef71932d41ca8e6c03392e598a0",
+        "preview/src/main.rs": "ebc16daa8657d6df1b3d60399ba452a8ab5ee54aabc2f52ac469a339dc79fec9"
+      },
+      "limitations": "Uncommitted task source, same build host; no clean browser-delivered execution, runtime source closure, public upload or visibility change.",
+      "retention": "Keep the accepted candidate and ignored notary receipt through final release review. Prior candidates are historical; never mix their hashes or notary IDs."
+    }
+  },
+  "public_onboarding": {
+    "date": "2026-10-11",
+    "scope": "Approved #47 Stage 1 public-documentation, community intake, reviewed catalog and branding extension; no stage transition",
+    "documentation": "Diataxis entry paths; separate Rosetta Preview and Rosetta-free engineering; no public download or native player preview claim",
+    "community": {
+      "repository_visibility": "private",
+      "discussions": [
+        {
+          "title": "Welcome to Pear: simple Windows Steam on Apple Silicon",
+          "url": "https://github.com/postmelee/pear/discussions/50"
+        },
+        {
+          "title": "Preview status: Windows Steam entry works locally; public release gates remain",
+          "url": "https://github.com/postmelee/pear/discussions/51"
+        },
+        {
+          "title": "How to share a game result, including failures",
+          "url": "https://github.com/postmelee/pear/discussions/52"
+        },
+        {
+          "title": "Contributing toward the Rosetta-free goal",
+          "url": "https://github.com/postmelee/pear/discussions/53"
+        }
+      ],
+      "issue_and_discussion_forms": "local YAML syntax parsed; default-branch GitHub form rendering unperformed",
+      "private_vulnerability_reporting": "unavailable until repository is public and feature enabled",
+      "content_reporting": "GitHub Support abuse route; personal-account repository does not establish organization-only maintainer reporting",
+      "pages": "prepared; not enabled or deployed; public master and explicit variable gate"
+    },
+    "catalog": {
+      "records": 1,
+      "reported": 1,
+      "qualified": 0,
+      "native_records": 0,
+      "public_output_files": [
+        "index.html",
+        "style.css",
+        "reports.json",
+        "pear.png",
+        "favicon.png"
+      ],
+      "browser": "Codex in-app browser, localhost desktop rendering checked; image and result/limitation text visible; no public deployment or mobile claim",
+      "automatic_ingestion": false
+    },
+    "branding": {
+      "app": "preview/assets/pear_icon.png",
+      "readme": "docs/assets/pear.png",
+      "favicon": "docs/assets/favicon.png",
+      "sources_exact_copy": true,
+      "icns_decoded_representations": 10,
+      "bundle_reference": "CFBundleIconFile=Pear.icns"
+    },
+    "tests": {
+      "rust": 9,
+      "package": 4,
+      "documentation_and_catalog": 46,
+      "governance_documents": 37,
+      "governance_local_targets": 350,
+      "yaml": "issue/discussion/workflow syntax parsed with Ruby Psych",
+      "whitespace": "passed"
+    },
+    "candidate": {
+      "app_path": ".build/task47/release-candidate-branded/Pear Preview.app",
+      "packages": {
+        "Pear-0.1.0-preview.1-macos-arm64.zip": {
+          "sha256": "29713b1bcf944475299f88d72b327e351c724d929b443228f2a9701523c0469d",
+          "size": 5294286
+        },
+        "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+          "sha256": "f4a9798809786cf20ca93e2acad3882968251e912026fcc9195bb2266eeaa53b",
+          "size": 327660
+        }
+      },
+      "package_directory": ".build/task47/packages-branded-notarized-candidate",
+      "notary": {
+        "app": {
+          "id": "5e195db2-0ffc-4e2a-b92c-51f4ffbea575",
+          "status": "Accepted",
+          "issues": null
+        },
+        "cli": {
+          "id": "3d801be9-0e25-42e7-8f38-ab4bd64a4e6f",
+          "status": "Accepted",
+          "issues": null
+        }
+      },
+      "extracted_checks": [
+        {
+          "check": "extract Pear-0.1.0-preview.1-macos-arm64.zip",
+          "exit_code": 0
+        },
+        {
+          "check": "extract pear-preview-0.1.0-preview.1-macos-arm64-cli.zip",
+          "exit_code": 0
+        },
+        {
+          "check": "app signature",
+          "exit_code": 0
+        },
+        {
+          "check": "app staple",
+          "exit_code": 0
+        },
+        {
+          "check": "app Gatekeeper",
+          "exit_code": 0
+        },
+        {
+          "check": "app distribution",
+          "exit_code": 0
+        },
+        {
+          "check": "CLI notarization",
+          "exit_code": 0
+        },
+        {
+          "check": "CLI help",
+          "exit_code": 0
+        }
+      ],
+      "license_notice_bytes_match_source": true,
+      "app_cli_bytes_identical": true,
+      "scope": "Build-host extracted candidate checks; not public or clean-Mac qualification"
+    },
+    "source_inputs_sha256": {
+      "README.md": "ac6b0ace4c458fcf37d9731270e4f76ac7be73ee5e914119e6a13caf0807935f",
+      "docs/README.md": "9a0a877a60cb7e6cceb55ea2baebaa0992da53ca24f8e1b360deb9d36fba1916",
+      "docs/contributing.md": "62ad2556f78209866a04535e077ca5f32ff4a8d1643f512b8203f76bc33522cb",
+      "docs/community.md": "b7ececcc9c95761e5c49f17a5da123563f4b6d66510bcbb3281c0912d1f59982",
+      "docs/SUPPORT.md": "2d05d8577b8b1aadf413266be5edb4f7952a47deb638a09ea2cbf73e5de4974a",
+      "docs/SECURITY.md": "a7ccd96a038920708471b1d3fee662d559df14a04e3cbd0e44fa902fb9c14f15",
+      "docs/CODE_OF_CONDUCT.md": "f701b09da6c4ab3414b432c6a861ce3130cc3593d9340d43010cef5eed798e48",
+      "docs/development/getting-started.md": "e5116fc040262980df4a2c917be81239dbfb4d851c988de95ce21973ba85f61c",
+      "docs/development/rosetta-free.md": "26069e82ec883674bdd4e1fc4c2618090b01d0c5e4e13f2e132fe3c3a401662b",
+      "docs/development/preview-release.md": "ecfaa28202be9356af753c98688c9b9fba8c03e84bb2ebc6e4e3dc37be901889",
+      "docs/compatibility/README.md": "ff7066c45951593b313a3654d1d85db934233b277f5a37c3f62f42a53f63492b",
+      "docs/compatibility/reports.json": "f5fb740643126ffd21f47e470ce2aaf4eed0c62871eb4242e7585850cbd895be",
+      "docs/compatibility/records.md": "b04e86e14d1427823a64255430e80f0e0e8354292a0ce84fdecb5cc1170bb732",
+      "docs/assets/pear.png": "ea213ca4c626f12a60289d768e7a35b59e32290d7c68f9b929907f1b98d2ac8b",
+      "docs/assets/favicon.png": "c1e73e838441675e1c35fabf9fd9da2062fad310eedceb0600ba44d99dc8e816",
+      "preview/assets/pear_icon.png": "0d8d505b7f876bdd5ea37d23c5f119f0879f8587b8d8e0ad7e604702cb343033",
+      "preview/build-icon.sh": "9b5a6c27f7139df909fda7bce17dd3865c50f25372e82eb078f5c62029b4991a",
+      "preview/build.sh": "d34cc9009bf51df9449947ece0bcdcd3cb7146140e471d9fdee1473285be38bf",
+      "preview/package.py": "deb86755592e914d48171d48886c528623c7c0d39a6deaf5e9b82ee4f41912a0",
+      "tools/compatibility.py": "cd33ef3cc530e214d4534bb694e925181a541b27d15d113d34ce7b216b479ca0",
+      "tests/docs/test_compatibility.py": "dcdba14de41642b23c01a64827e28836d58bf3015484d5f6d316add1f0c67db5",
+      ".github/workflows/compatibility-pages.yml": "272aea5688a5096a088ac4529de96795b15d7988adf454f7170fc1ba44d97e99"
+    },
+    "retained_private_evidence": ".build/task47/notarization-branded/verification.json and build/icon/site directories; task-owned, retain through artifact review and clean-delivery testing; excludes runtime/authentication data",
+    "remaining": "Runtime source/notices, recovery and sustained game/audio/save checks, second clean Mac delivery, final committed source, default-branch integration, visibility review/approval and actual public release remain pending."
+  },
+  "website_visual_review_checkpoint": {
+    "date": "2026-10-11",
+    "status": "Website implemented and checked locally; requester visual approval pending. Stage 1 and Issue #47 remain in progress.",
+    "preview_url": "http://127.0.0.1:8947/",
+    "intro": [
+      "Windows games on Mac.",
+      "Free and open source.",
+      "Our goal: a future without Rosetta."
+    ],
+    "current_status": "Preview in development; Rosetta required; public download coming later.",
+    "behavior": [
+      "Group reports by Steam App ID; separate Pass/Partial/Failed from support votes and qualification.",
+      "Steam store link and remotely referenced official artwork with fallback.",
+      "Search, runtime/result filters, game tabs and sort controls.",
+      "Game-specific environment records and expandable versions/limitations.",
+      "Local copyable report/request drafts with GitHub category handoff; no automatic submission or storage."
+    ],
+    "baseline": "Megabonk: 0 Pass / 1 Partial / 0 Failed; responsive menu reported by owner, not sustained-play qualification.",
+    "request_state": "No canonical game-demand Discussion exists; request links prepare a draft. No fabricated vote totals. GitHub category forms remain pending default-branch integration.",
+    "checks": {
+      "documentation_and_catalog_unit_tests": {
+        "passed": 55,
+        "log": ".build/task47/catalog-tests-v2.log"
+      },
+      "catalog_generation": "PASS: 1 reviewed record and 11 allowlisted public files",
+      "governance": "PASS: 37 documents and 351 local link targets",
+      "javascript_syntax": "PASS",
+      "pages_workflow_yaml": "PASS",
+      "git_diff_check": "PASS",
+      "browser": [
+        "Search no-match and reset",
+        "Pass/native filters do not promote menu observation",
+        "Partial result includes baseline",
+        "Requests empty state",
+        "Sort control changes selection; multiple-game browser ordering not exercised with one-game dataset",
+        "Game navigation, report filters and expanded versions",
+        "Required fields prevent incomplete draft",
+        "Report and request drafts generated from synthetic UI-only text",
+        "Copy title/body feedback and copied content verified",
+        "GitHub handoff URLs point to expected categories without submission",
+        "1280px desktop and 390px mobile layout; no horizontal overflow",
+        "Official Steam artwork rendered",
+        "Captured console errors: none"
+      ],
+      "browser_viewport_override_reset": true
+    },
+    "public_output_files": [
+      "about.html",
+      "catalog.js",
+      "favicon.png",
+      "game-3405340.html",
+      "games.json",
+      "index.html",
+      "pear.png",
+      "report.html",
+      "reports.json",
+      "request.html",
+      "style.css"
+    ],
+    "screenshots": [
+      ".build/task47/website-review/home.jpg",
+      ".build/task47/website-review/game.jpg",
+      ".build/task47/website-review/mobile.jpg"
+    ],
+    "source_inputs_sha256": {
+      "tools/compatibility.py": "db944cb153f9aaa6c9da925569fff66255db90f7ddb207ef0e0a8a4d1527d4bb",
+      "tools/catalog/style.css": "bfe810b6ea41da8192d6f33bab541f14b972f2034cdb9c3761d7988a92cccbe6",
+      "tools/catalog/catalog.js": "fd9a93e174c14de4b6f031db70d085f55e691c3769f4d247b66c266623ecc8ae",
+      "docs/compatibility/games.json": "9c6b39dbc8173f1140a5036db608669dcaaaf3599be840b8a0df7824187dadb6",
+      "docs/compatibility/reports.json": "f5fb740643126ffd21f47e470ce2aaf4eed0c62871eb4242e7585850cbd895be",
+      "docs/compatibility/README.md": "8e15f09ff0061d2245214a271385efe9ef43bebd41152fb2a0be33a1f982252d",
+      "docs/community.md": "0bf29a75b7efe74014c52bbb1d572c9508e2081f595c932b59b3afbb7dff4a0f",
+      "tests/docs/test_compatibility.py": "7b45cf0dddaf0be4bcb4994103c898ab98ac7280e4381bb38c6e28a8b1eec582",
+      ".github/workflows/compatibility-pages.yml": "9ce9eadd0e0598bab08cc22535f5490b35e2a263b0ae9ac1406b9b9c9b6033a7"
+    },
+    "remote_mutations_this_checkpoint": [],
+    "scope_limit": "Website-only checks. Prior app/CLI notarization evidence retained; no runtime/game/build-host or clean-Mac distribution checks repeated here.",
+    "next_step_gate": "Requester explicitly requires viewing and approving this website before integration, new remote posts, form activation, repository visibility, Pages deployment or release work proceeds.",
+    "retention": "Keep the task-owned local server, review screenshots and candidate artifacts available for requester review."
+  },
+  "website_feedback_revision": {
+    "date": "2026-10-11",
+    "status": "Local website revised from requester visual feedback; visual approval still pending. Stage 1 and Issue #47 remain in progress.",
+    "copy": "Removed Made for Apple Silicon; supporting line is Building a Rosetta-free way to play.",
+    "image_fix": {
+      "reproduced_at_viewport": 800,
+      "before_css_pixels": [
+        205,
+        245
+      ],
+      "after_css_pixels": [
+        205,
+        205
+      ],
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "method": "height:auto and intrinsic aspect ratio; no source artwork edit"
+    },
+    "downloads": "Home and navigation link to download.html; planned DMG/app and CLI downloads remain disabled, no release asset invented. Existing extracted-CLI commands have copy controls. Homebrew unavailable; tested cask follows a verified release.",
+    "report_layout": "Game and environment headings precede badges. Every report uses the same result, play duration, individual check states, version/evidence fields and game-specific notes. Baseline remains Partial/reported with unmeasured gameplay and untested audio/save/recovery. No qualification promotion.",
+    "game_identity": "Known catalog dropdown or Steam store URL/App ID; known name is readonly and canonical. Unlisted ID clears prior name and produces an ID-only draft pending name review. Invalid/foreign URLs, credentials, zero and uint32 overflow are rejected. No live API key or backend added.",
+    "verification": {
+      "unit_tests": {
+        "passed": 58,
+        "log": ".build/task47/catalog-tests-feedback.log"
+      },
+      "syntax": [
+        "Python compile PASS",
+        "JavaScript check PASS",
+        "Discussion YAML parse PASS",
+        "git diff --check PASS"
+      ],
+      "public_generation": "PASS: 12 allowlisted files, one unchanged-scope game observation",
+      "browser": [
+        "Canonical ID and name from dropdown/store URL/leading-zero input",
+        "Unknown ID does not inherit Megabonk name",
+        "Foreign host, credential-bearing URL, zero and uint32 overflow rejected",
+        "Changing identity hides stale draft",
+        "Active gameplay requires measured duration",
+        "Generated draft preserves Observed/Failed/Not tested checks and canonical ID",
+        "Request draft uses same canonical identity",
+        "CLI clipboard equals ./pear-preview steam after success feedback",
+        "800px image is square",
+        "1280px desktop screenshots and 390px home/detail/report/request/download have no horizontal overflow",
+        "Game/environment headings precede badges; versions include reproduction/qualification state",
+        "No captured browser console errors"
+      ],
+      "automation_scope_note": "Hidden-input values are redacted by browser automation; identity was verified from visible status, canonical-name selection and generated draft. Clipboard read was verified after its asynchronous success feedback.",
+      "screenshots": [
+        ".build/task47/website-review-feedback/home.jpg",
+        ".build/task47/website-review-feedback/game.jpg",
+        ".build/task47/website-review-feedback/download.jpg",
+        ".build/task47/website-review-feedback/form.jpg",
+        ".build/task47/website-review-feedback/mobile.jpg"
+      ]
+    },
+    "source_inputs_sha256": {
+      "tools/compatibility.py": "ae7df00ba1ea8c06c88a3c61276806501cf8eb72241e5439668641d4646f0046",
+      "tools/catalog/style.css": "0179890ec8f8e44582817912e24861b64a681c3ceb1ea93a7c20034a64b48e29",
+      "tools/catalog/catalog.js": "a0621afc2f14bf4dc7d0bc8ed1f03de7f4b478d3f1616981877c1a10043f91ed",
+      "tests/docs/test_compatibility.py": "eead2fe16a6772c64cfbbad033bedfc4fa879fd86bdcaf8667ffc470ea23bbb7",
+      "docs/compatibility/reports.json": "006206d941dd909b427a1175ea353d718a6396a71e5a5532ffbe9ac4133d9010",
+      "docs/compatibility/records.md": "07bd1d966db2857c41fde1da10e93701fd18e3bdc433e54e0050f8a0f5d45fee",
+      "docs/compatibility/README.md": "6138cb75474ffc58450a44e6151b585bdc1b9a0565ebfb3d3bf8a2053230a742",
+      ".github/DISCUSSION_TEMPLATE/show-and-tell.yml": "db49fea99edebde4a0b5e2139459ff35b09df8299e571dbddd2f95697b674f57"
+    },
+    "public_files": [
+      "about.html",
+      "catalog.js",
+      "download.html",
+      "favicon.png",
+      "game-3405340.html",
+      "games.json",
+      "index.html",
+      "pear.png",
+      "report.html",
+      "reports.json",
+      "request.html",
+      "style.css"
+    ],
+    "remote_mutations": [],
+    "scope_limit": "Website and local form changes only. No runtime/app package change, new gameplay, clean-Mac qualification, public release, merge, form activation or visibility change.",
+    "retention": "Keep local preview server and task-owned screenshots for requester review; preserve prior candidate artifacts and approvals."
+  },
+  "website_alignment_revision": {
+    "date": "2026-10-11",
+    "status": "Local typography/alignment feedback complete; requester visual approval pending.",
+    "changes": [
+      "All uppercase eyebrow captions removed from report, request and About pages, including unused CSS.",
+      "All form, catalog and report-filter select arrows share a 14px right inset and 40px text padding. Native select interaction retained; forced-colors mode uses native arrows.",
+      "Game-name label moved outside the input/link alignment row; Check on Steam aligns to input center on desktop and stacks below on mobile."
+    ],
+    "checks": {
+      "unit_tests": 58,
+      "log": ".build/task47/catalog-tests-alignment.log",
+      "site_generation": "PASS: 12 allowlisted files",
+      "no_eyebrows_in_generated_html": true,
+      "desktop_1280_input_link_center_delta_px": 0,
+      "mobile_390_no_overflow": [
+        "report",
+        "home",
+        "game"
+      ],
+      "all_inspected_select_background_positions": "calc(100% - 14px) 50%",
+      "git_diff_check": "PASS"
+    },
+    "source_sha256": {
+      "tools/compatibility.py": "63cbd5f298afc5a5e67dc62d8f3ff7395a42efdcd74427112ab85239de651042",
+      "tools/catalog/style.css": "64234837fcbc7995e9bbc24e5671cd6126819a9155ac73408fbb3a47d30dc14d"
+    },
+    "screenshots": [
+      ".build/task47/website-review-alignment/form.jpg",
+      ".build/task47/website-review-alignment/mobile.jpg"
+    ],
+    "steam_search_followup": "Requester asked about full Steam search and API-key issuance. Guided user to Steam Community API-key registration and repository Actions secret STEAM_WEB_API_KEY. No key was received/read and no full-catalog API integration or remote workflow was executed.",
+    "remote_mutations": [],
+    "retention": "Keep review screenshots and local preview server for the requester. Stage 1 and Issue #47 remain in progress."
+  },
+  "website_steam_search": {
+    "date": "2026-10-11",
+    "status": "Implemented and tested with real Steam metadata; local website awaits requester visual approval. Stage 1 remains in progress.",
+    "authorization": "Requester asked for whole-Steam live suggestions and confirmed saving the requested Actions secret. The isolated private CI fetch is part of website implementation/testing, not website publication or a stage transition.",
+    "secret_boundary": "Verified STEAM_WEB_API_KEY name only. Value never read by the agent, copied locally or included in source/artifacts; sent by CI only in x-webapi-key to the fixed public Steam API HTTPS host. Redirects refused.",
+    "upstream": "https://api.steampowered.com/IStoreService/GetAppList/v1/",
+    "snapshot": {
+      "games": 192045,
+      "bytes": 9301308,
+      "fetched_at": "2026-10-10T18:01:22+00:00",
+      "sha256": "219750c483363af7d0b81a3213450ebcf8c7a8e8f0433471277f17fbd9e104bd",
+      "path": ".build/task47/steam-catalog-complete/steam-games.json",
+      "scope": "All named games returned by the games-only paginated Steam store API, through its empty final page; not compatibility records."
+    },
+    "remote_verification": {
+      "branch": "codex/task47-steam-catalog-check",
+      "commit": "c90e77b8590a465d5be7f66ac237022d57886449",
+      "files": [
+        "tools/steam_catalog.py",
+        "tests/docs/test_steam_catalog.py",
+        ".github/workflows/steam-catalog.yml"
+      ],
+      "run_url": "https://github.com/postmelee/pear/actions/runs/38074068985",
+      "result": "success",
+      "artifact": "steam-game-identities",
+      "artifact_retention_days": 7,
+      "earlier_runs": [
+        {
+          "id": 38073813038,
+          "result": "failed safely on blank/control-character store names; normalized whitespace and omitted unnamed entries afterward"
+        },
+        {
+          "id": 38073882476,
+          "result": "API run succeeded but local completeness check found only 9999 names; superseded, not accepted as a complete snapshot. Fixed pagination to continue until empty without optional response flags."
+        }
+      ]
+    },
+    "checks": {
+      "python_unittest": "72 passed, no skips",
+      "node_search_tests": "6 passed, including 150000 synthetic identities",
+      "governance": "37 documents, 352 local targets; passed",
+      "yaml": "All three changed workflows parsed with Ruby YAML",
+      "javascript_syntax": "passed",
+      "site_output": "14 allowlisted public files; API metadata separate from reviewed reports/games",
+      "browser": [
+        "Real name search: ELDEN RING, Stardew Valley, Portal 2; canonical App IDs retained",
+        "ArrowDown/Enter and pointer selection; exact-name priority",
+        "Name edits clear previous ID, Steam link and generated draft",
+        "Steam store URL resolves to read-only canonical name",
+        "Request draft contains selected name, ID and Steam link; no GitHub submission",
+        "390px report/request layouts and 1280px report layout: no horizontal overflow",
+        "Separate 8948 test server: missing snapshot shows fallback; direct ID accepted; restoring file plus retry resolves ELDEN RING",
+        "Main preview console errors: none"
+      ],
+      "git_diff_check": "passed"
+    },
+    "source_sha256": {
+      "tools/steam_catalog.py": "af7f5fa6e0f74a43a4311921d9864b4927ee75cef99cd0788216c389f9e397af",
+      "tools/compatibility.py": "dc8a53af17bd1d912e1d3c04a0a78223f46443d0482702e9da57f0b00b4ce53d",
+      "tools/catalog/catalog.js": "e68e8a0dd1bb806c31e4de86b074b59cc9ab54a050769e4f81e48fead4f52afd",
+      "tools/catalog/steam-search.js": "2a8a675fd46d500af7874c23fe5b288f77eafcea13144124b8bb2b62bebb74cf",
+      "tools/catalog/style.css": "6702bd0afe2796902d66aa700f311b7c666fdd7173caca5899fa39ea44416641",
+      "tests/docs/test_steam_catalog.py": "599fd562b1f8639029e86018c0ef93b206bf27331646e61e4574100d25dfd9f6",
+      "tests/docs/test_steam_search.cjs": "4434b1c39c20b4cdcd9414a80ab2cf7d16f8909ef509ae0e7274dc30cf8a34ec",
+      "tests/docs/test_compatibility.py": "b491fee44b7550854c789722a733f05baa54922905acbb1aa52b4cf0134d41ae",
+      ".github/workflows/steam-catalog.yml": "271f231a38af496fc9903243ed2d0e18e5d41f158050869bfcfddea3c174cbbb",
+      ".github/workflows/compatibility-pages.yml": "4efa3d740269984fcd55b80fca3e7c5d5b7427663c5032cdf1aeaf7a3d6602ae"
+    },
+    "screenshots": [
+      ".build/task47/website-review-steam-search/desktop.jpg",
+      ".build/task47/website-review-steam-search/mobile.jpg"
+    ],
+    "integration_gates": "No master merge, public visibility change, Pages enablement, GitHub form activation, app release or support promotion. No recurring sync schedule. Existing public/variable Pages guards retained.",
+    "retention": "Keep full snapshot, private verification ref, screenshots and 8947 review server until visual review/integration. Temporary 8948 server stopped and browser tab closed. Earlier partial snapshot retained only as failed completeness evidence; not served."
+  },
+  "website_download_navigation": {
+    "date": "2026-10-11",
+    "status": "Local website revision verified and explicitly approved by requester on 2026-10-11; Stage 1 remains in progress",
+    "changes": [
+      "Mac app, CLI and Homebrew methods exposed at top with native anchor fallback and accessible keyboard tabs",
+      "Requester refinement removes the large panel card; only brief installation copy, download control and CLI launch command switch",
+      "Common official Steam sign-in, owned game selection, requirements and Preview status are always-visible prose below methods",
+      "Unreleased app/CLI downloads stay disabled; Homebrew remains planned with no invented command"
+    ],
+    "diataxis_review": "Primary-source review and location judgment in mydocs/plans/task_m3_47_impl.md. Organize learning, task instructions, consistent reference and explanation behind goal-based Games/Download/About navigation. This is a design inference, not a usability-study conclusion.",
+    "checks": {
+      "python_unittest": "72 passed, no skips after latest renderer change",
+      "governance": "37 documents, 352 local targets; passed",
+      "javascript_syntax": "catalog.js passed",
+      "non_javascript_structure": "All three method sections unhidden in generated HTML and corresponding anchor links retained",
+      "browser": [
+        "App/CLI/Homebrew selection, shared prose visible outside every switching panel",
+        "Active panel has transparent background and zero border",
+        "Arrow key activation and #cli reload; launch command copies exactly ./pear-preview steam",
+        "1280px desktop, 390px CLI and 320px Homebrew: no horizontal overflow",
+        "Existing keyboard Home/End/Tab/Space behavior verified before latest prose/CSS-only refinement; interaction code unchanged",
+        "Console errors: none; viewport reset and App tab left for review"
+      ],
+      "public_output": "14 allowlisted files, including retained full sanitized Steam identities snapshot",
+      "git_diff_check": "passed"
+    },
+    "source_sha256": {
+      "tools/compatibility.py": "52664b0b881a2223760a0d908a219879cdc143f1d1254e91bf529ec499fe02f1",
+      "tools/catalog/catalog.js": "4d3d72de0c4b1e88158bd0db83609ada997693abce96f3e9e4d5ccc69df77b6d",
+      "tools/catalog/style.css": "9093f4ff7e7d5320230b188d90ffe871df0dea545e753958e5bf31c2fa9ae051"
+    },
+    "screenshots": [
+      ".build/task47/website-review-download/desktop.jpg",
+      ".build/task47/website-review-download/mobile.jpg"
+    ],
+    "review_url": "http://127.0.0.1:8947/download.html#app",
+    "integration_gates": "Website visual gate satisfied. Repository visibility final-action approval, source integration, live-form validation and release qualification remain separate gates."
+  },
+  "website_approval": {
+    "date": "2026-10-11",
+    "requester_message": "\uc2b9\uc778\ud560\uac8c",
+    "scope": "Reviewed website including download methods, shared prose and prior website refinements",
+    "source_sha256": {
+      "tools/compatibility.py": "52664b0b881a2223760a0d908a219879cdc143f1d1254e91bf529ec499fe02f1",
+      "tools/catalog/catalog.js": "4d3d72de0c4b1e88158bd0db83609ada997693abce96f3e9e4d5ccc69df77b6d",
+      "tools/catalog/style.css": "9093f4ff7e7d5320230b188d90ffe871df0dea545e753958e5bf31c2fa9ae051"
+    },
+    "diataxis_application": {
+      "tutorial": "docs/rosetta-preview.md#app-experience, linked as First Steam session from Download; release availability remains explicit",
+      "how_to": "download.html method tabs and report.html/request.html task forms",
+      "reference": "game-{AppID}.html standard environment/result/version/check fields; docs/compatibility/README.md",
+      "explanation": "about.html#preview and #results, contextual links from home/game/download",
+      "navigation": "Goal-based Games / Download / About retained; docs/README.md separates the four documentation needs"
+    },
+    "link_review": "Existing contextual destinations and canonical Markdown anchors inspected; no additional UI change needed after approval",
+    "remaining": "No stage-completion, merge, repository visibility or binary-release qualification implied"
+  },
+  "publication_preparation_after_website_approval": {
+    "date": "2026-10-11",
+    "repository_visibility": "private",
+    "remote_branches": [
+      "master",
+      "codex/task47-steam-catalog-check"
+    ],
+    "public_releases": 0,
+    "tags": 0,
+    "existing_introductory_discussions": [
+      50,
+      51,
+      52,
+      53
+    ],
+    "actions_artifacts": 15,
+    "source_scan": {
+      "counts": {
+        "history_blobs": 1884,
+        "history_bytes": 52277067,
+        "working_files": 1300
+      },
+      "selected_pattern_findings": [],
+      "limitations": [
+        "Selected-pattern scan is not a complete secret or copyright audit.",
+        "Historical paths and Git authorship remain part of publication review.",
+        "GitHub Actions artifact contents/logs, remote attachments and other refs require their own final review.",
+        "No visibility, history rewrite, source integration or release operation performed."
+      ]
+    },
+    "binary_filename_candidates": [],
+    "integration_dependency": "Preserve Task #48 retention changes from master; no rebase/merge performed",
+    "next_required_reviews": [
+      "Exact runtime provenance and source/notice correspondence",
+      "Actions artifacts/logs and final current-ref/publication inventory",
+      "Stage completion and integration checks",
+      "Final repository visibility decision and live public services verification",
+      "Recovery, sustained gameplay and clean delivery before binary release"
+    ]
+  },
+  "runtime_provenance_followup": {
+    "date": "2026-10-11",
+    "status": "partial: binary origins narrowed; exact Wine source/build and complete transitive notice/source inventory unresolved",
+    "selected_runtime_sha256": "01f3a1b43b98065fe20c529c1023b61dd79a6d2ad93bba6040865f646481ccf3",
+    "whisky_tag_commit": "58b3ce120bcc7a86ff6e6b4a4e921dfce57fe115",
+    "assembly_same_as_later_inspected_script": true,
+    "comparison_inputs": {
+      "wine-stable-11.0_1-osx64.tar.xz": {
+        "bytes": 185303032,
+        "sha256": "b50dc50ec7f41d58b115a6b685d4d1315ba3c797bd3aa0f49213f2703cb82388",
+        "digest_scope": "matched published release digest"
+      },
+      "dxmt-v0.80-builtin.tar.gz": {
+        "bytes": 18681669,
+        "sha256": "8f260e36b5739e68f3bad613381441385c4dc7b85b78ba8de653d5a6a264529d",
+        "digest_scope": "matched published release digest"
+      },
+      "dxvk-builtin.tar.gz": {
+        "bytes": 2785833,
+        "sha256": "810b1e5caf8ce975b784fae866a130ad23fa0ea233b0e5609cbc4a45f3ef6f00",
+        "digest_scope": "matched published release digest"
+      },
+      "dxvk-native.tar.gz": {
+        "bytes": 2793443,
+        "sha256": "acd1520ad105d8ef124a09c8e11a259a5dc8bdc565ad18e0e52693f9807b2477",
+        "digest_scope": "locally computed; upstream API had no published digest"
+      }
+    },
+    "wine_comparison": {
+      "regular_files": 4770,
+      "matching_some_upstream_regular_file": 3200,
+      "unmatched": 1570,
+      "same_path_matches": {
+        "helper_dylibs": 39,
+        "mono": 2921,
+        "gecko": 60
+      },
+      "scope": "File-hash identity is provenance evidence, not a corresponding-source legal test"
+    },
+    "dxmt": {
+      "files_matched": 11,
+      "documented_16_byte_transformations": 6,
+      "source_commit": "589adb780354b461645b29999cefaf533594ee99",
+      "license": "top-level MIT; separate DXVK zlib source notice and pinned submodule terms retained for further inventory"
+    },
+    "dxvk": {
+      "files_matched": 5,
+      "release": "v1.10.3-20230507-repack",
+      "variant": "native",
+      "source_commit": "8f1e28deed3ad30802f7e1bdff428ec14e6e7817",
+      "license": "zlib/libpng"
+    },
+    "versions": {
+      "mono": "10.4.1",
+      "gecko": "2.47.4",
+      "wine": "11.0; current repack is not Gcenx April 11.0_1 Wine core"
+    },
+    "recipe_candidate": "5c5bf5771ab8110d538aa25faee1b81578111840 (April overlay; not established January build input)",
+    "sources": [
+      {
+        "file": "runtime-tag-assembly.sh",
+        "endpoint": "repos/frankea/Whisky/contents/scripts/assemble-runtime.sh?ref=58b3ce120bcc7a86ff6e6b4a4e921dfce57fe115",
+        "sha256": "97fadd2a8493455e541863b133d6097be47aac91e7d9b03b87a209932300b0e9",
+        "bytes": 7773
+      },
+      {
+        "file": "runtime-tag-dependencies.md",
+        "endpoint": "repos/frankea/Whisky/contents/docs/DEPENDENCIES.md?ref=58b3ce120bcc7a86ff6e6b4a4e921dfce57fe115",
+        "sha256": "1c3be328882fbbda052869a0f2bf2c0b742ffb36f6e5c33cd44b95c242bddce5",
+        "bytes": 5505
+      },
+      {
+        "file": "gcenx-release-recipe",
+        "endpoint": "repos/Gcenx/macports-wine/contents/emulators/wine-stable/Portfile?ref=5c5bf5771ab8110d538aa25faee1b81578111840",
+        "sha256": "d01f529ff68afdca19b0c0472398188a15e3689c4be71f4600f963a4e82ed6bd",
+        "bytes": 8796
+      },
+      {
+        "file": "dxvk-release-license",
+        "endpoint": "repos/Gcenx/DXVK-macOS/contents/LICENSE?ref=v1.10.3-20230507-repack",
+        "sha256": "240101b852af584ded719e7335a36f9a3aae3ac816774cf3f460c00d2c88c161",
+        "bytes": 980
+      },
+      {
+        "file": "dxmt-release-submodules",
+        "endpoint": "repos/3Shain/dxmt/contents/.gitmodules?ref=v0.80",
+        "sha256": "f32472d7ca6d26fe5a28af8de9e8d30344ca7f614ba0d5f376fefe8102a46619",
+        "bytes": 221
+      },
+      {
+        "file": "dxmt-dxvk.LICENSE",
+        "endpoint": "repos/3Shain/dxmt/contents/src/util/dxvk.LICENSE?ref=589adb780354b461645b29999cefaf533594ee99",
+        "sha256": "03ca4af84f5cd28cef3ed3f1ef4d17996992d35ccdbe82b29cc020ca02c16f3d",
+        "bytes": 970
+      },
+      {
+        "file": "nvapi-license",
+        "endpoint": "repos/NVIDIA/nvapi/contents/License.txt?ref=d08488fcc82eef313b0464db37d2955709691e94",
+        "sha256": "bab44777f0f4d0333479ea0be6e24c084464a8cb64b98f1253fcc3df70f6eccf",
+        "bytes": 1217
+      }
+    ],
+    "retained_maps": {
+      "whisky-files.json": "d8bc54ff1db1cd06ecef8ad1c160d8acd74e8ca2b496cb5d42f50946cd96140c",
+      "gcenx-files.json": "7cb5d0658b0cabc99af4e9931c47554944382a1ab2b37808ee85d981e271067f",
+      "wine-comparison.json": "c24eccf6e5c48a42b675e0a7d7005c35ddb1798cfafd41409cbcb24ad811dcf8",
+      "dxmt-comparison.json": "853d8bf2cd55ec201b97ec174d6d99e994e4fbb70a21922081f596e9db737a4c",
+      "dxvk-comparison.json": "211279ed2cd024c9eb99e2968bcfff337cb16385c8a507ca74360a1314c6b828"
+    },
+    "external_contact": "Concrete inquiry prepared in existing reuse investigation; not posted, requester authorization required before sending",
+    "artifact_effect": "Changed notice source only. Installed runtime, private state and sealed notarized candidates unchanged. Final candidate must be rebuilt with updated notices.",
+    "stage_scope": "S1-identity remains partial. No completed stage report, stage transition, replacement runtime or release promotion.",
+    "retention": "Task-owned ignored license-review archives/maps retained through source resolution; no additional extracted runtime or game acquisition"
+  },
+  "replacement_runtime_candidate": {
+    "date": "2026-10-11",
+    "status": "validation_in_progress_not_release",
+    "authorization": "Requester approved replacement-candidate validation and distribution after verification; no upstream inquiry.",
+    "runtime_id": "gcenx-11.0_1-dxmt-0.80-v1",
+    "inputs": [
+      {
+        "name": "wine-stable-11.0_1-osx64.tar.xz",
+        "bytes": 185303032,
+        "sha256": "b50dc50ec7f41d58b115a6b685d4d1315ba3c797bd3aa0f49213f2703cb82388",
+        "release": "https://github.com/Gcenx/macOS_Wine_builds/releases/tag/11.0_1"
+      },
+      {
+        "name": "dxmt-v0.80-builtin.tar.gz",
+        "bytes": 18681669,
+        "sha256": "8f260e36b5739e68f3bad613381441385c4dc7b85b78ba8de653d5a6a264529d",
+        "release": "https://github.com/3Shain/dxmt/releases/tag/v0.80"
+      }
+    ],
+    "basic_execution": {
+      "wine_version": "wine-11.0",
+      "wineboot_exit": 0,
+      "cmd_ver_exit": 0,
+      "reported_windows": "10.0.19045",
+      "rosetta": true
+    },
+    "shared_bootstrap_setup": "passed_in_fresh_private_state",
+    "source_files_sha256": {
+      "preview/src/lib.rs": "2b8c1b40eeacaecd2cd2e33a62682deb1f0545edf8d6743d75a5e7cbde166ecd",
+      "preview/src/main.rs": "9bc1a48afc6d41bcab44c9bd3b2737bb3ba97125094a03f5af68dbc120e0f2a8",
+      "preview/build.sh": "6538e99474479a5945ae2f0a18c53adb084c99af3446878e607532701f8494dd",
+      "preview/THIRD_PARTY_NOTICES.md": "54f9427b92c071cabb980cc3081f281ead635903d718b0cf046b482dba70d2c6"
+    },
+    "tests": {
+      "rust": {
+        "passed": 11,
+        "failed": 0
+      },
+      "packaging": {
+        "passed": 4,
+        "failed": 0
+      },
+      "governance": {
+        "documents": 37,
+        "local_targets": 352,
+        "result": "passed"
+      },
+      "whitespace": "passed"
+    },
+    "runtime_integrity": {
+      "after_setup_and_steam_start": "inventory_matches",
+      "original_wine_regular_files_unchanged": 4768,
+      "selected_dxmt_dlls": 8,
+      "marker_transformations": 6,
+      "paired_bridge_files_match": true
+    },
+    "initial_steam_attempt": {
+      "client_build": "1788652215",
+      "owner_observation": "Updater disappeared; no Steam window visible",
+      "processes": "Steam and CEF running",
+      "cef_errors": [
+        "SwapChain11 reset HRESULT 0x80004005",
+        "eglCreateWindowSurface EGL_BAD_ALLOC"
+      ],
+      "result": "failed_login_window"
+    },
+    "startup_correction": {
+      "argument": "-cef-disable-gpu",
+      "scope": "Steam CEF UI only; game DXMT and sandbox settings unchanged",
+      "flag_present_in_official_client": true,
+      "restart": "Normal -shutdown returned 0 but processes remained; candidate-prefix-only wineserver -k/-w completed",
+      "result": "failed: requester observed and supplied solid black window screenshot"
+    },
+    "system_gstreamer_present": false,
+    "linked_library_inspection": "No non-system absolute linked dependencies in the inspected Wine Unix modules after excluding their own install names; dlopen dependencies not covered.",
+    "preservation": "All execution used new task-owned prefixes. Existing authenticated roots, games, saves, and sealed candidates were not migrated or modified.",
+    "retained_evidence": ".build/task47/runtime-candidate/",
+    "retention": "Failed candidate build/source/download/runtime and unauthenticated Steam payloads retired at requester instruction. Small metadata retained; prior working authenticated environments and sealed apps preserved.",
+    "remaining": [
+      "Steam login and owned-game launch on the replacement",
+      "Component source/patch and auxiliary notices review",
+      "Stage 2 recovery/preservation",
+      "Stage 3 sustained gameplay and clean delivery",
+      "Final signed/notarized distribution artifact; old receipts do not apply"
+    ],
+    "renderer_split_probe": {
+      "result": "failed: requester reports no window",
+      "runtime": "Gcenx Wine 11.0_1 / DXMT 0.80 builtins / DXVK macOS native Steam overrides",
+      "input_sha256": "acd1520ad105d8ef124a09c8e11a259a5dc8bdc565ad18e0e52693f9807b2477",
+      "private_state": "cloned unauthenticated candidate; not clean-install evidence",
+      "module_load": "CEF native d3d11/dxgi; default process builtin dxgi/winemetal",
+      "stopped": true,
+      "evidence": ".build/task47/runtime-candidate/steam-renderer-split-probe/assembly.json"
+    },
+    "admission": "Rejected for Steam UI; not an admitted replacement or release",
+    "source_build_probe": {
+      "source_url": "https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz",
+      "source_sha256": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+      "source_bytes": 149054023,
+      "wine_version": "11.0",
+      "wine_license": "LGPL-2.1-or-later",
+      "configure": "passed after task-local Bison 3.8.2 and explicit x86_64 diagnostic helper libraries",
+      "build": "passed: make -j6 after task-local FreeType loader symlink; install-lib passed",
+      "source_scope": "Wine only; no proprietary CrossOver or D3DMetal payload",
+      "dependency_scope": "existing Gcenx helper binaries with host headers; diagnostic only, not a qualified standalone release",
+      "evidence": ".build/task47/runtime-candidate/cx26-source-probe",
+      "wineboot": "passed",
+      "device_probe": "passed: D3D11CreateDevice hr=0 level=0xb000; no presentation/game claim",
+      "steam_install": "passed",
+      "steam_update": "passed: 1788652215",
+      "initial_ui": "failed: requester confirmed black window",
+      "admission": "rejected for Steam UI; retired",
+      "ui_software_compositing_probe": {
+        "status": "failed: requester confirmed black screen",
+        "arguments": [
+          "-cef-disable-gpu",
+          "-cef-disable-gpu-compositing"
+        ],
+        "cef_arguments_verified": true,
+        "automated_screen_read": "unavailable: Wine app accessibility timeout",
+        "authentication": "not attempted",
+        "remaining_log_observation": "auth-session transport polling errors remain; not a credential rejection or successful login"
+      },
+      "stopped": true
+    },
+    "failed_flag_removed": true,
+    "post_flag_removal_rust_tests": {
+      "passed": 11,
+      "failed": 0
+    },
+    "source_hashes": {
+      "preview/src/lib.rs": "378e613351c8d70296aeeb131a72570c94936c71bfbd694d9de83407ac61edfb",
+      "preview/src/main.rs": "9bc1a48afc6d41bcab44c9bd3b2737bb3ba97125094a03f5af68dbc120e0f2a8",
+      "preview/build.sh": "6538e99474479a5945ae2f0a18c53adb084c99af3446878e607532701f8494dd"
+    },
+    "cleanup": {
+      "date": "2026-10-11",
+      "result": "completed using individually evidenced paths after broad-root deletion was rejected by automatic approval review",
+      "reclaimed_bytes_measured": 11951427584,
+      "free_bytes_after": 19608727552,
+      "record": ".build/task47/retired-runtime-evidence/",
+      "candidate_payloads": "removed",
+      "private_raw_logs": "removed after summarized outcome recording",
+      "preserved": "Prior working runtime/authenticated prefixes/games/saves, sealed app and notarized artifacts; original Libraries and Steam installer archives"
+    }
+  },
+  "baseline_argument_comparison": {
+    "date": "2026-10-11",
+    "scope": "Successful baseline read-only inspection plus original no-network PE argument probe; no real Steam relaunch or login",
+    "baseline_archive_sha256": "01f3a1b43b98065fe20c529c1023b61dd79a6d2ad93bba6040865f646481ccf3",
+    "kernelbase_sha256": {
+      "i386": "9541e9c17de25039bf6b7da6b5b38c7a94ab320da6568866738d755e6f0132d5",
+      "x86_64": "ff5ea07a753e462b04e9b67830993103a4f24d880c9c6125687485c65429f6a8"
+    },
+    "observed_webhelper_options": [
+      "--no-sandbox",
+      "--in-process-gpu",
+      "--disable-gpu"
+    ],
+    "probe": {
+      "control": "sentinel only",
+      "steamwebhelper_name": "sentinel plus all three injected options",
+      "crashpad_control": "sentinel and supplied crashpad flag only; no injection",
+      "passed": 3
+    },
+    "official_cx26_selected_process_source": {
+      "url": "https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz",
+      "archive_sha256": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+      "bytes": 149054023,
+      "source_member": "sources/wine/dlls/kernelbase/process.c",
+      "process_c_sha256": "b8f8e7df6e188a905aa0bfa23de0be37a97826d3160d99a4da892f3c726a74d2",
+      "steam_option_match_lines": [],
+      "archive_retained": false
+    },
+    "matching_public_behavior_reference": "https://github.com/Ryu-ga/winecx/blob/1b7e19170021fa95a170f0312358dd408e906317/dlls/kernelbase/process.c#L686",
+    "reference_limit": "Wine 9.0 mirror matches behavior; not identified as the complete source of the baseline Wine 11.0-labeled build",
+    "alternative_reference": "https://github.com/WineAndAqua/wine/blob/479d46a96a325caff09e6143cb0636fcbe565ff9/dlls/kernelbase/process.c#L562",
+    "alternative_limit": "Source uses in-process-gpu without explicit no-sandbox for Steam; not executed or qualified",
+    "security_correction": "Previous macOS signing/Gatekeeper observations do not establish CEF sandboxing. Baseline automatically adds no-sandbox. No automatic adoption for release.",
+    "remaining": [
+      "Exact baseline Wine source/build correspondence",
+      "Controlled presentation test separating in-process rendering from explicit sandbox disable",
+      "Authentication, gameplay and distribution checks on an admitted replacement"
+    ]
+  },
+  "steam_inprocess_candidate": {
+    "date": "2026-10-11",
+    "scope": "Stage 1 isolated replacement diagnostic; not release-admitted",
+    "source_url": "https://media.codeweavers.com/pub/crossover/source/crossover-sources-26.3.0.tar.gz",
+    "source_sha256": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+    "patch_sha256": "58b5531569bf270ad962681e766b01e48c91ac32123e0775bda49d58619b6a35",
+    "change": "Opt-in PEAR_STEAM_IN_PROCESS_GPU=1 appends --in-process-gpu only for exact Steam webhelper main-process name; excludes --type= subprocesses and existing option",
+    "build": {
+      "exit": 0,
+      "seconds": 493.86
+    },
+    "install": {
+      "exit": 0,
+      "seconds": 4.07
+    },
+    "argument_controls": {
+      "passed": 8,
+      "failed": 0,
+      "scope": "Original no-network argv-printing PE, no Valve executable substitution"
+    },
+    "steam": {
+      "installer_sha256": "7d3654531c32d941b8cae81c4137fc542172bfa9635f169cb392f245a0a12bcb",
+      "observed_selected_webhelper_options": [
+        "--in-process-gpu"
+      ],
+      "explicit_sandbox_disabling_options_observed": [],
+      "sandbox_effectiveness": "not independently verified",
+      "login_ui": "Requester confirmed visible normal login screen and completed QR authentication",
+      "owned_megabonk_install": "Completed through official Steam without installation-dialog interaction; StateFlags=4",
+      "game_launch": "Requested through official Steam -applaunch 3405340; requester confirmed visible and interactive menu",
+      "game_build": "21750826",
+      "game_graphics": "Unity 2023.2.22f1 log identifies Direct3D and Apple M4 Pro; input initialized",
+      "active_gameplay_minutes": null,
+      "audio": "Requester reports no audio problems during gameplay",
+      "save_reload": "not-tested",
+      "recovery": "not-tested",
+      "gameplay_report": {
+        "report": "Requester reports no problems even during extended gameplay and no audio problems",
+        "duration_minutes": null,
+        "audio": "observed by requester, no problems reported",
+        "save_reload": "not separately reported",
+        "scope": "Extended user gameplay and audio observation; exact duration and formal 20-minute qualification not recorded"
+      }
+    },
+    "private_state": "Fresh prefix now authenticated; exclude from Git and release artifacts; original prefixes preserved",
+    "release_limits": [
+      "Diagnostic absolute helper-library dependencies remain",
+      "Exact source/build correspondence of helper libraries remains separately required",
+      "Game, recovery, sustained-play and clean delivery gates incomplete"
+    ],
+    "evidence_location": ".build/task47/steam-inprocess-candidate",
+    "probe_cleanup": {
+      "scope": "Only original no-network argv probe prefix; authenticated run prefix preserved",
+      "free_bytes_before": 5555310592,
+      "free_bytes_after": 7054548992,
+      "reclaimed_bytes": 1499238400
+    },
+    "runtime_file_sha256": {
+      "bin/wine": "f97cebc151faafc99512424b193a83d3b07a55e96292179c9da2024f75930cbf",
+      "lib/wine/i386-windows/kernelbase.dll": "b7d168f2d153fb9cf761901c2edd44abe590d4b6cc66c5695842e165c0237e2c",
+      "lib/wine/x86_64-windows/kernelbase.dll": "229318417b2206346753838854f592893c3ef49e4a62f4a69972c5e7e9a613f7"
+    }
+  },
+  "portable_runtime_candidate": {
+    "date": "2026-10-11",
+    "status": "Requester confirmed normal menu, gameplay and audio on standalone runtime; release qualification pending",
+    "scope": "Stage 1 diagnostic, not release-qualified",
+    "wine_source_sha256": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+    "patch_sha256": "58b5531569bf270ad962681e766b01e48c91ac32123e0775bda49d58619b6a35",
+    "dependency_versions": {
+      "gmp": "6.3.0",
+      "nettle": "4.0",
+      "libtasn1": "4.21.0",
+      "libunistring": "1.4.2",
+      "libidn2": "2.3.8",
+      "gnutls": "3.8.13",
+      "freetype": "2.14.3",
+      "libpng": "1.6.59"
+    },
+    "moltenvk": "Official v1.4.2 public macOS dylib, source db66022459ffb663aa2b50f6b018bc2e124f5edf",
+    "dxmt": "Official 0.80, source 589adb780354b461645b29999cefaf533594ee99",
+    "static_macho_audit_files": 45,
+    "relocation": {
+      "native-library-smoke": {
+        "exit": 0,
+        "stdout": "GnuTLS 3.8.13; FreeType initialized; Vulkan loader version 1.4.357"
+      },
+      "wine-version": {
+        "exit": 0,
+        "stdout": "wine-11.0"
+      },
+      "windows-runtime-smoke": {
+        "exit": 0,
+        "stdout": "AES known-answer passed\nFont metrics height=24\nHTTPS store.steampowered.com success=1 status=200 error=0\nHTTPS badssl.com success=1 status=200 error=0\nHTTPS wrong.host.badssl.com success=0 status=0 error=12157\n",
+        "certificate_hostname_mismatch_verified_in_trace": true,
+        "initial_test_adjustment": "Wine reports API error 12157, while its verification trace records hostname mismatch 12038. Require the explicit mismatch trace plus valid-host controls, not generic failure alone."
+      },
+      "scope": "Relocated path with spaces; no DYLD_LIBRARY_PATH; fresh unauthenticated prefix; AES known answer, font metrics, two trusted-host HTTPS controls and certificate mismatch rejection"
+    },
+    "dynamic_load_audit": {
+      "exit": 0,
+      "loaded_private_helpers": [
+        "libfreetype.6.dylib",
+        "libgmp.10.dylib",
+        "libgnutls.30.dylib",
+        "libhogweed.7.0.dylib",
+        "libidn2.0.dylib",
+        "libnettle.9.0.dylib",
+        "libpng16.16.dylib",
+        "libtasn1.6.dylib",
+        "libunistring.5.dylib"
+      ],
+      "unexpected_build_helper_loads": []
+    },
+    "prefix_prelaunch": {
+      "prefix": "private APFS clone; original unchanged",
+      "wineboot_exit": 0,
+      "builtin_and_dxmt_hash_checks": {
+        "x86_64-windows/kernelbase.dll": true,
+        "x86_64-windows/d3d11.dll": true,
+        "x86_64-windows/dxgi.dll": true,
+        "x86_64-windows/d3d10core.dll": true,
+        "x86_64-windows/winemetal.dll": true,
+        "i386-windows/kernelbase.dll": true,
+        "i386-windows/d3d11.dll": true,
+        "i386-windows/dxgi.dll": true,
+        "i386-windows/d3d10core.dll": true,
+        "i386-windows/winemetal.dll": true
+      },
+      "wineserver_wait": "timed out after wineboot; Steam helper processes observed",
+      "launch": "official Steam -applaunch 3405340 requested",
+      "ui": "Requester confirmed normal menu/gameplay/audio"
+    },
+    "observed_game_modules": [
+      "DXMT d3d11.dll native",
+      "DXMT dxgi.dll native",
+      "winemetal.dll builtin",
+      "UnityPlayer.dll native",
+      "GameAssembly.dll native"
+    ],
+    "observed_renderer": "Apple M4 Pro; Direct3D; Unity input initialization",
+    "requester_visual_result": {
+      "menu": "normal",
+      "gameplay": "normal",
+      "audio": "normal",
+      "source": "Requester answered normal to the standalone-runtime menu/gameplay/audio question",
+      "active_gameplay_minutes": null,
+      "save_reload": "not separately verified"
+    },
+    "evidence_location": ".build/task47/portable-runtime",
+    "remaining": [
+      "Save/reload and recovery",
+      "Reusable clean build/source-kit packaging",
+      "Final license/source delivery review",
+      "Signing, notarization and independent clean-Mac delivery"
+    ],
+    "runtime_manifest": {
+      "path": ".build/task47/portable-runtime/runtime-content-manifest.json",
+      "sha256": "e7239cd96e075acc37b507263c8b0cee5611a773a4c117243230386ac5b04da2",
+      "file_count": 1849,
+      "file_bytes": 1539360169,
+      "external_symlinks": 0
+    },
+    "input_manifest_sha256": "efee74f91f46a29a948b17e430b6d2a1979bfb73820f13ced2764947b174121b",
+    "host_resource_decision": "Approximately 4.1 GiB available; no additional full prefix clone, archive or rebuild; retain tested candidate and original private data"
+  },
+  "requester_save_baseline": {
+    "date": "2026-10-11",
+    "game_ui_version": "1.0.69",
+    "source": "Requester supplied screenshots and confirmed normal exit after changes",
+    "sniper_rifle_enabled": true,
+    "shop_post_purchase_currency": 296,
+    "pre_purchase_currency": 329,
+    "shop_upgrade_state": "Reference screenshot supplied privately; not copied into source or release files",
+    "scope": "Before-relaunch comparison only; persistence not yet verified"
+  },
+  "resumed_reconstruction": {
+    "status": "fresh build, relocation/synthetic validation and requester-confirmed relaunch passed",
+    "source": "preview/runtime_build.py",
+    "lock": "preview/runtime-inputs.json",
+    "verified_inputs": 11,
+    "verified_notices": 61,
+    "source_kit": {
+      "sha256": "1f227622dcdde9e83091459390a44fdd9a6e06f72dd2a2599a6fa48dbac9005f",
+      "bytes": 204021646,
+      "scope": "Pinned source/input kit; upstream binary inputs explicitly identified; not complete release admission",
+      "extracted_verify_exit": 0,
+      "extracted_verify_output": "{\"verified_inputs\": 11, \"verified_notices\": 61}",
+      "source_files_match": true
+    },
+    "focused_tests": 15,
+    "v1_failure": "Bison executable path containing whitespace rejected by upstream configure; local space-free tool alias added; failure receipts retained",
+    "runtime_scope": "x86_64 Rosetta candidate; no ARM64 qualification",
+    "private_state": "Preserved; no authenticated state in source kit",
+    "next": "Stage 1 source/delivery admission; later approved recovery and clean-Mac/signing checks remain",
+    "build": {
+      "build": "passed",
+      "execution": "not-tested",
+      "distribution": "not-qualified",
+      "recipe_sha256": "1b72cee6617566c1f53adf34a3e7e437cad3d807b35edcb6750926e1caff22c6"
+    },
+    "runtime_manifest_sha256": "df62f412dfdce96b37ee8358af1ff232a033ee762aa6a3e1b6a1fb1dd722ce36",
+    "runtime_files": 1860,
+    "load_audit_count": 45,
+    "validation": {
+      "scope": "New unauthenticated synthetic prefix, no Steam/game/private data",
+      "runtime_manifest_sha256": "df62f412dfdce96b37ee8358af1ff232a033ee762aa6a3e1b6a1fb1dd722ce36",
+      "checks": {
+        "native_initialization": "passed",
+        "windows_crypto_font_tls": "passed",
+        "wrong_host_rejected_with_specific_trace": true,
+        "external_helper_loads": 0,
+        "observed_packaged_helpers": [
+          "libMoltenVK.dylib",
+          "libfreetype.6.dylib",
+          "libgmp.10.dylib",
+          "libgnutls.30.dylib",
+          "libhogweed.7.0.dylib",
+          "libidn2.0.dylib",
+          "libnettle.9.0.dylib",
+          "libpng16.16.dylib",
+          "libtasn1.6.dylib",
+          "libunistring.5.dylib"
+        ]
+      },
+      "cleanup": "owned synthetic server stopped; unauthenticated prefix removed",
+      "probe_compiler": {
+        "path": "/opt/homebrew/Cellar/mingw-w64/14.0.0/toolchain-x86_64/bin/x86_64-w64-mingw32-gcc",
+        "sha256": "5ef14d8024319e581c6db2c1578425f84beb5d15d25e9de9337c7107b2a4faa9"
+      },
+      "native-smoke_sha256": "e9f399a4992fc4ece4e5b435f7f9ee2ab4b96d83209818e5850279ab30384bb6",
+      "runtime-smoke.exe_sha256": "950210c3de7bcfc5accdcc115bbdff2b7362c113e3806361e1dbc501345476bf",
+      "status": "passed"
+    },
+    "cleanup": {
+      "scope": "Task47 v2 completed build intermediates only",
+      "roots": [
+        {
+          "path": "/private/tmp/pear47-rebuild-v2/sources",
+          "logical_bytes": 495313386,
+          "allocated_bytes_stat_blocks": 567095296,
+          "files": 27820
+        },
+        {
+          "path": "/private/tmp/pear47-rebuild-v2/objects",
+          "logical_bytes": 3366991545,
+          "allocated_bytes_stat_blocks": 3415302144,
+          "files": 21634
+        },
+        {
+          "path": "/private/tmp/pear47-rebuild-v2/deps",
+          "logical_bytes": 11032614,
+          "allocated_bytes_stat_blocks": 11554816,
+          "files": 239
+        },
+        {
+          "path": "/private/tmp/pear47-rebuild-v2/binary-inputs",
+          "logical_bytes": 112800503,
+          "allocated_bytes_stat_blocks": 112971776,
+          "files": 79
+        }
+      ],
+      "free_bytes_before": 14230913024,
+      "free_bytes_after": 18347343872,
+      "measured_net_free_change": 4116430848,
+      "protected_runtime_manifest_unchanged": true,
+      "private_prefixes": "Not traversed or modified",
+      "retained": "Exact inputs and source kit; runtime, build recipe, config, logs, manifests, validation and toolchain",
+      "attribution": "Net filesystem change, not exclusive physical attribution"
+    },
+    "evidence_root": "/private/tmp/pear47-rebuild-v2",
+    "recipe_scope": "The exact executing recipe is preserved as build-recipe.py. Later source-kit packaging/toolchain metadata additions do not change component build commands. Actual MinGW identities retained separately in mingw-toolchain.json.",
+    "official_steam_user_result": {
+      "menu_input": "normal",
+      "sniper_enabled": "persisted",
+      "shop_purchase_state": "persisted",
+      "currency": 296,
+      "normal_exit": true,
+      "source": "Direct requester response",
+      "scope": "Same-host rebuilt runtime relaunch; no recovery/clean-Mac qualification"
+    },
+    "official_steam_shutdown": {
+      "task": 47,
+      "phase": "normal shutdown complete",
+      "released": true,
+      "lock_owner_pid": 68338,
+      "runtime": "/private/tmp/pear47-rebuild-v2/relocated runtime/Runtime",
+      "runtime_manifest_sha256": "df62f412dfdce96b37ee8358af1ff232a033ee762aa6a3e1b6a1fb1dd722ce36",
+      "prefix": "Existing private portable test prefix; no new full copy",
+      "saved_file_count": 8,
+      "private_contents_exported": false,
+      "free_bytes_before_run": 18345308160,
+      "owned_run_processes": [],
+      "remaining_dependencies": [
+        "Rebuilt candidate visual observation",
+        "Later-stage recovery/qualification and delivery gates"
+      ],
+      "launch_command": [
+        "official Steam",
+        "-applaunch",
+        "3405340"
+      ],
+      "save_files_unchanged_after_prefix_update": true,
+      "free_bytes_after_run": 17944383488
+    },
+    "current_launch_evidence": {
+      "observed_module_names": {
+        "d3d11.dll": "not observed in selected module log",
+        "dxgi.dll": "not observed in selected module log",
+        "winemetal.dll": "not observed in selected module log",
+        "UnityPlayer.dll": "not observed in selected module log",
+        "GameAssembly.dll": "not observed in selected module log"
+      },
+      "renderer_lines": [
+        "Initialize engine version: 2023.2.22f1 (6b19bf4f8115)",
+        "kGfxThreadingModeSplitJobs is not supported on Direct3D 11. Reverting to kGfxThreadingModeClientWorkerJobs instead.",
+        "Direct3D:",
+        "    Version:  Direct3D 11.0 [level 11.1]",
+        "    Renderer: Apple M4 Pro (ID=0x0)",
+        "    Vendor:   Unknown (ID=106b)"
+      ],
+      "scope": "Current-run Player.log renderer observation; module logging unavailable because Steam started during prefix update; user confirmed menu/input and save persistence. No SteamAPI_Init success inferred."
+    }
+  },
+  "source_delivery_review": {
+    "status": "notice/source-kit preparation verified; final release admission pending",
+    "source_kit": {
+      "sha256": "78c6e90db49cf42a2b96422d379dce299a86b3771416a188a5f1987389a9d306",
+      "bytes": 204137155,
+      "scope": "Pinned source/input kit; upstream binary inputs explicitly identified; not complete release admission",
+      "verified_inputs": 11,
+      "verified_notices": 103,
+      "independent_extraction_verify_exit": 0,
+      "extracted_tests_exit": 0,
+      "extracted_tests": 16,
+      "installed_notices_match_lock": true,
+      "baseline_runtime_unchanged": true,
+      "baseline_runtime_manifest_sha256": "df62f412dfdce96b37ee8358af1ff232a033ee762aa6a3e1b6a1fb1dd722ce36",
+      "runtime_claim": "No runtime mutation or new execution; executable observations remain on prior v2 manifest",
+      "release_admitted": false
+    },
+    "new_source_lock_sha256": "40b19a77570e1b2a0a7479fbbc16d3217b66726e9b3989804fec7ae4f7ba06d0",
+    "new_recipe_sha256": "f3597611b9eb56878cc34852143f35eb31311d760470850857b1996c3de335b7",
+    "reviewed_baseline_manifest_sha256": "df62f412dfdce96b37ee8358af1ff232a033ee762aa6a3e1b6a1fb1dd722ce36",
+    "baseline_runtime_unchanged_verified": true,
+    "changes": [
+      "Wine nested library licenses, font attribution and original authors",
+      "DXMT LLVM15/Microsoft/NVIDIA/MinGW attribution with pinned origins",
+      "Hash-checked notice installation; mismatched Wine source refused",
+      "Source kit includes component record"
+    ],
+    "remaining": [
+      "Complete upstream static compiler/runtime notice correspondence",
+      "Integrate admitted runtime with app and CLI; current bootstrap still selects the rejected Gcenx candidate",
+      "Confirm normal Steamworks initialization in same-run evidence",
+      "Final committed source, matched signing/notarization, recovery and clean-Mac qualification"
+    ],
+    "scope": "Light Stage 1 preparation only; no heavy slot, game run, stage transition or public upload"
+  },
+  "app_cli_rebuilt_runtime_integration": {
+    "status": "candidate integration and noninteractive validation passed; Steam GUI/game integration pending",
+    "runtime": {
+      "runtime_id": "pear-wine11-cw26.3-dxmt0.80-v2",
+      "name": "pear-runtime-v2-notices.tar.gz",
+      "sha256": "b81c372b52020a2880543bcb49e472ea6d69a479f062a0a9f641898c68c990bc",
+      "size": 533646314,
+      "baseline_manifest_sha256": "df62f412dfdce96b37ee8358af1ff232a033ee762aa6a3e1b6a1fb1dd722ce36",
+      "baseline_unchanged": true,
+      "notice_files": 127
+    },
+    "source_kit": {
+      "sha256": "83bd45ab8f97f5aa91fb94db0471c1466dbdc1e9d5f6bb2a691a2db4fe5b2132",
+      "bytes": 204182329,
+      "verify": {
+        "verified_inputs": 11,
+        "verified_notices": 127
+      },
+      "tests": "...................\n----------------------------------------------------------------------\nRan 19 tests in 0.072s\n\nOK\n",
+      "status": "passed",
+      "scope": "Independent source/input-kit extraction, no Steam/private state; not public release qualification"
+    },
+    "checks": {
+      "rust_tests": 12,
+      "python_runtime_tests": 19,
+      "app_package_tests": 4,
+      "app_bundled_cli_matches_standalone": true,
+      "installed_integrity_and_preservation": "passed",
+      "installed_crypto_font_tls": "passed",
+      "packaged_helpers": 10,
+      "external_helper_loads": 0,
+      "dxmt_overrides_match_successful_prefix": 8
+    },
+    "cli_sha256": "97a3e3476b29aa4c889f02c97bb53208dd2681fd244eca9e03fd1f24f5f7cbdc",
+    "source_sha256": {
+      "preview/src/lib.rs": "bbae3f91b6427f953f26bde63681fabd76623c7e93b5a396483eff15d88f0356",
+      "preview/src/main.rs": "aa0bc734c2e1ac2cf96cc59ab38c00acabe07b0db25bfa18a3adee30c7f2f0f0",
+      "preview/src/runtime_pin.rs": "ad95bfcdfc313dd70b309b7eccb04d26adeec1297e20b0b97a1d0a07920fd9fe",
+      "preview/Launcher.swift": "c9905a1398644c7236ca00b1359fea145a8e4b7a46816a9a76b4f90fa8032783",
+      "preview/runtime_package.py": "b281790d7740729531f061f7b60512a875b99a696acbf5f878ffbc1774809456",
+      "preview/runtime-inputs.json": "8663326ea89edc50c4ca8b8f433b75c997671fbd54495a143c83ed20cd20aa4f",
+      "preview/runtime_build.py": "d8294f8e65fdef71417602672d3b74130bfdd50480a2ab4a2814e31a63cacde2",
+      "preview/THIRD_PARTY_NOTICES.md": "527d3c05b5fd740ba10f0858a11cc127f343c7829c2ff757772a5c08e04565bd"
+    },
+    "private_state_modified": false,
+    "steam_gui_or_game_launched_this_integration": false,
+    "signature": "ad hoc development app verified; no new Developer ID or notarization claim",
+    "remaining": [
+      "New app/CLI official Steam GUI and game execution after Task11 priority permits",
+      "Same-run Steamworks initialization evidence",
+      "Recovery, exact-duration game acceptance, clean-Mac delivery and final signing/notarization",
+      "Committed matching sources and public distribution admission"
+    ],
+    "stage": "Stage 1 remains in progress",
+    "cleanup": {
+      "removed": "pear-runtime-v2.tar.gz",
+      "reason": "Superseded notice text; final archive and installed copy verified. No runtime process used this archive.",
+      "logical_bytes": 533646333,
+      "stat_allocated_bytes": 533647360,
+      "filesystem_free_before": 14928732160,
+      "filesystem_free_after": 15463055360,
+      "scope": "Only newly created obsolete package; baseline, final package and private state preserved"
+    }
+  },
+  "signed_integration_oct11": {
+    "app_and_cli": {
+      "scope": "Signed/notarized app and CLI pinning the unsigned v2 runtime candidate; no claim of signed Wine or new GUI execution",
+      "app_status": "Accepted",
+      "cli_status": "Accepted",
+      "checks": {
+        "staple": {
+          "exit": 0,
+          "output": "Processing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v1/Pear Preview.app\nProcessing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v1/Pear Preview.app\nThe staple and validate action worked!\n"
+        },
+        "staple-validate": {
+          "exit": 0,
+          "output": "Processing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v1/Pear Preview.app\nThe validate action worked!\n"
+        },
+        "app-policy": {
+          "exit": 0,
+          "output": "App passed all pre-distribution checks and is ready for distribution.\n"
+        },
+        "app-gatekeeper": {
+          "exit": 0,
+          "output": ".build/task47/integrated-signing-v1/Pear Preview.app: accepted\nsource=Notarized Developer ID\n"
+        },
+        "cli-notarized": {
+          "exit": 0,
+          "output": ""
+        }
+      },
+      "app_executable_sha256": "e961b420110bfea7672c72654e7540317a7b09a0ac7dd386a864bf9ae71cb288",
+      "cli_sha256": "798a34fc06727053293b38a8c967e4703d69a46cabbd7dcafce4a475843eeaee",
+      "public_release": false
+    },
+    "runtime": {
+      "scope": "Signed runtime candidate; notarization and execution are independent checks",
+      "notary": {
+        "createdDate": "2026-10-10T23:58:45.159Z",
+        "name": "pear-runtime-signed-v1.zip",
+        "message": "Successfully received submission info",
+        "id": "06546735-84a0-4e90-a108-106d34945c06",
+        "status": "Accepted"
+      },
+      "archive": {
+        "runtime_id": "pear-wine11-cw26.3-dxmt0.80-signed-v1",
+        "name": "pear-runtime-signed-v1.zip",
+        "sha256": "0045d92717668eece7633627e3f954266176d470f3ba8bc80d081f47c8462c81",
+        "size": 489091332
+      },
+      "signature_checks": {
+        "macho_count": 45,
+        "notarized_policy": "passed",
+        "executable_text_unchanged": true,
+        "non_macho_unchanged": true,
+        "original_runtime_unchanged": true
+      },
+      "execution": {
+        "native_initialization": "passed",
+        "windows_crypto_font_tls": "failed",
+        "error": "Executable-section protection failures followed by repeated PE exec faults",
+        "steam_or_game_launched": false,
+        "result_sha256": "29b6a029331e6f90fe8d5e9ef15511255761e4164a867b138ad1d8073f1cc882"
+      },
+      "cleanup": {
+        "synthetic_prefix_removed": true,
+        "owned_handles": 0,
+        "original_log_sha256": "63654dd5345058814f90d8aacb9de98ccd39a9fe7d97194cf252b080832e0d52",
+        "original_log_bytes": 192135830,
+        "compressed_bytes": 1282042,
+        "log_restoration": "gzip -dc windows.log.gz",
+        "private_state_touched": false,
+        "filesystem_free_before": 13479809024,
+        "filesystem_free_after": 13670658048
+      },
+      "app_runtime_pin_promoted": false,
+      "release_admitted": false,
+      "next": "Test a narrow loader-only library-validation hypothesis when the shared execution slot is available; no broad exception adoption"
+    },
+    "source_kit": {
+      "sha256": "a58be53271ec48d0acb26d21e73aaf01ced5c26f7cf78116392bb71b9bdfab06",
+      "bytes": 204185044,
+      "verify": {
+        "verified_inputs": 11,
+        "verified_notices": 127
+      },
+      "tests": "........................\n----------------------------------------------------------------------\nRan 24 tests in 0.170s\n\nOK\n",
+      "status": "passed",
+      "scope": "Independent source/input-kit extraction and bounded validation tests; signed runtime execution remains failed; no release admission",
+      "superseded_kit": {
+        "name": "pear-runtime-source-kit-signing-v4.tar.gz",
+        "sha256": "ec5393c3ff42a80ce608b399990d0bb266c043828a3f88d3b28664a2fba1f4cc",
+        "logical_bytes": 204184209,
+        "allocated_bytes_stat_blocks_512": 204185600,
+        "reason": "Same-turn source kit superseded by independently verified v5; historical v3/v2 preserved",
+        "filesystem_free_before": 13214183424,
+        "filesystem_free_after": 13418373120
+      }
+    },
+    "current_source_sha256": {
+      "preview/runtime_sign.py": "71a099bb2ca0e4962a39a3092acea46007b5fa75a2b537f1bfce1fd80a3dd01b",
+      "preview/runtime_validate.py": "8c9e8d7fb88949a7c7d8f8f1a41262dc004357bac603b1bb89b15031eda12c66",
+      "preview/runtime_build.py": "069a6392ac8fa2ed46d1dcc2c023a76baf3dad49783a044330baa868ed4889bb",
+      "preview/test_runtime_validate.py": "c11d8132f7a43ec23df0ff6e98e6a11521e4a53e5dc41349ed2e8fb14f10f16a",
+      "preview/wine-entitlements.plist": "329d9fb59048780d1ec5e8fa8acdfdeeb3bf20960c99ff63d4071c86c0659cf4"
+    },
+    "stage": "Stage 1 remains in progress",
+    "remaining": [
+      "Signed runtime Windows execution failure must be resolved",
+      "New app official Steam and game checks wait for Task11/46 ready priority",
+      "Same-run Steamworks, recovery, independent clean-Mac and public delivery qualification remain"
+    ]
+  },
+  "signed_runtime_retry_preparation_oct11": {
+    "receipt": ".build/task47/signed-runtime-v2-preparation/preflight.json",
+    "sha256": "730b5198083cbc75d0ba9303bb18802d9d74ae1a7917c4820b6a8495b1d96062",
+    "status": "loader copies signed, code text unchanged; 26 source-only tests pass; runtime execution pending fair shared-slot handoff",
+    "runtime_pin_unchanged": true,
+    "private_state_touched": false
+  },
+  "unsigned_installed_copy_retirement_oct11": {
+    "owner": 47,
+    "time": 1791678204.997796,
+    "root": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-runtime-v1/state/runtimes/pear-wine11-cw26.3-dxmt0.80-v2/Libraries",
+    "state": "cold archive; installed copy restore-required",
+    "reason": "Installed unsigned copy was consumed by verified integration and signed-v1 preparation. Current signed-v2 trial consumes signed-v1, not this old installed tree. Preserve exact archived bytes for any unsigned fallback/re-sign consumer.",
+    "archive": {
+      "path": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-runtime-v1/pear-runtime-v2-notices.tar.gz",
+      "sha256": "b81c372b52020a2880543bcb49e472ea6d69a479f062a0a9f641898c68c990bc",
+      "bytes": 533646314
+    },
+    "actual_restore_evidence": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-runtime-v1/integration-checks.json",
+    "restoration_checks": "Prior actual CLI extraction receipt reused only after current whole archive, extracted inventory, symlink targets and mode equality revalidated; no path/inode claim",
+    "inventory_count": 1931,
+    "logical_bytes": 1557713735,
+    "allocated_bytes_stat_blocks_512": 1561681920,
+    "filesystem_free_before": 12483555328,
+    "restore_command": [
+      "/usr/bin/tar",
+      "-xf",
+      "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-runtime-v1/pear-runtime-v2-notices.tar.gz",
+      "-C",
+      "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-runtime-v1/state/runtimes/pear-wine11-cw26.3-dxmt0.80-v2"
+    ],
+    "restore_space_bytes": 1557713735,
+    "preserved": "Archive, manifests, install evidence, signed v1/v2 inputs, all source kits, original successful runtime, every private prefix/login/game/save",
+    "remaining_consumers": "Restore and revalidate before any future unsigned installed-runtime execution or signature reconstruction",
+    "filesystem_free_after": 14027620352,
+    "measured_net_free_delta": 1544065024,
+    "protected_hashes_unchanged": true
+  },
+  "signed_runtime_v2_synthetic_oct11": {
+    "result": ".build/task47/signed-runtime-v2/validation/result.json",
+    "result_sha256": "84234c37ef03a91951a3b704a64e1b25f637733436befef22cef2d4f15fcbf3e",
+    "execution_checks": {
+      "native_initialization": "passed",
+      "wine_process_images": {
+        "pid": 18241,
+        "packaged_helpers": [
+          "bcrypt.so",
+          "crypt32.so",
+          "dnsapi.so",
+          "libfreetype.6.dylib",
+          "libgmp.10.dylib",
+          "libgnutls.30.dylib",
+          "libhogweed.7.0.dylib",
+          "libidn2.0.dylib",
+          "libnettle.9.0.dylib",
+          "libpng16.16.dylib",
+          "libtasn1.6.dylib",
+          "libunistring.5.dylib",
+          "msv1_0.so",
+          "netapi32.so",
+          "ntdll.so",
+          "secur32.so",
+          "win32u.so",
+          "winemac.so",
+          "ws2_32.so"
+        ],
+        "external_helper_loads": 0,
+        "native_image_count": 20
+      },
+      "windows_crypto_font_tls": "passed",
+      "wrong_host_rejected_with_specific_trace": true,
+      "external_helper_loads": 0,
+      "observed_packaged_helpers": [
+        "libMoltenVK.dylib",
+        "libfreetype.6.dylib",
+        "libgmp.10.dylib",
+        "libgnutls.30.dylib",
+        "libhogweed.7.0.dylib",
+        "libidn2.0.dylib",
+        "libnettle.9.0.dylib",
+        "libpng16.16.dylib",
+        "libtasn1.6.dylib",
+        "libunistring.5.dylib"
+      ]
+    },
+    "wrapper_status": "failed: synthetic-stop exit1; original evidence retained",
+    "independent_cleanup": {
+      "checked_at": "2026-10-11T00:36:26.118847+00:00",
+      "validation_result_sha256": "84234c37ef03a91951a3b704a64e1b25f637733436befef22cef2d4f15fcbf3e",
+      "execution_checks": "passed",
+      "validator_overall": "failed at cleanup command; original result preserved",
+      "cleanup_command_exit": 1,
+      "remaining_owned_pids": [],
+      "lsof_exit": 0,
+      "removed_unauthenticated_synthetic_prefix": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/signed-runtime-v2/validation/synthetic-prefix",
+      "logical_bytes": 1494935009,
+      "stat_allocated_bytes": 1498808320,
+      "measured_free_delta": 1500831744,
+      "current_free_bytes": 10105606144,
+      "private_state_modified": false
+    },
+    "followup": "29 focused source-only tests pass after cleanup handling fix; no runtime rerun. Production entitlement change awaits explicit requester approval after automatic review rejection. New app Steam/game remains unperformed."
+  },
+  "signed_runtime_v2_authorized_integration": {
+    "approval": "Requester explicitly approved two-loader disable-library-validation and conflict-free app/game/sign/notary work on 2026-10-11",
+    "readiness": {
+      "path": "/Users/melee/Documents/ChatGPT/New project/.build/coordination/20261011-resume/task47-signed-v2-ready.json",
+      "sha256": "7e711949c079f389923d82a601c45373985216dbe36fbd06cade1cea720bab07",
+      "bytes": 8469
+    },
+    "signature_manifest": {
+      "path": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/signed-runtime-v2/signing.json",
+      "sha256": "538ebe21ef40521e54f0be7ce1c0cd59b48f28316d4253a37361bdb0236ec778",
+      "bytes": 357483
+    },
+    "tests": {
+      "path": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2-preparation/unit-test-receipt.json",
+      "sha256": "bcc15c056f25cc3e068c0eeb4e1f68ecd9490a283239a3d0614ef5ae148f8b12",
+      "bytes": 4855
+    },
+    "state": "Prepared, waiting for Task11 D27 full release and fresh grant; no new Wine/build/notary run"
+  },
+  "signed_v2_integration_completed": {
+    "completed_at": "2026-10-11T07:32:48.526137+00:00",
+    "preparation": {
+      "task": 47,
+      "phase": "signed runtime/app/CLI packages ready for notarization",
+      "released": true,
+      "owner_pid": 3154,
+      "grant_sha256": "896bf68e205b1e31e4ed66ec5fed402ab086b678f16bf9f5980e2437c5afc34f",
+      "steam_or_game_launched": false,
+      "status": "prepared",
+      "archive": {
+        "path": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2/pear-runtime-signed-v2.tar.gz",
+        "sha256": "bf660c1ddf0a40cd2c7e345343b32f6515bf34c1fe6566aae337302f221a4127"
+      },
+      "source_kit": {
+        "path": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2/pear-runtime-source-kit-signing-v6.tar.gz",
+        "sha256": "61e7f41f4644c49061e485e3149cc0cc0ee33b4e58aaf417dd6380630b930fbe"
+      },
+      "app": "/Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2/Pear Preview.app",
+      "remaining_owned_pids": [],
+      "completed_at": 1791703926.375461,
+      "operation_id": "task47-signed-v2-integration-4727814e99664d4f",
+      "next_heavy_consumer": 11
+    },
+    "synthetic": {
+      "scope": "New unauthenticated synthetic prefix, no Steam/game/private data",
+      "runtime_manifest_sha256": "dc4a5035d22b3353ca5a952b320c00760905bd2ce24bb986a7e286d9f388625d",
+      "checks": {
+        "native_initialization": "passed",
+        "wine_process_images": {
+          "pid": 3206,
+          "packaged_helpers": [
+            "bcrypt.so",
+            "crypt32.so",
+            "dnsapi.so",
+            "libfreetype.6.dylib",
+            "libgmp.10.dylib",
+            "libgnutls.30.dylib",
+            "libhogweed.7.0.dylib",
+            "libidn2.0.dylib",
+            "libnettle.9.0.dylib",
+            "libpng16.16.dylib",
+            "libtasn1.6.dylib",
+            "libunistring.5.dylib",
+            "msv1_0.so",
+            "netapi32.so",
+            "ntdll.so",
+            "secur32.so",
+            "win32u.so",
+            "winemac.so",
+            "ws2_32.so"
+          ],
+          "external_helper_loads": 0,
+          "native_image_count": 20
+        },
+        "windows_crypto_font_tls": "passed",
+        "wrong_host_rejected_with_specific_trace": true,
+        "external_helper_loads": 0,
+        "observed_packaged_helpers": [
+          "libMoltenVK.dylib",
+          "libfreetype.6.dylib",
+          "libgmp.10.dylib",
+          "libgnutls.30.dylib",
+          "libhogweed.7.0.dylib",
+          "libidn2.0.dylib",
+          "libnettle.9.0.dylib",
+          "libpng16.16.dylib",
+          "libtasn1.6.dylib",
+          "libunistring.5.dylib"
+        ]
+      },
+      "cleanup": "owned synthetic server stopped; unauthenticated prefix removed",
+      "probe_compiler": {
+        "path": "/opt/homebrew/Cellar/mingw-w64/14.0.0/toolchain-x86_64/bin/x86_64-w64-mingw32-gcc",
+        "sha256": "5ef14d8024319e581c6db2c1578425f84beb5d15d25e9de9337c7107b2a4faa9"
+      },
+      "native-smoke_sha256": "e9f399a4992fc4ece4e5b435f7f9ee2ab4b96d83209818e5850279ab30384bb6",
+      "runtime-smoke.exe_sha256": "b1399613946eba1754958a1cf75687e940c49b956053b5446549dec84f8afe76",
+      "status": "passed",
+      "synthetic_stop_exit": 1
+    },
+    "rust_tests": 12,
+    "notarization": "not yet submitted",
+    "new_app_steam_game": "not yet run"
+  },
+  "signed_v2_notarization": {
+    "runtime_status": "Accepted",
+    "runtime_id": "0835e086-ae8c-4524-a509-5c56073681fb",
+    "runtime_notarized_policy_checks": 45,
+    "app_status": "Accepted",
+    "app_id": "436131e9-2617-4bbc-846c-8116341f98ed",
+    "cli_status": "Accepted",
+    "cli_id": "5e268b16-29c1-409b-bb8c-7c078d73e143",
+    "app_stapled": true,
+    "policy_checks": {
+      "staple": {
+        "exit": 0,
+        "output": "Processing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2/Pear Preview.app\nProcessing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2/Pear Preview.app\nThe staple and validate action worked!\n"
+      },
+      "staple-validate": {
+        "exit": 0,
+        "output": "Processing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/integrated-signing-v2/Pear Preview.app\nThe validate action worked!\n"
+      },
+      "app-policy": {
+        "exit": 0,
+        "output": "App passed all pre-distribution checks and is ready for distribution.\n"
+      },
+      "app-gatekeeper": {
+        "exit": 0,
+        "output": ""
+      },
+      "cli-policy": {
+        "exit": 0,
+        "output": ""
+      }
+    },
+    "runtime_payload": "Complete 489714571-byte runtime ZIP; no loader-only submission",
+    "earlier_runtime_id": "1fb2162f-fca1-475a-9cd7-a426fb43b8f5",
+    "earlier_runtime_outcome": "Unknown after upload timeout; retained history/info, not used for acceptance",
+    "new_app_steam_game": "not yet executed",
+    "public_release": false
+  },
+  "signed_v2_cli_integration": {
+    "status": "passed",
+    "receipt": ".build/task47/integrated-signing-v2/integration-checks.json",
+    "receipt_sha256": "b8cbe5d67d3b2938706e149b2de28291eb9b82a7864753133eaae027e8aeaeb0",
+    "checks": [
+      "Pinned archive extraction and installed runtime verification",
+      "Modified runtime file rejected and exact bytes restored",
+      "Foreign runtime prefix rejected before Wine launch; save sentinel preserved",
+      "Corrupt archive rejected without activation",
+      "App bundled CLI equals signed standalone CLI"
+    ],
+    "private_prefix_created": false,
+    "steam_or_game_launched": false,
+    "released": true,
+    "remaining_owned_pids": [],
+    "new_app_steam_game": "Awaiting separately coordinated GUI interval after Task11 D29",
+    "public_release": false
+  },
+  "signed_v2_gui_trial": {
+    "status": "failed",
+    "operation_id": "task47-gui-c1d32e6dba944219",
+    "pear_window": "opened",
+    "steam_helper": "macOS damaged-app warning; codesign and spctl reject missing bundle resource seal",
+    "original_loader_notarized_policy_exit": 0,
+    "copied_loader_bytes_match_original": true,
+    "steam_login": false,
+    "game_launched": false,
+    "user_cancelled_warning": true,
+    "guard_exit": 0,
+    "remaining_owned_pids": [],
+    "released": true,
+    "private_state": "Preserved, no authentication performed",
+    "evidence": ".build/task47/integrated-signing-v2/gui-validation/failure.json",
+    "prepared_correction": "Invoke original notarized Wine start /unix; no generated app, runtime byte or entitlement change",
+    "correction_validation": "Not built or executed yet"
+  },
+  "original_loader_correction": {
+    "status": "built, signed, notarized and same-host official Steam/game GUI verified",
+    "change": "Remove generated unsigned app bundle; call original notarized Wine start /unix for official Steam",
+    "regression_tests": 13,
+    "runtime_bytes_changed": false,
+    "entitlements_changed": false,
+    "old_private_state_preserved": true,
+    "build": {
+      "task": 47,
+      "operation_id": "task47-loader-correction-a205d7e0607b4c15",
+      "owner_pid": 31384,
+      "owner_start": "Sun Oct 11 18:01:34 2026",
+      "released": true,
+      "grant_sha256": "fbfad8c97344e2d792bccd42200f3105e4ec1c911636f031e0f3c0358b5af548",
+      "phase": "signed app/CLI correction built and packaged",
+      "status": "passed",
+      "steam_or_game_launched": false,
+      "remaining_owned_pids": [],
+      "lsof_exit": 0,
+      "free_bytes": 11663491072
+    },
+    "notarization": {
+      "app": {
+        "id": "d85a8ee3-13dc-4dfa-99e1-389c2436414d",
+        "status": "Accepted"
+      },
+      "cli": {
+        "id": "18c4759c-5f60-4e3b-b27f-25754a31e975",
+        "status": "Accepted"
+      },
+      "staple": {
+        "exit": 0,
+        "output": "Processing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/loader-handoff-v3/Pear Preview.app\nProcessing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/loader-handoff-v3/Pear Preview.app\nThe staple and validate action worked!\n"
+      },
+      "staple-validate": {
+        "exit": 0,
+        "output": "Processing: /Users/melee/.codex/worktrees/pear-task47/New project/.build/task47/loader-handoff-v3/Pear Preview.app\nThe validate action worked!\n"
+      },
+      "app-policy": {
+        "exit": 0,
+        "output": "App passed all pre-distribution checks and is ready for distribution.\n"
+      },
+      "app-gatekeeper": {
+        "exit": 0,
+        "output": ""
+      },
+      "cli-policy": {
+        "exit": 0,
+        "output": ""
+      }
+    },
+    "public_release": false
+  },
+  "original_loader_gui_verification": {
+    "status": "passed",
+    "operation_id": "task47-loader-gui-e84415937f344027",
+    "app_cli": "Developer ID signed, Apple Accepted, stapled app and policy checks passed",
+    "runtime": "Unchanged pear-wine11-cw26.3-dxmt0.80-signed-v2",
+    "login_screen": "Requester confirmed visible",
+    "official_login": "Requester confirmed in coordinator chat",
+    "owned_install": {
+      "app_id": 3405340,
+      "build_id": "21750826",
+      "state_flags": 4,
+      "download_bytes": 179240512,
+      "staged_bytes": 522734781
+    },
+    "official_steam_handoff_exit": 0,
+    "current_game_log": [
+      "Steam initialized",
+      "Direct3D 11.0 [level 11.1]",
+      "Renderer: Apple M4 Pro"
+    ],
+    "menu_input": "Requester confirmed normal",
+    "game_exit": "Requester confirmed normal; exact process absent",
+    "cleanup": "Normal Steam shutdown and Pear window close; 19 pre-cleanup process identities absent; lsof no state/app handles; guard exit0; lock released",
+    "released": true,
+    "sequence_released": true,
+    "private_state": "New authenticated prefix, installed game and any saves preserved; old private server14921 unchanged",
+    "release_receipt_sha256": "32926f3a366d76c022fe8be29e758741c3a52c4dab1e00c4ffbd751783f33f1d",
+    "evidence": ".build/task47/loader-handoff-v3/gui-validation/whole-release.json",
+    "scope": "Same-host corrected signed app/CLI validation; not a new timed-play/recovery/second-clean-Mac/public-release claim"
+  },
+  "stage1_closure": {
+    "status": "complete; Stage 2 awaiting requester continuation",
+    "report": "mydocs/working/task_m3_47_stage1.md",
+    "supersedes_pending_statuses_in_historical_checkpoints": true,
+    "fresh_checks": {
+      "documentation_tests": 72,
+      "steam_search_tests": 6,
+      "preview_tool_tests": 34,
+      "exact_gui_inputs": 33,
+      "gui_receipt_chain": 9,
+      "source_kit_inputs": 11,
+      "source_kit_notices": 127,
+      "source_kit_recipes": 15
+    },
+    "reused_rust_tests": 13,
+    "runtime_or_game_reexecuted": false,
+    "public_release": false,
+    "artifacts": {
+      "artifacts": [
+        {
+          "root": ".build/task47/loader-handoff-v3",
+          "logical_bytes": 11921699,
+          "stat_allocated_bytes": 12054528,
+          "regular_files": 56
+        },
+        {
+          "root": ".build/task47/signed-runtime-v2/Libraries",
+          "logical_bytes": 1558908079,
+          "stat_allocated_bytes": 1562882048,
+          "regular_files": 1919
+        },
+        {
+          "root": ".build/task47/integrated-signing-v2/pear-runtime-signed-v2.tar.gz",
+          "logical_bytes": 534424618,
+          "stat_allocated_bytes": 534425600,
+          "sha256": "bf660c1ddf0a40cd2c7e345343b32f6515bf34c1fe6566aae337302f221a4127"
+        },
+        {
+          "root": ".build/task47/integrated-signing-v2/pear-runtime-source-kit-signing-v6.tar.gz",
+          "logical_bytes": 204187222,
+          "stat_allocated_bytes": 204189696,
+          "sha256": "61e7f41f4644c49061e485e3149cc0cc0ee33b4e58aaf417dd6380630b930fbe"
+        }
+      ],
+      "filesystem_available_bytes": 8395681792,
+      "private_state_traversed": false,
+      "cleanup_performed": false
+    },
+    "checks": {
+      "path": ".build/task47/stage1-closure/checks.json",
+      "sha256": "6d8af1b3587ddaa1eab97a048a8fd7a1cb532bff3483367edf981f0b3cd745e7"
+    },
+    "identity-checks": {
+      "path": ".build/task47/stage1-closure/identity-checks.json",
+      "sha256": "3303ab3def5c24f9b23280a6eff2960a8354863dd300b50f719e8b98c70f6bec"
+    },
+    "source-kit-check": {
+      "path": ".build/task47/stage1-closure/source-kit-check.json",
+      "sha256": "39a19b5865885b0d88892143d22fd013a6867dff358563bca44d31432eee1187"
+    }
+  }
+}

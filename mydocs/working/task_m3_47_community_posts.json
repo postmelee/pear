@@ -1,0 +1,39 @@
+{
+  "prepared_on": "2026-10-11",
+  "repository": "postmelee/pear",
+  "visibility": "private",
+  "posts": [
+    {
+      "category": "General",
+      "category_id": "DIC_kwDOUuUVI84DHWh-",
+      "title": "Welcome to Pear: simple Windows Steam on Apple Silicon",
+      "body": "Pear aims to make Windows Steam games on Apple Silicon simple to start, free to use and open to inspect. Players should not have to understand Wine or maintain a compatibility-tool setup.\n\nOur final goal remains a Windows game experience with no Rosetta dependency across the required host processes and libraries. The current Rosetta-based Preview is an interim delivery track, not completion of that goal.\n\nThis repository is currently private and being prepared for public access. There is no qualified public download yet. Public onboarding, reporting forms and community policies are being prepared in [Task #47](https://github.com/postmelee/pear/issues/47); those files and forms will become active after review and integration into the default branch.\n\nUse Q&A for help, Ideas for proposals and game requests, Show and tell for game observations, and Issues for accepted work or reproducible Pear defects. Programming experience and paid AI tools are not required to participate. Keep discussion respectful and never post account credentials, QR codes, whole runtime prefixes, game payloads or private diagnostics.\n\nThe [delivery plan](https://github.com/postmelee/pear/blob/master/docs/delivery-plan.md) remains the roadmap. Discussion counts and reactions do not establish game support or a delivery date.",
+      "id": "D_kwDOUuUVI84Ap7b6",
+      "url": "https://github.com/postmelee/pear/discussions/50"
+    },
+    {
+      "category": "Announcements",
+      "category_id": "DIC_kwDOUuUVI84DHWh9",
+      "title": "Preview status: Windows Steam entry works locally; public release gates remain",
+      "body": "Status as of October 11, 2026.\n\nThe Pear app and optional CLI now share a Windows Steam preparation and library entry. The current development candidate uses Rosetta, Wine 11.0 and DXMT 0.80 from the pinned Libraries 3.1.1 runtime. The local candidate targets Apple Silicon/macOS 26+; observed execution is limited to M4 Pro/macOS 26.5.2.\n\nOn that host, official Steam login, owned Megabonk installation, normal Steam launch and a responsive game menu were observed. Opening the general Steam library as the default entry was also confirmed. Other games can be selected, but this is not an all-game compatibility claim.\n\n**No qualified public download is available yet.** Local notarization has passed for an earlier candidate; branding changes require their own final artifact checks. Runtime source/notice review, sustained gameplay, audio, save/recovery and second clean Mac delivery remain open gates. A fresh prefix on the build host is not a clean-user distribution test.\n\nPlayers will eventually download/open Pear, authenticate directly with official Steam and choose owned games from their library. The CLI is optional; no npm/npx package is published. The native Rosetta-free track remains under development.\n\nFollow [Task #47](https://github.com/postmelee/pear/issues/47) for the delivery work and the [single roadmap](https://github.com/postmelee/pear/blob/master/docs/delivery-plan.md) for acceptance criteria. This post will be updated when qualified artifacts are actually available.",
+      "id": "D_kwDOUuUVI84Ap7b7",
+      "url": "https://github.com/postmelee/pear/discussions/51"
+    },
+    {
+      "category": "Show and tell",
+      "category_id": "DIC_kwDOUuUVI84DHWiB",
+      "title": "How to share a game result, including failures",
+      "body": "This is the guide for future game observations, not itself a game support report. A public Preview download is not yet qualified; existing authorized testers can report the environment they actually used.\n\nPlease include:\n\n- Game name and Steam App ID; game and Steam builds if known.\n- Pear version/commit, runtime component versions, and Rosetta Preview or native development path.\n- Mac chip, memory, macOS version, test date, resolution and settings.\n- Exact launch steps and furthest behavior: failure, unusable launch, interactive menu, active gameplay or regression.\n- Active play minutes; input, audio, saving/loading, exit and relaunch observations. Write unknown or not tested rather than guessing.\n- A short sanitized error description and limitations.\n\nUse your legitimately owned copy. Do not upload game files, account details, passwords, QR codes, tokens, saves, whole prefixes or raw logs. Private vulnerabilities must not be reported here.\n\nThe structured Show and tell form is being prepared in [Task #47](https://github.com/postmelee/pear/issues/47). Until it is merged, use the fields above in a normal post. Your public report may be summarized in reviewed repository records with a link back to the original discussion.\n\nMaintainers will separate **reported observations**, **independent reproductions** and **Pear qualification**. A responsive menu does not prove sustained play, and a native launcher does not prove the entire game path avoided Rosetta. A reviewed PR will update versioned records and their generated documentation/catalog; a new discussion or reaction will never automatically mark a game supported. Failures and regressions are valuable evidence.",
+      "id": "D_kwDOUuUVI84Ap7b9",
+      "url": "https://github.com/postmelee/pear/discussions/52"
+    },
+    {
+      "category": "General",
+      "category_id": "DIC_kwDOUuUVI84DHWh-",
+      "title": "Contributing toward the Rosetta-free goal",
+      "body": "There is no player-ready Rosetta-free preview yet. This track is native runtime engineering toward the final Pear goal; improving the current Rosetta Preview does not automatically qualify M1.\n\nStart by reading the [architecture](https://github.com/postmelee/pear/blob/master/docs/architecture.md), [contributor guide](https://github.com/postmelee/pear/blob/master/docs/contributing.md) and the current Issue before proposing work. Useful areas include native host observations (#10), startup and Steam integration (#11 and #46), game qualification (#12/#16), runtime assembly (#13) and regression evidence (#14). These are existing work areas, not claims that each is unassigned.\n\nDocumentation, portable fixture tests and source-inventory improvements can help without a provisioned runtime or a game. Full Wine/FEX/DXMT reconstruction still has exact source/build prerequisites and prepared local inputs; a clean clone is not yet a complete player runtime. Record missing inputs instead of importing private signing material or authenticated Steam environments.\n\nKeep source inspection, synthetic tests, native host execution, game qualification and ordinary-user delivery distinct. Rosetta-free game claims require the relevant process and library architecture evidence across startup, play, exit and resume, alongside the gameplay requirements.\n\nReuse upstream implementations and retain their languages unless measurements justify a change. FEX's contribution policy restricts AI-generated contributions; respect upstream policies and licensing independently of the tools allowed for Pear. No AI subscription or internal task-report bundle is required from external contributors.\n\nPublic first-build and separate contribution-path guides are being prepared in [Task #47](https://github.com/postmelee/pear/issues/47). Ask in Q&A or the relevant Issue before taking overlapping work.",
+      "id": "D_kwDOUuUVI84Ap7b-",
+      "url": "https://github.com/postmelee/pear/discussions/53"
+    }
+  ]
+}

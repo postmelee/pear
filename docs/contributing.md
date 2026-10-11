@@ -4,6 +4,18 @@ Players, testers, developers and documentation contributors can help build Pear.
 
 Pear is under development. The [delivery plan](delivery-plan.md) defines the intended capabilities and completion criteria; [GitHub Issues](https://github.com/postmelee/pear/issues) track current ownership and progress. No general end-user release or Rosetta-free Megabonk support is established yet.
 
+## Choose a development track
+
+| Track | Useful work | Start here |
+|---|---|---|
+| Rosetta Preview | Setup, Steam launch, clear errors, recovery, packaging and accessibility | [First local build](development/getting-started.md#build-the-rosetta-preview) |
+| Rosetta-free runtime | Source reconstruction, Wine/FEX host integration, DXMT and process/library evidence | [Native contribution path](development/rosetta-free.md) |
+| Shared | Documentation, portable tests, reports and reviewed compatibility records | [First local checks](development/getting-started.md#run-your-first-check), [game reporting](compatibility/README.md) |
+
+The native track is engineering work, not a second downloadable preview. Check
+current Issue ownership before choosing work. Read the [Code of Conduct](CODE_OF_CONDUCT.md)
+and use the [support/security routes](SUPPORT.md) for the appropriate kind of report.
+
 ## Choose a contribution
 
 | Contribution | Useful information |
@@ -14,7 +26,7 @@ Pear is under development. The [delivery plan](delivery-plan.md) defines the int
 | Documentation | The confusing or missing guidance, intended audience and relevant existing document |
 | Profile or compatibility change | Related Issue, reusable upstream work, bounded settings/patches and evidence from the affected configuration |
 
-Search existing Issues and PRs first. Add relevant evidence to an existing report when possible. Requests and future votes express demand; they do not guarantee support, priority or a delivery date. If Discussions is available, it can hold questions and proposals, with adopted work linked to docs and Issues. The [documentation index](README.md) explains these information boundaries.
+Search existing Issues and PRs first. Add relevant evidence to an existing report when possible. Requests and future votes express demand; they do not guarantee support, priority or a delivery date. Use [Discussions](https://github.com/postmelee/pear/discussions) for questions, game observations and ideas; adopted work is linked to Issues. The [documentation index](README.md) explains these information boundaries.
 
 ## Propose and submit a change
 
@@ -26,7 +38,11 @@ Search existing Issues and PRs first. Add relevant evidence to an existing repor
 
 Repository documents, Issues, PR descriptions, code comments and default user-facing text are written in English. Contributors may discuss the work in their preferred language.
 
+### Maintainer workflow
+
 Internal Issue work uses the [Hyper-Waterfall task workflow](../mydocs/manual/task_workflow_guide.md): Issue, branch, daily board, approved task and implementation plans, implementation, verification, stage/final reports and PR. Stages need explicit approval to continue. Codex work uses `codex/task{issue_number}` and publishes through `codex/publish-task{issue_number}`, as defined in the [repository rules](../AGENTS.md).
+
+The [internal PR template](../.github/PULL_REQUEST_TEMPLATE/internal.md) preserves detailed stage/report fields for these tasks.
 
 External contributors are not required to produce the internal task-plan/report bundle or run agent skills. Maintainers record that review separately, as explained in the [PR process guide](../mydocs/manual/pr_process_guide.md). The review still needs clear scope, attributable changes and reproducible verification. These procedures do not require an AI subscription.
 
@@ -52,7 +68,13 @@ Reuse existing projects with attribution, identifiable revisions and their licen
 
 FEX's [contribution policy reviewed on September 28, 2026](https://github.com/FEX-Emu/FEX/blob/59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa/CONTRIBUTING.md) prohibits AI/ML/LLM code contributions. Do not submit AI-generated Pear code upstream to FEX or obscure its origin to evade that rule. Choosing optional AI assistance for other Pear work does not override this restriction, ownership rights, technical review or any other upstream policy.
 
-Pear's own product-license choice remains unresolved before public release. The MIT attribution for the installed Hyper-Waterfall framework does not choose a license for Pear or relicense reused components.
+Original Pear code is licensed under [GPL-3.0-or-later](../LICENSE), except where
+a file or directory specifies separate terms. Contributions to that code must be
+available under those terms, with copyright and upstream attribution preserved.
+Existing MIT/LGPL/GPL notices and additional permissions remain in force; the
+Hyper-Waterfall framework retains its MIT attribution. Do not replace upstream
+terms with Pear's root license. The [preview component record](../preview/THIRD_PARTY_NOTICES.md)
+tracks the separate runtime source/notice work still required for release.
 
 ## Documentation changes
 

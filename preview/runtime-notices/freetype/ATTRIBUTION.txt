@@ -1,0 +1,2 @@
+Portions of this software are copyright (c) 2026 The FreeType Project (www.freetype.org). All rights reserved.
+FreeType is used under the FreeType License; its separately licensed contributions retain their original terms.

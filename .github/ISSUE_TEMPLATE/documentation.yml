@@ -1,0 +1,29 @@
+name: Documentation improvement
+description: Tell us where instructions are confusing, missing or incorrect.
+title: "Docs: "
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or section
+    validations:
+      required: true
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Who needs this guidance?
+      options:
+        - Players using the Rosetta Preview
+        - Preview contributors
+        - Rosetta-free runtime contributors
+        - Maintainers
+        - Everyone
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: Goal and confusing or missing guidance
+      description: Describe what you were trying to do and the improvement you suggest.
+    validations:
+      required: true

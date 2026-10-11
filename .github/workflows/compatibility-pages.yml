@@ -1,0 +1,56 @@
+name: Reviewed compatibility catalog
+
+'on':
+  push:
+    branches: [master]
+    paths:
+      - docs/compatibility/**
+      - docs/assets/**
+      - tools/compatibility.py
+      - tools/steam_catalog.py
+      - tools/catalog/**
+      - .github/workflows/compatibility-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compatibility-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/master' && github.event.repository.private == false && vars.PEAR_PAGES_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Fetch public Steam game identities
+        env:
+          STEAM_WEB_API_KEY: ${{ secrets.STEAM_WEB_API_KEY }}
+        run: python3 -B tools/steam_catalog.py --output .build/steam-catalog/steam-games.json
+      - name: Validate and render reviewed public data
+        run: python3 tools/compatibility.py --check --site .build/compatibility-site --steam-catalog .build/steam-catalog/steam-games.json
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: .build/compatibility-site
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy public catalog
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

@@ -1,0 +1,82 @@
+[
+  {
+    "component": "gmp",
+    "version": "6.3.0",
+    "source_url": "https://ftpmirror.gnu.org/gmp/gmp-6.3.0.tar.xz",
+    "source_sha256": "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+    "license_metadata": "LGPL-3.0-or-later OR GPL-2.0-or-later",
+    "retained_notice_files": 5,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "nettle",
+    "version": "4.0",
+    "source_url": "https://ftpmirror.gnu.org/nettle/nettle-4.0.tar.gz",
+    "source_sha256": "3addbc00da01846b232fb3bc453538ea5468da43033f21bb345cb1e9073f5094",
+    "license_metadata": "GPL-2.0-or-later OR LGPL-3.0-or-later",
+    "retained_notice_files": 4,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "libtasn1",
+    "version": "4.21.0",
+    "source_url": "https://ftpmirror.gnu.org/libtasn1/libtasn1-4.21.0.tar.gz",
+    "source_sha256": "1d8a444a223cc5464240777346e125de51d8e6abf0b8bac742ac84609167dc87",
+    "license_metadata": "LGPL-2.1-or-later",
+    "retained_notice_files": 4,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "libunistring",
+    "version": "1.4.2",
+    "source_url": "https://ftpmirror.gnu.org/libunistring/libunistring-1.4.2.tar.gz",
+    "source_sha256": "e82664b170064e62331962126b259d452d53b227bb4a93ab20040d846fec01d8",
+    "license_metadata": "GPL-2.0-or-later OR LGPL-3.0-or-later",
+    "retained_notice_files": 3,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "libidn2",
+    "version": "2.3.8",
+    "source_url": "https://ftpmirror.gnu.org/libidn/libidn2-2.3.8.tar.gz",
+    "source_sha256": "f557911bf6171621e1f72ff35f5b1825bb35b52ed45325dcdee931e5d3c0787a",
+    "license_metadata": "(GPL-2.0-or-later OR LGPL-3.0-or-later) AND (Unicode-TOU AND Unicode-DFS-2016) AND GPL-3.0-or-later AND LGPL-2.1-or-later AND FSFAP-no-warranty-disclaimer",
+    "retained_notice_files": 6,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "gnutls",
+    "version": "3.8.13",
+    "source_url": "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.13.tar.xz",
+    "source_sha256": "ffed8ec1bf09c2426d4f14aae377de4753b53e537d685e604e99a8b16ca9c97e",
+    "license_metadata": "LGPL-2.1-or-later AND GPL-3.0-only",
+    "retained_notice_files": 7,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "freetype",
+    "version": "2.14.3",
+    "source_url": "https://downloads.sourceforge.net/project/freetype/freetype2/2.14.3/freetype-2.14.3.tar.xz",
+    "source_sha256": "36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f",
+    "license_metadata": "FTL",
+    "retained_notice_files": 15,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "libpng",
+    "version": "1.6.59",
+    "source_url": "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.59/libpng-1.6.59.tar.xz",
+    "source_sha256": "d80dd2a38a37f803cb9b6ac7b14bd6e74ddc3b654780a8380bdf93523fdb4389",
+    "license_metadata": "libpng-2.0",
+    "retained_notice_files": 6,
+    "scope": "Library plus conservative source notice collection; metadata does not replace per-file terms"
+  },
+  {
+    "component": "wine",
+    "version": "CodeWeavers 26.3.0 FOSS Wine 11.0",
+    "source_sha256": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+    "license_metadata": "LGPL-2.1-or-later with separately licensed bundled libraries/fonts",
+    "scope": "Exact upstream named notices, authors, XML2 exception files and embedded font fields; see wine/provenance.json",
+    "retained_notice_files": 30
+  }
+]

@@ -1,0 +1,121 @@
+# Building and releasing the Steam preview
+
+Status: release preparation, October 11, 2026. The app/CLI are development
+candidates; no public download is qualified. See the [player guide](../rosetta-preview.md)
+and [component record](../../preview/THIRD_PARTY_NOTICES.md).
+
+## Build one shared core
+
+Use an Apple Silicon Mac with the Xcode command-line tools and Rust 1.94 or later.
+Current evidence uses Rust 1.94.1 and Swift 6.3.3. These are developer prerequisites;
+players use prebuilt artifacts. The candidate targets macOS 26.0 and ARM64.
+
+From the repository root, obtain only Cargo.lock's dependencies, then build:
+
+```sh
+cargo fetch --manifest-path preview/Cargo.toml --locked
+preview/build.sh
+```
+
+The script runs locked/offline tests and a release build, then builds the Swift
+window and seals a local development app. Outputs are under `.build/task47/preview`;
+`PEAR_PREVIEW_BUILD_ROOT` selects an alternate app output. The Cargo cache is reused.
+The app and standalone CLI use the same Rust binary. Default/`steam` opens the
+library; `megabonk` requests the bounded reference-game install/launch flow.
+
+## Branding assets
+
+The requester supplied `preview/assets/pear_icon.png` for the distributed app and
+`docs/assets/pear.png` for documentation and the catalog favicon. Preserve the
+source artwork. `preview/build-icon.sh` uses macOS `sips` and `iconutil` to generate
+16–1024 pixel representations in `Contents/Resources/Pear.icns`; the bundle's
+`CFBundleIconFile` points to that file. The package allowlist requires it.
+
+Regenerate the 64-pixel catalog favicon after an approved source-image change:
+
+```sh
+sips -z 64 64 docs/assets/pear.png --out docs/assets/favicon.png
+```
+
+Changing an icon changes the app's sealed resources. Rebuild, sign, notarize,
+staple and repackage; never modify a sealed candidate in place. README uses the
+original pear image, not the macOS tile. Branding is not runtime qualification.
+
+## Signing and notarization
+
+Use only an owner-authorized Developer ID Application identity. Keep private keys
+in Keychain. Set `PEAR_SIGNING_IDENTITY` locally to its identity name or SHA-1 and
+run the build. Release mode signs the nested CLI and app with Hardened Runtime
+and a secure timestamp, with no entitlement exceptions. Ad-hoc builds are not
+ordinary-user release artifacts. Never re-sign an upstream runtime to conceal a
+missing permission or disable macOS protections.
+
+Register Apple notarization credentials interactively on the maintainer's Mac:
+
+```sh
+xcrun notarytool store-credentials pear-notary --team-id YOUR_TEAM_ID
+```
+
+Use the secure prompts. Do not put passwords, API private keys or credentials in
+arguments, this repository or logs. `pear-notary` is only a Keychain profile name.
+
+Prepare candidate archives with `preview/package.py --app PATH --output PATH`.
+Submit each app and CLI archive with `xcrun notarytool submit ARCHIVE
+--keychain-profile pear-notary --output-format json`. Poll its submission ID with
+`notarytool info`; retrieve `notarytool log` when rejected. Submission is not
+acceptance. Retain sanitized IDs and outcomes, not credentials.
+
+After acceptance, staple the app using `xcrun stapler staple APP`, validate it,
+then rebuild the final archives with `preview/package.py --release`. Stapling
+changes package bytes: compute SHA-256 only after it. Standalone CLI archives
+cannot be stapled like an app; verify the CLI's accepted notarization and the
+actual downloaded command on a clean online Mac. Do not assume the app's ticket
+covers a different CLI binary. Check the app with `syspolicy_check distribution`
+and the CLI with `codesign --verify --strict -R=notarized --check-notarization`.
+`spctl --type execute` applies app-specific policy and rejects a raw command-line
+binary as not being an app even when its notarization is valid. These preliminary
+checks follow [Apple's product-type guidance](https://developer.apple.com/forums/thread/130560)
+(revised December 5, 2024; reviewed October 11, 2026); they do not replace the
+required clean browser-download and actual execution tests. A source archive must
+match the final committed release revision.
+
+## Current candidate checkpoint
+
+Stage 1's corrected app invokes the original notarized Wine loader with
+`start /unix`; it does not construct a new unsigned Steam app bundle around a
+copied signed executable. That earlier bundle failed macOS resource-seal checks.
+The replacement app/CLI passed same-host official Steam login, owned installation,
+game Steamworks initialization, menu/input and normal exit. The
+[Stage 1 report](../../mydocs/working/task_m3_47_stage1.md) binds the exact candidate,
+notarization receipts and source/notice review.
+
+The runtime URL is intentionally unset in `preview/src/runtime_pin.rs` until
+public delivery is admitted. Developer validation uses the exact pinned local
+archive. Submission ZIPs are not final downloads: the app must be packaged after
+stapling, and release source must match the final committed revision. Preserve
+these inputs through recovery and clean-delivery checks before publishing.
+
+## Release admission
+
+Before any release upload or public-download claim:
+
+- Include Pear's GPL-3.0-or-later text/scope notice and preserved component
+  notices. Provide release-matching corresponding source, lockfiles and build
+  scripts alongside downloads; a private source URL is insufficient.
+- Resolve exact runtime component notices and corresponding-source obligations.
+- Pass the required #47 game, setup-recovery, save and second-clean-environment
+  checks. Same-host fresh prefixes do not establish browser-delivered installation.
+- Verify final app/CLI signatures and notary acceptance, the app staple and
+  distribution assessment, and the CLI explicit notarization requirement. Test a
+  real browser download with normal security protections.
+- Inspect app/CLI archive allowlists, checksums and matching source revision. Never
+  include runtime downloads, Steam/game payloads, account state, saves or keys.
+- Review the current source, relevant Git history and GitHub content before any
+  requested repository visibility change. A private release link is not public.
+- Preserve M1/R1 identities, task stage/report/commit requirements and remaining
+  failures. Packaging success does not close Issue #47 or authorize a merge.
+
+Publish only the approved exact artifacts and source revision as a clearly named
+preview release. Keep the player guide and README download status synchronized
+with actual availability. Do not replace failed tests with a disclaimer to promote
+a release. Performance or Rust-port work is outside this delivery task.

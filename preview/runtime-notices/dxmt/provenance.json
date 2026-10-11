@@ -1,0 +1,24 @@
+{
+  "source_revision": "589adb780354b461645b29999cefaf533594ee99",
+  "source_archive_sha256": "f1a5522c3cbe46a7784bdcc7be6152c4c246e40ecb98f51816fabfa642eedc39",
+  "notices": [
+    {
+      "file": "nvapi-License.txt",
+      "url": "https://raw.githubusercontent.com/NVIDIA/nvapi/d08488fcc82eef313b0464db37d2955709691e94/License.txt",
+      "sha256": "bab44777f0f4d0333479ea0be6e24c084464a8cb64b98f1253fcc3df70f6eccf"
+    },
+    {
+      "file": "directx-COPYING.MinGW-w64.txt",
+      "url": "https://raw.githubusercontent.com/misyltoad/mingw-directx-headers/9df86f2341616ef1888ae59919feaa6d4fad693d/COPYING.MinGW-w64.txt",
+      "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1"
+    },
+    {
+      "file": "LLVM-15.0.7-LICENSE.TXT",
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/llvmorg-15.0.7/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "evidence": "Pinned DXMT CI LLVM_VERSION plus LLVM15.0.7 embedded in shipped winemetal.so"
+    }
+  ],
+  "additional_files": "Exact DXBCParser source files preserving Microsoft MIT headers and airconv/sha256.hpp preserving contributor attribution; full source in pinned upstream archive",
+  "limits": "Retains observed third-party notices; does not establish exact static toolchain-runtime composition of the upstream release."
+}

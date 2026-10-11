@@ -2,11 +2,23 @@
 
 `docs/` is Pear's official root for product, technical and contributor documentation. The [delivery plan](delivery-plan.md) is the single roadmap and completion-criteria reference; the root [README](../README.md) provides a short project overview. The [architecture](architecture.md) defines the intended runtime. These requirements do not establish completed implementation or qualified support.
 
-## Start here
+## Start with your goal
 
-- [Delivery plan](delivery-plan.md): Phase 1-5, technical M1, proposed ordinary-user M2, independent R1 and acceptance dependencies.
-- [Contributor guide](contributing.md): requests, reports, testing, documentation, profiles and code contributions; no AI subscription required.
-- [Runtime architecture](architecture.md): requirements, subsystem boundaries, interfaces, language decisions and qualification gates.
+This index uses [Diataxis](https://diataxis.fr/) to separate learning, practical
+steps, reference and explanation. Existing technical guides stay in place; a
+planned feature is not a usable release.
+
+| Need | Start here |
+|---|---|
+| Learn by doing | [First Steam session](rosetta-preview.md#app-experience), once a verified release is available; [first local check/build](development/getting-started.md) today |
+| Complete a task | [Report a game result](compatibility/README.md#submit-a-result), [get help](SUPPORT.md), [submit a change](contributing.md#propose-and-submit-a-change), [build/sign a candidate](development/preview-release.md) |
+| Look up details | [Preview requirements](rosetta-preview.md#before-using-a-release), [CLI](rosetta-preview.md#optional-cli), [data location](rosetta-preview.md#data-and-recovery), [record meanings](compatibility/README.md#read-the-records), technical references below |
+| Understand the design | [One delivery plan](delivery-plan.md), [architecture](architecture.md), [Rosetta-free contribution path](development/rosetta-free.md), [evidence and community boundaries](community.md) |
+
+## Technical references and engineering guides
+
+- [Preview release procedure](development/preview-release.md): maintainer signing and distribution gates.
+- [Contributor guide](contributing.md): scope, verification, upstream policies and licensing.
 - [Runtime contracts](runtime-contracts.md): seven experimental record kinds, reference validation, source handoff, and supervisor/observer ownership.
 - [Native supervisor CLI](development/runtime-supervisor.md): read-only fixture setup, activation, prepared contexts, cancellation and preservation-first recovery; real-runtime execution remains unavailable.
 - [Game profiles](game-profiles.md): v2 profile knowledge, two fixture profiles and researched Megabonk facts with explicit unknowns.
@@ -45,4 +57,7 @@ For example, [host capability evidence](host-capabilities.md) establishes a boun
 
 The recommended role of Discussions is requests, votes, questions and proposals. Adopted decisions should be linked into the appropriate official document and tracked Issue before implementation. A vote does not by itself change support status or promise a delivery date.
 
-The initial recommended Wiki role is navigation and links to these documents. It should not maintain a second copy of roadmap, contribution or engineering rules. These roles do not require either surface to be activated or populated now; use available GitHub Issues for current tracked work.
+The Wiki, if used, links to these documents. Reviewed game observations live in
+[versioned records](compatibility/README.md); generated Markdown and the optional
+GitHub Pages catalog use the same source. See the [community guide](community.md)
+for reporting, moderation and publication boundaries.

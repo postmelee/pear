@@ -1,0 +1,233 @@
+{
+  "archive_sha256": "ac99c8ca4b3848f3e81784135f023df266b61c2345726ea55a50b3e030dd6872",
+  "files": [
+    {
+      "source_path": "sources/wine/AUTHORS",
+      "notice_path": "wine/AUTHORS",
+      "sha256": "4e2f062fd9c658b60ba7c0000f88f08d2b8f1333fa7b1c37ec27859ecb2de59d",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/xslt/COPYING",
+      "notice_path": "wine/libs/xslt/COPYING",
+      "sha256": "7e48e290b6bfccc2ec1b297023a1d77f2fd87417f71fbb9f50aabef40a851819",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/musl/COPYRIGHT",
+      "notice_path": "wine/libs/musl/COPYRIGHT",
+      "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/vkd3d/COPYING",
+      "notice_path": "wine/libs/vkd3d/COPYING",
+      "sha256": "ba2942ea4fef8b3f674577cf100a2d44c44f237a6d9514067a776f6979dad1c5",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/faudio/LICENSE",
+      "notice_path": "wine/libs/faudio/LICENSE",
+      "sha256": "18325126e220d6898c4a8d1e3896a7b8c0e10e15b9d08bc6630f403bf4981215",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/zlib/LICENSE",
+      "notice_path": "wine/libs/zlib/LICENSE",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/xml2/COPYING",
+      "notice_path": "wine/libs/xml2/COPYING",
+      "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/xml2/list.c",
+      "notice_path": "wine/libs/xml2/list.c",
+      "sha256": "fd11b902de551807692385fbda445c23a083931dd02bf560471adbf0540ec355",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/xml2/hash.c",
+      "notice_path": "wine/libs/xml2/hash.c",
+      "sha256": "de8d30a40c9f2598130c89d4b934191495dd9b6938b59e7caa9bbc50a0ab5fa6",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/jxr/LICENSE",
+      "notice_path": "wine/libs/jxr/LICENSE",
+      "sha256": "a645aa6019f2a0300dd5108b6679afb9fca0620ed06b8efe4bc1eb3d36799ada",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/compiler-rt/LICENSE.TXT",
+      "notice_path": "wine/libs/compiler-rt/LICENSE.TXT",
+      "sha256": "09e65c6534e75ec49cdc74fa894bfe4287bfbb1002be41fcad90110e9acd0984",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/capstone/LICENSE_LLVM.TXT",
+      "notice_path": "wine/libs/capstone/LICENSE_LLVM.TXT",
+      "sha256": "dfdca2d7fdbabfd937f9dc41b7f61647b0e6cb1f9ee767ecb4520f979ebe91da",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/capstone/LICENSE.TXT",
+      "notice_path": "wine/libs/capstone/LICENSE.TXT",
+      "sha256": "65e9ed46a59976eda8f5bd1ea79a680dea38dd299c760bc9a8d87a764ef5029b",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/mpg123/LICENSE",
+      "notice_path": "wine/libs/mpg123/LICENSE",
+      "sha256": "88cfbfd10c2b05905b84819502d8f494c925497507b13b60acd4e99fa85586dc",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/tiff/COPYRIGHT",
+      "notice_path": "wine/libs/tiff/COPYRIGHT",
+      "sha256": "fbd6fed7938541d2c809c0826225fc85e551fdbfa8732b10f0c87e0847acafd7",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/tomcrypt/LICENSE",
+      "notice_path": "wine/libs/tomcrypt/LICENSE",
+      "sha256": "1ba8f8006c93ac386e117f5721080192b2b29c1e3e8f75dfe577ff4e2c3459a8",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/fluidsynth/COPYING.md",
+      "notice_path": "wine/libs/fluidsynth/COPYING.md",
+      "sha256": "db7d88e8584f98b5d393cc4ab60290c3d06cd3947d104b1c91ec95c140df89c6",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/lcms2/COPYING",
+      "notice_path": "wine/libs/lcms2/COPYING",
+      "sha256": "46d4e05af3bce75332a12d01f19bcce7e32b6bac544be28a64043d0231291e31",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/jpeg/LICENSE",
+      "notice_path": "wine/libs/jpeg/LICENSE",
+      "sha256": "1cb448f5e2e6d3aca60943f4eee1a04675628dc0266a074a42bc1560ebc28d61",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/gsm/COPYRIGHT",
+      "notice_path": "wine/libs/gsm/COPYRIGHT",
+      "sha256": "81c68a3374937ed9b5e4929c709e81a2c4b35b5d1f450ecf8c473e2daea46ff6",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/png/LICENSE",
+      "notice_path": "wine/libs/png/LICENSE",
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/ldap/COPYRIGHT",
+      "notice_path": "wine/libs/ldap/COPYRIGHT",
+      "sha256": "0d60f0cfcce7c4d08ac12e677ed1223319cba6409682ba62a944f2cd37fb836a",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/libs/ldap/LICENSE",
+      "notice_path": "wine/libs/ldap/LICENSE",
+      "sha256": "310fe25c858a9515fc8c8d7d1f24a67c9496f84a91e0a0e41ea9975b1371e569",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/README.md",
+      "notice_path": "wine/README.md",
+      "sha256": "dfa580f97437666d522f5de33bcc1c43c2ac9f94d5d631b8c1c5beaa587e9b59",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/COPYING.LIB",
+      "notice_path": "wine/COPYING.LIB",
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/LICENSE.OLD",
+      "notice_path": "wine/LICENSE.OLD",
+      "sha256": "2799d474935ef6c1787abc0895f3e386cd2843a5c7cd72a1c30d4f6762ac4b0a",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/LICENSE",
+      "notice_path": "wine/LICENSE",
+      "sha256": "ae025f125a5d639f0f7abe5146efa1e3d7453cc10b744b2910806fa3f46626ef",
+      "mode": "exact upstream file"
+    },
+    {
+      "source_path": "sources/wine/fonts/fixedsys_jp.sfd",
+      "sha256": "bd1982e6cbe4bbe0268b6e014d0521848398c7e2c19b0dc9b6e5e4698c7848fa",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/system.sfd",
+      "sha256": "88596900ca3df8dcf6ef257793a3b52baf666cc7f72140598bd2aef4787e9a41",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/fixedsys.sfd",
+      "sha256": "9019eab07b9a19f994829e88556a5df4332a6cce9543c1aa83ee2433fb58c07c",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/small_fonts.sfd",
+      "sha256": "9d31cc3988f1d7ecb6a650ff2b312722b0114bfedc86c03f95c4c15d0b680ca5",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/webdings.sfd",
+      "sha256": "52eea2ba6ea5bb5e5db89ce2a01e578d7bb768e8da04a0e235fa04a1c1821b09",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/wingding.sfd",
+      "sha256": "6d8d42e70c405f41d9a9a3c54479cee0b022b5b0509ab8c9ada0402ac3007478",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/symbol.sfd",
+      "sha256": "b146fffd2713a55b7f5101f32b3199b47542c2d5234f61cb5626ce2c886193d6",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/small_fonts_jp.sfd",
+      "sha256": "2213f79206358a65a5058287dcd8cd4b41ec3ffb3287639e6f19d5391b1f30ab",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/tahoma.sfd",
+      "sha256": "0c1a3182a3a6b3d444113421121cbacf87322111aff245ee616109bd47479710",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/courier.sfd",
+      "sha256": "ab712b8cf0682a5dea331b4f518401039099c6426470763da2f8269d0dae6fa8",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/tahomabd.sfd",
+      "sha256": "90e42b98fc092034e6485a7f8f811195ca2ca148b6704e5d2df56a4c97dfca49",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/marlett.sfd",
+      "sha256": "eaaf88567db49cdacac4ec9e61a4ce14648e682f48343d8b9c9056cb5a1d3970",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    },
+    {
+      "source_path": "sources/wine/fonts/ms_sans_serif.sfd",
+      "sha256": "d8cc5e8e93d70478e810b9aa3272006da57e819a063c2b34f5cf92a233b0f3f3",
+      "mode": "Verbatim FontName/Copyright/English LangName fields in FONT-NOTICES.txt; original SFD remains in pinned source archive"
+    }
+  ],
+  "coverage": "Named license/copying/copyright/notice files, top-level authors/readme, XML2 exception source files and font embedded English fields. Not an exhaustive per-file legal opinion."
+}

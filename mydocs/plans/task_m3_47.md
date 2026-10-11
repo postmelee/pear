@@ -5,18 +5,20 @@ Milestone: [M3 — Rosetta-based Megabonk Preview](https://github.com/postmelee/
 Branch: `codex/task47`
 Planning date: October 10, 2026 (Asia/Seoul)
 Status: Task plan approved by explicit requester continuation on October 10, 2026;
-implementation plan and Stage 1 awaiting approval.
+implementation plan approved; Stage 1 complete; Stage 2 awaiting continuation.
 
 ## Purpose
 
 Deliver the smallest usable interim path for owners to install and play Windows
 Megabonk on a declared Apple Silicon/macOS configuration using Rosetta and
-unmodified official Windows Steam. Prioritize existing GUI delivery, repeatable
-setup, normal Steam Play, save preservation and clear user guidance.
+unmodified official Windows Steam. Use a small shared preparation/launch tool exposed by one command and a
+double-click app, as subsequently authorized by the requester. Preserve normal
+Steam Play, saves and clear user guidance.
 
 This is an explicitly Rosetta-dependent preview. It neither qualifies M1 nor
-completes the proposed Rosetta-free M2 experience. A new UI, QR login, Terminal
-workflow, npx, Dock or completion of ARM64 Wine/FEX is not a prerequisite.
+completes the proposed Rosetta-free M2 experience. The CLI and small Mac entry point share a Rust core; Swift is limited to the
+Mac window. QR-only interaction, npx, Dock and ARM64 Wine/FEX completion are not
+prerequisites. The implementation plan records the concrete revised scope.
 
 ## Background
 
@@ -87,7 +89,7 @@ are design evidence, not a preview launch facility.
 ### Excluded
 
 - New CPU/Windows/Steam authentication implementations; Dock/FEX completion;
-  broad game support; automatic Steam library discovery; predetermined UI work.
+  broad game support; automatic Steam library discovery; a general new UI.
 - Game/API/ownership patches, authentication stubs, or `steam_appid.txt` as a
   supported launch route. Old diagnostic success does not qualify Steam Play.
 - Distribution of proprietary games, signed-in prefixes, credentials, saves,
@@ -97,11 +99,11 @@ are design evidence, not a preview launch facility.
 
 ## Design Direction
 
-### Reuse decision and unresolved selection
+### Reuse decision and authorized selection
 
 | Candidate | Existing evidence | Proposed use and remaining gate |
 |---|---|---|
-| frankea/Whisky GUI and upstream DMG | Swift/SwiftUI app, bottle facilities, Steam integration and resumable download source | First candidate: use an exact upstream release without a Pear UI if it satisfies the flow; verify actual signed delivery, pinned inputs and recovery |
+| frankea/Whisky GUI and upstream DMG | Swift/SwiftUI app, bottle facilities, Steam integration and resumable download source | Initial candidate reviewed; shared CLI/app tool subsequently selected by the requester, pinned inputs and recovery |
 | Minimal adaptation of existing Whisky facilities | Installer/download/bottle/Steam code available at the pin below | Only if a demonstrated gap prevents the unchanged app route; retain Swift and file notices, review the smallest patch and delivery obligations before implementation |
 | Pear manager #9 | Tested Rust/C fixture admission, isolation and lifecycle | Reuse contract/ownership ideas; no new real-runtime adaptation or relaxation of its admission policy is selected |
 | Original private Wine experiment | Working historical Wine/DXMT game baseline | Reuse exact settings and component facts; do not ship the fixed-layout script or its direct-launch shortcut |
@@ -135,9 +137,10 @@ D3DMetal/GPTK is not selected by this DXMT baseline.
 
 ### User flow and preservation
 
-Download/open the selected app through normal macOS behavior, prepare a new
-preview bottle, install official Windows Steam, let the owner authenticate
-directly with Valve, install owned Megabonk and select Steam Play. Subsequent
+Open the small app or invoke the shared command. The tool prepares a private
+preview bottle and installs official Windows Steam. The owner authenticates
+directly with Valve; the tool requests automatic installation in the default
+Steam library and normal Steam launch after installation completes. Subsequent
 launches reuse the same verified installation. Routine users need no Terminal,
 Xcode or developer account; implementation/testing tools are separate.
 
@@ -194,9 +197,9 @@ Task artifacts:
 - `mydocs/working/task_m3_47_stage{N}.md` and sanitized supporting observations
 - `mydocs/report/task_m3_47_report.md`
 
-Product source/test paths depend on the reuse decision. Do not create speculative
-subsystems. Any necessary adapter paths and exact scope must be reviewed before
-source changes. Private execution outputs belong outside tracked artifacts;
+The requester approved the small tool: source/build/test paths are under
+`preview/`, with Rust core and thin Swift shell as detailed in the implementation
+plan. No source changes to the existing native manager are selected. Private execution outputs belong outside tracked artifacts;
 no existing personal bottle is copied into Git.
 
 ## Tentative Stages
@@ -294,3 +297,25 @@ tentative stages and verification criteria by explicit continuation in this chat
 The [implementation plan](task_m3_47_impl.md) now defines concrete Stage artifacts,
 verification methods and commit messages for review before Stage 1. No product
 changes or runtime execution occurred during planning.
+
+
+## October 11 Requester Revision: User Distribution First
+
+The requester approved general Windows Steam entry through Pear, public-document
+alignment and app/CLI release preparation. Pear is intended to be free and open
+source, usable without Wine/Whisky/Terminal knowledge. Rosetta-free Windows Steam
+gameplay remains the final product goal; this Rosetta preview is an interim route.
+Megabonk remains the first validation game, not the only game selectable in Steam.
+The implementation plan records the approved paths, exact source/package changes,
+retention and outstanding release decisions. Performance and memory work is deferred.
+Existing qualification requirements are retained; no all-game or public-release
+qualification follows from selecting the general Steam entry.
+
+
+## Approved Public Onboarding Extension — October 11
+
+The requester approved public README/documentation entry points using Diataxis,
+separate Preview/native contribution paths, community forms/policies, reviewed
+game records and supplied branding. The implementation plan records the approved
+locations, reuse decisions and affected checks. Repository visibility and public
+release remain separate pending gates; Stage 1 stays in progress.

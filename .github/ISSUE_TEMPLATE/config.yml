@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and help
+    url: https://github.com/postmelee/pear/discussions/categories/q-a
+    about: Ask about setup or contributions.
+  - name: Game compatibility report
+    url: https://github.com/postmelee/pear/discussions/new?category=show-and-tell
+    about: Share an owned-game result with its environment and limitations.
+  - name: Ideas and game requests
+    url: https://github.com/postmelee/pear/discussions/categories/ideas
+    about: Discuss proposals before turning them into tracked work.
+  - name: Security policy and private reporting availability
+    url: https://github.com/postmelee/pear/blob/master/docs/SECURITY.md
+    about: Read the private-reporting route and its availability; do not post vulnerabilities in Issues.

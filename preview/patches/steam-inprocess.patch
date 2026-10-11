@@ -1,0 +1,38 @@
+--- a/dlls/kernelbase/process.c
++++ b/dlls/kernelbase/process.c
+@@ -545,6 +545,35 @@
+         app_name = name;
+     }
+ 
++    /* Pear diagnostic: keep Steam CEF GPU work in its browser process.
++     * Opt-in only. Do not disable sandboxing or alter subprocess invocations. */
++    {
++        WCHAR enabled[2];
++        const WCHAR *basename = app_name, *cursor;
++        static const WCHAR option[] = L" --in-process-gpu";
++        for (cursor = app_name; *cursor; ++cursor)
++            if (*cursor == '\\' || *cursor == '/') basename = cursor + 1;
++        if (GetEnvironmentVariableW( L"PEAR_STEAM_IN_PROCESS_GPU", enabled, 2 ) == 1
++            && enabled[0] == '1' && !lstrcmpiW( basename, L"steamwebhelper.exe" )
++            && tidy_cmdline && !wcsstr( tidy_cmdline, L"--type=" )
++            && !wcsstr( tidy_cmdline, L"--in-process-gpu" ))
++        {
++            SIZE_T length = lstrlenW( tidy_cmdline );
++            WCHAR *updated = HeapAlloc( GetProcessHeap(), 0,
++                                        (length + ARRAY_SIZE(option)) * sizeof(WCHAR) );
++            if (!updated)
++            {
++                if (tidy_cmdline != cmd_line) HeapFree( GetProcessHeap(), 0, tidy_cmdline );
++                SetLastError( ERROR_NOT_ENOUGH_MEMORY );
++                return FALSE;
++            }
++            memcpy( updated, tidy_cmdline, length * sizeof(WCHAR) );
++            memcpy( updated + length, option, sizeof(option) );
++            if (tidy_cmdline != cmd_line) HeapFree( GetProcessHeap(), 0, tidy_cmdline );
++            tidy_cmdline = updated;
++        }
++    }
++
+     /* CW Hack 24938 */
+     if (cmd_line && wcsstr(cmd_line, L"EpicGamesLauncher.exe"))
+     {

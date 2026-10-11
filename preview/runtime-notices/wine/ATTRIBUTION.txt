@@ -1,0 +1,5 @@
+This software is based in part on the work of the Independent JPEG Group.
+Wine contains separately licensed bundled libraries; retained upstream notices
+and the pinned complete Wine source preserve their individual terms.
+The Wine patch opts into --in-process-gpu for the main Steam webhelper.
+Pear does not add a sandbox-disable argument. This is not sandbox qualification.
