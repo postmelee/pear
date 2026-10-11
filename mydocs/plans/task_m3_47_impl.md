@@ -2223,3 +2223,32 @@ eb80d8aa8b08fd7b558cb9728f3e1f81746640ce8113795bcc6f5018714066c9.
 Existing private state and failed trial are retained, no GUI reacquisition or
 extra launch occurred. Reinstall success and abnormal helper cleanup remain
 separate observations; Stage 2 matrix/closure review is still pending.
+
+
+## October 12 non-conflicting Stage 2 evidence review
+
+The requester explicitly asked for Stage 2 result reconciliation and assessment
+of whether the remaining Steam helper exit problem blocks distribution. Location
+judgment: use `mydocs/working/task_m3_47_stage2_review.md` and the existing JSON
+observation record for this internal interim assessment; do not create a formal
+completed-stage report or change public product documentation. Existing task
+approval covers this requested documentation work.
+
+Reuse exact signed CI 0f712b9, prior app-v4 host observations and supervisor
+receipts within their separate scopes. Compare current launcher/core source to
+CI and recheck existing CI status without dispatching jobs. No source change,
+Steam/Wine/game execution, build, signing, cleanup or shared execution lock.
+Storage planning: documentation-only changes below 1 MiB; no substantial output,
+full runtime copy or storage reclamation. Preserve all previous retention terms.
+
+The review distinguishes passing reinstall/game observations from abnormal
+harness-requested Steam shutdown. Normal Steam UI Exit/reopen is the smallest
+remaining host check; it needs a later coordinated interval. Public user exit
+risk must be resolved, but this does not itself mandate an upstream runtime
+patch or broad repetition of passed tests. Stage 2 remains in progress, and
+Stage 3 and final delivery requirements remain unchanged.
+
+Review validation: offline governance check passed (37 documents, 354 local
+targets); review-relative links and observations JSON syntax passed; candidate
+source identity and coordinator receipt hash matched; git diff --check passed.
+No runtime test was repeated and no other worktree was modified.

@@ -94,7 +94,7 @@
     "scope": "Disposable bundle and synthetic state only; no Wine/Steam/game launched"
   },
   "remaining_stage2": [
-    "Reconcile the full Stage 2 matrix and candidate/source-seam boundaries, including the abnormal orphan Steam helper cleanup, before a Stage 2 completion report."
+    "Resolve the normal-user Steam exit/reopen risk disposition at a coordinated host interval, then review and report Stage 2 completion against the approved matrix; no automatic upstream patch requirement."
   ],
   "closure_preparation": {
     "integrity_receipt": ".build/task47/stage2/closure-preparation-v1/integrity.json",
@@ -470,5 +470,22 @@
       "sha256": "eb80d8aa8b08fd7b558cb9728f3e1f81746640ce8113795bcc6f5018714066c9",
       "tracked_lifetimes_checked": 49
     }
+  },
+  "stage2_evidence_review": {
+    "date": "2026-10-12",
+    "document": "mydocs/working/task_m3_47_stage2_review.md",
+    "status": "reviewed; stage remains in progress",
+    "new_host_execution": false,
+    "candidate_source_matches": [
+      "preview/src/lib.rs",
+      "preview/src/recovery_tests.rs",
+      "preview/src/runtime_pin.rs",
+      "preview/src/main.rs",
+      "preview/Launcher.swift"
+    ],
+    "ci_run_rechecked": "38171422915: success; all three jobs success; head 0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "normal_user_Steam_UI_exit": "not yet observed in the latest reinstall interval",
+    "release_disposition": "Resolve user exit/reopen risk before ordinary-user public distribution. An upstream runtime patch is not automatically required; harness shutdown failure is distinct from intentional close-Pear behavior.",
+    "coordinator_release_sha256": "fa12e66beace1a715658662ce1f73d38a6c6fbf49a56d45be5cce8ccde52df67"
   }
 }
