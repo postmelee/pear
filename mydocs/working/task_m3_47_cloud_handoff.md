@@ -97,3 +97,15 @@ The local coordinator retains execution-slot ownership for real local GUI/game
 runs. No cloud source edit or hosted build needs a local Wine/GPU slot. Do not
 resume stopped automations or recreate Goals. Existing local preparation is
 ready but is not authorization to launch it from cloud.
+
+
+## First hosted execution
+
+Source checkpoint: d9e222327efda07fe24a39c6d8841251c94d1ba3.
+[Actions run 38163826676](https://github.com/postmelee/pear/actions/runs/38163826676)
+passed. Ubuntu and macOS each passed 51 Python fixtures with zero skips; the Mac
+passed 21 Rust tests, app/CLI build and candidate package checks. Downloaded
+archive bytes matched the package manifest. Actual host: macOS 26.6.2 ARM64,
+Xcode 26.5 (17F42), SDK 26.5, Swift 6.3.2 and Rust 1.94.1. This differs from the
+local candidate toolchain and is a new unsigned-for-distribution candidate,
+not inherited local game qualification. No runtime was fetched or executed.

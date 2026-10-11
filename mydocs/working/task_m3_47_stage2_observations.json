@@ -163,7 +163,7 @@
     "report_destination_after_completion": "mydocs/working/task_m3_47_stage2.md"
   },
   "cloud_preparation": {
-    "status": "source prepared; hosted execution pending",
+    "status": "GitHub hosted candidate build passed; Codex Cloud environment setup in progress",
     "workflow": ".github/workflows/preview-candidate.yml",
     "handoff": "mydocs/working/task_m3_47_cloud_handoff.md",
     "portable_tests": 51,
@@ -175,6 +175,27 @@
     "cloud_environment_created": false,
     "stage2_complete": false,
     "candidate_scope": "Ad-hoc signed app/CLI only; no runtime, no notarization, no public release",
-    "portable_log_sha256": "1e421b676afe0450e79d0251323828dbd604b57d7ea1f9ec045306737ac318ed"
+    "portable_log_sha256": "1e421b676afe0450e79d0251323828dbd604b57d7ea1f9ec045306737ac318ed",
+    "source_checkpoint": "d9e222327efda07fe24a39c6d8841251c94d1ba3",
+    "run_url": "https://github.com/postmelee/pear/actions/runs/38163826676",
+    "hosted_python_tests": {
+      "ubuntu": 51,
+      "macos": 51,
+      "skips": 0
+    },
+    "hosted_rust_tests": 21,
+    "download_hashes_verified": true,
+    "artifacts": {
+      "Pear-0.1.0-preview.1-macos-arm64.zip": {
+        "sha256": "1fd169093a7fd51e4461697110b9b277bd2eb5896051141f13dcc1bc8e7ac635",
+        "size": 5291438
+      },
+      "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+        "sha256": "7fd25e088bece60bf1e2af535b6eb04dfebe41a7b6efbc2e8285b29113e21782",
+        "size": 335560
+      }
+    },
+    "provenance_sha256": "fe0aa1c3b200576a055a40a9f7e100104b886c1e136419f4d7e05be8ab94f689",
+    "candidate_not_for_normal_security_user_testing": true
   }
 }
