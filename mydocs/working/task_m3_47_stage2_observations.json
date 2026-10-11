@@ -198,7 +198,7 @@
     "provenance_sha256": "fe0aa1c3b200576a055a40a9f7e100104b886c1e136419f4d7e05be8ab94f689",
     "candidate_not_for_normal_security_user_testing": true,
     "cloud_environment": {
-      "name": "Pear Preview · Issue 47",
+      "name": "Pear Preview \u00b7 Issue 47",
       "published": true,
       "visibility": "Only me",
       "source_checkpoint": "c8c7e25739f59c22c9fce5f66b90dcb84f3edd99",
@@ -358,5 +358,27 @@
     ],
     "retained_private_review_root": ".build/task47/publication-audit",
     "next_action": "Requester final approval for narrow public-entry PR/integration and existing-repository visibility change; do not publish the full unfinished #47 implementation as completed"
+  },
+  "public_source_and_ci_registration": {
+    "date": "2026-10-12",
+    "public_source": true,
+    "public_entry_pr": 54,
+    "merge": "3a15ddd2539ca5c0578834ff644548e58b7a6a39",
+    "issue_47_open": true,
+    "private_vulnerability_reporting": true,
+    "intake_forms_rendered": true,
+    "wiki": "empty first-page state observed",
+    "secret_registration": "Owner local helper completed; names and protection verified; values not read back",
+    "environment": "pear-preview-signing",
+    "required_reviewer": "postmelee",
+    "admins_bypass": false,
+    "allowed_branch": "codex/publish-task47",
+    "single_owner_self_review": true,
+    "candidate_sha": "e27e002e4745cd1dbd7ac1b7245ac154e589711a",
+    "run_url": "https://github.com/postmelee/pear/actions/runs/38167091034",
+    "attempt": 2,
+    "signing": "Waiting for required owner approval in GitHub; both preceding jobs passed in attempt 2",
+    "public_player_release": false,
+    "local_gui_started": false
   }
 }

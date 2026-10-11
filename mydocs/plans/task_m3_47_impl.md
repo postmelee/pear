@@ -2039,3 +2039,66 @@ Private review receipts, the prepared tree/patch and after-public draft messages
 remain retained for this decision. No raw log/archive downloads were retained,
 and no binary was executed. Inspect the latest remote delta again after approval;
 prior public-source snapshot hashes are not an unbounded future approval.
+
+
+### Approved public conversion and credential handoff
+
+On October 12 the requester explicitly approved the final narrow public-entry PR
+and existing-history visibility conversion. PR #54 merged as
+3a15ddd2539ca5c0578834ff644548e58b7a6a39 after eight hosted checks passed; #47
+remains open. Public visibility, required reviewer postmelee (single-owner manual
+self-review allowed), exact codex/publish-task47 branch and administrator bypass
+disabled were read back. Private vulnerability reporting is enabled. No signing
+secrets are present yet. Owner-only encrypted export of the exact Developer ID
+identity and a dedicated app password are the remaining credential inputs.
+
+Prepare a local-only helper under .build/task47/publication-audit/ to collect
+these through getpass and send them on stdin to gh secret set for the approved
+environment. Re-read protection before every secret, refuse a configured approved
+SHA, check the public certificate fingerprint and encrypted PKCS#12 key bag, and
+never print or write secret values. Do not extract the local pear-notary profile
+or export all identities. Retain only non-secret completion metadata. This is an
+internal provisioning helper, not product functionality; no documentation move.
+Portable synthetic checks cover protection refusal and exact destination routing;
+actual credential registration remains pending direct owner input.
+
+
+### Public source and CI credential registration completed (October 12)
+
+The owner approved the exact public-source change and visibility conversion.
+PR #54 merged as 3a15ddd2539ca5c0578834ff644548e58b7a6a39 after eight hosted
+checks passed. The repository is public; #47 and Stage 2 remain in progress.
+Private vulnerability reporting is enabled. Bug and Show and tell forms rendered
+in the browser; the Wiki displayed its empty first-page creation state. Prepared
+Discussion 50/51 updates now distinguish public source from a player release.
+No Pages deployment or player release was performed.
+
+The owner completed the local credential helper. Its non-secret receipt and
+GitHub metadata confirm four expected environment secret names and the approved
+public certificate fingerprint. Secret contents were not read back. Protection
+was rechecked: required reviewer postmelee, exact codex/publish-task47 branch,
+administrator bypass disabled. Single-owner self-review is permitted; this is
+manual owner approval, not independent peer review. The original Keychain
+identity and owner-exported encrypted certificate remain preserved.
+
+Set PEAR_SIGNING_APPROVED_SHA to e27e002e4745cd1dbd7ac1b7245ac154e589711a and
+rerun existing hosted run 38167091034, attempt 2, without debug logging. The
+preview/, manager/ and signing workflow trees match current task HEAD 39c5001.
+Rerunning preserves the reviewed original commit/ref and avoids changing source
+or merging unfinished Stage 2 merely to trigger signing. The protected sign job
+must wait for the owner's GitHub approval; do not approve it through automation.
+Remove the approved-SHA variable after the selected run finishes. Credential
+registration alone does not establish successful import/signing/notarization.
+
+Reuse the existing hosted storage plan and workflow-owned fresh roots: builds
+admit at least 6 GiB free; credentials are transient in the job-owned keychain;
+only allowlisted candidate packages and sanitized receipts are retained for 14
+days. No local substantial build, runtime copy, Steam or game execution occurs.
+Local receipts are small task evidence; retain signed candidate bytes through
+local qualification and preserve all earlier private state/recovery dependencies.
+A fresh signed app needs new readiness and a non-conflicting GUI validation slot.
+
+Attempt 2 passed both portable fixtures and the hosted macOS app/CLI build.
+GitHub now reports Approved Developer ID candidate as waiting, with pending
+environment pear-preview-signing and owner approval available. No signing job
+has started; the owner was directed to Review deployments on the run page.
