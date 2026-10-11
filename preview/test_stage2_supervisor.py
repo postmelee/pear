@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Pear contributors.
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Pure/synthetic guard checks: no real GUI, Wine, shared lock or user state."""
 import importlib.util
 import json
@@ -16,6 +18,71 @@ def process(birth='birth-a', exe='/owned/wine', ppid=1):
 
 
 class SupervisionTests(unittest.TestCase):
+    def test_storage_tolerates_child_removed_after_enumeration(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name); keep = root / 'keep'; keep.write_bytes(b'kept')
+            vanishing = root / 'update.tmp'; vanishing.write_bytes(b'temporary')
+            original = Path.lstat
+            def remove_child(path, *args, **kwargs):
+                if path == vanishing:
+                    path.unlink()
+                return original(path, *args, **kwargs)
+            with patch.object(Path, 'lstat', remove_child):
+                logical, allocated = m.storage(root)
+            self.assertEqual(logical, 4)
+            self.assertGreaterEqual(allocated, 0)
+
+    def test_storage_tolerates_child_directory_removed_before_scan(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name); child = root / 'updater'; child.mkdir()
+            (root / 'keep').write_bytes(b'kept')
+            original = m.os.scandir
+            def remove_directory(path):
+                if Path(path) == child:
+                    child.rmdir()
+                return original(path)
+            with patch.object(m.os, 'scandir', remove_directory):
+                self.assertEqual(m.storage(root)[0], 4)
+
+    def test_storage_does_not_hide_missing_root_or_access_errors(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            with self.assertRaises(FileNotFoundError): m.storage(root / 'absent')
+            original = m.os.scandir
+            child = root / 'protected'; child.mkdir()
+            def deny(path):
+                if Path(path) == child: raise PermissionError('fixture access denied')
+                return original(path)
+            with patch.object(m.os, 'scandir', deny):
+                with self.assertRaises(PermissionError): m.storage(root)
+
+    def test_storage_does_not_follow_symlink_to_external_state(self):
+        with tempfile.TemporaryDirectory() as name:
+            base = Path(name); root = base / 'output'; root.mkdir()
+            external = base / 'private'; external.mkdir()
+            (external / 'save').write_bytes(b'private data')
+            (root / 'link').symlink_to(external, target_is_directory=True)
+            (root / 'keep').write_bytes(b'abc')
+            self.assertEqual(m.storage(root)[0], 3)
+
+    def test_reinstall_reuses_candidate_and_preserves_external_state(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name); source = root / 'source'; source.mkdir()
+            (source / 'binary').write_bytes(b'signed candidate')
+            trial = root / 'trial'; m.shutil.copytree(source, trial)
+            saved = root / 'private-save'; saved.write_bytes(b'preserve')
+            inventory = root / 'inventory.json'; m.write(inventory, m.inventory(source))
+            target = root / 'reinstalled'
+            g = self.guard(); g.phase = 'trial-verified'; g.quiet = Mock()
+            g.r.update(source_app=str(source), trial_app=str(trial),
+                       reinstalled_app=str(target), app_inventory=str(inventory))
+            g.r['actions']['reinstall-app'] = {'from': ['trial-verified'], 'to': 'reinstalled', 'quiet': True}
+            g.dispatch({'action': 'reinstall-app'})
+            self.assertFalse(trial.exists())
+            self.assertEqual(m.inventory(target), m.inventory(source))
+            self.assertEqual(saved.read_bytes(), b'preserve')
+            g.quiet.assert_called_once()
+
     def test_pid_reuse_is_not_old_owned_process(self):
         old = process()
         seen = {(10, *m.identity(old)): old}

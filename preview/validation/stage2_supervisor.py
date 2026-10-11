@@ -1,3 +1,5 @@
+# Copyright (C) 2026 Pear contributors.
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Operator-only Stage 2 guard. No GUI execution without a pinned Root grant."""
 from pathlib import Path
 import argparse
@@ -161,11 +163,27 @@ def system_snapshot(roots):
 
 def storage(root):
     logical = allocated = 0
-    for p in [Path(root), *Path(root).rglob('*')]:
-        s = p.lstat()
+    root = Path(root)
+    pending = [root]
+    while pending:
+        p = pending.pop()
+        try:
+            s = p.lstat()
+        except FileNotFoundError:
+            if p == root:
+                raise
+            continue  # Updaters may remove a child after directory enumeration.
         allocated += s.st_blocks * 512
         if stat.S_ISREG(s.st_mode):
             logical += s.st_size
+        elif stat.S_ISDIR(s.st_mode):
+            try:
+                with os.scandir(p) as entries:
+                    pending.extend(Path(entry.path) for entry in entries)
+            except FileNotFoundError:
+                if p == root:
+                    raise
+    root.lstat()  # Losing the monitored root is not ordinary child churn.
     return logical, allocated
 
 

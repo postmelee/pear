@@ -2153,3 +2153,51 @@ local qualification. The inherited 8 GiB entry/6 GiB output GUI budget still app
 
 Stage 2 remains in progress. Measured gameplay/clean-user qualification is Stage 3;
 public runtime URL, final DMG and player release remain separate pending gates.
+
+
+## October 12 scoped continuation after recovered Steam update
+
+The requester approved proceeding with the storage-observer repair and the
+remaining reinstall/Steam/game check. Reuse the existing operator supervisor,
+standard-library traversal and signed CI 0f712b9 candidate; no app/runtime rebuild
+or repeated download test. The previous interval remains failed due to observer
+ENOENT; retain its original Steam error and the separately observed owner retry
+after full network recovery (normal login pixels). No failure latch is reset.
+
+Change only preview/validation/stage2_supervisor.py and its synthetic tests.
+Enumerate storage without following symlinks; tolerate only disappearing child
+entries, preserving root absence and permission/other failures. Test those
+boundaries deterministically without Wine, GUI, shared lock or account state.
+Keep copyright/SPDX notices on the two modified original files.
+
+Create fresh ignored readiness for a reinstall-only interval: install a small
+trial app copy, verify its inventory/signature, use the existing reinstall action
+to remove that exact copy and copy the immutable signed source to a new location,
+verify and open preserved existing state, then official Steam game launch. Pin
+new supervisor/test hashes and source checkpoint, original app/runtime identities
+and prior release evidence. The action allowlist excludes trial Steam download,
+retry, sign-in and disposal. Normal shutdown and independent whole release remain
+mandatory. A fresh coordinator assignment is required for the shared Mac session.
+
+Location judgment: this is internal validation/evidence in existing preview and
+mydocs task locations, not product documentation; no public docs changes.
+Artifact lifecycle: #47 owns small synthetic scratch (<20 MiB, auto-cleaned),
+reinstall preparation (<1 MiB) and two small app copies (<64 MiB). Reuse existing
+runtime and authenticated state in place, no full runtime copy. Allow 2 GiB
+uncertainty for Steam updates; filesystem free-space monitoring includes growth
+of existing mutable state, and output has its own size limit. No minimum-time
+gameplay claim. Retain signed inputs, old failure
+trial, source checkpoint and receipts through Stage 2 review. Preserve original
+private data; release disposable app copies only after normal exit and review.
+
+Verification of this preparation: all 64 Preview Python tests passed (including
+22 supervisor cases); changed-source notice validation passed for both modified
+Python files; git diff --check passed. These are synthetic/offline results, not
+reinstall execution. Storage traversal ignores FileNotFoundError only for child
+entries and does not follow static symlinks; root and access failures still stop
+new work. Signed app/runtime bytes are not edited. Prior GUI record is retained
+under final-gui-ci-0f712b9, including independent-release.json SHA-256
+5647c7faef2fae4de89ed7905adfc1515fef59feee149acdcaf539acaa831c72.
+The post-close accessibility read unexpectedly reactivated the trial launcher;
+that occurrence is excluded from recovery evidence. Future close verification
+uses process/handle inspection only, never an accessibility call on a quit app.
