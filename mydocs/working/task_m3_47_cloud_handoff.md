@@ -248,3 +248,57 @@ that exist on this task branch. Align the public default-branch entry separately
 without merging unfinished Stage 2 solely to unlock CI. The owner has asked about
 public feasibility, not authorized visibility conversion. Keep secrets absent and
 the approved signing SHA unset until effective reviewer protection is verified.
+
+
+### Public-source review ready for owner decision (October 12)
+
+The requester approved the preparation sequence. The exact-base public-entry
+patch is retained privately at .build/task47/publication-audit/master-entry.patch.
+Base master: 4340f2059ae187a0322fec564a700721e57a88f8. Pinned Preview guide
+source: 4e1be9114fc76802e21b075e143cfc2f86c66c0a. Patch SHA-256:
+4f697e6c290dc6eb01f06860e5a32a769d1f5e33c9f7740b2b1fb4820e6429d2.
+
+Fourteen files provide GPL text/package metadata, short README, documentation
+and contribution entry points, security/conduct/support/community policies and
+Issue/Discussion forms. Existing approved community files are reused; their
+Preview links pin the reviewed task source instead of importing unfinished code.
+No workflow, runtime source or implementation change is included. master already
+preserves the exact Madeira exception under tests/cpu/LICENSES; no duplicate is
+added. Its SHA-256 matches the task copy. This is a proposed narrow integration,
+not the final #47 PR, stage completion or permission to close #47.
+
+Verification passed: exact-base cached patch application; pinned file targets;
+31 governed documents and 284 local targets; 35 existing documentation tests;
+five intake YAML parses; whitespace checks. GitHub-rendered intake and private
+reporting still need verification after integration/visibility change. Full site
+publication and runtime/game qualification remain separate.
+
+Refreshed remote review covered three branch heads, 37 Actions runs (5,647,479
+log bytes), 17 artifacts (646 members including nested app/CLI ZIPs), 49 Issues/PRs,
+two issue comments, zero review comments and four Discussions. Selected credential
+patterns produced no matches; no history paths ending in the reviewed executable,
+archive, credential or save suffixes were found. GitHub body attachment URL scan
+found none. Artifact entries contain the expected public Steam identities,
+redistributable CPU fixtures/results and ad hoc Pear candidates. Review is bounded,
+not a guarantee against every possible secret or a general license clearance.
+
+Historical author names/email and personal absolute paths remain visible if
+published. Actions development binaries are not player releases. Zero tags or
+releases exist. Wiki is enabled in metadata but its authenticated Git endpoint
+returns Repository not found; no readable Wiki contents were available. This
+limitation is recorded rather than treating a failed read as an empty-content audit.
+
+No visibility, master, secret or runtime-state change occurred. The exact signing
+branch policy and zero environment secrets were read back. After final owner
+approval, integrate only the reviewed public-entry change, recheck changed remote
+inputs, then make the existing repository public. Verify required reviewer
+postmelee, disable administrator bypass and preserve the exact branch rule before
+provisioning credentials. A single owner must be able to approve their own run;
+this is a manual approval gate, not independent peer review. Enable private
+vulnerability reporting, verify intake availability and apply prepared Discussion
+50/51 updates. Keep Pages and player downloads gated.
+
+Private review receipts, the prepared tree/patch and after-public draft messages
+remain retained for this decision. No raw log/archive downloads were retained,
+and no binary was executed. Inspect the latest remote delta again after approval;
+prior public-source snapshot hashes are not an unbounded future approval.

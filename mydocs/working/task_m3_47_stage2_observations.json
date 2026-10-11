@@ -297,5 +297,66 @@
       "selected_secret_pattern_matches": 0,
       "claim": "Bounded scan, not complete prose/privacy review"
     }
+  },
+  "publication_preparation": {
+    "date": "2026-10-12",
+    "approved_scope": "Review public contents and prepare default-branch entry/license alignment; final visibility approval pending",
+    "remote_source_snapshot": "4e1be9114fc76802e21b075e143cfc2f86c66c0a",
+    "master_base": "4340f2059ae187a0322fec564a700721e57a88f8",
+    "prepared_patch_sha256": "4f697e6c290dc6eb01f06860e5a32a769d1f5e33c9f7740b2b1fb4820e6429d2",
+    "prepared_patch_files": [
+      ".github/DISCUSSION_TEMPLATE/show-and-tell.yml",
+      ".github/ISSUE_TEMPLATE/bug_report.yml",
+      ".github/ISSUE_TEMPLATE/config.yml",
+      ".github/ISSUE_TEMPLATE/documentation.yml",
+      ".github/ISSUE_TEMPLATE/task.yml",
+      "LICENSE",
+      "README.md",
+      "docs/CODE_OF_CONDUCT.md",
+      "docs/README.md",
+      "docs/SECURITY.md",
+      "docs/SUPPORT.md",
+      "docs/community.md",
+      "docs/contributing.md",
+      "manager/Cargo.toml"
+    ],
+    "verification": "Exact-base git apply --cached --check passed; pinned documentation targets exist; 31 governed documents / 284 targets; 35 existing docs tests passed; five intake YAML files parsed.",
+    "remote_heads_reviewed": 3,
+    "actions_runs_reviewed": 37,
+    "actions_artifacts_reviewed": 17,
+    "archive_members_including_nested": 646,
+    "log_bytes_scanned": 5647479,
+    "selected_secret_pattern_matches": 0,
+    "history_binary_archive_credential_filename_candidates": 0,
+    "issues_prs": 49,
+    "issue_comments": 2,
+    "review_comments": 0,
+    "discussions": 4,
+    "surface_attachment_urls_found": 0,
+    "public_disclosures": [
+      "Historical commit author names/email addresses",
+      "Personal absolute source/build paths in historical evidence and test literals",
+      "Actions logs, fixture binaries and ad hoc development candidates"
+    ],
+    "wiki": "has_wiki true; authenticated wiki Git endpoint returned Repository not found; no readable wiki contents available for inspection",
+    "tags": 0,
+    "releases": 0,
+    "limitations": [
+      "Bounded automated patterns and content/entry review do not guarantee absence of every secret or legal issue",
+      "Changes to remote heads, logs, artifacts or public bodies require delta review before visibility change",
+      "Source publication does not qualify binary/runtime distribution or game support"
+    ],
+    "master_changed": false,
+    "visibility_changed": false,
+    "credential_material_exported_or_uploaded": false,
+    "signing_environment_secrets": 0,
+    "prepared_post_public_actions": [
+      "Verify required reviewer postmelee and exact branch policy; disable administrator bypass; single-owner manual self-review allowed, not independent review",
+      "Enable and verify private vulnerability reporting",
+      "Update reviewed Discussions 50 and 51",
+      "Keep Pages and player release unavailable until their separate gates"
+    ],
+    "retained_private_review_root": ".build/task47/publication-audit",
+    "next_action": "Requester final approval for narrow public-entry PR/integration and existing-repository visibility change; do not publish the full unfinished #47 implementation as completed"
   }
 }
