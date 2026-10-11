@@ -23,21 +23,21 @@
     }
   },
   "case_scope": {
-    "S2-download": "Partial/error/hash rejection/retry and valid-cache reuse pass in source seam; actual GUI/network interruption pending",
+    "S2-download": "Observed pinned SteamSetup partial-download interruption, cache cleanup and GUI retry; Steam update initially ended with steamui.dll error during reported network loss. After full network restoration, requester clicked Open Steam again and supplied normal login pixels. The observer interval separately failed on a disappearing updater file; that failure and bounded manual recovery remain recorded. Hosted runtime delivery is not covered.",
     "S2-install": "Source seam and frozen signed CLI actual extraction interruption/retry/reuse passed; no partial activation; scratch removed",
     "S2-invalid": "Truncated/wrong/missing inputs rejected; verified supplied input preferred; damaged regular cache retries only with a pinned URL; links, offline cache and unrelated files preserved",
     "S2-space": "Real statvfs insufficient-space branch passes with impossible requirement; no full filesystem or actual quota test",
     "S2-update": "Failed same-runtime transaction preserves prior installation and private sentinel; migration/update rollback is not qualified",
     "S2-repeat": "New notarized app-v4 reopened same runtime/authenticated state twice; both normal Steam game launch requests succeeded; fresh Steam initialization and requester input/normal exit confirmed.",
     "S2-save": "Passed same-host local restoration: requester changed sniper enabled to disabled, normally exited; changed state retained; baseline eight files restored while Cloud off and no prefix handles; new game process loaded enabled state and normal input; requester normally exited. Requester confirmed Steam Cloud reenabled afterward; synchronization and cross-device recovery are not separately qualified.",
-    "S2-removal": "Passed offline disposable app removal/reinstall: separate synthetic state unchanged at every boundary; exact app inventory/signature retained; reinstalled CLI opens retained owned state and rejects absent archive. Actual post-reinstall GUI/runtime/game launch remains pending."
+    "S2-removal": "Passed candidate-specific app copy removal/reinstall, signature/runtime checks, actual Steam library and normal Megabonk launch. Requester confirmed menu/input/prior progression and normal game exit on signed CI 0f712b9 candidate. Full session cleanup remains pending: Steam main and Pear exited but an owned orphan steamwebhelper and Wine services remain."
   },
   "limitations": [
     "Synthetic setup-failure cases and frozen Stage 1 CLI trials retain their recorded scopes; they do not prove all failure paths in app-v4.",
     "New app-v4 actual repeated Steam/game launch and local save restore are verified on the same host; no second clean Mac or final public delivery qualification.",
-    "S2-removal offline preservation passed, while post-reinstall GUI remains pending; actual network interruption and filesystem quota exhaustion have not been performed.",
     "Steam Cloud setting was restored by the requester; full synchronization and cross-device recovery were not separately qualified.",
-    "No new heavy/UI run before fresh coordination."
+    "No new heavy/UI run before fresh coordination.",
+    "CI 0f712b9 reinstall user flow passed; orphan helper cleanup is unresolved and is not counted as normal full-session termination. Filesystem quota exhaustion remains unperformed."
   ],
   "private_state_modified": true,
   "public_release": false,
@@ -94,9 +94,8 @@
     "scope": "Disposable bundle and synthetic state only; no Wine/Steam/game launched"
   },
   "remaining_stage2": [
-    "Actual owned SteamSetup download interruption followed by GUI reopen/retry, using the pinned official 2380800-byte installer; exact ready manifest prepared, execution requires new grant.",
-    "Post-reinstall GUI/runtime reuse observation under fresh coordination; no active GUI grant.",
-    "Reconcile S2-update and source-seam boundaries against the required scenario matrix before any Stage 2 completion report."
+    "Complete and independently verify owned orphan helper/guard/handle/lock cleanup for the reinstall interval; retain abnormal termination details if required.",
+    "Reconcile the full Stage 2 scenario matrix and candidate/source-seam boundaries before a Stage 2 completion report."
   ],
   "closure_preparation": {
     "integrity_receipt": ".build/task47/stage2/closure-preparation-v1/integrity.json",
@@ -452,5 +451,18 @@
     "ready": ".build/task47/stage2/supervisor-preparation-ci-0f712b9/ready.json",
     "ready_sha256": "debbf025dde9f319ef596adf4305f7828210618feb3c80faa972612437f7f049",
     "local_execution": "fresh coordinator grant requested; not yet admitted"
+  },
+  "ci_reinstall_observation": {
+    "operation_id": "task47-stage2-reinstall-ci-0f712b9-r1",
+    "candidate_source": "0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "supervisor_source": "b1ac5c6f0c4fc13b5ce32ee22c8e9c4e53ab522c",
+    "date": "2026-10-12",
+    "app_reinstall": "passed",
+    "Steam_library": "requester confirmed",
+    "menu_input_progression_normal_game_exit": "requester confirmed",
+    "Steam_main_and_Pear_exit": "observed",
+    "whole_session_release": false,
+    "evidence_root": ".build/task47/stage2/reinstall-ci-0f712b9-r1",
+    "scope": "Same-host Rosetta Preview, not no-Rosetta qualification, clean-user delivery or measured gameplay"
   }
 }

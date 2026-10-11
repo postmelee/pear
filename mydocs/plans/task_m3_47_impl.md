@@ -2201,3 +2201,14 @@ under final-gui-ci-0f712b9, including independent-release.json SHA-256
 The post-close accessibility read unexpectedly reactivated the trial launcher;
 that occurrence is excluded from recovery evidence. Future close verification
 uses process/handle inspection only, never an accessibility call on a quit app.
+
+
+Reinstall execution update (October 12, 2026): under fresh operation
+`task47-stage2-reinstall-ci-0f712b9-r1`, the exact small app copy was removed and
+reinstalled, signature/runtime checks passed, and the requester confirmed Steam
+library, Megabonk menu/input/progression and normal game exit. The guard observed
+no remaining game process. Steam `-shutdown` returned zero and the app was closed
+without any post-close accessibility call. An orphan owned steamwebhelper and
+Wine services remained; whole-session cleanup and independent return are pending.
+Do not promote normal Steam/main exit to successful full-process cleanup. Reuse
+these game observations within the unchanged CI candidate scope only.
