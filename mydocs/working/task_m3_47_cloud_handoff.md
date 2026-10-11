@@ -64,7 +64,8 @@ hosted scratch is disposable. No runtime build, real Steam or game is launched.
 
 **This first candidate is ad-hoc signed, not Developer ID signed or notarized.**
 It is build evidence, not the installable candidate for normal-security user
-acceptance. No signing secrets are referenced and contents permission is read-only.
+acceptance. The ordinary build jobs reference no signing secrets; contents
+permission is read-only. The separately gated signing job is described below.
 There is no release upload or Pages deployment step. Do not bypass Gatekeeper.
 
 ## Remaining signing and local acceptance
@@ -134,3 +135,92 @@ source or the app/CLI candidate. Refresh the environment checkpoint only when a
 later authorized source change requires it. Stage 2 remains incomplete: hosted
 signing credential provisioning, candidate acceptance and the recorded actual
 local GUI tests remain outstanding. No public repository/release change occurred.
+
+
+## Prepared CI signing path (not provisioned or executed)
+
+The optional `sign` job requires the repository to be postmelee/pear, branch
+codex/publish-task47, event push or workflow_dispatch, and repository configuration
+variable PEAR_SIGNING_APPROVED_SHA equal to that run's exact commit. An unset
+variable refuses entry. PRs never enter signing. The environment name is
+pear-preview-signing. The existing build jobs retain no signing credentials.
+
+Before enabling, the owner must authorize sending the selected Developer ID
+Application private key and a dedicated Apple app-specific password to GitHub
+Actions for postmelee/pear. Local certificate permission is not that authorization.
+No credentials are requested in chat. None were exported, read or uploaded while
+preparing this job. Use only this environment's secrets, never repository-wide
+secrets, Codex Cloud variables, committed files or pull-request workflows.
+
+Provisioning after authorization:
+
+1. Create pear-preview-signing with selected deployment branch
+   codex/publish-task47 only. Enable required review by the owner if the account
+   plan supports it; if unavailable, report that limitation before storing keys
+   and obtain an explicit decision on the alternative. Do not silently replace
+   protected approval with an unrestricted environment. Disable admin bypass if
+   available. Confirm effective settings before importing credentials.
+2. In Keychain Access, the owner exports only the authorized Developer ID
+   Application identity and its private key as an encrypted .p12 file. Set a
+   strong export password using the local UI. Keep its temporary location private
+   and outside Git/cloud sync. Do not export an entire keychain or use a blank
+   password. Obtain the certificate's SHA-1 fingerprint for exact selection.
+3. Add four environment secrets through GitHub's secret-entry UI or stdin to
+   `gh secret set --env pear-preview-signing`: PEAR_CERTIFICATE_BASE64 (Base64 of
+   that encrypted .p12), PEAR_CERTIFICATE_PASSWORD, PEAR_NOTARY_APPLE_ID and
+   PEAR_NOTARY_PASSWORD (a dedicated Apple app-specific password, not the account
+   login password). Never paste values in chat, command literals or logs. The
+   owner should perform credential-entry prompts directly. The local pear-notary
+   profile is not extracted. Add environment variable PEAR_CERTIFICATE_SHA1 with
+   the matching fingerprint. Team is pinned to XH6JHKYXV8.
+4. Review the exact source commit and workflow, set repository variable
+   PEAR_SIGNING_APPROVED_SHA to that full SHA, and push that reviewed commit to
+   codex/publish-task47. This allows pre-merge validation without modifying master.
+   A previously pushed commit is not automatically a new push event: use a later
+   reviewed candidate checkpoint, or manual dispatch only when GitHub accepts
+   workflow_dispatch registration. Official guidance requires its presence on
+   the default branch; this is not permission to merge unfinished #47.
+5. Review/approve the protected job. It rebuilds and checks source without secrets,
+   imports credentials only afterward into its own temporary Keychain, signs a
+   disposable app copy with Hardened Runtime/timestamps and no added exceptions,
+   notarizes app and CLI separately, requires Accepted, staples and runs existing
+   distribution/package checks. Only final archives and sanitized receipts upload.
+   Notary submissions use Apple; no runtime, login, game or save is uploaded.
+6. Remove PEAR_SIGNING_APPROVED_SHA after the selected run to avoid unintended
+   re-signing on a rerun. On every outcome delete the job-owned keychain and .p12;
+   GitHub also destroys the hosted runner. If cleanup fails, the job fails and
+   does not upload a candidate. Remove the owner's temporary exported .p12 only
+   after confirming provisioning and its retention decision. Never delete the
+   original Keychain identity. Retain downloaded candidate hashes/receipts through
+   local qualification. Revoke dedicated credentials when this CI path is retired.
+
+The build owner trusts reviewed repository/workflow changes; environment secrets
+are accessible to admitted jobs, so encryption at rest does not remove this trust
+boundary. Store no credentials until effective deployment restrictions/review
+protection and the owner approval above are confirmed. No hosted signing or actual
+Apple acceptance is claimed by portable mocks.
+
+Sources reviewed October 12:
+- [GitHub certificate/keychain recipe](https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/sign-xcode-applications)
+- [Manual workflow requirements](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)
+
+
+### Protection provisioning outcome
+
+The owner explicitly approved GitHub CI credential provisioning after protection
+verification. GitHub rejected required_reviewers for the current private-repository
+plan but left an empty environment behind. Follow-up hardening set custom branch
+policies and verified exactly codex/publish-task47 with type branch. Environment
+secrets total is zero; PEAR_SIGNING_APPROVED_SHA is unset. No credential has been
+exported, entered or uploaded and no signing job has been admitted.
+
+The owner did not select the proposed weaker alternative and instead asked about
+making the repository public. GitHub documentation confirms required reviewers
+are available on public repositories on Free/Pro/Team. Keep credential provisioning
+on hold until the public-conversion decision and actual reviewer protection are
+resolved. Asking about public feasibility is not final visibility authorization.
+Repository publication remains separate from app release and all game/recovery gates.
+
+Portable preparation passed 58 tests with zero skips, actionlint and governance.
+This validates synthetic boundaries, not real Keychain import, notary acceptance
+or hosted cleanup. The existing runtime and local supervisor inputs are unchanged.

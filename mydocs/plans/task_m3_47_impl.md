@@ -1870,3 +1870,53 @@ then inspect actual hosted job outcomes/artifact manifest. A hosted build failur
 is fixed only in the affected preparation path. No new local heavy slot is used.
 The local supervisor readiness and 16 frozen inputs are unchanged; cloud output
 requires its own candidate identity and future local test admission.
+
+### Hosted signing preparation, October 12
+
+The requester continued after the private cloud environment and hosted candidate
+were verified. Prepare an opt-in signing job in the existing candidate workflow,
+preview/sign_candidate.py and portable refusal/cleanup fixtures. Keep the signing
+job separate from pull requests and ordinary unsigned builds: only this repository,
+codex/publish-task47, a push/manual event and exact repository variable
+PEAR_SIGNING_APPROVED_SHA matching github.sha may enter pear-preview-signing.
+Provision that environment and credentials only after the owner reviews and
+explicitly authorizes the concrete destination and secret set. A default-branch
+workflow_dispatch requirement must not force an unapproved merge; the existing
+push route can use a reviewed commit selected before push. No configuration
+variable or secret is populated by this preparation.
+
+Reuse the official GitHub temporary-keychain recipe and Pear build/package tools.
+Build/check with no signing secrets first. Import only the authorized Developer ID
+identity into a job-owned temporary keychain, store notarization credentials there,
+then sign a disposable app copy, submit app and CLI separately, require Accepted,
+staple and assess, and create allowlisted packages with sanitized receipts. Clean
+keychain and credential files on all outcomes. No runtime signing/entitlement
+changes, local Keychain exports, GUI execution or public release are included.
+The signed artifact is still a qualification candidate; retain all local gates.
+
+The new job uses a fresh hosted Mac, pinned Xcode/Rust and owned RUNNER_TEMP roots.
+Its rebuild is required to obtain a source-identified app without extracting an
+untrusted archive near credential material; no full runtime copy is made. Budget
+4 GiB plus 2 GiB uncertainty and require 6 GiB free before building. Retain only
+app/CLI archives, checksums, manifest and sanitized notary/provenance receipts for
+14 days, downloading the selected candidate before expiry for local qualification.
+Delete job scratch on completion and signing material even on failure/cancellation.
+Local changes and synthetic tests require less than 20 MiB and no shared GPU slot.
+
+Location judgment: extend this task plan and existing cloud handoff for maintainer
+setup instructions; no new product guide or official-document relocation occurs.
+Verify fixture refusals, acceptance/error handling, immutable source preservation,
+workflow event/secret boundaries and actionlint; actual hosted signing remains
+unperformed until credential provisioning is approved and succeeds.
+
+
+The owner approved GitHub CI signing credential provisioning after protection
+verification. Required reviewers were rejected by GitHub's current private-repo
+plan. The resulting empty environment was immediately restricted and read back as
+codex/publish-task47 only; secret count remains zero and approved SHA is unset.
+The owner then asked about public conversion rather than approving reduced review
+protection. Public-repository required reviewers are supported per GitHub docs.
+Resume existing read-only publication inventory; do not change visibility or
+provision secrets until the reviewed final-action approval and protection checks.
+58 portable fixtures, actionlint and governance passed; actual hosted signing is
+unperformed. No local build/runtime/game was started.

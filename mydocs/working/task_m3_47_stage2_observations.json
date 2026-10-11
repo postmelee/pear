@@ -213,5 +213,29 @@
       "source_modified_during_setup": false,
       "network_secrets_or_environment_variables_added": false
     }
+  },
+  "cloud_signing_preparation": {
+    "status": "Implemented and portable-checked; credential provisioning and real signing not performed",
+    "portable_tests": 58,
+    "skipped": 0,
+    "actionlint": "passed",
+    "environment": "pear-preview-signing",
+    "deployment_branch": "codex/publish-task47",
+    "branch_policy_verified": true,
+    "required_reviewers": "Rejected by GitHub for current private-repository plan",
+    "environment_secret_count": 0,
+    "signing_approved_sha_configured": false,
+    "owner_authorized_github_signing_credentials": true,
+    "reduced_approval_mode_authorized": false,
+    "visibility_change_authorized": false,
+    "visibility_change_performed": false,
+    "owner_followup": "Asked whether making the repository public enables required reviewers; public conversion remains a separate final action",
+    "local_runtime_or_gui_started": false,
+    "source_scope": [
+      ".github/workflows/preview-candidate.yml",
+      "preview/sign_candidate.py",
+      "preview/test_sign_candidate.py"
+    ],
+    "synthetic_claim": "Refusal of private payloads, wrong/dirty source, prior-output overwrite, non-Accepted receipts; temporary output cleanup and input preservation; success still requires both tickets and package-policy checks."
   }
 }
