@@ -356,3 +356,39 @@ and require the exact valid signing identity before signing. No local identity,
 private export, app runtime code or entitlements changed. Portable tests: 59
 passed, zero skipped; actionlint, governance and whitespace passed. The repair
 requires another hosted run with owner approval before claiming success.
+
+
+### Hosted signed candidate accepted and locally assessed (October 12)
+
+Owner-approved run [38171422915](https://github.com/postmelee/pear/actions/runs/38171422915)
+passed on exact source 0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1. The corrected
+keychain search-list setup resolved the earlier identity lookup failure. All
+three jobs passed: 59 Python fixtures per test job and 22 Rust tests per Mac
+build, zero skips/ignored. App and CLI notarization both returned Accepted:
+12fff2ca-f4f3-4fa4-aa7d-4e3683e8c2f6 and
+04de6001-cf22-4a9d-8b9c-170ae6bd232f, respectively. Job-owned credential cleanup
+passed. Removed PEAR_SIGNING_APPROVED_SHA and read back its absence.
+
+Downloaded only the signed artifact to .build/task47/stage2/ci-signed-0f712b9.
+Both ZIP sizes/hashes match the manifest; source/provenance/notary receipts agree.
+Archive paths/types were checked before separate app/CLI extraction. This Mac
+passed deep strict team-bound app signature, staple validation, Gatekeeper,
+distribution assessment, CLI notarization and help. The CLI matches the app's
+embedded CLI. The app package allowlist excludes runtime/private payloads.
+No quarantine/security attribute was removed and no Steam/game/GUI was started.
+This is local package assessment, not clean-user or game qualification.
+
+Reuse the existing Stage 2 supervisor with a new immutable candidate inventory,
+16 exact inputs and fresh output root final-gui-ci-0f712b9. Readiness SHA-256:
+debbf025dde9f319ef596adf4305f7828210618feb3c80faa972612437f7f049.
+Readiness is at .build/task47/stage2/supervisor-preparation-ci-0f712b9/ready.json.
+Requested a conflict-free fresh coordinator grant for actual download interruption
+and GUI retry, then post-reinstall Steam/game launch. The old app/runtime/private
+state and old readiness remain preserved. Host free space was about 13 GiB;
+small candidate download/extraction stayed within 100 MiB. Exact logical,
+stat-allocated and observed free bytes are in the observations record; no cleanup
+or free-space attribution is claimed. Retain these packages and receipts through
+local qualification. The inherited 8 GiB entry/6 GiB output GUI budget still applies.
+
+Stage 2 remains in progress. Measured gameplay/clean-user qualification is Stage 3;
+public runtime URL, final DMG and player release remain separate pending gates.

@@ -400,5 +400,57 @@
     },
     "actual_signing_after_fix": "pending owner-approved hosted run",
     "local_keychain_changed": false
+  },
+  "hosted_signed_candidate_0f712b9": {
+    "date": "2026-10-12",
+    "source_revision": "0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "run_url": "https://github.com/postmelee/pear/actions/runs/38171422915",
+    "result": "success",
+    "python_tests": 59,
+    "rust_tests": 22,
+    "skipped_or_ignored": 0,
+    "notarization": {
+      "app": {
+        "id": "12fff2ca-f4f3-4fa4-aa7d-4e3683e8c2f6",
+        "status": "Accepted"
+      },
+      "cli": {
+        "id": "04de6001-cf22-4a9d-8b9c-170ae6bd232f",
+        "status": "Accepted"
+      }
+    },
+    "artifacts": {
+      "Pear-0.1.0-preview.1-macos-arm64.zip": {
+        "sha256": "2d66b3d79014b9c59989bccae95c9fa3a1f9dc77b45803c4615f52024a86cc83",
+        "size": 5299791
+      },
+      "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+        "sha256": "c61bf5d462fb1bb5f7d414d6def34628f03a5ab2297ba83125f5e9678651eae9",
+        "size": 337606
+      }
+    },
+    "local_policy_checks": {
+      "app-signature": 0,
+      "staple": 0,
+      "gatekeeper": 0,
+      "distribution": 0,
+      "cli-notarization": 0,
+      "cli-help": 0
+    },
+    "always_cleanup": "passed",
+    "approved_sha_variable": "removed and read back absent",
+    "candidate_root": ".build/task47/stage2/ci-signed-0f712b9",
+    "storage": {
+      "logical_bytes": 13071055,
+      "stat_allocated_bytes": 13209600,
+      "free_bytes_observed": 14295707648
+    },
+    "runtime_included": false,
+    "private_state_included": false,
+    "public_release": false,
+    "local_gui_started": false,
+    "ready": ".build/task47/stage2/supervisor-preparation-ci-0f712b9/ready.json",
+    "ready_sha256": "debbf025dde9f319ef596adf4305f7828210618feb3c80faa972612437f7f049",
+    "local_execution": "fresh coordinator grant requested; not yet admitted"
   }
 }
