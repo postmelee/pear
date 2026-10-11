@@ -45,8 +45,8 @@ git diff --check
 These are synthetic, source and website checks. preview/build.rs invokes Apple
 native tools: do not claim a Linux cargo build qualifies the app. Native app
 building is delegated to the candidate workflow on a GitHub-hosted macOS runner.
-The cloud environment itself still needs actual creation/setup validation; a
-committed handoff document is not evidence that it exists or was published.
+The private environment was created, checked and published as recorded below.
+Fresh-task restoration and subsequent implementation remain separate checks.
 
 ## Hosted Mac candidate job
 
@@ -109,3 +109,28 @@ archive bytes matched the package manifest. Actual host: macOS 26.6.2 ARM64,
 Xcode 26.5 (17F42), SDK 26.5, Swift 6.3.2 and Rust 1.94.1. This differs from the
 local candidate toolchain and is a new unsigned-for-distribution candidate,
 not inherited local game qualification. No runtime was fetched or executed.
+
+
+## Published cloud environment
+
+On October 12 the browser showed **Published** for **Pear Preview · Issue 47**
+with availability **Only me**, repository postmelee/pear and checkpoint
+c8c7e25739f59c22c9fce5f66b90dcb84f3edd99 on codex/publish-task47. The start skill
+pins that checkpoint, reads this handoff and preserves the Stage 2 boundaries.
+No network secrets or environment variables were configured; the package-manager
+network preset was retained. No signing key or Steam state was uploaded.
+
+The setup instance reported Python 3.12.14 and Node 24.19.0; 51 Preview Python,
+72 documentation Python and 6 Node tests passed with zero skips. Governance,
+catalog and diff checks passed. Setup made no source changes or pushes and did
+not rerun hosted CI. These are setup-instance results, not fresh-task restoration
+or native/game qualification. Earlier master-based onboarding results are outside
+this checkpoint's claim. Task-owned setup logs remain in the cloud workspace at
+.build/task47/cloud-onboarding/check-1.log through check-6.log until setup review;
+they are regenerable. No background service is required.
+
+This subsequent local documentation receipt does not change the pinned cloud
+source or the app/CLI candidate. Refresh the environment checkpoint only when a
+later authorized source change requires it. Stage 2 remains incomplete: hosted
+signing credential provisioning, candidate acceptance and the recorded actual
+local GUI tests remain outstanding. No public repository/release change occurred.

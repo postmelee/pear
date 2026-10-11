@@ -163,7 +163,7 @@
     "report_destination_after_completion": "mydocs/working/task_m3_47_stage2.md"
   },
   "cloud_preparation": {
-    "status": "GitHub hosted candidate build passed; Codex Cloud environment setup in progress",
+    "status": "Hosted macOS candidate passed; private Codex Cloud environment published and setup checks passed",
     "workflow": ".github/workflows/preview-candidate.yml",
     "handoff": "mydocs/working/task_m3_47_cloud_handoff.md",
     "portable_tests": 51,
@@ -172,7 +172,7 @@
     "actionlint": "passed after correcting job-level runner context to step GITHUB_ENV",
     "runtime_or_gui_started": false,
     "private_credentials_transferred": false,
-    "cloud_environment_created": false,
+    "cloud_environment_created": true,
     "stage2_complete": false,
     "candidate_scope": "Ad-hoc signed app/CLI only; no runtime, no notarization, no public release",
     "portable_log_sha256": "1e421b676afe0450e79d0251323828dbd604b57d7ea1f9ec045306737ac318ed",
@@ -196,6 +196,22 @@
       }
     },
     "provenance_sha256": "fe0aa1c3b200576a055a40a9f7e100104b886c1e136419f4d7e05be8ab94f689",
-    "candidate_not_for_normal_security_user_testing": true
+    "candidate_not_for_normal_security_user_testing": true,
+    "cloud_environment": {
+      "name": "Pear Preview \u00b7 Issue 47",
+      "published": true,
+      "visibility": "Only me",
+      "source_checkpoint": "c8c7e25739f59c22c9fce5f66b90dcb84f3edd99",
+      "preview_python_tests": 51,
+      "docs_python_tests": 72,
+      "node_tests": 6,
+      "skips": 0,
+      "checks": "governance, catalog and diff passed in setup instance",
+      "python": "3.12.14",
+      "node": "24.19.0",
+      "fresh_task_restoration_verified": false,
+      "source_modified_during_setup": false,
+      "network_secrets_or_environment_variables_added": false
+    }
   }
 }
