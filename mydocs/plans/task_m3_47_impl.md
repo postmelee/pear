@@ -2252,3 +2252,49 @@ Review validation: offline governance check passed (37 documents, 354 local
 targets); review-relative links and observations JSON syntax passed; candidate
 source identity and coordinator receipt hash matched; git diff --check passed.
 No runtime test was repeated and no other worktree was modified.
+
+## October 12 expedited distribution continuation
+
+The requester explicitly asked to continue toward distribution as quickly as
+possible. Keep required checks, reuse exact unaffected evidence and avoid a
+repeat of the full download/reinstall/game sequence. The focused Stage 2 UI-exit
+readiness uses the existing supervisor without source changes and one small app
+copy. Fresh operation: `task47-stage2-steam-ui-exit-ci-0f712b9-r1`.
+Readiness: `.build/task47/stage2/steam-ui-exit-preparation-ci-0f712b9-r1/ready.json`,
+14194 bytes, SHA-256
+`6940344ddca60eaf433e38e54f134ef32757986ab02c6e936fc194eeb2a763c8`.
+Validate-only passed for 16 exact inputs and the existing app inventory. The
+sequence is library open, normal Steam-menu Exit and separate Pear close,
+process/handle quiet verification, one library reopen, and final normal UI exit.
+There is no game, build, download, sign-in, programmatic Steam shutdown or kill
+action. The 120-second normal-exit observation is a bounded test window, not an
+assumed success timeout. An abnormal exit requires retained evidence and scoped
+cleanup. Execution still requires fresh coordinator assignment and quiet roots.
+
+Retention: reuse immutable app/runtime and authenticated state in place; copy
+only the small app at execution. Allow 32 MiB for app/log receipts plus 512 MiB
+uncertainty, and 2 GiB for possible Steam self-update growth in existing state.
+Retain prior failed and successful receipts. Entry requires 4 GiB free; stop new
+work at 2 GiB free, 256 MiB output or 16 MiB aggregate logs; the guard's 20-minute
+safety ceiling is not a gameplay test or project time limit. No output run root
+is created until admission.
+
+Independent distribution input review: the signed CI app passes the explicit
+27-file package allowlist. The matching runtime source kit is
+`pear-runtime-source-kit-signing-v6.tar.gz`, 204187222 bytes, SHA-256
+`61e7f41f4644c49061e485e3149cc0cc0ee33b4e58aaf417dd6380630b930fbe`;
+its bytes match the existing 11-input/127-notice verification receipt. Older
+source-kit variants are not selected for distribution. No package was rebuilt
+or uploaded by this review.
+
+Remaining delivery work must use one final candidate, not publish today's test
+app as a finished installer: its compiled runtime download URL is still empty.
+After Stage 2 closure, integrate the already-prepared original-source notices,
+bind the runtime/source hosting addresses, build/sign/notarize the resulting
+exact revision in approved CI, and prepare final DMG/CLI/source checksums. Changes
+to the final candidate require affected delivery checks, not relabeling old
+results. Define the same-Mac clean-user test and timed owner gameplay under the
+approved Stage 3 scope; retain any limits versus a second physical Mac. Enable
+catalog download links only after the actual release assets are available.
+Location judgment: this entry records internal execution/distribution preparation
+in the existing task plan; no public wording or release-state change yet.
