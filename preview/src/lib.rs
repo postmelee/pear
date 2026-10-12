@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
 //! Isolated Rosetta preview bootstrap. Steam owns authentication and game launch.
 use pear_manager::{fs::hex, native::sha256};
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -866,10 +868,16 @@ mod tests {
         assert_eq!(inventory(&old).unwrap(), before);
     }
     #[test]
-    fn unpublished_runtime_refuses_network_fallback() {
+    fn unpublished_artifact_refuses_network_fallback() {
         let t = scratch();
         let s = Session::open(&t.path.join("state")).unwrap();
-        let error = s.archive(RUNTIME, None).unwrap_err().to_string();
+        let unpublished = Artifact { url: "", ..RUNTIME };
+        let error = s
+            .archive_with(unpublished, None, |_| {
+                panic!("unpublished input must not download")
+            })
+            .unwrap_err()
+            .to_string();
         assert!(error.contains("no public runtime download"));
         assert_eq!(fs::read_dir(s.root.join("cache")).unwrap().count(), 0);
     }

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Run portable Preview fixtures; never start an app, runtime or real account."""
 import json
 from pathlib import Path

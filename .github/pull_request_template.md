@@ -18,3 +18,5 @@ identify versions, environment, date and claim scope. Exclude private logs and d
 <!-- Identify reused upstream work and its license/policy. Note remaining risks.
 External contributors do not need internal task plans or stage reports. Internal
 Hyper-Waterfall tasks also include the fields in PULL_REQUEST_TEMPLATE/internal.md. -->
+
+- [ ] Changed original source has copyright/SPDX notices; existing upstream terms are preserved. Record the comparison commits and source-notice check result.

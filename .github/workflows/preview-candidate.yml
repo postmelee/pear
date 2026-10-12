@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 name: Preview candidate
 
 'on':
@@ -125,7 +127,7 @@ jobs:
               'DEVELOPMENT CANDIDATE ONLY. Not signed with Developer ID or notarized.\n'
               'Do not disable macOS protections to run it.\n'
               'No runtime, Steam account, game or save data is included.\n'
-              'Runtime delivery URL is not configured; this is not a player-ready download.\n'
+              'Runtime delivery URL is reserved; public delivery remains unqualified.\n'
               'Retain exact package hashes for subsequent candidate review.\n')
           with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a') as f:
               f.write('## Development candidate\n\nSource: `' + revision + '`\n\n'
@@ -273,6 +275,7 @@ jobs:
           name: pear-preview-signed-candidate-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/pear-signed-packages/*.zip
+            ${{ runner.temp }}/pear-signed-packages/*.dmg
             ${{ runner.temp }}/pear-signed-packages/SHA256SUMS
             ${{ runner.temp }}/pear-signed-packages/package-manifest.json
             ${{ runner.temp }}/pear-signed-packages/notarization.json

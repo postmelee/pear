@@ -1,5 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Synthetic candidate boundary checks; no Apple tools or credentials required."""
 import json
+import hashlib
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -97,12 +101,21 @@ class CandidateSigningTests(unittest.TestCase):
             self.assertEqual(before, {str(p.relative_to(app)): p.read_bytes() for p in app.rglob('*') if p.is_file()})
 
 
-    def test_success_requires_both_tickets_and_preserves_original(self):
+    def test_success_requires_all_tickets_and_hashes_stapled_dmg(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp); app, keychain = self.fixture(root)
             before = {str(p.relative_to(app)): p.read_bytes() for p in app.rglob('*') if p.is_file()}
             submitted = []
             def command(*args):
+                if args[0] == '/usr/bin/ditto' and len(args) == 3:
+                    shutil.copytree(args[1], args[2])
+                if args[:2] == ('/usr/bin/hdiutil', 'create'):
+                    payload = Path(args[args.index('-srcfolder') + 1])
+                    self.assertEqual({p.name for p in payload.iterdir()}, {'Pear Preview.app', 'Applications'})
+                    self.assertEqual((payload / 'Applications').readlink(), Path('/Applications'))
+                    Path(args[-1]).write_bytes(b'synthetic image')
+                if 'stapler' in args and 'staple' in args and str(args[-1]).endswith('.dmg'):
+                    Path(args[-1]).write_bytes(b'synthetic image plus staple')
                 if 'find-identity' in args:
                     return '  1) ' + IDENTITY + ' "Synthetic Developer ID"'
                 if args[:4] == ('git', '-C', s.packages.REPO, 'rev-parse'):
@@ -113,14 +126,42 @@ class CandidateSigningTests(unittest.TestCase):
                 if str(s.packages.REPO / 'preview/package.py') in [str(a) for a in args]:
                     destination = Path(args[args.index('--output') + 1])
                     destination.mkdir()
-                    (destination / 'package-manifest.json').write_text('{}')
+                    (destination / 'package-manifest.json').write_text('{"artifacts": {}}')
                 return ''
             with patch.object(s, 'run', side_effect=command):
                 self.invoke(app, root / 'out', keychain)
-            self.assertEqual(submitted, ['app.zip', 'cli.zip'])
+            self.assertEqual(submitted, ['app.zip', 'cli.zip', 'Pear-0.1.0-preview.1-macos-arm64.dmg'])
+            manifest = json.loads((root / 'out/package-manifest.json').read_text())
+            image = root / 'out/Pear-0.1.0-preview.1-macos-arm64.dmg'
+            self.assertEqual(manifest['artifacts'][image.name]['sha256'], hashlib.sha256(image.read_bytes()).hexdigest())
+            self.assertEqual(image.read_bytes(), b'synthetic image plus staple')
             receipt = json.loads((root / 'out/notarization.json').read_text())
             self.assertFalse(receipt['public_release'])
-            self.assertEqual(set(receipt['submissions']), {'app', 'cli'})
+            self.assertEqual(set(receipt['submissions']), {'app', 'cli', 'dmg'})
+            self.assertEqual(list(root.glob('pear-sign-*')), [])
+            self.assertEqual(before, {str(p.relative_to(app)): p.read_bytes() for p in app.rglob('*') if p.is_file()})
+
+    def test_dmg_rejection_does_not_publish_other_accepted_packages(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); app, keychain = self.fixture(root)
+            before = {str(p.relative_to(app)): p.read_bytes() for p in app.rglob('*') if p.is_file()}
+            def command(*args):
+                if 'find-identity' in args:
+                    return '  1) ' + IDENTITY + ' "Synthetic Developer ID"'
+                if args[:4] == ('git', '-C', s.packages.REPO, 'rev-parse'):
+                    return REV
+                if 'notarytool' in args:
+                    return json.dumps({'id': SUBMISSION, 'status': 'Accepted'})
+                if str(s.packages.REPO / 'preview/package.py') in [str(a) for a in args]:
+                    destination = Path(args[args.index('--output') + 1])
+                    destination.mkdir()
+                    (destination / 'accepted-app.zip').write_bytes(b'synthetic approved app')
+                return ''
+            with patch.object(s, 'run', side_effect=command), patch.object(
+                    s, 'signed_disk_image', side_effect=ValueError('DMG notarization rejected')):
+                with self.assertRaisesRegex(ValueError, 'DMG notarization rejected'):
+                    self.invoke(app, root / 'out', keychain)
+            self.assertFalse((root / 'out').exists())
             self.assertEqual(list(root.glob('pear-sign-*')), [])
             self.assertEqual(before, {str(p.relative_to(app)): p.read_bytes() for p in app.rglob('*') if p.is_file()})
 

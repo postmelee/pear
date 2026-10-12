@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
 use std::{env, path::PathBuf, process::Command};
 fn main() {
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());

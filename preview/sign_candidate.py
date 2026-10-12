@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Sign a disposable Preview app copy using an already provisioned Keychain."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -31,6 +34,45 @@ def accepted_submission(archive, profile, keychain):
             r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}', submission):
         raise ValueError('Notarization was not accepted; retain the submission in Apple history.')
     return {'id': submission, 'status': 'Accepted'}
+
+
+
+def signed_disk_image(app, output, identity, keychain, profile, team):
+    """Build a drag-to-Applications image from an audited, stapled app only."""
+    packages.audit_app(app)
+    image = output / f'Pear-{packages.VERSION}-macos-arm64.dmg'
+    if image.exists() or image.is_symlink():
+        raise ValueError('Preserve existing disk image.')
+    with tempfile.TemporaryDirectory(prefix='pear-dmg-', dir=output.parent) as scratch:
+        payload = Path(scratch) / 'payload'
+        payload.mkdir()
+        run('/usr/bin/ditto', app, payload / app.name)
+        packages.audit_app(payload / app.name)
+        (payload / 'Applications').symlink_to('/Applications', target_is_directory=True)
+        run('/usr/bin/hdiutil', 'create', '-volname', 'Pear Preview', '-fs', 'HFS+',
+            '-srcfolder', payload, '-format', 'UDZO', image)
+    run('/usr/bin/hdiutil', 'verify', image)
+    run('/usr/bin/codesign', '--force', '--timestamp', '--keychain', keychain,
+        '--sign', identity, image)
+    run('/usr/bin/codesign', '--verify', '--strict',
+        '-R=anchor apple generic and certificate leaf[subject.OU] = "' + team + '"', image)
+    receipt = accepted_submission(image, profile, keychain)
+    run('/usr/bin/xcrun', 'stapler', 'staple', image)
+    run('/usr/bin/xcrun', 'stapler', 'validate', image)
+    run('/usr/sbin/spctl', '--assess', '--type', 'open',
+        '--context', 'context:primary-signature', image)
+    # The staple changes image bytes. Bind only the completed image to the manifest.
+    manifest_path = output / 'package-manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    manifest['artifacts'][image.name] = {
+        'sha256': hashlib.sha256(image.read_bytes()).hexdigest(),
+        'size': image.stat().st_size,
+    }
+    manifest['dmg_contents'] = [app.name, 'Applications -> /Applications']
+    manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
+    (output / 'SHA256SUMS').write_text(''.join(
+        f"{value['sha256']}  {name}\n" for name, value in manifest['artifacts'].items()))
+    return receipt
 
 
 def sign_candidate(app, output, identity, keychain, profile, revision, team):
@@ -77,6 +119,7 @@ def sign_candidate(app, output, identity, keychain, profile, revision, team):
         built = root / 'packages'
         run('python3', '-B', packages.REPO / 'preview/package.py', '--app', staged,
             '--output', built, '--release')
+        receipts['dmg'] = signed_disk_image(staged, built, identity, keychain, profile, team)
         (built / 'notarization.json').write_text(json.dumps({
             'source_revision': revision, 'team_id': team, 'submissions': receipts,
             'distribution_signed': True, 'notarized': True, 'public_release': False,

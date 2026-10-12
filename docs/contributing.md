@@ -76,6 +76,62 @@ Hyper-Waterfall framework retains its MIT attribution. Do not replace upstream
 terms with Pear's root license. The [preview component record](../preview/THIRD_PARTY_NOTICES.md)
 tracks the separate runtime source/notice work still required for release.
 
+### Source notices
+
+Add copyright and license comments to new or modified original source files.
+Use the actual publication year and holder; existing Pear original code uses
+`Pear contributors`. For example, Python and shell comments use:
+
+```python
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+```
+
+Use `//` for Rust/Swift or a C comment for C/C++. Keep a script's shebang first
+and Python encoding declarations in the first two lines. Preserve existing
+copyright lines, license expressions, permission text and upstream attribution;
+append new attribution when needed. Never assume a file is Pear-owned merely
+because it is in this repository. Update generators alongside generated source.
+
+Run the incremental check before committing (Python 3 and Git, offline):
+
+```sh
+python3 -B tools/check_source_notices.py --base <comparison-commit>
+python3 -B tools/check_source_notices.py --base <base-commit> --head <head-commit>
+python3 -B -m unittest discover -s tests/docs -p 'test_source_notices.py' -v
+```
+
+Use the agreed branch point as the comparison commit, or an explicit PR base/head
+pair. Without `--head`, tracked working changes and non-ignored untracked files
+are checked. The separate **Changed source notices** PR job uses exact GitHub
+base/head SHAs. It runs on ordinary pull requests with read-only permissions and
+no signing secrets. It becomes active after this workflow is integrated; making
+it a branch-protection requirement is a separate repository setting.
+
+The checker covers source/script extensions, TOML/YAML build configuration,
+Makefile/CMakeLists.txt/Dockerfile and extensionless shebang scripts. The exact
+suffix list is in [the checker](../tools/check_source_notices.py). It requires
+leading-comment copyright/year and SPDX metadata, defaults new files to
+GPL-3.0-or-later and preserves existing header copyright/SPDX entries on modified
+or renamed files. It reports imported copies under `preview/licenses/` and
+`preview/runtime-notices/` for manual review instead of relabeling them.
+
+New separately licensed files or older files without SPDX can use an exact-path
+entry in [the reviewed exceptions file](../.github/source-notice-exceptions.json):
+`{"path/to/file.c": {"license": "MIT", "reason": "Reviewed source and revision",
+"notice": "path/to/existing-license.txt"}}`. This selects the correct existing
+license, not a waiver of attribution; the referenced notice must exist. Existing
+SPDX expressions cannot be overridden by an exception. Changes to this policy or
+to the checker itself need maintainer review.
+
+Documents, JSON/data, patches, binary assets and unrecognized source formats
+remain manual-review items; use associated notices or sidecars when inline
+comments would corrupt them. This incremental gate does not parse every SPDX
+expression, detect unmarked copied code, verify ownership or audit every license
+obligation. It is not full [REUSE compliance](https://reuse.software/tutorial/).
+Unchanged legacy files are not silently declared compliant. Keep frozen signed
+candidates unchanged; notice-only edits belong to the next source/package revision.
+
 ## Documentation changes
 
 Read the existing document first and update only the necessary parts. Official product, architecture, roadmap and contributor guidance belongs in `docs/`; retain `docs/delivery-plan.md` as the single roadmap. Dated research is evidence, not automatically an accepted specification.

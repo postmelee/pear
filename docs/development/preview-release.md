@@ -1,6 +1,6 @@
 # Building and releasing the Steam preview
 
-Status: release preparation, October 11, 2026. The app/CLI are development
+Status: release preparation, October 13, 2026. The app/CLI are development
 candidates; no public download is qualified. See the [player guide](../rosetta-preview.md)
 and [component record](../../preview/THIRD_PARTY_NOTICES.md).
 
@@ -79,6 +79,22 @@ checks follow [Apple's product-type guidance](https://developer.apple.com/forums
 required clean browser-download and actual execution tests. A source archive must
 match the final committed release revision.
 
+## DMG and CLI delivery candidates
+
+The protected CI signing job uses `preview/sign_candidate.py` to retain app and
+CLI ZIPs and build a DMG with the audited app plus an Applications shortcut.
+The DMG receives its own Developer ID signature, Apple notarization submission
+and staple. Image verification, staple validation and Gatekeeper's disk-image
+assessment must pass before any packages leave temporary staging. `SHA256SUMS`
+and the package manifest bind the final stapled bytes. A failed DMG submission
+prevents the transaction from publishing the other candidate packages.
+
+CI outputs remain qualification candidates. Validate actual browser download,
+DMG mount, drag to Applications and first launch under normal protections before
+claiming user-ready distribution. Keep the original signed app unchanged when
+creating the image. CLI users receive the separate notarized archive; Homebrew
+is not required for the initial app/CLI release.
+
 ## Current candidate checkpoint
 
 Stage 1's corrected app invokes the original notarized Wine loader with
@@ -89,9 +105,11 @@ game Steamworks initialization, menu/input and normal exit. The
 [Stage 1 report](../../mydocs/working/task_m3_47_stage1.md) binds the exact candidate,
 notarization receipts and source/notice review.
 
-The runtime URL is intentionally unset in `preview/src/runtime_pin.rs` until
-public delivery is admitted. Developer validation uses the exact pinned local
-archive. Submission ZIPs are not final downloads: the app must be packaged after
+The runtime URL in `preview/src/runtime_pin.rs` reserves the immutable
+`v0.1.0-preview.1` release asset; it is not live until the reviewed runtime and
+matching source kit are published. Do not advertise availability before checking
+the actual download. Existing Stage 2 validation used the pinned local archive.
+Submission ZIPs are not final downloads: the app must be packaged after
 stapling, and release source must match the final committed revision. Preserve
 these inputs through recovery and clean-delivery checks before publishing.
 

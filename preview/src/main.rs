@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
 use pear_preview::{Result, Session};
 use std::{io::Write, path::PathBuf};
 fn main() {

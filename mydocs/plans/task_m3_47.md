@@ -5,7 +5,7 @@ Milestone: [M3 — Rosetta-based Megabonk Preview](https://github.com/postmelee/
 Branch: `codex/task47`
 Planning date: October 10, 2026 (Asia/Seoul)
 Status: Task plan approved by explicit requester continuation on October 10, 2026;
-implementation plan approved; Stages 1 and 2 complete; Stage 3 awaiting explicit continuation.
+implementation plan approved; Stages 1 and 2 complete; Stage 3 approved and in progress.
 
 ## Purpose
 

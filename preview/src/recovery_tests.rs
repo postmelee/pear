@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
 //! Disposable source-seam checks; these do not qualify GUI or actual save recovery.
 use super::*;
 

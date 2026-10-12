@@ -2308,3 +2308,48 @@ lock returned; receipt SHA-256
 The earlier automated -shutdown failure stays historical and is not overwritten.
 Stage 2's recovery matrix is complete within the recorded approved seam scopes;
 final delivery remains Stage 3. No other chat was invoked to begin other work.
+
+## Stage 3 entry — October 13 requester continuation
+
+The requester explicitly approved Stage 3 after the completed Stage 2 report.
+Preview distribution takes priority; do not invoke other chats to start other
+work. Preserve the existing signed candidate and private state as recovery
+inputs while preparing one final CI candidate.
+
+Reuse the existing package allowlist, signing transaction, Apple hdiutil,
+codesign/notarytool/stapler and GitHub protected signing environment. Extend the
+signing transaction to produce a separately signed/notarized/stapled DMG containing
+only the already-audited app and an Applications link. Hash after stapling and
+retain the existing ZIP/CLI outputs. Test rejection and atomic staging boundaries
+with synthetic commands; actual Apple validation belongs in hosted macOS CI.
+
+Integrate the already-approved source notice/checker work selectively, preserving
+the supervisor fixes. Carry forward master4340f20 artifact-retention rules and
+its linked manual plus the separately verified 951264b guidance additions; do
+not replace another worker's checkout. Document locations remain README and the
+existing docs/contributing.md and docs/development/preview-release.md. These are
+previously approved public entry/contributor/release locations; this step adds
+notice procedure and DMG packaging facts without claiming released support.
+
+Reserve the immutable final asset URL under GitHub release v0.1.0-preview.1 for
+the already-pinned runtime. This source preparation is not evidence that the URL
+is live. Keep catalog availability false until final assets exist and affected
+browser/download/clean-user checks pass. Matching runtime source kit v6 and exact
+Pear source must accompany final distribution. Homebrew is deferred beyond the
+app and CLI; it is not a first-release prerequisite.
+
+Storage: this checkout creates only source, synthetic temporary fixtures and
+small receipts (<64 MiB); no local Wine/game/build interval. CI owns isolated
+build/signing directories, requires 6 GiB free and keeps bounded candidate
+artifacts for 14 days. A DMG adds one small app copy and image, conservatively
+<128 MiB beyond the existing candidate job. No full runtime copy or rebuild;
+retain runtime/source-kit and old signed app through final delivery review.
+
+Stage 3 preparation checks: `python3 -B preview/ci_checks.py` passed 66
+synthetic checks with no skips; `python3 -B -m unittest discover -s tests/docs
+-p 'test_*.py'` passed 94 checks; governance checked 37 official documents and
+358 local targets. These checks do not run Apple signing or qualify the DMG.
+The changed Rust fixture explicitly supplies an empty-URL artifact so its
+network-refusal oracle remains valid after the real runtime URL is reserved.
+The runtime binary and matching source kit remain unchanged. The changed
+launcher, package recipe and DMG need exact-revision hosted CI validation.

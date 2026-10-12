@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Package only the reviewed Pear app and CLI; never walk a runtime/state root."""
 import argparse
 import hashlib

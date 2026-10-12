@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 import hashlib
 import json
 from pathlib import Path
@@ -10,6 +12,18 @@ from runtime_build import inventory
 
 
 class PackageTests(unittest.TestCase):
+    def test_regenerated_pin_keeps_notices_and_exact_artifact_identity(self):
+        result = {'runtime_id': 'fixture-id', 'name': 'fixture.tar.gz',
+                  'sha256': 'a' * 64, 'size': 123}
+        source = p.render_pin(result)
+        self.assertTrue(source.startswith('// SPDX-FileCopyrightText: 2026 Pear contributors\n'
+                                          '// SPDX-License-Identifier: GPL-3.0-or-later\n'))
+        body = '\n'.join(line for line in source.splitlines() if not line.startswith('//')) + '\n'
+        self.assertEqual(body, 'pub const RUNTIME_ID: &str = "fixture-id";\n'
+                         'pub const RUNTIME: super::Artifact = super::Artifact {\n'
+                         '    name: "fixture.tar.gz", url: "", sha: "' + 'a' * 64
+                         + '", size: 123,\n};\n')
+
     def test_override_changes_only_reviewed_marker(self):
         data = b'x' * 64 + b'Wine builtin DLL' + b'y' * 64
         out = p.native_dxmt(data)

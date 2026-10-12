@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Pear contributors
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Relocated synthetic runtime checks. Never accepts an existing/private prefix."""
 import argparse
