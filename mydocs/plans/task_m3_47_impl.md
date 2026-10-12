@@ -2298,3 +2298,13 @@ approved Stage 3 scope; retain any limits versus a second physical Mac. Enable
 catalog download links only after the actual release assets are available.
 Location judgment: this entry records internal execution/distribution preparation
 in the existing task plan; no public wording or release-state change yet.
+
+Focused UI-exit closure: the owner confirmed normal library, Steam-menu Exit
+and Pear close, preserved login/library after one reopen, and a second normal
+Exit/close. The admitted guard passed with no forced cleanup. Independent check
+found 69 tracked lifetimes plus owner absent, no owned handles, and the shared
+lock returned; receipt SHA-256
+`ee7fa7db0c42d48d47030051a6b555110007610db138f39b80c1d406c23c4155`.
+The earlier automated -shutdown failure stays historical and is not overwritten.
+Stage 2's recovery matrix is complete within the recorded approved seam scopes;
+final delivery remains Stage 3. No other chat was invoked to begin other work.

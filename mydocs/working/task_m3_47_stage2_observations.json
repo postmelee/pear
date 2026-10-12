@@ -1,7 +1,7 @@
 {
   "task": 47,
   "stage": 2,
-  "status": "in progress",
+  "status": "complete",
   "approved_by": "Requester explicit continuation after Stage 1 commit 2c59711",
   "baseline_commit": "2c59711",
   "source_inputs": {
@@ -30,7 +30,7 @@
     "S2-update": "Failed same-runtime transaction preserves prior installation and private sentinel; migration/update rollback is not qualified",
     "S2-repeat": "New notarized app-v4 reopened same runtime/authenticated state twice; both normal Steam game launch requests succeeded; fresh Steam initialization and requester input/normal exit confirmed.",
     "S2-save": "Passed same-host local restoration: requester changed sniper enabled to disabled, normally exited; changed state retained; baseline eight files restored while Cloud off and no prefix handles; new game process loaded enabled state and normal input; requester normally exited. Requester confirmed Steam Cloud reenabled afterward; synchronization and cross-device recovery are not separately qualified.",
-    "S2-removal": "Passed candidate-specific app copy removal/reinstall, signature/runtime checks, actual Steam library and normal Megabonk launch. Requester confirmed menu/input/prior progression and normal game exit on signed CI 0f712b9. Steam main/Pear exited; an orphan owned steamwebhelper required one scoped SIGTERM, after which all owned services/handles exited. Normal full-session shutdown is not qualified."
+    "S2-removal": "Passed candidate-specific app copy removal/reinstall, signature/runtime checks, actual Steam library and normal Megabonk launch. Requester confirmed menu/input/prior progression and normal game exit on signed CI 0f712b9. Steam main/Pear exited; an orphan owned steamwebhelper required one scoped SIGTERM, after which all owned services/handles exited. Normal full-session shutdown is not qualified. Follow-up exact-candidate normal Steam UI Exit/reopen passed twice without forced cleanup; final owned processes, handles and lock independently released."
   },
   "limitations": [
     "Synthetic setup-failure cases and frozen Stage 1 CLI trials retain their recorded scopes; they do not prove all failure paths in app-v4.",
@@ -93,9 +93,7 @@
     "measured_free_delta_bytes": 6336512,
     "scope": "Disposable bundle and synthetic state only; no Wine/Steam/game launched"
   },
-  "remaining_stage2": [
-    "Resolve the normal-user Steam exit/reopen risk disposition at a coordinated host interval, then review and report Stage 2 completion against the approved matrix; no automatic upstream patch requirement."
-  ],
+  "remaining_stage2": [],
   "closure_preparation": {
     "integrity_receipt": ".build/task47/stage2/closure-preparation-v1/integrity.json",
     "integrity_sha256": "e3789d9658d0a1a24bc6cb5aad15b7cc90a9e981ac8d86ddb9169a3778c96045",
@@ -474,7 +472,7 @@
   "stage2_evidence_review": {
     "date": "2026-10-12",
     "document": "mydocs/working/task_m3_47_stage2_review.md",
-    "status": "reviewed; stage remains in progress",
+    "status": "superseded by Stage 2 completion report after normal UI exit/reopen passed",
     "new_host_execution": false,
     "candidate_source_matches": [
       "preview/src/lib.rs",
@@ -484,8 +482,30 @@
       "preview/Launcher.swift"
     ],
     "ci_run_rechecked": "38171422915: success; all three jobs success; head 0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
-    "normal_user_Steam_UI_exit": "not yet observed in the latest reinstall interval",
-    "release_disposition": "Resolve user exit/reopen risk before ordinary-user public distribution. An upstream runtime patch is not automatically required; harness shutdown failure is distinct from intentional close-Pear behavior.",
+    "normal_user_Steam_UI_exit": "passed twice with one preserved-login library reopen; no forced termination",
+    "release_disposition": "Observed harness -shutdown orphan remains a historical limitation; normal Steam menu Exit and reopen passed on the exact candidate. No upstream runtime patch is required solely on this evidence. Final-candidate delivery checks still required.",
     "coordinator_release_sha256": "fa12e66beace1a715658662ce1f73d38a6c6fbf49a56d45be5cce8ccde52df67"
-  }
+  },
+  "normal_steam_ui_exit_validation": {
+    "operation_id": "task47-stage2-steam-ui-exit-ci-0f712b9-r1",
+    "candidate_source": "0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "result": "passed",
+    "requester_confirmed": [
+      "initial library normal",
+      "Steam menu Exit and Pear closed",
+      "reopened with existing login and normal library",
+      "second Steam menu Exit and Pear closed"
+    ],
+    "normal_exit_cycles": 2,
+    "reopen_cycles": 1,
+    "forced_cleanup": false,
+    "tracked_lifetimes_absent": 69,
+    "owned_handles": [],
+    "supervisor_exit_code": 0,
+    "independent_lock_acquire_release": true,
+    "receipt": ".build/task47/stage2/steam-ui-exit-ci-0f712b9-r1/independent-release.json",
+    "receipt_sha256": "ee7fa7db0c42d48d47030051a6b555110007610db138f39b80c1d406c23c4155",
+    "scope": "Same-host exact candidate normal Steam UI exit/reopen only; no new game, timed play, clean-user or public delivery qualification"
+  },
+  "completion_report": "mydocs/working/task_m3_47_stage2.md"
 }

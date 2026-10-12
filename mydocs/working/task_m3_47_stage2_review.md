@@ -1,6 +1,10 @@
 # Task #47 — Stage 2 evidence review
 
-Date: October 12, 2026. Status: interim review; Stage 2 remains in progress.
+Date: October 12, 2026. Status: historical interim review.
+
+Subsequent normal Steam UI exit/reopen passed without forced cleanup. The
+[Stage 2 completion report](task_m3_47_stage2.md) supersedes this review's pending
+status; the failure analysis below is preserved as the pre-validation assessment.
 
 This review implements the request to reconcile existing results without
 interfering with other host experiments. It does not start Stage 3, waive required
