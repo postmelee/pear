@@ -105,10 +105,11 @@ game Steamworks initialization, menu/input and normal exit. The
 [Stage 1 report](../../mydocs/working/task_m3_47_stage1.md) binds the exact candidate,
 notarization receipts and source/notice review.
 
-The runtime URL in `preview/src/runtime_pin.rs` reserves the immutable
-`v0.1.0-preview.1` release asset; it is not live until the reviewed runtime and
-matching source kit are published. Do not advertise availability before checking
-the actual download. Existing Stage 2 validation used the pinned local archive.
+The runtime URL in `preview/src/runtime_pin.rs` points to the immutable
+`v0.1.0-preview.1` runtime asset, published with its matching source kit after
+explicit qualification-prerelease approval. Anonymous delivery and hashes were
+verified. The preview.2 app reuses these exact runtime bytes; its app/CLI/source
+archives need distinct versions and new signing. Do not overwrite preview.1. Existing Stage 2 validation used the pinned local archive.
 Submission ZIPs are not final downloads: the app must be packaged after
 stapling, and release source must match the final committed revision. Preserve
 these inputs through recovery and clean-delivery checks before publishing.

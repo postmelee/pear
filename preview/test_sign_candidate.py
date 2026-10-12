@@ -130,9 +130,9 @@ class CandidateSigningTests(unittest.TestCase):
                 return ''
             with patch.object(s, 'run', side_effect=command):
                 self.invoke(app, root / 'out', keychain)
-            self.assertEqual(submitted, ['app.zip', 'cli.zip', 'Pear-0.1.0-preview.1-macos-arm64.dmg'])
+            self.assertEqual(submitted, ['app.zip', 'cli.zip', f'Pear-{s.packages.VERSION}-macos-arm64.dmg'])
             manifest = json.loads((root / 'out/package-manifest.json').read_text())
-            image = root / 'out/Pear-0.1.0-preview.1-macos-arm64.dmg'
+            image = root / f'out/Pear-{s.packages.VERSION}-macos-arm64.dmg'
             self.assertEqual(manifest['artifacts'][image.name]['sha256'], hashlib.sha256(image.read_bytes()).hexdigest())
             self.assertEqual(image.read_bytes(), b'synthetic image plus staple')
             receipt = json.loads((root / 'out/notarization.json').read_text())

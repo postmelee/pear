@@ -2353,3 +2353,81 @@ The changed Rust fixture explicitly supplies an empty-URL artifact so its
 network-refusal oracle remains valid after the real runtime URL is reserved.
 The runtime binary and matching source kit remain unchanged. The changed
 launcher, package recipe and DMG need exact-revision hosted CI validation.
+
+## October 13 qualification prerelease approval
+
+The requester explicitly approved publishing candidate f9d9578 as a public
+qualification Pre-release before the final browser/clean-user/timed-play checks.
+This is a narrow sequence exception to the earlier no-upload-before-checks rule:
+ship the exact signed app/CLI/DMG, pinned runtime, corresponding source archives
+and checksums together under v0.1.0-preview.1, visibly pending qualification.
+Do not call it a qualified player release, activate the website download or
+change the frozen candidate. Prepare a draft, verify its complete asset set and
+exact source target, then publish with prerelease=true and latest=false.
+After publication, verify anonymous HTTPS delivery and SHA-256 before the clean
+user test. This authorization does not change Stage 3 acceptance criteria.
+
+No runtime rebuild/copy is needed. Upload existing immutable runtime/source files
+in place. Bound local download verification to at most one asset at a time;
+stream large assets into SHA-256 rather than retaining duplicate archives.
+Preserve the existing private state and recovery baseline. The requester will
+create any clean standard macOS account directly; do not create accounts, reboot
+or log out other users automatically. No other chat is invoked to start work.
+
+The requester also approved a brief shared component sentence in the GitHub
+release body and download page: “This release uses Wine 11.0 and DXMT 0.80.”
+Location: retain the existing download renderer in tools/compatibility.py and
+existing page layout; add one sentence below the platform requirements without
+enabling buttons or deploying Pages. This follows the previously approved user
+entry-point location; no second roadmap or new product page is introduced.
+
+Fresh-user handoff: the requester created standard user peartest (UID 503).
+The read-only baseline records M4 Pro/24 GB/macOS 26.5.2, enabled SIP and
+Gatekeeper, existing system Rosetta/Xcode, no global Pear Preview app and no
+current Wine/Steam/game/compiler processes. The new user's private state is
+not observable from the original user; do not infer absence from permission
+denial. This is explicitly the same-Mac fresh-user route, not a clean second OS.
+
+The existing shared advisory lock is reserved for the requester-driven browser
+installation/play test by a small task-owned Python/fcntl lease using the
+existing OS locking mechanism. It records owner/entry/explicit release, performs
+no app launch or cleanup and has no game time limit. The old Stage 2 assignment
+is not reused as Stage 3 admission; this operation follows the requester's new
+explicit distribution priority and fresh-user approval. No other chat is called.
+The helper lives only in ignored Stage 3 scratch; retain its receipt until review.
+
+## October 13 approved first-run presentation refinement
+
+The requester approved the proposed bounded follow-up: explain initial downloads
+and sizes, wait for an explicit Download and install action, show download bytes
+and progress plus indeterminate preparation stages, and expose version information.
+Full removal and destructive settings are deferred. Keep the same Rust core and
+Swift/AppKit window; reuse curl, cancellation, hash verification, atomic staging,
+ready-state checks and the pinned signed runtime. No new installer framework,
+network API or dependency is needed. An initial read-only setup-info command must
+not create state or contact the network. Returning installations may open Steam
+after the existing core validates their state. CLI commands remain explicit
+requests to prepare; add read-only setup-info and version entry points.
+
+Use fixed byte sizes from the artifact pins for the runtime and Steam installer;
+Steam updates and games have variable sizes. Do not imply compressed downloads
+are installed disk usage or fabricate percentages for extraction/Steam updates.
+Use native AppKit controls, keyboard actions and accessible progress text.
+
+Create a distinct preview.2 app/CLI candidate; preserve published preview.1 assets
+and its owner-reported evidence. Keep the unchanged runtime URL and source kit.
+Tests cover read-only metadata, ready-marker identity, progress while an owned
+fixture child runs, cancellation/error preservation, and fragmented UI output.
+Run the existing Rust/Python checks and compile the Swift presentation. Re-sign
+and notarize in the protected CI environment; recheck affected first-run/retry
+and installed-state launch paths on the exact resulting app. Do not require a
+new twenty-minute game session solely for unchanged runtime presentation work.
+
+Documentation location: this internal plan and existing Stage 3 receipt record
+the change; later update existing preview user/release guides in docs/, keeping
+the previously approved destinations. No new product documentation root.
+Storage: reuse the current task-owned Rust target; a new small app and Swift
+fixture binary go under .build/task47/stage3/first-run-ui, with <256 MiB additional
+local outputs expected. No Wine runtime or private prefix copy. Hosted CI uses
+its existing isolated build/signing/storage policy. Retain the small candidate
+through signed successor review; preserve all current recovery inputs.

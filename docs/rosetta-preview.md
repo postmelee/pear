@@ -1,7 +1,10 @@
 # Pear Windows Steam preview
 
-Status: development candidate, October 11, 2026. **There is no qualified public
-download yet.** Do not use development build output as a notarized release.
+Status: qualification preview, October 13, 2026. The signed
+[preview.1 qualification candidate](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.1)
+is public. The preview.2 first-run interface described below is a new candidate
+awaiting signing and affected delivery checks. Local development builds are not
+notarized releases.
 [Release preparation](development/preview-release.md) tracks the remaining work.
 
 Pear is intended to be free and open source. The preview prepares Windows Steam
@@ -21,15 +24,23 @@ beyond the small Pear download.
 ## App experience
 
 Once a verified release is published, its release page will provide the app,
-checksums, exact requirements and test results. Extract the app, put it in
+checksums, exact requirements and test results. Open its DMG, drag the app to
 Applications, then open Pear Preview normally.
 
-1. Pear prepares a private Windows Steam environment and checks its runtime.
+1. On first setup in preview.2, review the runtime and Steam installer download
+   sizes, then select **Download and install**. Pear shows downloaded bytes and
+   a progress bar; extraction and preparation show their current step. Steam
+   self-updates and game downloads have separate, variable sizes. **Cancel**
+   stops preparation; **Retry** continues with existing data preserved.
 2. Steam may update itself. Sign in directly in the official Steam window using
    QR or your account; Pear does not request your password.
 3. Choose a game from your Steam library, install it, then use Steam's Play button.
-4. Open Pear again later to reuse the same installation. Steam may require an
+4. After setup, opening Pear checks the existing installation and opens Steam
+   automatically without asking for download confirmation again. Steam may require an
    update or renewed sign-in; a fresh client download is not required on every run.
+
+**About Pear** shows the Pear, Wine and DXMT versions. Full removal and automatic
+runtime repair are not included in this interface.
 
 You do not need a separate Whisky app or macOS Steam. Pear's status window can be
 closed after Steam opens; that does not quit Steam or a running game. Quit games
@@ -46,6 +57,10 @@ Python, Xcode or Rust on the player's Mac. After extracting a verified CLI relea
 
 Equivalent explicit command: `./pear-preview steam`. `./pear-preview setup`
 prepares the environment without opening the Steam library. `--help` lists options.
+In preview.2, `./pear-preview setup-info` prints read-only installation hints and
+pinned download sizes without creating state or contacting the network.
+`./pear-preview --version` shows the version. Invoking `steam` or `setup` explicitly
+starts preparation; CLI commands do not display the app's confirmation screen.
 No npx package is published.
 
 The optional `./pear-preview megabonk` command requests automatic installation
@@ -67,10 +82,15 @@ Earlier replacement-runtime trials also received owner confirmation of extended
 play, audio and retained progress after relaunch. Active play duration was not
 measured, and these observations do not substitute for final-package tests.
 
-Measured twenty-minute play, backup restoration, interrupted setup/update
-recovery and second-clean-environment delivery remain pending. A fresh prefix on
-the development Mac is not a clean-machine distribution test. No all-game,
-Steam Cloud, controller, performance or power claim is made.
+Stage 2 recorded bounded interrupted-setup recovery, reinstall and local save
+restoration. The owner reported completing the preview.1 browser installation,
+fresh standard-account setup, requested twenty-minute active-play checklist and
+save/relaunch without problems on the same Mac. Exact duration and graphics
+settings were not supplied. This is owner-reported evidence, not an instrumented
+performance measurement or a second physical Mac test. The host already had
+Rosetta and Xcode installed. The changed preview.2 app needs its own affected
+first-run checks; unchanged runtime observations are retained separately. No
+all-game, Steam Cloud, controller, performance or power claim is made.
 
 ## Data and recovery
 

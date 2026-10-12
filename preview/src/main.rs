@@ -12,11 +12,19 @@ fn execute() -> Result<()> {
     pear_preview::install_cancellation();
     let mut args = std::env::args_os().skip(1);
     let command = args.next().unwrap_or_else(|| "steam".into());
-    if command == "--help" || command == "help" {
-        println!("Pear Preview (Rosetta required)\n\npear-preview [steam|setup|megabonk|check-runtime] [--root PATH] [--runtime-archive PATH] [--steam-installer PATH]\n\nDefault: prepare and open Windows Steam. Sign in and choose games in your library.\nmegabonk: automatically install and launch the first validation game (legacy alias: play).\nSubsequent runs reuse private state. Other games have not been qualified.\nNo account credentials are accepted by this tool.");
+    if command == "--version" {
+        println!(
+            "Pear Preview {} (Wine 11.0, DXMT 0.80; Rosetta required)",
+            env!("CARGO_PKG_VERSION")
+        );
         return Ok(());
     }
-    if command != "steam"
+    if command == "--help" || command == "help" {
+        println!("Pear Preview (Rosetta required)\n\npear-preview [steam|setup|setup-info|megabonk|check-runtime] [--root PATH] [--runtime-archive PATH] [--steam-installer PATH]\n\nsetup-info: read-only setup and download information; no network or state changes.\n--version: show Pear and component versions.\nDefault: prepare and open Windows Steam. Sign in and choose games in your library.\nmegabonk: automatically install and launch the first validation game (legacy alias: play).\nSubsequent runs reuse private state. Other games have not been qualified.\nNo account credentials are accepted by this tool.");
+        return Ok(());
+    }
+    if command != "setup-info"
+        && command != "steam"
         && command != "megabonk"
         && command != "play"
         && command != "setup"
@@ -28,6 +36,7 @@ fn execute() -> Result<()> {
     let mut root = PathBuf::from(home).join("Library/Application Support/Pear Preview");
     let mut runtime = std::env::var_os("PEAR_PREVIEW_RUNTIME_ARCHIVE").map(PathBuf::from);
     let mut steam = None;
+    let mut events = false;
     let mut seen = std::collections::BTreeSet::new();
     while let Some(key) = args.next() {
         if !seen.insert(key.clone()) {
@@ -37,13 +46,26 @@ fn execute() -> Result<()> {
         match key.to_str() {
             Some("--root") => root = value.into(),
             Some("--runtime-archive") => runtime = Some(PathBuf::from(value)),
+            Some("--output") if value == "events" => events = true,
             Some("--steam-installer") => steam = Some(PathBuf::from(value)),
             _ => return Err("Unknown option. Use --help.".into()),
         }
     }
+    if command == "setup-info" {
+        println!("{}", pear_preview::setup_info(&root)?);
+        return Ok(());
+    }
     let session = Session::open(&root)?;
     let notify = |s: &str| {
-        println!("{s}");
+        if !events && s.starts_with("@download\t") {
+            let fields: Vec<_> = s.split('\t').collect();
+            println!(
+                "Downloading {}: {} / {} bytes",
+                fields[3], fields[1], fields[2]
+            );
+        } else {
+            println!("{s}");
+        }
         let _ = std::io::stdout().flush();
     };
     if command == "check-runtime" {

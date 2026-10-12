@@ -117,6 +117,9 @@ fn write_new(path: &Path, bytes: &[u8]) -> Result<()> {
     Ok(())
 }
 pub fn run(cmd: &mut Command, seconds: u64) -> Result<()> {
+    run_observed(cmd, seconds, || {})
+}
+fn run_observed(cmd: &mut Command, seconds: u64, mut observe: impl FnMut()) -> Result<()> {
     cancelled()?;
     // No client output capture: authentication belongs in Steam's window.
     let mut child = cmd
@@ -126,6 +129,7 @@ pub fn run(cmd: &mut Command, seconds: u64) -> Result<()> {
         .spawn()?;
     let start = Instant::now();
     loop {
+        observe();
         if let Some(status) = child.try_wait()? {
             return need(status.success(), &format!("The current step failed ({status}). Retry after closing this preview's Steam window."));
         }
@@ -141,6 +145,40 @@ pub fn run(cmd: &mut Command, seconds: u64) -> Result<()> {
         thread::sleep(Duration::from_millis(50));
     }
 }
+/// Read-only hints for the initial UI. Normal preparation still verifies every input.
+pub fn setup_info(root: &Path) -> Result<String> {
+    need(root.is_absolute(), "State path must be absolute.")?;
+    let matches = |path: PathBuf, expected: &str| text(&path, 512).is_ok_and(|s| s == expected);
+    let owned = matches(root.join(".owner"), OWNER);
+    let runtime = owned
+        && matches(
+            root.join("runtimes").join(RUNTIME_ID).join("inputs"),
+            &runtime_inputs(),
+        )
+        && root
+            .join("runtimes")
+            .join(RUNTIME_ID)
+            .join("Libraries/Wine/bin/wine")
+            .is_file();
+    let steam = owned
+        && matches(root.join("private/prefix.ready"), RUNTIME_ID)
+        && matches(root.join("private/steam.ready"), STEAM.sha)
+        && root
+            .join("private/prefix/drive_c/Program Files (x86)/Steam/steam.exe")
+            .is_file();
+    // All strings below are compile-time constants; no private paths or user input are emitted.
+    Ok(format!(
+        r#"{{"version":"{}","runtime_id":"{}","runtime_bytes":{},"steam_bytes":{},"runtime_present":{},"steam_present":{},"ready":{}}}"#,
+        env!("CARGO_PKG_VERSION"),
+        RUNTIME_ID,
+        RUNTIME.size,
+        STEAM.size,
+        runtime,
+        steam,
+        runtime && steam
+    ))
+}
+
 pub struct Session {
     pub root: PathBuf,
     _lock: File,
@@ -198,9 +236,20 @@ impl Session {
         }
         Ok(Self { root, _lock: lock })
     }
-    fn archive(&self, artifact: Artifact, supplied: Option<&Path>) -> Result<PathBuf> {
+    fn archive(
+        &self,
+        artifact: Artifact,
+        supplied: Option<&Path>,
+        notify: &dyn Fn(&str),
+    ) -> Result<PathBuf> {
         self.archive_with(artifact, supplied, |download| {
-            run(
+            let mut last = None;
+            let mut updated = Instant::now() - Duration::from_secs(1);
+            notify(&format!(
+                "@download\t0\t{}\t{}",
+                artifact.size, artifact.name
+            ));
+            run_observed(
                 Command::new("/usr/bin/curl")
                     .args([
                         "--fail",
@@ -222,7 +271,22 @@ impl Session {
                     .arg(download)
                     .arg(artifact.url),
                 1810,
-            )
+                || {
+                    if updated.elapsed() >= Duration::from_millis(250) {
+                        let bytes = fs::metadata(download).map(|m| m.len()).unwrap_or(0);
+                        if last != Some(bytes) {
+                            notify(&format!(
+                                "@download\t{}\t{}\t{}",
+                                bytes, artifact.size, artifact.name
+                            ));
+                            last = Some(bytes);
+                        }
+                        updated = Instant::now();
+                    }
+                },
+            )?;
+            notify("Verifying the download…");
+            Ok(())
         })
     }
     // The operation seam keeps failure tests on the real cache/verification transaction.
@@ -279,7 +343,8 @@ impl Session {
         }
         self.space(3 * 1024 * 1024 * 1024)?;
         notify("Checking and installing the Pear runtime…");
-        let archive = self.archive(RUNTIME, supplied)?;
+        let archive = self.archive(RUNTIME, supplied, notify)?;
+        notify("Extracting the runtime…");
         self.install_runtime(&archive, |archive, stage| {
             // Only this exact reviewed archive is passed to tar, after hash verification.
             run(
@@ -438,7 +503,7 @@ impl Session {
         let steam_ready = self.root.join("private/steam.ready");
         if !steam_ready.exists() {
             notify("Installing official Steam…");
-            let installer = self.archive(STEAM, installer)?;
+            let installer = self.archive(STEAM, installer, notify)?;
             run(self.wine(&lib).arg(installer).arg("/S"), 180)?;
             need(
                 steam.is_file(),
@@ -698,6 +763,41 @@ mod tests {
         Stage::new(&std::env::temp_dir()).unwrap()
     }
     #[test]
+    fn setup_info_is_read_only_and_does_not_trust_partial_markers() {
+        let t = scratch();
+        let root = t.path.join("absent state");
+        let info = setup_info(&root).unwrap();
+        assert!(info.contains("\"ready\":false"));
+        assert!(!root.exists());
+        assert!(setup_info(Path::new("relative")).is_err());
+        let session = Session::open(&root).unwrap();
+        let runtime = root.join("runtimes").join(RUNTIME_ID);
+        fs::create_dir_all(runtime.join("Libraries/Wine/bin")).unwrap();
+        fs::write(runtime.join("Libraries/Wine/bin/wine"), b"fixture").unwrap();
+        fs::write(runtime.join("inputs"), runtime_inputs()).unwrap();
+        fs::create_dir_all(session.steam().parent().unwrap()).unwrap();
+        fs::write(session.steam(), b"fixture").unwrap();
+        fs::write(root.join("private/prefix.ready"), RUNTIME_ID).unwrap();
+        fs::write(root.join("private/steam.ready"), STEAM.sha).unwrap();
+        let before = inventory(&root.join("private")).unwrap();
+        assert!(setup_info(&root).unwrap().contains("\"ready\":true"));
+        assert_eq!(inventory(&root.join("private")).unwrap(), before);
+        fs::write(root.join("private/prefix.ready"), "different-runtime").unwrap();
+        assert!(setup_info(&root).unwrap().contains("\"ready\":false"));
+    }
+
+    #[test]
+    fn progress_observer_runs_before_completion_and_preserves_failure() {
+        let mut observations = 0;
+        run_observed(Command::new("/bin/sleep").arg("0.2"), 3, || {
+            observations += 1
+        })
+        .unwrap();
+        assert!(observations >= 2);
+        assert!(run_observed(&mut Command::new("/usr/bin/false"), 3, || {}).is_err());
+    }
+
+    #[test]
     fn session_drop_releases_lock_despite_a_duplicated_descriptor() {
         let owner = scratch();
         let root = owner.path.join("state");
@@ -766,7 +866,7 @@ mod tests {
         fs::write(s.root.join("private/save"), b"keep").unwrap();
         let bad = t.path.join("bad.tar.gz");
         fs::write(&bad, b"bad").unwrap();
-        assert!(s.archive(RUNTIME, Some(&bad)).is_err());
+        assert!(s.archive(RUNTIME, Some(&bad), &|_| {}).is_err());
         assert_eq!(fs::read_dir(s.root.join("runtimes")).unwrap().count(), 0);
         assert_eq!(fs::read(s.root.join("private/save")).unwrap(), b"keep");
     }

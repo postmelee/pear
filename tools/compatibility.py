@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Validate reviewed observations and render a bounded public catalog. No ingestion."""
 import argparse
 import datetime
@@ -290,6 +292,7 @@ def intake_page(catalog, kind, steam_available=False):
 def download_page():
     return shell('Download', '''<div class="readable download-page"><h1>Get Pear.</h1><p>Choose how to set up Windows Steam on your Mac.</p>
 <p class="download-platform">Apple Silicon <span aria-hidden="true">·</span> macOS 26+ <span aria-hidden="true">·</span> Rosetta required</p>
+<p class="method-status">This release uses Wine 11.0 and DXMT 0.80.</p>
 <nav class="download-methods" aria-label="Download methods"><a id="method-app" href="#app" data-method="app"><strong>Mac app</strong><span>Recommended</span></a><a id="method-cli" href="#cli" data-method="cli"><strong>CLI</strong><span>Terminal</span></a><a id="method-homebrew" href="#homebrew" data-method="homebrew"><strong>Homebrew</strong><span>Planned</span></a></nav>
 <div class="download-panels">
 <section id="app" class="download-panel" data-download-panel aria-labelledby="method-app"><h2>Install the Mac app</h2><p>Once released, open the DMG, drag Pear Preview to Applications, then open Pear.</p><button class="button primary" type="button" disabled>Download for Mac · Coming soon</button><p class="method-status">The public preview is being prepared. DMG installation is planned.</p></section>
