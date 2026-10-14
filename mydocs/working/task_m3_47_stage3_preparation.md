@@ -128,3 +128,78 @@ package and remains under ignored first-run-ui/ui-fixture until candidate review
 Runtime inventory, download hash checks, isolated staging and existing recovery
 failure tests remain in place. Signed preview.2 actual-delivery checks remain
 pending; these local ad-hoc/fixture results are not release qualification.
+
+## October 15 resumed signed preview.2 checks
+
+The requester resumed the network-paused verification. Frozen preview.2 source
+is `d5364ddc9a674cf91df287b2c152468b28e49d44`. Protected CI run
+https://github.com/postmelee/pear/actions/runs/38282662453 completed successfully.
+App, CLI and DMG notarization were Accepted; local package checks recorded in
+`ci-signed-d5364dd/local-package-assessment.json` passed. The final app seal was
+checked again before this run. No signed artifact or published preview.1 was changed.
+
+No prior Pear, Wine or Steam process or advisory holder remained at resumption.
+The old receipt's unreleased flag is historical, not live ownership. A fresh
+OS advisory lock was acquired without invoking another chat. Available filesystem
+space was approximately 16 GiB. The isolated retry environment may use up to
+4 GiB for runtime and Steam setup; it is retained through candidate review.
+Existing authenticated state and recovery archives are preserved separately.
+
+The actual signed app displayed the first-run consent and pinned download sizes.
+Download progress reached 255.5 MB of 534.4 MB; Cancel returned Setup paused and
+enabled Retry. Retry restarted the download, reached 492.8 MB and transitioned
+to Windows environment preparation. Steam visibility and installed-state launch
+are still pending at this checkpoint. No additional gameplay claim is made.
+
+Preparation subsequently completed and the signed app displayed Open Steam again.
+The official updater requested its current manifest from Valve. This establishes
+preparation/handoff only; the requester has been asked to confirm the login UI.
+All three signed package SHA-256 values were rechecked and matched SHA256SUMS.
+The protected CI app/CLI/DMG acceptance IDs are respectively
+`f58d9187-4112-47d0-af4c-0e6061df3e00`,
+`db3386f6-7ee5-4724-a50c-3732a6628f1b` and
+`2cd9579c-4193-4e4c-b183-c4f011e9a7b0`.
+
+The requester then confirmed that the updated Steam login screen displayed its
+text and QR normally. No login was requested for this disposable environment.
+The signed preview.2 cancel/retry-to-visible-login check therefore passed on
+the recorded host. Existing-installation automatic launch remains the next check.
+
+Closing the unauthenticated login window exited Steam's main process but left
+a CPU-active steamwebhelper and Wine services. Open-file inspection bound the
+helper to this isolated test root. The exact runtime's wineserver -k, scoped by
+that root's WINEPREFIX, terminated the four remaining test lifetimes; an independent
+process check confirmed all absent. This is a failed login-window cleanup
+observation, not a clean exit. No authenticated prefix was targeted.
+
+The signed app was then opened against the preserved integrated-signing-v2/state.
+Read-only setup-info reported runtime_present, steam_present and ready=true.
+Without clicking any download/setup button, the actual app reached Open Steam
+again and dispatched Steam. User confirmation of existing login/library visibility
+and normal Steam-menu exit is pending.
+
+The requester confirmed preserved login and a normal library, then selected
+Steam > Exit. A process-name check found no Steam or Wine processes; only Pear
+remained. Pear was closed through its window control, and a second process check
+found none of the trial applications. The advisory holder was explicitly released
+and exited successfully. Existing-state automatic launch and normal menu exit
+passed; closing the unauthenticated login window remains a separate known issue.
+
+Release assessment: the latter issue affects background resource cleanup, with
+no observed data loss in the unauthenticated isolated test. Normal authenticated
+Steam-menu exit passed. This does not invalidate download recovery or existing
+login reuse, but must be disclosed rather than reported as universal clean exit.
+A preview.2 qualification release draft can retain that limitation while final
+browser delivery remains pending. No new runtime build or repeat twenty-minute
+game session is justified solely by this presentation change.
+
+Preview.2 draft release 413098631 is prepared at exact source d5364dd, with
+prerelease=true and draft=true. Five uploaded assets (DMG, app ZIP, CLI ZIP, exact
+Pear source archive and SHA256SUMS) match local sizes and GitHub SHA-256 digests.
+The body links the unchanged preview.1 runtime and corresponding source kit,
+records component versions, host requirements, tested scope and the login-window
+cleanup limitation. No website activation or public preview.2 publication occurred.
+The prior sequence exception explicitly named preview.1; obtain confirmation
+for the same qualification-publication sequence for preview.2 before public
+browser-download verification. Documentation checks: 94 passed; governance
+37 documents/358 targets passed; git diff --check passed.

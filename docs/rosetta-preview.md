@@ -1,10 +1,11 @@
 # Pear Windows Steam preview
 
-Status: qualification preview, October 13, 2026. The signed
+Status: qualification preview, October 15, 2026. The signed
 [preview.1 qualification candidate](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.1)
 is public. The preview.2 first-run interface described below is a new candidate
-awaiting signing and affected delivery checks. Local development builds are not
-notarized releases.
+with completed signing, notarization, first-run retry and existing-installation
+launch checks. Final browser delivery of preview.2 remains pending. Local
+development builds are not notarized releases.
 [Release preparation](development/preview-release.md) tracks the remaining work.
 
 Pear is intended to be free and open source. The preview prepares Windows Steam
@@ -88,9 +89,16 @@ fresh standard-account setup, requested twenty-minute active-play checklist and
 save/relaunch without problems on the same Mac. Exact duration and graphics
 settings were not supplied. This is owner-reported evidence, not an instrumented
 performance measurement or a second physical Mac test. The host already had
-Rosetta and Xcode installed. The changed preview.2 app needs its own affected
-first-run checks; unchanged runtime observations are retained separately. No
+Rosetta and Xcode installed. The signed preview.2 app passed first-run consent,
+download progress, cancellation and retry through a visible Steam login screen, plus existing-login library launch
+and normal Steam-menu exit on this host. Final preview.2 browser delivery remains
+pending; unchanged runtime observations are retained separately. No
 all-game, Steam Cloud, controller, performance or power claim is made.
+
+Closing Steam’s login window before signing in left a CPU-active background
+helper in one test. Closing the Pear window does not stop Steam. Normal
+**Steam → Exit** after signing in completed without remaining Wine/Steam processes.
+The login-window cleanup issue remains unresolved in this candidate.
 
 ## Data and recovery
 
