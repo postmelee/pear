@@ -203,3 +203,76 @@ The prior sequence exception explicitly named preview.1; obtain confirmation
 for the same qualification-publication sequence for preview.2 before public
 browser-download verification. Documentation checks: 94 passed; governance
 37 documents/358 targets passed; git diff --check passed.
+
+
+## October 15 login-window close investigation
+
+The requester rejected publication with the login-close limitation and explicitly
+requested a correction first. Release 413098631 was rechecked as draft=true,
+prerelease=true at exact d5364dd. Its earlier proposed publication assessment
+above is superseded by this instruction; no public preview.2 delivery occurred.
+
+The first failed close remains valid: a CPU-active renderer and Wine services
+survived the Steam main process. Subsequent observations on the same immutable
+signed runtime are distinct, not a correction of that failure:
+
+- Reopening the unauthenticated prefix and closing its login window did not
+  reproduce the renderer orphan. Short-lived Wine services alone were observed.
+- The original HTML cache was renamed and retained. After Steam recreated its
+  web cache, the requester closed the login window again. The observer completed
+  with no surviving exact-prefix helper to sample; an independent process check
+  found no Wine/Steam process. No forced cleanup was used for that close.
+- A further signed-CLI launch was observed for 200 seconds before sending Steam's
+  own -shutdown command. Exact-root observations found no candidates at 10, 30
+  and 60 seconds after the request. This is CLI shutdown evidence, not another
+  real-window close result. No production patch has been applied.
+
+Ignored evidence is under `.build/task47/stage3/login-exit-fix`: the cache-close
+observer, `cold-close-samples.json` (empty), `second-close-observations.json`,
+and `delayed-exit.json`. The absence of samples means no target was available;
+it is not an empty stack proving the cause. Logs and raw host paths remain private.
+
+The original bootstrap log shows a first-install updater transition from the
+bundled 2024 bootstrapper through the win32 client to current win64 Steam build
+1791918634. A single additional first-update diagnostic uses a new unauthenticated
+prefix with the already verified Steam installer and shares the immutable runtime
+without a full runtime copy. Its result is pending at this checkpoint.
+
+Reuse inspection included Wine's existing job-object lifecycle and process
+creation support. No job-object patch or host cleanup supervisor is selected:
+there is not yet evidence that modifying those mechanisms fixes this failure.
+In particular, process-name-only termination and a timer that could interrupt
+an authenticated session or game are not acceptable substitutes for ownership.
+Existing successful game/save checks and the signed release inputs stay intact.
+
+
+The first-update comparison subsequently reached a login-window visibility entry
+in Steam's own log (not independent visual confirmation). After 200 seconds the
+normal Steam shutdown request succeeded. No exact-prefix candidates remained
+at 10, 30 or 60 seconds. Thus this test did not reproduce the orphan either and
+does not establish that the updater was its cause.
+
+A standalone original synthetic C fixture compiled with MinGW (-Wall -Wextra
+-Werror) and ran under the unchanged signed Wine. Atomic job-list assignment,
+a nested job child and grandchild exiting on final job-handle close, and survival
+of a separately created child all passed. The fixture then cleaned only children
+it created through retained process handles. This supports a possible bounded
+lifecycle mechanism; it does not test CEF sandbox compatibility or correct Steam
+selection, and no such policy is added to the runtime or app.
+
+The final independent process check found no Steam, Wine or fixture process.
+The diagnostic advisory lease was explicitly released. Private receipts and
+probe sources remain under login-exit-fix; source/binary hashes for the synthetic
+fixture are in job-lifecycle-result.json. The directory has 3,073,125,931 logical
+bytes and 3,083,018,240 allocated bytes at the retention checkpoint, mostly the
+additional Steam prefix. No runtime duplicate was created. Retain the two test
+prefixes for the correction's differential checks; after those consumers finish,
+keep minimal evidence and release their disposable bytes. Existing authenticated
+state, save recovery archives, signed artifacts and other worktrees were untouched.
+
+Current conclusion: intermittent unauthenticated-close failure remains unresolved.
+There is no reproducible failing stack or verified production correction yet.
+The next correction must establish exact browser/child ownership, respect nested
+CEF jobs and preserve games; then revalidate the affected signed candidate.
+Do not promote passing comparisons or the synthetic lifecycle probe into a claim
+that preview.2's login-window problem is fixed. Publication remains withheld.

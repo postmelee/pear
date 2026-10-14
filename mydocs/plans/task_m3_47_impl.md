@@ -2431,3 +2431,32 @@ fixture binary go under .build/task47/stage3/first-run-ui, with <256 MiB additio
 local outputs expected. No Wine runtime or private prefix copy. Hosted CI uses
 its existing isolated build/signing/storage policy. Retain the small candidate
 through signed successor review; preserve all current recovery inputs.
+
+## October 15 approved login-window shutdown correction
+
+The requester explicitly chose to fix unauthenticated Steam-window shutdown
+before publishing preview.2. Keep draft release 413098631 unpublished. Reuse
+the current signed runtime and disposable untouched-first-run prefix to capture
+the remaining helper's call stack and compare exact Steam exit paths. Reuse
+existing Wine lifecycle primitives or a bounded upstream correction before
+adding any new host supervisor. Do not terminate unrelated processes, an active
+Steam session or a running game. A process-name-only cleanup policy is forbidden.
+
+Diagnostics go under ignored stage3/login-exit-fix, with at most 128 MiB expected
+new logs/probes and no full runtime copy. Existing private/recovery state and the
+signed baseline remain protected. A runtime patch, if necessary, must carry its
+source/notices, distinct artifact identity and new signing/qualification; do not
+modify the published runtime in place. Existing task evidence and player-guide
+locations are reused for resulting findings.
+
+
+After warm-cache, fresh-web-cache and delayed normal exits failed to reproduce
+an earlier orphan, compare the first-update path in one additional unauthenticated
+prefix. Reuse the exact signed Libraries directory read-only; do not copy runtime
+bytes or touch authenticated state. The new prefix lives under the ignored
+login-exit-fix/first-update directory and may consume up to 3 GiB, with at least
+4 GiB free required before preparation. Use the already verified Steam installer.
+Retain its logs and state until the shutdown investigation is resolved, then
+release disposable bytes after exact process checks. A CLI shutdown comparison
+is diagnostic evidence, not a replacement for the eventual real login-window
+close check on a corrected candidate.
