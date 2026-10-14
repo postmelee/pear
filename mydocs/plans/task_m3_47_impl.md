@@ -2513,3 +2513,23 @@ uploads a seven-day candidate artifact; it never publishes a release. Package
 helpers accept an explicit reviewed manifest digest and distinct runtime identity
 while retaining the historical defaults. Reject malformed identities, changed
 manifests and modified payloads. Preserve all existing signed-v2 artifacts.
+
+
+Runtime transition verification uses a task-owned APFS clone of the quiescent
+authenticated prefix before any production migration is admitted. Reuse Wine's
+existing wineboot update procedure and Pear's DXMT replacement path; a changed
+ready marker alone is not a migration. Preserve the original runtime, prefix and
+save-recovery copies. Check the old server has exited before cloning; no timeout
+may kill an active player session. Verify the clone's game/save input identities,
+then the new runtime's actual Steam, owned-game and save/relaunch behavior. Keep
+failed/partial migration candidates isolated and recoverable. The production
+app must continue refusing unknown runtime identities. No new general-purpose
+supervisor or silent v2-to-v3 relabel is authorized by this design.
+
+The reconstruction artifact download is limited to the workflow's allowlisted
+archives and receipts under ignored stage3/runtime-rebuild-c6a6c4d. Budget up to
+1 GiB compressed input plus 3 GiB for a later extracted signed runtime; do not
+extract the unsigned archive locally merely to repeat hosted validation. Retain
+provenance/manifests and source delivery through release review; unsigned local
+archives become disposable after the signed successor is admitted. Account for
+new prefix clone writes separately before actual Steam/game execution.
