@@ -276,3 +276,58 @@ The next correction must establish exact browser/child ownership, respect nested
 CEF jobs and preserve games; then revalidate the affected signed candidate.
 Do not promote passing comparisons or the synthetic lifecycle probe into a claim
 that preview.2's login-window problem is fixed. Publication remains withheld.
+
+
+## October 15 Stage 3.5: bounded browser-child lifetime candidate
+
+The requester authorized a safe correction, verification and distribution. The
+selected candidate adds an opt-in Wine kernelbase policy: an exact configured
+browser image may associate same-image renderer/utility children with one
+non-inheritable kill-on-close job. Atomic assignment preserves the caller's job
+list, including nested CEF sandbox jobs. It excludes Steam, other image paths,
+unknown roles and a parent already running as a CEF child. No process-name scan,
+host termination timer or sandbox-disable switch is introduced. Wine's original
+LGPL notices remain; the additional code has Pear contributors attribution.
+
+A first diagnostic link failed because job creation APIs live in kernel32; using
+Wine's existing NtCreateJobObject/NtSetInformationJobObject dependency corrected
+that layer violation. Both i386 and x86_64 kernelbase DLLs then built. These are
+component-only diagnostics, not a redistributable whole-runtime build. Their
+native baseline and signed preview.2 assets remain immutable.
+
+The actual patched DLL passed seven ownership cases in each guest ABI: renderer,
+utility, opt-in disabled, mismatched parent path, different child image, CEF-child
+parent and unknown role. Positive cases also check that a nested grandchild exits
+and a separately created sibling survives; caller-supplied job membership is
+checked. The fixture owns retained handles for cleanup. The committed original
+fixture is now part of runtime_validate.py and the source-kit allowlist.
+
+In an APFS clone of the unauthenticated Steam prefix, actual Steam build
+1791918634 logged the policy on children with both zero and one existing caller
+job. The requester confirmed normal login text/QR, then closed the window using
+X without login. Three consecutive exact-root observations were empty; an
+independent process snapshot also found no Steam/Wine processes. No forced
+cleanup was used. This establishes the corrected candidate's observed close
+path, not reproduction or a claimed root-cause diagnosis of the original hang.
+Sanitized evidence is task_m3_47_login_lifetime.json; raw traces remain private.
+
+The additional first-update comparison prefix had no remaining consumer. Its
+logs were archived and byte-verified, account/game absence and no live process
+were checked, then only that prefix was removed. Released logical bytes:
+3,072,894,385; allocated bytes: 3,082,743,808. Measured filesystem free bytes rose
+from 4,528,594,944 to 7,609,548,800; this shared-host delta is recorded separately.
+The diagnostic root /private/tmp/pear47-exit-20261015 retains its cloned source,
+DLLs, synthetic prefix and no-login Steam clone until the complete-runtime
+candidate comparison. Authenticated state and save recovery remain untouched.
+
+A complete reconstruction is prepared for a fresh GitHub macOS runner using
+pinned public source inputs, the existing builder and expanded synthetic
+validation. It has no signing secrets or release write permission. This avoids
+lowering the local full-build storage admission requirement. New runtime
+identity, prefix migration, actual game verification and protected signing /
+notarization remain required. preview.2 stays draft; no current app pin or
+production launch environment has been changed at this checkpoint.
+
+Checks: 31 runtime Python tests passed; 14 actual guest ownership cases passed;
+source notice gate and git diff --check passed. This is a Stage 3 continuation
+checkpoint, not completion or approval of public distribution.

@@ -107,7 +107,7 @@
   },
   "patch": {
     "file": "patches/steam-inprocess.patch",
-    "sha256": "58b5531569bf270ad962681e766b01e48c91ac32123e0775bda49d58619b6a35",
+    "sha256": "916282dd70d8136fca9a93308b39e59da3d75cda52e71df2a0bfb107fafeebb6",
     "license": "Wine derivative; LGPL-2.1-or-later"
   },
   "notice_files": {
@@ -208,7 +208,7 @@
     "toolchain/mingw-wine-mingw-w64-libraries-winpthreads-COPYING": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
     "toolchain/mingw-wine-mingw-w64-libraries-winstorecompat-COPYING": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36",
     "toolchain/provenance.json": "cad46db42aee1beda55fc26cd16ce3a47a874da03beabcd50cf5083294d289f4",
-    "wine/ATTRIBUTION.txt": "3a3e708a5c1de7569c602bac448614c6c550fc812aa6bc457c9abf95feab584b",
+    "wine/ATTRIBUTION.txt": "0a726781702ff3280c28cb35248fa05bfbe01a15a25255e816d3f5018c092080",
     "wine/AUTHORS": "4e2f062fd9c658b60ba7c0000f88f08d2b8f1333fa7b1c37ec27859ecb2de59d",
     "wine/COPYING.LIB": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
     "wine/FONT-NOTICES.txt": "e62315563cdf95f4576307b3528910cb5dd0510929d70fb1dd43c550154f718f",

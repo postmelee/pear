@@ -163,6 +163,20 @@ def validate(runtime, output):
                             'libMoltenVK.dylib'}
         if not required_helpers.issubset(record['checks']['observed_packaged_helpers']):
             raise RuntimeError('Incomplete packaged helper load evidence')
+        # Exercise the actual patched process-creation path in both guest ABIs.
+        # The fixture owns every handle it cleans up; Steam and games are absent.
+        for arch, compiler in (('x86_64', 'x86_64-w64-mingw32-gcc'),
+                               ('i386', 'i686-w64-mingw32-gcc')):
+            executable = output / 'browser-lifetime.exe'
+            run([Path('/opt/homebrew/bin') / compiler, '-Wall', '-Wextra', '-Werror',
+                 '-Wno-misleading-indentation', '-O2', HERE / 'browser-lifetime-smoke.c',
+                 '-o', executable], env, output / f'compile-lifetime-{arch}.log')
+            shutil.copy2(executable, output / 'other.exe')
+            trace = run([runtime / 'bin/wine', executable], env | {'WINEDEBUG': '-all'},
+                        output / f'lifetime-{arch}.log', 120)
+            record['checks']['browser_lifetime_' + arch] = {
+                'status': 'passed', 'fixture_sha256': rb.sha256(executable),
+                'source_sha256': rb.sha256(HERE / 'browser-lifetime-smoke.c')}
         record['status'] = 'passed'
     except Exception as error:
         record.update(status='failed', error=str(error))

@@ -2460,3 +2460,44 @@ Retain its logs and state until the shutdown investigation is resolved, then
 release disposable bytes after exact process checks. A CLI shutdown comparison
 is diagnostic evidence, not a replacement for the eventual real login-window
 close check on a corrected candidate.
+
+
+## October 15 requester-approved safe correction and delivery continuation
+
+The requester explicitly authorized fixing login-window shutdown, verifying the
+correction and continuing through distribution. Investigate a Wine-side lifetime
+policy using its existing atomic job-list support: only the configured exact
+Steam webhelper browser image may put children of that same image into its own
+non-inheritable kill-on-close job. Steam itself and separately launched game
+images remain outside. Preserve caller-supplied job lists and nested CEF jobs;
+never disable sandboxing or infer ownership from a process name. This is orphan
+containment, not a claimed diagnosis of the intermittent renderer hang.
+
+Keep the released/signed baseline immutable. Before adopting a new runtime,
+compile a small kernelbase diagnostic candidate and run positive/negative
+ownership fixtures plus actual Steam close, authenticated launch and game checks.
+Only a qualified correction may proceed to distinct artifact identity, matching
+source/notices and protected signing/notarization. Existing prefix migration must
+be explicitly checked; do not silently relabel or erase an old prefix.
+
+Storage: the additional first-update prefix has completed its comparison and no
+longer has a differential-test consumer; use the original untouched-first-run
+prefix for follow-up. Preserve its logs/receipt and exact Steam file hashes, check
+no login/account or live process exists, then release only that disposable prefix.
+This supersedes its earlier retention-until-investigation-end note. Allocate a
+fresh no-space temporary build root for kernelbase only (<1 GiB estimated), and
+an APFS clone of the runtime only if needed for execution: separate modified DLLs
+from the immutable signed baseline. Do not fall back to an unplanned full copy.
+Record measured allocations and release scratch after correction review. No other
+chat is called, and other task worktrees and authenticated game state stay intact.
+
+
+After the 32/64-bit ownership fixtures and requester-confirmed real login-window
+close pass, reconstruct the complete runtime in a fresh hosted macOS runner.
+Local storage cannot admit the existing 12 GiB full-build budget; do not weaken
+that check. Reuse runtime_build.py and runtime_validate.py, adding the same-image
+lifetime fixture to validation and source delivery. A build-only workflow has
+contents:read, no signing secrets and no release writes; signed distribution
+still uses reviewed exact inputs and the protected signing approval. Hosted
+builds retain only allowlisted runtime/source archives, manifests and bounded
+logs, for 7 days, and never include a Steam prefix. No other chat is started.

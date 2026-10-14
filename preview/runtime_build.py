@@ -316,7 +316,7 @@ def source_kit(output, inputs, lock):
     license_path = HERE / 'LICENSE' if (HERE / 'LICENSE').exists() else HERE.parent / 'LICENSE'
     source_files = [HERE / 'runtime_build.py', HERE / 'runtime-inputs.json',
                     HERE / lock['patch']['file'], license_path]
-    source_files += [HERE / n for n in ('runtime_validate.py', 'runtime-smoke.c', 'native-smoke.c',
+    source_files += [HERE / n for n in ('runtime_validate.py', 'runtime-smoke.c', 'native-smoke.c', 'browser-lifetime-smoke.c',
                                       'test_runtime_build.py', 'test_runtime_validate.py', 'runtime_package.py', 'test_runtime_package.py',
                                       'runtime_sign.py', 'test_runtime_sign.py', 'wine-entitlements.plist', 'THIRD_PARTY_NOTICES.md') if (HERE / n).is_file()]
     source_files += [HERE / 'runtime-notices' / p for p in sorted(lock['notice_files'])]
