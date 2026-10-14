@@ -347,3 +347,13 @@ Complete reconstruction was started from c6a6c4d in GitHub run 38630377016.
 The concurrent existing app/CLI candidate run 38630376850 passed its portable
 and Apple Silicon checks; its signing job was skipped by the exact-SHA gate.
 That app still pins the old runtime and is not the corrected release candidate.
+
+
+The runtime signing handoff is prepared in preview-runtime-sign.yml. Its required
+reviewer and custom branch policy were re-read from GitHub and remain active.
+No signing credentials have been loaded by this continuation. Inline Python
+blocks and YAML parse, 32 runtime tests pass, and source notices / whitespace
+checks pass. The package helpers can record a new explicit identity and reviewed
+manifest without rewriting the historical v2 constants; negative digest/name
+checks run before output creation. The signing handoff still needs the successful
+reconstruction provenance and human approval before execution.

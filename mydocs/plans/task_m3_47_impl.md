@@ -2501,3 +2501,15 @@ contents:read, no signing secrets and no release writes; signed distribution
 still uses reviewed exact inputs and the protected signing approval. Hosted
 builds retain only allowlisted runtime/source archives, manifests and bounded
 logs, for 7 days, and never include a Steam prefix. No other chat is started.
+
+
+Prepare a separate protected runtime-signing workflow for the rebuilt candidate.
+It requires an explicit successful reconstruction run, source SHA and provenance
+SHA-256; checks every artifact hash, lifecycle validation and the source-input
+lock before provisioning credentials. Reuse the existing temporary-keychain
+credential step and reviewed runtime signer. Keep the exact-SHA gate and required
+reviewer in pear-preview-signing. Signing has contents:read/actions:read only and
+uploads a seven-day candidate artifact; it never publishes a release. Package
+helpers accept an explicit reviewed manifest digest and distinct runtime identity
+while retaining the historical defaults. Reject malformed identities, changed
+manifests and modified payloads. Preserve all existing signed-v2 artifacts.

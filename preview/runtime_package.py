@@ -7,6 +7,7 @@ import gzip
 import hashlib
 import io
 import json
+import re
 from pathlib import Path
 import tarfile
 from runtime_build import inventory, sha256
@@ -32,8 +33,17 @@ def notice_files():
     return root, actual
 
 
-def package(runtime, manifest, output):
-    if sha256(manifest) != BASELINE:
+def reviewed_identity(digest, runtime_id):
+    if not re.fullmatch(r'[0-9a-f]{64}', digest):
+        raise ValueError('Expected an explicitly reviewed SHA-256')
+    if not re.fullmatch(r'[a-z0-9][a-z0-9.-]{0,79}', runtime_id):
+        raise ValueError('Invalid runtime identity')
+
+
+def package(runtime, manifest, output, *, baseline_sha256=None, runtime_id=RUNTIME_ID):
+    baseline_sha256 = BASELINE if baseline_sha256 is None else baseline_sha256
+    reviewed_identity(baseline_sha256, runtime_id)
+    if sha256(manifest) != baseline_sha256:
         raise ValueError('Unreviewed baseline manifest')
     expected = json.loads(manifest.read_text())
     if inventory(runtime) != expected:
@@ -92,8 +102,8 @@ def package(runtime, manifest, output):
                 raise ValueError('Unexpected archive member')
     if observed != rows or inventory(runtime) != expected:
         raise ValueError('Archive verification or unchanged-baseline check failed')
-    result = {'runtime_id': RUNTIME_ID, 'name': output.name, 'sha256': sha256(output),
-              'size': output.stat().st_size, 'url': '', 'baseline_manifest_sha256': BASELINE,
+    result = {'runtime_id': runtime_id, 'name': output.name, 'sha256': sha256(output),
+              'size': output.stat().st_size, 'url': '', 'baseline_manifest_sha256': baseline_sha256,
               'baseline_unchanged': True, 'notice_files': len(notice_hashes),
               'overrides': transformed, 'files': rows,
               'scope': 'Local integration candidate; public distribution not admitted'}
@@ -101,10 +111,12 @@ def package(runtime, manifest, output):
     return result
 
 
-def package_signed(libraries, manifest, manifest_sha256, output):
+def package_signed(libraries, manifest, manifest_sha256, output, *,
+                   runtime_id="pear-wine11-cw26.3-dxmt0.80-signed-v2"):
     """Archive exact, separately reviewed signed bytes without transforming PE data."""
     if sha256(manifest) != manifest_sha256:
         raise ValueError('Signed manifest changed')
+    reviewed_identity(manifest_sha256, runtime_id)
     expected = json.loads(manifest.read_text())['files']
     if libraries.is_symlink() or inventory(libraries) != expected:
         raise ValueError('Signed runtime inventory changed')
@@ -138,7 +150,7 @@ def package_signed(libraries, manifest, manifest_sha256, output):
             observed.append(dict(row, mode=member.mode))
     if observed != rows or inventory(libraries) != expected:
         raise ValueError('Signed archive verification failed')
-    result = {'runtime_id': 'pear-wine11-cw26.3-dxmt0.80-signed-v2',
+    result = {'runtime_id': runtime_id,
               'name': output.name, 'sha256': sha256(output), 'size': output.stat().st_size,
               'url': '', 'signing_manifest_sha256': manifest_sha256, 'files': rows,
               'scope': 'Signed candidate; notarization, execution and release qualification are separate'}

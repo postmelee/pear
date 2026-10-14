@@ -24,6 +24,14 @@ class PackageTests(unittest.TestCase):
                          '    name: "fixture.tar.gz", url: "", sha: "' + 'a' * 64
                          + '", size: 123,\n};\n')
 
+    def test_reviewed_identity_rejects_missing_digest_and_unsafe_names(self):
+        for digest in ('', 'a' * 63, 'g' * 64):
+            with self.assertRaisesRegex(ValueError, 'reviewed SHA-256'):
+                p.reviewed_identity(digest, 'pear-test-v3')
+        for identity in ('../old', 'bad"name', '', 'a' * 81):
+            with self.assertRaisesRegex(ValueError, 'runtime identity'):
+                p.reviewed_identity('a' * 64, identity)
+
     def test_override_changes_only_reviewed_marker(self):
         data = b'x' * 64 + b'Wine builtin DLL' + b'y' * 64
         out = p.native_dxmt(data)
@@ -55,6 +63,14 @@ class PackageTests(unittest.TestCase):
                 out = root / 'candidate.tar.gz'
                 result = p.package(runtime, manifest, out)
                 self.assertTrue(result['baseline_unchanged'])
+                successor = p.package(runtime, manifest, root / 'successor.tar.gz',
+                    baseline_sha256=p.sha256(manifest), runtime_id='pear-test-v3')
+                self.assertEqual(successor['runtime_id'], 'pear-test-v3')
+                self.assertEqual(successor['baseline_manifest_sha256'], p.sha256(manifest))
+                with self.assertRaisesRegex(ValueError, 'Unreviewed'):
+                    p.package(runtime, manifest, root / 'wrong.tar.gz',
+                        baseline_sha256='a' * 64, runtime_id='pear-test-v3')
+                self.assertFalse((root / 'wrong.tar.gz').exists())
                 with tarfile.open(out) as archive:
                     self.assertFalse(any('private' in n for n in archive.getnames()))
                     self.assertEqual(archive.getmember('Libraries/Wine/bin/wine').mode, 0o755)
@@ -77,6 +93,9 @@ class PackageTests(unittest.TestCase):
                 self.assertEqual(archive.extractfile('Libraries/wine').read(), binary.read_bytes())
                 self.assertEqual(archive.getmember('Libraries/wine').mode, 0o755)
                 self.assertEqual(archive.getmember('Libraries/wine64').linkname, 'wine')
+            successor = p.package_signed(libraries, manifest, digest, root/'successor.tar.gz',
+                                         runtime_id='pear-test-signed-v3')
+            self.assertEqual(successor['runtime_id'], 'pear-test-signed-v3')
             with self.assertRaisesRegex(ValueError, 'fresh'):
                 p.package_signed(libraries, manifest, digest, root/'signed.tar.gz')
             with self.assertRaisesRegex(ValueError, 'manifest changed'):
