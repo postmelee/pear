@@ -331,3 +331,19 @@ production launch environment has been changed at this checkpoint.
 Checks: 31 runtime Python tests passed; 14 actual guest ownership cases passed;
 source notice gate and git diff --check passed. This is a Stage 3 continuation
 checkpoint, not completion or approval of public distribution.
+
+
+Follow-up control: the unchanged signed baseline ran the identical i386 fixture.
+It failed renderer-owned and utility-owned cleanup as expected while all five
+exclusion controls passed. The fixture therefore detects absent containment;
+it does not merely pass on either runtime. After exact open-handle absence was
+checked, its synthetic-only prefix was released (1,494,487,264 logical bytes;
+1,498,288,128 allocated bytes; measured free-space increase 1,500,098,560 bytes).
+The executable, source and all outcome logs remain available. The complete CI
+runtime will use a fresh synthetic prefix, so this prefix has no remaining
+consumer. The task's diagnostic lease was released; no host execution is active.
+
+Complete reconstruction was started from c6a6c4d in GitHub run 38630377016.
+The concurrent existing app/CLI candidate run 38630376850 passed its portable
+and Apple Silicon checks; its signing job was skipped by the exact-SHA gate.
+That app still pins the old runtime and is not the corrected release candidate.

@@ -31,5 +31,27 @@
   "forced_cleanup": false,
   "game_verification": "not performed on this candidate",
   "root_cause": "Intermittent orphan cause not reproduced; ownership-based containment tested",
-  "timing": "Build and synthetic phases measured in private receipts; user-visible/manual endpoint not independently timestamped"
+  "timing": "Build and synthetic phases measured in private receipts; user-visible/manual endpoint not independently timestamped",
+  "baseline_negative_control": {
+    "expected_failure_control": true,
+    "exit": 1,
+    "checks": [
+      "renderer-owned: FAIL (error=0)",
+      "utility-owned: FAIL (error=0)",
+      "optin-off: PASS (error=0)",
+      "wrong-parent-path: PASS (error=0)",
+      "other-child-image: PASS (error=0)",
+      "renderer-parent-excluded: PASS (error=0)",
+      "unknown-role: PASS (error=0)"
+    ],
+    "scope": "unchanged signed baseline, isolated synthetic prefix, i386 fixture"
+  },
+  "synthetic_prefix_release": {
+    "reason": "All diagnostic and negative-control consumers finished; CI creates its own fresh synthetic prefix",
+    "logical_bytes": 1494487264,
+    "allocated_bytes": 1498288128,
+    "free_before": 4524105728,
+    "free_after": 6024204288,
+    "logs_retained": true
+  }
 }
