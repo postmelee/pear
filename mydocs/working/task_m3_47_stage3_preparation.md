@@ -357,3 +357,11 @@ checks pass. The package helpers can record a new explicit identity and reviewed
 manifest without rewriting the historical v2 constants; negative digest/name
 checks run before output creation. The signing handoff still needs the successful
 reconstruction provenance and human approval before execution.
+
+
+The app/CLI shared launch environment now selects the exact installed CEF browser
+path for the opt-in lifetime policy. The existing GPU policy, Wine loader path
+and game DLL overrides remain unchanged. All 24 Preview Rust tests, formatting,
+incremental source notices and whitespace checks passed. The production runtime
+pin remains signed-v2 until the reconstructed/signed candidate is admitted; this
+source change alone does not activate the new kernelbase policy on that baseline.

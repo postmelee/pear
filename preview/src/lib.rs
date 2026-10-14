@@ -427,6 +427,10 @@ impl Session {
             .env("WINEPREFIX", self.prefix())
             .env("WINEARCH", "win64")
             .env("PEAR_STEAM_IN_PROCESS_GPU", "1")
+            .env(
+                "PEAR_STEAM_WEBHELPER_PATH",
+                r"C:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe",
+            )
             .env("WINEDEBUG", "-all")
             .env(
                 "WINEDLLOVERRIDES",
@@ -930,6 +934,12 @@ mod tests {
         assert_eq!(
             vars.get(OsStr::new("PEAR_STEAM_IN_PROCESS_GPU")),
             Some(&Some(OsStr::new("1")))
+        );
+        assert_eq!(
+            vars.get(OsStr::new("PEAR_STEAM_WEBHELPER_PATH")),
+            Some(&Some(OsStr::new(
+                r"C:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe"
+            )))
         );
         assert!(!vars.contains_key(OsStr::new("WINEMSYNC")));
     }
