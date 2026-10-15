@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
 'use strict';
 
 // Compatibility content is reviewed repository data; Steam identities are public metadata. No API token or write API.

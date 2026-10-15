@@ -2,8 +2,7 @@
 
 Start with the [reviewed records](records.md). They describe exact configurations,
 including incomplete and failed tests. They are not a universal supported-games
-list. The current Rosetta Preview has no qualified public download; no player-ready
-Rosetta-free preview exists. See the [Preview guide](../rosetta-preview.md).
+list. The Rosetta Preview is available; no player-ready Rosetta-free preview exists. See the [Preview guide](../rosetta-preview.md).
 
 ## Read the records
 
@@ -110,8 +109,8 @@ Commit JSON and generated `records.md` together. The optional site contains only
 allowlisted public HTML, CSS, JavaScript, reviewed JSON and Pear branding.
 Game detail filenames are derived only from validated numeric App IDs. No private diagnostics or full checkout is copied.
 The [community checklist](../community.md#public-opening-checklist-for-maintainers)
-controls Pages activation after the approved public transition. Pages is not live
-yet; Wiki entries should link here rather than maintain a second data set.
+controls Pages activation after the approved public transition. The [public catalog](https://postmelee.github.io/pear/) uses this source;
+Wiki entries should link here rather than maintain a second data set.
 
 ## Refresh Steam search metadata
 

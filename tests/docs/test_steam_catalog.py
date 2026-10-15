@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Synthetic public metadata fixtures; no real key, account or compatibility claims."""
 import copy
 import importlib.util

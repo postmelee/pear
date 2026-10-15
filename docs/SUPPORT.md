@@ -1,6 +1,6 @@
 # Get help with Pear
 
-A public Preview download is not yet qualified. Start with the
+For the current public Preview, start with the
 [Preview status and guide](rosetta-preview.md) for requirements and data preservation.
 
 - **Setup question:** ask in [Q&A](https://github.com/postmelee/pear/discussions/categories/q-a).

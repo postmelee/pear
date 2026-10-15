@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Synthetic names only; these tests do not assert game compatibility.
 const test = require('node:test');
 const assert = require('node:assert/strict');

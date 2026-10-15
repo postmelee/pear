@@ -2638,3 +2638,20 @@ private state. Retain verification receipts through release review; local build
 intermediates are disposable after signed successor comparison. The unpublished
 preview.3 draft can be replaced after new exact-source signing, never published
 preview.2. No new full runtime build or twenty-minute game test is required.
+
+
+## Final delivery and catalog authorization (2026-10-15)
+
+The requester confirmed the final fresh standard-user checklist without problems,
+then reported deleting that test account after checking all required items. Record
+this as owner-reported same-Mac reproduction; no second physical Mac or exact
+play timing is inferred. The requester explicitly authorized final verification
+recording, release guidance/download activation and public catalog completion.
+Existing approved destinations are retained: README, docs/README.md,
+docs/rosetta-preview.md, docs/development/preview-release.md and docs/compatibility.
+The existing allowlisted static generator and master-only Pages workflow are
+reused; no new website subsystem or runtime build is needed. Changes are
+documentation/catalog-only and leave immutable e574ba1 release bytes unchanged.
+Retention: reuse existing signed/source assets and receipts; new site/check output
+is bounded to 50 MiB, owned by #47 and disposable after public delivery verification.
+No extra runtime/prefix copy or test-account deletion is needed.

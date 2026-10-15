@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Pear contributors
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Fetch public Steam game identities; never publish raw API responses or keys."""
 import argparse

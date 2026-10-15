@@ -4,8 +4,8 @@ This tutorial gives you a small local success before choosing runtime work. You
 need Git and Python 3 for documentation checks. AI tools, a Steam account, games
 and Apple signing credentials are not required for these checks.
 
-The repository is being prepared for public access. Until it opens, cloning
-requires existing access. Do not treat a private URL as a public download.
+The repository is public. The [player guide](../rosetta-preview.md) links to
+prebuilt downloads; the steps below are for contributors.
 
 ## Get the source
 

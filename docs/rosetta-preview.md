@@ -1,12 +1,11 @@
 # Pear Windows Steam preview
 
-Status: [preview.2 qualification pre-release](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.2)
-is public. App/CLI/DMG signing, notarization, anonymous download verification,
-new-runtime gameplay and save/relaunch checks passed. Final fresh-account
-installation of this exact runtime remains pending. The preview.3 candidate
-renames the app to **Pear** and is awaiting its own signing and package checks.
-Local development builds are not notarized releases.
-[Release preparation](development/preview-release.md) tracks the remaining work.
+Status: **[Pear 0.1.0-preview.3](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3) is available.**
+[Download the Mac app](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg) or use the
+[download guide](https://postmelee.github.io/pear/download.html). This release uses
+**Wine 11.0 and DXMT 0.80** and requires Rosetta. Signing, notarization, public
+download checks and owner-confirmed fresh standard-account installation passed.
+The second account was on the same Mac, not a second physical Mac.
 
 Pear is intended to be free and open source. The preview prepares Windows Steam
 on Apple Silicon so you can use your library without installing or configuring
@@ -15,7 +14,7 @@ in the [delivery plan](delivery-plan.md).
 
 ## Before using a release
 
-The candidate is built for Apple Silicon and macOS 26 or later; actual execution
+The release is built for Apple Silicon and macOS 26 or later; actual execution
 has only been observed on M4 Pro, macOS 26.5.2. Broader support is unverified.
 Rosetta, internet access, a Steam account and ownership of games are required.
 Allow several GB for setup plus each game's requirements. Steam's first update
@@ -24,9 +23,9 @@ beyond the small Pear download.
 
 ## App experience
 
-Once a verified release is published, its release page will provide the app,
-checksums, exact requirements and test results. Open its DMG, drag the app to
-Applications, then open Pear normally (Pear Preview in preview.2 and earlier).
+The release page includes downloads, checksums, source and test scope. Open the
+DMG, drag **Pear** to Applications, then open it normally. Keep macOS security
+protections enabled; no Terminal or developer enrollment is needed for the app.
 
 1. On first setup in preview.2 or later, review the runtime and Steam installer download
    sizes, then select **Download and install**. Pear shows downloaded bytes and
@@ -40,6 +39,10 @@ Applications, then open Pear normally (Pear Preview in preview.2 and earlier).
    automatically without asking for download confirmation again. Steam may require an
    update or renewed sign-in; a fresh client download is not required on every run.
 
+While Steam starts, Pear shows **Opening Steam…** and a progress indicator.
+**Steam window is open** means a matching window was detected; Steam may still
+be loading or updating. If opening takes longer, Pear offers a retry.
+
 **About Pear** shows the Pear, Wine and DXMT versions. Full removal and automatic
 runtime repair are not included in this interface.
 
@@ -50,7 +53,8 @@ and Steam through their own menus. Other games are selectable but unverified.
 ## Optional CLI
 
 The CLI uses the same setup and state as the app. It does not require Node.js,
-Python, Xcode or Rust on the player's Mac. After extracting a verified CLI release:
+Python, Xcode or Rust on the player's Mac. Download the [CLI archive](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/pear-preview-0.1.0-preview.3-macos-arm64-cli.zip),
+extract it and run:
 
 ```sh
 ./pear-preview
@@ -94,8 +98,10 @@ download progress, cancellation and retry. The final signed-v3 runtime passed
 requester-confirmed twenty-plus active gameplay minutes, input and audio. The
 final signed preview.2 app passed retained-login launch, latest-progress
 preservation after relaunch and normal exit. Its public DMG, CLI and runtime
-passed anonymous HTTPS checksum verification. Final fresh-account delivery of
-this candidate remains pending. See the [dated verification record](../mydocs/working/task_m3_47_stage3_preparation.md).
+passed anonymous HTTPS checksum verification. On October 15, the owner confirmed the final preview.3 public-download,
+fresh standard-account setup, Steam/game launch and save/relaunch checklist
+without problems, then deleted the test account. No repeat is required; this
+is owner-reported evidence and not an independent second-Mac reproduction. See the [dated verification record](../mydocs/working/task_m3_47_stage3_preparation.md).
 No all-game, Steam Cloud, controller, performance or power claim is made.
 
 The previous login-window close issue was corrected in signed-v3. One real
@@ -126,6 +132,6 @@ Pear uses a pinned externally downloaded runtime and the official Valve installe
 Game downloads come through Steam. Pear's app/CLI packages contain no game files,
 Steam account data or Wine runtime payload. See the [component record](../preview/THIRD_PARTY_NOTICES.md).
 Pear original code is [GPL-3.0-or-later](../LICENSE); upstream components retain
-their terms. The candidate notice/source comparison is recorded; final binary and source
+their terms. The release notice/source comparison is recorded; final binary and source
 packages must be paired and made available at release. Downloading separately
 is not a blanket exemption from obligations.

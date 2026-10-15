@@ -1,7 +1,7 @@
 # Building and releasing the Steam preview
 
-Status: release preparation, October 15, 2026. The app/CLI are development
-candidates; no public download is qualified. See the [player guide](../rosetta-preview.md)
+Status: preview.3 is public as of October 15, 2026. Its signed app/CLI/DMG,
+public downloads and same-Mac fresh-account installation have passed their checks. See the [player guide](../rosetta-preview.md)
 and [component record](../../preview/THIRD_PARTY_NOTICES.md).
 
 ## Build one shared core
@@ -110,14 +110,14 @@ notarization receipts and source/notice review.
 The runtime URL in `preview/src/runtime_pin.rs` points to the immutable
 `v0.1.0-preview.2/pear-runtime-signed-v3.tar.gz` asset, published with its matching
 source kit as a qualification pre-release. Anonymous delivery and hashes passed.
-The preview.3 naming candidate reuses these exact runtime bytes and changes the
-app name to Pear; its app/CLI/source archives need distinct versions and new
-signing. Preserve published preview.1 and preview.2 assets. Recheck affected app
+The preview.3 release reuses these exact runtime bytes, names the app Pear and
+adds Steam-opening feedback. Its app/CLI/DMG passed new signing and notarization
+with matching e574ba1 source. Preserve published preview.1 and preview.2 assets. Recheck affected app
 metadata, package contents and actual launch; do not rebuild the unchanged
 runtime or repeat its sustained-play check for a display-name change.
 Submission ZIPs are not final downloads: package after stapling and bind source
-to the exact committed release revision. Final clean-account delivery remains
-separate and pending; earlier account checks are scoped to their own artifacts.
+to the exact committed release revision. Final preview.3 clean-account delivery was confirmed by the owner on October 15
+on the same physical Mac. Earlier account checks retain their own artifact scope.
 
 ## Release admission
 

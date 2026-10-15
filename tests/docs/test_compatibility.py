@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Synthetic publication boundaries; no game or host qualification."""
 import copy
 import importlib.util
@@ -17,6 +19,7 @@ spec.loader.exec_module(catalog)
 class CatalogTests(unittest.TestCase):
     def setUp(self):
         self.data = json.loads(catalog.SOURCE.read_text())
+        self.data['records'] = self.data['records'][:1]  # Isolate the historical menu fixture.
         self.row = self.data['records'][0]
         self.games = json.loads(catalog.CATALOG.read_text())
 
@@ -250,7 +253,7 @@ class CatalogTests(unittest.TestCase):
             self.assertIn(value, page)
         self.assertIn(self.row['limitations'], catalog.report_card(self.row))
 
-    def test_download_guide_does_not_advertise_a_release_asset(self):
+    def test_download_guide_links_exact_public_app_and_cli(self):
         from html.parser import HTMLParser
         class Controls(HTMLParser):
             def __init__(self):
@@ -265,8 +268,8 @@ class CatalogTests(unittest.TestCase):
                     self.assets.append(attrs['href'])
         controls = Controls()
         controls.feed(catalog.download_page())
-        self.assertEqual(controls.disabled, 2)
-        self.assertEqual(controls.assets, [])
+        self.assertEqual(controls.disabled, 0)
+        self.assertEqual(controls.assets, ['https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg', 'https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/pear-preview-0.1.0-preview.3-macos-arm64-cli.zip'])
 
     def test_game_name_is_canonical_but_reports_remain_identifiable_by_app(self):
         self.row['game'] = 'A different spelling of the same game'

@@ -10,7 +10,7 @@ planned feature is not a usable release.
 
 | Need | Start here |
 |---|---|
-| Learn by doing | [First Steam session](rosetta-preview.md#app-experience), once a verified release is available; [first local check/build](development/getting-started.md) today |
+| Learn by doing | [First Steam session](rosetta-preview.md#app-experience); [first local check/build](development/getting-started.md) today |
 | Complete a task | [Report a game result](compatibility/README.md#submit-a-result), [get help](SUPPORT.md), [submit a change](contributing.md#propose-and-submit-a-change), [build/sign a candidate](development/preview-release.md) |
 | Look up details | [Preview requirements](rosetta-preview.md#before-using-a-release), [CLI](rosetta-preview.md#optional-cli), [data location](rosetta-preview.md#data-and-recovery), [record meanings](compatibility/README.md#read-the-records), technical references below |
 | Understand the design | [One delivery plan](delivery-plan.md), [architecture](architecture.md), [Rosetta-free contribution path](development/rosetta-free.md), [evidence and community boundaries](community.md) |

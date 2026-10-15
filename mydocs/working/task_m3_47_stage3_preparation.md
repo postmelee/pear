@@ -746,3 +746,14 @@ this publication is not broad Mac/game qualification. Retain signed/source archi
 verification receipts and all private authenticated/recovery state. Approximately
 30 MiB of new app/package/source output fits the approved 100 MiB budget, with
 no additional runtime/prefix copy. Private receipts: stage3/launch-status.
+
+
+## Final fresh-account confirmation (2026-10-15)
+
+The owner confirmed the final preview.3 installation checklist without problems,
+and clarified that all required items were checked before deleting the test
+account. Record this as same-Mac fresh standard-user evidence. Account identity,
+per-step timestamps and screenshots were not supplied; no second physical Mac
+or instrumented timing is inferred. The requester explicitly authorized final
+records, real download activation and catalog publication. See the
+[Stage 3 report](task_m3_47_stage3.md) for final scope and retention.

@@ -15,12 +15,13 @@ into official Windows Steam, then choose an owned game from your library. The ap
 and optional CLI share the same setup. Routine players should not need Terminal,
 Xcode, a developer account or a paid compatibility app.
 
-**A public download is not available yet.** The app and CLI are local notarized
-candidates. The pinned replacement runtime has passed notice/source comparison
-and same-host Steam/game checks. Recovery, measured sustained play and final
-clean-Mac delivery remain pending. Notarization alone does not complete these
-checks. The candidate targets Apple Silicon and macOS 26+; observed execution is
-limited to M4 Pro/macOS 26.5.2.
+**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg)** · [Catalog and installation options](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3)
+
+Preview **0.1.0-preview.3** uses **Wine 11.0 and DXMT 0.80** and requires
+Apple Silicon, macOS 26+ and Rosetta. Megabonk gameplay, input/audio, saved
+progress, recovery and a fresh standard-account installation were checked on
+one M4 Pro / macOS 26.5.2. The second account is on the same Mac; other hardware
+and games remain unverified.
 
 | Start here | What you will find |
 |---|---|
@@ -35,7 +36,7 @@ limited to M4 Pro/macOS 26.5.2.
 
 | Track | Current scope | Status |
 |---|---|---|
-| Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Signed app/CLI: official login, Megabonk installation, Steamworks and menu/input verified on one Mac; public distribution pending |
+| Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Public preview.3; Megabonk play, save/relaunch, recovery and fresh-account setup verified on one Mac |
 | Rosetta-free runtime (M1) | Run owned Windows Megabonk with every required host process and library free of Rosetta | Under development; no player-ready native preview |
 
 On October 11, an experimental ARM64 Wine/FEX/DXMT configuration reached the

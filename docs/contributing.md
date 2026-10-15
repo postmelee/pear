@@ -74,7 +74,7 @@ available under those terms, with copyright and upstream attribution preserved.
 Existing MIT/LGPL/GPL notices and additional permissions remain in force; the
 Hyper-Waterfall framework retains its MIT attribution. Do not replace upstream
 terms with Pear's root license. The [preview component record](../preview/THIRD_PARTY_NOTICES.md)
-tracks the separate runtime source/notice work still required for release.
+records the separate runtime source and notice obligations for each release.
 
 ### Source notices
 
