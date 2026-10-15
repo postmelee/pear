@@ -17,6 +17,9 @@ planned feature is not a usable release.
 
 ## Technical references and engineering guides
 
+- [Split native development components](development/rosetta-free.md#split-native-development-components): private source repositories, selected reconstruction/fixture/recovery interfaces and isolated Pear development selection; source and execution gates remain explicit.
+- [Common runtime developer guide](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md): collaborator-access build/input locks, isolated assembly and bounded recovery. Historical Wine/FEX/DXMT guides below retain their original evidence scope.
+
 - [Preview release procedure](development/preview-release.md): maintainer signing and distribution gates.
 - [Contributor guide](contributing.md): scope, verification, upstream policies and licensing.
 - [Runtime contracts](runtime-contracts.md): seven experimental record kinds, reference validation, source handoff, and supervisor/observer ownership.

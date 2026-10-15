@@ -4,6 +4,25 @@ This developer CLI implements inspection, evaluation, immutable fixture activati
 
 The [runtime contracts](../runtime-contracts.md) define independent eligibility and ownership requirements. The [profile guide](../game-profiles.md) explains fixture inputs and the researched Megabonk profile. Installation/library discovery, a Mac UI, automatic migration and save rollback remain separate work.
 
+## Separate development candidate path
+
+[Task #56](https://github.com/postmelee/pear/issues/56) provides a separate
+[runtime-owned development reconstruction and diagnostic path](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md). Its
+explicit local candidate/operation records and current artifact authorization
+do not change the Rust manager commands documented below. A diagnostic assembly
+receipt is not a product `runtime_artifact` record, and a synthetic caller policy
+cannot authorize it for supported play.
+
+The separate [Pear development selector](rosetta-free.md#select-an-isolated-development-candidate)
+provides the closed local spec and exact prepare/select/inspect/diagnose commands.
+It binds a clean committed runtime tool root, preserves Preview/default state and
+delegates to the existing runtime owner. Its portable/source checkpoint and
+fresh selected-fixture execution remain separate Stage 5 gates. The
+[Rosetta-free guide](rosetta-free.md#split-native-development-components) lists
+component owners and prerequisites. Candidate3's native four, three bootstrap controls, seven D36 cases and visible
+presentation-frame check passed with independent release evidence. This document does not
+waive required oracles or enable real-runtime admission in the existing manager.
+
 ## Build and reproduce
 
 The tested development setup is ARM64 macOS 26.5.2, Xcode 26.6 with SDK 26.5, Rust/Cargo 1.94.1 and CPython 3.14. The build targets macOS 26.0; this does not declare an end-user minimum. Use physical paths without symlink components. Work from the repository root and keep all generated evidence under ignored `.build/task9/`.
@@ -22,6 +41,18 @@ PEAR_MANAGER_BUILD=.build/task9/stage4 .build/task9/venv/bin/python -B -m unitte
 These tests create their own finite native fixtures, policies, read-only images, observer sockets and unrelated sentinel. The CLI test executes the marked command examples below as argument arrays, checks actual settings/save persistence and both cancellation signals, and retains sanitized command outcomes locally. Failures remain failures; a missing mount identity is not retried through writable media. Run image-creating suites sequentially: availability during concurrent image attach/detach activity is not qualified.
 
 Build receipts bind their recorded source and binary inputs. Reuse an existing output only when those identities remain valid; changed inputs require a fresh build and affected checks. Run labels such as `stage4` are output locations, not an authority. Raw media commands/private scratch paths stay in ignored local evidence; do not upload them as public logs.
+
+At the Task #56 checkpoint, the existing fresh builder refuses the current
+whole-file mismatch between `manager/Cargo.toml` and
+`experiments/manager/rust/Cargo.toml`: the manager manifest now contains its
+package license field. The original builder and these command examples remain
+unchanged. Existing executable-policy source and command blocks still match the
+recorded Task #9 Stage 6.1 evidence, but its exact binary/raw build output is not
+available in the checked retained roots. Older retained Task #10 binaries bind a
+different policy implementation and cannot replace it. Task #56 therefore makes
+no fresh manager/profile test or clean-rebuild claim; the metadata reconciliation
+belongs to a separate manager change. Its independent portable contract run
+passed 154 tests plus the v1/v2 schema/example validators without a manager build.
 
 ## Manual fixture setup
 

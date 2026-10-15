@@ -1,1 +1,92 @@
-{}
+{
+  "tests/development/game/test_capture_policy.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_input_ledger.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_manual_play_adapter.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_manual_play_joint.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_play_adapter.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_play_handoff.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_play_pump.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_play_watch.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tests/development/game/test_play_witness.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/adapter.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/capture_policy.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/feedback.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/handoff.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/inputs.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/manual.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/watch.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/window.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  },
+  "tools/development/game/witness.py": {
+    "license": "MIT",
+    "notice": "tools/development/game/MIT.txt",
+    "reason": "Original Pear MIT source/test import; exact origin file and body identities plus bounded adaptations are recorded in tools/development/game/import-provenance.json. Preserve original SPDX terms and the adjacent permission notice."
+  }
+}

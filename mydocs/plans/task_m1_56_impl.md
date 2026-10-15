@@ -173,6 +173,29 @@ Record reused historical evidence with its unchanged inputs/claim scope. Disting
 
 ## Stage 5 - Connect developer entrypoints
 
+Stage 5 uses two reported and committed checkpoints within the approved scope.
+**5.1** completes the runtime/Pear source integration and required portable
+checks, then bundles the source and substage report in their owning repositories.
+Commit the runtime source before creating the final development lock so the
+selector can require an exact clean checkout; a dirty checkout at an older HEAD
+is not the new tool identity. After that commit, create the source-only detached
+`.worktrees/runtime-development-v1` checkout at the exact Stage 5.1 revision,
+with a 128 MiB additional-space allowance and a separate 6 GiB reserve. It copies
+no runtime, input pack, prefix or game. Bind new fixture/game producer manifests
+and the selector to this clean immutable tool root; keep later source reports
+and documentation on `runtime-task56`. Task #56 owns the retained source
+checkout until all selected producer/diagnostic consumers accept a successor;
+no deletion is authorized. Recheck capacity and exact checkout identity before
+creation and record the materialized result. Historical component build pins,
+reconstruction lock, candidate and earlier producer receipts remain unchanged.
+**5.2** binds that committed runtime tool revision, prepares and inspects the
+exact Pear development selection, and executes the required fresh seven
+synthetic controls through the selector, with their original authority, result,
+cleanup and independent-release checks. Its report binds the exact source and
+operation identities. Stage 5 is complete only after both checkpoints and all
+listed verification requirements pass. No required check is removed or replaced
+by the source-only checkpoint; game copying/execution remains unperformed.
+
 ### Artifacts
 
 - Narrow Pear development candidate adapter/configuration and tests, using runtime-owned build/diagnostic entrypoints.
