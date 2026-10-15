@@ -414,3 +414,36 @@ Apple Silicon build; its still-old-runtime signing job was cancelled before
 credentials. Do not treat that app as the new-runtime candidate. A local
 read-only check found no Wine/Steam/game processes and the advisory lock available;
 recheck when admitting actual host execution. Signing is still in progress.
+
+## Signed runtime admitted for local candidate verification
+
+Protected run 38659029719 completed successfully after human approval. Its
+notarization receipt is Accepted (submission 8d008588-a874-4630-b5c0-32fa103eb74a).
+Forty-five Mach-O files were signed; the receipt confirms original, non-Mach-O
+and executable-text preservation. Only Wine/bin/wine and
+Wine/lib/wine/x86_64-unix/wine carry disable-library-validation and unsigned
+executable-memory entitlements; the other 43 carry none. Temporary signing
+credentials were removed successfully. Artifact 11938217960 retains the runtime,
+corresponding source kit and receipts for seven days.
+
+Signed runtime identity: pear-wine11-cw26.3-dxmt0.80-signed-v3;
+archive size 542,451,640 bytes; SHA-256
+eb32a9ef8012216d11348c1af089254f2127f28e2b330cf4f1c700f41967d7b0.
+Corresponding source kit SHA-256:
+4577a0d67c82e649194ce85fa932039598243c2d2afcde252c6cf014f5199ec3.
+Seven receipt hashes match signing provenance. The runtime payload download is
+still in progress at this checkpoint, so local payload verification is pending.
+
+The local app/CLI pin now selects this candidate with no public URL. No release
+asset or website download has been enabled. Local Rust tests (24), Swift
+presentation fixtures and ad-hoc app signature verification passed. Initially,
+locked libc 0.2.186 was absent from the local cache; cargo fetch --locked restored
+it and the normal offline build passed. This app is a local development artifact,
+not a Developer ID app qualification.
+
+The advisory host lock was acquired; the no-login prefix was copied using APFS
+copy-on-write only after confirming no open handles or Steam account record.
+The clone has no ready marker. prepare must execute wineboot -u and replace DXMT
+before a new-runtime ready marker can exist. The original diagnostic prefix,
+authenticated prefix, games and saved-state archives remain unchanged. This is
+an isolated test transition; production migration is not claimed implemented.
