@@ -447,3 +447,24 @@ The clone has no ready marker. prepare must execute wineboot -u and replace DXMT
 before a new-runtime ready marker can exist. The original diagnostic prefix,
 authenticated prefix, games and saved-state archives remain unchanged. This is
 an isolated test transition; production migration is not claimed implemented.
+
+Local runtime payload verification completed: SHA-256 and 542,451,640-byte size
+match the signed candidate manifest. Installed inventory matches signing.json;
+all 45 strict codesign checks and exact entitlement comparisons pass locally.
+The source kit stays retained in CI and has not been downloaded locally.
+
+An attempted transition of the old diagnostic prefix was rejected as evidence:
+prepare completed, but both installed kernelbase.dll hashes still matched old
+diagnostic files rather than the reconstructed runtime. Merely calling wineboot
+-u or relabeling readiness therefore does not establish this transition. That
+quiescent test clone was renamed and retained, not used for the new-runtime UI
+claim. A fresh Windows prefix reused only its unauthenticated Steam directory.
+Actual prepare completed; both x86_64 and i386 kernelbase hashes now exactly match
+the new runtime. Production upgrade behavior remains unresolved and fail-closed.
+
+The local app at d65d713 (ad-hoc app, notarized runtime) was launched into this
+fresh no-login environment. Read-only exact-root process observation is active.
+The requester was asked to confirm readable login/QR and close Steam without
+logging in, then close Pear. No UI/exit success is recorded until that response
+and process observations arrive; no forced cleanup is used. Authenticated state
+and the prior signed release remain unchanged.
