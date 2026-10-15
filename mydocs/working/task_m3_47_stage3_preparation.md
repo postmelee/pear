@@ -404,3 +404,13 @@ Required reviewer postmelee and the codex/publish-task47 environment branch
 restriction remain active. No signing job has been dispatched at this checkpoint;
 no signing credentials were read. Signed runtime admission and local isolated
 Steam/game verification remain outstanding. preview.2 remains draft.
+
+Protected runtime signing run 38659029719 was dispatched at exact signing revision
+181e2629ac6b11aa6ae575ae4f032ea05d34fd7d; the requester confirmed approval.
+YAML and four embedded Python blocks parse, source notice and whitespace checks
+pass. Push-triggered reconstruction 38659028866 was cancelled as redundant for
+this notice-only repack. App/CLI run 38659029144 passed portable fixtures and the
+Apple Silicon build; its still-old-runtime signing job was cancelled before
+credentials. Do not treat that app as the new-runtime candidate. A local
+read-only check found no Wine/Steam/game processes and the advisory lock available;
+recheck when admitting actual host execution. Signing is still in progress.
