@@ -112,6 +112,8 @@ Generate new build records; compare `.text`/unsigned payloads or explain differe
 
 ## Stage 4 - Verify affected behavior
 
+Implementation checkpoints retain the complete approved scope: **4.1** captures the original supervisor/oracles and verifies the seven D36 categories plus independent resource release; **4.2** verifies remaining native Wine, full CPU/ordering and graphics controls; **4.3** closes editable test-source exports and recovery. A substage commit does not mark all Stage 4 work complete.
+
 ### Artifacts
 
 - Exact candidate verification matrix and results, portable tests, artifact differences and recovery checks.
