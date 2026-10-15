@@ -44,6 +44,7 @@ pub struct Artifact {
     pub sha: &'static str,
     pub size: u64,
 }
+mod migration;
 mod runtime_pin;
 pub use runtime_pin::{RUNTIME, RUNTIME_ID};
 fn runtime_inputs() -> String {
@@ -161,7 +162,9 @@ pub fn setup_info(root: &Path) -> Result<String> {
             .join("Libraries/Wine/bin/wine")
             .is_file();
     let steam = owned
-        && matches(root.join("private/prefix.ready"), RUNTIME_ID)
+        && [RUNTIME_ID, migration::PREVIOUS]
+            .iter()
+            .any(|id| matches(root.join("private/prefix.ready"), id))
         && matches(root.join("private/steam.ready"), STEAM.sha)
         && root
             .join("private/prefix/drive_c/Program Files (x86)/Steam/steam.exe")
@@ -384,7 +387,7 @@ impl Session {
         let ready = self.root.join("private/prefix.ready");
         if ready.try_exists()? {
             need(
-                text(&ready, 100)? == RUNTIME_ID,
+                matches!(text(&ready, 100)?.as_str(), RUNTIME_ID | migration::PREVIOUS),
                 "This installation uses a different runtime. Its games and saves were kept. Continue with its original Pear version; automatic migration is not available.",
             )?;
         } else if self.prefix().try_exists()? {
@@ -454,6 +457,7 @@ impl Session {
             "Rosetta is required. Install it through macOS, then open Pear Preview again."
         })?;
         let lib = self.runtime(runtime, notify)?;
+        self.upgrade_prefix(&lib, notify)?;
         let ready = self.root.join("private/prefix.ready");
         if !ready.exists() {
             self.space(2 * 1024 * 1024 * 1024)?;
@@ -483,20 +487,7 @@ impl Session {
                 ]),
                 30,
             )?;
-            for (arch, system) in [("x64", "system32"), ("x32", "syswow64")] {
-                for name in ["d3d11.dll", "dxgi.dll", "d3d10core.dll", "winemetal.dll"] {
-                    let target = self
-                        .prefix()
-                        .join("drive_c/windows")
-                        .join(system)
-                        .join(name);
-                    replace_file(
-                        &lib.join("DXMT").join(arch).join(name),
-                        &target,
-                        &self.root.join("private"),
-                    )?;
-                }
-            }
+            self.install_graphics(&lib, &self.prefix())?;
             write_new(&ready, RUNTIME_ID.as_bytes())?;
         }
         need(
@@ -786,6 +777,10 @@ mod tests {
         let before = inventory(&root.join("private")).unwrap();
         assert!(setup_info(&root).unwrap().contains("\"ready\":true"));
         assert_eq!(inventory(&root.join("private")).unwrap(), before);
+        fs::write(root.join("private/prefix.ready"), migration::PREVIOUS).unwrap();
+        assert!(setup_info(&root)
+            .unwrap()
+            .contains("\"steam_present\":true"));
         fs::write(root.join("private/prefix.ready"), "different-runtime").unwrap();
         assert!(setup_info(&root).unwrap().contains("\"ready\":false"));
     }

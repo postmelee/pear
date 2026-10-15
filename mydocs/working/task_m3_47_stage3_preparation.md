@@ -481,3 +481,54 @@ existing-prefix upgrade, or the final Developer ID app/CLI/DMG distribution.
 Private receipts remain in stage3/signed-runtime-v3. Release the advisory test
 lease after the verified process absence; retain the new runtime and both prefix
 copies for the remaining comparison and migration investigation.
+
+## Signed-v2 prefix migration and new-runtime game admission (2026-10-15)
+
+The failed diagnostic transition retained PendingFileRenameOperations. Wine's
+setupapi deliberately queues loaded builtin replacements; wineboot -r processes
+them without force/kill flags. That restart made six x86/x64 core DLLs and all
+1,421 installed builtin DLLs checked in the retained copy match signed-v3.
+
+The shared app/CLI core now admits only the reviewed signed-v2 -> signed-v3
+upgrade. It validates the old runtime inventory and quiescence, makes a clonefile
+copy (no full-copy fallback), runs wineboot -u -r then wineboot -r with natural
+server-exit waits, reapplies DXMT and checks installed builtin/core/graphics
+bytes. Original-tree metadata is rechecked before a journaled atomic RENAME_SWAP.
+The previous prefix remains in private/runtime-upgrade-signed-v3/prefix. An
+interrupted post-exchange launch can finish only with matching directory inodes
+and byte verification; unknown states fail closed. Cancellation and retries
+never kill a game/server or remove the original prefix. An unactivated owned
+scratch prefix is disposable only after its server has exited. Additional retry
+layout/cancellation guards were added after the first local executable build.
+
+Thirty Rust tests pass, including clone isolation, stale builtin/core/graphics
+rejection, external path rejection, save-mutation detection and pre/post-exchange
+interruption boundaries. All 68 portable Python fixtures pass without skips.
+Swift presentation fixtures and local ad-hoc signature verification pass for the
+first migration app. Incremental source notices and governance checks pass.
+Final protected CI must build the committed successor with the small retry/UI
+metadata and release-URL updates; the running local app is not that final binary.
+
+Actual migration used a private clone of integrated-signing-v2/state; the source
+was never launched or modified. The outer clone includes 14,283 files, logical
+6,765,474,738 bytes. Measured free space changed from 7,517,900,800 to 7,511,023,616
+bytes during cloning; this is a filesystem observation, not exclusive physical
+allocation. Preparation took 71.03 seconds and returned success. Ten private
+save-related files match the pre-run hashes in the active migrated prefix, its
+preserved backup, and the untouched original. The original marker remains
+signed-v2; only the test clone is signed-v3.
+
+Local app launch was 00:52:18 UTC, after the frozen initial migration source at
+00:49:29 UTC and preparation at 00:50:40–00:51:51 UTC. Steam game handoff completed
+at 00:52:34 UTC. Megabonk and UnityCrashHandler64 processes were observed; neither
+process creation nor handoff is counted as user-operable gameplay. Requester
+confirmation of menu/input/audio and prior progress is pending. Continuous timing
+and exact source hashes are retained privately in migration-feedback-timing.json;
+the comparable historical baseline is unavailable. Real gameplay duration,
+save/relaunch and final signed app qualification remain unperformed for this
+candidate until their respective evidence is collected.
+
+The upcoming preview.2 asset URL is pinned in the app/CLI, with the already
+verified signed-v3 size/hash. It is a release destination, not a currently working
+public download claim. The old public preview.1 and stale preview.2 draft assets
+have not been changed. Stage 3 and public distribution remain incomplete.

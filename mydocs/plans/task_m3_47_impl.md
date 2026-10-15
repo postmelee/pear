@@ -2548,3 +2548,32 @@ signed artifact. This notice-only repack does not require another full compilati
 These are internal implementation/evidence records in mydocs, not new product
 documentation. Cancel only a redundant push-triggered reconstruction of this exact
 notice-refresh commit if created; required package and app checks remain enabled.
+
+The retained failed transition contains PendingFileRenameOperations. Upstream
+setupapi/fakedll.c deliberately delays replacement of loaded builtin DLLs;
+wineboot.c applies those operations on restart. A bounded wineboot -r (without
+kill/force flags) on that unauthenticated copy made all six x86/x64 core DLL
+hashes match signed-v3. Reuse this upstream update/restart sequence rather than
+manually rewriting Windows DLLs or rebuilding Wine again.
+
+Implement only the reviewed signed-v2 -> signed-v3 transition in the shared
+Preview library. Require the original server to exit naturally, validate its
+runtime inventory, clone its prefix using macOS clonefile (no full-copy fallback),
+and prepare the clone. Wait for the clone's server to exit, run wineboot -r,
+wait again, restore pinned DXMT, and verify installed builtin/core DLL bytes.
+Keep the original prefix active until validation succeeds. Atomically exchange
+the two directories using macOS RENAME_SWAP; retain the old prefix as recovery
+state. A durable inode journal distinguishes interruption before/after exchange;
+complete only a verified exchange, and refuse unknown identities/layouts. Hold
+Pear's existing state lock and check original tree metadata and server quiescence
+again before activation. Do not force-stop Steam, games, or other tasks.
+
+Synthetic tests cover clone isolation, unknown states, changed DLL rejection and
+interruption boundaries. Actual game/save checks use an APFS clone of the owned
+baseline in stage3/signed-runtime-v3/game-state, with both runtime inventories
+retained. Budget 2 GiB of additional copy-on-write mutations; current free space
+is approximately 7 GiB. Immutable runtime data is cloned only because each
+standalone test state requires its own valid non-symlink runtime root. Keep
+original authenticated state and recovery archives unchanged. The state clone,
+failed candidates and receipts stay private/ignored through release acceptance.
+Internal plan/evidence updates stay in mydocs; no product-documentation move.

@@ -4,7 +4,7 @@
 pub const RUNTIME_ID: &str = "pear-wine11-cw26.3-dxmt0.80-signed-v3";
 pub const RUNTIME: super::Artifact = super::Artifact {
     name: "pear-runtime-signed-v3.tar.gz",
-    url: "",
+    url: "https://github.com/postmelee/pear/releases/download/v0.1.0-preview.2/pear-runtime-signed-v3.tar.gz",
     sha: "eb32a9ef8012216d11348c1af089254f2127f28e2b330cf4f1c700f41967d7b0",
     size: 542451640,
 };
