@@ -1,0 +1,45 @@
+{
+  "assembly_tool_checkpoint": "625fd0f97b9955e43f71cb7906ccc41d8f70853b",
+  "candidate": {
+    "assembly_operation": {
+      "sha256": "0de34ec5eb5afcf7d088f3032995ccf4d6a69a73b6225d47e27bad1947fc6b59",
+      "size_bytes": 9289
+    },
+    "builds": {
+      "fex": {
+        "sha256": "7d6dd8687793cd9f9e8eb46cd0f2f9ecfb3276fbc8645f5eb21d2ef2212b06b3",
+        "size_bytes": 3617500
+      },
+      "graphics": {
+        "sha256": "2dbcafc16a00ec547987a81101bf898e29f0eae30926850fab0b1e4fa2b11b38",
+        "size_bytes": 5968320
+      },
+      "wine": {
+        "sha256": "fe70874ffb0cd23564e6ecb5928b4cfb3214148f1ca7d37686d6131a60be9880",
+        "size_bytes": 6615478
+      }
+    },
+    "runtime": {
+      "sha256": "b9bee774f596c4f7bf908dc30ef1c11745797af2837ee4b42016bdf152086fc7",
+      "size_bytes": 2455486
+    }
+  },
+  "component_sources": {
+    "dxmt": "e800e770006fc7c37831ab857000a4781c85f6fd",
+    "fex": "c62ed75aa6a33809ddb76c7f40aabbe4f4fbdda6",
+    "wine": "1b76db6902345388c589ba3909b22badf751dfd5"
+  },
+  "purpose": "development_diagnostics",
+  "reconstruction": {
+    "path": "locks/task56-reconstruction-v1.json",
+    "sha256": "f3a3cba6d2ffc762cad176a51ba6f4a9b3cc199da8708a5e6fdbb3ecf850be22",
+    "size_bytes": 6318
+  },
+  "schema_version": 1,
+  "scope": "pear_development_candidate_lock",
+  "tool_sources": {
+    "fex": "9c9b602c07b57a08500862abfdf62e1bac351640",
+    "runtime": "6f0202b457f0e585c5c7621a63d203e77d07386d",
+    "wine": "d31a50d7385b3385ab278e0fe7687b9d1267de94"
+  }
+}

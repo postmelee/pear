@@ -50,9 +50,14 @@ preserved object/config/toolchain packs or private local inputs.
 
 The Pear-side prepare/select/inspect interface below binds an exact reviewed
 candidate and final operation, separate development state and complete producer
-inputs. Stage 5 separates its portable/source checkpoint from real selected-
-fixture execution. Neither changes Preview selection or the existing manager's
-fixture-only admission; see the [native manager guide](runtime-supervisor.md#separate-development-candidate-path).
+inputs. The committed Stage 5.1 source checkpoint and fresh Stage 5.2 selector
+checks have distinct records. Seven fresh candidate3 fixture operations passed;
+the game prerequisite packet retains eight Stage 4 candidate3 native/bootstrap/
+frame operations under their original identities. Fresh independent release
+observations cover all fifteen selected operations. Exact game-input inspection
+admitted 69 files and 92 producer files, followed by successful game-to-fixture-to-
+game metadata reselection. No game was copied or executed. None changes Preview
+selection or the existing manager's fixture-only admission; see the [native manager guide](runtime-supervisor.md#separate-development-candidate-path).
 
 The selected source/test exports and accepted 196-method reconciliation are
 recorded in the [local Stage 4 report](../../mydocs/working/task_m1_56_stage4.md).
@@ -71,15 +76,26 @@ purpose `development_diagnostics`, an exact clean runtime checkout commit, a
 separate development lock, exact fixture descriptor, optional exact game
 descriptor, isolated state root and explicit protected roots. Use the exact clean Stage 5.1 source checkpoint and reviewed descriptor/producer
 identities; the historical reconstruction lock remains unchanged. Keep that
-selected source-only checkout at `.worktrees/runtime-development-v1`, separate
-from later report/documentation edits on `runtime-task56`. Its creation requires
-a fresh 128 MiB allowance plus the separate 6 GiB reserve; it copies no runtime
-bundle, prefix, input pack or game. Retain it until all consumers accept a successor.
+selected source-only checkout at `.worktrees/runtime-task56`, detached at runtime
+`6f0202b457f0e585c5c7621a63d203e77d07386d`. Later report/documentation edits use
+`.worktrees/runtime-development-v1` on `codex/task56`. Creating another source
+worktree needs fresh capacity review: the exercised allowance was 128 MiB plus
+a separate 6 GiB reserve, with no runtime bundle, prefix, input pack or game copy.
+Retain the selected root until all consumers accept a successor.
+
+Candidate3 binds ten assembly-producer files by exact bytes and absolute paths.
+An initial attempt from the other source checkout refused
+`assembly_builder_changed` before loader execution despite identical source
+bytes. That failed operation remains retained. The no-code worktree role swap
+restored the recorded builder paths; fresh v5 requests then passed without
+changing an authority gate. A retained candidate is not freely relocatable:
+commit equality alone cannot replace its recorded builder root. A new root needs
+a separately reviewed assembly and new records.
 
 ### Prepare the explicit local selection
 
 Use a clean checkout of the exact runtime tool commit in Pear's separate
-`tools/development/locks/task56-development-v1.json`. This development lock
+[development lock](../../tools/development/locks/task56-development-v1.json). This lock
 binds the selected candidate's runtime and final assembly identities, its three
 component build identities and source pins, and current tool source pins.
 Its `reconstruction` field references the unchanged historical reconstruction
@@ -95,7 +111,7 @@ Keep the following local inputs outside Git:
 | `DEVELOPMENT_LOCK` | The reviewed Pear development lock. Use its exact runtime tool pin, not the branch tip or an inspection result. |
 | `RUNTIME_REPO` | Canonical, clean runtime checkout at that exact tool pin. |
 | `FEX_TOOL_ROOT` | When the producer manifest consumes FEX modules, the canonical clean checkout at `lock.tool_sources.fex`. The selected tool root is the CPU checkpoint `9c9b602c07b57a08500862abfdf62e1bac351640`, distinct from the Stage 4 developer/export checkpoint and historical artifact-build commit. |
-| `DEVELOPMENT_STATE` | New or selector-owned state directory outside source, candidate, seed, output, signing and game roots. Its parent must already exist. |
+| `DEVELOPMENT_STATE` | New or selector-owned state directory disjoint from source, candidate, seed, output, signing, game and descriptor/input-metadata roots. Its parent must already exist. Use a sibling of the metadata root, not a child inside it. |
 | `PROTECTED_ROOTS_JSON` | JSON array of existing canonical Preview/installed-runtime/user-state roots that this selection must preserve. |
 | `SELECTION_SPEC` | Fresh local JSON filename whose existing parent is outside all source repositories. |
 
@@ -111,6 +127,20 @@ clean runtime/FEX state and every consumed file against its independent tool
 commit before importing it. FEX generated/private inputs are separate from its
 Python tool-source checkout.
 Do not copy old producer hashes or reuse a saved current-authority result.
+
+Keep selection state separate from the existing private metadata directory.
+For example, set these exported variables under a canonical existing local
+parent; the input directory must already exist:
+
+```sh
+export DEVELOPMENT_INPUT_ROOT="$LOCAL_PARENT/task56"
+export DEVELOPMENT_STATE="$LOCAL_PARENT/pear-development-state-task56-v1"
+export SELECTION_SPEC="$DEVELOPMENT_INPUT_ROOT/selection-v5.json"
+```
+
+The exercised initial spec placed state inside the metadata root and refused
+`state_input_overlap` without creating that state. The accepted spec used a
+sibling directory; no input or isolation check was weakened.
 
 From the reviewed Pear checkout, this metadata-only recipe writes the complete
 closed selection spec. Supply the named variables as environment variables;
@@ -210,10 +240,28 @@ record and transaction for diagnosis; select a separately reviewed prior prepare
 record to change development selection, without editing old receipts or Preview
 state.
 
-The Stage 5.1 portable/source checkpoint supplies these interfaces. Real
-selection, fresh seven-case execution through the selector and independent
-release are the separate Stage 5.2 gate; they are not claimed by the portable
-checkpoint. Game copying and execution remain unperformed in Task #56.
+The Stage 5.1 portable/source checkpoint supplies these interfaces. Stage 5.2
+separately exercised preparation, selection, inspection, seven fresh fixture
+operations and independent release. The selected game context's 69-file input
+admission passed; no game copy or execution followed.
+
+Metadata recovery was exercised with the previously returned exact fixture and
+game prepared records. The same state retained a transaction for each selection:
+
+```sh
+"$ARM64_PYTHON" -B -m tools.development.runtime_candidate select --prepared "$GAME_PREPARED_SELECTION"
+"$ARM64_PYTHON" -B -m tools.development.runtime_candidate inspect --state "$DEVELOPMENT_STATE" --kind game
+"$ARM64_PYTHON" -B -m tools.development.runtime_candidate select --prepared "$FIXTURE_PREPARED_SELECTION"
+"$ARM64_PYTHON" -B -m tools.development.runtime_candidate inspect --state "$DEVELOPMENT_STATE" --kind fixture
+"$ARM64_PYTHON" -B -m tools.development.runtime_candidate select --prepared "$GAME_PREPARED_SELECTION"
+"$ARM64_PYTHON" -B -m tools.development.runtime_candidate inspect --state "$DEVELOPMENT_STATE" --kind game
+```
+
+This restores a development selection only. It does not restore a runtime,
+object/toolchain pack, prefix, save, credential or private state, and it does not
+reuse an earlier execution grant. The separate input-recovery exercise restored
+only exact binding metadata and one 3,634-byte common header; see the
+[runtime recovery limits](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md#bounded-exact-input-recovery).
 
 ### Finish a future game diagnostic with independent release
 

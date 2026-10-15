@@ -49,7 +49,9 @@ Native source development is being separated into Wine, FEX, DXMT and common
 runtime repositories through [Task #56](https://github.com/postmelee/pear/issues/56). The
 [developer guide](docs/development/rosetta-free.md#split-native-development-components)
 links the private component sources and distinguishes completed reconstruction
-from the completed Stage 4 controls and remaining selection/qualification work.
+from the completed development-selector checks and remaining game qualification.
+The selector's seven fresh synthetic cases and metadata recovery passed; this
+work did not copy or execute Megabonk.
 
 Megabonk is the first validation game. Selecting another game in Steam does not
 establish compatibility. [Recorded results](docs/compatibility/records.md) retain

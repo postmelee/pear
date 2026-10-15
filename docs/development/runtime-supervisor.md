@@ -16,8 +16,10 @@ cannot authorize it for supported play.
 The separate [Pear development selector](rosetta-free.md#select-an-isolated-development-candidate)
 provides the closed local spec and exact prepare/select/inspect/diagnose commands.
 It binds a clean committed runtime tool root, preserves Preview/default state and
-delegates to the existing runtime owner. Its portable/source checkpoint and
-fresh selected-fixture execution remain separate Stage 5 gates. The
+delegates to the existing runtime owner. Its committed portable/source checkpoint
+and seven fresh selector-driven fixture operations passed, followed by independent
+release. Game-input inspection and metadata reselection passed without copying
+or executing the game. These do not change the manager's admission. The
 [Rosetta-free guide](rosetta-free.md#split-native-development-components) lists
 component owners and prerequisites. Candidate3's native four, three bootstrap controls, seven D36 cases and visible
 presentation-frame check passed with independent release evidence. This document does not

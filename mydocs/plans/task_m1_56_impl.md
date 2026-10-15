@@ -178,16 +178,25 @@ Stage 5 uses two reported and committed checkpoints within the approved scope.
 checks, then bundles the source and substage report in their owning repositories.
 Commit the runtime source before creating the final development lock so the
 selector can require an exact clean checkout; a dirty checkout at an older HEAD
-is not the new tool identity. After that commit, create the source-only detached
-`.worktrees/runtime-development-v1` checkout at the exact Stage 5.1 revision,
-with a 128 MiB additional-space allowance and a separate 6 GiB reserve. It copies
-no runtime, input pack, prefix or game. Bind new fixture/game producer manifests
-and the selector to this clean immutable tool root; keep later source reports
-and documentation on `runtime-task56`. Task #56 owns the retained source
-checkout until all selected producer/diagnostic consumers accept a successor;
-no deletion is authorized. Recheck capacity and exact checkout identity before
-creation and record the materialized result. Historical component build pins,
-reconstruction lock, candidate and earlier producer receipts remain unchanged.
+is not the new tool identity. The source-only additional worktree was created
+with a 128 MiB allowance and separate 6 GiB reserve, without copying a runtime,
+input pack, prefix or game. The initial detached `runtime-development-v1`
+selection refused `assembly_builder_changed` before loader execution: candidate3
+binds ten assembly producer files to absolute `runtime-task56` paths, although
+both checkouts had identical committed bytes. Preserve that failed v4 operation
+and its bounded resource observation; no receipt or authority check is rewritten.
+
+The reviewed no-code role swap makes `.worktrees/runtime-task56` the clean,
+detached selected root at runtime commit
+`6f0202b457f0e585c5c7621a63d203e77d07386d`. The existing
+`.worktrees/runtime-development-v1` now carries `codex/task56` for later reports
+and documentation. New v5 descriptors bind the immutable selected root and
+recorded builder paths. Task #56 retains the source roots until all selected
+consumers accept a successor; no deletion is authorized. Measure capacity before
+new worktrees or operations. Historical component build pins, reconstruction
+lock, candidate and earlier producer receipts remain unchanged. Moving a future
+selected tool to another path requires separately reviewed assembly records;
+commit equality alone does not permit relocating retained builder identities.
 **5.2** binds that committed runtime tool revision, prepares and inspects the
 exact Pear development selection, and executes the required fresh seven
 synthetic controls through the selector, with their original authority, result,
@@ -210,6 +219,18 @@ A documented command must prepare/select/inspect a candidate and provide the exa
 The concrete Stage 5 seam uses a separate Pear-owned `GameContext` with explicit original 69-file game/snapshot, synthetic seed, exact candidate/build/assembly/capability, required-control and predecessor-release references. Descriptor preparation and inspection write only new local metadata and do not copy or execute the game. Preserve the eight original manual/feedback policy modules and their unchanged assertions with explicit namespace/gate bindings. Runtime factors its one existing owned lifecycle, retains the strict seven-fixture wrapper, and supplies a separate bounded game entry, current operation, prefix/module preparation and captured companion/witness provider. No alternate observer or no-op attach adapter is introduced. The source import inventory identifies 64 original policy test bodies and 25 original input methods to reconcile; these are inventories, not passing test counts.
 
 Implement the selector at `tools/development/runtime_candidate.py`, Pear policy under `tools/development/game/`, focused tests under `tests/development/`, and provenance under that Pear development source area. Runtime owns its shared execution/operation/producer extension and affected tests. Keep current maps and Stage 4 receipts as historical evidence when factoring changes producer identities; record exact later adaptations and new frozen bindings. Run affected portable checks and the original seven synthetic controls after integration. Actual game copying and execution remain unperformed in Task #56; the future command must still be fully wired, input-bound, independently recoverable and subject to its own concrete capacity/current-authority gate.
+
+The final documented source-check command exposed a separate tooling mismatch:
+Wine's imported-source verifier refused approved Stage 4 report and source-notice
+metadata as `unaccounted_source_change`. DXMT's corresponding check would reject
+its new Stage 5.2 report after staging. Correct only these component validation
+tools with explicit approved metadata paths; do not allow arbitrary `mydocs/` or
+`.github/` trees. Preserve the recorded refusal and require focused positive and
+unknown-path refusal tests plus both documented source-check commands on the
+final staged file scope. This changes component verification tooling only; it
+does not change selected Wine/DXMT implementation bytes, historical build/tool
+pins, candidate3, or immutable runtime/Pear execution sources. Bundle the exact
+correction, test/provenance and report identities in their component commits.
 
 ### Verification
 
