@@ -45,8 +45,8 @@ during loading. Verification of Rosetta independence across all required host
 processes and libraries, Steamworks integration and gameplay qualification remain
 pending. Follow [the native integration work (#11)](https://github.com/postmelee/pear/issues/11).
 
-Native source development is being separated into Wine, FEX, DXMT and common
-runtime repositories through [Task #56](https://github.com/postmelee/pear/issues/56). The
+Native source development now has accepted Wine, FEX, DXMT and common
+runtime owners through [Task #56](https://github.com/postmelee/pear/issues/56). The
 [developer guide](docs/development/rosetta-free.md#split-native-development-components)
 links the private component sources and distinguishes completed reconstruction
 from the completed development-selector checks and remaining game qualification.

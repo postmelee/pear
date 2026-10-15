@@ -164,10 +164,12 @@ reinterpreted as the product `runtime_lock`, `runtime_artifact` or qualification
 records defined here.
 
 Pear retains the Rust manager, profiles, account/game policy and Preview
-integration. The local registry/validator paths below remain valid for the
-historical evidence and existing consumers until an explicit verified cutover;
-copying source does not change schema versions or admission behavior. Final source
-ownership remains a separate gate. The Pear development selector binds the
+integration. The [accepted cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+assigns the imported common contracts and validators to the runtime owner. The
+local paths below remain retained compatibility copies for historical evidence
+and existing Pear consumers; they are not a second editable common source.
+Changes require an explicit pinned import and affected consumer checks. This
+source cutover changes neither schema versions nor admission behavior. The Pear development selector binds the
 selected candidate without changing these contract schemas. Consult the
 [split development guide](development/rosetta-free.md#split-native-development-components)
 for the separate source/build/test revisions and required private inputs. The

@@ -2,6 +2,11 @@
 
 Date: October 15, 2026. Task: [#56](https://github.com/postmelee/pear/issues/56). This dated investigation updates the earlier temporary separation proposal. It is not gameplay, distribution or complete Rosetta-independence qualification.
 
+The initial findings below retain their October 15 investigation scope. The
+[October 16 accepted handoff](#accepted-source-handoff-and-reconstruction-update--october-16)
+and [final report](../report/task_m1_56_report.md) supersede pending status only
+for the exact adopted range; they do not rewrite earlier evidence.
+
 ## Research Background
 
 The native candidate's editable source and build inputs span accepted component layers and selected generated diagnostics. The requester approved separating source ownership and preparing a usable development/reconstruction path while preserving the Rosetta Preview and existing execution environment. Actual Megabonk correction remains follow-up work.
@@ -87,3 +92,58 @@ A separate proposal identifies 3,030 old Task4 PE/archive products at 3.826 GiB 
 ## Owner review update — October 16
 
 The #12 review found no newer source edits; its selected Wine WGI files match the pinned upstream and must arrive with the whole tree rather than a fabricated downstream patch. The actual WGI call/failure-source binding remains unproved. #10 confirms the existing D24/D32 reader cannot admit D36 by relabeling; an explicit current-candidate adapter and refreshed path/signing/authority checks are required. Reuse the current APISession and manual handoff seam; do not replace it with an older observer fork or require full N1 production closure before bounded debugging. Both reviews were read directly from their completed chat records after outbound reply approval was rejected; no implementation change or new execution was requested.
+
+## Accepted source handoff and reconstruction update — October 16
+
+The existing #11 source owner accepted the exact selected implementation, tests
+and runtime/Pear development boundary; #10 and #12 accepted their observation and
+manual-diagnostic scopes without additional blockers. The
+[canonical cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+binds those accepted checkpoints. The [final reference record](task_m1_56_source_cutover.json)
+separately records verified private publication refs. Historical pending-cutover records retain their original meaning;
+D37 and separate research are not adopted or completed by this decision.
+
+The recovered D25 producer remains distinct from its successor. The original
+build failed overall, although selected control outputs were subsequently used.
+Task #56's versioned recipes rebuilt three FEX units, three Wine units and five
+graphics units from pinned forks with explicit retained objects, configuration,
+tools and SDK inputs. D27 native-owner and the two `ntdll/string.c` architecture
+builds retain their separate source/configuration views, including the PE `-O2`
+overlay. Wine native and all three graphics artifacts match their selected
+references byte-for-byte; Wine PE matches after recorded timestamp normalization.
+FEX deployment differs in exactly fourteen timestamp/CodeView bytes, with the
+remaining bytes and section headers equal. These are bounded reconstructions,
+not clean builds of every lower layer. Candidate3 retains the same component
+records; its comparison with candidate2 permits only recorded signing changes.
+See the [Stage 3 report](../working/task_m1_56_stage3.md).
+
+The original D36 game result remains `owner_refused` during loading, with
+`ECGate.exit` status 3. The owner then terminated the loader; that SIGTERM is not
+an independent spontaneous crash or established first cause. No gameplay was
+accepted. Sixty-four occupied binding entries do not establish their liveness,
+a safe reclamation policy or a capacity cause. Keep the capacity and ABI guards.
+
+WGI's source still has a candidate failure path: a failed `GetDeviceState` can
+return `S_OK` without filling output consumed by two reading paths. Candidate3's
+WGI PE is byte-identical to runtime12, but the exact source-to-PE build binding
+and natural-call failure remain unknown. Next work belongs in
+`pear-wine/dlls/windows.gaming.input/`; establish its explicit build closure and
+observe the existing natural call before considering an HRESULT-preserving fix.
+EC gate/lifecycle work belongs in `pear-fex/Source/Windows/ARM64EC/Module.cpp`
+and `Source/Windows/Common/PearFEXMemory.cpp`. Do not add polling, automated input
+or a neutral-success stub.
+
+The [Stage 5.2 report](../working/task_m1_56_stage5.2.md) records seven fresh
+selector-driven fixture passes, independent release for fifteen operations,
+exact inspection of 69 owned inputs and game→fixture→game selection-metadata
+recovery. Eight native/bootstrap/frame executions remain retained evidence.
+No game copy or execution occurred. The
+[developer handoff](../../docs/development/rosetta-free.md#finish-a-future-game-diagnostic-with-independent-release)
+requires new capacity and authority checks. Its current static plan is
+2,440,580,183 additional bytes plus a 6 GiB reserve; it grants no execution.
+
+Source cutover releases no retained payload group. Preserve selected packs and
+builds, candidate2 reuse evidence, candidate3, original failures, fixed builder
+paths and private state. Git history does not restore compiled/tool/private
+inputs. The demonstrated recovery covers selection metadata and a separate
+3,634-byte shared-header restore, not a full environment restore.

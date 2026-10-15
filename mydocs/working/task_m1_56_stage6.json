@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "issue": 56,
+  "stage": 6,
+  "scope": "completed_source_split_and_development_handoff",
+  "parent": "2bfcc9dff80212ba40b841a2fe6c32033ca0e801",
+  "merged_master": "5b1f94871263eb3ba3fe2549ce1b1d44d1c2e536",
+  "changed_task_files_before_this_report": [
+    {
+      "path": "README.md",
+      "name": "README.md",
+      "sha256": "814afc8d61c15a62262bfb0a01c8a0117edf64e9b84e025c4954ddc7baa54121",
+      "size_bytes": 5789
+    },
+    {
+      "path": "docs/architecture.md",
+      "name": "architecture.md",
+      "sha256": "5beca1bbd642944510ed8577efe2b42965515544657e9eab8750a8f2373bd7cb",
+      "size_bytes": 26822
+    },
+    {
+      "path": "docs/development/rosetta-free.md",
+      "name": "rosetta-free.md",
+      "sha256": "6753e56af871851516b7226f5477a8f1a5fa0c9eaee9359bdee2451fab31322d",
+      "size_bytes": 22588
+    },
+    {
+      "path": "docs/runtime-contracts.md",
+      "name": "runtime-contracts.md",
+      "sha256": "ec2a0daf8aba45c408a8262c26213c5f8bcdaa0eaa0766427ae5edeac9c3e42b",
+      "size_bytes": 40332
+    },
+    {
+      "path": "mydocs/orders/20261016.md",
+      "name": "20261016.md",
+      "sha256": "9ac369089908552a7bf94752bf0dc804e2a68dbcc7d5aa769d9a83daff3797f1",
+      "size_bytes": 631
+    },
+    {
+      "path": "mydocs/plans/task_m1_56_impl.md",
+      "name": "task_m1_56_impl.md",
+      "sha256": "19b443c933be7066cb85f5117b15c14ef11e689f318b0925499d961681c06b73",
+      "size_bytes": 34578
+    },
+    {
+      "path": "mydocs/tech/20261015_runtime_repository_split.md",
+      "name": "20261015_runtime_repository_split.md",
+      "sha256": "77b6cf18b6691c63f66faf679759b522e604934ccb973993c4cf290e3a0bc58e",
+      "size_bytes": 15249
+    },
+    {
+      "path": "mydocs/tech/task_m1_56_source_cutover.json",
+      "name": "task_m1_56_source_cutover.json",
+      "sha256": "abdacc0bedb6c4bb8c51fa5358afa230b6d853a728d47ab77ace3592903eff7d",
+      "size_bytes": 14228
+    },
+    {
+      "path": "mydocs/report/task_m1_56_report.md",
+      "name": "task_m1_56_report.md",
+      "sha256": "fc34d815e20bc0aad256e9f953a2a2015bb2380e3442d9dc5bc120e9c26ca3bf",
+      "size_bytes": 14795
+    },
+    {
+      "path": "mydocs/working/task_m1_56_stage6.md",
+      "name": "task_m1_56_stage6.md",
+      "sha256": "764ceac3b83b73194a810020f2999cbe3dee516bb83ed1c902cd5ebbb042d6ac",
+      "size_bytes": 7199
+    }
+  ],
+  "private_repository_refs": [
+    {
+      "repository": "postmelee/pear-wine",
+      "visibility": "PRIVATE",
+      "ref": "refs/heads/codex/task56",
+      "commit": "007291b81de386fd8886770c33b5d385c078635d"
+    },
+    {
+      "repository": "postmelee/pear-fex",
+      "visibility": "PRIVATE",
+      "ref": "refs/heads/codex/task56",
+      "commit": "4ae26ddf9a21b52cd50d096504c4d0ea5ab49204"
+    },
+    {
+      "repository": "postmelee/pear-dxmt",
+      "visibility": "PRIVATE",
+      "ref": "refs/heads/codex/task56",
+      "commit": "d0ad50946ab64bbe4dc3584a5d91f8e99a6e492c"
+    },
+    {
+      "repository": "postmelee/pear-runtime",
+      "visibility": "PRIVATE",
+      "ref": "refs/heads/codex/task56",
+      "commit": "9be1545f5a0845d3b14d4b845bf6bd413a224df3"
+    }
+  ],
+  "evidence": {
+    "private_publication": {
+      "name": "stage6-private-publication-v2.json",
+      "sha256": "23ea56cbbac05001c3af10feb77095d5017c23971505324cdcd46e75fa58046a",
+      "size_bytes": 1901
+    },
+    "source_owner_packet": {
+      "name": "stage6-owner-packet.json",
+      "sha256": "31a2495e2f0daf75e3540b4202df4ef44ab582eb5e099c38800d8f6832580f2f",
+      "size_bytes": 10927
+    },
+    "source_owner10": {
+      "name": "stage6-owner10-acceptance-thread.json",
+      "sha256": "e8831da76c17c5d45559ba0178a2f9290f11edc643ee87a273c4f34329a03363",
+      "size_bytes": 232114
+    },
+    "source_owner11": {
+      "name": "stage6-owner11-acceptance-thread.json",
+      "sha256": "5f4373d34857bf4c8e690cb4b1450aec8088552d60b88140f45d54ab05a74b97",
+      "size_bytes": 256561
+    },
+    "source_owner12": {
+      "name": "stage6-owner12-acceptance-thread.json",
+      "sha256": "f8af3e291e57063b18414a84b8871dcd4ded1d77bd447b8a4b3472312fff0815",
+      "size_bytes": 175988
+    },
+    "initial_archive": {
+      "name": "operation.json",
+      "sha256": "af8b27d5daacddfb945bdf3f2f4da5fc697f80d82200aad571ffee991cefaac2",
+      "size_bytes": 379303
+    },
+    "committed_archive": {
+      "name": "operation.json",
+      "sha256": "3d0a7b12bbecc1d92dfbb7b88be42eb1fdec1adcc4aae6283da9cf309f5de3fb",
+      "size_bytes": 68166
+    },
+    "cutover_review": {
+      "name": "verification-v3.json",
+      "sha256": "101686a6a4b589ea6b7f29a28c518789eea5538c9212c56c04efd2ad27e540fe",
+      "size_bytes": 11328
+    },
+    "merge_link_review": {
+      "name": "inventory-v1.json",
+      "sha256": "0d303dd8ed7930339b0fde299344c5c7671c9305c6a2d158dc2489657ff324f6",
+      "size_bytes": 85236
+    },
+    "final_protection_and_inspection": {
+      "name": "receipt.json",
+      "sha256": "a36baccdca9b977d1fd6b35033c3681af43a333199eafd3699bdeb5392a8d63e",
+      "size_bytes": 14285
+    },
+    "retention_consumer_review": {
+      "name": "storage-consumer-update.json",
+      "sha256": "3d66fb9ae09228d8e7a0bdc0436871f9e981afb969f3275a9a1fc66885f05dbf",
+      "size_bytes": 4702
+    },
+    "future_game_request_review": {
+      "name": "receipt.json",
+      "sha256": "dccd9212f12cfc8ee35809ad5af7a0600369d8f8bad72662e4d2f3b1d6b50b03",
+      "size_bytes": 65004
+    },
+    "future_game_plan_independent": {
+      "name": "future-game-plan-review.json",
+      "sha256": "195844fffb50ff1ef654fae274e6d5c47e47e1fb5066aefb39a5f76882f3872c",
+      "size_bytes": 1943
+    },
+    "next_game_handoff": {
+      "name": "handoff.json",
+      "sha256": "934380fe9bb5e53ece9301f8f6be11f1c9c14d8ae53279426f463441f446c2ed",
+      "size_bytes": 2197
+    },
+    "wine_commit": {
+      "name": "stage6-wine-commit.json",
+      "sha256": "d8f383418dc432d6ecf282b908e51ad5c9d9dd65aad2f8e82ce50bec3c19b5c8",
+      "size_bytes": 322
+    },
+    "wine_precommit-verification": {
+      "name": "stage6-wine-precommit-verification.json",
+      "sha256": "f0e0924d6bbdcb18b5fbdb687ab6ca1fdf408aaad3139026b4c0e4470a44b64f",
+      "size_bytes": 1532
+    },
+    "wine_staged-verification": {
+      "name": "stage6-wine-staged-verification.json",
+      "sha256": "a995e16d3e6b50acbc59b0fa60611b1a63e23bdf54d7870af93f0c38ab5b164b",
+      "size_bytes": 1247
+    },
+    "dxmt_commit": {
+      "name": "stage6-dxmt-commit.json",
+      "sha256": "361fc94c2a8f9b538e5c8faee77e6dc84ce71b6da9d3fa04191aa4b98297fb6a",
+      "size_bytes": 322
+    },
+    "dxmt_precommit-verification": {
+      "name": "stage6-dxmt-precommit-verification.json",
+      "sha256": "3f45794a7d9227b411d02a9b66501c99044bd36dfd65bfc880b4d8d843142301",
+      "size_bytes": 1529
+    },
+    "dxmt_staged-verification": {
+      "name": "stage6-dxmt-staged-verification.json",
+      "sha256": "677e1db892e5051b625ad208e1cb73e4fd98f7001fb20f514d78c0d632561b0d",
+      "size_bytes": 1244
+    },
+    "fex_commit": {
+      "name": "stage6-fex-commit.json",
+      "sha256": "f0a7e3df60486d5708a6bcc9fa6b1bc301d7c7b57c272b1085d46131a23772d5",
+      "size_bytes": 321
+    },
+    "fex_precommit-verification": {
+      "name": "stage6-fex-precommit-verification.json",
+      "sha256": "ecb92b62a953523b59b615c7162aee811579b4a2225ca2fd722308bb5084b3bc",
+      "size_bytes": 1598
+    },
+    "fex_staged-verification": {
+      "name": "stage6-fex-staged-verification.json",
+      "sha256": "908518a6e3eb40df5c08f6b9b302ef2596b31cd1024bd0c0d903c7d9bb826f3c",
+      "size_bytes": 1313
+    },
+    "runtime_commit": {
+      "name": "stage6-runtime-commit.json",
+      "sha256": "ee3845b2db2a3a4b4e0e9d5055948510bcacdae95d86e05906e021acf89c513c",
+      "size_bytes": 375
+    },
+    "runtime_precommit-verification": {
+      "name": "stage6-runtime-precommit-verification.json",
+      "sha256": "b890f52bc179969388fc8e2badd761c1da7f2ae525ab3bf1d245b597f684689c",
+      "size_bytes": 995
+    },
+    "runtime_staged-verification": {
+      "name": "stage6-runtime-staged-verification.json",
+      "sha256": "0fb3fa62bc4d817f1451364183e1a8209933aad9b1b6d49c603c8887760b6571",
+      "size_bytes": 405
+    },
+    "wine_publication-link-commit": {
+      "name": "stage6-wine-publication-link-commit.json",
+      "sha256": "e8697fd98c4a8aecf017f83d14e0ede2dd97b3d215a75f362a379f235d887fb5",
+      "size_bytes": 840
+    },
+    "wine_publication-link-check": {
+      "name": "stage6-wine-publication-link-check.json",
+      "sha256": "f61b09cffe7897e1d8fb46be872c29780e67206997f43c6c7c3a14ce7306abf0",
+      "size_bytes": 970
+    },
+    "dxmt_publication-link-commit": {
+      "name": "stage6-dxmt-publication-link-commit.json",
+      "sha256": "aafc29b62f6742cdb54c5c65359d34e577e7667da1870108a513e6b25ab46580",
+      "size_bytes": 838
+    },
+    "dxmt_publication-link-check": {
+      "name": "stage6-dxmt-publication-link-check.json",
+      "sha256": "e78dc1dadd45eb180ad0675bc2dd4e34ec003726aa353fddb2cdf324b0aab909",
+      "size_bytes": 970
+    },
+    "fex_publication-link-commit": {
+      "name": "stage6-fex-publication-link-commit.json",
+      "sha256": "fba607205d11b0454f769d0ea580e6541ce18ccc481e43b637343f33b8561d7b",
+      "size_bytes": 1233
+    },
+    "fex_publication-link-check": {
+      "name": "stage6-fex-publication-link-check.json",
+      "sha256": "c021aa23a37c704d146aebd9a7d838487d8733136889eb8ac71fea55e4d40e79",
+      "size_bytes": 562
+    },
+    "runtime_publication-link-commit": {
+      "name": "stage6-runtime-publication-link-commit.json",
+      "sha256": "5acb7f5bce6dad7c193e9e31690a5bc184843afc66ad5028b1e77f0adbfa0d56",
+      "size_bytes": 476
+    },
+    "runtime_publication-link-check": {
+      "name": "stage6-runtime-publication-link-check.json",
+      "sha256": "9ddabfc0c4dc99601b9a448617a399450532257e8a6c8398df3fbcd60285aa80",
+      "size_bytes": 1021
+    },
+    "final_scope_review": {
+      "name": "stage6-final-scope-review.json",
+      "sha256": "79896a1f1bd5911183b4ff84d434c25b038aaa0a83ee8f139cf96a169ed81d9d",
+      "size_bytes": 4020
+    },
+    "technical_completion_time": {
+      "name": "stage6-technical-completion-time.json",
+      "sha256": "7f63b1d8e158bd6b4944e2016680a3f8978df434fb54f2af0be275f28f484a7d",
+      "size_bytes": 132
+    },
+    "independent_final_document_review": {
+      "name": "final-pear-review-v2.json",
+      "sha256": "e2c7594f766e484e163763db86608c2aba245610829a91f7f963263eda8406ae",
+      "size_bytes": 93303
+    },
+    "final_stage6_archive": {
+      "name": "operation.json",
+      "sha256": "7f38b8282b11fbb5372ec7df6a46b0772d257efb02746817c5583dbc8ffadc2f",
+      "size_bytes": 65863
+    }
+  },
+  "checks": {
+    "owner_acceptance": [
+      10,
+      11,
+      12
+    ],
+    "private_remote_refs_verified": 4,
+    "canonical_provenance_refs": 27,
+    "selected_producer_git_blobs": 92,
+    "frozen_runtime_source_identities": 307,
+    "protected_original_identities": 29,
+    "inherited_master_files": 5,
+    "actual_metadata_game_inspect": "passed",
+    "game_output_empty": true,
+    "game_copied": false,
+    "game_executed": false,
+    "additional_deletion": false,
+    "public_pear_publication": false
+  },
+  "reuse": "Stage5.1 portable and Stage5.2 execution/release claims preserve exact consumed sources and original scopes. Stage6 changes only documentation/provenance; inherited master Preview code remains byte-exact.",
+  "publication_boundary": "Technical acceptance complete. Public Pear branch/PR/Issue text is separately reviewable and requires explicit authorization. No merge or Issue closure."
+}

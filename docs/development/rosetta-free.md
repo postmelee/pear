@@ -39,8 +39,8 @@ source languages, file-specific notices and contribution policies remain intact.
 
 The [runtime development guide](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md) supplies the selected source/build lock,
 exact retained-input prerequisites, exercised assembly/fixture commands and
-bounded recovery procedure. The Stage 3 reconstruction (local report; publication pending) and
-seven-fixture checkpoint (local report; publication pending) have bounded passing evidence. Candidate3 assembly and all fifteen fresh controls passed with independent
+bounded recovery procedure. The Stage 3 reconstruction and seven-fixture
+checkpoint have bounded passing evidence recorded in the [final report](../../mydocs/report/task_m1_56_report.md). Candidate3 assembly and all fifteen fresh controls passed with independent
 release: four native controls, three bootstrap controls, seven D36 cases and
 an eighteen-frame presentation check. Accepted reuse keeps candidate2 CPU/ordering and graphics operations
 under their original identities and reviewed limits; it does not relabel them as
@@ -61,11 +61,15 @@ selection or the existing manager's fixture-only admission; see the [native mana
 
 The selected source/test exports and accepted 196-method reconciliation are
 recorded in the [local Stage 4 report](../../mydocs/working/task_m1_56_stage4.md).
-The exact Stage 4 component tool/test checkpoints are published privately;
-collaborator access is required. Stage 5 publication and final source-owner
-cutover still require their named review gates. Preserve old source
-and private candidate recovery inputs until their owners release them; this source
-split does not solve or qualify the current game/runtime limitations.
+The #11, #10 and #12 owners accepted the exact selected implementation, tests
+and development boundary. The [canonical source-cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+and [final repository references](../../mydocs/tech/task_m1_56_source_cutover.json)
+separate accepted source revisions, published documentation tips, compiled source
+pins and executed tool pins. The four component repositories are private and
+require collaborator access. Historical pending-cutover records remain dated
+evidence; future edits to the accepted range belong to the mapped new owners.
+Preserve legacy consumer copies and private recovery inputs until their owners
+release them. This does not activate a runtime or qualify the game.
 
 ## Select an isolated development candidate
 
@@ -290,6 +294,38 @@ The checker inspects the original loader/server/sentinel groups, retained game
 observation companions and open handles, and transiently probes the existing
 operation lock without truncating it. It does not signal processes or launch the
 game. Preserve both diagnostic and independent-release outcomes.
+
+### Continue the developer Megabonk investigation
+
+The [accepted source-cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+identifies the single editable owners and exact reviewed checkpoints. It does not
+activate the candidate or replace the historical compilation and executed-tool
+pins. Task #56 inspected all 69 owned inputs and exercised metadata selection and
+recovery; game copying, execution and gameplay remain unperformed.
+
+The original D36 diagnostic still ended `owner_refused` during loading with
+EC-gate status 3, followed by owner-initiated termination. The Down-input report
+and WGI invalid-output path remain hypotheses about the cause. Candidate3's WGI
+PE equals runtime12 byte-for-byte, but its source-to-PE linkage and natural-call
+failure are unknown. Establish that build binding in
+`pear-wine/dlls/windows.gaming.input/`, then observe the existing call without
+extra polling or injected input. EC gate/lifecycle changes belong in
+`pear-fex/Source/Windows/ARM64EC/Module.cpp` and
+`Source/Windows/Common/PearFEXMemory.cpp`. Keep existing capacity, ownership and
+failure guards; an occupied-slot count is not a reclamation proof.
+
+The conservative plan is 2,440,580,183 additional bytes (about 2.44 GB) plus a
+6 GiB reserve: 8,883,031,127 free bytes in total, without assumed clone savings.
+Remeasure and re-admit all inputs, predecessor resources, the live lease/deadline
+and current authority immediately before execution. Inspection is not a grant.
+Retain human-only input, terminal/expiry priority and the independent release
+request above after either success or failure.
+
+Keep the exact retained packs, builder paths, original D36 and candidate2 reuse
+evidence, candidate3 and private state. Recover the development pointer by
+selecting and inspecting a previously valid prepared record; do not import the
+old selection schema or rewrite its receipts. Git checkout and the separate
+3,634-byte header restore do not prove full runtime/toolchain/prefix recovery.
 
 ## Understand the prerequisites
 

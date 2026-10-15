@@ -131,3 +131,17 @@ The live default-branch Show and tell form was inspected in GitHub on October 15
 Steam App ID, date, versions, host, result, individual checks and privacy consent
 were rendered. The catalog now links that form as live; its local draft remains
 manual and never auto-submits. The fallback is still covered by tests.
+
+## Download layout follow-up — 2026-10-16
+
+The requester approved the second local preview and Pages publication. The
+original tabs, install copy and download-button order remain. Requirements now
+appear under System requirements; Wine 11.0 / DXMT 0.80 appears under native
+collapsible Release details. Home download routing remains unchanged.
+
+Verification: generated download.html matches the approved local preview byte for
+byte; 94 documentation/catalog Python tests and 6 Steam identity JavaScript tests
+passed. Governance checks passed (37 documents, 360 local targets), as did
+`git diff --check`. No app/runtime input or artifact changed. The existing
+master-only Reviewed compatibility catalog workflow is enabled and will deploy
+this source revision without app signing or builds.
