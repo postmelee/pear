@@ -648,3 +648,41 @@ the existing migrated state as ready. No Steam/game process was started by these
 checks. The existing manager unused-function warning remains unrelated.
 The fresh-account requirement remains pending; CI signing and actual final Pear
 app presentation/launch will be checked on the new immutable candidate.
+
+
+## Steam opening feedback (2026-10-15)
+
+The requester approved replacing the misleading post-handoff idle screen with
+bounded opening feedback. The app now shows an indeterminate indicator, disables
+duplicate opening for thirty seconds, offers retry while delayed, and stops the
+observer after two minutes with an unconfirmed message. A matched visible Steam
+window changes the heading to "Steam window is open"; no login, library contents
+or responsiveness is inferred. Closing Pear/retrying invalidates stale callbacks.
+
+The read-only probe uses CoreGraphics bounds/layer/owner PID and Darwin executable
+path/arguments. It admits only the exact current runtime executable, the exact
+private prefix and official Steam/CEF executable argument. It requests no screen
+recording or Accessibility permission, reads no pixels/titles and logs no process
+environment. Failure to obtain metadata remains unknown. Apple's official
+CGWindowListCopyWindowInfo documentation and WWDC19 session 701 were reviewed.
+The initial live probe failed because Wine rewrites argv, leaving NUL padding
+before the environment; the parser correction and a regression fixture cover
+that layout. It then detected the owned live Steam window and rejected a different
+retained Pear root with that same window present.
+
+Local build, 30 Rust tests, expanded Swift parser/state fixtures, all 68 portable
+checks without skips, incremental source notices and governance passed. Actual
+AppKit UI observations confirmed opening + spinner + disabled retry, delayed +
+enabled retry, and finally detected + no spinner. Timeout is covered synthetically;
+a final rebuilt cold-launch observation and protected signed-app validation remain
+pending. Tests do not establish readable/login-ready content from window metadata.
+The exact runtime pin, migration and Rust launch core remain unchanged. No game
+was launched and no new prefix/runtime copy was made. Earlier gameplay/save
+results retain their original scope. The unpublished preview.3 candidate must be
+replaced only after new source-specific signing; no public asset was changed.
+
+Private build/UI receipts are in stage3/launch-status (under 100 MiB budget).
+The first dev launch's continuous source-freeze-to-input baseline was not captured;
+its build and manual observation are separate evidence. The fixed-app receipt
+starts after build and does not claim a complete build-to-input interval. Preserve
+these limitations; capture a fresh continuous interval for the final signed app.

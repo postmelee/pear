@@ -17,7 +17,7 @@ if [ -d "$repo/preview/licenses" ]; then cp -R "$repo/preview/licenses" "$app/Co
 if [ -f "$repo/preview/THIRD_PARTY_NOTICES.md" ]; then cp "$repo/preview/THIRD_PARTY_NOTICES.md" "$app/Contents/Resources/"; fi
 xcrun swiftc -target arm64-apple-macosx26.0 "$repo/preview/Presentation.swift" "$repo/preview/test_presentation.swift" -o "$out/presentation-tests"
 "$out/presentation-tests"
-xcrun swiftc -O -target arm64-apple-macosx26.0 "$repo/preview/Presentation.swift" "$repo/preview/Launcher.swift" -o "$app/Contents/MacOS/PearPreview"
+xcrun swiftc -O -target arm64-apple-macosx26.0 "$repo/preview/Presentation.swift" "$repo/preview/SteamWindow.swift" "$repo/preview/Launcher.swift" -o "$app/Contents/MacOS/PearPreview"
 cat > "$app/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict>
 <key>CFBundleIdentifier</key><string>org.pear.rosetta-preview</string>

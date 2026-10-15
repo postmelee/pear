@@ -2604,3 +2604,37 @@ CI for signed packages; no new Steam prefix or runtime copy. Retain earlier
 signed packages and private recovery state. Release transient naming-build outputs
 after final signed-package comparison; retain manifests and signed/source archives
 through release review. Final fresh-account delivery remains pending separately.
+
+
+## Approved Steam opening feedback (2026-10-15)
+
+The requester approved a spinner and truthful opening/detected/delayed states.
+Reuse AppKit's existing progress indicator and CoreGraphics window metadata,
+not a new runtime supervisor or screen capture. Apple's CGWindowList API and
+WWDC19 session 701 distinguish public window bounds/owner PID from protected
+window contents/titles. Inspect no pixels/titles and request no recording or
+Accessibility permission. Match a candidate window's current executable and
+WINEPREFIX to this app's exact runtime/root, plus the official Steam executable
+argument. Reuse Darwin's proc_pidpath/sysctl facilities; the fixture runner's
+proc_pidpath usage is a reference, not a new dependency. No existing production
+Preview window observer was found; operator Stage 2 human reports are not a
+production readiness signal. Metadata failure must remain unconfirmed.
+
+After successful launch handoff, poll once per second off the UI thread for at
+most two minutes. Keep duplicate launch disabled for the first thirty seconds;
+then offer a retry without killing anything. A visible window means only that a
+Steam window exists, including an updater or login window, never authenticated
+library/game readiness. Stop observation after detection/timeout/app close, and
+ignore stale asynchronous results after retry. Keep the shared CLI launch,
+runtime pin, migration, authentication and saves unchanged. Tests cover foreign
+prefixes/executables, malformed process metadata and timer/retry boundaries.
+
+Scope remains Issue #47 Stage 3 in its existing worktree; inspected open Issues
+#10/#11/#12/#46 and active worktrees are unrelated to these preview-only edits.
+Internal plan/evidence remain in mydocs; no product-documentation move. Reuse the
+existing Cargo cache and signed-v3 runtime. Local output stage3/launch-status has
+a 100 MiB budget; no prefix/runtime copy. Preserve signed naming candidate and
+private state. Retain verification receipts through release review; local build
+intermediates are disposable after signed successor comparison. The unpublished
+preview.3 draft can be replaced after new exact-source signing, never published
+preview.2. No new full runtime build or twenty-minute game test is required.

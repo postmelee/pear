@@ -17,6 +17,48 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
     var lines = OutputLines()
     var closing = false
     var stopping = false
+    var openingGeneration = 0
+    let windowQueue = DispatchQueue(label: "org.pear.steam-window", qos: .utility)
+
+    func observeSteam() {
+        openingGeneration += 1
+        let generation = openingGeneration
+        let env = ProcessInfo.processInfo.environment
+        let root = URL(fileURLWithPath: env["PEAR_PREVIEW_ROOT"] ??
+            (env["HOME"] ?? NSHomeDirectory()) + "/Library/Application Support/Pear Preview")
+            .standardizedFileURL.resolvingSymlinksInPath()
+        let probe = SteamWindowProbe(root: root, runtime: info!.runtime_id)
+        let began = ProcessInfo.processInfo.systemUptime
+        showOpening(.waiting)
+        pollSteam(probe, began: began, generation: generation)
+    }
+
+    func showOpening(_ state: SteamOpening) {
+        titleLabel.stringValue = state.title
+        label.stringValue = state.message
+        button.title = "Open Steam again"
+        button.isEnabled = state.retryEnabled
+        busy.setAccessibilityLabel("Opening Steam")
+        busy.isHidden = !state.observing
+        if state.observing { busy.startAnimation(nil) } else { busy.stopAnimation(nil) }
+    }
+
+    func pollSteam(_ probe: SteamWindowProbe, began: TimeInterval, generation: Int) {
+        guard !closing, generation == openingGeneration else { return }
+        windowQueue.async {
+            let visible = probe.visible()
+            DispatchQueue.main.async {
+                guard !self.closing, generation == self.openingGeneration else { return }
+                let state = SteamOpening.state(elapsed: ProcessInfo.processInfo.systemUptime - began, visible: visible)
+                self.showOpening(state)
+                if state.observing {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                        self?.pollSteam(probe, began: began, generation: generation)
+                    }
+                }
+            }
+        }
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 580, height: 370),
@@ -109,6 +151,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
         guard task == nil else { return }
         // Retry a failed metadata inspection before offering any download action.
         guard info != nil else { inspectSetup(); return }
+        openingGeneration += 1
         button.isEnabled = false
         downloads?.isHidden = true
         titleLabel.stringValue = "Preparing Steam"
@@ -211,6 +254,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
                     self.titleLabel.stringValue = child.terminationStatus == 0 ? "Windows Steam · Preview" : "Setup paused"
                     self.button.title = child.terminationStatus == 0 ? "Open Steam again" : "Retry"
                     self.button.isEnabled = true
+                    if child.terminationStatus == 0 && !self.stopping { self.observeSteam() }
                     if self.stopping { self.label.stringValue = "Setup stopped. Existing games and saves were kept. Select Retry to continue." }
                 }
                 if self.closing { NSApp.reply(toApplicationShouldTerminate: true) }
@@ -220,8 +264,9 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard let task, task.isRunning else { return .terminateNow }
         closing = true
+        openingGeneration += 1
+        guard let task, task.isRunning else { return .terminateNow }
         task.interrupt()
         return .terminateLater
     }
