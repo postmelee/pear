@@ -72,8 +72,8 @@ Separate the game-derived selector from generic FEX source. Import exact generic
 - Compare imported selected file SHA-256, executable modes and symlinks to the approved export; examine every intentional README/provenance/shared-input addition separately.
 - Validate provenance mapping, SPDX/notices and shared provider/consumer digest equality.
 - Run applicable source/contract tests without private input, then confirm private inputs cannot enter tracked files.
-- Verify private remote metadata and pushed refs match local commits; no public visibility change.
-- `git diff --check` for each changed repository.
+- Verify private remote metadata; no public visibility change. Check pushed refs against local commits. If the initial full-history upload remains active after local source verification, record it explicitly as pending and allow independent recipe implementation; remote identity verification remains mandatory before the final runtime lock/handoff. This scheduling change does not treat an unverified remote ref as available or authorize heavy operations beyond their storage plan.
+- `git diff --check` for new metadata and adapted code in each changed repository. Preserve exact imported source bytes: any pre-existing whitespace warning must be enumerated, matched to the frozen selected checkpoint and reported separately; do not normalize source silently or suppress unrelated warnings.
 
 ### Commit
 
