@@ -31,9 +31,9 @@ Start with these maintainer posts:
 
 ## From a report to a public record
 
-1. Submit a [game report](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/compatibility/README.md#submit-a-result).
+1. Submit a [game report](compatibility/README.md#submit-a-result).
 2. A maintainer checks privacy, exact inputs, missing data and claim scope.
-3. A PR updates the [reviewed JSON](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/compatibility/reports.json) and generated table.
+3. A PR updates the [reviewed JSON](compatibility/reports.json) and generated table.
 4. CI validates the data and table. Once configured, Pages renders the same data
    from public `master`. An Issue or Discussion alone never changes support status.
 
@@ -59,7 +59,7 @@ After the reviewed visibility change and integration into `master`:
 - Review the generated site before enabling deployment. It contains only the
   catalog, reviewed JSON, stylesheet and branding; never upload the checkout,
   `mydocs`, private logs, runtime state or game files as a Pages artifact.
-- Keep download links unavailable until the [release gates](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/development/preview-release.md#release-admission)
+- Keep download links unavailable until the [release gates](development/preview-release.md#release-admission)
   pass. Update announcement text when actual availability changes.
 
 Support demand uses one canonical GitHub Discussion per Steam App ID; the

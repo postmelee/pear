@@ -1,0 +1,144 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+import hashlib
+import json
+from pathlib import Path
+import tarfile
+import tempfile
+import unittest
+from unittest.mock import patch
+import runtime_package as p
+from runtime_build import inventory
+
+
+class PackageTests(unittest.TestCase):
+    def test_regenerated_pin_keeps_notices_and_exact_artifact_identity(self):
+        result = {'runtime_id': 'fixture-id', 'name': 'fixture.tar.gz',
+                  'sha256': 'a' * 64, 'size': 123}
+        source = p.render_pin(result)
+        self.assertTrue(source.startswith('// SPDX-FileCopyrightText: 2026 Pear contributors\n'
+                                          '// SPDX-License-Identifier: GPL-3.0-or-later\n'))
+        body = '\n'.join(line for line in source.splitlines() if not line.startswith('//')) + '\n'
+        self.assertEqual(body, 'pub const RUNTIME_ID: &str = "fixture-id";\n'
+                         'pub const RUNTIME: super::Artifact = super::Artifact {\n'
+                         '    name: "fixture.tar.gz", url: "", sha: "' + 'a' * 64
+                         + '", size: 123,\n};\n')
+
+    def test_reviewed_identity_rejects_missing_digest_and_unsafe_names(self):
+        for digest in ('', 'a' * 63, 'g' * 64):
+            with self.assertRaisesRegex(ValueError, 'reviewed SHA-256'):
+                p.reviewed_identity(digest, 'pear-test-v3')
+        for identity in ('../old', 'bad"name', '', 'a' * 81):
+            with self.assertRaisesRegex(ValueError, 'runtime identity'):
+                p.reviewed_identity('a' * 64, identity)
+
+    def test_notice_refresh_rejects_source_drift_and_unreviewed_input(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'runtime-notices').mkdir()
+            (root / 'runtime-notices/NOTICE').write_text('reviewed compiler terms')
+            original = {'inputs': {'wine': {'sha256': 'a' * 64}},
+                        'patches': {'lifetime': 'b' * 64}, 'notice_files': {}}
+            rebuilt = root / 'rebuilt.json'
+            rebuilt.write_text(json.dumps(original))
+            reviewed = p.sha256(rebuilt)
+            current = dict(original, notice_files={'NOTICE': p.sha256(root / 'runtime-notices/NOTICE')})
+            lock = root / 'runtime-inputs.json'
+            lock.write_text(json.dumps(current))
+            with patch.object(p, 'HERE', root):
+                p.admit_notice_refresh(rebuilt, reviewed)
+                with self.assertRaisesRegex(ValueError, 'input lock changed'):
+                    p.admit_notice_refresh(rebuilt, '0' * 64)
+                for field in ('inputs', 'patches', 'unexpected_option'):
+                    lock.write_text(json.dumps(dict(current, **{field: 'unreviewed'})))
+                    with self.assertRaisesRegex(ValueError, 'Only reviewed notice'):
+                        p.admit_notice_refresh(rebuilt, reviewed)
+                lock.write_text(json.dumps(current))
+                (root / 'runtime-notices/NOTICE').write_text('unreviewed change')
+                with self.assertRaisesRegex(ValueError, 'Notice inventory'):
+                    p.admit_notice_refresh(rebuilt, reviewed)
+
+    def test_override_changes_only_reviewed_marker(self):
+        data = b'x' * 64 + b'Wine builtin DLL' + b'y' * 64
+        out = p.native_dxmt(data)
+        self.assertEqual(out[:64], data[:64])
+        self.assertEqual(out[80:], data[80:])
+        with self.assertRaises(ValueError):
+            p.native_dxmt(out)
+        with self.assertRaises(ValueError):
+            p.native_dxmt(b'bad')
+
+    def test_exact_inventory_and_no_private_payload(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            runtime = root / 'Runtime'
+            (runtime / 'bin').mkdir(parents=True)
+            (runtime / 'bin/wine').write_bytes(b'fixture')
+            (runtime / 'bin/wine').chmod(0o755)
+            (runtime / 'bin/wine64').symlink_to('wine')
+            for arch in ['i386-windows', 'x86_64-windows']:
+                directory = runtime / 'share/pear/dxmt' / arch
+                directory.mkdir(parents=True)
+                for name in ['d3d11.dll', 'dxgi.dll', 'd3d10core.dll', 'winemetal.dll']:
+                    (directory / name).write_bytes(b'x' * 64 + b'Wine builtin DLL' + b'y')
+            (root / 'private').mkdir()
+            (root / 'private/secret').write_text('not for distribution')
+            manifest = root / 'manifest.json'
+            manifest.write_text(json.dumps(inventory(runtime)))
+            with patch.object(p, 'BASELINE', hashlib.sha256(manifest.read_bytes()).hexdigest()):
+                out = root / 'candidate.tar.gz'
+                result = p.package(runtime, manifest, out)
+                self.assertTrue(result['baseline_unchanged'])
+                successor = p.package(runtime, manifest, root / 'successor.tar.gz',
+                    baseline_sha256=p.sha256(manifest), runtime_id='pear-test-v3')
+                self.assertEqual(successor['runtime_id'], 'pear-test-v3')
+                self.assertEqual(successor['baseline_manifest_sha256'], p.sha256(manifest))
+                with self.assertRaisesRegex(ValueError, 'Unreviewed'):
+                    p.package(runtime, manifest, root / 'wrong.tar.gz',
+                        baseline_sha256='a' * 64, runtime_id='pear-test-v3')
+                self.assertFalse((root / 'wrong.tar.gz').exists())
+                with tarfile.open(out) as archive:
+                    self.assertFalse(any('private' in n for n in archive.getnames()))
+                    self.assertEqual(archive.getmember('Libraries/Wine/bin/wine').mode, 0o755)
+                    self.assertEqual(archive.getmember('Libraries/Wine/bin/wine64').linkname, 'wine')
+                with self.assertRaises(ValueError):
+                    p.package(runtime, manifest, out)
+                (runtime / 'credentials').write_text('unexpected')
+                with self.assertRaises(ValueError):
+                    p.package(runtime, manifest, root / 'other.tar.gz')
+
+    def test_signed_archive_preserves_bytes_modes_and_rejects_extra_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); libraries = root/'Libraries'; libraries.mkdir()
+            binary = libraries/'wine'; binary.write_bytes(b'signed Mach-O fixture'); binary.chmod(0o755)
+            (libraries/'wine64').symlink_to('wine')
+            manifest = root/'signing.json'; manifest.write_text(json.dumps({'files': inventory(libraries)}))
+            digest = p.sha256(manifest)
+            result = p.package_signed(libraries, manifest, digest, root/'signed.tar.gz')
+            with tarfile.open(root/'signed.tar.gz') as archive:
+                self.assertEqual(archive.extractfile('Libraries/wine').read(), binary.read_bytes())
+                self.assertEqual(archive.getmember('Libraries/wine').mode, 0o755)
+                self.assertEqual(archive.getmember('Libraries/wine64').linkname, 'wine')
+            successor = p.package_signed(libraries, manifest, digest, root/'successor.tar.gz',
+                                         runtime_id='pear-test-signed-v3')
+            self.assertEqual(successor['runtime_id'], 'pear-test-signed-v3')
+            with self.assertRaisesRegex(ValueError, 'fresh'):
+                p.package_signed(libraries, manifest, digest, root/'signed.tar.gz')
+            with self.assertRaisesRegex(ValueError, 'manifest changed'):
+                p.package_signed(libraries, manifest, 'bad', root/'other.tar.gz')
+            (libraries/'login').write_text('private')
+            with self.assertRaisesRegex(ValueError, 'inventory changed'):
+                p.package_signed(libraries, manifest, digest, root/'other.tar.gz')
+            self.assertFalse((root/'other.tar.gz').exists())
+
+    def test_unknown_manifest_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manifest = root / 'manifest.json'
+            manifest.write_text('[]')
+            with self.assertRaises(ValueError):
+                p.package(root, manifest, root / 'candidate.tar.gz')
+
+
+if __name__ == '__main__':
+    unittest.main()

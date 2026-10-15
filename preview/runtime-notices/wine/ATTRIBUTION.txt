@@ -1,0 +1,9 @@
+This software is based in part on the work of the Independent JPEG Group.
+Wine contains separately licensed bundled libraries; retained upstream notices
+and the pinned complete Wine source preserve their individual terms.
+The Wine patch opts into --in-process-gpu for the main Steam webhelper.
+Pear does not add a sandbox-disable argument. This is not sandbox qualification.
+The opt-in browser lifetime patch is Copyright 2026 Pear contributors, under
+Wine's LGPL-2.1-or-later terms. It associates only same-image renderer/utility
+children of the configured browser with a non-inheritable kill-on-close job.
+Caller-supplied job lists are preserved; Steam itself and game images are excluded.

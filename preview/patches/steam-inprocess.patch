@@ -1,0 +1,147 @@
+--- a/dlls/kernelbase/process.c
++++ b/dlls/kernelbase/process.c
+@@ -2,6 +2,7 @@
+  * Win32 processes
+  *
+  * Copyright 1996, 1998 Alexandre Julliard
++ * Copyright 2026 Pear contributors (opt-in Steam child lifetime)
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Lesser General Public
+@@ -500,6 +501,47 @@
+     return ret;
+ }
+ 
++/* Own only children of the exact configured Steam browser image. A single
++ * non-inheritable job is kept until this browser exits. Steam and games are not
++ * members. Reuse atomic job-list assignment and nested-job support; do not
++ * enumerate or terminate processes by PID/name from the Mac host. */
++static BOOL pear_browser_child( const WCHAR *image, const WCHAR *command )
++{
++    WCHAR configured[MAX_PATH], current[MAX_PATH];
++    DWORD length;
++    const WCHAR *role;
++
++    length = GetEnvironmentVariableW( L"PEAR_STEAM_WEBHELPER_PATH", configured, ARRAY_SIZE(configured) );
++    if (!length || length >= ARRAY_SIZE(configured)) return FALSE;
++    length = GetModuleFileNameW( NULL, current, ARRAY_SIZE(current) );
++    if (!length || length >= ARRAY_SIZE(current)) return FALSE;
++    if (wcsicmp( current, configured ) || wcsicmp( image, configured )) return FALSE;
++    if (wcsstr( GetCommandLineW(), L"--type=" ) || !command) return FALSE;
++    if (!(role = wcsstr( command, L" --type=" ))) return FALSE;
++    role += 8;
++    return (!wcsncmp( role, L"renderer", 8 ) && (!role[8] || role[8] == ' ')) ||
++           (!wcsncmp( role, L"utility", 7 ) && (!role[7] || role[7] == ' '));
++}
++
++static BOOL WINAPI pear_browser_job_init( INIT_ONCE *once, void *parameter, void **context )
++{
++    JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits = {0};
++    OBJECT_ATTRIBUTES attr;
++    HANDLE job;
++    NTSTATUS status;
++    InitializeObjectAttributes( &attr, NULL, 0, NULL, NULL );
++    if ((status = NtCreateJobObject( &job, JOB_OBJECT_ALL_ACCESS, &attr )))
++        return set_ntstatus( status );
++    limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
++    if ((status = NtSetInformationJobObject( job, JobObjectExtendedLimitInformation, &limits, sizeof(limits) )))
++    {
++        NtClose( job );
++        return set_ntstatus( status );
++    }
++    *context = job;
++    return TRUE;
++}
++
+ /**********************************************************************
+  *           CreateProcessInternalW   (kernelbase.@)
+  */
+@@ -511,6 +553,9 @@
+                                                       PROCESS_INFORMATION *info, HANDLE *new_token )
+ {
+     const struct proc_thread_attr *handle_list = NULL, *job_list = NULL;
++    static INIT_ONCE pear_job_once = INIT_ONCE_STATIC_INIT;
++    struct proc_thread_attr pear_job_list;
++    HANDLE *pear_jobs = NULL;
+     WCHAR name[MAX_PATH];
+     WCHAR *p, *tidy_cmdline = cmd_line;
+     RTL_USER_PROCESS_PARAMETERS *params = NULL;
+@@ -543,6 +588,35 @@
+     {
+         if (!(tidy_cmdline = get_file_name( cmd_line, name, ARRAY_SIZE(name) ))) return FALSE;
+         app_name = name;
++    }
++
++    /* Pear diagnostic: keep Steam CEF GPU work in its browser process.
++     * Opt-in only. Do not disable sandboxing or alter subprocess invocations. */
++    {
++        WCHAR enabled[2];
++        const WCHAR *basename = app_name, *cursor;
++        static const WCHAR option[] = L" --in-process-gpu";
++        for (cursor = app_name; *cursor; ++cursor)
++            if (*cursor == '\\' || *cursor == '/') basename = cursor + 1;
++        if (GetEnvironmentVariableW( L"PEAR_STEAM_IN_PROCESS_GPU", enabled, 2 ) == 1
++            && enabled[0] == '1' && !lstrcmpiW( basename, L"steamwebhelper.exe" )
++            && tidy_cmdline && !wcsstr( tidy_cmdline, L"--type=" )
++            && !wcsstr( tidy_cmdline, L"--in-process-gpu" ))
++        {
++            SIZE_T length = lstrlenW( tidy_cmdline );
++            WCHAR *updated = HeapAlloc( GetProcessHeap(), 0,
++                                        (length + ARRAY_SIZE(option)) * sizeof(WCHAR) );
++            if (!updated)
++            {
++                if (tidy_cmdline != cmd_line) HeapFree( GetProcessHeap(), 0, tidy_cmdline );
++                SetLastError( ERROR_NOT_ENOUGH_MEMORY );
++                return FALSE;
++            }
++            memcpy( updated, tidy_cmdline, length * sizeof(WCHAR) );
++            memcpy( updated + length, option, sizeof(option) );
++            if (tidy_cmdline != cmd_line) HeapFree( GetProcessHeap(), 0, tidy_cmdline );
++            tidy_cmdline = updated;
++        }
+     }
+ 
+     /* CW Hack 24938 */
+@@ -662,6 +736,34 @@
+         }
+     }
+ 
++    if (!parent && pear_browser_child( params->ImagePathName.Buffer, tidy_cmdline ))
++    {
++        HANDLE job;
++        SIZE_T count = job_list ? job_list->size / sizeof(HANDLE) : 0;
++        if (job_list && (job_list->size % sizeof(HANDLE) || count >= ~(SIZE_T)0 / sizeof(HANDLE)))
++        {
++            status = STATUS_INVALID_PARAMETER;
++            goto done;
++        }
++        if (!InitOnceExecuteOnce( &pear_job_once, pear_browser_job_init, NULL, (void **)&job ))
++        {
++            status = STATUS_UNSUCCESSFUL;
++            goto done;
++        }
++        if (!(pear_jobs = HeapAlloc( GetProcessHeap(), 0, (count + 1) * sizeof(HANDLE) )))
++        {
++            status = STATUS_NO_MEMORY;
++            goto done;
++        }
++        pear_jobs[0] = job;
++        if (count) memcpy( pear_jobs + 1, job_list->value, count * sizeof(HANDLE) );
++        pear_job_list.attr = PROC_THREAD_ATTRIBUTE_JOB_LIST;
++        pear_job_list.size = (count + 1) * sizeof(HANDLE);
++        pear_job_list.value = pear_jobs;
++        job_list = &pear_job_list;
++        TRACE( "Pear browser lifetime: image %s, caller jobs %Iu\n", debugstr_w(params->ImagePathName.Buffer), count );
++    }
++
+     if (inherit) nt_flags |= PROCESS_CREATE_FLAGS_INHERIT_HANDLES;
+     if (flags & DEBUG_ONLY_THIS_PROCESS) nt_flags |= PROCESS_CREATE_FLAGS_NO_DEBUG_INHERIT;
+     if (flags & CREATE_BREAKAWAY_FROM_JOB) nt_flags |= PROCESS_CREATE_FLAGS_BREAKAWAY;
+@@ -712,6 +814,7 @@
+     /* CW Hack 24938 */
+     if (epic_launcher_hack) startup_info->lpDesktop = orig_lpDesktop;
+ 
++    HeapFree( GetProcessHeap(), 0, pear_jobs );
+     RtlDestroyProcessParameters( params );
+     if (tidy_cmdline != cmd_line) HeapFree( GetProcessHeap(), 0, tidy_cmdline );
+     return set_ntstatus( status );

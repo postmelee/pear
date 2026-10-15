@@ -1,0 +1,57 @@
+{
+  "scope": "Diagnostic DLL candidate, not signed or distributable full runtime",
+  "patch_sha256": "916282dd70d8136fca9a93308b39e59da3d75cda52e71df2a0bfb107fafeebb6",
+  "fixture_source_sha256": "3be236fcce3655a4b3e80aa172ca5572d5408ff5ab68eb561951ad5975746532",
+  "fixtures": [
+    {
+      "arch": "x86_64",
+      "exit": 0,
+      "seconds": 4.84516479199965,
+      "exe_sha256": "19c3783202fd970564146659d0548bca47d468752e0c79af530ea01c6b2370a9"
+    },
+    {
+      "arch": "i386",
+      "exit": 0,
+      "seconds": 3.7265404579998176,
+      "exe_sha256": "1e34e1c5442c4d6190042fc9624f928388429ff1c0667619f79b1f1ca02652bb"
+    }
+  ],
+  "steam_build": "1791918634",
+  "steam_user_confirmation": "Login text/QR displayed normally; closed using window X without login",
+  "steam_policy_applied": true,
+  "caller_job_counts_observed": [
+    0,
+    1
+  ],
+  "last_empty_observations_utc": [
+    "2026-10-14T20:10:39.798096+00:00",
+    "2026-10-14T20:10:44.846181+00:00",
+    "2026-10-14T20:10:49.884017+00:00"
+  ],
+  "forced_cleanup": false,
+  "game_verification": "not performed on this candidate",
+  "root_cause": "Intermittent orphan cause not reproduced; ownership-based containment tested",
+  "timing": "Build and synthetic phases measured in private receipts; user-visible/manual endpoint not independently timestamped",
+  "baseline_negative_control": {
+    "expected_failure_control": true,
+    "exit": 1,
+    "checks": [
+      "renderer-owned: FAIL (error=0)",
+      "utility-owned: FAIL (error=0)",
+      "optin-off: PASS (error=0)",
+      "wrong-parent-path: PASS (error=0)",
+      "other-child-image: PASS (error=0)",
+      "renderer-parent-excluded: PASS (error=0)",
+      "unknown-role: PASS (error=0)"
+    ],
+    "scope": "unchanged signed baseline, isolated synthetic prefix, i386 fixture"
+  },
+  "synthetic_prefix_release": {
+    "reason": "All diagnostic and negative-control consumers finished; CI creates its own fresh synthetic prefix",
+    "logical_bytes": 1494487264,
+    "allocated_bytes": 1498288128,
+    "free_before": 4524105728,
+    "free_after": 6024204288,
+    "logs_retained": true
+  }
+}

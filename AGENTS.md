@@ -12,6 +12,11 @@ Pear is an open-source platform under development for running owned Windows game
 - Before new implementation, inspect relevant open Issues, active work branches/worktrees and latest reports; record existing reusable work and unresolved integration dependencies.
 - Reuse verification evidence only when its recorded inputs and claim scope remain valid; revalidate affected evidence after integration or relevant source, toolchain, configuration or artifact changes. Preserve approved required checks. See the [dated reuse investigation](mydocs/tech/20261004_recompilation_and_verification_reuse.md) for non-normative examples.
 
+## Verification feedback time
+
+- Measure preparation, admission, build/signing, fixture execution, coordination and human handoff separately before replacing tools or parallelizing tests. For interactive iteration, record one continuous wall-clock interval from the frozen source/candidate completion through build, verification, resource waiting, preparation and loading to a user-operable window and confirmed manual input response. Record monotonic and wall timestamps at phase boundaries, separate human response waiting, and label approximate or missing baselines. Process creation, a first frame and sums of independent runs do not establish this endpoint.
+- Preserve approved checks and failure oracles while removing redundant work. Build recipes should consume admitted inputs without recursively revalidating dependencies. Reuse immutable validation only within its exact input/scope boundary, recheck affected bytes and aliases at operation boundaries, and keep live authority, ownership and cleanup checks current. Never reuse a saved pass flag as current authorization.
+
 ## Approval and workflow
 
 - Track work by GitHub Issue. Obtain requester approval before source changes and follow `Issue -> branch -> daily task board -> plan -> implementation -> verification -> final report -> PR`.
@@ -29,6 +34,30 @@ Pear is an open-source platform under development for running owned Windows game
 - `master` is the integration and release branch. Do not execute same-branch release-promotion examples; a separate release branch needs a separate decision.
 - Preserve existing M1/R1 milestone names and Issue identities. Use the milestone-inclusive filename `task_{milestone}_{issue_number}{_impl|_stage{N}|_report}?.md` with lowercase milestone text. New milestone conventions follow the manuals.
 - Use `Task #{number}: summary`, `Task #{number} Stage {N}: summary`, `Task #{number} [Stage {N.M}]: summary`, or `Task #{number} Stage {N} + final report: summary` for the corresponding commit type.
+
+## Source copyright and license notices
+
+- For every new or modified Pear original source file, add a leading comment with
+  `SPDX-FileCopyrightText: <publication year> <actual holder>` and
+  `SPDX-License-Identifier: GPL-3.0-or-later`, unless reviewed file/directory terms
+  require another license. Retain Pear's existing collective `Pear contributors`
+  attribution where applicable; do not invent ownership or replace another author.
+- Preserve existing copyright, permission and SPDX notices. Existing MIT, LGPL,
+  GPL and Hyper-Waterfall terms are not converted by this rule. Inspect provenance
+  first; copied or adapted code needs its original notices and source reference.
+- Keep shebangs first and Python encoding declarations in their valid positions.
+  Use the language's comment syntax. Generated source needs notices in its
+  generator as well as output; do not patch imported/binary/hashed artifacts just
+  to satisfy a header check. Document separately reviewed notice handling for
+  formats that cannot carry comments.
+- Before committing and in PR verification, run the incremental source notice
+  check documented in [the contributor guide](docs/contributing.md#source-notices).
+  Fix missing notices on touched files without sweeping unrelated active work.
+  Review exclusions and provenance manually; passing automation is not license
+  clearance. Never remove existing terms just to make the check pass.
+- Header changes still change source identity. Keep frozen signed artifacts and
+  qualification inputs intact; prepare changes separately and revalidate affected
+  builds/packages on their next admitted revision.
 
 ## Evidence and security
 

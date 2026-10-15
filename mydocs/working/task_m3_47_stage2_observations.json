@@ -1,0 +1,511 @@
+{
+  "task": 47,
+  "stage": 2,
+  "status": "complete",
+  "approved_by": "Requester explicit continuation after Stage 1 commit 2c59711",
+  "baseline_commit": "2c59711",
+  "source_inputs": {
+    "preview/src/lib.rs": "c7809aba381c66eb3858e99cc722fa61c0c839a10ede3c4564aae7e3de6d670e",
+    "preview/src/recovery_tests.rs": "e00d40d0e5d9b0f8fbafc26c7b936635e903c666b7b087b8303a98ac1fafecfc",
+    "preview/src/runtime_pin.rs": "accb37405d4c8435a60b684babec32bd7f7c5fa71a456334c1c3532f00f92113"
+  },
+  "synthetic_tests": {
+    "rust": {
+      "passed": 21,
+      "new_recovery_cases": 8,
+      "log": ".build/task47/stage2/unit/rust.log",
+      "log_sha256": "5c14faab85a5149b6f9ebb30fa30f718fcaee754b6abed4bf32d267f76690f73"
+    },
+    "python": {
+      "passed": 34,
+      "log": ".build/task47/stage2/unit/python.log",
+      "log_sha256": "fd203a060c7ca663637ae4a7de9be0666be2f2c3e98c3bacb4ab44c95672f4c7"
+    }
+  },
+  "case_scope": {
+    "S2-download": "Observed pinned SteamSetup partial-download interruption, cache cleanup and GUI retry; Steam update initially ended with steamui.dll error during reported network loss. After full network restoration, requester clicked Open Steam again and supplied normal login pixels. The observer interval separately failed on a disappearing updater file; that failure and bounded manual recovery remain recorded. Hosted runtime delivery is not covered.",
+    "S2-install": "Source seam and frozen signed CLI actual extraction interruption/retry/reuse passed; no partial activation; scratch removed",
+    "S2-invalid": "Truncated/wrong/missing inputs rejected; verified supplied input preferred; damaged regular cache retries only with a pinned URL; links, offline cache and unrelated files preserved",
+    "S2-space": "Real statvfs insufficient-space branch passes with impossible requirement; no full filesystem or actual quota test",
+    "S2-update": "Failed same-runtime transaction preserves prior installation and private sentinel; migration/update rollback is not qualified",
+    "S2-repeat": "New notarized app-v4 reopened same runtime/authenticated state twice; both normal Steam game launch requests succeeded; fresh Steam initialization and requester input/normal exit confirmed.",
+    "S2-save": "Passed same-host local restoration: requester changed sniper enabled to disabled, normally exited; changed state retained; baseline eight files restored while Cloud off and no prefix handles; new game process loaded enabled state and normal input; requester normally exited. Requester confirmed Steam Cloud reenabled afterward; synchronization and cross-device recovery are not separately qualified.",
+    "S2-removal": "Passed candidate-specific app copy removal/reinstall, signature/runtime checks, actual Steam library and normal Megabonk launch. Requester confirmed menu/input/prior progression and normal game exit on signed CI 0f712b9. Steam main/Pear exited; an orphan owned steamwebhelper required one scoped SIGTERM, after which all owned services/handles exited. Normal full-session shutdown is not qualified. Follow-up exact-candidate normal Steam UI Exit/reopen passed twice without forced cleanup; final owned processes, handles and lock independently released."
+  },
+  "limitations": [
+    "Synthetic setup-failure cases and frozen Stage 1 CLI trials retain their recorded scopes; they do not prove all failure paths in app-v4.",
+    "New app-v4 actual repeated Steam/game launch and local save restore are verified on the same host; no second clean Mac or final public delivery qualification.",
+    "Steam Cloud setting was restored by the requester; full synchronization and cross-device recovery were not separately qualified.",
+    "No new heavy/UI run before fresh coordination.",
+    "CI 0f712b9 reinstall user flow passed, but normal full-session shutdown did not: one owned orphan steamwebhelper needed SIGTERM. Guard used abort-release and resources were independently returned. Filesystem quota exhaustion remains unperformed."
+  ],
+  "private_state_modified": true,
+  "public_release": false,
+  "signed_cli_trial": {
+    "status": "passed",
+    "whole_release": ".build/task47/stage2/cli-recovery-v1/whole-release.json",
+    "sha256": "b10cf0b32e595594d546a7d71045d28565c30cb24ec28fb922d812d8e82aa1e8",
+    "scope": "Frozen Stage1 CLI actual interruption/retry/reuse/tamper refusal/restore; no Wine, Steam, GUI or game",
+    "synthetic_state_removed": true
+  },
+  "private_backup": {
+    "manifest_sha256": "7ecf455d23c23d4d6cdfc23a6d973409b927b5af9584f7f36d267d410f317adc",
+    "files": 8,
+    "bytes": 68813,
+    "original_modified": false
+  },
+  "new_app_candidate": {
+    "build_whole_release": ".build/task47/stage2/app-v4/build-whole-release.json",
+    "build_receipt_sha256": "065e1234eed27cd76d76806830c93dadfa446c225e6a04ad1a276bf5c45659c1",
+    "app_notarization": {
+      "message": "Successfully received submission info",
+      "createdDate": "2026-10-11T15:13:20.680Z",
+      "name": "Pear-0.1.0-preview.1-macos-arm64.zip",
+      "id": "4a4a2c9a-c184-4658-98ff-1e0698f5cf9a",
+      "status": "Accepted"
+    },
+    "cli_notarization": {
+      "message": "Successfully received submission info",
+      "name": "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip",
+      "status": "Accepted",
+      "id": "6364ec68-960d-49c0-be8a-57c58c942d97",
+      "createdDate": "2026-10-11T15:13:56.506Z"
+    },
+    "policy_checks_sha256": "7a4bf8b3ed7ec17989c84f85128f5055a9a7a685d3eae0de44031cf00ffe5dec",
+    "policy_checks": "All seven passed: staple, staple validation, deep strict signature, Gatekeeper, distribution, CLI notarization, CLI help",
+    "gui": "Passed repeated app/Steam/game launch and actual local save restoration; normal Steam/Pear exit and independent owned-process/handle/lock release verified. Steam Cloud setting restored.",
+    "gui_whole_release": {
+      "path": ".build/task47/stage2/app-v4/gui-validation/whole-release.json",
+      "sha256": "4cc396d9b2eed1a9a59ae11fdb72c73d8b997f3c06ae386e83e379c4c9b2583a",
+      "released": true,
+      "scope": "Two same-host launches; requester visual/input/normal-exit confirmations; actual local backup restore; no timed gameplay claim"
+    }
+  },
+  "private_state_preservation": "Local baseline restored; changed-current and earlier baseline retained privately; no authentication/game installation reset",
+  "removal_trial": {
+    "result": ".build/task47/stage2/removal-v1/result.json",
+    "result_sha256": "2fc066650f80cb71ef1ba31536dc1daaa48f62f830538b5d692558850d79415c",
+    "script_sha256": "6d7fdbb372a3d5c5f3234e88374e44d5c85c2d6b259ab2d74640108e5f86d87a",
+    "private_state_accessed": false,
+    "scratch_removed": true,
+    "removed_logical_bytes": 6237185,
+    "removed_stat_allocated_bytes": 6311936,
+    "measured_free_delta_bytes": 6336512,
+    "scope": "Disposable bundle and synthetic state only; no Wine/Steam/game launched"
+  },
+  "remaining_stage2": [],
+  "closure_preparation": {
+    "integrity_receipt": ".build/task47/stage2/closure-preparation-v1/integrity.json",
+    "integrity_sha256": "e3789d9658d0a1a24bc6cb5aad15b7cc90a9e981ac8d86ddb9169a3778c96045",
+    "network_target_receipt": ".build/task47/stage2/closure-preparation-v1/network-target.json",
+    "network_target_sha256": "8d5c10e84fba65690179bf20a35e5c34980f16622b7d13178365567b08b41927",
+    "procedure": ".build/task47/stage2/closure-preparation-v1/gui-procedure.json",
+    "procedure_sha256": "e3b050b508d56cdb78aee7f2ae6f184a462622fdf5aa10fb3a17fe28021c26f9",
+    "runtime_archive_matches_pin": true,
+    "app_and_source_unchanged": true,
+    "new_execution": false,
+    "S2_update_audit": "Exact current source test invalid_layout_and_failed_replacement_keep_previous_runtime_and_private_state covers partial transaction failure and activation refusal with previous inventory/private sentinel preserved. Real Stage1 CLI tamper/refusal/exact restoration is supporting evidence only. No general updater or different-runtime migration exists or is qualified; final case reconciliation remains explicit."
+  },
+  "supervisor_preparation": {
+    "status": "prepared-not-executed",
+    "driver": {
+      "path": "preview/validation/stage2_supervisor.py",
+      "sha256": "456416ed2101d1e734787dd24d6c3bf674d0b728211f67813e42a0fe74bcce33",
+      "size_bytes": 17778
+    },
+    "tests": {
+      "path": "preview/test_stage2_supervisor.py",
+      "sha256": "2dc1d509e4316cbb4665d0da33e18f5e64add71841c8e8073c853c2a9a648c62",
+      "size_bytes": 7652
+    },
+    "unit_log": {
+      "path": ".build/task47/stage2/supervisor-preparation-v1/unit.log",
+      "sha256": "32784d11131f8daf9f96ecdb956858bd11c809819f0e138b978bdf8757746474",
+      "size_bytes": 2622
+    },
+    "unit_tests_passed": 17,
+    "ready": {
+      "path": ".build/task47/stage2/supervisor-preparation-v1/ready.json",
+      "sha256": "4d4baa9da182a9ff0faa0db5129c51ac32c8783be019fae0d6614e0b3163a83e",
+      "size_bytes": 22016
+    },
+    "operation_id": "task47-stage2-supervised-gui-v1",
+    "input_validation": "Passed exact input hashes and complete app inventory; no execution",
+    "runtime_or_gui_started": false,
+    "shared_lock_acquired": false,
+    "private_state_accessed_by_tests": false,
+    "grant_required": true,
+    "budget_scope": "Sampled output/log/free-space thresholds; not hard OS quotas. Threshold failures stop new launches and preserve ownership for normal cleanup.",
+    "initial_test_fixture_corrections": "Two initial fixture errors corrected: temporary path canonicalization and synthetic supervisor PID; all 17 cases then passed."
+  },
+  "report_outline": {
+    "status": "draft-outline-only; required GUI observations pending",
+    "completed": [
+      "Pinned app-v4 and CLI notarization and package policy checks",
+      "Repeated same-host Steam/game launch and actual local save restoration",
+      "Source recovery seams, signed CLI interruption/refusal/retry and offline synthetic removal preservation",
+      "Operator supervision preparation and 17 synthetic tests"
+    ],
+    "pending": [
+      "Actual owned network interruption and GUI retry",
+      "Actual reinstalled app Steam/game reuse",
+      "Final scenario scope reconciliation and independent execution release"
+    ],
+    "claim_limits": [
+      "No general updater or different-runtime migration qualification",
+      "No timed 20-minute gameplay or fresh-user Stage 3 qualification",
+      "No public delivery qualification or public release performed"
+    ],
+    "report_destination_after_completion": "mydocs/working/task_m3_47_stage2.md"
+  },
+  "cloud_preparation": {
+    "status": "Hosted macOS candidate passed; private Codex Cloud environment published and setup checks passed",
+    "workflow": ".github/workflows/preview-candidate.yml",
+    "handoff": "mydocs/working/task_m3_47_cloud_handoff.md",
+    "portable_tests": 51,
+    "skipped": 0,
+    "skip_negative_control": "passed: intentionally skipped suite returns failure",
+    "actionlint": "passed after correcting job-level runner context to step GITHUB_ENV",
+    "runtime_or_gui_started": false,
+    "private_credentials_transferred": false,
+    "cloud_environment_created": true,
+    "stage2_complete": false,
+    "candidate_scope": "Ad-hoc signed app/CLI only; no runtime, no notarization, no public release",
+    "portable_log_sha256": "1e421b676afe0450e79d0251323828dbd604b57d7ea1f9ec045306737ac318ed",
+    "source_checkpoint": "d9e222327efda07fe24a39c6d8841251c94d1ba3",
+    "run_url": "https://github.com/postmelee/pear/actions/runs/38163826676",
+    "hosted_python_tests": {
+      "ubuntu": 51,
+      "macos": 51,
+      "skips": 0
+    },
+    "hosted_rust_tests": 21,
+    "download_hashes_verified": true,
+    "artifacts": {
+      "Pear-0.1.0-preview.1-macos-arm64.zip": {
+        "sha256": "1fd169093a7fd51e4461697110b9b277bd2eb5896051141f13dcc1bc8e7ac635",
+        "size": 5291438
+      },
+      "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+        "sha256": "7fd25e088bece60bf1e2af535b6eb04dfebe41a7b6efbc2e8285b29113e21782",
+        "size": 335560
+      }
+    },
+    "provenance_sha256": "fe0aa1c3b200576a055a40a9f7e100104b886c1e136419f4d7e05be8ab94f689",
+    "candidate_not_for_normal_security_user_testing": true,
+    "cloud_environment": {
+      "name": "Pear Preview \u00b7 Issue 47",
+      "published": true,
+      "visibility": "Only me",
+      "source_checkpoint": "c8c7e25739f59c22c9fce5f66b90dcb84f3edd99",
+      "preview_python_tests": 51,
+      "docs_python_tests": 72,
+      "node_tests": 6,
+      "skips": 0,
+      "checks": "governance, catalog and diff passed in setup instance",
+      "python": "3.12.14",
+      "node": "24.19.0",
+      "fresh_task_restoration_verified": false,
+      "source_modified_during_setup": false,
+      "network_secrets_or_environment_variables_added": false
+    }
+  },
+  "cloud_signing_preparation": {
+    "status": "Implemented and portable-checked; credential provisioning and real signing not performed",
+    "portable_tests": 58,
+    "skipped": 0,
+    "actionlint": "passed",
+    "environment": "pear-preview-signing",
+    "deployment_branch": "codex/publish-task47",
+    "branch_policy_verified": true,
+    "required_reviewers": "Rejected by GitHub for current private-repository plan",
+    "environment_secret_count": 0,
+    "signing_approved_sha_configured": false,
+    "owner_authorized_github_signing_credentials": true,
+    "reduced_approval_mode_authorized": false,
+    "visibility_change_authorized": false,
+    "visibility_change_performed": false,
+    "owner_followup": "Asked whether making the repository public enables required reviewers; public conversion remains a separate final action",
+    "local_runtime_or_gui_started": false,
+    "source_scope": [
+      ".github/workflows/preview-candidate.yml",
+      "preview/sign_candidate.py",
+      "preview/test_sign_candidate.py"
+    ],
+    "synthetic_claim": "Refusal of private payloads, wrong/dirty source, prior-output overwrite, non-Accepted receipts; temporary output cleanup and input preservation; success still requires both tickets and package-policy checks.",
+    "hosted_run": "https://github.com/postmelee/pear/actions/runs/38166760208",
+    "hosted_result": "58 Python fixtures passed; existing Rust recovery test failed (20/21). Sign job skipped; no credentials present.",
+    "recovery_followup": "Explicit Session unlock and duplicated-descriptor regression verified in hosted run 38167091034. Existing frozen local candidate is unchanged; changed app requires new local admission.",
+    "hosted_recovery_fix": {
+      "source_revision": "e27e002e4745cd1dbd7ac1b7245ac154e589711a",
+      "run": "https://github.com/postmelee/pear/actions/runs/38167091034",
+      "result": "success",
+      "python_tests_per_platform": 58,
+      "platforms": [
+        "Ubuntu",
+        "macOS ARM64"
+      ],
+      "rust_tests": 22,
+      "skipped_or_ignored": 0,
+      "signing_job": "skipped; approved SHA unset; no credentials provisioned",
+      "downloaded_archives": {
+        "Pear-0.1.0-preview.1-macos-arm64.zip": {
+          "size": 5291542,
+          "sha256": "75394e3eb6b7007cd1c9894f01507968fceb745c747e457b3971d4de020213cc"
+        },
+        "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+          "size": 335662,
+          "sha256": "fe3e5530a5105c3c7ffe27c75c8e6eb29553edcccc224c85c7a41cac6b9b14dd"
+        }
+      },
+      "all_manifest_hashes_verified": true,
+      "local_execution": false,
+      "distribution_qualified": false
+    }
+  },
+  "public_source_review_20261012": {
+    "remote_branches": 3,
+    "history_blobs": 2100,
+    "bytes_scanned": 60777999,
+    "selected_secret_pattern_matches": 0,
+    "credential_filename_matches": 0,
+    "historical_blobs_with_personal_paths": 19,
+    "artifact_count": 16,
+    "master_missing": [
+      "LICENSE",
+      "docs/rosetta-preview.md",
+      "docs/development/preview-release.md",
+      ".github/workflows/preview-candidate.yml"
+    ],
+    "scope": "Bounded pattern scan only; no complete publication/privacy audit claim",
+    "remaining": [
+      "Final current-ref scan (history snapshot predates e27e002)",
+      "Actions logs/artifact contents and historical personal-path disclosure review",
+      "Default-branch license and public-entry alignment",
+      "Final visibility authorization"
+    ],
+    "visibility_change_performed": false,
+    "github_surface_scan": {
+      "issues_and_prs": 49,
+      "issue_comments": 2,
+      "pr_review_comments": 0,
+      "discussions": 4,
+      "selected_secret_pattern_matches": 0,
+      "claim": "Bounded scan, not complete prose/privacy review"
+    }
+  },
+  "publication_preparation": {
+    "date": "2026-10-12",
+    "approved_scope": "Review public contents and prepare default-branch entry/license alignment; final visibility approval pending",
+    "remote_source_snapshot": "4e1be9114fc76802e21b075e143cfc2f86c66c0a",
+    "master_base": "4340f2059ae187a0322fec564a700721e57a88f8",
+    "prepared_patch_sha256": "4f697e6c290dc6eb01f06860e5a32a769d1f5e33c9f7740b2b1fb4820e6429d2",
+    "prepared_patch_files": [
+      ".github/DISCUSSION_TEMPLATE/show-and-tell.yml",
+      ".github/ISSUE_TEMPLATE/bug_report.yml",
+      ".github/ISSUE_TEMPLATE/config.yml",
+      ".github/ISSUE_TEMPLATE/documentation.yml",
+      ".github/ISSUE_TEMPLATE/task.yml",
+      "LICENSE",
+      "README.md",
+      "docs/CODE_OF_CONDUCT.md",
+      "docs/README.md",
+      "docs/SECURITY.md",
+      "docs/SUPPORT.md",
+      "docs/community.md",
+      "docs/contributing.md",
+      "manager/Cargo.toml"
+    ],
+    "verification": "Exact-base git apply --cached --check passed; pinned documentation targets exist; 31 governed documents / 284 targets; 35 existing docs tests passed; five intake YAML files parsed.",
+    "remote_heads_reviewed": 3,
+    "actions_runs_reviewed": 37,
+    "actions_artifacts_reviewed": 17,
+    "archive_members_including_nested": 646,
+    "log_bytes_scanned": 5647479,
+    "selected_secret_pattern_matches": 0,
+    "history_binary_archive_credential_filename_candidates": 0,
+    "issues_prs": 49,
+    "issue_comments": 2,
+    "review_comments": 0,
+    "discussions": 4,
+    "surface_attachment_urls_found": 0,
+    "public_disclosures": [
+      "Historical commit author names/email addresses",
+      "Personal absolute source/build paths in historical evidence and test literals",
+      "Actions logs, fixture binaries and ad hoc development candidates"
+    ],
+    "wiki": "has_wiki true; authenticated wiki Git endpoint returned Repository not found; no readable wiki contents available for inspection",
+    "tags": 0,
+    "releases": 0,
+    "limitations": [
+      "Bounded automated patterns and content/entry review do not guarantee absence of every secret or legal issue",
+      "Changes to remote heads, logs, artifacts or public bodies require delta review before visibility change",
+      "Source publication does not qualify binary/runtime distribution or game support"
+    ],
+    "master_changed": false,
+    "visibility_changed": false,
+    "credential_material_exported_or_uploaded": false,
+    "signing_environment_secrets": 0,
+    "prepared_post_public_actions": [
+      "Verify required reviewer postmelee and exact branch policy; disable administrator bypass; single-owner manual self-review allowed, not independent review",
+      "Enable and verify private vulnerability reporting",
+      "Update reviewed Discussions 50 and 51",
+      "Keep Pages and player release unavailable until their separate gates"
+    ],
+    "retained_private_review_root": ".build/task47/publication-audit",
+    "next_action": "Requester final approval for narrow public-entry PR/integration and existing-repository visibility change; do not publish the full unfinished #47 implementation as completed"
+  },
+  "public_source_and_ci_registration": {
+    "date": "2026-10-12",
+    "public_source": true,
+    "public_entry_pr": 54,
+    "merge": "3a15ddd2539ca5c0578834ff644548e58b7a6a39",
+    "issue_47_open": true,
+    "private_vulnerability_reporting": true,
+    "intake_forms_rendered": true,
+    "wiki": "empty first-page state observed",
+    "secret_registration": "Owner local helper completed; names and protection verified; values not read back",
+    "environment": "pear-preview-signing",
+    "required_reviewer": "postmelee",
+    "admins_bypass": false,
+    "allowed_branch": "codex/publish-task47",
+    "single_owner_self_review": true,
+    "candidate_sha": "e27e002e4745cd1dbd7ac1b7245ac154e589711a",
+    "run_url": "https://github.com/postmelee/pear/actions/runs/38167091034",
+    "attempt": 2,
+    "signing": "Attempt 2 failed before notarization: codesign no identity found; credentials provisioned and always-cleanup passed; approved SHA removed",
+    "public_player_release": false,
+    "local_gui_started": false
+  },
+  "hosted_identity_discovery_repair": {
+    "previous_run": "https://github.com/postmelee/pear/actions/runs/38167091034/attempts/2",
+    "failure": "codesign: no identity found before notarization",
+    "credential_provisioning": "passed",
+    "credential_cleanup": "passed",
+    "signed_artifact_uploaded": false,
+    "changes": [
+      "Add disposable hosted signing keychain to user search list following GitHub recipe",
+      "Require exact valid code-signing identity before codesign"
+    ],
+    "verification": {
+      "portable_tests": 59,
+      "skipped": 0,
+      "actionlint": "passed",
+      "governance": "37 documents, 354 targets",
+      "whitespace": "passed"
+    },
+    "actual_signing_after_fix": "pending owner-approved hosted run",
+    "local_keychain_changed": false
+  },
+  "hosted_signed_candidate_0f712b9": {
+    "date": "2026-10-12",
+    "source_revision": "0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "run_url": "https://github.com/postmelee/pear/actions/runs/38171422915",
+    "result": "success",
+    "python_tests": 59,
+    "rust_tests": 22,
+    "skipped_or_ignored": 0,
+    "notarization": {
+      "app": {
+        "id": "12fff2ca-f4f3-4fa4-aa7d-4e3683e8c2f6",
+        "status": "Accepted"
+      },
+      "cli": {
+        "id": "04de6001-cf22-4a9d-8b9c-170ae6bd232f",
+        "status": "Accepted"
+      }
+    },
+    "artifacts": {
+      "Pear-0.1.0-preview.1-macos-arm64.zip": {
+        "sha256": "2d66b3d79014b9c59989bccae95c9fa3a1f9dc77b45803c4615f52024a86cc83",
+        "size": 5299791
+      },
+      "pear-preview-0.1.0-preview.1-macos-arm64-cli.zip": {
+        "sha256": "c61bf5d462fb1bb5f7d414d6def34628f03a5ab2297ba83125f5e9678651eae9",
+        "size": 337606
+      }
+    },
+    "local_policy_checks": {
+      "app-signature": 0,
+      "staple": 0,
+      "gatekeeper": 0,
+      "distribution": 0,
+      "cli-notarization": 0,
+      "cli-help": 0
+    },
+    "always_cleanup": "passed",
+    "approved_sha_variable": "removed and read back absent",
+    "candidate_root": ".build/task47/stage2/ci-signed-0f712b9",
+    "storage": {
+      "logical_bytes": 13071055,
+      "stat_allocated_bytes": 13209600,
+      "free_bytes_observed": 14295707648
+    },
+    "runtime_included": false,
+    "private_state_included": false,
+    "public_release": false,
+    "local_gui_started": false,
+    "ready": ".build/task47/stage2/supervisor-preparation-ci-0f712b9/ready.json",
+    "ready_sha256": "debbf025dde9f319ef596adf4305f7828210618feb3c80faa972612437f7f049",
+    "local_execution": "fresh coordinator grant requested; not yet admitted"
+  },
+  "ci_reinstall_observation": {
+    "operation_id": "task47-stage2-reinstall-ci-0f712b9-r1",
+    "candidate_source": "0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "supervisor_source": "b1ac5c6f0c4fc13b5ce32ee22c8e9c4e53ab522c",
+    "date": "2026-10-12",
+    "app_reinstall": "passed",
+    "Steam_library": "requester confirmed",
+    "menu_input_progression_normal_game_exit": "requester confirmed",
+    "Steam_main_and_Pear_exit": "observed",
+    "whole_session_release": true,
+    "evidence_root": ".build/task47/stage2/reinstall-ci-0f712b9-r1",
+    "scope": "Same-host Rosetta Preview, not no-Rosetta qualification, clean-user delivery or measured gameplay",
+    "normal_full_session_exit": false,
+    "cleanup": "One identity-checked SIGTERM to owned orphan steamwebhelper; all remaining services subsequently exited; no forced game termination",
+    "independent_release": {
+      "path": ".build/task47/stage2/reinstall-ci-0f712b9-r1/independent-release.json",
+      "sha256": "eb80d8aa8b08fd7b558cb9728f3e1f81746640ce8113795bcc6f5018714066c9",
+      "tracked_lifetimes_checked": 49
+    }
+  },
+  "stage2_evidence_review": {
+    "date": "2026-10-12",
+    "document": "mydocs/working/task_m3_47_stage2_review.md",
+    "status": "superseded by Stage 2 completion report after normal UI exit/reopen passed",
+    "new_host_execution": false,
+    "candidate_source_matches": [
+      "preview/src/lib.rs",
+      "preview/src/recovery_tests.rs",
+      "preview/src/runtime_pin.rs",
+      "preview/src/main.rs",
+      "preview/Launcher.swift"
+    ],
+    "ci_run_rechecked": "38171422915: success; all three jobs success; head 0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "normal_user_Steam_UI_exit": "passed twice with one preserved-login library reopen; no forced termination",
+    "release_disposition": "Observed harness -shutdown orphan remains a historical limitation; normal Steam menu Exit and reopen passed on the exact candidate. No upstream runtime patch is required solely on this evidence. Final-candidate delivery checks still required.",
+    "coordinator_release_sha256": "fa12e66beace1a715658662ce1f73d38a6c6fbf49a56d45be5cce8ccde52df67"
+  },
+  "normal_steam_ui_exit_validation": {
+    "operation_id": "task47-stage2-steam-ui-exit-ci-0f712b9-r1",
+    "candidate_source": "0f712b93bbd239a1defd959da4dbf1cd0ad9a7a1",
+    "result": "passed",
+    "requester_confirmed": [
+      "initial library normal",
+      "Steam menu Exit and Pear closed",
+      "reopened with existing login and normal library",
+      "second Steam menu Exit and Pear closed"
+    ],
+    "normal_exit_cycles": 2,
+    "reopen_cycles": 1,
+    "forced_cleanup": false,
+    "tracked_lifetimes_absent": 69,
+    "owned_handles": [],
+    "supervisor_exit_code": 0,
+    "independent_lock_acquire_release": true,
+    "receipt": ".build/task47/stage2/steam-ui-exit-ci-0f712b9-r1/independent-release.json",
+    "receipt_sha256": "ee7fa7db0c42d48d47030051a6b555110007610db138f39b80c1d406c23c4155",
+    "scope": "Same-host exact candidate normal Steam UI exit/reopen only; no new game, timed play, clean-user or public delivery qualification"
+  },
+  "completion_report": "mydocs/working/task_m3_47_stage2.md"
+}

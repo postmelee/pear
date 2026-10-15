@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "github_forms_live": true,
+  "games": [
+    {
+      "app_id": "3405340",
+      "name": "Megabonk",
+      "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405340/8c557b0ace38af77f6e49eaa6aafa29ccea4b987/capsule_616x353.jpg?t=1760445338",
+      "image_source_url": "https://store.steampowered.com/app/3405340/Megabonk/",
+      "image_credit": "Megabonk artwork from its official Steam store page; rights remain with the respective owners.",
+      "request": {
+        "discussion_url": null,
+        "upvotes": null,
+        "synced_at": null
+      }
+    }
+  ]
+}

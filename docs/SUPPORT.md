@@ -1,12 +1,12 @@
 # Get help with Pear
 
-A public Preview download is not yet qualified. Start with the
-[Preview status and guide](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/rosetta-preview.md) for requirements and data preservation.
+For the current public Preview, start with the
+[Preview status and guide](rosetta-preview.md) for requirements and data preservation.
 
 - **Setup question:** ask in [Q&A](https://github.com/postmelee/pear/discussions/categories/q-a).
 - **Pear bug:** use the [bug form](https://github.com/postmelee/pear/issues/new?template=bug_report.yml)
   with steps, expected/actual behavior, Pear version, Mac chip and macOS version.
-- **Game result:** follow the [compatibility reporting guide](https://github.com/postmelee/pear/blob/4e1be9114fc76802e21b075e143cfc2f86c66c0a/docs/compatibility/README.md),
+- **Game result:** follow the [compatibility reporting guide](compatibility/README.md),
   including failures and short runs; menu interaction is a useful but limited result.
 - **Documentation problem:** use the [documentation form](https://github.com/postmelee/pear/issues/new?template=documentation.yml).
 - **Feature/game request:** use [Ideas](https://github.com/postmelee/pear/discussions/categories/ideas).

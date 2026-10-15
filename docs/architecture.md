@@ -2,6 +2,21 @@
 
 Status: proposed implementation baseline, not an implemented runtime. Original evidence review: September 27, 2026; roadmap, repository status, contracts and manager-decision alignment: September 28, 2026.
 
+## Product experience and runtime routes
+
+The shared product goal is a free, open-source application that prepares Windows
+Steam and lets players choose owned games without configuring compatibility tools.
+The current M3 preview uses a separate Rosetta/Wine/DXMT route and shared Rust
+bootstrap with a thin Mac UI. Its default entry opens Steam's library. Megabonk
+is a validation target rather than a restriction on Steam library selection.
+
+The native requirements below remain the M1 target: every required host process
+and library must avoid Rosetta. The preview does not relax these requirements or
+the native manager's fixture-only admission. Adopting a qualified native runtime
+later should preserve the player-facing entry; state migration, saves and recovery
+must be validated for that runtime family. The [delivery plan](delivery-plan.md)
+is authoritative for current priorities; performance rewrites are deferred.
+
 ## 1. Objective and engineering standard
 
 The first technical runtime milestone, M1, is **Megabonk running on an Apple Silicon Mac without Rosetta**. Pear will own a reproducible compatibility runtime: its source and patch set, build definitions, macOS integration, component contracts, validation, and release process. A successful launch using an opaque collection of prebuilt libraries is insufficient.

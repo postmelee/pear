@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Steam game search snapshot
+
+'on':
+  workflow_dispatch:
+  # Temporary private verification ref; no website/release deployment.
+  push:
+    branches: [codex/task47-steam-catalog-check]
+    paths:
+      - tools/steam_catalog.py
+      - tests/docs/test_steam_catalog.py
+      - .github/workflows/steam-catalog.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: steam-catalog-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    if: github.repository == 'postmelee/pear' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/codex/task47-steam-catalog-check')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Check metadata and secret boundaries with synthetic inputs
+        run: python3 -B -m unittest discover -s tests/docs -p test_steam_catalog.py -v
+      - name: Fetch public game identities
+        env:
+          STEAM_WEB_API_KEY: ${{ secrets.STEAM_WEB_API_KEY }}
+        run: python3 -B tools/steam_catalog.py --output .build/steam-catalog/steam-games.json
+      - name: Retain only the sanitized public snapshot
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: steam-game-identities
+          path: .build/steam-catalog/steam-games.json
+          if-no-files-found: error
+          retention-days: 7

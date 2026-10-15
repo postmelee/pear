@@ -1,12 +1,37 @@
 # Pear roadmap and delivery plan
 
-Planning baseline: September 28, 2026. This is Pear's canonical roadmap and defines intended outcomes and completion criteria. It does not certify a Rosetta-free runtime or an available end-user release.
+Planning baseline: September 28, 2026; product/preview priority revised October 11, 2026. This is Pear's canonical roadmap and defines intended outcomes and completion criteria. It does not certify a Rosetta-free runtime or an available end-user release.
 
 The [official documentation index](README.md) identifies the source for each kind of information. Current task state belongs in [GitHub Issues](https://github.com/postmelee/pear/issues); actual execution claims require matching qualification records. Dated [local experiments](research/local-evidence.md) and [host capability evidence](host-capabilities.md) retain their recorded limits. Issue-specific plans, approvals and reports belong in [mydocs](../mydocs/manual/document_structure_guide.md), rather than serving as a second roadmap. See the [contributor guide](contributing.md) for participation and review.
 
+## Product philosophy and current priority
+
+Pear is intended to be free and open source. Players should open Pear, sign into
+official Windows Steam and select owned games without learning Wine, Whisky,
+command-line setup or developer tooling. Pear owns preparation, useful failures,
+updates and preservation-first recovery. It should disclose its components and
+requirements without making their configuration a routine player task.
+
+The final goal remains **Windows Steam gameplay without Rosetta in any required
+host process or library**. The current M3 Rosetta preview develops the user
+experience alongside M1 technical work. It is an interim delivery route, not a
+replacement for that goal. Performance/memory optimization and language rewrites
+are deferred behind making the demonstrated experience usable by others.
+
+M3's default entry opens Windows Steam's library; Steam handles game selection,
+ownership, installation and Play. Megabonk remains its first validation game.
+Opening a library is not a compatibility claim for every game. Later game profiles
+and a Pear compatibility view add evidence and automation beyond Steam's own UI.
+
+The existing registered name **M3 — Rosetta-based Megabonk Preview** and Issue
+[#47](https://github.com/postmelee/pear/issues/47) are retained while the entry
+broadens to Steam. Its game, recovery, security and clean-delivery gates remain.
+The [preview guide](rosetta-preview.md) records actual availability. No public
+release is established by a successful local build, signature or one game menu.
+
 ## Product phases
 
-The first user goal is to download Pear on a supported Apple Silicon Mac, sign into official Steam, install an owned Windows copy of Megabonk, and play, save, quit and resume without Rosetta. Every required host process and native library must meet that requirement; a native launcher alone cannot qualify the experience.
+The Rosetta-free Phase 1 user goal is to download Pear on a supported Apple Silicon Mac, sign into official Steam, install an owned Windows copy of Megabonk, and play, save, quit and resume without Rosetta. Every required host process and native library must meet that requirement; a native launcher alone cannot qualify the experience.
 
 | Phase | Intended user capability | Completion focus |
 |---|---|---|
@@ -19,6 +44,8 @@ The first user goal is to download Pear on a supported Apple Silicon Mac, sign i
 Phases describe expanding user capabilities, not a requirement to postpone useful groundwork. Profile design and validation can begin in Phase 1. [#3](https://github.com/postmelee/pear/issues/3) owns actual runtime/profile contracts and the manager-language decision; this roadmap does not settle either. Later phases require their own bounded tasks and acceptance criteria before implementation. No delivery dates, all-game support or performance advantage are implied.
 
 ## Milestones
+
+- **M3 — Rosetta-based Megabonk Preview:** the current user-delivery priority. Provide a small app and optional CLI that prepare and open Windows Steam. Qualify Megabonk first, preserve saves, validate recovery and resolve signed/notarized ordinary-user distribution. Keep its Rosetta requirement explicit. Reuse its user-flow lessons in M2; runtime compatibility and migrations require new evidence.
 
 - **M1 — Megabonk on Apple Silicon without Rosetta:** the existing technical runtime milestone. Its 16 implementation issues cover a source-buildable runtime, necessary host ports, correctness tests, Steam/game integration and reproducible qualification. Authorized development-profile execution may qualify this technical scope; an ordinary-user application requires additional evidence.
 - **M2 — Install Pear and play Megabonk without Rosetta (proposed):** the ordinary-user portion of Phase 1, including the application, runtime installation, official Steam flow, recovery and distribution. M2 and U01-U07 below are unregistered planning candidates as of this baseline, with no assigned GitHub identities.
@@ -124,7 +151,7 @@ Implement versioned local save/settings backups, verified restoration and compat
 
 ### U06 - Installable release candidate
 
-Package the signed/notarized application and compatible runtime delivery with component identities, source references, notices, and tested installation, update, removal and diagnostic instructions. The supported user flow needs no Terminal commands. Resolve Pear's own license and component distribution obligations before public release. Packaging alone does not qualify support or authorize a repository visibility change.
+Package the signed/notarized application and compatible runtime delivery with component identities, source references, notices, and tested installation, update, removal and diagnostic instructions. The supported user flow needs no Terminal commands. Preserve Pear's GPL-3.0-or-later license and resolve component distribution obligations before public release. Packaging alone does not qualify support or authorize a repository visibility change.
 
 ### U07 - End-to-end qualification
 

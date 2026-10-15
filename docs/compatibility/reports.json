@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "records": [
+    {
+      "id": "megabonk-20261011-m4pro-preview-menu",
+      "game": "Megabonk",
+      "app_id": "3405340",
+      "tested_on": "2026-10-11",
+      "track": "rosetta-preview",
+      "evidence": "reported",
+      "result": "menu-interactive",
+      "pear_version": "0.1.0-preview.1 development candidate (Task #47, uncommitted)",
+      "runtime": "Libraries 3.1.1 / Wine 11.0 / DXMT 0.80 / Rosetta",
+      "game_build": "21750826",
+      "steam_build": "unknown",
+      "host": "Apple M4 Pro, 24 GB; macOS 26.5.2 (25F84)",
+      "settings": "Resolution and graphics settings not recorded for this official-Steam menu check",
+      "play_minutes": null,
+      "checks": {
+        "input": "observed",
+        "audio": "not-tested",
+        "save_reload": "not-tested",
+        "recovery": "not-tested"
+      },
+      "summary": "Official Steam login, owned installation and normal launch in a fresh same-host environment. The owner confirmed a responsive menu. Input observation is limited to menu interaction.",
+      "limitations": "Input was checked in menus only.",
+      "source_url": "https://github.com/postmelee/pear/issues/47",
+      "reproduction_url": null,
+      "qualification_url": null,
+      "architecture_evidence_url": null
+    },
+    {
+      "id": "megabonk-20261015-m4pro-preview3",
+      "game": "Megabonk",
+      "app_id": "3405340",
+      "tested_on": "2026-10-15",
+      "track": "rosetta-preview",
+      "evidence": "reported",
+      "result": "active-gameplay",
+      "pear_version": "0.1.0-preview.3 (e574ba1); sustained play on preview.2 with identical signed-v3 runtime",
+      "runtime": "pear-wine11-cw26.3-dxmt0.80-signed-v3 / Wine 11.0 / DXMT 0.80 / Rosetta",
+      "game_build": "unknown for final session; earlier recorded build 21750826",
+      "steam_build": "unknown for final session",
+      "host": "Apple M4 Pro, 24 GB; macOS 26.5.2 (25F84)",
+      "settings": "Owner settings; exact resolution and quality not recorded",
+      "play_minutes": 20,
+      "checks": {
+        "input": "observed",
+        "audio": "observed",
+        "save_reload": "observed",
+        "recovery": "observed"
+      },
+      "summary": "Owner confirmed 20+ active play minutes, input, audio and saved progress on the unchanged signed-v3 runtime. Final signed app launch and a fresh standard-account installation on the same Mac were confirmed without problems.",
+      "limitations": "20 minutes is the owner-confirmed minimum, not an instrumented exact duration. Recovery checks retain their Stage 2 input scope. Same physical Mac; no independent reproduction, controller, Steam Cloud or performance qualification.",
+      "source_url": "https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3",
+      "reproduction_url": null,
+      "qualification_url": null,
+      "architecture_evidence_url": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+[package]
+name = "pear-preview"
+version = "0.1.0-preview.3"
+edition = "2021"
+rust-version = "1.94"
+publish = false
+license = "GPL-3.0-or-later"
+
+[dependencies]
+pear-manager = { path = "../manager" }
+libc = "=0.2.186"
+
+[profile.release]
+opt-level = 3
+codegen-units = 1

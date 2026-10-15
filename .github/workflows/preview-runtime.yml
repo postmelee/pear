@@ -1,0 +1,128 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Preview runtime reconstruction
+
+'on':
+  workflow_dispatch:
+  push:
+    branches: [codex/publish-task47]
+    paths:
+      - '.github/workflows/preview-runtime.yml'
+      - 'preview/runtime_build.py'
+      - 'preview/runtime_validate.py'
+      - 'preview/browser-lifetime-smoke.c'
+      - 'preview/patches/**'
+      - 'preview/runtime-inputs.json'
+      - 'preview/runtime-notices/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-runtime-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    if: github.repository == 'postmelee/pear' && github.ref == 'refs/heads/codex/publish-task47'
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.5.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Prepare isolated build tools
+        run: |
+          test "$(uname -m)" = arm64
+          test -d "$DEVELOPER_DIR"
+          brew install bison mingw-w64 pkgconf
+          /usr/bin/arch -x86_64 /usr/bin/true || sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+          python3 -B -m unittest discover -s preview -p 'test_runtime*.py'
+      - name: Verify and extract pinned public source inputs
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/source-kit.tar.gz" \
+            https://github.com/postmelee/pear/releases/download/v0.1.0-preview.1/pear-runtime-source-kit-signing-v6.tar.gz
+          python3 -B - <<'PYTHON'
+          import hashlib, json, os, tarfile
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          archive = root / 'source-kit.tar.gz'
+          expected = '61e7f41f4644c49061e485e3149cc0cc0ee33b4e58aaf417dd6380630b930fbe'
+          if hashlib.file_digest(archive.open('rb'), 'sha256').hexdigest() != expected:
+              raise SystemExit('Public source-kit checksum mismatch')
+          lock = json.loads(Path('preview/runtime-inputs.json').read_text())
+          names = {'inputs/' + item['filename'] for item in lock['inputs'].values()}
+          with tarfile.open(archive) as source:
+              members = [member for member in source.getmembers() if member.name in names]
+              if len(members) != len(names) or any(not member.isfile() for member in members):
+                  raise SystemExit('Source-kit input allowlist mismatch')
+              source.extractall(root / 'input-kit', members=members, filter='data')
+          mapping = {name: str(root / 'input-kit/inputs' / item['filename'])
+                     for name, item in lock['inputs'].items()}
+          (root / 'input-map.json').write_text(json.dumps(mapping))
+          PYTHON
+          python3 -B preview/runtime_build.py verify --input-map "$RUNNER_TEMP/input-map.json"
+      - name: Reconstruct complete runtime with recorded toolchain
+        run: |
+          python3 -B preview/runtime_build.py build \
+            --input-map "$RUNNER_TEMP/input-map.json" \
+            --bison /opt/homebrew/opt/bison/bin/bison \
+            --output "$RUNNER_TEMP/pear-runtime" --jobs 4
+      - name: Verify a relocated synthetic runtime
+        run: |
+          mkdir -p "$RUNNER_TEMP/pear-relocated/Libraries"
+          cp -R "$RUNNER_TEMP/pear-runtime/Runtime" "$RUNNER_TEMP/pear-relocated/Libraries/Wine"
+          cp "$RUNNER_TEMP/pear-runtime/runtime-manifest.json" "$RUNNER_TEMP/pear-relocated/runtime-manifest.json"
+          python3 -B - <<'PYTHON'
+          import os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'preview')
+          import runtime_validate
+          root = Path(os.environ['RUNNER_TEMP'])
+          runtime_validate.validate(root / 'pear-relocated/Libraries/Wine', root / 'pear-validation')
+          PYTHON
+      - name: Archive only runtime, matching sources and verification receipts
+        run: |
+          mkdir "$RUNNER_TEMP/pear-runtime-artifacts"
+          python3 -B preview/runtime_build.py source-kit \
+            --input-map "$RUNNER_TEMP/input-map.json" \
+            --output "$RUNNER_TEMP/pear-runtime-artifacts/pear-runtime-source-kit.tar.gz"
+          python3 -B - <<'PYTHON'
+          import hashlib, json, os, shutil, tarfile
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          out = root / 'pear-runtime-artifacts'
+          with tarfile.open(out / 'pear-runtime-unsigned.tar.gz', 'w:gz', compresslevel=1) as target:
+              target.add(root / 'pear-runtime/Runtime', arcname='Runtime')
+          for name in ('runtime-manifest.json', 'toolchain.json', 'load-audit.json', 'result.json', 'wine-config.h'):
+              shutil.copy2(root / 'pear-runtime' / name, out / name)
+          shutil.copy2(root / 'pear-runtime/logs/commands.json', out / 'commands.json')
+          shutil.copy2(root / 'pear-validation/result.json', out / 'validation.json')
+          files = {p.name: hashlib.file_digest(p.open('rb'), 'sha256').hexdigest()
+                   for p in sorted(out.iterdir()) if p.is_file()}
+          (out / 'provenance.json').write_text(json.dumps(dict(
+              source_revision=os.environ['GITHUB_SHA'], run_id=os.environ['GITHUB_RUN_ID'],
+              run_attempt=os.environ['GITHUB_RUN_ATTEMPT'], files=files,
+              scope='Unsigned reconstruction candidate; no Steam/game/signing/release qualification'), indent=2) + '\n')
+          PYTHON
+      - name: Retain reconstruction candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-runtime-unsigned-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pear-runtime-artifacts/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain bounded build diagnostics on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-runtime-failure-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pear-runtime/logs/*.log
+            ${{ runner.temp }}/pear-runtime/logs/commands.json
+            ${{ runner.temp }}/pear-runtime/result.json
+            ${{ runner.temp }}/pear-validation/*.log
+            ${{ runner.temp }}/pear-validation/result.json
+          retention-days: 7

@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Source notices
+
+'on':
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  source-notices:
+    name: Changed source notices
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Test notice checker with disposable repositories
+        run: python3 -B -m unittest discover -s tests/docs -p 'test_source_notices.py' -v
+      - name: Check the exact pull request changes
+        env:
+          NOTICE_BASE: ${{ github.event.pull_request.base.sha }}
+          NOTICE_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python3 -B tools/check_source_notices.py --base "$NOTICE_BASE" --head "$NOTICE_HEAD"

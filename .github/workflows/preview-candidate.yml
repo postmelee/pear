@@ -1,0 +1,286 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Preview candidate
+
+'on':
+  workflow_dispatch:
+  push:
+    branches: [codex/publish-task47]
+    paths:
+      - 'preview/**'
+      - 'manager/**'
+      - '.github/workflows/preview-candidate.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'preview/**'
+      - 'manager/**'
+      - '.github/workflows/preview-candidate.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  portable:
+    name: Portable Preview fixtures
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run synthetic checks without skips
+        run: python3 -B preview/ci_checks.py
+      - name: Check documentation and whitespace
+        run: |
+          python3 -B tools/check_governance.py
+          git diff --check
+
+  macos:
+    name: Apple Silicon app and CLI candidate
+    needs: portable
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      RUSTUP_TOOLCHAIN: '1.94.1'
+      DEVELOPER_DIR: /Applications/Xcode_26.5.app/Contents/Developer
+      PEAR_SIGNING_IDENTITY: ''
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Admit a fresh hosted Mac and record compiler selection
+        run: |
+          export CARGO_HOME="$RUNNER_TEMP/pear-cargo"
+          export CARGO_TARGET_DIR="$RUNNER_TEMP/pear-target"
+          export PEAR_PREVIEW_BUILD_ROOT="$RUNNER_TEMP/pear-app"
+          export PEAR_CI_PACKAGES="$RUNNER_TEMP/pear-packages"
+          printf '%s\n' "CARGO_HOME=$CARGO_HOME" "CARGO_TARGET_DIR=$CARGO_TARGET_DIR" "PEAR_PREVIEW_BUILD_ROOT=$PEAR_PREVIEW_BUILD_ROOT" "PEAR_CI_PACKAGES=$PEAR_CI_PACKAGES" >> "$GITHUB_ENV"
+          test "$(uname -m)" = arm64
+          test -d "$DEVELOPER_DIR"
+          python3 -B - <<'PYTHON'
+          import os, shutil
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          if shutil.disk_usage(root).free < 6 * 1024**3:
+              raise SystemExit('Need at least 6 GiB of free hosted storage')
+          for name in ('CARGO_HOME', 'CARGO_TARGET_DIR', 'PEAR_PREVIEW_BUILD_ROOT', 'PEAR_CI_PACKAGES'):
+              p = Path(os.environ[name])
+              if p.exists():
+                  raise SystemExit('Candidate output must be fresh: ' + name)
+          PYTHON
+          xcodebuild -version
+          xcrun --sdk macosx --show-sdk-version
+          xcrun swiftc --version
+      - name: Install pinned Rust and locked dependencies
+        run: |
+          rustup toolchain install 1.94.1 --profile minimal
+          cargo fetch --manifest-path preview/Cargo.toml --locked
+      - name: Test and build the existing app and CLI
+        run: |
+          python3 -B preview/ci_checks.py
+          sh preview/build.sh
+          "$CARGO_TARGET_DIR/release/pear-preview" --help
+      - name: Package only allowlisted candidate contents
+        run: |
+          python3 -B preview/package.py --app "$PEAR_PREVIEW_BUILD_ROOT/Pear.app" --output "$PEAR_CI_PACKAGES"
+          python3 -B - <<'PYTHON'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          def command(*args):
+              return subprocess.check_output(args, text=True).strip()
+          def digest(p):
+              return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          if command('git', 'status', '--porcelain'):
+              raise SystemExit('Source changed during the candidate build')
+          out = Path(os.environ['PEAR_CI_PACKAGES'])
+          manifest = json.loads((out / 'package-manifest.json').read_text())
+          revision = command('git', 'rev-parse', 'HEAD')
+          if not manifest['candidate'] or manifest['source_dirty'] or manifest['source_revision'] != revision:
+              raise SystemExit('Candidate source identity mismatch')
+          for name, item in manifest['artifacts'].items():
+              p = out / name
+              if p.stat().st_size != item['size'] or digest(p) != item['sha256']:
+                  raise SystemExit('Candidate archive identity mismatch')
+          provenance = dict(
+              source_revision=revision,
+              run_url=os.environ['GITHUB_SERVER_URL'] + '/' + os.environ['GITHUB_REPOSITORY'] + '/actions/runs/' + os.environ['GITHUB_RUN_ID'],
+              run_attempt=os.environ['GITHUB_RUN_ATTEMPT'],
+              runner_image=os.environ.get('ImageVersion', 'unknown'),
+              os=command('sw_vers'), architecture=command('uname', '-m'),
+              xcode=command('xcodebuild', '-version'),
+              sdk=command('xcrun', '--sdk', 'macosx', '--show-sdk-version'),
+              swift=command('xcrun', 'swiftc', '--version'),
+              rust=command('rustc', '-Vv'), cargo=command('cargo', '-V'),
+              source_input_sha256={p: digest(p) for p in (
+                  'preview/Cargo.lock', 'preview/src/runtime_pin.rs',
+                  'preview/runtime-inputs.json', 'preview/build.sh', 'preview/package.py')},
+              distribution_signed=False, notarized=False, public_release=False,
+              gui_game_qualification='Not performed in CI', runtime_included=False,
+              qualification='Development build only. Local GUI/recovery, final signing/notarization and Stage 3 gates remain required.')
+          (out / 'ci-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
+          (out / 'CANDIDATE.txt').write_text(
+              'DEVELOPMENT CANDIDATE ONLY. Not signed with Developer ID or notarized.\n'
+              'Do not disable macOS protections to run it.\n'
+              'No runtime, Steam account, game or save data is included.\n'
+              'Runtime delivery URL is reserved; public delivery remains unqualified.\n'
+              'Retain exact package hashes for subsequent candidate review.\n')
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a') as f:
+              f.write('## Development candidate\n\nSource: `' + revision + '`\n\n'
+                      'App/CLI built and package-checked on a hosted Mac. '
+                      'No Developer ID signing, notarization, Steam/game or public-release qualification.\n')
+          PYTHON
+      - name: Retain bounded candidate packages for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-preview-candidate-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pear-packages/*.zip
+            ${{ runner.temp }}/pear-packages/SHA256SUMS
+            ${{ runner.temp }}/pear-packages/package-manifest.json
+            ${{ runner.temp }}/pear-packages/ci-provenance.json
+            ${{ runner.temp }}/pear-packages/CANDIDATE.txt
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+  sign:
+    name: Approved Developer ID candidate
+    needs: macos
+    if: >-
+      github.repository == 'postmelee/pear' &&
+      github.ref == 'refs/heads/codex/publish-task47' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      vars.PEAR_SIGNING_APPROVED_SHA == github.sha
+    runs-on: macos-26
+    environment: pear-preview-signing
+    timeout-minutes: 45
+    env:
+      RUSTUP_TOOLCHAIN: '1.94.1'
+      DEVELOPER_DIR: /Applications/Xcode_26.5.app/Contents/Developer
+      PEAR_SIGNING_IDENTITY: ''
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and verify before loading any signing secret
+        run: |
+          export CARGO_HOME="$RUNNER_TEMP/pear-sign-cargo"
+          export CARGO_TARGET_DIR="$RUNNER_TEMP/pear-sign-target"
+          export PEAR_PREVIEW_BUILD_ROOT="$RUNNER_TEMP/pear-sign-app"
+          printf '%s\n' "CARGO_HOME=$CARGO_HOME" "CARGO_TARGET_DIR=$CARGO_TARGET_DIR" "PEAR_PREVIEW_BUILD_ROOT=$PEAR_PREVIEW_BUILD_ROOT" >> "$GITHUB_ENV"
+          test "$(uname -m)" = arm64
+          test -d "$DEVELOPER_DIR"
+          python3 -B - <<'PYTHON'
+          import os, shutil
+          from pathlib import Path
+          if shutil.disk_usage(os.environ['RUNNER_TEMP']).free < 6 * 1024**3:
+              raise SystemExit('Need at least 6 GiB free hosted storage')
+          for name in ('CARGO_HOME', 'CARGO_TARGET_DIR', 'PEAR_PREVIEW_BUILD_ROOT'):
+              if Path(os.environ[name]).exists():
+                  raise SystemExit('Signing job needs fresh output roots')
+          PYTHON
+          rustup toolchain install 1.94.1 --profile minimal
+          cargo fetch --manifest-path preview/Cargo.toml --locked
+          python3 -B preview/ci_checks.py
+          sh preview/build.sh
+          git diff --exit-code
+      - name: Provision the approved identity in an isolated temporary keychain
+        env:
+          PEAR_CERTIFICATE_BASE64: ${{ secrets.PEAR_CERTIFICATE_BASE64 }}
+          PEAR_CERTIFICATE_PASSWORD: ${{ secrets.PEAR_CERTIFICATE_PASSWORD }}
+          PEAR_NOTARY_APPLE_ID: ${{ secrets.PEAR_NOTARY_APPLE_ID }}
+          PEAR_NOTARY_PASSWORD: ${{ secrets.PEAR_NOTARY_PASSWORD }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import base64, os, secrets, subprocess
+          from pathlib import Path
+          os.umask(0o077)
+          names = ('PEAR_CERTIFICATE_BASE64', 'PEAR_CERTIFICATE_PASSWORD', 'PEAR_NOTARY_APPLE_ID', 'PEAR_NOTARY_PASSWORD')
+          if any(not os.environ.get(name) for name in names):
+              raise SystemExit('Required protected environment credentials are missing')
+          root = Path(os.environ['RUNNER_TEMP']) / 'pear-sign-credentials'
+          root.mkdir(mode=0o700)
+          keychain, certificate = root / 'signing.keychain-db', root / 'identity.p12'
+          password = secrets.token_urlsafe(32)
+          def quiet(*args):
+              # Never log credential-bearing arguments or command diagnostics.
+              result = subprocess.run(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+              if result.returncode:
+                  raise RuntimeError('Private credential provisioning failed; review the configured identity and Apple account')
+          try:
+              certificate.write_bytes(base64.b64decode(os.environ['PEAR_CERTIFICATE_BASE64'], validate=True))
+              quiet('/usr/bin/security', 'create-keychain', '-p', password, str(keychain))
+              quiet('/usr/bin/security', 'set-keychain-settings', '-lut', '3600', str(keychain))
+              quiet('/usr/bin/security', 'unlock-keychain', '-p', password, str(keychain))
+              quiet('/usr/bin/security', 'import', str(certificate), '-P', os.environ['PEAR_CERTIFICATE_PASSWORD'],
+                    '-k', str(keychain), '-T', '/usr/bin/codesign')
+              quiet('/usr/bin/security', 'set-key-partition-list', '-S', 'apple-tool:,apple:', '-s', '-k', password, str(keychain))
+              # Match the hosted macOS recipe: codesign needs search-list admission.
+              quiet('/usr/bin/security', 'list-keychains', '-d', 'user', '-s', str(keychain))
+              quiet('/usr/bin/xcrun', 'notarytool', 'store-credentials', 'pear-ci-notary', '--keychain', str(keychain),
+                    '--apple-id', os.environ['PEAR_NOTARY_APPLE_ID'], '--team-id', 'XH6JHKYXV8',
+                    '--password', os.environ['PEAR_NOTARY_PASSWORD'])
+          except Exception:
+              raise SystemExit('Private credential provisioning failed; no credential diagnostics are retained') from None
+          finally:
+              certificate.unlink(missing_ok=True)
+          PYTHON
+      - name: Sign, notarize and assess the disposable candidate copy
+        env:
+          PEAR_CERTIFICATE_SHA1: ${{ vars.PEAR_CERTIFICATE_SHA1 }}
+        run: |
+          python3 -B preview/sign_candidate.py \
+            --app "$PEAR_PREVIEW_BUILD_ROOT/Pear.app" \
+            --output "$RUNNER_TEMP/pear-signed-packages" \
+            --identity "$PEAR_CERTIFICATE_SHA1" \
+            --team XH6JHKYXV8 \
+            --keychain "$RUNNER_TEMP/pear-sign-credentials/signing.keychain-db" \
+            --notary-profile pear-ci-notary --revision "$GITHUB_SHA"
+          python3 -B - <<'PYTHON'
+          import json, os, subprocess
+          from pathlib import Path
+          def command(*args):
+              return subprocess.check_output(args, text=True).strip()
+          out = Path(os.environ['RUNNER_TEMP']) / 'pear-signed-packages'
+          (out / 'signing-provenance.json').write_text(json.dumps(dict(
+              source_revision=os.environ['GITHUB_SHA'], run_id=os.environ['GITHUB_RUN_ID'],
+              run_attempt=os.environ['GITHUB_RUN_ATTEMPT'], runner_image=os.environ.get('ImageVersion', 'unknown'),
+              os=command('sw_vers'), architecture=command('uname', '-m'),
+              xcode=command('xcodebuild', '-version'), sdk=command('xcrun', '--sdk', 'macosx', '--show-sdk-version'),
+              swift=command('xcrun', 'swiftc', '--version'), rust=command('rustc', '-Vv'),
+              public_release=False, runtime_included=False), indent=2) + '\n')
+          PYTHON
+      - name: Remove the job-owned credentials on every outcome
+        if: ${{ always() }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import os, shutil, subprocess
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'pear-sign-credentials'
+          keychain = root / 'signing.keychain-db'
+          if keychain.exists():
+              subprocess.run(['/usr/bin/security', 'delete-keychain', str(keychain)], check=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+          if root.exists():
+              shutil.rmtree(root)
+          PYTHON
+      - name: Retain only the signed qualification candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-preview-signed-candidate-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pear-signed-packages/*.zip
+            ${{ runner.temp }}/pear-signed-packages/*.dmg
+            ${{ runner.temp }}/pear-signed-packages/SHA256SUMS
+            ${{ runner.temp }}/pear-signed-packages/package-manifest.json
+            ${{ runner.temp }}/pear-signed-packages/notarization.json
+            ${{ runner.temp }}/pear-signed-packages/signing-provenance.json
+            ${{ runner.temp }}/pear-signed-packages/CANDIDATE.txt
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
