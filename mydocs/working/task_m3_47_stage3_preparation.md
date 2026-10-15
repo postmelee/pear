@@ -468,3 +468,16 @@ The requester was asked to confirm readable login/QR and close Steam without
 logging in, then close Pear. No UI/exit success is recorded until that response
 and process observations arrive; no forced cleanup is used. Authenticated state
 and the prior signed release remain unchanged.
+
+Requester confirmed normal login text/QR and closed both Steam and Pear with X.
+A Wine Dock icon was still visible in the 09:38:34 KST screenshot. Exact-root
+observation then recorded no owned processes at 09:38:58, 09:39:03 and 09:39:08
+KST; an independent current process scan also found no Wine, Steam, PearPreview
+or Megabonk processes. No forced cleanup was performed or requested. This real
+unauthenticated close attempt passes for the local d65d713 app and notarized
+signed-v3 runtime. The Dock screenshot alone was not treated as a live-process
+failure. This does not yet qualify the new runtime's game/save behavior, an
+existing-prefix upgrade, or the final Developer ID app/CLI/DMG distribution.
+Private receipts remain in stage3/signed-runtime-v3. Release the advisory test
+lease after the verified process absence; retain the new runtime and both prefix
+copies for the remaining comparison and migration investigation.
