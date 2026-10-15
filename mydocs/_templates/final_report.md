@@ -46,6 +46,16 @@ If no quantitative metric applies, write "Not applicable" and explain why.
 - Stage 2: {report link or verification summary}
 - Stage 3: {report link or verification summary}
 
+## Retention Handoff
+
+Reconcile remaining artifacts with current consumers under the [artifact retention procedure](../manual/artifact_retention_guide.md). Include ignored worktree evidence and recovery dependencies before any later worktree removal. Small text-only tasks may use a concise Git-backed handoff with reasoned `Not applicable` for material storage.
+
+| Remaining artifact/root | State and owner/consumer | Identity/recovery reference | Retain reason / release condition |
+|---|---|---|---|
+| `{root or manifest reference}` | {retained, disposable, archived or unavailable; responsible tasks} | {required bindings, recovery store and restore procedure} | {needed claim/use, release event and checks} |
+
+Cleanup outcome and limits: {completed versus deferred operations, unavailable material, unresolved consumers, worktree preservation decision and any separately measured storage results; no inferred deletion permission from task completion}.
+
 ## Residual Risks and Follow-up Work
 
 ### Residual Risks

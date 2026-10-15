@@ -22,8 +22,7 @@ Reactions help show interest but cannot establish compatibility or a deadline.
 
 ## Introductory discussions
 
-These posts are already prepared in the current private repository and become
-public only with the reviewed visibility change:
+Start with these maintainer posts:
 
 - [Welcome to Pear](https://github.com/postmelee/pear/discussions/50).
 - [Preview status and remaining release gates](https://github.com/postmelee/pear/discussions/51).
@@ -45,9 +44,8 @@ automatic settings installer or qualified-game registry.
 
 ## Public-opening checklist for maintainers
 
-The repository is currently private. These documents and forms are preparation,
-not evidence that public services are enabled. After the reviewed visibility
-change and integration into `master`:
+Source publication, website deployment and app distribution are separate steps.
+After the reviewed visibility change and integration into `master`:
 
 - Enable GitHub private vulnerability reporting and verify the private form from
   the [security policy](SECURITY.md). Keep exploit details out of Issues.

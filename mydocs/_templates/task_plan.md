@@ -60,6 +60,17 @@ Task artifacts:
 - `mydocs/working/task_{milestone}_{issue}_stage{N}.md`
 - `mydocs/report/task_{milestone}_{issue}_report.md`
 
+## Artifact Lifecycle
+
+Follow the [artifact retention procedure](../manual/artifact_retention_guide.md). Record material inputs/output roots below; small tasks may give reasoned `Not applicable` for material storage planning.
+
+| Artifact/root | Class and state | Owner/consumer | Identity and recovery needs | Retain reason | Release condition |
+|---|---|---|---|---|---|
+| `{root or manifest reference}` | {class/state} | {producer and consumers} | {exact identity, bindings and recovery procedure} | {needed claim/use} | {release event and verification} |
+
+Reuse/copy decision: {existing compatible inputs and why any full runtime copy is necessary}.
+Peak-space plan: {expected creation/archive/restore overlap and uncertainty; measured available space, method/filesystem/time, or reasoned Not applicable}.
+
 ## Tentative Stages
 
 {Split into 3-6 stages by default. Each stage should be small enough to implement, verify, and report in one cycle.}

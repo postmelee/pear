@@ -39,6 +39,16 @@ Result:
 - {Actual outcome and key output summary, sanitized evidence link and coverage boundary}
 - {Unavailable, skipped or unperformed checks and reasons; these are not passing results}
 
+## Artifact Disposition
+
+Reconcile the plan's lifecycle record using the [artifact retention procedure](../manual/artifact_retention_guide.md). Record actual retained, disposable, archived, unavailable or released material; distinguish planned cleanup from completed cleanup. A small task may summarize Git-backed text outputs and give reasoned `Not applicable` for material storage.
+
+| Artifact/root | Actual state and outcome | Remaining owner/consumer | Identity/recovery reference | Retain reason / release condition |
+|---|---|---|---|---|
+| `{root or manifest reference}` | {state; operation performed or deferred} | {owner and consumers} | {bindings; restore-required/unavailable status and procedure} | {reason, release event, unresolved dependency} |
+
+Storage observations: {if measured, separate logical/allocated/archive sizes and filesystem free-space change, with method/time and concurrent-work limits; otherwise state unperformed or Not applicable with reason}.
+
 ## Residual Risks
 
 - {remaining risk. Write `None` if there are none.}
