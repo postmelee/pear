@@ -1,5 +1,5 @@
 {
-  "scope": "Conservative static-runtime notice set. DXMT upstream CI pins llvm-mingw 20251216; its scripts default to LLVM 21.1.8 and the recorded MinGW revision. Wine PE tools locally recorded GCC 15.2.0. Toolchain scripts are source correspondence, not a byte-identical rebuild of DXMT. Build tools themselves are not shipped.",
+  "scope": "Conservative static-runtime notice set. DXMT upstream CI pins llvm-mingw 20251216; its scripts default to LLVM 21.1.8 and the recorded MinGW revision. Wine PE tools locally recorded GCC 15.2.0. Toolchain scripts are source correspondence, not a byte-identical rebuild of DXMT. Build tools themselves are not shipped. The c6a6c4d hosted reconstruction used GCC 16.2.0 (MinGW-w64 14.0.0_3), Apple clang 21.0.0 / Xcode 26.6 build 17F113 and SDK 26.5. Its GCC 16.2.0 notices were compared byte-for-byte with the retained GCC 15.2.0 copies; both texts are identical. Actual toolchain receipts accompany the signed candidate.",
   "files": [
     {
       "file": "llvm-mingw-LICENSE.txt",
@@ -115,6 +115,16 @@
       "file": "mingw-wine-mingw-w64-libraries-winstorecompat-COPYING",
       "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/v14.0.0/mingw-w64-libraries/winstorecompat/COPYING",
       "sha256": "fa7368d1f93d890c173177475d8ec7aff265a7d08f1f364d66f74d138978ce36"
+    },
+    {
+      "file": "GCC-16.2.0-COPYING.RUNTIME",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-16.2.0/COPYING.RUNTIME",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "file": "GCC-16.2.0-COPYING3",
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-16.2.0/COPYING3",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
     }
   ]
 }

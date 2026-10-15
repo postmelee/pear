@@ -2533,3 +2533,18 @@ extract the unsigned archive locally merely to repeat hosted validation. Retain
 provenance/manifests and source delivery through release review; unsigned local
 archives become disposable after the signed successor is admitted. Account for
 new prefix clone writes separately before actual Steam/game execution.
+
+Reconstruction c6a6c4d completed with Xcode 26.6 / SDK 26.5 and GCC 16.2.0,
+not the intended Xcode 26.5: the builder's restricted environment excludes
+DEVELOPER_DIR. Admit only the recorded actual toolchain and its own passing
+execution evidence; do not claim the older toolchain was used. Before signing,
+refresh compiler notices using official GCC 16.2.0 texts (byte-identical to the
+retained 15.2.0 copies). Reuse the existing package helper's notice replacement.
+The original runtime remains immutable; its complete manifest and exact original
+input-lock digest remain admission requirements. Permit only notice_files changes
+in the current lock; reject source, patch, option and unknown-field changes.
+Keep actual reconstruction toolchain, validation and provenance receipts with the
+signed artifact. This notice-only repack does not require another full compilation.
+These are internal implementation/evidence records in mydocs, not new product
+documentation. Cancel only a redundant push-triggered reconstruction of this exact
+notice-refresh commit if created; required package and app checks remain enabled.

@@ -33,6 +33,21 @@ def notice_files():
     return root, actual
 
 
+
+def admit_notice_refresh(rebuilt_lock, reviewed_sha256):
+    """Admit only a notice refresh of an exact reviewed reconstruction lock."""
+    if not re.fullmatch(r'[0-9a-f]{64}', reviewed_sha256) or sha256(rebuilt_lock) != reviewed_sha256:
+        raise ValueError('Reconstruction input lock changed')
+    original = json.loads(rebuilt_lock.read_text())
+    current = json.loads((HERE / 'runtime-inputs.json').read_text())
+    # Executable sources, patches, options and every unknown field must match.
+    original.pop('notice_files')
+    current.pop('notice_files')
+    if original != current:
+        raise ValueError('Only reviewed notice changes may be repackaged')
+    notice_files()
+
+
 def reviewed_identity(digest, runtime_id):
     if not re.fullmatch(r'[0-9a-f]{64}', digest):
         raise ValueError('Expected an explicitly reviewed SHA-256')

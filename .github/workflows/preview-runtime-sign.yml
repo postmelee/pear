@@ -88,9 +88,10 @@ jobs:
           raw = root / 'pear-runtime-raw'
           with tarfile.open(inputs / 'pear-runtime-unsigned.tar.gz') as archive:
               archive.extractall(raw, filter='data')
-          # Match source inputs to the signing checkout before any code is signed.
-          if (raw / 'Runtime/share/pear/runtime-inputs.json').read_bytes() != Path('preview/runtime-inputs.json').read_bytes():
-              raise SystemExit('Rebuilt input lock differs from the signing checkout')
+          # Exact c6a6c4d input lock; only the reviewed compiler notice refresh is allowed.
+          # package() independently matches the complete immutable runtime inventory.
+          rp.admit_notice_refresh(raw / 'Runtime/share/pear/runtime-inputs.json',
+              '3f9f87501f3817ba685db9cc422d6a646b588117c9d52ffae72578a18de77da0')
           package = root / 'pear-runtime-integration.tar.gz'
           rp.package(raw / 'Runtime', inputs / 'runtime-manifest.json', package,
               baseline_sha256=record['files']['runtime-manifest.json'],
@@ -185,6 +186,8 @@ jobs:
           for name in ('signing.json', 'runtime-manifest.json'):
               shutil.copy2(signed / name, out / name)
           shutil.copy2(root / 'pear-runtime-notarization.json', out / 'notarization.json')
+          for name in ('toolchain.json', 'validation.json', 'provenance.json'):
+              shutil.copy2(root / 'pear-runtime-inputs' / name, out / ('reconstruction-' + name))
           record = dict(signing_source_revision=os.environ['GITHUB_SHA'],
               reconstruction_source_revision=os.environ['PEAR_SOURCE_SHA'],
               reconstruction_run=os.environ['PEAR_BUILD_RUN'],

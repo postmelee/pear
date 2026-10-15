@@ -32,6 +32,32 @@ class PackageTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'runtime identity'):
                 p.reviewed_identity('a' * 64, identity)
 
+    def test_notice_refresh_rejects_source_drift_and_unreviewed_input(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'runtime-notices').mkdir()
+            (root / 'runtime-notices/NOTICE').write_text('reviewed compiler terms')
+            original = {'inputs': {'wine': {'sha256': 'a' * 64}},
+                        'patches': {'lifetime': 'b' * 64}, 'notice_files': {}}
+            rebuilt = root / 'rebuilt.json'
+            rebuilt.write_text(json.dumps(original))
+            reviewed = p.sha256(rebuilt)
+            current = dict(original, notice_files={'NOTICE': p.sha256(root / 'runtime-notices/NOTICE')})
+            lock = root / 'runtime-inputs.json'
+            lock.write_text(json.dumps(current))
+            with patch.object(p, 'HERE', root):
+                p.admit_notice_refresh(rebuilt, reviewed)
+                with self.assertRaisesRegex(ValueError, 'input lock changed'):
+                    p.admit_notice_refresh(rebuilt, '0' * 64)
+                for field in ('inputs', 'patches', 'unexpected_option'):
+                    lock.write_text(json.dumps(dict(current, **{field: 'unreviewed'})))
+                    with self.assertRaisesRegex(ValueError, 'Only reviewed notice'):
+                        p.admit_notice_refresh(rebuilt, reviewed)
+                lock.write_text(json.dumps(current))
+                (root / 'runtime-notices/NOTICE').write_text('unreviewed change')
+                with self.assertRaisesRegex(ValueError, 'Notice inventory'):
+                    p.admit_notice_refresh(rebuilt, reviewed)
+
     def test_override_changes_only_reviewed_marker(self):
         data = b'x' * 64 + b'Wine builtin DLL' + b'y' * 64
         out = p.native_dxmt(data)

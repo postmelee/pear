@@ -365,3 +365,42 @@ and game DLL overrides remain unchanged. All 24 Preview Rust tests, formatting,
 incremental source notices and whitespace checks passed. The production runtime
 pin remains signed-v2 until the reconstructed/signed candidate is admitted; this
 source change alone does not activate the new kernelbase policy on that baseline.
+
+## Complete reconstruction review and signing admission — 2026-10-15
+
+Run 38630377016 (source c6a6c4d412055e62890351b9fd692eb396bd470c) completed
+successfully in 46m59s. Native image/load checks, crypto/font checks, valid HTTPS
+and wrong-host rejection, both seven-case browser-lifetime suites and owned
+synthetic cleanup passed. This remains hosted synthetic runtime evidence, not
+new signed-app or real-game qualification.
+
+Reviewed provenance SHA-256:
+0027957fbcafed3cdf217567e61c5f0830c6199ed670f40ff66a5cf9a610bd44.
+Runtime archive SHA-256 recorded by CI:
+89e054ff2631a7f79986bb7516d0fc61778c545cb0a11f322866cea21ca9e07f.
+Source archive SHA-256 recorded by CI:
+0b23bde973d6c30651a392cc71650349843dd04bffee481e02db590e42ff2c61.
+Runtime manifest SHA-256:
+088156ef7004e6d0ebdf3494a8917c8e3a2c091b57489912e627f4a511b806dc.
+The seven small metadata files were independently hash-checked against provenance.
+A bounded range reader retrieved 105,053 bytes instead of downloading/extracting
+both large unsigned archives locally. Full archive hashes will be verified in
+protected signing before credentials; they are not claimed locally verified yet.
+
+Actual tools: Apple clang 21.0.0, Xcode 26.6 build 17F113, SDK 26.5, GCC 16.2.0
+with Homebrew MinGW-w64 14.0.0_3. DEVELOPER_DIR was filtered by the builder;
+the receipts, not the workflow's intended Xcode path, define this candidate.
+GCC 16.2.0 COPYING.RUNTIME and COPYING3 from gcc-mirror release sources match
+the existing 15.2.0 copies byte-for-byte (SHA-256 9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74
+and 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903).
+The new notice names and provenance identify 16.2.0 explicitly; old copies remain.
+No executable is changed by this notice refresh. Admission additionally anchors
+the original lock at 3f9f87501f3817ba685db9cc422d6a646b588117c9d52ffae72578a18de77da0
+and permits only the reviewed notice inventory to differ. Negative tests reject
+changed sources, patches, unknown options, wrong original digest and tampered
+notices. All 33 runtime Python tests pass.
+
+Required reviewer postmelee and the codex/publish-task47 environment branch
+restriction remain active. No signing job has been dispatched at this checkpoint;
+no signing credentials were read. Signed runtime admission and local isolated
+Steam/game verification remain outstanding. preview.2 remains draft.
