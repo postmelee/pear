@@ -91,3 +91,15 @@ See Stage 3 for roots, owner/consumers, scope and accounting limitations.
 Final verification and catalog publication were explicitly requested on October 15.
 Publish the reviewable PR and complete the master-only deployment within that
 scope, preserving immutable preview.3 and all private recovery state.
+
+## Approved download layout publication follow-up — 2026-10-16
+
+The download page keeps its original layout while moving system requirements
+below the installation flow and Wine/DXMT versions into Release details. The
+requester approved the rendered local preview and deployment. HTML matches that
+preview exactly; 94 Python tests, 6 JavaScript tests and governance checks pass.
+The existing Pages-only workflow is reused; no workflow configuration, binary,
+release assets or home download routing change. This is a bounded #47 follow-up.
+
+Retention handoff: small generated validation output is disposable after public
+HTML verification. Existing private runtime/save evidence is outside this change.
