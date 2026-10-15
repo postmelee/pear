@@ -704,3 +704,45 @@ passed the portable and macOS build jobs; the requester approved its protected
 signing job. Exact corresponding Pear source and updated release text are prepared
 locally. Signing/notarization and final signed-app checks remain pending at this
 checkpoint; preview.3 is still an unpublished draft and preview.2 is unchanged.
+
+
+## Signed opening-feedback candidate and publication (2026-10-15)
+
+CI 38669041530 completed successfully for exact source e574ba1. App, CLI and
+DMG notarization were Accepted (4002ce10-2331-4ca6-ac92-999427cfbe09,
+c342fc49-36b8-41dc-8fbc-4cfe297b523d,
+99ab2451-0d69-41bb-aa2c-f572481f5ce6). Package hashes, Developer ID team,
+notarization requirements, Gatekeeper, syspolicy_check, stapled tickets and DMG
+integrity passed locally. The read-only mounted DMG's 27 app files exactly match
+the ZIP app; the Applications link is correct. The CLI matches the app's core.
+The completed exact-source signing variable was removed; reviewer protection
+remains unchanged.
+
+The final signed app was started after confirming all earlier test processes had
+exited. The matching Steam window was detected 26.49 seconds after process launch.
+AppKit observation confirmed the opening spinner/disabled retry followed by the
+window-detected heading/no spinner. The requester confirmed the library and prompt
+status transition were normal, then exited Steam and Pear normally. A subsequent
+scan found no Wine/Steam/Pear processes; the owned host lease was released. This
+is existing-state execution, not a new-account or readable-content inference from
+window metadata. Build/signing/preparation precede the recorded execution interval;
+no complete source-freeze-to-human-input latency claim is made.
+
+The unpublished preview.3 draft was updated to exact e574ba1 with matching source
+and five assets, then published as a qualification pre-release (not latest):
+https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3 . Obsolete naming-only
+source/binaries were replaced while still draft; public preview.2 assets remain
+unchanged. Full unauthenticated downloads of all five new assets matched their
+published sizes and SHA-256. Source archive pear-source-e574ba1.tar.gz contains
+1,658 entries, 10,478,219 bytes, SHA-256
+70f65ed187d2bc3be80394046bf8dcf2037376f6a5349e755607e82f7a1a30cc.
+The unchanged signed-v3 runtime and its corresponding source remain linked from
+preview.2. No credentials, game content or saves were published.
+
+Final new-user installation of this candidate remains pending because the
+requester cannot currently switch accounts. Earlier clean-user results keep their
+original artifact scope. Stage 3 and homepage download activation remain open;
+this publication is not broad Mac/game qualification. Retain signed/source archives,
+verification receipts and all private authenticated/recovery state. Approximately
+30 MiB of new app/package/source output fits the approved 100 MiB budget, with
+no additional runtime/prefix copy. Private receipts: stage3/launch-status.
