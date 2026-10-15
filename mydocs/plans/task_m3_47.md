@@ -319,3 +319,27 @@ separate Preview/native contribution paths, community forms/policies, reviewed
 game records and supplied branding. The implementation plan records the approved
 locations, reuse decisions and affected checks. Repository visibility and public
 release remain separate pending gates; Stage 1 stays in progress.
+
+## Approved download-page follow-up — 2026-10-16
+
+The requester approved the second local layout preview and explicitly requested
+publication through a Pages-only Action. Reuse Issue #47 for this bounded
+post-delivery entry-point correction; do not reopen runtime qualification.
+Keep the original introduction, tabs, installation instructions and download
+button order. Move platform requirements into a lower System requirements
+section and the Wine/DXMT line into native collapsible Release details.
+Keep the home Download link routed to download.html.
+
+Location judgment: update the existing HTML generator in tools/compatibility.py
+and its existing tools/catalog/style.css styles; no new documentation destination.
+Record results in the existing Stage 3/final-report files and today's task board.
+Reuse the current generator, native details element and existing Pages Action;
+no dependency or new subsystem. Current open #56 concerns runtime source ownership,
+not these catalog files; no open PR conflicts were present at inspection.
+
+Verification: compare generated download.html with the approved local preview,
+run documentation/catalog checks, retain exact DMG/CLI links, and verify the
+master-only Pages deployment and public HTML. User approval covers implementation,
+PR integration and publication of this reviewed layout. No new app builds.
+Artifact lifecycle: generate a small ignored site under .build; reuse existing
+source/data; no runtime copies. Delete disposable validation output after publish.
