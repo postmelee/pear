@@ -532,3 +532,97 @@ The upcoming preview.2 asset URL is pinned in the app/CLI, with the already
 verified signed-v3 size/hash. It is a release destination, not a currently working
 public download claim. The old public preview.1 and stale preview.2 draft assets
 have not been changed. Stage 3 and public distribution remain incomplete.
+
+
+## Final signed migration candidate and gameplay (2026-10-15)
+
+The requester approved source 1d2a084288b6ab3f2faa1a71d1954cb94157d2dc
+for publication and protected CI signing, then approved the required GitHub
+environment review. Run 38663035130 completed successfully. The app, CLI and DMG
+were accepted by Apple notarization; submission IDs respectively are
+0fa7117c-380c-47c8-b650-8bdb228311dd,
+cc17c577-dc9b-4101-a80d-69c42d9c9685 and
+1fa876c6-d986-408a-b6db-255f932176b1. Downloaded artifacts match the manifest:
+
+| Artifact | Bytes | SHA-256 |
+|---|---|---|
+| App ZIP | 5336851 | `30de38ce04853791709e3dfd55d0060ff65da161092338ba7df41ab358ec1bc3` |
+| CLI ZIP | 356925 | `c1450da9b7cdf2c005d8b74b3da0593141c61fe38d7bd6b784bae0bb9964c56c` |
+| DMG | 5455519 | `0936db367777fdb87dd32c4e74a4b492d3f3dba41b6bcdb4a2b947ad189a2acc` |
+
+Local app seal, staple, Gatekeeper and syspolicy_check distribution checks pass;
+DMG seal, staple, Gatekeeper and internal CRC checks pass. Standalone CLI bytes
+match the app's signed CLI; its explicit codesign notarized requirement and
+--version pass. An attempted app-only spctl assessment rejected the standalone
+CLI as not an app; the existing package procedure correctly checks CLI
+notarization with codesign instead. This was a checker selection correction,
+not a signature or notarization change.
+
+The requester confirmed normal menu, manual controls, audio and preserved prior
+progress in the migrated signed-v3 environment. After an explicit request for at
+least twenty active gameplay minutes, excluding idle/menu time, they confirmed
+completion and normal game exit, then explicitly confirmed no audio/control/save
+problems. Exact active duration was not supplied; this is requester-confirmed
+>=20 minutes, not a process-uptime measurement. The request timestamp is
+01:02:09 UTC. Continuous initial source-to-received-manual-input confirmation was
+529.98 seconds, including unmeasured human response waiting; exact first manual
+input time and a comparable earlier baseline are unavailable.
+
+After the requester closed Steam via its menu and closed Pear, no Wine, Steam,
+Megabonk or PearPreview process remained. The final downloaded Developer ID app
+was started at 01:22:19 UTC into the preserved migrated test state. Its identical
+signed CLI requested the game through official Steam at 01:22:32-34 UTC.
+The requester confirmed normal menu, controls, audio and preservation of the
+latest gameplay progress, then normally exited game, Steam and Pear. A process
+scan again found no matching processes; no force-stop was used. A late game
+mapping snapshot was empty after exit and establishes no additional loaded-image
+claim. The earlier active-game mapping receipt remains scoped to its own run.
+The advisory host lease was released after verifying process absence.
+
+Private receipts are retained under stage3/release-1d2a084 and
+stage3/signed-runtime-v3. No authenticated baseline, saved game, old prefix
+recovery copy or runtime was removed. The new source kit was also downloaded and
+checked: 158 members, eleven pinned source-input archives and the current lock
+match. Exact source archive pear-source-1d2a084.tar.gz has 1,657 entries,
+10,470,738 bytes and SHA-256
+5201a1b20d0adf2e0a53c048cd0386bce4dbbbaa31e94c8e22b6edba2927a9d9.
+Retain these approximately 22 MiB app/package/source bytes and the already
+retained runtime/source kit through release review. No new runtime copy is needed.
+
+The final signed-app existing-state relaunch and save/exit checks pass. The
+previous fresh-standard-account result applies to preview.1; it is not relabeled
+as a clean-account delivery test of 1d2a084/signed-v3. Final anonymous delivery
+and clean-account first setup remain to be checked for this candidate. Stage 3
+is still in progress and the homepage download is not enabled by this receipt.
+
+
+After the requested login-window correction and game/save verification, the
+qualification pre-release v0.1.0-preview.2 was published with prerelease=true and
+latest=false. The tag points to exact approved source 1d2a084; seven assets contain
+app ZIP, CLI ZIP, DMG, signed-v3 runtime, matching runtime source kit, exact Pear
+source archive and SHA256SUMS. All uploaded sizes/digests match the prepared
+manifest. The obsolete d5364dd source and binaries were replaced while the
+release was still a draft; no published preview.1 asset was changed. The release
+body explicitly says final browser delivery and fresh-user installation checks
+are pending. The previous instruction to fix login-close before publication has
+been met; this is a qualification pre-release, not Stage 3 completion.
+
+The requester cannot switch macOS accounts now. Preserve that remaining final
+clean-account delivery check without relabeling old evidence or requiring another
+twenty-minute play interval merely for account switching. The published site and
+homepage download remain unchanged. A successful anonymous download alone does
+not establish ordinary-user installation. Retain all authenticated/recovery state
+and the published artifact receipts until this final check can resume. The
+completed exact-SHA signing gate was cleared; required-reviewer and branch
+protections remain in place.
+
+
+Anonymous full HTTPS downloads of the published DMG (5,455,519 bytes), CLI
+(356,925 bytes) and runtime (542,451,640 bytes) all matched the exact release
+SHA-256 values. No credentials were passed; the runtime was streamed into its
+hash rather than stored as another local copy. The DMG was mounted read-only:
+its 27 app files exactly match the previously verified ZIP app and its
+Applications link resolves to /Applications. The seal passed and the volume was
+detached without launching another session. The release notes now mark only
+final fresh-user installation as pending. Stage 3 remains open; no website
+activation or broad compatibility claim follows from this download check.
