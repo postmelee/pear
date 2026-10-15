@@ -58,7 +58,7 @@ The requester explicitly included README, Pear/runtime documentation and permane
 | File | Classification | Audience | Selected Location | Alternative Location | Reason |
 |---|---|---|---|---|---|
 | Component READMEs | Official component entrypoints | Maintainers/developers | Each repository `README.md` or existing upstream README with a Pear section | Pear-only guide | Roles, upstream and local commands must be discoverable at source |
-| Runtime build/input/recovery guide | Official integration guide | Runtime developers | `pear-runtime/docs/development.md` and linked input reference | `mydocs/manual/` | Reusable developer contract, not workflow procedure |
+| Runtime build/input/recovery guide | Official integration guide | Runtime developers | `pear-runtime/docs/development.md` and linked `docs/assembly.md` input/operation reference | `mydocs/manual/` | Reusable developer contract, not workflow procedure |
 | Pear native development guide | Official contributor guide | Pear/runtime developers | Existing `docs/development/rosetta-free.md`, linked `docs/development/runtime-supervisor.md` | New parallel roadmap | Extend existing entrypoints and preserve qualification status |
 | Architecture/runtime link references | Official reference | Integrators | `docs/architecture.md`, `docs/runtime-contracts.md`, `docs/README.md`, root README | New roadmap | Narrow ownership/link updates; delivery plan remains canonical |
 | Reviewed source investigation | Dated technical evidence | Maintainers | `mydocs/tech/20261015_runtime_repository_split.md` plus sanitized data | Raw temporary packet | Preserve decisions/provenance without personal/private contents |

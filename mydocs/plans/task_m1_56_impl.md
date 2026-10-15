@@ -19,7 +19,7 @@ The requester approved continuous progression within the task plan, with verific
 
 ## Document Location Check
 
-Component root READMEs and runtime `docs/development.md` own reusable source/build instructions. Pear updates its existing `docs/development/rosetta-free.md` and related architecture/contracts/index links. The dated investigation is `mydocs/tech/20261015_runtime_repository_split.md`; plans/reports/orders stay in their existing workflow directories. These match the requester-approved location judgment in the task plan. Personal path maps, source-edit history metadata, raw evidence and private generation inputs remain outside Git.
+Component root READMEs and runtime `docs/development.md` own reusable source/build instructions. Its linked `docs/assembly.md` is the concrete assembly request/CLI and recovery reference; this stays within the approved runtime build/input/recovery documentation scope. Pear updates its existing `docs/development/rosetta-free.md` and related architecture/contracts/index links. The dated investigation is `mydocs/tech/20261015_runtime_repository_split.md`; plans/reports/orders stay in their existing workflow directories. These match the requester-approved location judgment in the task plan. Personal path maps, source-edit history metadata, raw evidence and private generation inputs remain outside Git.
 
 ## Stage 1 - Reconcile source/input authority
 
@@ -85,7 +85,7 @@ Each participating repository may need source/import commits; the Pear stage rep
 
 ### Artifacts
 
-- Runtime component commit lock and immutable input/configuration manifest.
+- Runtime component commit lock (`pear-runtime/locks/task56-reconstruction-v1.json`) and immutable input/configuration manifest. Each repository keeps its stage report under `mydocs/working/`; Pear records the exact runtime commit without a recursive self-pin.
 - Portable builder/assembler under `pear-runtime`, explicit local input binding file outside Git, isolated build logs and receipts.
 - Reconstructed native Wine/PE overlay, FEX module and graphics combination; an isolated development candidate bundle.
 
