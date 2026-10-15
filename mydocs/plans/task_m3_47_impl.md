@@ -2577,3 +2577,30 @@ standalone test state requires its own valid non-symlink runtime root. Keep
 original authenticated state and recovery archives unchanged. The state clone,
 failed candidates and receipts stay private/ignored through release acceptance.
 Internal plan/evidence updates stay in mydocs; no product-documentation move.
+
+
+## Approved Pear display name (2026-10-15)
+
+The requester approved renaming the installed app to Pear and preparing
+0.1.0-preview.3. Reuse the existing app/package/signing pipeline. Change the
+bundle directory, Finder/Dock name, window/About/error copy and DMG volume name;
+retain the bundle identifier, internal executable and pear-preview CLI command.
+Keep ~/Library/Application Support/Pear Preview and all runtime identities,
+URLs, hashes, migration behavior and saves unchanged. Existing preview.2 assets
+remain immutable. No Wine/DXMT reconstruction or repeated twenty-minute gameplay
+is required by this presentation-only change; verify packaging, signed display
+metadata and unchanged-state launch on the new artifact.
+
+Document-location judgment: update the existing player guide and maintainer
+release guide and existing getting-started build-output path under docs/ for the renamed app, compatible upgrade instructions
+and current candidate boundary; retain implementation and verification history
+here and in the existing stage3 preparation record. No new documentation roots.
+The requester's explicit continuation approves this bounded naming work. Existing
+source notices and all required package/security checks remain in force.
+
+Storage: reuse the existing Cargo cache and immutable runtime. Allocate a fresh
+ignored stage3/name-preview3 output for the local app (budget 100 MiB) and hosted
+CI for signed packages; no new Steam prefix or runtime copy. Retain earlier
+signed packages and private recovery state. Release transient naming-build outputs
+after final signed-package comparison; retain manifests and signed/source archives
+through release review. Final fresh-account delivery remains pending separately.

@@ -87,7 +87,7 @@ jobs:
           "$CARGO_TARGET_DIR/release/pear-preview" --help
       - name: Package only allowlisted candidate contents
         run: |
-          python3 -B preview/package.py --app "$PEAR_PREVIEW_BUILD_ROOT/Pear Preview.app" --output "$PEAR_CI_PACKAGES"
+          python3 -B preview/package.py --app "$PEAR_PREVIEW_BUILD_ROOT/Pear.app" --output "$PEAR_CI_PACKAGES"
           python3 -B - <<'PYTHON'
           import hashlib, json, os, subprocess
           from pathlib import Path
@@ -235,7 +235,7 @@ jobs:
           PEAR_CERTIFICATE_SHA1: ${{ vars.PEAR_CERTIFICATE_SHA1 }}
         run: |
           python3 -B preview/sign_candidate.py \
-            --app "$PEAR_PREVIEW_BUILD_ROOT/Pear Preview.app" \
+            --app "$PEAR_PREVIEW_BUILD_ROOT/Pear.app" \
             --output "$RUNNER_TEMP/pear-signed-packages" \
             --identity "$PEAR_CERTIFICATE_SHA1" \
             --team XH6JHKYXV8 \

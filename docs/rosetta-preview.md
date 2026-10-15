@@ -1,11 +1,11 @@
 # Pear Windows Steam preview
 
-Status: qualification preview, October 15, 2026. The signed
-[preview.1 qualification candidate](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.1)
-is public. The preview.2 first-run interface described below is a new candidate
-with completed signing, notarization, first-run retry and existing-installation
-launch checks. Final browser delivery of preview.2 remains pending. Local
-development builds are not notarized releases.
+Status: [preview.2 qualification pre-release](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.2)
+is public. App/CLI/DMG signing, notarization, anonymous download verification,
+new-runtime gameplay and save/relaunch checks passed. Final fresh-account
+installation of this exact runtime remains pending. The preview.3 candidate
+renames the app to **Pear** and is awaiting its own signing and package checks.
+Local development builds are not notarized releases.
 [Release preparation](development/preview-release.md) tracks the remaining work.
 
 Pear is intended to be free and open source. The preview prepares Windows Steam
@@ -26,9 +26,9 @@ beyond the small Pear download.
 
 Once a verified release is published, its release page will provide the app,
 checksums, exact requirements and test results. Open its DMG, drag the app to
-Applications, then open Pear Preview normally.
+Applications, then open Pear normally (Pear Preview in preview.2 and earlier).
 
-1. On first setup in preview.2, review the runtime and Steam installer download
+1. On first setup in preview.2 or later, review the runtime and Steam installer download
    sizes, then select **Download and install**. Pear shows downloaded bytes and
    a progress bar; extraction and preparation show their current step. Steam
    self-updates and game downloads have separate, variable sizes. **Cancel**
@@ -58,7 +58,7 @@ Python, Xcode or Rust on the player's Mac. After extracting a verified CLI relea
 
 Equivalent explicit command: `./pear-preview steam`. `./pear-preview setup`
 prepares the environment without opening the Steam library. `--help` lists options.
-In preview.2, `./pear-preview setup-info` prints read-only installation hints and
+In preview.2 or later, `./pear-preview setup-info` prints read-only installation hints and
 pinned download sizes without creating state or contacting the network.
 `./pear-preview --version` shows the version. Invoking `steam` or `setup` explicitly
 starts preparation; CLI commands do not display the app's confirmation screen.
@@ -89,20 +89,25 @@ fresh standard-account setup, requested twenty-minute active-play checklist and
 save/relaunch without problems on the same Mac. Exact duration and graphics
 settings were not supplied. This is owner-reported evidence, not an instrumented
 performance measurement or a second physical Mac test. The host already had
-Rosetta and Xcode installed. The signed preview.2 app passed first-run consent,
-download progress, cancellation and retry through a visible Steam login screen, plus existing-login library launch
-and normal Steam-menu exit on this host. Final preview.2 browser delivery remains
-pending; unchanged runtime observations are retained separately. No
-all-game, Steam Cloud, controller, performance or power claim is made.
+Rosetta and Xcode installed. The preview.2 interface passed first-run consent,
+download progress, cancellation and retry. The final signed-v3 runtime passed
+requester-confirmed twenty-plus active gameplay minutes, input and audio. The
+final signed preview.2 app passed retained-login launch, latest-progress
+preservation after relaunch and normal exit. Its public DMG, CLI and runtime
+passed anonymous HTTPS checksum verification. Final fresh-account delivery of
+this candidate remains pending. See the [dated verification record](../mydocs/working/task_m3_47_stage3_preparation.md).
+No all-game, Steam Cloud, controller, performance or power claim is made.
 
-Closing Steam’s login window before signing in left a CPU-active background
-helper in one test. Closing the Pear window does not stop Steam. Normal
-**Steam → Exit** after signing in completed without remaining Wine/Steam processes.
-The login-window cleanup issue remains unresolved in this candidate.
+The previous login-window close issue was corrected in signed-v3. One real
+unauthenticated close passed without leftover owned processes, and signed-app
+Steam-menu exits also passed. Closing Pear still does not quit Steam or games.
 
 ## Data and recovery
 
 Pear stores its environment under `~/Library/Application Support/Pear Preview`.
+The preview.3 app name changes to Pear, but this data path and its bundle identifier
+stay unchanged. Close Steam and the old app before upgrading. Once Pear is
+installed, the older Pear Preview.app can be removed; keep the data folder.
 Keep this folder: it includes Steam account state, downloaded games and saves.
 Removing the Pear app alone does not remove this folder. Do not include it in
 bug reports or share it as an installation package.

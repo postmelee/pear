@@ -8,7 +8,7 @@ export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$repo/.build/task47/preview/cargo}"
 export MACOSX_DEPLOYMENT_TARGET=26.0
 cargo test --manifest-path "$repo/preview/Cargo.toml" --locked --offline
 cargo build --manifest-path "$repo/preview/Cargo.toml" --locked --offline --release
-app="$out/Pear Preview.app"
+app="$out/Pear.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 sh "$repo/preview/build-icon.sh" "$app/Contents/Resources/Pear.icns"
 cp "$CARGO_TARGET_DIR/release/pear-preview" "$app/Contents/Resources/pear-preview"
@@ -21,11 +21,12 @@ xcrun swiftc -O -target arm64-apple-macosx26.0 "$repo/preview/Presentation.swift
 cat > "$app/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict>
 <key>CFBundleIdentifier</key><string>org.pear.rosetta-preview</string>
-<key>CFBundleName</key><string>Pear Preview</string>
+<key>CFBundleName</key><string>Pear</string>
+<key>CFBundleDisplayName</key><string>Pear</string>
 <key>CFBundleIconFile</key><string>Pear.icns</string>
 <key>CFBundleExecutable</key><string>PearPreview</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleVersion</key><string>2</string>
+<key>CFBundleVersion</key><string>3</string>
 <key>CFBundleShortVersionString</key><string>0.1.0</string>
 <key>LSMinimumSystemVersion</key><string>26.0</string>
 <key>NSHighResolutionCapable</key><true/>

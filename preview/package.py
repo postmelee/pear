@@ -11,7 +11,7 @@ import subprocess
 import tempfile
 
 REPO = Path(__file__).resolve().parent.parent
-VERSION = "0.1.0-preview.2"
+VERSION = "0.1.0-preview.3"
 REQUIRED = {
     "Contents/Info.plist", "Contents/MacOS/PearPreview", "Contents/Resources/Pear.icns",
     "Contents/Resources/pear-preview", "Contents/Resources/THIRD_PARTY_NOTICES.md",
@@ -21,8 +21,8 @@ OPTIONAL = {"Contents/Resources/LICENSE", "Contents/CodeResources"}
 
 
 def audit_app(app):
-    if app.is_symlink() or not app.is_dir() or app.name != "Pear Preview.app":
-        raise ValueError("Expected the built Pear Preview.app directory, not a link.")
+    if app.is_symlink() or not app.is_dir() or app.name != "Pear.app":
+        raise ValueError("Expected the built Pear.app directory, not a link.")
     found = set()
     for p in app.rglob("*"):
         relative = p.relative_to(app).as_posix()
@@ -85,7 +85,7 @@ def main():
                 shutil.copy2(p, bundle / name)
         shutil.copytree(app / "Contents/Resources/licenses", bundle / "licenses")
         (bundle / "README.txt").write_text(
-            "Pear Preview (Apple Silicon, macOS 26+, Rosetta required)\n"
+            "Pear (Apple Silicon, macOS 26+, Rosetta required)\n"
             "Run ./pear-preview to prepare and open Windows Steam.\n"
             "Sign in directly in Steam and choose games from your library.\n"
             "Run ./pear-preview --help for optional commands.\n"

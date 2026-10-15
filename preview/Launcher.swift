@@ -21,7 +21,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 580, height: 370),
                           styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
-        window.title = "Pear Preview"
+        window.title = "Pear"
         window.isReleasedWhenClosed = false
         titleLabel = NSTextField(labelWithString: "Set up Pear")
         titleLabel.font = .boldSystemFont(ofSize: 23)
@@ -98,8 +98,8 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
 
     @objc func showAbout() {
         let alert = NSAlert()
-        alert.messageText = "Pear Preview"
-        let version = info?.version ?? "0.1.0-preview.2"
+        alert.messageText = "Pear"
+        let version = info?.version ?? "0.1.0-preview.3"
         alert.informativeText = "Version \(version)\nRuntime: Wine 11.0 · DXMT 0.80\nRosetta required\n\nFree and open source · GPL-3.0-or-later\n\nSteam, games and saves are kept in your user’s Library/Application Support/Pear Preview folder."
         alert.addButton(withTitle: "OK")
         alert.beginSheetModal(for: window)
@@ -159,7 +159,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
             try child.run()
             task = child
         } catch {
-            label.stringValue = "Cannot start Pear Preview: \(error.localizedDescription)"
+            label.stringValue = "Cannot start Pear: \(error.localizedDescription)"
             button.title = "Retry"
             button.isEnabled = true
             progress.isHidden = true

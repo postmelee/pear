@@ -48,7 +48,7 @@ sh preview/build.sh
 ```
 
 The build runs the Rust tests, builds the shared CLI and Swift window, converts
-the supplied icon, and produces `.build/task47/preview/Pear Preview.app` with a
+the supplied icon, and produces `.build/task47/preview/Pear.app` with a
 local ad-hoc signature. `--help` is a safe first inspection and does not prepare
 Steam. The release script's `.build/task47` output is a development location.
 

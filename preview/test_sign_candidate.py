@@ -17,7 +17,7 @@ SUBMISSION = '12345678-1234-1234-1234-123456789abc'
 
 class CandidateSigningTests(unittest.TestCase):
     def fixture(self, root):
-        app = root / 'input/Pear Preview.app'
+        app = root / 'input/Pear.app'
         for name in s.packages.REQUIRED | {'Contents/Resources/licenses/test.txt'}:
             p = app / name
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -111,7 +111,7 @@ class CandidateSigningTests(unittest.TestCase):
                     shutil.copytree(args[1], args[2])
                 if args[:2] == ('/usr/bin/hdiutil', 'create'):
                     payload = Path(args[args.index('-srcfolder') + 1])
-                    self.assertEqual({p.name for p in payload.iterdir()}, {'Pear Preview.app', 'Applications'})
+                    self.assertEqual({p.name for p in payload.iterdir()}, {'Pear.app', 'Applications'})
                     self.assertEqual((payload / 'Applications').readlink(), Path('/Applications'))
                     Path(args[-1]).write_bytes(b'synthetic image')
                 if 'stapler' in args and 'staple' in args and str(args[-1]).endswith('.dmg'):

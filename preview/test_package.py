@@ -11,7 +11,7 @@ class PackageBoundaryTests(unittest.TestCase):
     def setUp(self):
         self.scratch = tempfile.TemporaryDirectory(prefix="pear-package-test-")
         self.addCleanup(self.scratch.cleanup)
-        self.app = Path(self.scratch.name) / "Pear Preview.app"
+        self.app = Path(self.scratch.name) / "Pear.app"
         for name in REQUIRED | {"Contents/Resources/licenses/example.txt"}:
             p = self.app / name
             p.parent.mkdir(parents=True, exist_ok=True)

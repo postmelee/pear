@@ -14,13 +14,13 @@ fn execute() -> Result<()> {
     let command = args.next().unwrap_or_else(|| "steam".into());
     if command == "--version" {
         println!(
-            "Pear Preview {} (Wine 11.0, DXMT 0.80; Rosetta required)",
+            "Pear {} (Wine 11.0, DXMT 0.80; Rosetta required)",
             env!("CARGO_PKG_VERSION")
         );
         return Ok(());
     }
     if command == "--help" || command == "help" {
-        println!("Pear Preview (Rosetta required)\n\npear-preview [steam|setup|setup-info|megabonk|check-runtime] [--root PATH] [--runtime-archive PATH] [--steam-installer PATH]\n\nsetup-info: read-only setup and download information; no network or state changes.\n--version: show Pear and component versions.\nDefault: prepare and open Windows Steam. Sign in and choose games in your library.\nmegabonk: automatically install and launch the first validation game (legacy alias: play).\nSubsequent runs reuse private state. Other games have not been qualified.\nNo account credentials are accepted by this tool.");
+        println!("Pear (Rosetta required)\n\npear-preview [steam|setup|setup-info|megabonk|check-runtime] [--root PATH] [--runtime-archive PATH] [--steam-installer PATH]\n\nsetup-info: read-only setup and download information; no network or state changes.\n--version: show Pear and component versions.\nDefault: prepare and open Windows Steam. Sign in and choose games in your library.\nmegabonk: automatically install and launch the first validation game (legacy alias: play).\nSubsequent runs reuse private state. Other games have not been qualified.\nNo account credentials are accepted by this tool.");
         return Ok(());
     }
     if command != "setup-info"
@@ -79,7 +79,7 @@ fn execute() -> Result<()> {
     } else if command == "megabonk" || command == "play" {
         session.play(&lib, &notify)?;
     } else {
-        notify("Setup complete. Run pear-preview or open Pear Preview.app to continue in Steam.");
+        notify("Setup complete. Run pear-preview or open Pear.app to continue in Steam.");
     }
     Ok(())
 }

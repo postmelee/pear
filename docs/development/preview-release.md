@@ -1,6 +1,6 @@
 # Building and releasing the Steam preview
 
-Status: release preparation, October 13, 2026. The app/CLI are development
+Status: release preparation, October 15, 2026. The app/CLI are development
 candidates; no public download is qualified. See the [player guide](../rosetta-preview.md)
 and [component record](../../preview/THIRD_PARTY_NOTICES.md).
 
@@ -20,6 +20,8 @@ preview/build.sh
 The script runs locked/offline tests and a release build, then builds the Swift
 window and seals a local development app. Outputs are under `.build/task47/preview`;
 `PEAR_PREVIEW_BUILD_ROOT` selects an alternate app output. The Cargo cache is reused.
+The output app is Pear.app from preview.3 onward. Its bundle identifier and
+existing Pear Preview data directory are preserved across the display-name change.
 The app and standalone CLI use the same Rust binary. Default/`steam` opens the
 library; `megabonk` requests the bounded reference-game install/launch flow.
 
@@ -106,13 +108,16 @@ game Steamworks initialization, menu/input and normal exit. The
 notarization receipts and source/notice review.
 
 The runtime URL in `preview/src/runtime_pin.rs` points to the immutable
-`v0.1.0-preview.1` runtime asset, published with its matching source kit after
-explicit qualification-prerelease approval. Anonymous delivery and hashes were
-verified. The preview.2 app reuses these exact runtime bytes; its app/CLI/source
-archives need distinct versions and new signing. Do not overwrite preview.1. Existing Stage 2 validation used the pinned local archive.
-Submission ZIPs are not final downloads: the app must be packaged after
-stapling, and release source must match the final committed revision. Preserve
-these inputs through recovery and clean-delivery checks before publishing.
+`v0.1.0-preview.2/pear-runtime-signed-v3.tar.gz` asset, published with its matching
+source kit as a qualification pre-release. Anonymous delivery and hashes passed.
+The preview.3 naming candidate reuses these exact runtime bytes and changes the
+app name to Pear; its app/CLI/source archives need distinct versions and new
+signing. Preserve published preview.1 and preview.2 assets. Recheck affected app
+metadata, package contents and actual launch; do not rebuild the unchanged
+runtime or repeat its sustained-play check for a display-name change.
+Submission ZIPs are not final downloads: package after stapling and bind source
+to the exact committed release revision. Final clean-account delivery remains
+separate and pending; earlier account checks are scoped to their own artifacts.
 
 ## Release admission
 

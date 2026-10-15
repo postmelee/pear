@@ -219,7 +219,7 @@ impl Session {
         // SAFETY: a live owned file descriptor; flock retains no userspace pointer.
         need(
             unsafe { libc::flock(lock.as_raw_fd(), libc::LOCK_EX | libc::LOCK_NB) } == 0,
-            "Pear Preview is already preparing or waiting for Steam. Use its existing window.",
+            "Pear is already preparing or waiting for Steam. Use its existing window.",
         )?;
         let owner = root.join(".owner");
         if !owner.exists() {
@@ -454,7 +454,7 @@ impl Session {
             15,
         )
         .map_err(|_| {
-            "Rosetta is required. Install it through macOS, then open Pear Preview again."
+            "Rosetta is required. Install it through macOS, then open Pear again."
         })?;
         let lib = self.runtime(runtime, notify)?;
         self.upgrade_prefix(&lib, notify)?;

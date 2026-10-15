@@ -49,7 +49,7 @@ def signed_disk_image(app, output, identity, keychain, profile, team):
         run('/usr/bin/ditto', app, payload / app.name)
         packages.audit_app(payload / app.name)
         (payload / 'Applications').symlink_to('/Applications', target_is_directory=True)
-        run('/usr/bin/hdiutil', 'create', '-volname', 'Pear Preview', '-fs', 'HFS+',
+        run('/usr/bin/hdiutil', 'create', '-volname', 'Pear', '-fs', 'HFS+',
             '-srcfolder', payload, '-format', 'UDZO', image)
     run('/usr/bin/hdiutil', 'verify', image)
     run('/usr/bin/codesign', '--force', '--timestamp', '--keychain', keychain,

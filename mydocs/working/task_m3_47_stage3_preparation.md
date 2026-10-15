@@ -626,3 +626,25 @@ Applications link resolves to /Applications. The seal passed and the volume was
 detached without launching another session. The release notes now mark only
 final fresh-user installation as pending. Stage 3 remains open; no website
 activation or broad compatibility claim follows from this download check.
+
+
+## Approved Pear naming candidate preview.3 (2026-10-15)
+
+The requester approved Pear as the installed app name, retaining Preview in the
+version/channel. The app directory, CFBundleName/CFBundleDisplayName, main window,
+About title, error copy and DMG volume become Pear. Build number is 3 and package
+version is 0.1.0-preview.3. Bundle identifier org.pear.rosetta-preview, internal
+PearPreview executable, pear-preview command and the Pear Preview user-data path
+remain unchanged. The runtime pin (including its published preview.2 URL),
+source/runtime inputs and migration implementation are byte-identical. Published
+preview.2 assets are not overwritten. Updating source and sealed display metadata
+requires fresh app/CLI/DMG signing, not a Wine rebuild or another sustained-play run.
+
+Local build passed 30 Rust tests, Swift presentation fixtures, compilation and
+ad-hoc seal verification. All 68 portable checks passed without skips. Incremental
+source notices and governance pass. Actual built plist names are Pear, retained
+identifier is unchanged, CLI reports preview.3 and read-only setup-info admits
+the existing migrated state as ready. No Steam/game process was started by these
+checks. The existing manager unused-function warning remains unrelated.
+The fresh-account requirement remains pending; CI signing and actual final Pear
+app presentation/launch will be checked on the new immutable candidate.
