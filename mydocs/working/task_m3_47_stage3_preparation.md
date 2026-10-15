@@ -686,3 +686,21 @@ The first dev launch's continuous source-freeze-to-input baseline was not captur
 its build and manual observation are separate evidence. The fixed-app receipt
 starts after build and does not claim a complete build-to-input interval. Preserve
 these limitations; capture a fresh continuous interval for the final signed app.
+
+
+After normal exit and a scan with no Wine/Steam/Pear processes, the corrected
+app was launched again against the retained authenticated environment. The probe
+observed a matching visible window after 12.25 seconds. AppKit inspection showed
+"Steam window is open" and no spinner; the requester confirmed that this switch
+was prompt after the library appeared, then normally exited Steam and Pear.
+A process scan found no matching runtime/application processes and the owned
+host lease was released. This is a process-cold launch with existing user data,
+not a new-account installation. The probe interval does not measure readable
+library/input readiness; the separate human confirmation establishes that bounded
+observation. Receipt: ignored stage3/launch-status/cold-launch.json.
+
+Commit e574ba1 is the new source-specific candidate. Hosted build 38669041530
+passed the portable and macOS build jobs; the requester approved its protected
+signing job. Exact corresponding Pear source and updated release text are prepared
+locally. Signing/notarization and final signed-app checks remain pending at this
+checkpoint; preview.3 is still an unpublished draft and preview.2 is unchanged.
