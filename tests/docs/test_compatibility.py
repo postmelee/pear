@@ -22,6 +22,7 @@ class CatalogTests(unittest.TestCase):
         self.data['records'] = self.data['records'][:1]  # Isolate the historical menu fixture.
         self.row = self.data['records'][0]
         self.games = json.loads(catalog.CATALOG.read_text())
+        self.games['github_forms_live'] = False  # Exercise the pre-integration fallback explicitly.
 
     def test_current_record_retains_unmeasured_and_unperformed_checks(self):
         catalog.validate(self.data)

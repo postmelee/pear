@@ -73,10 +73,10 @@ Pear vote database, automatic support promotion or browser API token is used.
 4. Remove account data, passwords, QR codes, tokens, whole prefixes, game files,
    saves and raw logs. Include only sanitized evidence you may share publicly.
 
-The structured form appears after integration into the default branch. Until
-then, the catalog can prepare a copyable draft for a normal discussion. It does
-not submit the draft, store form data or create a vote. After integration, set
-`github_forms_live` in `games.json` only when the live form has been verified. Use a legitimately owned copy;
+The structured GitHub form is live and was checked on October 15, 2026. The
+catalog can prepare a local draft; copy its values into the GitHub form fields.
+It does not submit the draft, store form data or create a vote. Maintain
+`github_forms_live` in `games.json` according to the verified form state. Use a legitimately owned copy;
 Pear does not provide games or bypass Steam authentication. Private vulnerabilities
 belong in the [security route](../SECURITY.md), not a game report.
 

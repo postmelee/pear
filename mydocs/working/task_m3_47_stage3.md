@@ -124,3 +124,10 @@ routing. Do not change the immutable release source/tag to the documentation SHA
 The requester explicitly asked to finish final records, release routing and
 catalog publication. This report supplies the concrete reviewed scope for that
 publication; no new runtime qualification or other-task work is requested.
+
+## Public form check
+
+The live default-branch Show and tell form was inspected in GitHub on October 15.
+Steam App ID, date, versions, host, result, individual checks and privacy consent
+were rendered. The catalog now links that form as live; its local draft remains
+manual and never auto-submits. The fallback is still covered by tests.
