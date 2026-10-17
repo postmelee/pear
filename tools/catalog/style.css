@@ -42,6 +42,9 @@
 .writing-list li { margin: var(--space-2) 0; }
 .writing-list a { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--space-4); text-decoration: none; }
 .writing-title { text-decoration: underline; text-decoration-color: var(--color-muted); text-underline-offset: .16em; }
+.article-categories { margin-top: var(--space-9); color: var(--color-muted); font-size: .875em; line-height: 1.5; }
+.article-categories a { color: inherit; }
+.article-categories a:hover { color: var(--color-link-hover); }
 .article-connections { border-top: 1px solid var(--color-border); margin-top: var(--space-11); }
 .article-connections h2, .blog-updates h2 { font-size: var(--font-size-subheading); font-weight: 400; color: var(--color-muted); }
 .blog-updates h2 a { text-decoration: none; }

@@ -466,3 +466,12 @@ separation from prose. Kept the gap unchanged. Prevented the author name from
 splitting within its link; the full name now moves together to the next line.
 Rebuilt local output, checked whitespace, and saved header-desktop-light/dark.png
 and header-mobile-light/dark.png. Restored light mode and default viewport.
+
+## Article-end categories
+
+Added a reusable article_categories component before the supporting-section rule.
+It derives links from post_topics, sharing the index's series/edition archives.
+Uses muted text at 0.875em, existing link hover/focus tokens and natural wrapping;
+no new heading or TOC item. Local render verified both relative archive targets
+and the small muted presentation. Catalog tests: 14 passed; diff check passed.
+Screenshot: article-categories.png.

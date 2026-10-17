@@ -403,6 +403,14 @@ def article_connections(post, posts, sources):
     return '<div class="article-connections">' + ''.join(parts) + '</div>'
 
 
+def article_categories(post):
+    """Render low-emphasis archive links from the shared topic metadata."""
+    links = ' · '.join(
+        f'<a href="{html.escape(posixpath.relpath(topic_path(label), "blog"), quote=True)}">{html.escape(label)}</a>'
+        for label in post_topics(post))
+    return f'<div class="article-categories" aria-label="Article categories">{links}</div>' if links else ''
+
+
 def blog_pages(base_pages=None):
     posts = sorted(POSTS, key=lambda post: (post.published or '', post.slug), reverse=True)
     sources = {}
@@ -435,7 +443,7 @@ def blog_pages(base_pages=None):
         timing = f'{minutes} minute{"s" if minutes != 1 else ""} read'
         metadata = f'{publication_label(post)} · {timing}' if post.published else timing
         header = f'<header class="article-header">{title}<p class="article-meta">{metadata} · {author_link(post.author)}</p><div class="article-subtitle">{subtitle}</div></header>'
-        article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{header}{body}</article>{article_connections(post, posts, sources)}'
+        article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{header}{body}{article_categories(post)}</article>{article_connections(post, posts, sources)}'
         pages[post.path] = shell(post.title, article, 'blog', root='../', article=True, description=post.summary)
     return pages
 
