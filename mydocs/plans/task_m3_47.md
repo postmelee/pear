@@ -358,3 +358,19 @@ Reuse the existing documentation and report; no new subsystem or source code.
 Verify local links/governance, unchanged download URLs, and incremental notices.
 No substantial build, host execution or resource coordination is needed; temporary
 text-only verification output is disposable. Existing private evidence is untouched.
+
+## Approved social-preview follow-up — 2026-10-17
+
+The requester approved the local 1200×630 Pear wordmark/pear composition and
+requested applying only the sharing preview. Keep the favicon and visible page
+layout unchanged. Reuse the existing supplied pear asset and shared HTML shell;
+add Open Graph and Twitter large-image metadata with an absolute Pages URL.
+Location: docs/assets/social-card.png is the public branding asset; the existing
+tools/compatibility.py generator owns metadata and its output allowlist. Existing
+Stage 3/final report and daily board retain the delivery record. No new subsystem,
+runtime inputs or dependencies; no open PR conflicts were found.
+Verify all generated HTML heads, image dimensions/bytes and public deployment;
+run existing catalog/document checks and incremental source notices. Use the
+existing Pages-only Action. This approved follow-up includes publication of the
+reviewed image. Small ignored static-site output is disposable after deployment;
+material build/storage planning is not applicable, and private state is preserved.

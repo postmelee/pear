@@ -115,3 +115,22 @@ Governance passed (37 documents, 372 local targets); incremental source notices
 and diff checks passed. This documentation-only change performs no runtime tests.
 The repository About homepage is https://postmelee.github.io/pear/.
 No material build output or change to retained private state.
+
+## Social-preview follow-up — 2026-10-17
+
+Applied the requester-approved 1200×630 composition of the Pear wordmark and
+existing supplied pear image. Shared Open Graph and Twitter large-image metadata
+now reference the absolute public social-card.png URL on all six generated pages.
+The favicon and visible page layout are unchanged. No external image service,
+new dependency, runtime rebuild or game qualification is involved.
+
+Verification: 94 documentation/catalog tests passed; governance passed (37
+documents, 372 local targets); incremental notices against 5daa083 and diff checks
+passed. Parsed all six HTML heads, checked 1200×630 PNG dimensions and exact copied
+image/favicon bytes. The image SHA-256 is
+`f6820a737ff3b77b489108cdd102d07b33b603366b27900d70636fb428e96cc6`.
+The requester visually approved the composition before implementation. Pages-only
+publication and public byte verification follow integration. Sharing services may
+retain earlier previews until their caches refresh; no service-specific rendering
+is claimed. Retention: keep the small public asset; generated local site is
+disposable after verification. Private evidence and other tasks are untouched.

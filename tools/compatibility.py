@@ -117,7 +117,7 @@ def markdown(data):
 CATALOG = ROOT / 'docs/compatibility/games.json'
 ASSETS = ROOT / 'tools/catalog'
 PUBLIC_FILES = {'index.html', 'style.css', 'catalog.js', 'reports.json', 'games.json',
-                'pear.png', 'favicon.png', 'steam-search.js', 'report.html', 'request.html', 'about.html', 'download.html'}
+                'pear.png', 'favicon.png', 'social-card.png', 'steam-search.js', 'report.html', 'request.html', 'about.html', 'download.html'}
 OPTIONAL_PUBLIC_FILES = {'steam-games.json'}
 OUTCOMES = {'pass': 'Pass', 'partial': 'Partial', 'failed': 'Failed'}
 
@@ -206,7 +206,7 @@ def demand_label(game):
 def shell(title, content, active='games'):
     e = html.escape
     return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · Pear</title><meta name="description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta name="referrer" content="no-referrer"><link rel="icon" type="image/png" href="favicon.png"><link rel="stylesheet" href="style.css"><script src="steam-search.js" defer></script><script src="catalog.js" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · Pear</title><meta name="description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta property="og:type" content="website"><meta property="og:site_name" content="Pear"><meta property="og:title" content="{e(title)} · Pear"><meta property="og:description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta property="og:image" content="https://postmelee.github.io/pear/social-card.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Pear wordmark with a golden Asian pear on the right"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)} · Pear"><meta name="twitter:description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta name="twitter:image" content="https://postmelee.github.io/pear/social-card.png"><meta name="twitter:image:alt" content="Pear wordmark with a golden Asian pear on the right"><meta name="referrer" content="no-referrer"><link rel="icon" type="image/png" href="favicon.png"><link rel="stylesheet" href="style.css"><script src="steam-search.js" defer></script><script src="catalog.js" defer></script></head>
 <body><div class="wrap"><header class="site-header"><a class="brand" href="index.html" aria-label="Pear home"><img src="pear.png" alt="" width="39" height="39">Pear</a><nav aria-label="Main"><a class="{'current' if active=='games' else ''}" href="index.html#games">Games</a><a class="{'current' if active=='download' else ''}" href="download.html">Download</a><a class="{'current' if active=='about' else ''}" href="about.html">About</a><a class="nav-docs" href="https://github.com/postmelee/pear/blob/master/docs/README.md">Docs</a><a class="external nav-github" href="https://github.com/postmelee/pear">GitHub</a></nav></header><main>{content}</main><footer class="site-footer"><span>Pear · Free and open source.</span><div class="footer-links"><a href="about.html#results">How results work</a><a href="reports.json">Open data</a><a class="external" href="https://github.com/postmelee/pear">GitHub</a></div></footer></div></body></html>'''
 
 
@@ -328,7 +328,7 @@ def build_site(data, out, catalog=None, steam_catalog=None):
         shutil.copyfile(ASSETS / name, out / name)
     for name, content in [('reports.json', data), ('games.json', catalog)]:
         (out / name).write_text(json.dumps(content, indent=2) + '\n', encoding='utf-8')
-    for name in ['pear.png', 'favicon.png']:
+    for name in ['pear.png', 'favicon.png', 'social-card.png']:
         shutil.copyfile(ROOT / 'docs/assets' / name, out / name)
     snapshot = out / 'steam-games.json'
     if steam_catalog is not None:
