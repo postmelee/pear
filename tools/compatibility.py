@@ -120,7 +120,7 @@ ASSETS = ROOT / 'tools/catalog'
 PUBLIC_FILES = {'index.html', 'style.css', 'catalog.js', 'reports.json', 'games.json',
                 'pear.png', 'favicon.png', 'social-card.png', 'steam-search.js', 'report.html', 'request.html', 'about.html', 'download.html'}
 PUBLIC_FILES |= {'games.html', 'tokens.css', 'components.css', 'theme.js', 'site.js',
-                 'search-index.json'} | site.BLOG_FILES
+                 'search-index.json', 'updates.html'} | site.BLOG_FILES
 OPTIONAL_PUBLIC_FILES = {'steam-games.json'}
 OUTCOMES = {'pass': 'Pass', 'partial': 'Partial', 'failed': 'Failed'}
 
@@ -318,6 +318,7 @@ def build_site(data, out, catalog=None, steam_catalog=None):
     groups = group_games(data, catalog)
     pages = {'index.html': webpage(data, catalog), 'games.html': games_page(data, catalog),
              'about.html': about_page(), 'download.html': download_page(),
+             'updates.html': site.updates_page(),
              'report.html': intake_page(catalog, 'report', steam_catalog is not None),
              'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
     pages.update({f'game-{g["app_id"]}.html': game_page(g) for g in groups})

@@ -168,9 +168,25 @@ class WebsiteTests(unittest.TestCase):
         self.assertNotIn('id="you-might-also-enjoy"', article)
         self.assertIn('id="linked-mentions"', article)
         self.assertIn('datetime="2026-10-18"', article)
-        for link in ('https://x.com/najukoreanpear', 'https://x.com/meleeisgloom2',
+        for link in ('https://x.com/najukoreanpear', 'https://github.com/postmelee/pear',
                      'https://www.threads.com/@postmelee'):
             self.assertIn(link, article)
+
+    def test_blog_navigation_and_updates_destinations(self):
+        listing = (self.output / 'blog/index.html').read_text()
+        nav = re.search(r'<nav id="sidebar".*?</nav>', listing, re.S)[0]
+        self.assertIn('href="#posts"', nav)
+        self.assertNotIn(site.ARTICLE_TITLE, nav)
+        article = (self.output / site.ARTICLE_PATH).read_text()
+        nav = re.search(r'<nav id="sidebar".*?</nav>', article, re.S)[0]
+        self.assertIn('href="#article-title"', nav)
+        self.assertIn(site.ARTICLE_TITLE, nav)
+        self.assertNotIn('Introduction', nav)
+        self.assertIn('href="../updates.html"', nav)
+        self.assertIn('href="../updates.html">other options', article)
+        updates = (self.output / 'updates.html').read_text()
+        self.assertIn('https://x.com/meleeisgloom2', updates)
+        self.assertIn('href="updates.html" aria-current="page"', updates)
 
     def test_rebuild_is_deterministic_and_does_not_publish_article_source(self):
         before = {name: (self.output / name).read_bytes() for name in self.files}

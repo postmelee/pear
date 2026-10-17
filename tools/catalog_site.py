@@ -53,6 +53,7 @@ NAVIGATION = (
     ('download', 'Download', 'download.html'),
     ('blog', 'Blog', 'blog/index.html'),
     ('about', 'About', 'about.html'),
+    ('updates', 'Updates', 'updates.html'),
     ('docs', 'Documentation', DOCS),
 )
 
@@ -99,12 +100,15 @@ def prepare_content(content, levels=(2,)):
 
 
 def local_link(path, root):
-    return path if urlsplit(path).scheme else root + path
+    return path if urlsplit(path).scheme or path.startswith('#') else root + path
 
 
-def navigation(active, outline, root):
+def navigation(active, outline, root, article_title=None):
     items = []
-    for key, label, path in NAVIGATION:
+    entries = (('article', article_title, '#article-title'), ('updates', 'Updates', 'updates.html')) if article_title else NAVIGATION
+    if article_title:
+        active = 'article'
+    for key, label, path in entries:
         current = ' aria-current="page"' if key == active else ''
         item = f'<li><a href="{local_link(path, root)}"{current}>{label}</a>'
         if key == active and outline:
@@ -141,7 +145,7 @@ def shell(title, content, active='games', *, root='', article=False, description
     content, outline = prepare_content(content, (2, 3) if article else (2,))
     description = description or 'Windows games on Mac. Free and open source. Building a Rosetta-free way to play.'
     e = html.escape
-    nav = navigation(active, outline, root)
+    nav = navigation(active, outline, root, title if article else None)
     return f'''<!doctype html>
 <!-- SPDX-FileCopyrightText: 2026 Pear contributors
      SPDX-License-Identifier: GPL-3.0-or-later -->
@@ -158,7 +162,7 @@ def shell(title, content, active='games', *, root='', article=False, description
 <div class="header-tools"><button class="search-trigger" type="button" aria-label="Search" aria-keyshortcuts="Meta+K Control+K" data-search-open>{SEARCH_ICON}<span>Search</span><kbd class="search-shortcut">⌘K</kbd></button>
 <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)">{SUN_ICON}{MOON_ICON}<span class="theme-knob" aria-hidden="true"></span></button>
 <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu <span aria-hidden="true">☰</span></button></div></header>
-<nav id="sidebar" class="sidebar" aria-label="Site navigation">{nav}</nav>
+<nav id="sidebar" class="sidebar" aria-label="{'Article contents' if article else 'Site navigation'}">{nav}</nav>
 <div class="page-layout"><main id="main" class="{'article-body' if article else 'page-content'}" tabindex="-1">{content}</main>{footer(root)}</div>
 {search_dialog()}</body></html>'''
 
@@ -217,7 +221,7 @@ class ArticleValidator(HTMLParser):
             if key == 'href':
                 parsed = urlsplit(value)
                 internal = internal_target(value, self.source_path)
-                known = BLOG_FILES | {'index.html', 'games.html', 'about.html',
+                known = BLOG_FILES | {'index.html', 'games.html', 'about.html', 'updates.html',
                                       'download.html', 'request.html', 'report.html'}
                 public_https = (parsed.scheme == 'https' and parsed.hostname
                                 and not parsed.username and not parsed.password)
@@ -280,9 +284,20 @@ def article_parts(content):
     return match.groups()
 
 
-def update_links():
-    return '''<section class="blog-updates"><h2 id="receive-updates">Receive updates</h2>
-<p>Follow <a href="https://x.com/najukoreanpear">X (Pear)</a> for project updates, and <a href="https://x.com/meleeisgloom2">X (Taegyu Lee)</a> or <a href="https://www.threads.com/@postmelee">Threads (Taegyu Lee)</a> for personal notes and work in progress.</p></section>'''
+def update_links(root=''):
+    return f'''<section class="blog-updates"><h2 id="receive-updates"><a href="{root}updates.html">Receive my updates</a></h2>
+<p>Follow me via <a href="https://x.com/najukoreanpear">X</a>, <a href="https://www.threads.com/@postmelee">Threads</a>, <a href="{REPO}">GitHub</a>, and <a href="{root}updates.html">other options</a>.</p></section>'''
+
+
+def updates_page():
+    content = f'''<h1>Receive my updates</h1>
+<p class="page-intro">I post project updates on <a href="https://x.com/najukoreanpear">X (Pear)</a>, and personal notes and work in progress on <a href="https://x.com/meleeisgloom2">X (Taegyu Lee)</a> and <a href="https://www.threads.com/@postmelee">Threads (Taegyu Lee)</a>.</p>
+<h2>Ways to follow</h2>
+<ul><li>X (Pear): <a href="https://x.com/najukoreanpear">@najukoreanpear</a></li>
+<li>X (Taegyu Lee): <a href="https://x.com/meleeisgloom2">@meleeisgloom2</a></li>
+<li>Threads (Taegyu Lee): <a href="https://www.threads.com/@postmelee">@postmelee</a></li>
+<li>GitHub (Pear): <a href="{REPO}">postmelee/pear</a></li></ul>'''
+    return shell('Updates', content, 'updates')
 
 
 def linked_mentions(target, sources):
@@ -327,7 +342,7 @@ def article_connections(post, posts, sources):
     if related:
         items = ''.join(f'<li><a href="{html.escape(other.slug, quote=True)}.html">{html.escape(other.title)}</a></li>' for other in related)
         parts.append(f'<section><h2 id="you-might-also-enjoy">You might also enjoy</h2><ul>{items}</ul></section>')
-    return '<div class="article-connections">' + ''.join(parts) + update_links() + '</div>'
+    return '<div class="article-connections">' + ''.join(parts) + update_links('../') + '</div>'
 
 
 def blog_pages(base_pages=None):
@@ -342,10 +357,11 @@ def blog_pages(base_pages=None):
     contents = {post.slug: article_content(post) for post in posts}
     sources.update({post.path: (post.title, contents[post.slug], post.summary) for post in posts})
     rows = ''.join(blog_list_item(post) for post in posts)
-    listing = f'<h1>Blog</h1><p class="page-intro">Experiments, observations, and the work behind Pear.</p><div class="article-list" aria-label="Articles">{rows}</div>{update_links()}'
+    listing = f'<h1>Blog</h1><p class="page-intro">Experiments, observations, and the work behind Pear.</p><section><h2 id="posts">Posts</h2><div class="article-list" aria-label="Articles">{rows}</div></section>{update_links("../")}'
     pages = {'blog/index.html': shell('Blog', listing, 'blog', root='../')}
     for post in posts:
         title, subtitle, byline, body = article_parts(contents[post.slug])
+        title = title.replace("<h1>", '<h1 id="article-title">', 1)
         minutes = reading_minutes(body)
         timing = f'{minutes} minute{"s" if minutes != 1 else ""} read'
         metadata = f'{publication_label(post)} · {timing}' if post.published else timing
@@ -357,7 +373,7 @@ def blog_pages(base_pages=None):
 
 def blog_list_item(post):
     e = html.escape
-    return f'''<div class="article-list-item"><span class="article-date">{publication_label(post, compact=True)}</span><div><h2 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h2><p>{e(post.summary)}</p></div></div>'''
+    return f'''<div class="article-list-item"><span class="article-date">{publication_label(post, compact=True)}</span><div><h3 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h3><p>{e(post.summary)}</p></div></div>'''
 
 
 def search_index(pages):

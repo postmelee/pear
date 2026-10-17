@@ -298,3 +298,26 @@ confirmed light rgb(111, 110, 105), dark rgb(135, 133, 128), heading weight 400,
 and an independently scrollable 200px sidebar with a stable gutter and 12px
 padding. Verified sidebar scrolling and saved blog-followup.png. No article
 body, active TOC behavior, account destination or publication state changed.
+
+## Article navigation and Updates page
+
+Requester approved a Posts section on the blog index, article-only navigation
+rooted at the article title, and an Updates destination based on the structure
+of https://stephango.com/subscribe. Reused the existing shell, outline builder,
+footer and search projection. This is a generated public website page in
+`tools/catalog_site.py`, not a new official documentation tree. The output
+allowlist explicitly includes updates.html.
+
+Blog listing titles are h3 under Posts h2 and do not enter its h2-only outline.
+Article navigation contains the article title, its existing section hierarchy,
+and Updates; global navigation remains available through Pear home, All posts
+and the footer. Shared Receive my updates headings and other options links use
+root-aware Updates paths. The concise social sentence points X to official Pear,
+Threads to the developer, and GitHub to the existing Pear repository. Updates
+lists all four destinations, including personal X, with explicit ownership.
+No subscription form or unsupported channel was added.
+
+All 105 Python documentation tests passed, including new checks for index/article
+navigation, nested Updates paths and active navigation. Local site rebuilt;
+browser verified Posts, article-only navigation and the Updates link destination.
+Screenshots: article-toc.png and updates-page.png. Existing local server retained.
