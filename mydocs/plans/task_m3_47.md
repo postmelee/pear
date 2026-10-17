@@ -374,3 +374,13 @@ run existing catalog/document checks and incremental source notices. Use the
 existing Pages-only Action. This approved follow-up includes publication of the
 reviewed image. Small ignored static-site output is disposable after deployment;
 material build/storage planning is not applicable, and private state is preserved.
+
+## Approved social-preview revision — 2026-10-18
+
+The requester approved local v3: black Pear title at 140 px, gray 35 px subtitle
+“Play Windows Steam games on Mac”, existing pear on the right. Replace the existing
+public PNG in docs/assets and update its shared metadata alternative text and
+version query in tools/compatibility.py. Existing favicon/layout are unchanged.
+Reuse #47 and its Stage 3/final report; no new document destination or dependency.
+Verify approved bytes, dimensions, six page metadata, existing catalog checks and
+Pages deployment. Only small disposable site output; retain all private state.
