@@ -29,6 +29,11 @@ class Flow(unittest.TestCase):
                     with urllib.request.urlopen(req) as out: return out.read().decode()
                 post('/approve',{'id':rid,'revision':1})
                 with urllib.request.urlopen(base+'/catalog.json') as out:self.assertEqual(json.load(out)['reports'],[])
+                with urllib.request.urlopen(base+'/?tab=queued') as out:
+                    page=out.read().decode();self.assertIn('Cancel approval',page)
+                post('/unqueue',{'id':rid,'revision':1,'tab':'queued'})
+                with sqlite3.connect(db) as c:self.assertEqual(c.execute('select state,approved from reports').fetchone(),('Needs review',None))
+                post('/approve',{'id':rid,'revision':1})
                 post('/publish',{})
                 with urllib.request.urlopen(base+'/catalog.json') as out:
                     public=json.load(out);self.assertEqual(len(public['reports']),1);self.assertNotIn('PRIVATE NOTE',json.dumps(public))

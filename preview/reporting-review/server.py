@@ -5,7 +5,7 @@
 import argparse, hashlib, html, json, secrets, sqlite3, uuid
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlsplit
 
 FIELDS = {'reportID','userResult','macOS','chip','memoryGiB','pear','wine','dxmt','appID','gameBuild','dateUTC','processMinutes','observedExit','note','supplemental'}
 CHECKS = {'unknown','observed','failed','not-tested'}
@@ -42,6 +42,7 @@ def card(r):
 
 STYLE='body{font:16px system-ui;color:#263027;background:#faf9f3;margin:40px auto;max-width:1050px;padding:0 24px}h1{font-size:36px}h2{font-size:25px}article{background:white;border:1px solid #dedfd7;border-radius:14px;padding:24px;margin:20px 0}a{color:#40643a}button{padding:12px 18px;background:#40643a;color:white;border:0;border-radius:8px;cursor:pointer;margin:8px}dl{display:grid;grid-template-columns:240px 1fr;gap:12px}dt{font-weight:600}dd{margin:0}.badge{display:inline-block;padding:8px 12px;border-radius:8px;background:#eee}.normal{background:#e4f1e3}.problems{background:#f9e3df}.notice{padding:18px;background:#eeefe5;border-radius:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere}'
 STYLE += '.report-row{border-bottom:1px solid #dedfd7;background:#fff}.report-row>summary{list-style:none;display:grid;grid-template-columns:minmax(180px,1fr) 180px 140px 16px;align-items:center;gap:16px;padding:16px;cursor:pointer}.report-row>summary::-webkit-details-marker{display:none}.report-row>summary::after{content:"›";font-size:24px;color:#687463}.report-row[open]>summary::after{content:"⌄"}.report-row>summary:hover{background:#f0f3e9}.report-row>summary:focus-visible{outline:2px solid #40643a;outline-offset:-2px}.report-name{font-weight:650}.report-name small{display:block;font-size:13px;font-weight:400;color:#687463;margin-top:4px}.result{font-size:13px;padding:6px 9px;border-radius:6px;justify-self:start}.review-state{font-size:13px;color:#586650}.report-detail{padding:8px 24px 24px;border-top:1px solid #e5e7df;background:#fafbf7}.report-detail article{margin:12px 0}.private-note summary{cursor:pointer;padding:12px 0}.report-detail h2{font-size:21px}@media(max-width:650px){.report-row>summary{grid-template-columns:1fr auto;gap:8px}.report-name{grid-column:1}.result{grid-column:1}.review-state{grid-column:2;grid-row:2}.report-row>summary::after{grid-column:2;grid-row:1;justify-self:end}dl{grid-template-columns:1fr;gap:5px}dd{margin-bottom:12px}.report-detail{padding:8px 16px 16px}}'
+STYLE += '.tabs{display:flex;gap:8px;border-bottom:1px solid #dce0d4;margin:20px 0}.tabs a{padding:14px 16px;text-decoration:none;color:#687463;border-bottom:3px solid transparent}.tabs a[aria-current]{border-color:#40643a;color:#263027;font-weight:650}.tabs span{background:#e8eddf;border-radius:6px;padding:2px 7px;margin-left:5px;font-size:13px}.queue-summary{font-size:14px;color:#687463;margin-top:24px}.empty{padding:32px 16px;color:#687463}button:disabled{opacity:.45;cursor:default}@media(max-width:650px){.tabs{gap:0}.tabs a{padding:12px 8px;font-size:14px}}'
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def send(self,code,value,kind='application/json'):
@@ -86,20 +87,39 @@ class Handler(BaseHTTPRequestHandler):
                     r=project(json.loads(row[0]))
                     if not r.get('appID'): return self.send(409,{'error':'App ID not shared; keep private until supplied'})
                     db.execute("update reports set approved=?,state='Queued' where id=?",(json.dumps(r),form['id'][0]))
+                elif self.path=='/unqueue':
+                    changed=db.execute("update reports set approved=null,state='Needs review' where id=? and revision=? and state='Queued'",(form['id'][0],int(form['revision'][0]))).rowcount
+                    if not changed: return self.send(409,{'error':'stale review'})
                 elif self.path=='/publish': db.execute("update reports set published=approved,state='Published' where state='Queued'")
                 else: return self.send(404,{})
-            self.send_response(303);self.send_header('Location','/');self.end_headers()
+            tab=form.get('tab',['review'])[0]
+            if tab not in ('review','queued','published'): tab='review'
+            self.send_response(303);self.send_header('Location','/?tab='+tab);self.end_headers()
         except (ValueError,KeyError): self.send(400,{})
     def do_GET(self):
         if not self.host_ok(): return self.send(403,{})
         with sqlite3.connect(self.server.db) as db: rows=db.execute('select id,revision,payload,state,published from reports order by rowid desc').fetchall()
         if self.path=='/catalog.json': return self.send(200,{'schemaVersion':1,'reports':[json.loads(r[4]) for r in rows if r[4]]})
-        if self.path not in ('/','/catalog'): return self.send(404,{})
-        page='<h1>'+('Catalog preview' if self.path=='/catalog' else 'Private report review')+'</h1><p class="notice">LOCAL REHEARSAL · Data stays on this Mac. Nothing is published to GitHub or the public website. This is not production authentication or hosting validation.</p><nav><a href="/">Review reports</a> · <a href="/catalog">Catalog preview</a> · <a href="/catalog.json">Public projection JSON</a></nav>'
+        parsed=urlsplit(self.path);path=parsed.path
+        if path not in ('/','/catalog'): return self.send(404,{})
+        tab=parse_qs(parsed.query).get('tab',['review'])[0]
+        tabs={'review':'Needs review','queued':'Queued','published':'Published'}
+        if tab not in tabs: tab='review'
+        page='<h1>'+('Catalog preview' if path=='/catalog' else 'Private report review')+'</h1><p class="notice">LOCAL REHEARSAL · Data stays on this Mac. Nothing is published to GitHub or the public website. This is not production authentication or hosting validation.</p><nav><a href="/">Review reports</a> · <a href="/catalog">Catalog preview</a> · <a href="/catalog.json">Public projection JSON</a></nav>'
         token=f'<input type="hidden" name="csrf" value="{self.server.csrf}">'
-        if self.path=='/': page+=f'<form action="/publish" method="post">{token}<button>Apply approved reports to local catalog</button></form><p>This simulates the daily batch. Approval alone does not publish.</p>'
+        if path=='/':
+            counts={key:sum(r[3]==label for r in rows) for key,label in tabs.items()}
+            page+=f'<p class="queue-summary">{counts["queued"]} reports queued for the next update</p><nav class="tabs" aria-label="Report status">'
+            for key,label in tabs.items():
+                current=' aria-current="page"' if key==tab else ''
+                page+=f'<a href="/?tab={key}"{current}>{label} <span>{counts[key]}</span></a>'
+            page+='</nav>'
+            if tab=='queued':
+                disabled=' disabled' if not counts['queued'] else ''
+                page+=f'<form action="/publish" method="post">{token}<input type="hidden" name="tab" value="queued"><button{disabled}>Apply approved reports to local catalog</button></form><p>This simulates the daily batch. Approval alone does not publish.</p>'
+            rows=[r for r in rows if r[3]==tabs[tab]]
         for rid,rev,payload,state,published in rows:
-            if self.path=='/catalog':
+            if path=='/catalog':
                 if published: page+=card(json.loads(published))
             else:
                 r=json.loads(payload)
@@ -109,8 +129,13 @@ class Handler(BaseHTTPRequestHandler):
                 duration=f"{r['processMinutes']} min process" if 'processMinutes' in r else 'Duration unknown'
                 result={'normal':'Worked normally','problems':'Had problems','unknown':'Not confirmed'}[r['userResult']]
                 e=html.escape
-                page+=f'<details class="report-row" name="report"><summary><span class="report-name">{e(name)}<small>{e(date)} · {e(duration)}</small></span><span class="result {e(r["userResult"])}">{e(result)}</span><span class="review-state">{e(state)}</span></summary><div class="report-detail"><h2>Report details</h2><p>Revision {rev} · App ID: {app if app else "Not shared"}</p>'+card(project(r))+f'<details class="private-note"><summary>Private note · never in catalog</summary><pre>{e(r.get("note", "No note shared"))}</pre></details><form action="/approve" method="post">{token}<input type="hidden" name="id" value="{rid}"><input type="hidden" name="revision" value="{rev}"><button>Approve for next update</button></form></div></details>'
-        if not rows: page+='<p>No reports yet. Share a result from Pear Reporting Review.</p>'
+                action=''
+                if state in ('Needs review','Queued'):
+                    endpoint='/approve' if state=='Needs review' else '/unqueue'
+                    label='Approve for next update' if state=='Needs review' else 'Cancel approval'
+                    action=f'<form action="{endpoint}" method="post">{token}<input type="hidden" name="tab" value="{tab}"><input type="hidden" name="id" value="{rid}"><input type="hidden" name="revision" value="{rev}"><button>{label}</button></form>'
+                page+=f'<details class="report-row" name="report"><summary><span class="report-name">{e(name)}<small>{e(date)} · {e(duration)}</small></span><span class="result {e(r["userResult"])}">{e(result)}</span><span class="review-state">{e(state)}</span></summary><div class="report-detail"><h2>Report details</h2><p>Revision {rev} · App ID: {app if app else "Not shared"}</p>'+card(project(r))+f'<details class="private-note"><summary>Private note · never in catalog</summary><pre>{e(r.get("note", "No note shared"))}</pre></details>{action}</div></details>'
+        if not rows: page+='<p class="empty">'+({'review':'No reports waiting for review.','queued':'No reports queued for the next update.','published':'No published reports yet.'}[tab] if path=='/' else 'No published reports yet.')+'</p>'
         self.send(200,'<!doctype html><meta charset="utf-8"><title>Pear · Local report review</title><style>'+STYLE+'</style>'+page,'text/html')
 
 def main():

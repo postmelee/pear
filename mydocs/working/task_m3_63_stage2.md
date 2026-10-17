@@ -128,3 +128,9 @@ Requester UI follow-up: local private review now uses compact game/date/process
 time/result/review-state rows. Native details/summary disclosure opens report
 fields, private notes and approval controls on demand, one report at a time.
 Stored reports and approval/publication behavior are unchanged.
+
+Requester approved status tabs: Needs review (default), Queued and Published,
+with counts and a compact queued summary. Approval preserves the current tab;
+Queued exposes revision-checked cancellation and the local batch action. Existing
+published snapshots survive cancellation of a newer revision. Receiver tests
+exercise queue cancellation and reapproval before publication.
