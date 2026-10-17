@@ -217,3 +217,19 @@ the rendered classes/fill and whitespace. Screenshot:
 `.build/catalog-design/game-buttons-restored.png`.
 Recommended normal body color for page introductions and muted color for
 metadata; no introduction-color change was made while discussing that choice.
+
+## Button label wrapping audit
+
+The requester reported a wrapped Request a game label and asked to inspect
+other buttons. The shared button now uses nowrap and does not shrink inside
+flex layouts. Contribution and section-header rows can wrap their children;
+the contribution copy has a flexible basis so the entire action moves below
+when necessary. Compact section actions and command-copy buttons also resist
+text wrapping. Existing action groups already supported flex wrapping.
+
+Inspected 18 unique generated button labels in a 240px-wide review column:
+none wrapped or overflowed. Reviewed actual Games layouts at 320px and 800px;
+Request a game stays on one line and card actions move to separate rows on the
+narrow viewport. Rebuilt the site and passed whitespace validation. Removed
+both temporary review pages. Screenshot:
+`.build/catalog-design/button-nowrap-responsive.png`.
