@@ -30,7 +30,7 @@
 .article-subtitle em { font-style: normal; }
 .article-author p { margin: var(--space-3) 0 0; }
 .article-connections { border-top: 1px solid var(--color-border); margin-top: var(--space-11); }
-.article-connections h2, .blog-updates h2 { font-size: var(--font-size-subheading); }
+.article-connections h2, .blog-updates h2 { font-size: var(--font-size-subheading); font-weight: 400; color: var(--color-muted); }
 .mention-list { list-style: none; padding: 0; }
 .mention-list li { margin-block: var(--space-6); }
 .mention-list p { color: var(--color-muted); font-size: var(--font-size-small); margin: var(--space-1) 0 0; }

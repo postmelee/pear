@@ -282,8 +282,7 @@ def article_parts(content):
 
 def update_links():
     return '''<section class="blog-updates"><h2 id="receive-updates">Receive updates</h2>
-<p>Follow <a href="https://x.com/najukoreanpear">Pear on X</a> for project updates.</p>
-<p class="muted">Follow the developer on <a href="https://x.com/meleeisgloom2">X</a> or <a href="https://www.threads.com/@postmelee">Threads</a> for personal notes and work in progress.</p></section>'''
+<p>Follow <a href="https://x.com/najukoreanpear">X (Pear)</a> for project updates, and <a href="https://x.com/meleeisgloom2">X (Taegyu Lee)</a> or <a href="https://www.threads.com/@postmelee">Threads (Taegyu Lee)</a> for personal notes and work in progress.</p></section>'''
 
 
 def linked_mentions(target, sources):

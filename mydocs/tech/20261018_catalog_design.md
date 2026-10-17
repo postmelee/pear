@@ -282,3 +282,19 @@ tables and image bytes remain unchanged. Screenshots under `.build/catalog-desig
 `blog-list-refined.png`, `blog-article-header.png`, `blog-connections.png`, and
 `blog-mobile-refined.png`. Temporary responsive review HTML was removed. The
 existing loopback server remains available; no Issue or publication was created.
+
+## Blog section and sidebar follow-up
+
+Matched the muted, regular-weight supporting section headings shown on
+https://stephango.com/vcware using the existing light/dark muted token. The
+updates paragraph now labels links X (Pear), X (Taegyu Lee), and Threads
+(Taegyu Lee), distinguishing project updates from personal notes in one sentence.
+The shared sidebar reserves a stable scrollbar gutter and 12px inner right gap;
+its outer width grows 20px into the existing column gap to retain text width.
+The mobile width and padding overrides remain intact.
+
+Rebuilt the local site and passed all 10 catalog tests. Browser inspection
+confirmed light rgb(111, 110, 105), dark rgb(135, 133, 128), heading weight 400,
+and an independently scrollable 200px sidebar with a stable gutter and 12px
+padding. Verified sidebar scrolling and saved blog-followup.png. No article
+body, active TOC behavior, account destination or publication state changed.

@@ -43,7 +43,7 @@ kbd { font-family: inherit; font-size: var(--font-size-xs); font-weight: 400; }
 .theme-toggle:hover, .theme-toggle:focus-visible { color: var(--color-theme-hover); }
 .theme-knob { position: absolute; left: 3px; top: 3px; width: var(--theme-icon-size); height: var(--theme-icon-size); border-radius: 50%; background: var(--color-theme-knob); transition: transform var(--motion-fast) var(--motion-ease); }
 [data-theme="dark"] .theme-knob { transform: translateX(var(--theme-switch-travel)); }
-.sidebar { position: fixed; top: var(--sidebar-top); left: var(--sidebar-left); width: var(--sidebar-width); max-height: calc(100dvh - var(--sidebar-top) - 20px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; font-size: var(--font-size-small); }
+.sidebar { position: fixed; top: var(--sidebar-top); left: var(--sidebar-left); width: calc(var(--sidebar-width) + var(--space-6)); padding-right: var(--space-3); scrollbar-gutter: stable; max-height: calc(100dvh - var(--sidebar-top) - 20px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; font-size: var(--font-size-small); }
 .page-navigation, .toc-outline { display: grid; gap: var(--space-2); list-style: none; padding: 0; margin: 0; }
 .page-navigation li { margin: 0; min-width: 0; }
 .page-navigation a { text-decoration: none; color: var(--color-muted); display: block; line-height: 1.3; padding-block: 2px; overflow-wrap: anywhere; }
