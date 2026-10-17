@@ -398,3 +398,15 @@ labels, excluded destinations, missing labels and the requested compatibility
 README. Local browser confirmed 15 unique references and the top-level outline.
 Restarted the stopped loopback preview on port 8765. Screenshot:
 article-references.png. No external content was fetched or republished.
+
+## Exact Latest typography
+
+Compared live stephango.com Latest computed typography and its public CSS.
+The previous Latest metadata incorrectly reused the larger article-header size.
+Added scoped reusable Latest tokens reproducing the reference responsive size
+formulas in Pear's 16px root units. At 1280px, both sites now measure: label
+18.2px/27.3px, title 20.76px/26.988px with weight 500, metadata and summary
+15.925px/22.295px with weight 400. Title tracking is -0.015em, and weight becomes
+600 at the reference's 860px breakpoint. No reference stylesheet was vendored.
+Rebuilt preview, checked whitespace and verified computed sizes and screenshot
+latest-font-matched.png. Existing article-header sizing is unchanged.

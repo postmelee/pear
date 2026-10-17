@@ -27,7 +27,10 @@
 .blog-index h2 a { text-decoration: none; }
 .blog-index h2 a:hover { text-decoration: underline; }
 .latest-item { position: relative; }
-.latest-item h3 { font-size: var(--font-size-heading); margin: 0 0 var(--space-3); }
+.blog-index #latest { font-size: var(--latest-label-size); line-height: 1.5; }
+.latest-item h3 { font-size: var(--latest-title-size); font-weight: 500; line-height: 1.3; letter-spacing: -.015em; margin: 0 0 .5em; }
+.latest-item .article-meta, .latest-summary { font-size: var(--latest-detail-size); line-height: 1.4; }
+@media (max-width: 860px) { .latest-item h3 { font-weight: 600; } }
 .latest-link { text-decoration: none; }
 .latest-link::after { content: ""; position: absolute; inset: 0; }
 .latest-item a[rel="author"] { position: relative; z-index: 1; }
