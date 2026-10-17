@@ -323,7 +323,7 @@ def build_site(data, out, catalog=None, steam_catalog=None):
              'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
     pages.update({f'game-{g["app_id"]}.html': game_page(g) for g in groups})
     pages.update(site.blog_pages(pages))
-    allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | set(pages)
+    allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | site.blog_files(site.POSTS) | set(pages)
     allowed_dirs = {str(parent) for name in allowed for parent in Path(name).parents if str(parent) != '.'}
     out = Path(out)
     require(not out.is_symlink(), 'Site output must not be a symlink')
@@ -338,11 +338,7 @@ def build_site(data, out, catalog=None, steam_catalog=None):
     assets = {name: ASSETS / name for name in
               ['tokens.css', 'components.css', 'style.css', 'theme.js', 'site.js', 'catalog.js', 'steam-search.js']}
     assets.update({name: ROOT / 'docs/assets' / name for name in ['pear.png', 'favicon.png', 'social-card.png']})
-    assets.update({f'blog/images/{name}': ROOT / 'docs/assets/blog' / name
-                   for post in site.POSTS for name in post.images})
-    assets.update({f'blog/media/{name}': ROOT / 'docs/assets/blog/media' / name
-                   for video in site.ARTICLE_VIDEOS
-                   for name in (video, f'{Path(video).stem}.jpg')})
+    assets.update(site.blog_assets(site.POSTS))
     for source in assets.values():
         require(source.is_file() and not source.is_symlink(), 'Missing or symlinked public asset')
     out.mkdir(parents=True, exist_ok=True)

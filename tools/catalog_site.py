@@ -24,8 +24,18 @@ ARTICLE_SLUG = 'running-megabonk-on-an-apple-silicon-mac'
 ARTICLE_TITLE = 'Running Megabonk on an Apple Silicon Mac'
 ARTICLE_SUMMARY = 'How one Windows game led me to build Pear, and where I want to take it next.'
 ARTICLE_PATH = f'blog/{ARTICLE_SLUG}.html'
-ARTICLE_VIDEOS = {'gameplay.mp4': (960, 1280), 'demo.mp4': (1600, 1040)}
 ARTICLE_IMAGES = ('current-runtime.png', 'rosetta-free-runtime.png')
+
+
+@dataclass(frozen=True)
+class BlogVideo:
+    filename: str
+    width: int
+    height: int
+
+    @property
+    def poster(self):
+        return f'{Path(self.filename).stem}.jpg'
 
 
 @dataclass(frozen=True)
@@ -39,6 +49,8 @@ class BlogPost:
     published: str | None = None
     topics: tuple = ()
     series: str = "Pear development journal"
+    author_url: str | None = None
+    videos: tuple[BlogVideo, ...] = ()
 
     @property
     def path(self):
@@ -46,7 +58,9 @@ class BlogPost:
 
 
 POSTS = (BlogPost(ARTICLE_SLUG, ARTICLE_TITLE, ARTICLE_SUMMARY, 'Taegyu Lee',
-                  'v0.1.0', ARTICLE_IMAGES, '2026-10-18', ('development', 'megabonk', 'apple-silicon')),)
+                  'v0.1.0', ARTICLE_IMAGES, '2026-10-18', ('development', 'megabonk', 'apple-silicon'),
+                  author_url='https://x.com/meleeisgloom2',
+                  videos=(BlogVideo('gameplay.mp4', 960, 1280), BlogVideo('demo.mp4', 1600, 1040))),)
 def topic_path(label):
     return 'blog/topics/' + re.sub(r'[^a-z0-9]+', '-', label.lower()).strip('-') + '/index.html'
 
@@ -55,11 +69,58 @@ def post_topics(post):
     return tuple(label for label in (post.series, post.edition) if label)
 
 
-BLOG_FILES = {'blog/index.html', 'blog/topics/index.html', 'blog/writing.html',
-              *(topic_path(label) for post in POSTS for label in post_topics(post)), *(post.path for post in POSTS),
-              *(f'blog/images/{name}' for post in POSTS for name in post.images),
-              *(f'blog/media/{name}' for name in ARTICLE_VIDEOS),
-              *(f'blog/media/{Path(name).stem}.jpg' for name in ARTICLE_VIDEOS)}
+def blog_assets(posts):
+    assets = {f'blog/images/{name}': ROOT / 'docs/assets/blog' / name
+              for post in posts for name in post.images}
+    assets.update({f'blog/media/{name}': ROOT / 'docs/assets/blog/media' / name
+                   for post in posts for video in post.videos
+                   for name in (video.filename, video.poster)})
+    return assets
+
+
+def blog_files(posts):
+    return {'blog/index.html', 'blog/topics/index.html', 'blog/writing.html',
+            *(topic_path(label) for post in posts for label in post_topics(post)),
+            *(post.path for post in posts), *blog_assets(posts)}
+
+
+def validate_posts(posts):
+    """Reject ambiguous archives and unsafe publication paths before rendering."""
+    slugs, topic_slugs, videos = set(), {}, {}
+    for post in posts:
+        if (not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', post.slug)
+                or post.slug in slugs | {'index', 'writing'}):
+            raise ValueError('Invalid, reserved or duplicate blog slug')
+        slugs.add(post.slug)
+        if not all(value.strip() for value in (post.title, post.summary, post.author)):
+            raise ValueError('Blog title, summary and author are required')
+        if post.published:
+            if date.fromisoformat(post.published).isoformat() != post.published:
+                raise ValueError('Publication dates must use YYYY-MM-DD')
+        if post.author_url:
+            url = urlsplit(post.author_url)
+            if (url.scheme != 'https' or not url.hostname or url.username or url.password
+                    or any(c.isspace() for c in post.author_url) or '\\' in post.author_url):
+                raise ValueError('Author profiles must use public HTTPS URLs')
+        for label in post_topics(post):
+            path = topic_path(label)
+            if path == 'blog/topics//index.html' or (path in topic_slugs and topic_slugs[path] != label):
+                raise ValueError('Topic names must produce unique nonempty archive paths')
+            topic_slugs[path] = label
+        for name in post.images:
+            if not re.fullmatch(r'[a-z0-9][a-z0-9._-]*\.png', name):
+                raise ValueError('Images require plain PNG filenames')
+        for video in post.videos:
+            if (not re.fullmatch(r'[a-z0-9][a-z0-9._-]*\.mp4', video.filename)
+                    or type(video.width) is not int or type(video.height) is not int
+                    or min(video.width, video.height) <= 0):
+                raise ValueError('Videos require a plain MP4 filename and positive dimensions')
+            if video.filename in videos and videos[video.filename] != video:
+                raise ValueError('Conflicting shared video dimensions')
+            videos[video.filename] = video
+
+
+BLOG_FILES = blog_files(POSTS)
 NAVIGATION = (
     ('home', 'Introduction', 'index.html'),
     ('games', 'Games', 'games.html'),
@@ -125,7 +186,7 @@ def navigation(active, outline, root, article_title=None):
         active = 'article'
     for key, label, path in entries:
         current = ' aria-current="page"' if key == active else ''
-        item = f'<li><a href="{local_link(path, root)}"{current}>{label}</a>'
+        item = f'<li><a href="{local_link(path, root)}"{current}>{html.escape(label)}</a>'
         if key == active and outline:
             item += '<ul class="toc-outline">' + ''.join(
                 f'<li class="toc-depth-{level}"><a href="#{html.escape(anchor)}" data-toc-link>{html.escape(title)}</a></li>'
@@ -143,7 +204,7 @@ def explore_cards(items):
 
 
 def footer(root, article=False):
-    links = ''.join(f'<a href="{local_link(path, root)}">{label}</a>' for key, label, path in NAVIGATION if not (article and key == 'updates'))
+    links = ''.join(f'<a href="{local_link(path, root)}">{html.escape(label)}</a>' for key, label, path in NAVIGATION if not (article and key == 'updates'))
     return f'''<footer class="site-footer"><p>Pear is <a href="{REPO}">open source</a> under the <a href="{REPO}/blob/master/LICENSE">GPL-3.0-or-later license</a>.</p>
 <nav class="footer-nav" aria-label="Footer">{links}<a href="{REPO}">GitHub</a></nav>
 <a class="footer-author" href="{REPO}"><img src="{root}pear.png" alt="" width="32" height="32"><span><span class="muted">by</span> Pear contributors</span></a></footer>'''
@@ -216,9 +277,10 @@ class ArticleValidator(HTMLParser):
     TAGS = {'a', 'blockquote', 'code', 'div', 'em', 'strong', 'figure', 'figcaption',
             'h1', 'h2', 'h3', 'img', 'video', 'p', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'ul', 'ol', 'li'}
 
-    def __init__(self, images=ARTICLE_IMAGES, source_path=f'blog/{ARTICLE_SLUG}.html'):
+    def __init__(self, images=ARTICLE_IMAGES, source_path=f'blog/{ARTICLE_SLUG}.html', videos=()):
         super().__init__(convert_charrefs=True)
         self.images = images
+        self.videos = {video.filename: video for video in videos}
         self.source_path = source_path
         self.output = []
         self.stack = []
@@ -237,7 +299,7 @@ class ArticleValidator(HTMLParser):
             if key == 'href':
                 parsed = urlsplit(value)
                 internal = internal_target(value, self.source_path)
-                known = BLOG_FILES | {'index.html', 'games.html', 'about.html', 'updates.html',
+                known = blog_files(POSTS) | {'index.html', 'games.html', 'about.html', 'updates.html',
                                       'download.html', 'request.html', 'report.html'}
                 public_https = (parsed.scheme == 'https' and parsed.hostname
                                 and not parsed.username and not parsed.password)
@@ -245,14 +307,14 @@ class ArticleValidator(HTMLParser):
                         or not (public_https or internal in known)):
                     raise ValueError('Article links must be public HTTPS or known local pages')
             if key == 'src' and not ((tag == 'img' and value in {f'images/{name}' for name in self.images})
-                                     or (tag == 'video' and value in {f'media/{name}' for name in ARTICLE_VIDEOS})):
+                                     or (tag == 'video' and value in {f'media/{name}' for name in self.videos})):
                 raise ValueError('Unapproved article image')
             rendered.append(f' {key}="{html.escape(value, quote=True)}"')
         if tag == 'video':
             name = Path(dict(attrs).get('src', '')).name
-            if name not in ARTICLE_VIDEOS:
+            if name not in self.videos:
                 raise ValueError('Video requires a reviewed local source')
-            width, height = ARTICLE_VIDEOS[name]
+            width, height = self.videos[name].width, self.videos[name].height
             rendered.append(f' controls playsinline preload="none" width="{width}" height="{height}" poster="media/{Path(name).stem}.jpg"')
         if tag == 'img':
             if 'src' not in dict(attrs) or 'alt' not in dict(attrs):
@@ -279,12 +341,24 @@ class ArticleValidator(HTMLParser):
 
 
 def article_content(post=POSTS[0]):
-    parser = ArticleValidator(post.images, post.path)
+    parser = ArticleValidator(post.images, post.path, post.videos)
     parser.feed((ROOT / 'docs/blog' / f'{post.slug}.html').read_text(encoding='utf-8'))
     parser.close()
     if parser.stack:
         raise ValueError('Unclosed article element')
-    return ''.join(parser.output)
+    content = ''.join(parser.output)
+    title, subtitle, byline, body = article_parts(content)
+    if plain_text(title) != post.title or plain_text(subtitle) != post.summary:
+        raise ValueError('Article title and summary must match the post registry')
+    if plain_text(byline).split(' · ', 1)[0] != f'By {post.author}':
+        raise ValueError('Article byline must match the registered author')
+    ids = re.findall(r'\bid="([^"]+)"', content)
+    reserved = {'article-title', 'references', 'linked-mentions', 'you-might-also-enjoy'}
+    if len(ids) != len(set(ids)) or reserved.intersection(ids):
+        raise ValueError('Article IDs must be unique and not reserved by generated sections')
+    if len(re.findall(r'<h1(?:\s|>)', content)) != 1:
+        raise ValueError('Articles require exactly one title')
+    return content
 
 
 def publication_label(post, compact=False):
@@ -412,6 +486,7 @@ def article_categories(post):
 
 
 def blog_pages(base_pages=None):
+    validate_posts(POSTS)
     posts = sorted(POSTS, key=lambda post: (post.published or '', post.slug), reverse=True)
     sources = {}
     for path, page in (base_pages or {}).items():
@@ -442,18 +517,15 @@ def blog_pages(base_pages=None):
         minutes = reading_minutes(body)
         timing = f'{minutes} minute{"s" if minutes != 1 else ""} read'
         metadata = f'{publication_label(post)} · {timing}' if post.published else timing
-        header = f'<header class="article-header">{title}<p class="article-meta">{metadata} · {author_link(post.author)}</p><div class="article-subtitle">{subtitle}</div></header>'
+        header = f'<header class="article-header">{title}<p class="article-meta">{metadata} · {author_link(post.author, post.author_url)}</p><div class="article-subtitle">{subtitle}</div></header>'
         article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{header}{body}{article_categories(post)}</article>{article_connections(post, posts, sources)}'
         pages[post.path] = shell(post.title, article, 'blog', root='../', article=True, description=post.summary)
     return pages
 
 
-def author_link(name):
-    profiles = {'Taegyu Lee': 'https://x.com/meleeisgloom2'}
+def author_link(name, url=None):
     label = html.escape(name)
-    if name not in profiles:
-        return label
-    return f'<a href="{profiles[name]}" rel="author">{label}</a>'
+    return f'<a href="{html.escape(url, quote=True)}" rel="author">{label}</a>' if url else label
 
 
 def writing_list(posts, prefix=''):
@@ -464,7 +536,7 @@ def writing_list(posts, prefix=''):
 
 def latest_item(post, content):
     minutes = reading_minutes(article_parts(content)[3])
-    return f'''<article class="latest-item"><h3><a class="latest-link" href="{html.escape(post.slug)}.html">{html.escape(post.title)}</a></h3><p class="article-meta">{publication_label(post)} · {minutes} min read · {author_link(post.author)}</p><p class="latest-summary">{html.escape(post.summary)} <span class="keep-reading">Keep reading →</span></p></article>'''
+    return f'''<article class="latest-item"><h3><a class="latest-link" href="{html.escape(post.slug)}.html">{html.escape(post.title)}</a></h3><p class="article-meta">{publication_label(post)} · {minutes} min read · {author_link(post.author, post.author_url)}</p><p class="latest-summary">{html.escape(post.summary)} <span class="keep-reading">Keep reading →</span></p></article>'''
 
 
 def search_index(pages):

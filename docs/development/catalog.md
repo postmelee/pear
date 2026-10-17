@@ -25,6 +25,7 @@ the same semantic names:
 | Group | Main tokens | Purpose |
 |---|---|---|
 | Typography | `--font-sans`, `--font-size-body`, `--font-size-heading`, `--font-size-title`, `--line-height-body` | Font stack, scale and reading rhythm |
+| Blog typography | `--article-font-family`, `--article-font-size`, `--article-line-height`, `--article-reading-width`, `--article-header-gap`, `--article-small-size`, `--latest-label-size`, `--latest-title-size`, `--latest-detail-size` | Shared article and list hierarchy |
 | Colors | `--color-bg`, `--color-surface`, `--color-text`, `--color-muted`, `--color-border` | Page, panel, text and separators |
 | States | `--color-focus`, `--color-positive`, `--color-warning`, `--color-negative` and their backgrounds | Focus and report outcomes |
 | Spacing | `--space-1` through `--space-13`, `--section-gap` | Shared spacing scale |
@@ -74,8 +75,10 @@ and local GitHub draft behavior. Global search does not replace Steam lookup.
 
 ## Add a blog post
 
-1. Add a reviewed HTML article fragment to `docs/blog/<slug>.html`, with one
-   `h1`, an introduction, byline and `h2`/`h3` sections. Preserve attribution and
+1. Read the [scoped authoring rules](../blog/AGENTS.md). Add a reviewed HTML article fragment to `docs/blog/<slug>.html`, with one
+   `h1`, a subtitle paragraph, a `By Author` paragraph, then body paragraphs and
+   `h2`/`h3` sections. The title and subtitle must match the registry exactly
+   after HTML text normalization. The byline must name the registered author. Preserve attribution and
    applicable source notices. Do not include a document shell, inline styles,
    scripts or event handlers.
 2. Add any reviewed PNG figures to `docs/assets/blog/`. Use unique filenames,
@@ -83,25 +86,38 @@ and local GitHub draft behavior. Global search does not replace Steam lookup.
    The renderer reads intrinsic image dimensions to reserve layout space.
 3. Add a `BlogPost` record to `POSTS` in `tools/catalog_site.py`. Supply title,
    summary, author, edition, the exact image tuple, an approved ISO publication
-   date (`published`) and a tuple of topic identifiers (`topics`). The list sorts
+   date (`published`) and a tuple of topic identifiers (`topics`). Set
+   `author_url` to the author’s approved public HTTPS profile, or omit it for
+   plain text. Never reuse another author’s account. The list sorts
    newest first. Latest shows the full date, computed reading time, linked author
    and summary; Writing shows year/month and title. `series` (default Pear
    development journal) and `edition` generate Topics and their filtered archives.
    The separate `topics` identifiers continue to rank related articles.
    Omit the date if unknown; it is never inferred from build time or file dates.
-4. Rebuild and run the checks below. The registry derives the public page/image
+4. For reviewed video, add web MP4 and matching JPEG poster to
+   `docs/assets/blog/media/`. Declare each `BlogVideo(filename, width, height)`
+   in that post’s `videos` tuple. The poster shares the filename stem. Use
+   `<figure><video src="media/name.mp4"></video><figcaption>Meaningful description</figcaption></figure>`.
+   The generator adds native controls, inline playback, poster and `preload="none"`;
+   autoplay and arbitrary remote embeds are rejected. Keep original recordings
+   outside the public output, record provenance and verify actual browser playback.
+5. Rebuild and run the checks below. The registry derives the public page/image
    allowlist and index cards; rendered content supplies the search index and TOC.
 
 Article validation fails on unsupported markup, unsafe links, unknown images or
 unbalanced elements. Expand the supported format only with appropriate tests.
-The first article came solely from the requester-supplied HTML, credited to
-Taegyu Lee; its prose, HTTPS links, two tables and original PNG bytes are retained.
+The first article originated in requester-supplied HTML, credited to Taegyu Lee;
+its prose, HTTPS links, two tables and original PNG bytes are retained, with
+requester-authorized recordings and descriptive captions added later.
 Its release-specific statements are independent of current download metadata.
 
 ## Automatic article components
 
-The article renderer preserves the source title, subtitle, byline and body while
-placing the publication date and estimated reading time directly below the title.
+The article renderer displays the source title, then date, computed reading time
+and linked author, then the muted subtitle. The source byline validates authorship
+but is not repeated as a separate visible paragraph. The body follows a shared
+`2em` header gap. Categories are hidden in the header and appear as small muted
+archive links after the body, before the supporting-section rule.
 Reading time is rounded up at 220 words per minute, with a one-minute minimum;
 it uses body text, including headings and captions, but excludes generated
 navigation, recommendations, title, subtitle and byline.
@@ -113,13 +129,70 @@ navigation and generated backlinks do not produce mentions. Each source appears
 once. Article sources can link to known published local pages as well as public
 HTTPS URLs; private paths and paths escaping the site prefix are rejected.
 
+`references` collects external HTTP(S) links from the body, in first-appearance
+order, merging exact duplicate decoded URLs. It excludes local Pear links and
+generated author/navigation links. It does not fetch previews from external sites.
+
 `related_posts` ranks other registered articles by shared topics, then date and
 slug, with at most three results. Sections with no matches are omitted. With only
-one article, no recommendation is fabricated. `update_links` renders the shared
-Receive updates section using the official Pear X account and the developer's
-personal X and Threads accounts. These are ordinary links, not subscriptions or
+one article, no recommendation is fabricated. Blog index and article pages omit
+Receive updates blocks. The separate Updates page contains the official Pear X
+account and developer personal X and Threads accounts. These are ordinary links, not subscriptions or
 embedded social widgets. First-article publication date 2026-10-18 was explicitly
 supplied by the requester.
+
+
+## Authoring contract and navigation order
+
+Use the same components for every article, regardless of author or topic. Keep
+article content in English and preserve the author’s voice; project-level UI uses
+Pear/we rather than a personal “me.” Do not invent dates, authors, evidence,
+compatibility claims, categories or related posts. Cite revision-specific sources
+for release claims. An older article is a dated account, not current download
+metadata; update its claims only with explicit editorial scope.
+
+- Site navigation: Introduction → Games → Download → Blog → About → Updates →
+  Documentation. Footer follows that order, then GitHub. The article footer omits
+  Updates, as requested.
+- Blog index outline: Latest → Topics → Writing. Latest links across its preview
+  area; its author link remains independent. Writing uses chronological date/title
+  rows. Topic archives derive from `series` and `edition` without manual lists.
+- Article outline: title at the top, body h2/h3 in source order nested underneath,
+  then References → Linked mentions → You might also enjoy as top-level siblings.
+  Empty supporting sections disappear. Categories do not add a TOC entry.
+- Supply stable section IDs for durable URLs. Never duplicate an ID or use
+  `article-title`, `references`, `linked-mentions`, or `you-might-also-enjoy` in
+  authored fragments. Do not manually add generated sections or navigation.
+- Use lowercase ASCII hyphenated post slugs, unique PNG/MP4 basenames, and topic
+  labels whose archive slugs are distinct. Unsupported non-Latin-only topic
+  slugs are rejected; adding localized archive identifiers needs a schema change.
+- Change typography at semantic tokens, not inline styles or post-specific CSS.
+  Article paragraphs use the shared responsive size, 1.5 line height and 37em
+  desktop measure; small screens use 88vw. Titles and summaries wrap naturally;
+  author names stay intact. Captions and categories use muted colors in both themes.
+- Keep heading depth sequential (h2 then h3); use prose, lists, blockquotes,
+  tables and figures for their meanings. Wrap wide tables in `table-scroll` with
+  `tabindex="0"`. Every image needs alt text; videos need explanatory captions.
+
+A minimal source fragment starts as follows (replace all placeholders and retain
+accurate copyright attribution):
+
+```html
+<!-- SPDX-FileCopyrightText: 2026 Actual author
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<h1>Article title</h1>
+<p><em>One-sentence summary.</em></p>
+<p>By Author name</p>
+<p>Opening paragraph.</p>
+<h2 id="first-section">First section</h2>
+<p>Article body with reviewed sources.</p>
+```
+
+The matching `BlogPost` should use keyword arguments for all metadata, including
+`series`, `edition`, `published`, `author_url`, `images`, `videos`, and related-post
+`topics`. Use empty tuples/strings for absent assets/categories rather than
+copying a previous post’s metadata. A second article must not require a new page
+renderer, CSS block, navigation list, or hardcoded author lookup.
 
 ## Verify a change
 

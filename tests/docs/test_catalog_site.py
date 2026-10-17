@@ -46,6 +46,70 @@ class WebsiteTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 site.ArticleValidator().feed(markup)
 
+    def test_registry_rejects_ambiguous_or_unsafe_publication_metadata(self):
+        first = site.POSTS[0]
+        invalid = [replace(first, slug='../escape'), replace(first, slug='index'),
+                   replace(first, published='2026-13-01'), replace(first, summary=''),
+                   replace(first, author_url='javascript:alert(1)'),
+                   replace(first, images=('../private.png',)),
+                   replace(first, videos=(site.BlogVideo('../private.mp4', 1, 1),)),
+                   replace(first, videos=(site.BlogVideo('demo.mp4', 0, 1),)),
+                   replace(first, series='!!!')]
+        for post in invalid:
+            with self.subTest(post=post), self.assertRaises(ValueError):
+                site.validate_posts((post,))
+        with self.assertRaises(ValueError):
+            site.validate_posts((first, first))
+        with self.assertRaises(ValueError):
+            site.validate_posts((first, replace(first, slug='second', series='Pear-development-journal')))
+
+    def test_source_metadata_and_generated_section_ids_are_checked(self):
+        post = replace(site.POSTS[0], title='Example', summary='Summary', images=(), videos=())
+        source = '<h1>Example</h1><p>Summary</p><p>By Taegyu Lee</p><h2 id="one">One</h2><p>Body</p>'
+        with patch.object(Path, 'read_text', return_value=source):
+            self.assertIn('Body', site.article_content(post))
+        for bad in (source.replace('Example', 'Other'), source.replace('Summary', 'Other'),
+                    source.replace('By Taegyu Lee', 'By Someone else'),
+                    source.replace('By Taegyu Lee', 'By Taegyu Lee Jr.'),
+                    source + '<h2 id="one">Duplicate</h2>',
+                    source + '<h2 id="references">References</h2>'):
+            with patch.object(Path, 'read_text', return_value=bad), self.assertRaises(ValueError):
+                site.article_content(post)
+
+    def test_per_post_media_and_authors_do_not_leak_between_posts(self):
+        first = site.POSTS[0]
+        second = replace(first, slug='second', title='Second & next', images=(), videos=(),
+                         author='Another author', author_url='https://example.org/author', published='2026-10-19')
+        with self.assertRaises(ValueError):
+            site.ArticleValidator(second.images, second.path, second.videos).feed('<video src="media/demo.mp4"></video>')
+        self.assertEqual(site.blog_assets((second,)), {})
+        source = '<h1>Second &amp; next</h1><p>Summary</p><p>By Another author</p><h2>One</h2><p>Text</p>'
+        with patch.object(site, 'POSTS', (first, second)), patch.object(site, 'article_content', return_value=source):
+            pages = site.blog_pages()
+        latest = re.search(r'<article class="latest-item">.*?</article>', pages['blog/index.html'], re.S)[0]
+        self.assertIn('href="second.html"', latest)
+        self.assertIn('https://example.org/author', latest)
+        self.assertNotIn('meleeisgloom2', latest)
+        self.assertIn('Second &amp; next', pages[second.path])
+        self.assertIn('2 entries', pages[site.topic_path(first.series)])
+        self.assertIn('Article categories', pages[second.path])
+
+    def test_navigation_order_matches_body_and_shared_destinations(self):
+        expected = ['Introduction', 'Games', 'Download', 'Blog', 'About', 'Updates', 'Documentation']
+        self.assertEqual([label for _, label, _ in site.NAVIGATION], expected)
+        for name in ('index.html', 'games.html', 'download.html', 'blog/index.html', 'about.html', 'updates.html'):
+            content = (self.output / name).read_text()
+            nav = re.search(r'<nav id="sidebar".*?</nav>', content, re.S)[0]
+            offsets = [nav.index('>' + label + '</a>') for label in expected]
+            self.assertEqual(offsets, sorted(offsets), name)
+        article = (self.output / site.ARTICLE_PATH).read_text()
+        nav = re.search(r'<nav id="sidebar".*?</nav>', article, re.S)[0]
+        anchors = [attrs['href'][1:] for tag, attrs in Elements(nav).elements
+                   if tag == 'a' and 'data-toc-link' in attrs]
+        offsets = [article.index('id="' + anchor + '"') for anchor in anchors]
+        self.assertEqual(offsets, sorted(offsets))
+        self.assertNotIn('Article categories', nav)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

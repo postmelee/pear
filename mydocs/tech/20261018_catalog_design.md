@@ -475,3 +475,61 @@ Uses muted text at 0.875em, existing link hover/focus tokens and natural wrappin
 no new heading or TOC item. Local render verified both relative archive targets
 and the small muted presentation. Catalog tests: 14 passed; diff check passed.
 Screenshot: article-categories.png.
+
+## Final maintainability review plan
+
+The requester authorized final review and necessary authoring rules. Extend the
+existing contributor guide at docs/development/catalog.md; add a short scoped
+docs/blog/AGENTS.md pointing authors to that guide. These locations keep human
+authoring guidance in official docs and agent-specific entry rules beside source
+articles. No new Issue, publishing, merge or runtime changes are authorized.
+
+Reuse the registry, HTML sanitizer, renderers and token files. Scope: per-post
+media/author metadata, validation of publication identifiers and source metadata,
+shared typography tokens, navigation order and multi-post regression coverage.
+Open #63 still overlaps catalog generation in another worktree; its integration
+remains a later merge check. No other worktrees or untracked research are touched.
+Verification uses existing docs, JS, governance, notice and link checks plus local
+desktop/mobile browser checks; no runtime builds or new video derivatives.
+
+## Final maintainability review results
+
+The shared pipeline is sufficient for the next articles without introducing a
+CMS or per-post renderers. Replaced first-article video and author lookup globals
+with explicit BlogPost metadata; derive publication assets from that registry.
+Added validation for duplicate/reserved slugs, invalid dates, ambiguous topic
+archives, unsafe media/profile paths, mismatched title/summary/author, and
+conflicting section IDs. Article font family and small-text/caption metrics now
+use semantic tokens. Existing visible typography is preserved.
+
+Added scoped blog-agent rules and the authoring contract to the existing guide.
+Regression coverage exercises a second author/post with independent media and
+shared archive generation, plus common navigation and article outline order.
+No automatic recommendations are fabricated for the current single-post site.
+
+Validation:
+- Python documentation suite: 112 tests passed, including 18 catalog tests.
+- JavaScript Steam-search suite: 6 tests passed.
+- Governance: 39 documents and 377 local targets passed.
+- Public build and internal page/asset/fragment checks passed; diff whitespace
+  and scoped pre-commit source notices passed. Unrelated untracked analysis and
+  research were excluded from this task's notice scope and remain untouched.
+- Browser checks at 1440, 800, 390 and 320 CSS pixels: no horizontal overflow;
+  article header gap follows the 2em token and author names remain intact.
+  Desktop dark and mobile light rendering inspected. Search returned Rosetta
+  results and restored focus on Escape; topic archive navigation worked.
+  Mobile TOC closes after anchor selection and focuses References; Installation
+  navigation preserves the selected CLI tab. Restored light mode and the default
+  viewport after checks. Local preview remains served on port 8765.
+- Screenshots: final-article-desktop.png, final-article-mobile.png and
+  final-article-light.png under .build/catalog-design/.
+
+Timing: the last full Python run took 8.001 seconds. A continuous frozen-source
+through browser-input interval was not recorded for this review; no feedback-time
+improvement is claimed. No runtime build/signing or new media conversion ran.
+The unchanged two-video playback evidence remains scoped to the same assets.
+
+Integration limit: #63 modifies catalog generation in a separate worktree. Its
+combined result has not been merged or verified here. The article's dated v0.1.0
+account remains separate from current preview.3 download metadata; this review
+makes no new compatibility or release-readiness claim.
