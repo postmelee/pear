@@ -389,6 +389,74 @@
       "disposition": "new_final_evidence_boundary"
     }
   ],
+  "explicit_behavioral_adaptations": [
+    {
+      "destination": "tools/development/game/handoff.py",
+      "destination_ref": {
+        "path": "tools/development/game/handoff.py",
+        "sha256": "ec9daa8bfa018b2eb2f22e858091649fe433172d04ab5577dfe7fbd9941c8ff2",
+        "size_bytes": 8811
+      },
+      "origin": "tools/steam/play_handoff.py",
+      "prior_destination": {
+        "path": "tools/development/game/handoff.py",
+        "sha256": "ca467ae732571c9d4d51492a24a076c37d9f10af85db0a69bce4e8ea247229fe",
+        "size_bytes": 8659
+      },
+      "prior_import_commit": "914725732a17b9e13886bc906625df9ca9ba07b3",
+      "reason": "PR58 P2: keep the incoming manual confirmation immutable while retaining recomputed evidence-deadline checks on a verification-local copy.",
+      "scope": "Portable manual-hold correction only; no game or native execution claim.",
+      "unchanged_guards": [
+        "Terminal precedence",
+        "Owner and witness freshness",
+        "Manual expiry after verification and probe",
+        "Stop/join completion",
+        "Exact repeated request and finish identity",
+        "Changed-payload refusal",
+        "Outer and owner deadline bounds"
+      ],
+      "units": [
+        {
+          "destination": {
+            "ast_sha256": "c0d32d63b1c4c6a5aeb7bbb4f7396ba01ce261a85a63b9ad00837eb5ee08d13c",
+            "end_line": 124,
+            "kind": "ClassDef",
+            "line": 37,
+            "qualname": "PlayHandoff",
+            "source_sha256": "e69e62c9ddf617bb8139b6c4e7159e645452b3eb3505ac757bb1de5d5c5b240e"
+          },
+          "prior_destination": {
+            "ast_sha256": "c4dad0322ffd7fee08f5d00beae4948b9823e0f53a79950f740aafa797eb3c6b",
+            "end_line": 122,
+            "kind": "ClassDef",
+            "line": 37,
+            "qualname": "PlayHandoff",
+            "source_sha256": "7540636f5ce3c5fa39a088e077f2f501515f39b2b764c75efd4d2e7772eddce5"
+          },
+          "qualname": "PlayHandoff"
+        },
+        {
+          "destination": {
+            "ast_sha256": "dcd578f522ab9c7ae019d564f7c8912ad2d5d51ecbbc8ac205f4b6eefee3908a",
+            "end_line": 124,
+            "kind": "FunctionDef",
+            "line": 68,
+            "qualname": "PlayHandoff.step",
+            "source_sha256": "247663d34153cbf3f3a922bfb306e30dcff57bbd06db9dad1b883a0e8a63b3a8"
+          },
+          "prior_destination": {
+            "ast_sha256": "293451e29383fcc44e8df21e16a6cc024a7bb88a45e2632e366bade916ab10a3",
+            "end_line": 122,
+            "kind": "FunctionDef",
+            "line": 68,
+            "qualname": "PlayHandoff.step",
+            "source_sha256": "d19ae96a001f497f06d93ef099676349a614c1237c7b706f5827e2eee626a595"
+          },
+          "qualname": "PlayHandoff.step"
+        }
+      ]
+    }
+  ],
   "explicit_binding_adaptations": [
     {
       "destination": "tools/development/game/adapter.py",
@@ -1127,8 +1195,8 @@
       "checkpoint_alone_reconstructs_bytes": false,
       "destination": {
         "path": "tools/development/game/handoff.py",
-        "sha256": "ca467ae732571c9d4d51492a24a076c37d9f10af85db0a69bce4e8ea247229fe",
-        "size_bytes": 8659
+        "sha256": "ec9daa8bfa018b2eb2f22e858091649fe433172d04ab5577dfe7fbd9941c8ff2",
+        "size_bytes": 8811
       },
       "kind": "policy",
       "license": "MIT",
@@ -1293,14 +1361,14 @@
         },
         {
           "destination": {
-            "ast_sha256": "c4dad0322ffd7fee08f5d00beae4948b9823e0f53a79950f740aafa797eb3c6b",
-            "end_line": 122,
+            "ast_sha256": "c0d32d63b1c4c6a5aeb7bbb4f7396ba01ce261a85a63b9ad00837eb5ee08d13c",
+            "end_line": 124,
             "kind": "ClassDef",
             "line": 37,
             "qualname": "PlayHandoff",
-            "source_sha256": "7540636f5ce3c5fa39a088e077f2f501515f39b2b764c75efd4d2e7772eddce5"
+            "source_sha256": "e69e62c9ddf617bb8139b6c4e7159e645452b3eb3505ac757bb1de5d5c5b240e"
           },
-          "disposition": "exact_source",
+          "disposition": "explicit_behavioral_adaptation",
           "origin": {
             "ast_sha256": "c4dad0322ffd7fee08f5d00beae4948b9823e0f53a79950f740aafa797eb3c6b",
             "end_line": 121,
@@ -1388,14 +1456,14 @@
         },
         {
           "destination": {
-            "ast_sha256": "293451e29383fcc44e8df21e16a6cc024a7bb88a45e2632e366bade916ab10a3",
-            "end_line": 122,
+            "ast_sha256": "dcd578f522ab9c7ae019d564f7c8912ad2d5d51ecbbc8ac205f4b6eefee3908a",
+            "end_line": 124,
             "kind": "FunctionDef",
             "line": 68,
             "qualname": "PlayHandoff.step",
-            "source_sha256": "d19ae96a001f497f06d93ef099676349a614c1237c7b706f5827e2eee626a595"
+            "source_sha256": "247663d34153cbf3f3a922bfb306e30dcff57bbd06db9dad1b883a0e8a63b3a8"
           },
-          "disposition": "exact_source",
+          "disposition": "explicit_behavioral_adaptation",
           "origin": {
             "ast_sha256": "293451e29383fcc44e8df21e16a6cc024a7bb88a45e2632e366bade916ab10a3",
             "end_line": 121,
@@ -3354,8 +3422,8 @@
       "checkpoint_alone_reconstructs_bytes": false,
       "destination": {
         "path": "tests/development/game/test_manual_play_joint.py",
-        "sha256": "94a39bb8f88b5ce1e4703cd2c5e2e25a2d72beadfe52c0bc6dd40f9b090f07db",
-        "size_bytes": 6202
+        "sha256": "f25c2d9a681b72fb8a601ec4b5647972efa8ab28e79096f0544d7424ff2f9d5c",
+        "size_bytes": 11581
       },
       "kind": "original_policy_test_methods",
       "license": "MIT",
@@ -3369,9 +3437,9 @@
         {
           "destination": {
             "ast_sha256": "6e8f24f118d853958d1ca66f9ed7707d31884249a3016c549e7ecce3659dfda7",
-            "end_line": 56,
+            "end_line": 58,
             "kind": "FunctionDef",
-            "line": 48,
+            "line": 50,
             "qualname": "ManualJoint.test_tick_manual_handoff_preserves_human_source_and_zero_events",
             "source_sha256": "658618bdd37565e76d33063b130b5f71ffd91bff27e0790c9e7b10224478d492"
           },
@@ -3388,9 +3456,9 @@
         {
           "destination": {
             "ast_sha256": "5fdc7fc0f1e546af0166ba6ecc2a335ed9e10f5ed413b39ac1e7cc4fe0561b8d",
-            "end_line": 63,
+            "end_line": 65,
             "kind": "FunctionDef",
-            "line": 57,
+            "line": 59,
             "qualname": "ManualJoint.test_tick_rejects_double_age_delay_pending_and_stale_witness",
             "source_sha256": "36294d1199086d1f02f351a59e143b87366efaacb463b6c2dc9551fb88573f39"
           },
@@ -3407,9 +3475,9 @@
         {
           "destination": {
             "ast_sha256": "5a5ed5fc0594c31173ef0e7b0a08480a4f55ddd45c7b630b2f927a691a728038",
-            "end_line": 68,
+            "end_line": 70,
             "kind": "FunctionDef",
-            "line": 64,
+            "line": 66,
             "qualname": "ManualJoint.test_same_pump_terminal_wins_before_human_request",
             "source_sha256": "c12fbeed68ac15444860ea076939a1e2a09c54485df77bb2f1654deaa1e86952"
           },
@@ -4878,6 +4946,49 @@
     "manual_only": true,
     "witness_stream_bytes": 262144
   },
+  "post_import_regression_tests": [
+    {
+      "claims": [
+        "Unchanged manual control remains held across repeated ticks and accepts only the matching finish.",
+        "Changed confirmation and foreign finish identities still refuse.",
+        "Derived evidence expiry remains authoritative after verification, stop and probe delays."
+      ],
+      "destination": {
+        "path": "tests/development/game/test_manual_play_joint.py",
+        "sha256": "f25c2d9a681b72fb8a601ec4b5647972efa8ab28e79096f0544d7424ff2f9d5c",
+        "size_bytes": 11581
+      },
+      "disposition": "new_portable_behavioral_regression",
+      "execution_status": "not_executed_by_source_import",
+      "path": "tests/development/game/test_manual_play_joint.py",
+      "units": [
+        {
+          "ast_sha256": "b23f3b9505c2cefb515e3a630e3720ed52861ddd11da7af6727952c67d28a5f4",
+          "end_line": 89,
+          "kind": "FunctionDef",
+          "line": 71,
+          "qualname": "ManualJoint.test_unchanged_manual_control_remains_held_then_matching_finish_ends",
+          "source_sha256": "66b5f3907989480ac5c10c8ef9af1de7e75b2894c1160010da5ffd3867d1903f"
+        },
+        {
+          "ast_sha256": "816dc45e40cfac4a23bd9d57bb1367831fb08180355eac770f813ff3c664a593",
+          "end_line": 105,
+          "kind": "FunctionDef",
+          "line": 91,
+          "qualname": "ManualJoint.test_changed_manual_confirmation_and_foreign_finish_still_refuse",
+          "source_sha256": "59f96d3136282a58172fed9d07dd1bbdac55d40066d5b1d69a29e10d8168fa2d"
+        },
+        {
+          "ast_sha256": "eca79e6452aa602202d27518116c6380615bcff4ced113f2465cfd50d44d3d80",
+          "end_line": 134,
+          "kind": "FunctionDef",
+          "line": 107,
+          "qualname": "ManualJoint.test_derived_manual_expiry_still_rejects_verification_stop_and_probe_delay",
+          "source_sha256": "c221d33e120b2cd028ef5a5908b16773d0731992075de000e48d7f3ed3bc1e6a"
+        }
+      ]
+    }
+  ],
   "schema_version": 1,
   "scope": "pear_owned_game_policy_import",
   "status": "source_import_and_portable_validation_only",
@@ -4889,7 +5000,8 @@
     "inherited_cases_are_not_new_bodies": true,
     "native_execution_performed": false,
     "original_declared_ledger_bodies": 3,
-    "original_declared_policy_bodies": 64
+    "original_declared_policy_bodies": 64,
+    "post_import_regression_bodies": 3
   },
   "unperformed": [
     "Actual owned-game copying",

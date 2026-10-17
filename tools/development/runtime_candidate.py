@@ -13,6 +13,7 @@ from contextlib import contextmanager
 import fcntl
 import hashlib
 import importlib
+from importlib.machinery import PathFinder, SourceFileLoader
 import json
 import os
 from pathlib import Path
@@ -241,6 +242,40 @@ def selection(ref):
     return value, lock, descriptor
 
 
+def runtime_module_source(name, spec, root, admitted, code):
+    require(spec is not None and spec.name == name and type(spec.origin) is str, code)
+    package = spec.submodule_search_locations is not None
+    relative = Path(*name.split('.'))
+    expected = root / (relative / '__init__.py' if package else relative.with_suffix('.py'))
+    require(spec.origin == str(expected) and expected in admitted and
+            expected == expected.resolve(strict=True) and
+            type(spec.loader) is SourceFileLoader and spec.loader.name == name and
+            spec.loader.path == str(expected), code)
+    if package:
+        require(list(spec.submodule_search_locations) == [str(expected.parent)], code)
+    return expected, package
+
+
+def loaded_runtime_modules(root, admitted):
+    for name, module in tuple(sys.modules.items()):
+        if name == 'pear_runtime' or name.startswith('pear_runtime.'):
+            path = getattr(module, '__file__', None)
+            require(path is not None and Path(path).resolve().is_relative_to(root),
+                    'loaded_runtime_origin')
+            spec = getattr(module, '__spec__', None)
+            expected, package = runtime_module_source(name, spec, root, admitted,
+                                                       'loaded_runtime_origin')
+            require(path == str(expected) and getattr(module, '__name__', None) == name and
+                    getattr(module, '__loader__', None) is spec.loader and
+                    getattr(module, '__package__', None) == (name if package else name.rpartition('.')[0]),
+                    'loaded_runtime_origin')
+            if package:
+                require(list(getattr(module, '__path__', ())) == [str(expected.parent)],
+                        'loaded_runtime_origin')
+            else:
+                require(not hasattr(module, '__path__'), 'loaded_runtime_origin')
+
+
 def load_runtime(value, descriptor):
     root = Path(value['runtime_checkout']['path'])
     manifest = read_ref(descriptor['producer_manifest_ref'])
@@ -250,6 +285,7 @@ def load_runtime(value, descriptor):
     if 'fex' in manifest['roots']:
         pins['fex'] = read_ref(value['lock_ref'])['tool_sources']['fex']
         roots['fex'] = checkout(dict(path=manifest['roots']['fex'], commit=pins['fex']))
+    admitted = set()
     for row in manifest['files']:
         if row['root'] not in roots:
             continue
@@ -264,18 +300,26 @@ def load_runtime(value, descriptor):
         require(blob.returncode == 0 and blob.stdout == raw and
                 hashlib.sha256(raw).hexdigest() == row['sha256'] and len(raw) == row['size_bytes'],
                 'producer_commit_content')
-    for name, module in tuple(sys.modules.items()):
-        if name == 'pear_runtime' or name.startswith('pear_runtime.'):
-            path = getattr(module, '__file__', None)
-            require(path is not None and Path(path).resolve().is_relative_to(root), 'loaded_runtime_origin')
-    # The captured producer validator checks every loaded runtime/FEX module.
+        if row['root'] == 'runtime' and relative.suffix == '.py':
+            admitted.add(owner_root / relative)
+    loaded_runtime_modules(root, admitted)
+    # Promote selected roots even if an ambient PYTHONPATH already contains them.
     paths = [str(root)]
     if 'fex' in manifest['roots']:
         paths.append(str(canonical(manifest['roots']['fex'], directory=True)))
-    for path in reversed(paths):
-        if path not in sys.path:
-            sys.path.insert(0, path)
-    return importlib.import_module('pear_runtime.fixtures.context')
+    sys.path[:] = paths + [path for path in sys.path if path not in paths]
+    # Walk package specs without importing their initializers. The bootstrap
+    # must resolve to admitted source files before any of its code executes.
+    search = sys.path
+    for name in ('pear_runtime', 'pear_runtime.fixtures', 'pear_runtime.fixtures.context'):
+        spec = PathFinder.find_spec(name, search)
+        runtime_module_source(name, spec, root, admitted, 'runtime_bootstrap_origin')
+        search = spec.submodule_search_locations
+    api = importlib.import_module('pear_runtime.fixtures.context')
+    loaded_runtime_modules(root, admitted)
+    require(sys.modules.get('pear_runtime.fixtures.context') is api, 'loaded_runtime_origin')
+    # The captured producer validator retains its complete runtime/FEX closure check.
+    return api
 
 
 @contextmanager

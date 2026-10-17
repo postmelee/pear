@@ -97,11 +97,13 @@ class PlayHandoff:
         need(request['operation_id']==self.operation_id and request['renderer']==self.renderer.binding and request['owner']==self.owner.binding and request['window_id']==self.window_id,'play_request_binding')
         at=request['at_ns'];need(type(at) is int and max(self.renderer.ready_ns,self.owner.ready_ns)<=at<=now_ns and now_ns-at<=self.max_age_ns,'play_request_clock')
         need(request['visual_status']=='actual-play' and request['input_status']=='responsive','play_request_evidence_status')
-        need(verify_evidence(request) is True,'play_request_evidence')
+        # Derived evidence must not change the repeated control-file identity.
+        verification_request=deepcopy(request)
+        need(verify_evidence(verification_request) is True,'play_request_evidence')
         need(positive(request['requested_deadline_ns']),'play_requested_deadline')
         verified=self.clock();need(positive(verified) and verified>=now_ns and verified-at<=self.max_age_ns,'play_pair_stale_after_verify')
         manual=request.get('input_source')=='human'
-        expiry=request.get('evidence_deadline_ns')
+        expiry=verification_request.get('evidence_deadline_ns')
         if manual:need(positive(expiry) and verified<expiry,'play_manual_expired_after_verify')
         try:
             need(stop_actions() is True,'play_stop_unconfirmed')

@@ -273,3 +273,103 @@ Record the current Megabonk failure, competing hypotheses and evidence limits, e
 ## Stage Dependencies and Risks
 
 Stages retain verification/report/commit gates, with continuous user authorization. Parallel read-only work is allowed. Source import does not imply authority cutover; remote creation remains private. A failed required check keeps its stage open while corrective work remains within approved scope. Capacity or missing inputs must be resolved before dependent heavy work, while independent work continues. Any broader implementation or required existing-environment change is brought back as a concrete scope decision.
+
+
+## PR #58 review remediation — requester-approved 2026-10-17
+
+The requester approved correcting the reproduced P1 runtime selection and P2
+manual-confirmation defects, affected regressions, and then updating/merging PR
+#58, closing #56 and removing only unnecessary Pear branches if verification and
+final review pass. This is continuous approval within that scope; the existing
+Preview, execution environment, worktrees, inputs and runtime artifacts remain
+protected. Stages 1–6 and their recorded evidence remain historical.
+
+### Stage 6.1 — Correct admission and manual confirmation
+
+Use a new mutable source-only worktree on `codex/task56`. The old execution-bound
+worktree stays at `914725732a17b9e13886bc906625df9ca9ba07b3`, detached and locked;
+no captured producer file is edited. Reuse Python's standard import machinery
+and the existing request/state machine. No alternate importer, observer, runtime
+or language port is introduced.
+
+- P1: put canonical admitted roots first even when already in `sys.path`, check
+  bootstrap package resolution before import, retain loaded-module refusals,
+  and test actual synthetic CLI behavior with competing runtime paths.
+- P2: verify a deep copy of the confirmation, read its derived expiry for existing
+  freshness gates, and retain the original request for repeat/finish identity.
+  Preserve the manual-only input policy, terminal precedence and cleanup gates.
+- Add the self-contained development-selector suite to the existing portable CI
+  matrix. Manual-policy suites consume pinned private runtime source and run in
+  the recorded local environment; no private dependency is published for CI.
+- Update only changed destination identities and explicit adaptation statements
+  in the import provenance; retain original hashes, notices and assertions.
+- Run affected portable suites sequentially, recording wall and monotonic phase
+  boundaries. Native execution/signing/build and human input are unperformed;
+  no interactive feedback latency is inferred from these checks.
+
+Verification commands (run from the new Pear checkout with the existing pinned
+runtime source available through the explicit environment):
+
+```sh
+python3 -B -m unittest discover -s tests/development -p 'test_runtime_candidate.py' -v
+PYTHONPATH="$PEAR_RUNTIME_SOURCE:$FEX_SOURCE" python3 -B -m unittest discover -s tests/development/game -p 'test_*.py' -v
+python3 -B -m unittest discover -s tests/docs -p 'test_*.py' -v
+python3 -B tools/check_source_notices.py --base 914725732a17b9e13886bc906625df9ca9ba07b3
+git diff --check
+```
+
+Omitting `--head` includes working changes and untracked files, as documented by
+the notice tool. Also reconcile all affected destination file and
+AST identities, retained original methods and the new regression dispositions.
+Fresh tests must demonstrate both original defects failing against the old source
+and passing against corrected source without native/game operations. Any extra
+probe is justified by a concrete new concern, not repeated broad testing.
+
+Commit source, provenance, this plan, daily status and passing Stage 6.1 report
+together as `Task #56 [Stage 6.1]: fix runtime admission and manual confirmation`.
+
+### Stage 6.2 — Rebind developer metadata and publish the reviewed fix
+
+Preserve old manifests, source roots, selected state and all component pins. The
+runtime candidate and component build inputs are unchanged, so do not rebuild or
+rerun native controls merely to refresh reports. Their earlier evidence retains
+its exact claim scope. Create new game producer/descriptor and selection metadata
+for the changed Pear source in a separate private root; do not redirect the old
+selection. Reconstruct only the exact absent 494-byte historical frame request
+from its verified evidence object, refusing an unrelated occupant. Verify affected
+read-only admission before representing the new bindings as usable. No game copy,
+launch, current execution grant, signing or full qualification is part of this fix.
+
+Run current prepare/inspect/selection against isolated metadata with both fixture
+and game descriptors as applicable; inspect any missing prerequisite rather than
+using historical pass flags. Recheck protected source/input facts and Preview
+bytes, and independently review the final diff. Record exact source commits,
+manifest/descriptor identities, commands, bounded evidence reuse and recovery
+limits in private receipts plus sanitized workflow reports. A separate prepared
+state is not activation of the original execution environment.
+
+Document location judgment: append the remediation and source-binding distinction
+to the existing `docs/development/rosetta-free.md` only where necessary. Update
+`mydocs/working/task_m1_56_stage6.1.md`, `task_m1_56_stage6.2.md`, their sanitized
+JSON evidence, `mydocs/report/task_m1_56_report.md`, and `mydocs/orders/20261017.md`.
+The import provenance remains beside its source. No new product documentation
+root or public private-path inventory is introduced. The request to fix and
+verify these development routes authorizes these directly affected locations.
+
+After final checks, publish a fast-forward update to the existing PR branch,
+update its body around the final implementation and wait for all required CI.
+Merge only the exact reviewed head with an ancestry-preserving merge. Close #56
+only after that confirmation, then remove only the merged Pear task/publication
+branch labels. Keep the old fixed-path producer worktree locked and all component
+default branches. Retain the new source path too if new bindings consume it; no
+worktree or artifact deletion is implied by branch cleanup.
+
+### Artifact lifecycle and capacity
+
+The source checkout has 1,542 Git entries and 28,595,357 logical bytes. This
+source-only correction reserves at most 512 MiB additional for checkout, portable
+scratch, metadata and logs, plus 1 GiB untouched free-space reserve; observed free
+space before creation was 22,887,006,208 bytes. No runtime or game copy is planned.
+Recheck capacity before larger dependent work. New tests clean only their own
+scratch; retain compact failure/pass/provenance evidence privately. Branch cleanup
+has no material space-recovery claim. No prior deletion authorization is extended.

@@ -1,10 +1,15 @@
 # SPDX-FileCopyrightText: 2026 Pear contributors
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Portable selector admission and isolated state tests; no runtime execution."""
+from contextlib import contextmanager
 import copy
+import importlib
+import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import types
 import unittest
@@ -347,7 +352,166 @@ class SelectionTests(unittest.TestCase):
         api.FixtureContext.assert_not_called()
         game_module.GameContext.assert_called_once_with(game_ref)
 
+    @contextmanager
+    def isolated_runtime_imports(self):
+        # Test-only isolation; production must refuse an already-loaded impostor.
+        with patch.dict(sys.modules), patch.object(sys, 'path', list(sys.path)):
+            for name in tuple(sys.modules):
+                if name == 'pear_runtime' or name.startswith('pear_runtime.'):
+                    del sys.modules[name]
+            yield
+
+    def runtime_package(self, root, label, *, marker=None):
+        package = root / 'pear_runtime/fixtures'
+        package.mkdir(parents=True, exist_ok=True)
+        initializer = '' if marker is None else (
+            'from pathlib import Path\nPath(' + repr(str(marker)) + ').write_text("executed")\n')
+        files = {
+            'pear_runtime/__init__.py': initializer,
+            'pear_runtime/fixtures/__init__.py': '',
+            'pear_runtime/fixtures/types.py': 'class Selection:\n    def __init__(self,*args,**kwargs): pass\n',
+            'pear_runtime/fixtures/context.py': (
+                'FIELDS = set(' + repr(sorted(self.descriptor)) + ')\n'
+                'class FixtureContext:\n    def __init__(self,*args,**kwargs): pass\n'
+                '    def inspect(self,output): return {"imported_origin": ' + repr(label) + '}\n'),
+        }
+        notice = ('# SPDX-FileCopyrightText: 2026 Pear contributors\n'
+                  '# SPDX-License-Identifier: GPL-3.0-or-later\n')
+        for relative, body in files.items():
+            (root / relative).write_text(notice + body)
+        return list(files)
+
+    def bind_runtime_package(self, paths):
+        self.git('add', '.')
+        self.git('-c', 'user.name=Selector test', '-c', 'user.email=selector@example.invalid',
+                 'commit', '-qm', 'Synthetic runtime bootstrap')
+        self.pin = self.git('rev-parse', 'HEAD').strip()
+        self.spec['runtime_checkout']['commit'] = self.pin
+        self.lock['tool_sources']['runtime'] = self.pin
+        self.update_lock()
+        rows = [dict(root='runtime', path=path, **candidate.compact(candidate.fact(self.runtime / path)))
+                for path in paths]
+        manifest = self.put(self.root / 'private/producers.json',
+                            dict(roots={'runtime': str(self.runtime)}, files=rows))
+        self.descriptor['producer_manifest_ref'] = manifest
+        self.desc = self.put(self.root / 'private/descriptor.json', self.descriptor)
+        self.update_spec(fixture_descriptor_ref=self.desc)
+        return rows
+
+    def runtime_bootstrap(self):
+        return self.bind_runtime_package(self.runtime_package(self.runtime, 'selected-pinned-root'))
+
+    def cli_import_case(self, selected_present):
+        self.runtime_bootstrap()
+        foreign = self.root / 'foreign-runtime'
+        marker = self.root / 'foreign-imported'
+        self.runtime_package(foreign, 'unadmitted-root', marker=marker)
+        with patch.object(candidate, 'inspect', side_effect=self.synthetic_inspection):
+            prepared = candidate.prepare(self.spec_ref['path'])
+        pythonpath = [str(foreign)] + ([str(self.runtime)] if selected_present else [])
+        env = {key: value for key, value in os.environ.items()
+               if not key.startswith(('PYTHON', 'WINE', 'FEX', 'DYLD_'))}
+        env.update(PYTHONPATH=os.pathsep.join(pythonpath), PYTHONDONTWRITEBYTECODE='1',
+                   GIT_OPTIONAL_LOCKS='0')
+        result = subprocess.run([sys.executable, '-B', '-m', 'tools.development.runtime_candidate',
+                                 'inspect', '--prepared', prepared['path'], '--kind', 'fixture'],
+                                cwd=candidate.PEAR_ROOT, env=env, capture_output=True,
+                                text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        value = json.loads(result.stdout)
+        self.assertEqual(value['fixture']['imported_origin'], 'selected-pinned-root')
+        self.assertFalse(value['runtime_execution_performed'])
+        self.assertFalse(marker.exists(), 'unadmitted package body executed')
+        self.assertEqual(self.preview.read_bytes(), b'preserve original state')
+
+    def test_cli_promotes_selected_runtime_already_on_pythonpath(self):
+        self.cli_import_case(selected_present=True)
+
+    def test_cli_adds_selected_runtime_absent_from_pythonpath(self):
+        self.cli_import_case(selected_present=False)
+
+    def test_unadmitted_bootstrap_initializer_refused_before_import(self):
+        self.runtime_bootstrap()
+        manifest = candidate.read_ref(self.descriptor['producer_manifest_ref'])
+        manifest['files'] = [row for row in manifest['files'] if row['path'] != 'pear_runtime/__init__.py']
+        self.descriptor['producer_manifest_ref'] = self.put(self.root / 'private/producers.json', manifest)
+        with self.isolated_runtime_imports(), \
+             patch.object(candidate.importlib, 'import_module') as imported, \
+             self.refused('runtime_bootstrap_origin'):
+            candidate.load_runtime(self.spec, self.descriptor)
+        imported.assert_not_called()
+
+    def test_foreign_package_resolution_refused_before_initializer(self):
+        paths = self.runtime_package(self.runtime, 'selected-pinned-root')
+        (self.runtime / 'pear_runtime/__init__.py').unlink()
+        self.bind_runtime_package([path for path in paths if path != 'pear_runtime/__init__.py'])
+        foreign = self.root / 'foreign-runtime'
+        marker = self.root / 'foreign-imported'
+        self.runtime_package(foreign, 'unadmitted-root', marker=marker)
+        with self.isolated_runtime_imports(), \
+             patch.object(candidate.importlib, 'import_module') as imported, \
+             self.refused('runtime_bootstrap_origin'):
+            sys.path[:0] = [str(foreign), str(self.runtime)]
+            candidate.load_runtime(self.spec, self.descriptor)
+        imported.assert_not_called()
+        self.assertFalse(marker.exists())
+
+    def test_bootstrap_source_symlink_refused_before_import(self):
+        self.runtime_bootstrap()
+        source = self.runtime / 'pear_runtime/fixtures/context.py'
+        target = self.root / 'outside-context.py'
+        target.write_bytes(source.read_bytes())
+        source.unlink()
+        source.symlink_to(target)
+        with self.isolated_runtime_imports(), \
+             patch.object(candidate.importlib, 'import_module') as imported, self.refused('path_alias'):
+            candidate.load_runtime(self.spec, self.descriptor)
+        imported.assert_not_called()
+
+    def test_already_loaded_foreign_runtime_refused_unchanged(self):
+        self.runtime_bootstrap()
+        foreign = types.ModuleType('pear_runtime')
+        foreign.__file__ = str(self.root / 'foreign-runtime/pear_runtime/__init__.py')
+        with self.isolated_runtime_imports(), patch.object(candidate.importlib, 'import_module') as imported:
+            sys.modules['pear_runtime'] = foreign
+            with self.refused('loaded_runtime_origin'):
+                candidate.load_runtime(self.spec, self.descriptor)
+            self.assertIs(sys.modules['pear_runtime'], foreign)
+        imported.assert_not_called()
+
+    def test_loaded_package_foreign_search_path_refused(self):
+        self.runtime_bootstrap()
+        with self.isolated_runtime_imports():
+            sys.path.insert(0, str(self.runtime))
+            package = importlib.import_module('pear_runtime')
+            package.__path__ = [str(self.root / 'foreign-runtime/pear_runtime')]
+            with patch.object(candidate.importlib, 'import_module') as imported, \
+                 self.refused('loaded_runtime_origin'):
+                candidate.load_runtime(self.spec, self.descriptor)
+            imported.assert_not_called()
+            self.assertIs(sys.modules['pear_runtime'], package)
+
+    def test_loaded_package_foreign_spec_refused(self):
+        self.runtime_bootstrap()
+        with self.isolated_runtime_imports():
+            sys.path.insert(0, str(self.runtime))
+            package = importlib.import_module('pear_runtime')
+            package.__spec__ = importlib.util.spec_from_file_location(
+                'pear_runtime', self.root / 'foreign-runtime/pear_runtime/__init__.py')
+            with patch.object(candidate.importlib, 'import_module') as imported, \
+                 self.refused('loaded_runtime_origin'):
+                candidate.load_runtime(self.spec, self.descriptor)
+            imported.assert_not_called()
+
+    def test_loaded_selected_runtime_reused_with_canonical_package_paths(self):
+        self.runtime_bootstrap()
+        with self.isolated_runtime_imports():
+            first = candidate.load_runtime(self.spec, self.descriptor)
+            self.assertIs(candidate.load_runtime(self.spec, self.descriptor), first)
+            self.assertEqual(sys.modules['pear_runtime'].__path__, [str(self.runtime / 'pear_runtime')])
+
     def fex_bootstrap(self):
+        runtime_rows = self.runtime_bootstrap()
         root = self.root / 'fex'
         root.mkdir()
         source = root / 'observer.py'
@@ -364,17 +528,16 @@ class SelectionTests(unittest.TestCase):
         ref = candidate.fact(source)
         manifest = self.put(self.root / 'private/fex-producer.json',
             dict(roots={'runtime': str(self.runtime), 'fex': str(root)},
-                 files=[dict(root='fex', path=source.name, **candidate.compact(ref))]))
+                 files=runtime_rows + [dict(root='fex', path=source.name, **candidate.compact(ref))]))
         descriptor = {**self.descriptor, 'producer_manifest_ref': manifest}
         return root, source, descriptor
 
     def test_clean_pinned_fex_source_admitted_before_import(self):
-        import sys
         root, source, descriptor = self.fex_bootstrap()
-        with patch.object(sys, 'path', list(sys.path)), \
-             patch.object(candidate.importlib, 'import_module', return_value='admitted') as imported:
-            self.assertEqual(candidate.load_runtime(self.spec, descriptor), 'admitted')
-        imported.assert_called_once_with('pear_runtime.fixtures.context')
+        with self.isolated_runtime_imports():
+            api = candidate.load_runtime(self.spec, descriptor)
+            self.assertEqual(api.__file__, str(self.runtime / 'pear_runtime/fixtures/context.py'))
+            self.assertEqual(sys.path[:2], [str(self.runtime), str(root)])
 
     def test_dirty_fex_source_refuses_before_import(self):
         root, source, descriptor = self.fex_bootstrap()
