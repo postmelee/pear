@@ -14,7 +14,7 @@
 .step-number { color: var(--color-muted); font-size: var(--font-size-small); padding-top: 2px; font-variant-numeric: tabular-nums; }
 .steps-panel p { color: var(--color-muted); margin: var(--space-1) 0 0; }
 .steps-panel a { text-decoration: none; }
-.page-intro { margin-bottom: var(--space-11); color: var(--color-muted); }
+.page-intro { margin-bottom: var(--space-11); }
 .article-list { margin-top: var(--space-11); }
 .article-list-item { display: block; text-decoration: none; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding-block: var(--space-8); }
 .article-list-item h2 { margin: var(--space-3) 0; font-size: var(--font-size-heading); }

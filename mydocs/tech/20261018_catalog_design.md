@@ -239,3 +239,13 @@ both temporary review pages. Screenshot:
 Removed the upward arrow from Request support at the requester's direction.
 Rebuilt and verified the label in both Games and the game detail output.
 Existing vote labels and button styles remain unchanged.
+
+## Consistent muted page introductions
+
+The requester chose Games-style muted introductions. Added shared intro-copy
+color styling alongside page-intro, using the existing theme-aware muted token.
+Applied it to Home, Download, both introductory About paragraphs, and the
+request/report introductions. Games, Blog and article introductions already
+use the same token. Existing spacing and normal body text remain unchanged.
+Rebuilt the local site and checked whitespace. Browser checks confirmed light
+`#6f6e69` and dark `#878580`; screenshot: `.build/catalog-design/intro-muted.png`.
