@@ -8,22 +8,33 @@ name: Reviewed compatibility catalog
     paths:
       - docs/compatibility/**
       - docs/assets/**
+      - docs/blog/**
       - tools/compatibility.py
+      - tools/catalog_site.py
+      - tools/catalog_icons.py
       - tools/steam_catalog.py
+      - tools/reporting_sync.py
+      - tools/community_reports.py
       - tools/catalog/**
       - .github/workflows/compatibility-pages.yml
+  schedule:
+    - cron: '17 0 * * *' # 09:17 Asia/Seoul; GitHub scheduling may be delayed.
   workflow_dispatch:
 
 permissions:
   contents: read
+  issues: read
+  discussions: read
 
 concurrency:
   group: compatibility-pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/master' && github.event.repository.private == false && vars.PEAR_PAGES_ENABLED == 'true'
+    if: github.ref == 'refs/heads/master' && github.event.repository.private == false && vars.PEAR_PAGES_ENABLED == 'true' && (github.event_name != 'schedule' || vars.PEAR_REPORTS_ENABLED == 'true')
+    outputs:
+      batch: ${{ steps.reports.outputs.batch }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -37,8 +48,29 @@ jobs:
         env:
           STEAM_WEB_API_KEY: ${{ secrets.STEAM_WEB_API_KEY }}
         run: python3 -B tools/steam_catalog.py --output .build/steam-catalog/steam-games.json
+      - name: Import selected GitHub source links
+        if: vars.PEAR_REPORTS_ENABLED == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PEAR_REPORTS_URL: ${{ vars.PEAR_REPORTS_URL }}
+          PEAR_REPORTS_IMPORT_TOKEN: ${{ secrets.PEAR_REPORTS_IMPORT_TOKEN }}
+          PEAR_REPORTS_DISCUSSION_CATEGORY: ${{ vars.PEAR_REPORTS_DISCUSSION_CATEGORY }}
+        run: python3 -B tools/reporting_sync.py github
+      - name: Fetch immutable approved public snapshot
+        id: reports
+        if: vars.PEAR_REPORTS_ENABLED == 'true'
+        env:
+          PEAR_REPORTS_URL: ${{ vars.PEAR_REPORTS_URL }}
+          PEAR_REPORTS_EXPORT_TOKEN: ${{ secrets.PEAR_REPORTS_EXPORT_TOKEN }}
+        run: python3 -B tools/reporting_sync.py prepare --output .build/reports/public.json
       - name: Validate and render reviewed public data
-        run: python3 tools/compatibility.py --check --site .build/compatibility-site --steam-catalog .build/steam-catalog/steam-games.json
+        env:
+          REPORTS_ENABLED: ${{ vars.PEAR_REPORTS_ENABLED }}
+        shell: bash
+        run: |
+          args=()
+          if [[ "$REPORTS_ENABLED" == true ]]; then args+=(--community-reports .build/reports/public.json); fi
+          python3 tools/compatibility.py --check --site .build/compatibility-site --steam-catalog .build/steam-catalog/steam-games.json "${args[@]}"
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: .build/compatibility-site
@@ -47,6 +79,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
+      contents: read
       pages: write
       id-token: write
     environment:
@@ -56,3 +89,14 @@ jobs:
       - name: Deploy public catalog
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.build.outputs.batch != ''
+        with:
+          persist-credentials: false
+      - name: Acknowledge successfully deployed snapshot
+        if: needs.build.outputs.batch != ''
+        env:
+          PEAR_REPORTS_URL: ${{ vars.PEAR_REPORTS_URL }}
+          PEAR_REPORTS_EXPORT_TOKEN: ${{ secrets.PEAR_REPORTS_EXPORT_TOKEN }}
+          REPORT_BATCH: ${{ needs.build.outputs.batch }}
+        run: python3 -B tools/reporting_sync.py published --batch "$REPORT_BATCH"

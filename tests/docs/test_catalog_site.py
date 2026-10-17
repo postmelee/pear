@@ -110,6 +110,51 @@ class WebsiteTests(unittest.TestCase):
         self.assertEqual(offsets, sorted(offsets))
         self.assertNotIn('Article categories', nav)
 
+    def test_community_snapshot_integrates_with_search_blog_and_toc(self):
+        snapshot = {'schemaVersion': 1, 'batchID': '00000000-0000-4000-8000-000000000001',
+                    'reports': [{'revision': 1, 'report': {
+                        'reportID': '00000000-0000-4000-8000-000000000002',
+                        'appID': 3405340, 'userResult': 'normal', 'chip': 'Synthetic <chip>',
+                        'processMinutes': 25}}]}
+        compatibility.build_site(self.data, self.output, community=snapshot)
+        game = (self.output / 'game-3405340.html').read_text()
+        self.assertIn('href="#app-submitted-reports" data-toc-link', game)
+        self.assertIn('Synthetic &lt;chip&gt;', game)
+        self.assertIn('Publication approval does not establish Pass.', game)
+        self.assertEqual(game.count('data-report data-track='), 2)
+        self.assertEqual(json.loads((self.output / 'community-reports.json').read_text()), snapshot)
+        index = json.loads((self.output / 'search-index.json').read_text())
+        self.assertTrue(any(item['url'] == 'community.html#app-submitted-reports' for item in index))
+        self.assertFalse(any(item['url'].endswith('.json') for item in index))
+        self.assertTrue((self.output / site.ARTICLE_PATH).is_file())
+        for page in ('community.html', 'index.html', 'game-3405340.html'):
+            content = (self.output / page).read_text()
+            self.assertIn('href="tokens.css"', content)
+            for tag, attrs in Elements(content).elements:
+                if tag == 'a' and attrs.get('href', '').startswith('#'):
+                    self.assertIn('id="' + attrs['href'][1:] + '"', content)
+        snapshot['reports'][0]['report']['note'] = 'Private note'
+        with self.assertRaises(ValueError):
+            compatibility.build_site(self.data, self.output, community=snapshot)
+        self.assertNotIn('Private note', (self.output / 'community-reports.json').read_text())
+
+    def test_empty_community_snapshot_remains_a_searchable_page(self):
+        snapshot = {'schemaVersion': 1, 'batchID': '00000000-0000-4000-8000-000000000001', 'reports': []}
+        compatibility.build_site(self.data, self.output, community=snapshot)
+        content = (self.output / 'community.html').read_text()
+        self.assertIn('No app-submitted reports have been published yet.', content)
+        self.assertIn('href="community.html"', (self.output / 'index.html').read_text())
+        self.assertNotIn('id="app-submitted-reports"', (self.output / 'game-3405340.html').read_text())
+
+    def test_homebrew_command_has_its_own_copy_feedback_and_heading(self):
+        content = (self.output / 'download.html').read_text()
+        self.assertIn('brew install --cask postmelee/tap/pear', content)
+        self.assertIn('data-status="brew-command-status"', content)
+        self.assertIn('id="brew-command-status"', content)
+        self.assertIn('<h3 id="install-with-homebrew">', content)
+        self.assertNotIn('Homebrew distribution is planned', content)
+        self.assertIn('href="#installation" data-toc-link', content)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

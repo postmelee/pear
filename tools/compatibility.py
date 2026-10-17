@@ -223,8 +223,9 @@ def game_card(game):
     return f'''<article class="game-row" data-game data-name="{e(game['name'], quote=True)}" data-app="{game['app_id']}" data-records="{e(json.dumps(rows), quote=True)}" data-request="{'yes' if request['discussion_url'] else 'no'}" data-votes="{request['upvotes'] if request['upvotes'] is not None else -1}" data-qualified="{'yes' if qualified else 'no'}"><a class="game-card-media" href="{href}" aria-label="View {e(game['name'], quote=True)} reports">{cover(game)}</a><div><h3><a href="{href}">{e(game['name'])}</a></h3><div class="badges"><span data-stage class="badge {outcome(latest) if latest else ''}">{'Verified configuration' if qualified else e(stage)}</span>{('<span data-runtime class="badge">'+TRACKS[latest['track']]+'</span>') if latest else ''}</div><p class="meta"><span data-report-total>{count} {'report' if count==1 else 'reports'}</span> · <span data-latest>{'Last tested '+latest['tested_on'] if latest else 'No reports yet'}</span></p>{report_counts(records)}</div><div class="row-actions"><a class="button primary small" href="{href}">View game →</a><a class="button small" href="{demand_link(game)}">{demand_label(game)}</a><span class="meta">{'Votes synced '+request['synced_at'] if request['synced_at'] else 'Support requests on GitHub'}</span></div></article>'''
 
 
-def webpage(data, catalog=None):
-    return site.shell('Windows games on Mac', site.home_content(), 'home')
+def webpage(data, catalog=None, community_available=False):
+    community_link = '<p><a href="community.html">Browse reviewed app reports</a></p>' if community_available else ''
+    return site.shell('Windows games on Mac', site.home_content() + community_link, 'home')
 
 
 def games_page(data, catalog=None):
@@ -258,7 +259,7 @@ def report_card(r):
 <details><summary>Versions &amp; test details</summary><dl class="facts">{''.join(f'<dt>{e(k)}</dt><dd>{e(v)}</dd>' for k,v in fields)}</dl><p>{links}</p></details></article>'''
 
 
-def game_page(game):
+def game_page(game, community_entries=()):
     e = html.escape
     records = game['records']
     qualified = any(r['evidence']=='qualified' for r in records)
@@ -266,7 +267,11 @@ def game_page(game):
     vote_text = str(request['upvotes']) if request['upvotes'] is not None else '—'
     votes = f'<p class="big-number">{vote_text}</p><p>{"votes · synced "+request["synced_at"] if request["synced_at"] else "Vote count unavailable"}</p>' if request['discussion_url'] else '<p>No support request yet. Start the conversation on GitHub.</p>'
     cards = ''.join(report_card(r) for r in records)
-    return shell(game['name'], f'''<p class="crumb"><a href="games.html">← All games</a></p><section class="detail-hero">{cover(game)}<div><h1>{e(game['name'])}</h1><p class="meta">Steam App {game['app_id']}</p><div class="badges"><span class="badge {'pass' if qualified else 'partial'}">{'Verified configuration' if qualified else 'Community reports' if records else 'Not tested'}</span></div><div class="actions"><a class="button" href="https://store.steampowered.com/app/{game['app_id']}/" rel="noreferrer">View on Steam ↗</a><a class="button primary" href="report.html?app={game['app_id']}">Share a result</a></div></div></section><div class="detail-layout"><section><div class="detail-section-head"><h2>Player reports <span class="meta">{len(records)}</span></h2><div class="report-filters"><label><span class="sr-only">Filter report runtime</span><select id="report-track"><option value="all">All runtimes</option><option value="rosetta-preview">Rosetta Preview</option><option value="rosetta-free-development">Rosetta-free development</option></select></label><label><span class="sr-only">Filter report result</span><select id="report-result"><option value="all">All results</option><option value="pass">Pass</option><option value="partial">Partial</option><option value="failed">Failed</option></select></label></div></div>{report_counts(records)}<p class="meta" style="margin:12px 0 18px">Reports describe individual configurations. They are not votes or unique-player counts.</p><div id="reports">{cards}</div><div class="empty-state" id="no-reports" {'hidden' if records else ''}><h3>No reports for this selection</h3><p>Change the filters or share your own result.</p><a class="button small" href="report.html?app={game['app_id']}">Share a result</a></div><p class="art-credit">{e(game['image_credit'])} <a class="inline-link" href="{e(game['image_source_url'] or 'https://store.steampowered.com/app/'+game['app_id']+'/')}">Source</a></p></section><aside><div class="aside-card"><h2>Want better support?</h2>{votes}<a class="button" href="{demand_link(game)}">{demand_label(game)}</a><p>Votes show demand. Test reports show what happened.</p></div><div class="aside-card"><h2>Know before you play</h2><ul><li>Current Preview requires Rosetta.</li><li><a href="download.html">Download the Preview</a>.</li><li>Check the version and Mac in each report.</li></ul><a class="text-link" href="about.html#results">How results work →</a></div></aside></div>''')
+    community_section = ''
+    if community_entries:
+        from community_reports import cards as community_cards
+        community_section = '<section><h2>App-submitted reports</h2>' + community_cards(community_entries) + '</section>'
+    return shell(game['name'], f'''<p class="crumb"><a href="games.html">← All games</a></p><section class="detail-hero">{cover(game)}<div><h1>{e(game['name'])}</h1><p class="meta">Steam App {game['app_id']}</p><div class="badges"><span class="badge {'pass' if qualified else 'partial'}">{'Verified configuration' if qualified else 'Community reports' if records else 'Not tested'}</span></div><div class="actions"><a class="button" href="https://store.steampowered.com/app/{game['app_id']}/" rel="noreferrer">View on Steam ↗</a><a class="button primary" href="report.html?app={game['app_id']}">Share a result</a></div></div></section><div class="detail-layout"><section><div class="detail-section-head"><h2>Player reports <span class="meta">{len(records)}</span></h2><div class="report-filters"><label><span class="sr-only">Filter report runtime</span><select id="report-track"><option value="all">All runtimes</option><option value="rosetta-preview">Rosetta Preview</option><option value="rosetta-free-development">Rosetta-free development</option></select></label><label><span class="sr-only">Filter report result</span><select id="report-result"><option value="all">All results</option><option value="pass">Pass</option><option value="partial">Partial</option><option value="failed">Failed</option></select></label></div></div>{report_counts(records)}<p class="meta" style="margin:12px 0 18px">Reports describe individual configurations. They are not votes or unique-player counts.</p><div id="reports">{cards}</div><div class="empty-state" id="no-reports" {'hidden' if records else ''}><h3>No reports for this selection</h3><p>Change the filters or share your own result.</p><a class="button small" href="report.html?app={game['app_id']}">Share a result</a></div><p class="art-credit">{e(game['image_credit'])} <a class="inline-link" href="{e(game['image_source_url'] or 'https://store.steampowered.com/app/'+game['app_id']+'/')}">Source</a></p></section><aside><div class="aside-card"><h2>Want better support?</h2>{votes}<a class="button" href="{demand_link(game)}">{demand_label(game)}</a><p>Votes show demand. Test reports show what happened.</p></div><div class="aside-card"><h2>Know before you play</h2><ul><li>Current Preview requires Rosetta.</li><li><a href="download.html">Download the Preview</a>.</li><li>Check the version and Mac in each report.</li></ul><a class="text-link" href="about.html#results">How results work →</a></div></aside></div>{community_section}''')
 
 
 def about_page():
@@ -297,33 +302,43 @@ def download_page():
     return shell('Download', '''<div class="readable download-page"><h1>Get Pear.</h1><p class="intro-copy">Choose how to set up Windows Steam on your Mac.</p>
 <h2 id="installation">Installation</h2>
 
-<nav class="download-methods" aria-label="Download methods"><a id="method-app" href="#app" data-method="app"><strong>Mac app</strong><span>Recommended</span></a><a id="method-cli" href="#cli" data-method="cli"><strong>CLI</strong><span>Terminal</span></a><a id="method-homebrew" href="#homebrew" data-method="homebrew"><strong>Homebrew</strong><span>Planned</span></a></nav>
+<nav class="download-methods" aria-label="Download methods"><a id="method-app" href="#app" data-method="app"><strong>Mac app</strong><span>Recommended</span></a><a id="method-cli" href="#cli" data-method="cli"><strong>CLI</strong><span>Terminal</span></a><a id="method-homebrew" href="#homebrew" data-method="homebrew"><strong>Homebrew</strong><span>Mac app</span></a></nav>
 <div class="download-panels">
 <section id="app" class="download-panel" data-download-panel aria-labelledby="method-app"><h3>Install the Mac app</h3><p>Open the DMG, drag Pear to Applications, then open Pear. Review the first-run downloads and choose Download and install.</p><a class="button primary" href="https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg">Download for Mac</a><p class="method-status">0.1.0-preview.3 · Signed and notarized · <a class="inline-link" href="https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3">Release notes</a> · <a class="inline-link" href="https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/SHA256SUMS">Checksums</a></p></section>
 <section id="cli" class="download-panel" data-download-panel aria-labelledby="method-cli"><h3>Run from Terminal</h3><p>Download and extract the CLI. Open Terminal in that folder and run:</p><div class="command"><div><span>Open Windows Steam</span><button class="text-link copy-command" type="button" data-copy="command-steam" aria-label="Copy open windows steam command">Copy</button></div><code id="command-steam">./pear-preview steam</code></div><p id="command-status" class="copy-status" role="status" aria-live="polite"></p><a class="button primary" href="https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/pear-preview-0.1.0-preview.3-macos-arm64-cli.zip">Download CLI</a><p class="method-status">0.1.0-preview.3 · Uses the same runtime and data as the app.</p></section>
-<section id="homebrew" class="download-panel" data-download-panel aria-labelledby="method-homebrew"><h3>Install with Homebrew</h3><p>Homebrew distribution is planned. The installation command will appear here once a tested cask is published.</p><a class="text-link external" href="https://github.com/postmelee/pear/discussions/51">Follow Preview updates</a></section>
+<section id="homebrew" class="download-panel" data-download-panel aria-labelledby="method-homebrew"><h3>Install with Homebrew</h3><p>Install Pear from our Homebrew tap:</p><div class="command"><div><span>Install Pear</span><button class="text-link copy-command" type="button" data-copy="command-brew" data-status="brew-command-status" data-message="Command copied. Run it in Terminal." aria-label="Copy Homebrew installation command">Copy</button></div><code id="command-brew">brew install --cask postmelee/tap/pear</code></div><p id="brew-command-status" class="copy-status" role="status" aria-live="polite"></p><p>Open Pear from Applications to set up Windows Steam. Quit games, Steam and Pear before upgrading.</p><p class="method-status">The tap currently provides 0.1.0-preview.4 for Apple Silicon and macOS 15 or later. <a href="https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.4">Release notes</a> · <a href="https://github.com/postmelee/homebrew-tap">Homebrew tap</a></p></section>
 </div>
 <details class="release-details"><summary>Release details</summary><p>Runtime: Wine 11.0 · DXMT 0.80</p></details>
 <section class="download-common"><h2>Sign in and play</h2><p>Pear prepares Windows Steam for you. Sign in through the official Steam window, install a game you own, and select Play.</p><p><a class="inline-link" href="games.html">Check game reports</a> for results on specific Macs and configurations.</p>
-<h2>System requirements</h2><ul class="system-requirements"><li>Mac with Apple Silicon</li><li>macOS 26 or later</li><li>Rosetta</li><li>Internet access and a Steam account</li><li>Several GB for setup, plus space for your games</li></ul><p>Tested on M4 Pro / macOS 26.5.2, including owner-confirmed installation in a fresh standard account on that Mac. Other hardware remains unverified.</p><p>A Rosetta-free runtime is in development. <a class="inline-link" href="about.html#preview">About the Preview</a></p></section>
+<h2>System requirements</h2><ul class="system-requirements"><li>Mac with Apple Silicon</li><li>macOS 26 or later for the DMG and CLI downloads above; macOS 15 or later for the Homebrew release</li><li>Rosetta</li><li>Internet access and a Steam account</li><li>Several GB for setup, plus space for your games</li></ul><p>Tested on M4 Pro / macOS 26.5.2, including owner-confirmed installation in a fresh standard account on that Mac. Other hardware remains unverified.</p><p>A Rosetta-free runtime is in development. <a class="inline-link" href="about.html#preview">About the Preview</a></p></section>
 <div class="download-guides"><a class="text-link external" href="https://github.com/postmelee/pear/blob/master/docs/rosetta-preview.md#app-experience">First Steam session</a><a class="text-link external" href="https://github.com/postmelee/pear/discussions/51">Preview updates</a><a class="text-link external" href="https://github.com/postmelee/pear/blob/master/docs/development/getting-started.md">Build from source</a></div></div>''', 'download')
 
 
-def build_site(data, out, catalog=None, steam_catalog=None):
+def build_site(data, out, catalog=None, steam_catalog=None, community=None):
     validate(data)
     catalog = validate_catalog(catalog or json.loads(CATALOG.read_text()), data)
     if steam_catalog is not None:
         from steam_catalog import validate_snapshot
         validate_snapshot(steam_catalog)
+    if community is not None:
+        from community_reports import validate as validate_community, cards as community_cards
+        validate_community(community)
     groups = group_games(data, catalog)
-    pages = {'index.html': webpage(data, catalog), 'games.html': games_page(data, catalog),
+    pages = {'index.html': webpage(data, catalog, community is not None), 'games.html': games_page(data, catalog),
              'about.html': about_page(), 'download.html': download_page(),
              'updates.html': site.updates_page(),
              'report.html': intake_page(catalog, 'report', steam_catalog is not None),
              'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
-    pages.update({f'game-{g["app_id"]}.html': game_page(g) for g in groups})
+    for game in groups:
+        entries = [item for item in community['reports'] if str(item['report']['appID']) == game['app_id']] if community else []
+        pages[f'game-{game["app_id"]}.html'] = game_page(game, entries)
+    if community is not None:
+        content = '<p class="crumb"><a href="games.html">← All games</a></p><h1>Community run reports</h1><p class="page-intro">Reviewed for publication. User reports are separate from qualified compatibility evidence.</p><section><h2>App-submitted reports</h2>' + community_cards(community['reports']) + '</section>'
+        pages['community.html'] = shell('Community run reports', content)
     pages.update(site.blog_pages(pages))
-    allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | site.blog_files(site.POSTS) | set(pages)
+    # Keep the machine-readable snapshot out of HTML search and backlink parsing.
+    payloads = {'community-reports.json': json.dumps(community, indent=2) + '\n'} if community is not None else {}
+    allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | site.blog_files(site.POSTS) | set(pages) | set(payloads)
     allowed_dirs = {str(parent) for name in allowed for parent in Path(name).parents if str(parent) != '.'}
     out = Path(out)
     require(not out.is_symlink(), 'Site output must not be a symlink')
@@ -342,7 +357,7 @@ def build_site(data, out, catalog=None, steam_catalog=None):
     for source in assets.values():
         require(source.is_file() and not source.is_symlink(), 'Missing or symlinked public asset')
     out.mkdir(parents=True, exist_ok=True)
-    for name, text in pages.items():
+    for name, text in (pages | payloads).items():
         target = out / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(text, encoding='utf-8')
@@ -367,6 +382,7 @@ def main():
     parser.add_argument('--check', action='store_true', help='Fail if committed Markdown is stale')
     parser.add_argument('--site', type=Path, help='Render only the public allowlist into this directory')
     parser.add_argument('--steam-catalog', type=Path, help='Optional sanitized Steam game identity snapshot')
+    parser.add_argument('--community-reports', type=Path, help='Reviewed public app-report snapshot')
     args = parser.parse_args()
     steam_catalog = None
     if args.steam_catalog:
@@ -380,7 +396,7 @@ def main():
     else:
         TABLE.write_text(text, encoding='utf-8')
     if args.site:
-        print('Public files:', ', '.join(build_site(data, args.site, catalog, steam_catalog)))
+        print('Public files:', ', '.join(build_site(data, args.site, catalog, steam_catalog, json.loads(args.community_reports.read_text()) if args.community_reports else None)))
     print(f"Validated {len(data['records'])} reviewed record(s); content approval remains a human review.")
 
 

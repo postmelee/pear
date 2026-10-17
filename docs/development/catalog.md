@@ -194,6 +194,22 @@ The matching `BlogPost` should use keyword arguments for all metadata, including
 copying a previous post’s metadata. A second article must not require a new page
 renderer, CSS block, navigation list, or hardcoded author lookup.
 
+## Reviewed report integration
+
+An optional approved community snapshot generates `community.html`, app-submitted
+sections on matching game pages, and `community-reports.json`. Keep the JSON
+payload separate from the HTML page map: blog backlinks and global search consume
+HTML only. Render report sections before the shared shell so their headings enter
+the TOC. Reuse the report/facts components and preserve the distinction between
+publication approval, user observations and qualified compatibility; app-submitted
+reports do not change the reviewed catalog’s Pass counts.
+
+Pages publication retains the daily snapshot prepare/deploy/acknowledge sequence.
+Blog fragments, assets and renderer changes also trigger the existing Pages job.
+Use empty and synthetic approved snapshots for local integration tests; never
+publish synthetic results. New release links, OS requirements and reporting UI
+claims must follow their release owner’s verified state rather than design defaults.
+
 ## Verify a change
 
 ```sh

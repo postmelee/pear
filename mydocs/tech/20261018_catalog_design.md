@@ -533,3 +533,56 @@ Integration limit: #63 modifies catalog generation in a separate worktree. Its
 combined result has not been merged or verified here. The article's dated v0.1.0
 account remains separate from current preview.3 download metadata; this review
 makes no new compatibility or release-readiness claim.
+
+## Master integration and publication — 2026-10-18
+
+The requester now authorizes overlap review, Homebrew presentation integration,
+verification and merging this design, with remaining content work sent to #63.
+The earlier no-Issue-registration instruction remains in force. Reuse this report
+instead of inventing an Issue, milestone, or completion claim for #63. Official
+integration guidance is added to the existing catalog developer guide.
+
+Frozen upstream input: master 5bad28107f5fb68db500405e19cf0db2a1ea85ee
+(PR #64). Its approved-report pipeline is already public: daily import, immutable
+snapshot export, Pages deployment and post-deploy acknowledgment. Merge this
+input without importing the held v0.1.0/app changes in codex/task63.
+
+Resolved overlap in tools/compatibility.py:
+- Preserve approved community HTML and JSON alongside the new shell/blog assets.
+- Keep JSON payloads out of HTML-only search and backlink parsing. A mechanical
+  combination would fail rendering when community reports are enabled.
+- Render app-submitted game reports before shell/TOC generation; preserve their
+  separate, explicitly unqualified status and do not include them in Pass counts.
+- Preserve empty-report messaging and reuse existing report/facts CSS tokens.
+- Add docs/blog and the new renderer/icon module to Pages push paths; retain
+  #63's schedule, queueing, export credentials and acknowledgment behavior.
+
+The public Homebrew tap still serves preview.4 (cask inspected via GitHub API;
+release and tap exist publicly). Adopt its install command using existing command
+and tab components, h3 hierarchy and independent copy feedback. Keep existing
+preview.3 DMG/CLI links; label the differing versions and OS requirements explicitly.
+Do not copy held v0.1.0 links or imply that released apps include new reporting UI.
+Follow-up release-copy consolidation was sent to “Pear — Rosetta Megabonk 체험판”.
+
+Verification on the combined tree:
+- 115 Python documentation/catalog tests passed, including empty and populated
+  community snapshots, HTML search, article generation, TOC anchors, escaped
+  report text, rejection of private note fields, unchanged reviewed-report counts,
+  and the Homebrew copy/heading contract. Six Steam-search JavaScript tests passed.
+- Governance passed: 40 documents / 377 local targets. Diff whitespace passed.
+- Browser: synthetic community report expands; game report TOC anchor resolves.
+  Homebrew copy button produced “Command copied. Run it in Terminal.” at mobile
+  width. Installation anchor retained Homebrew selection. Desktop dark/mobile
+  light presentations inspected. No Homebrew command was executed.
+- Continuous static candidate build to confirmed browser detail-toggle response
+  was 61.03 seconds (build 0.11 seconds), including server permission retry and UI
+  setup. Wall/monotonic boundaries: .build/catalog-integration/timing.json. No
+  comparative latency claim; no build/signing/game fixture phase was applicable.
+
+Retention: .build/catalog-integration holds two generated static views and small
+synthetic fixtures/screenshots, owned by this design review, disposable after
+public deployment verification. Existing .build/catalog-design preview remains
+available for the requester. Video bytes and source are unchanged. Other worktrees,
+private state, signed artifacts, analysis/ and research/ are preserved. The local
+synthetic snapshot must never be deployed. Runtime, Worker, consent, and final
+release verification remain owned by #63.
