@@ -6,6 +6,7 @@ Compatibility data and release decisions remain in compatibility.py. This module
 owns the page shell, navigation, article presentation and public search projection.
 """
 import html
+from catalog_icons import ICON_NOTICES, SEARCH_ICON, SUN_ICON, MOON_ICON
 from html.parser import HTMLParser
 from pathlib import Path
 import re
@@ -49,7 +50,6 @@ NAVIGATION = (
     ('about', 'About', 'about.html'),
     ('docs', 'Documentation', DOCS),
 )
-SEARCH_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>'
 
 
 class PlainText(HTMLParser):
@@ -142,6 +142,7 @@ def shell(title, content, active='games', *, root='', article=False, description
      SPDX-License-Identifier: GPL-3.0-or-later -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pear · {e(title)}</title><meta name="description" content="{e(description, quote=True)}">
+{ICON_NOTICES}
 <meta name="color-scheme" content="light dark"><script src="{root}theme.js"></script>
 <meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="Pear"><meta property="og:title" content="Pear · {e(title, quote=True)}"><meta property="og:description" content="{e(description, quote=True)}"><meta property="og:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Pear · {e(title, quote=True)}"><meta name="twitter:description" content="{e(description, quote=True)}"><meta name="twitter:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta name="twitter:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right"><meta name="referrer" content="no-referrer">
@@ -150,7 +151,7 @@ def shell(title, content, active='games', *, root='', article=False, description
 <body data-root="{root}"><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><a class="wordmark" href="{root}index.html" aria-label="Pear home">Pear</a>
 <div class="header-tools"><button class="search-trigger" type="button" aria-label="Search" aria-keyshortcuts="Meta+K Control+K" data-search-open>{SEARCH_ICON}<span>Search</span><kbd class="search-shortcut">⌘K</kbd></button>
-<button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)"><span aria-hidden="true" class="theme-sun">☀</span><span aria-hidden="true" class="theme-moon">☾</span><span class="theme-knob"></span></button>
+<button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)"><span class="theme-knob" aria-hidden="true">{SUN_ICON}{MOON_ICON}</span></button>
 <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu <span aria-hidden="true">☰</span></button></div></header>
 <nav id="sidebar" class="sidebar" aria-label="Site navigation">{nav}</nav>
 <div class="page-layout"><main id="main" class="{'article-body' if article else 'page-content'}" tabindex="-1">{content}</main>{footer(root)}</div>

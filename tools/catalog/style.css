@@ -118,7 +118,7 @@
 .download-methods strong { font-size: var(--font-size-small); font-weight: 500; }
 .download-methods span { font-size: var(--font-size-xs); }
 .download-methods a[aria-selected="true"] { background: var(--color-bg); color: var(--color-text); }
-.download-panel h2 { margin-top: var(--space-9); }
+.download-panel h3 { margin-top: var(--space-9); }
 .method-status { font-size: var(--font-size-small); color: var(--color-muted); }
 .release-details { font-size: var(--font-size-small); color: var(--color-muted); margin-top: var(--space-7); }
 .download-common { border-top: 1px solid var(--color-border); margin-top: var(--space-9); }

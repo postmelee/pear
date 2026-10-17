@@ -7,6 +7,7 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --font-size-title: clamp(2rem, 4vw, 2.5rem);
   --font-size-heading: 1.25rem;
+  --font-size-subheading: var(--font-size-body);
   --font-size-body: clamp(1rem, .875rem + .2vw, 1.125rem);
   --font-size-lede: 1.42rem;
   --font-size-small: .875rem;
@@ -31,6 +32,10 @@
   --section-gap: 56px;
   --anchor-offset: 32px;
   --motion-fast: 150ms;
+  --theme-switch-width: 36px;
+  --theme-switch-height: 20px;
+  --theme-icon-size: 18px;
+  --theme-switch-travel: 15px;
   --motion-ease: cubic-bezier(.2, 0, 0, 1);
   --color-bg: #fffcf0;
   --color-surface: #f2f0e5;

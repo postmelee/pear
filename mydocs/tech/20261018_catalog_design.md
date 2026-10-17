@@ -124,3 +124,25 @@ both CLI and Homebrew remain selected after visiting another section and
 returning through Installation; the direct `#cli` link still selects CLI.
 Screenshot: `.build/catalog-design/download-installation.png`. The prior site
 digest and timing above describe the initial handoff, before this follow-up.
+
+## Typography and reference-icon follow-up
+
+The requester authorized a lower heading level inside the installation tabs and
+closer reference icons. All three panel titles are now semantic h3 elements,
+using the reusable subheading token. At the reviewed 1280px viewport they render
+at 16.56px, below the 20px Installation h2.
+
+Inspected live reference DOM and computed CSS: Pele uses a 16px Lucide/Feather
+search SVG with a 2-unit rounded stroke. Stephango uses a 36 by 20px track and
+an 18px moving Heroicons sun/moon, rather than a circle over Unicode glyphs.
+Shared SVG definitions live in `tools/catalog_icons.py`; upstream MIT/ISC and
+Feather notices are included in generated pages. Official upstream licenses were
+read before reuse. The switch is independently implemented with the observed
+geometry, state positions and 100ms timing. Search children use aligned line
+boxes and share the same measured vertical center.
+
+Rebuilt the local site; 25 compatibility and seven catalog-site tests passed,
+as did the whitespace check. Browser checks confirmed h2/h3 sizes, SVG geometry,
+light/dark states and search open/close. Screenshot:
+`.build/catalog-design/download-icons-hierarchy.png`. Earlier handoff digests
+and timings do not cover this follow-up.
