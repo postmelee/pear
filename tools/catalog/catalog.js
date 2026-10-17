@@ -355,5 +355,8 @@ if (downloadMethods) {
     });
   }
   selectMethod(location.hash.slice(1));
-  window.addEventListener('hashchange', () => selectMethod(location.hash.slice(1)));
+  window.addEventListener('hashchange', () => {
+    const method = location.hash.slice(1);
+    if (tabs.some(tab => tab.dataset.method === method)) selectMethod(method);
+  });
 }

@@ -110,3 +110,17 @@ free-space delta was measured. Keep the server/output for requester review;
 retain source assets and this record. Screenshots and detailed check logs are
 under `.build/catalog-design/`. The temporary mobile review harness was removed
 from the public output after inspection.
+
+## Installation navigation follow-up
+
+The requester authorized an Installation heading above the download-method tabs,
+a matching TOC entry, and preservation of the selected tab during section
+navigation. The shared heading renderer generates the TOC entry. Download tab
+hash handling now changes selection only for recognized method anchors.
+
+Rebuilt the existing local preview. All seven catalog-site tests, JavaScript
+syntax validation and whitespace checks passed. Browser input confirmed that
+both CLI and Homebrew remain selected after visiting another section and
+returning through Installation; the direct `#cli` link still selects CLI.
+Screenshot: `.build/catalog-design/download-installation.png`. The prior site
+digest and timing above describe the initial handoff, before this follow-up.

@@ -295,6 +295,7 @@ def intake_page(catalog, kind, steam_available=False):
 
 def download_page():
     return shell('Download', '''<div class="readable download-page"><h1>Get Pear.</h1><p>Choose how to set up Windows Steam on your Mac.</p>
+<h2 id="installation">Installation</h2>
 
 <nav class="download-methods" aria-label="Download methods"><a id="method-app" href="#app" data-method="app"><strong>Mac app</strong><span>Recommended</span></a><a id="method-cli" href="#cli" data-method="cli"><strong>CLI</strong><span>Terminal</span></a><a id="method-homebrew" href="#homebrew" data-method="homebrew"><strong>Homebrew</strong><span>Planned</span></a></nav>
 <div class="download-panels">
