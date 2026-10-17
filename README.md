@@ -15,7 +15,7 @@ into official Windows Steam, then choose an owned game from your library. The ap
 and optional CLI share the same setup. Routine players should not need Terminal,
 Xcode, a developer account or a paid compatibility app.
 
-**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg)** · [Catalog and installation options](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3)
+**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg)** · [Website & game reports](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3)
 
 Preview **0.1.0-preview.3** uses **Wine 11.0 and DXMT 0.80** and requires
 Apple Silicon, macOS 26+ and Rosetta. Megabonk gameplay, input/audio, saved
@@ -39,19 +39,17 @@ and games remain unverified.
 | Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Public preview.3; Megabonk play, save/relaunch, recovery and fresh-account setup verified on one Mac |
 | Rosetta-free runtime (M1) | Run owned Windows Megabonk with every required host process and library free of Rosetta | Under development; no player-ready native preview |
 
-On October 11, an experimental ARM64 Wine/FEX/DXMT configuration reached the
-Megabonk main menu, and manual menu input was confirmed. Gameplay entry failed
-during loading. Verification of Rosetta independence across all required host
-processes and libraries, Steamworks integration and gameplay qualification remain
-pending. Follow [the native integration work (#11)](https://github.com/postmelee/pear/issues/11).
+The Rosetta-free runtime remains in development. Experimental builds have reached
+Megabonk's menu, but gameplay and verification that every required process and
+library runs without Rosetta remain incomplete.
 
-Native source development now has accepted Wine, FEX, DXMT and common
-runtime owners through [Task #56](https://github.com/postmelee/pear/issues/56). The
-[developer guide](docs/development/rosetta-free.md#split-native-development-components)
-links the private component sources and distinguishes completed reconstruction
-from the completed development-selector checks and remaining game qualification.
-The selector's seven fresh synthetic cases and metadata recovery passed; this
-work did not copy or execute Megabonk.
+Wine, FEX, DXMT and common-runtime source ownership are established, and bounded
+runtime reconstruction and development-selector checks have passed. These checks
+do not qualify game compatibility. See the
+[native development guide](docs/development/rosetta-free.md#split-native-development-components)
+for prerequisites and ongoing work, and the
+[Task #56 handoff report](https://github.com/postmelee/pear/blob/914725732a17b9e13886bc906625df9ca9ba07b3/mydocs/report/task_m1_56_report.md)
+for the verified scope and remaining limitations.
 
 Megabonk is the first validation game. Selecting another game in Steam does not
 establish compatibility. [Recorded results](docs/compatibility/records.md) retain
