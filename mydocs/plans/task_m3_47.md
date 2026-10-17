@@ -384,3 +384,36 @@ version query in tools/compatibility.py. Existing favicon/layout are unchanged.
 Reuse #47 and its Stage 3/final report; no new document destination or dependency.
 Verify approved bytes, dimensions, six page metadata, existing catalog checks and
 Pages deployment. Only small disposable site output; retain all private state.
+
+## Approved minimum-OS follow-up — 2026-10-18
+
+Requester authorized runtime reuse where possible, app/CLI-only rebuilding,
+necessary compatibility checks and release/documentation updates after success.
+After inspection excluded macOS 14 for unchanged runtime bytes, requester asked
+for the lowest possible version: use macOS 15.0 as the candidate floor. The pinned
+542451640-byte runtime archive matches SHA-256 eb32a9ef8012216d11348c1af089254f2127f28e2b330cf4f1c700f41967d7b0.
+Its 46 Mach-O entries include 42 targeting 14.0, two targeting 12.0 and two DXMT
+winemetal.so copies targeting 15.0. Both modules match the archive exactly.
+No replacement runtime build is authorized or necessary for this candidate.
+
+Location/reuse: existing preview build scripts, package metadata and candidate
+workflow; existing Stage 3/final reports and daily board. Public README, catalog
+and Preview guidance stay at the current release requirements until qualification.
+Reuse the current signed runtime, pinned Cargo inputs, portable tests, signing
+protection and Pages workflow. No other open Issue concerns this Preview scope.
+
+Verification: preserve existing candidate checks; build app/CLI targeting 15.0
+on the pinned macOS 26 builder, then execute the same candidate CLI and isolated
+first-run app on macOS 15. Inspect all reused Mach-O deployment targets and launch
+Wine under Rosetta without credentials/games. Sign only after these checks pass;
+check the final signed artifact on 15 and local 26 before release. CI startup does
+not establish macOS 15 gameplay qualification or exact 15.0 execution coverage.
+Retain recorded OS patch versions. No repeat 20-minute gameplay is required for
+this deployment-target-only change unless new failures justify it.
+
+Artifact lifecycle: immutable cached runtime reused read-only locally, no copies
+of personal prefixes. Hosted runtime download/extraction and candidate build are
+isolated in RUNNER_TEMP (up to 6 GiB per job estimated); logs/artifacts bounded to
+14 days. Local audit only; 17 GiB free measured before any material local build.
+CI artifacts retained until final signing/release comparison; synthetic roots
+removed after owned processes stop. Existing recovery/private state is retained.
