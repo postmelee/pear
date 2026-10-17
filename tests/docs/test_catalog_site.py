@@ -187,7 +187,8 @@ class WebsiteTests(unittest.TestCase):
         self.assertNotIn('Introduction', nav)
         self.assertNotIn('updates.html', article)
         self.assertNotIn('Receive updates', article)
-        self.assertIn('</ul></li><li><a href="#linked-mentions" data-toc-link>', nav)
+        self.assertIn('</ul></li><li><a href="#references" data-toc-link>', nav)
+        self.assertIn('<li><a href="#linked-mentions" data-toc-link>', nav)
         updates = (self.output / 'updates.html').read_text()
         self.assertIn('https://x.com/meleeisgloom2', updates)
         self.assertIn('href="updates.html" aria-current="page"', updates)
@@ -208,6 +209,18 @@ class WebsiteTests(unittest.TestCase):
         self.assertNotIn(first.edition, header)
         self.assertIn('1 minute read · <a href="https://x.com/meleeisgloom2"', header)
         self.assertNotIn('rel="author"', pages['blog/writing.html'])
+
+    def test_references_use_body_links_deduplicate_and_escape(self):
+        content = '<a href="https://example.org/a?x=1&amp;y=2"><em>First</em> &amp; label</a><a href="https://example.org/a?x=1&amp;y=2">Again</a><a href="../index.html">Local</a><a href="https://postmelee.github.io/pear/">Home</a><a href="mailto:a@example.org">Email</a><a href="https://example.org/b"></a>'
+        result = site.references(content)
+        links = [a['href'] for tag, a in Elements(result).elements if tag == 'a']
+        self.assertEqual(links, ['https://example.org/a?x=1&y=2', 'https://example.org/b'])
+        self.assertIn('First &amp; label', result)
+        self.assertEqual(site.references('<p>No external links</p>'), '')
+        article = (self.output / site.ARTICLE_PATH).read_text()
+        section = re.search(r'<section><h2 id="references">.*?</section>', article, re.S)[0]
+        self.assertIn('https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/compatibility/README.md', section)
+        self.assertNotIn('https://x.com/meleeisgloom2', section)
 
     def test_rebuild_is_deterministic_and_does_not_publish_article_source(self):
         before = {name: (self.output / name).read_bytes() for name in self.files}

@@ -115,7 +115,7 @@ def local_link(path, root):
 
 def navigation(active, outline, root, article_title=None):
     items = []
-    siblings = [item for item in outline if item[1] in {'linked-mentions', 'you-might-also-enjoy'}] if article_title else []
+    siblings = [item for item in outline if item[1] in {'references', 'linked-mentions', 'you-might-also-enjoy'}] if article_title else []
     outline = [item for item in outline if item not in siblings]
     entries = (('article', article_title, '#article-title'),) if article_title else NAVIGATION
     if article_title:
@@ -329,10 +329,44 @@ class LinkCollector(HTMLParser):
     def __init__(self):
         super().__init__()
         self.hrefs = []
+        self.links = []
+        self.current_href = None
+        self.label_parts = []
 
     def handle_starttag(self, tag, attrs):
         if tag == 'a' and dict(attrs).get('href'):
-            self.hrefs.append(dict(attrs)['href'])
+            self.current_href = dict(attrs)['href']
+            self.hrefs.append(self.current_href)
+            self.label_parts = []
+
+    def handle_data(self, data):
+        if self.current_href is not None:
+            self.label_parts.append(data)
+
+    def handle_endtag(self, tag):
+        if tag == 'a' and self.current_href is not None:
+            self.links.append((self.current_href, ' '.join(''.join(self.label_parts).split())))
+            self.current_href = None
+
+
+def references(content):
+    """Collect outgoing web references in source order, before generated links."""
+    parser = LinkCollector()
+    parser.feed(content)
+    seen, items = set(), []
+    for href, label in parser.links:
+        url = urlsplit(href)
+        if url.scheme not in {'http', 'https'} or not url.netloc:
+            continue
+        if url.hostname == 'postmelee.github.io' and (url.path == '/pear' or url.path.startswith('/pear/')):
+            continue
+        if href in seen:
+            continue
+        seen.add(href)
+        items.append(f'<li><a href="{html.escape(href, quote=True)}">{html.escape(label or href)}</a></li>')
+    if not items:
+        return ''
+    return '<section><h2 id="references">References</h2><ul class="reference-list">' + ''.join(items) + '</ul></section>'
 
 
 def related_posts(post, posts):
@@ -345,7 +379,8 @@ def related_posts(post, posts):
 
 
 def article_connections(post, posts, sources):
-    parts = []
+    body = article_parts(sources[post.path][1])[3]
+    parts = [references(body)]
     mentions = linked_mentions(post.path, sources)
     if mentions:
         items = ''.join(f'<li><a href="{html.escape(posixpath.relpath(path, "blog"), quote=True)}">{html.escape(title)}</a><p>{html.escape(summary)}</p></li>'

@@ -42,6 +42,7 @@
 .article-connections h2, .blog-updates h2 { font-size: var(--font-size-subheading); font-weight: 400; color: var(--color-muted); }
 .blog-updates h2 a { text-decoration: none; }
 .blog-updates h2 a:hover { text-decoration: underline; }
+.reference-list a { overflow-wrap: anywhere; }
 .mention-list { list-style: none; padding: 0; }
 .mention-list li { margin-block: var(--space-6); }
 .mention-list p { color: var(--color-muted); font-size: var(--font-size-small); margin: var(--space-1) 0 0; }

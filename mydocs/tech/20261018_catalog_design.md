@@ -383,3 +383,18 @@ page remains available elsewhere. Reduced subtitle top spacing from 32px to
 to 24px. Catalog tests (12) pass, including hierarchy and Updates absence checks.
 Rebuilt and visually checked the local article; article-spacing-toc.png records
 the result.
+
+## Automatic outgoing references
+
+Reused LinkCollector to collect anchor labels and generate References from the
+original article body only. External HTTP(S) URLs appear in source order, with
+exact duplicate hrefs merged using the first label. Internal Pear links, mail
+links and generated author/navigation links are excluded. Labels and URLs are
+escaped; empty labels fall back to their URL. Empty sections are omitted.
+References is a top-level article sidebar sibling of Linked mentions.
+
+All 13 catalog tests passed, covering duplicate entity-decoded URLs, inline
+labels, excluded destinations, missing labels and the requested compatibility
+README. Local browser confirmed 15 unique references and the top-level outline.
+Restarted the stopped loopback preview on port 8765. Screenshot:
+article-references.png. No external content was fetched or republished.
