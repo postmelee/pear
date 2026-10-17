@@ -148,9 +148,38 @@ jobs:
           retention-days: 14
           compression-level: 0
 
+  compatibility:
+    name: macOS 15 candidate execution
+    needs: macos
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pear-preview-candidate-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pear-compat-packages
+      - name: Execute exact candidate and reused runtime on macOS 15
+        run: python3 -B preview/check_minimum_os.py --packages "$RUNNER_TEMP/pear-compat-packages" --output "$RUNNER_TEMP/pear-compat-check"
+      - name: Retain bounded compatibility evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-macos15-check-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pear-compat-check/receipt.json
+            ${{ runner.temp }}/pear-compat-check/*.log
+          retention-days: 14
+          if-no-files-found: warn
+
   sign:
     name: Approved Developer ID candidate
-    needs: macos
+    needs: [macos, compatibility]
     if: >-
       github.repository == 'postmelee/pear' &&
       github.ref == 'refs/heads/codex/publish-task47' &&

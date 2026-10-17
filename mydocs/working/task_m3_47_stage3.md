@@ -189,3 +189,19 @@ The requester approved the visual before implementation. Existing Pages workflow
 performs publication after integration; third-party cache refresh remains external.
 No runtime changes. Retain public PNG; generated site is disposable after live
 verification. Private state and other worktrees remain untouched.
+
+## macOS floor investigation and candidate — 2026-10-18
+
+Pinned public runtime cache was SHA-256 verified against runtime_pin.rs. All 46
+Mach-O entries were inspected: 42 declare 14.0, two 12.0 and two winemetal.so copies
+15.0. Both winemetal bytes match the pinned archive. Therefore unchanged runtime
+reuse selects 15.0, not 14.0, as the candidate floor. This is static compatibility
+evidence, not older-OS gameplay qualification. No runtime or private state changed.
+
+App/CLI build targets and candidate package text now target 15.0; preview.4 keeps
+all preview.3 runtime pins. Existing 68 portable tests, incremental source notices
+and whitespace checks passed. The existing macOS 26 builder remains pinned; a new
+macOS 15 job consumes its exact artifact, checks hashes/targets, executes read-only
+CLI and isolated first-run app startup, audits and starts the unchanged Wine under
+Rosetta. Signing depends on this job and retains existing protected approval.
+Hosted execution is pending; public docs still describe released preview.3.
