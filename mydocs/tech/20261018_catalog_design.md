@@ -164,3 +164,17 @@ tests and whitespace validation passed after rebuilding. Screenshots are
 `mobile-theme-restored.png` and `desktop-theme-restored.png` under the ignored
 `.build/catalog-design/` directory. Removed the temporary review HTML from the
 served output; the existing local server remains available.
+
+## SVG-only theme refinement
+
+The requester retained the circular switch behavior but asked for Stephango's
+sun/moon geometry and hover emphasis. Restored the shared Heroicons SVG shapes
+and their upstream notices, replacing only the text glyphs. The 44 by 24px track,
+16px knob, 20px travel, timing and mobile touch area remain unchanged. Added a
+dedicated theme hover token matching the inspected reference action colors:
+light `#24837b`, dark `#3aa99f`; keyboard focus uses the same emphasis.
+
+Rebuilt the local preview and passed all seven catalog-site tests and whitespace
+checks. Browser input confirmed both checked states, actual `:hover` matching,
+computed highlight colors and unchanged knob travel. Screenshot:
+`.build/catalog-design/theme-svg-hover.png`.

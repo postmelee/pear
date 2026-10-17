@@ -46,6 +46,7 @@
   --color-border: #e6e4d9;
   --color-border-strong: #cecdc3;
   --color-link-hover: #66800b;
+  --color-theme-hover: #24837b;
   --color-focus: #66800b;
   --color-selection: #e0e7c5;
   --color-positive: #536907;
@@ -67,6 +68,7 @@
   --color-faint: #575653;
   --color-border: #282726;
   --color-border-strong: #403e3c;
+  --color-theme-hover: #3aa99f;
   --color-link-hover: #f2f0e5;
   --color-focus: #a0af54;
   --color-selection: #fffcf026;
@@ -85,7 +87,8 @@
     --color-bg: #100f0f; --color-surface: #1c1b1a; --color-surface-hover: #222120;
     --color-text: #cecdc3; --color-muted: #878580; --color-faint: #575653;
     --color-border: #282726; --color-border-strong: #403e3c;
-    --color-link-hover: #f2f0e5; --color-focus: #a0af54; --color-selection: #fffcf026;
+    --color-theme-hover: #3aa99f;
+  --color-link-hover: #f2f0e5; --color-focus: #a0af54; --color-selection: #fffcf026;
     --color-positive: #a0af54; --color-positive-bg: #22291b;
     --color-warning: #dfb431; --color-warning-bg: #302819;
     --color-negative: #e8705f; --color-negative-bg: #321d1b;

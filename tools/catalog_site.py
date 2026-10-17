@@ -6,7 +6,7 @@ Compatibility data and release decisions remain in compatibility.py. This module
 owns the page shell, navigation, article presentation and public search projection.
 """
 import html
-from catalog_icons import ICON_NOTICES, SEARCH_ICON
+from catalog_icons import ICON_NOTICES, SEARCH_ICON, SUN_ICON, MOON_ICON
 from html.parser import HTMLParser
 from pathlib import Path
 import re
@@ -151,7 +151,7 @@ def shell(title, content, active='games', *, root='', article=False, description
 <body data-root="{root}"><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><a class="wordmark" href="{root}index.html" aria-label="Pear home">Pear</a>
 <div class="header-tools"><button class="search-trigger" type="button" aria-label="Search" aria-keyshortcuts="Meta+K Control+K" data-search-open>{SEARCH_ICON}<span>Search</span><kbd class="search-shortcut">⌘K</kbd></button>
-<button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)"><span aria-hidden="true" class="theme-sun">☀︎</span><span aria-hidden="true" class="theme-moon">☾</span><span class="theme-knob" aria-hidden="true"></span></button>
+<button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)">{SUN_ICON}{MOON_ICON}<span class="theme-knob" aria-hidden="true"></span></button>
 <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu <span aria-hidden="true">☰</span></button></div></header>
 <nav id="sidebar" class="sidebar" aria-label="Site navigation">{nav}</nav>
 <div class="page-layout"><main id="main" class="{'article-body' if article else 'page-content'}" tabindex="-1">{content}</main>{footer(root)}</div>
