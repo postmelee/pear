@@ -15,6 +15,8 @@ cp "$CARGO_TARGET_DIR/release/pear-preview" "$app/Contents/Resources/pear-previe
 if [ -f "$repo/LICENSE" ]; then cp "$repo/LICENSE" "$app/Contents/Resources/LICENSE"; fi
 if [ -d "$repo/preview/licenses" ]; then cp -R "$repo/preview/licenses" "$app/Contents/Resources/"; fi
 if [ -f "$repo/preview/THIRD_PARTY_NOTICES.md" ]; then cp "$repo/preview/THIRD_PARTY_NOTICES.md" "$app/Contents/Resources/"; fi
+xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/UpdateLaunchPolicy.swift" "$repo/preview/test_update_launch_policy.swift" -o "$out/update-policy-tests"
+"$out/update-policy-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/test_presentation.swift" -o "$out/presentation-tests"
 "$out/presentation-tests"
 xcrun swiftc -O -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/SteamWindow.swift" "$repo/preview/Launcher.swift" -o "$app/Contents/MacOS/PearPreview"
