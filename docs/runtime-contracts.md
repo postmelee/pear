@@ -154,6 +154,27 @@ Qualification names the exact test revision, configuration, required feature set
 
 The executed Stage 2 checks accept this example for research inspection and refuse execution. Changing the context string does not supply the missing identities or evidence. No computed eligibility field is embedded in the example for a consumer to trust blindly. The separate committed fixture bundle uses owned, non-executable text bytes and synthetic observations; its successful inspection or fixture evaluation is not a real runtime result.
 
+## Common-runtime source boundary
+
+[pear-runtime](https://github.com/postmelee/pear-runtime) carries the preserved experimental v1/v2 contracts and their
+reference validators, shared diagnostics and development composition tools.
+The [selected lock](https://github.com/postmelee/pear-runtime/blob/c8887f9edaba57dffe7772cc26fd19aa9571d451/locks/task56-reconstruction-v1.json) is a Task #56 reconstruction record; its assembly
+and fixture records have explicit development scopes and are not silently
+reinterpreted as the product `runtime_lock`, `runtime_artifact` or qualification
+records defined here.
+
+Pear retains the Rust manager, profiles, account/game policy and Preview
+integration. The [accepted cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+assigns the imported common contracts and validators to the runtime owner. The
+local paths below remain retained compatibility copies for historical evidence
+and existing Pear consumers; they are not a second editable common source.
+Changes require an explicit pinned import and affected consumer checks. This
+source cutover changes neither schema versions nor admission behavior. The Pear development selector binds the
+selected candidate without changing these contract schemas. Consult the
+[split development guide](development/rosetta-free.md#split-native-development-components)
+for the separate source/build/test revisions and required private inputs. The
+component repository requires collaborator access.
+
 ## Reference validator and reproducible setup
 
 [`tests/contracts/validate.py`](../tests/contracts/validate.py) is read-only evaluation tooling. It does not download sources, execute profile operations, spawn processes, inspect Mach-O slices, verify signatures, acquire credentials, or decide whether license terms fit a release. It verifies declared local bytes and relationships; source, build, signing and observation facts must come from independently reviewed producers. Every result includes `evaluation_only: true`.

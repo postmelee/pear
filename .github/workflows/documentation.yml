@@ -42,6 +42,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - suite: development-selector
+            directory: tests/development
+            pattern: test_runtime_candidate.py
           - suite: source-inventory
             directory: tests/sources
             pattern: test_inventory.py

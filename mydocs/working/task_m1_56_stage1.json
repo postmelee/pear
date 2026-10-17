@@ -1,0 +1,33 @@
+{
+  "stage": 1,
+  "date": "2026-10-16",
+  "source_units_rehashed": 141,
+  "selected_generic_payloads": 17,
+  "recovered_d25_bytes": 9057,
+  "recovered_d25_sha256": "3e83e11f7806b639d091052e140a103c2d3dd0eda6187cacc9117f9aae8ab84c",
+  "owner_review": {
+    "11": "isolated exact import accepted; authoritative cutover remains conditional",
+    "12": "no new source edits; D36 failure/WGI hypothesis and retained input requirements reviewed",
+    "10": "D36 adapter required; keep current launch/exec ownership seam"
+  },
+  "additional_cleanup": {
+    "allowlist_sha256": "33c513d7982a7c94666b6ce29d79cfb1e9c6cc28885d950126b4bece428ff6a4",
+    "deleted_count": 3030,
+    "protected_files_count": 52112,
+    "protected_metadata_unchanged": true,
+    "critical_hashes_unchanged": true,
+    "git_unchanged": true,
+    "free_bytes_before": 9448873984,
+    "free_bytes_after": 13555445760,
+    "observed_net_free_change_bytes": 4106571776
+  },
+  "licenses": "42 pinned FEX/DXMT terms references checked; mixed per-file notices preserved; import-specific completeness remains Stage2 gate",
+  "source_authority_transferred": false,
+  "builds_runs": 0,
+  "history_acquisition_budget": {
+    "additional_peak_gib": 6.5,
+    "host_free_floor_gib": 4,
+    "before_observed_free_bytes": 13555445760,
+    "strategy": "Serial independent repositories; no mirror plus second clone; disable automatic gc/repack; measure after every acquisition; stop if capacity changes invalidate plan."
+  }
+}

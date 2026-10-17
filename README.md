@@ -29,7 +29,7 @@ and games remain unverified.
 | [Game reports](docs/compatibility/README.md) | Tested configurations, limitations and how to share a result |
 | [Get help](docs/SUPPORT.md) | Questions, bug reports and private reporting routes |
 | [Make a first contribution](docs/development/getting-started.md) | Local checks, Preview build and contribution paths |
-| [Develop without Rosetta](docs/development/rosetta-free.md) | Native runtime work, existing Issues and current prerequisites |
+| [Develop without Rosetta](docs/development/rosetta-free.md) | Native component repositories, bounded reconstruction, current Issues and prerequisites |
 | [Read the documentation](docs/README.md) | Tutorials, task guides, reference and explanation |
 
 ## Two tracks, one goal
@@ -44,6 +44,14 @@ Megabonk main menu, and manual menu input was confirmed. Gameplay entry failed
 during loading. Verification of Rosetta independence across all required host
 processes and libraries, Steamworks integration and gameplay qualification remain
 pending. Follow [the native integration work (#11)](https://github.com/postmelee/pear/issues/11).
+
+Native source development now has accepted Wine, FEX, DXMT and common
+runtime owners through [Task #56](https://github.com/postmelee/pear/issues/56). The
+[developer guide](docs/development/rosetta-free.md#split-native-development-components)
+links the private component sources and distinguishes completed reconstruction
+from the completed development-selector checks and remaining game qualification.
+The selector's seven fresh synthetic cases and metadata recovery passed; this
+work did not copy or execute Megabonk.
 
 Megabonk is the first validation game. Selecting another game in Steam does not
 establish compatibility. [Recorded results](docs/compatibility/records.md) retain

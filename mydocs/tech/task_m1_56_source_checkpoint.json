@@ -1,0 +1,1304 @@
+{
+  "schema_version": 1,
+  "status": "isolated_import_accepted_by_original_source_owner; authority_cutover_pending",
+  "date": "2026-10-15",
+  "pear_source_checkpoint": "951264bf5be4b9d2afb87320f5fac74778b2dd58",
+  "pear_task_base": "bcd27806da5c9885cfcf40e639ae02b2c400e3c1",
+  "upstream": {
+    "wine": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+    "fex": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+    "dxmt": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67"
+  },
+  "changed_source_units": [
+    {
+      "component": "wine",
+      "path": "configure",
+      "sha256": "acf2d62208f396208ed812cf7b27246685a541410ec98f1ef89102bc3bb1e217",
+      "size_bytes": 745684,
+      "patch_ids": [
+        "runtime/wine/patches/0001-darwin-loader-layout.patch",
+        "runtime/wine/patches/0003e-darwin-pe-publication.patch",
+        "runtime/wine/patches/0003l-native-architecture-policy.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "configure.ac",
+      "sha256": "c7e40ccb0a8a61c5d940c2c9c43ca37a091eaf38a2faed19a043e0be7d292ec7",
+      "size_bytes": 154066,
+      "patch_ids": [
+        "runtime/wine/patches/0001-darwin-loader-layout.patch",
+        "runtime/wine/patches/0003e-darwin-pe-publication.patch",
+        "runtime/wine/patches/0003l-native-architecture-policy.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/Makefile.in",
+      "sha256": "31cc3f52a7d258e88d19b42a014bdbb4fd102ff057e5d8d5424d6fa7281ca139",
+      "size_bytes": 1818,
+      "patch_ids": [
+        "runtime/wine/patches/0003a-native-api-fixtures.patch",
+        "runtime/wine/patches/0003e-darwin-pe-publication.patch",
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch",
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/loader.c",
+      "sha256": "1f9e4b5ae2192d60230f7c14c429ae9652ed153f66ebcbcfc576d705f0cb0230",
+      "size_bytes": 180134,
+      "patch_ids": [
+        "runtime/wine/patches/0003f-pe-import-lifetime.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/ntdll.spec",
+      "sha256": "73981dd70ec38f032d7d54bb0f91d5142c57e103f287ed2bed242930658e362e",
+      "size_bytes": 88253,
+      "patch_ids": [
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch",
+        "runtime/fex/patches/integration/0004e-export-ec-owner-bridge.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/ntdll_misc.h",
+      "sha256": "31244a2730f977c1228dfcbac4e2e611ec30b31c069ccf71af87a2e2e55f6ed8",
+      "size_bytes": 8522,
+      "patch_ids": [
+        "runtime/fex/patches/integration/0004d-bind-translator-and-jit-bitmap.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/pear_fex_memory.c",
+      "sha256": "99050d8e45e52f93ef05180ed6c41e43adba7f9d1e273eafbcabda7dbe2beb6f",
+      "size_bytes": 7017,
+      "patch_ids": [
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch",
+        "runtime/fex/patches/integration/0004d-bind-translator-and-jit-bitmap.patch",
+        "runtime/wine/patches/0005-fex-caller-without-loader-lock.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/signal_arm64ec.c",
+      "sha256": "f740d06191d762008e0a926339a054e032e8b2b89b4ceb7772471c6b7514e010",
+      "size_bytes": 108332,
+      "patch_ids": [
+        "runtime/fex/patches/integration/0004d-bind-translator-and-jit-bitmap.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/env.c",
+      "sha256": "a02b358df08d35526124a415ab0f875de311f8987e5ef8c386fabd69fa749d40",
+      "size_bytes": 86446,
+      "patch_ids": [
+        "runtime/wine/patches/0003g-relocated-main-startup.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/loader.c",
+      "sha256": "cec2d1a1e00131a02750046bea52a7931a5ee3bf8e470a7b22dea763e72172cc",
+      "size_bytes": 81036,
+      "patch_ids": [
+        "runtime/wine/patches/0001-darwin-loader-layout.patch",
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch",
+        "runtime/wine/patches/0003a-native-api-fixtures.patch",
+        "runtime/wine/patches/0003h-spawn-input-diagnostics.patch",
+        "runtime/wine/patches/0003i-owned-exec-environment.patch",
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch",
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_abi_fixture.c",
+      "sha256": "80836d204a101c52f2921212f015ffe5089b8e06a8303b31d8b27b268ebd027c",
+      "size_bytes": 6104,
+      "patch_ids": [
+        "runtime/wine/patches/0003a-native-api-fixtures.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_fex_memory.c",
+      "sha256": "f0435fb10b5062eb9ff922dc8445836537d2942e0a5321f68d14529e36dcd1ed",
+      "size_bytes": 50375,
+      "patch_ids": [
+        "runtime/fex/patches/memory/0003a-wine-owner-core.patch",
+        "runtime/fex/patches/memory/0003ah-wine-metadata-observation.patch",
+        "runtime/fex/patches/integration/0004r-ec-readonly-metadata.patch",
+        "runtime/wine/patches/startup/0001-owner-timeout-observation.patch",
+        "runtime/wine/patches/startup/0002-owner-thread-identity-observation.patch",
+        "runtime/wine/patches/startup/0007-registration-observation.patch",
+        ".build/task11/d27-source5/pear_fex_memory.c.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_fex_memory_private.h",
+      "sha256": "6deec3f8deecfffe6d39f418fead96706483abaafda60d37405b262fa102e1c3",
+      "size_bytes": 2979,
+      "patch_ids": [
+        "runtime/fex/patches/memory/0003a-wine-owner-core.patch",
+        "runtime/fex/patches/memory/0003ah-wine-metadata-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_pe_arena.c",
+      "sha256": "4b91a66df05791bba2d454dd5c3c2131a3dffea339f9608db29c9ed68457d6de",
+      "size_bytes": 71063,
+      "patch_ids": [
+        "runtime/wine/patches/0003e-darwin-pe-publication.patch",
+        "runtime/wine/patches/0003n-complete-security-cookie-field.patch",
+        "runtime/wine/patches/0004-darwin-dynamic-memory.patch",
+        "runtime/fex/patches/memory/0003a-wine-owner-core.patch",
+        "runtime/fex/patches/memory/0003ah-wine-metadata-observation.patch",
+        "runtime/fex/patches/integration/0004a-validated-pe-role-reader.patch",
+        "runtime/fex/patches/integration/0004b-select-arm64x-staging.patch",
+        "runtime/fex/patches/integration/0004c-publish-role-aware-images.patch",
+        "runtime/fex/patches/integration/0004g-native-arm64x-selection.patch",
+        "runtime/wine/patches/gameassembly/0001-admission-diagnostics.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_pe_arena.h",
+      "sha256": "dccb37fd2f3506ac95539f8c084860f426b338976862e734b6e307df87a228a3",
+      "size_bytes": 3978,
+      "patch_ids": [
+        "runtime/wine/patches/0003e-darwin-pe-publication.patch",
+        "runtime/wine/patches/0003m-relocation-fixture-capacity.patch",
+        "runtime/wine/patches/0004-darwin-dynamic-memory.patch",
+        "runtime/wine/patches/0005a-window-fixture-capacity.patch",
+        "runtime/fex/patches/memory/0003a-wine-owner-core.patch",
+        "runtime/fex/patches/integration/0004a-validated-pe-role-reader.patch",
+        "runtime/fex/patches/integration/0004c-publish-role-aware-images.patch",
+        "runtime/wine/patches/gameassembly/0001-admission-diagnostics.patch",
+        "runtime/wine/patches/gameassembly/0002-image-admission.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_query_context.h",
+      "sha256": "0dc3162fbe314b69776e8bb99a9244552fb754ce2b3c94650d2c4d85eac10976",
+      "size_bytes": 262,
+      "patch_ids": [
+        "runtime/wine/patches/startup/0005-query-saved-context.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/pear_signal_fixture.c",
+      "sha256": "cadae5facb0185304e55daf363c8b1efd59d3a4969ca8908ab4b7d8a3c77b4f7",
+      "size_bytes": 16590,
+      "patch_ids": [
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/process.c",
+      "sha256": "ade5a827d570e305efec238108ff3a178ea8d231592564073dc5d51dec85f050",
+      "size_bytes": 66903,
+      "patch_ids": [
+        "runtime/wine/patches/0003b-owned-api-processes.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/server.c",
+      "sha256": "14b0d54d74a7c992ceebeb57c2fec2b05ca53bfa8b9ef698b126d06d77c76617",
+      "size_bytes": 69709,
+      "patch_ids": [
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch",
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/signal_arm64.c",
+      "sha256": "fbd5f053720a72bc1531138e728fc8d756e67446c986494c6ee83d3f20ca31de",
+      "size_bytes": 97575,
+      "patch_ids": [
+        "runtime/wine/patches/0003-darwin-x18-transitions.patch",
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch",
+        "runtime/wine/patches/0006-system-thread-exception-order.patch",
+        "runtime/fex/patches/integration/0004p-native-context-resume-observation.patch",
+        "runtime/wine/patches/startup/0003-signal-resume-observation-gate.patch",
+        "runtime/wine/patches/startup/0005-query-saved-context.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/stage4_protocol.h",
+      "sha256": "fed6aec99834a1960e3a4ef4e116879fb64a0d7b019d84300c7cd82022635555",
+      "size_bytes": 2431,
+      "patch_ids": [
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/thread.c",
+      "sha256": "8ad51c83cfab8a30c844a9e90032e3cd89092e1c4b56ca80ed18908709192b24",
+      "size_bytes": 102831,
+      "patch_ids": [
+        "runtime/wine/patches/0004a-darwin-thread-signal-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unix/virtual.c",
+      "sha256": "f73cad94b62aea7511eed8bf2f95e9dc5b1e5665497baa4251370d9399f6e793",
+      "size_bytes": 311351,
+      "patch_ids": [
+        "runtime/wine/patches/0003c-native-pe-startup.patch",
+        "runtime/wine/patches/0003d-pe-protection-failure.patch",
+        "runtime/wine/patches/0003e-darwin-pe-publication.patch",
+        "runtime/wine/patches/0004-darwin-dynamic-memory.patch",
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch",
+        "runtime/fex/patches/memory/0003ah-wine-metadata-observation.patch",
+        "runtime/fex/patches/memory/0003ai-wine-bitmap-diagnostic-selection.patch",
+        "runtime/fex/patches/memory/0003aj-wine-view-backing-admission.patch",
+        "runtime/fex/patches/integration/0004c-publish-role-aware-images.patch",
+        "runtime/fex/patches/integration/0004d-bind-translator-and-jit-bitmap.patch",
+        "runtime/fex/patches/integration/0004h-select-first-main-image.patch",
+        "runtime/fex/patches/integration/0004k-image-publication-checkpoints.patch",
+        "runtime/wine/patches/gameassembly/0001-admission-diagnostics.patch",
+        "runtime/wine/patches/startup/0004b-query-progress-owner-scope.patch",
+        "runtime/wine/patches/startup/0005-query-saved-context.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/ntdll/unixlib.h",
+      "sha256": "2815e818d5fa34a5de251fec58899048da6440caef9b12a939dd6d35c82a25ff",
+      "size_bytes": 2153,
+      "patch_ids": [
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/win32u/window.c",
+      "sha256": "29ffaf427dd689b4ecc43a086f71a3adfb8954c845d3b255701ec1d824abd373",
+      "size_bytes": 220657,
+      "patch_ids": [
+        "runtime/dxmt/patches/0005-managed-window-surface.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/Makefile.in",
+      "sha256": "ecddb1449e51f8345e5cae78b764f7bb116054f027e95f2426ff655f24f0fa4a",
+      "size_bytes": 891,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch",
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/cocoa_app.m",
+      "sha256": "05037cecb2278e45fe24576f2720e6343b8ba1ec255f414761040d5270955ddf",
+      "size_bytes": 103890,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/cocoa_event.m",
+      "sha256": "bd6caaf1d052164586d3fc643aca199392016b1bb11d963a12c6e7572762a438",
+      "size_bytes": 26302,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/cocoa_main.m",
+      "sha256": "59c0daf5029b053d63ad23b55932382aed282b1d7a5571ebb196c27231c7492a",
+      "size_bytes": 7623,
+      "patch_ids": [
+        "runtime/wine/patches/0006a-cocoa-startup-request-lifetime.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/cocoa_window.m",
+      "sha256": "287724940e792c7af070135aad4ce8663a4ae02bf54be26969f5279a8a7522c0",
+      "size_bytes": 138516,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch",
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/event.c",
+      "sha256": "4e1f356dfee936496e88526bd806ad29c10447005073869dabf484673b9f7174",
+      "size_bytes": 16819,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/macdrv.h",
+      "sha256": "c1ab92b1ef140b82ce71442d8c8a7c6fe73530db6688976f262fc3414233b9ec",
+      "size_bytes": 16763,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/macdrv_main.c",
+      "sha256": "f3f5d3a5d39b9526be82106065e3ac1e722757802006485451bea6d11c20ba67",
+      "size_bytes": 20829,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch",
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_dxmt/winemetal.h",
+      "sha256": "0602671b1a3dd3994dfa12492ec1dfb4001e02534f2b7429949eea840ec8940c",
+      "size_bytes": 64158,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_dxmt/winemetal_thunks.h",
+      "sha256": "c424046b565f99e0b99cf8aa95c28008c64d5812dd1c0d6d15753aab76445215",
+      "size_bytes": 9125,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_macdrv_metal_v1.h",
+      "sha256": "7a19ce6b49c19ab7603ff875d6e9d92ababa92dd1202fb3c912f02c2f6e5275d",
+      "size_bytes": 1684,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_macdrv_metal_v2.h",
+      "sha256": "c2da86219c1c90939339c39086b24d68a86d672cf72f239a88df3ac402be0eb9",
+      "size_bytes": 925,
+      "patch_ids": [
+        "runtime/dxmt/patches/0005-managed-window-surface.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_metal_bridge.m",
+      "sha256": "5f76acbd41a0f7bf7005972ee086644de34045632d509e554c2b18bb17affded",
+      "size_bytes": 11635,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch",
+        "runtime/dxmt/patches/0004-presentation-registry-observation.patch",
+        "runtime/dxmt/patches/0005-managed-window-surface.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_metal_control.c",
+      "sha256": "b3b7838d7aa1e5728dfc568ab1b7f73edf95b0e199491ce24fd2bd4dbd19432c",
+      "size_bytes": 340,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_metal_pairing.m",
+      "sha256": "dca814eb250212bf3e0983baba7aac63edf4d55000938ca07e122e7e7d948eb4",
+      "size_bytes": 19558,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch",
+        "runtime/dxmt/patches/0007-managed-surface-controls.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_metal_protocol.h",
+      "sha256": "64354b4685d66a22e7c565b20f30a1386bfa7e22c0220de9219ff78a9dbece91",
+      "size_bytes": 721,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_surface_owner.h",
+      "sha256": "6301219112fe68265815f7c0565602b6baedf55525b6f9d5486ccbc7468958c1",
+      "size_bytes": 5710,
+      "patch_ids": [
+        "runtime/dxmt/patches/0005-managed-window-surface.patch",
+        "runtime/dxmt/patches/0007-managed-surface-controls.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_window_control.c",
+      "sha256": "2cb1c0da0f9eac5f1d8c63a24ed74a2e6ed0f37d6f8fdf0c5d718afece057a44",
+      "size_bytes": 316,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/pear_window_fixture.m",
+      "sha256": "34124c67632916b0f9ef5437a3c8e874deec32ee242903c85ffade688cb00ed1",
+      "size_bytes": 28452,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/stage5_census.h",
+      "sha256": "2abc01e678e964c7d45c097f73ad6c2714ac65ae5c1e18453bf97d35786dd226",
+      "size_bytes": 6853,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/stage5_protocol.h",
+      "sha256": "bb2990f08bdf693b9223a7d1271723c2915fa87dface3fe39e8771c6f93201e5",
+      "size_bytes": 3728,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/unixlib.h",
+      "sha256": "54bcf19a48355409cb8c770bdab0a011914aef8195c37a14d8aeba46b0f99bdc",
+      "size_bytes": 1823,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch",
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/window.c",
+      "sha256": "6477b9b73f433bb5c5435713940c95e933473d9f0145f7250b6297363294513d",
+      "size_bytes": 73092,
+      "patch_ids": [
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch",
+        "runtime/dxmt/patches/0005-managed-window-surface.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "dlls/winemac.drv/winemac.drv.spec",
+      "sha256": "593d9d7e1ed438a7b6352b9e0c0fedd102037f927a4ce52d980b4a737daef1a5",
+      "size_bytes": 72,
+      "patch_ids": [
+        "runtime/wine/patches/0005-darwin-mac-driver-observation.patch",
+        "runtime/dxmt/patches/wine/0001-typed-metal-lease.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "include/Makefile.in",
+      "sha256": "7b0dd9c2957aacb944185e7ac039c990b25bd4fbf6718e4ab01e7b1051724b53",
+      "size_bytes": 22138,
+      "patch_ids": [
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch",
+        "runtime/wine/patches/0003b-owned-api-processes.patch",
+        "runtime/fex/patches/memory/0003b-wine-owner-bridge.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "include/wine/pear_bootstrap.h",
+      "sha256": "c3844ad60ea81c96952bc1abdad4328ef25973d6ac80179992358a281018b299",
+      "size_bytes": 12416,
+      "patch_ids": [
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch",
+        "runtime/wine/patches/0003b-owned-api-processes.patch",
+        "runtime/wine/patches/0003j-image-count-diagnostic.patch",
+        "runtime/wine/patches/0003k-image-observation-budget.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "include/wine/pear_fex_memory.h",
+      "sha256": "a089b475fe6d6f2401977319eb4f0702e85c0753063f5748093131088f9f8b55",
+      "size_bytes": 8507,
+      "patch_ids": [
+        "runtime/fex/patches/memory/0003a-wine-owner-core.patch",
+        "runtime/fex/patches/memory/0003ah-wine-metadata-observation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "include/wine/pear_stage3.h",
+      "sha256": "2523601a29896a098049128c91a56381fff297403626d8a93bff0fc6021a859e",
+      "size_bytes": 6724,
+      "patch_ids": [
+        "runtime/wine/patches/0003b-owned-api-processes.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "loader/main.c",
+      "sha256": "75824fbfbdce2adceefc736cad1de70d1fa01bf38e7f695a5dff4da64ee04617",
+      "size_bytes": 6613,
+      "patch_ids": [
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch",
+        "runtime/wine/patches/0003b-owned-api-processes.patch",
+        "runtime/wine/patches/0004-arm64-native-heap-reservation.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "server/Makefile.in",
+      "sha256": "1db7fadbda0e66a1f9f600d66bef1b85f28f38e9a80f3b9e7120ccd753dc3240",
+      "size_bytes": 901,
+      "patch_ids": [
+        "runtime/wine/patches/0003l-native-architecture-policy.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "server/main.c",
+      "sha256": "bb024e4d41b68427782d2bf85420f258bd2358ea7e06aa261c9803674eab3acb",
+      "size_bytes": 7896,
+      "patch_ids": [
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "server/registry.c",
+      "sha256": "c93b57df78d5394952baf227efb0beb3f6be375fdbb1cf94837758b9b45d98b1",
+      "size_bytes": 75803,
+      "patch_ids": [
+        "runtime/wine/patches/0003l-native-architecture-policy.patch"
+      ]
+    },
+    {
+      "component": "wine",
+      "path": "server/thread.c",
+      "sha256": "56b3493c9e65fc52af26a910fb207553286888f120452b98148f74b1c1e12fe7",
+      "size_bytes": 79505,
+      "patch_ids": [
+        "runtime/wine/patches/0002-native-bootstrap-evidence.patch"
+      ]
+    },
+    {
+      "component": "fex",
+      "path": "CodeEmitter/CodeEmitter/Buffer.h",
+      "sha256": "19ee5cea1f985286be33a6bac9ffbc8b3f8d475c7164fa9a70a7656e08e1f42f",
+      "size_bytes": 4367,
+      "last_patch_node": "task5-memory-17"
+    },
+    {
+      "component": "fex",
+      "path": "CodeEmitter/CodeEmitter/Emitter.h",
+      "sha256": "080edca22cba5563e40188fd5cbf97c8d7c7cfee5fbc23713b453a74359c0243",
+      "size_bytes": 31147,
+      "last_patch_node": "task6-cpu-01"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/CMakeLists.txt",
+      "sha256": "dfcd2cb0d1406122ae875ac1d0e48bcee35658ae4ca8b2e14a28ca2ed824ce8c",
+      "size_bytes": 11494,
+      "last_patch_node": "task5-memory-40"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Config/Config.cpp",
+      "sha256": "3dfaf99dbdc0165ab8c6dead751bf5c0ba17a7dc566fe1663b7e3684d588acf4",
+      "size_bytes": 23567,
+      "last_patch_node": "task5-memory-31"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Context/Context.cpp",
+      "sha256": "a64c770f4d41e38bfe912b0afda878996d35d7bd260e03e4db8ab6b0432cf187",
+      "size_bytes": 8113,
+      "last_patch_node": "task5-memory-40"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Context/Context.h",
+      "sha256": "dd0d6dfb9fcfc82048616bbc00c16bcd711482511395dd2da5a90680adebdb3b",
+      "size_bytes": 24603,
+      "last_patch_node": "task5-memory-51"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.cpp",
+      "sha256": "8697d9be23026e780e1593b938e5338d9e83610188434a8bfd772ab4c2ea84d2",
+      "size_bytes": 22248,
+      "last_patch_node": "task5-integration-18"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/CPUBackend.h",
+      "sha256": "f29a11861d88df3e5e99ed4cdd1bc782c2adfd35c016cf11f5291015728cb59e",
+      "size_bytes": 7255,
+      "last_patch_node": "task5-integration-18"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/CPUID.cpp",
+      "sha256": "7b3d3d9f381a4ba49a7e4c23ccb923e8cdcc188f748b4712a4eae08a53c2dba5",
+      "size_bytes": 59753,
+      "last_patch_node": "task5-memory-34"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/CPUID.h",
+      "sha256": "ef46a547b04aa5428b03a5417ec35250a2fd4aff00e12b6e6033502551234613",
+      "size_bytes": 23083,
+      "last_patch_node": "task5-memory-34"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/Core.cpp",
+      "sha256": "6d429b4f031e40a7c2685f428f26f6e86cb7717fc963275dcf5b15be88300165",
+      "size_bytes": 126332,
+      "last_patch_node": "generated-d36-source1"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.cpp",
+      "sha256": "10914dec18d3d18c11a6787ac8fc709eb8b1fb4f5a96f89e93515e6a8f011c2e",
+      "size_bytes": 107278,
+      "last_patch_node": "task5-memory-54"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/Dispatcher/Dispatcher.h",
+      "sha256": "4703030c454aa3b20d461ce9b41dda7778491c187661d77b7bc28958c06529f4",
+      "size_bytes": 8087,
+      "last_patch_node": "task5-memory-51"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/JIT/BranchOps.cpp",
+      "sha256": "bb21dec457093e43ce3c17f75bb3545f366bb81c6a203c903176ea0a7b58fad4",
+      "size_bytes": 16938,
+      "last_patch_node": "task5-integration-23"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/JIT/JIT.cpp",
+      "sha256": "d28372ed5bd82f156aa57491aa255c261ffebdf0f825e12413b595c812071b20",
+      "size_bytes": 83838,
+      "last_patch_node": "generated-d26-game-source1"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/JIT/JITClass.h",
+      "sha256": "69d9a9bb0e7de4e801871a0b73602ab33f9a7c09c64590d4d4d8e4328f1ee3e7",
+      "size_bytes": 25425,
+      "last_patch_node": "generated-d26-game-source1"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/JIT/MiscOps.cpp",
+      "sha256": "456db664c2ceb3d83f4d90acbf9aa54e05319c7e842bbdef7e5888f3b761e64e",
+      "size_bytes": 13053,
+      "last_patch_node": "generated-d26-game-source1"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/LookupCache.cpp",
+      "sha256": "ac5cabe4a257920eb79f91c16ad8b9c539470690b2329f3316749f5ac57cdab4",
+      "size_bytes": 6599,
+      "last_patch_node": "task5-memory-38"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/LookupCache.h",
+      "sha256": "01e8616f208521ca01091487bc5ff213773829cf2513dfa9d16066f97b001a7d",
+      "size_bytes": 22116,
+      "last_patch_node": "task5-memory-35"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/PearJITLinkLayout.h",
+      "sha256": "6224e0a5256534708f06595f86ad9e6bfb29d9b65771eee9189f59af0e3f0a37",
+      "size_bytes": 4412,
+      "last_patch_node": "task5-memory-08"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/PearJITLinkTickets.h",
+      "sha256": "c8128c73685c5341e64b46487c0c6eb517edc7742adb87708cbea47ad1eff338",
+      "size_bytes": 4382,
+      "last_patch_node": "task11-startup-15"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.cpp",
+      "sha256": "4bff016111f61f43b79df977c2f55139a75fe8dc0689fb0e7f02c46f62678019",
+      "size_bytes": 26174,
+      "last_patch_node": "task11-startup-10"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/PearJITLinks.h",
+      "sha256": "b4e70e8385cfbadf64389b6dd57376bb96629196ca4cb49c857d0c78981d2f81",
+      "size_bytes": 3572,
+      "last_patch_node": "task5-memory-08"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/PearJITMetadata.h",
+      "sha256": "20431878e7e975bffd6b6060db3678a6623b9b60845208a1cd86d5fb2f5c2ff7",
+      "size_bytes": 2628,
+      "last_patch_node": "task5-memory-05"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.cpp",
+      "sha256": "8fec80eef79c9662ef76dd72054ed3d97b11c3c2c9baf2566547b5aafd680657",
+      "size_bytes": 10518,
+      "last_patch_node": "task5-memory-40"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/Core/SharedCodeBufferManager.h",
+      "sha256": "39e638d9ce84ce69db1977aaf97e2a307b50e0655a5d7c016f7b83833f651e79",
+      "size_bytes": 6897,
+      "last_patch_node": "task5-memory-17"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/IR/PassManager.cpp",
+      "sha256": "b5d318ffc0cd909293f3a80966498952cae206c97851ba2f40fa36e9cd6c5599",
+      "size_bytes": 6143,
+      "last_patch_node": "task5-memory-38"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/IR/PassManager.h",
+      "sha256": "d0a7841d0286b8019faac1ebf8e03531ab4efcbb39c6fc4b2499eef6410cb270",
+      "size_bytes": 3394,
+      "last_patch_node": "task5-memory-35"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/IR/Passes.h",
+      "sha256": "4535c50bec0bf39e2e3b0fa31e06a806b140ed05c37e0ea663007482610803ec",
+      "size_bytes": 896,
+      "last_patch_node": "task5-memory-35"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp",
+      "sha256": "1d921a6dbe67522ea35940fd32077d92117358f9b784f7f3ab9c971ea8327fa8",
+      "size_bytes": 23183,
+      "last_patch_node": "task5-memory-35"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/IR/Passes/RegisterAllocationPass.cpp",
+      "sha256": "c27b5fb49ad6836f45803e7ee029c68339a2aff919b189d1e7729c255bcabb23",
+      "size_bytes": 29236,
+      "last_patch_node": "generated-d26-game-source1"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Interface/IR/Passes/x87StackOptimizationPass.cpp",
+      "sha256": "6443c3f1bad6f00f3a4bd388292843820430e15dfbf4912aebf433eeab21d70b",
+      "size_bytes": 42463,
+      "last_patch_node": "task5-memory-35"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Utils/AllocatorHooks.cpp",
+      "sha256": "f9a458113b45568652ccebd8d04640bf51583e2507e733c74d31a7fa80fad67f",
+      "size_bytes": 6402,
+      "last_patch_node": "task5-memory-40"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+      "sha256": "f039cee1108279645e72769d56fcfb1b5751889b622d24a64b5b531d4cfee5c2",
+      "size_bytes": 80018,
+      "last_patch_node": "task5-memory-15"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64InstructionConstants.h",
+      "sha256": "7f6a789075544099408e373a98511b796a712912265ac334a92129331e9d9d64",
+      "size_bytes": 3789,
+      "last_patch_node": "task5-memory-11"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Utils/ArchHelpers/Arm64Preparation.h",
+      "sha256": "db39e4ade63756c134609bc79f12a2bb730f0978f4af9dc82820f37b0bce5566",
+      "size_bytes": 3573,
+      "last_patch_node": "task5-memory-11"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Utils/PearEmptyObjectStorage.cpp",
+      "sha256": "4094c7633ea0da4ee032fe223eeea35e8f1fbd68029632833ad9f41ac26091c9",
+      "size_bytes": 3171,
+      "last_patch_node": "task5-memory-44"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/Source/Utils/PearFEXRetirement.cpp",
+      "sha256": "af78eadf5bb4275b466c5e84dfbfda42e701c61f0fe81a4cdcb58960fd53aac6",
+      "size_bytes": 3644,
+      "last_patch_node": "task11-startup-06"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Config/Config.h",
+      "sha256": "db67ac76ef6146bb587d7df7c69457681ec83de8b3fb6bcf1a39a1282d9ccbf4",
+      "size_bytes": 12042,
+      "last_patch_node": "task5-memory-31"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Config/PearConfigAllocator.h",
+      "sha256": "fe9b0d5fdca9c198738fcec9f86cb09a50a60257d2ce2bb1a88f83bc8d50ad77",
+      "size_bytes": 2886,
+      "last_patch_node": "task5-memory-31"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Core/Context.h",
+      "sha256": "f88ecdb960b1664402e6fa22f9dc2c50c26d332dd23a395b2ccefea4f8098eb0",
+      "size_bytes": 12269,
+      "last_patch_node": "task11-startup-03"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Core/HostFeatures.h",
+      "sha256": "89ac64af3346457a18fa635112e3d26e8263dcbf107a84c08f6e7ad85a15ba9d",
+      "size_bytes": 3288,
+      "last_patch_node": "task5-services-02"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Debug/InternalThreadState.h",
+      "sha256": "08ab6d391701355f4356c508f3bb8e5abd0a6e52360808d3c7f518935d2dc142",
+      "size_bytes": 4125,
+      "last_patch_node": "task5-memory-16"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/AllocatorHooks.h",
+      "sha256": "8bede143837bf3902f23f928b56217f9f22b6c95eb30c8932d47929ec152756a",
+      "size_bytes": 7397,
+      "last_patch_node": "task5-memory-26"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/ArchHelpers/Arm64.h",
+      "sha256": "0e413f8e9e895bc1ffb048d7f2c4d8a9d78384ed5370606da398e7d43b447380",
+      "size_bytes": 2321,
+      "last_patch_node": "task5-memory-11"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/PearDataMemory.h",
+      "sha256": "4e9f94cc78fda875a6eab2e06483435de2468efb870e3a46097d020f855c1a60",
+      "size_bytes": 1367,
+      "last_patch_node": "task5-memory-38"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXLinks.h",
+      "sha256": "1cba741536eef82fd7fdee4e1ecad8c85883ea67297c6b968dcd881bb2cd3b26",
+      "size_bytes": 2500,
+      "last_patch_node": "task5-integration-10"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXMemory.h",
+      "sha256": "532f1b06365a3d65f719c6f1ce0df3d5431e3d51bed0fdddb3270fdfbca4b65d",
+      "size_bytes": 16776,
+      "last_patch_node": "task11-startup-03"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/PearFEXRetirement.h",
+      "sha256": "1edc6cf02d96adc20be530219f98943a3b89f7acb5d2adfc208f148c56979e11",
+      "size_bytes": 8506,
+      "last_patch_node": "task5-memory-03"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/Utils/PearSourceGuard.h",
+      "sha256": "f39c5b7957091b0ba2cf49a492eec3ac6259501a511147614bc30276468fd674",
+      "size_bytes": 2331,
+      "last_patch_node": "task5-memory-17"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/fextl/memory.h",
+      "sha256": "c8fade6eb37b9526e0a6e516cb2f5e39c9ad1d18bb88f398a6d605506c6d2553",
+      "size_bytes": 1370,
+      "last_patch_node": "task5-memory-40"
+    },
+    {
+      "component": "fex",
+      "path": "FEXCore/include/FEXCore/fextl/memory_resource.h",
+      "sha256": "e441ca2dacaaeb28d03b81ea8e51a16067670499ff28390395279bb925910eeb",
+      "size_bytes": 5725,
+      "last_patch_node": "task5-memory-25"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Common/Config.cpp",
+      "sha256": "b06a8f3812446bd90f4aaf826e1ba432d6c96f86263f1410072ecd226f7d3ec2",
+      "size_bytes": 26999,
+      "last_patch_node": "task5-services-04"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Tools/CommonTools/DummyHandlers.cpp",
+      "sha256": "4fddd369e6b194e0fc63ef6c1ae4132ac25e94336a0b6ad9dd1772f46d12040c",
+      "size_bytes": 2102,
+      "last_patch_node": "task5-memory-22"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Tools/CommonTools/DummyHandlers.h",
+      "sha256": "a7bbe3aadf0b2f0b895a546f3ea6409347d60ff431f440d5508de4ae6c266d23",
+      "size_bytes": 1826,
+      "last_patch_node": "task5-memory-22"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/ARM64EC/CMakeLists.txt",
+      "sha256": "a6adab38815d97d22b55d4e0f79c72054510e85041fa89a1de85d77bf08e5c09",
+      "size_bytes": 704,
+      "last_patch_node": "task5-services-03"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/ARM64EC/Module.S",
+      "sha256": "ecf58cfaebfb7214ce4ec6a41364827225de4da4bc4371c05b59eb94f70bc11d",
+      "size_bytes": 8037,
+      "last_patch_node": "task5-integration-05"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/ARM64EC/Module.cpp",
+      "sha256": "8b61138b67361230ebda3bca24eb95a98e5216e6495c7dca26d5a76b9b48160d",
+      "size_bytes": 103449,
+      "last_patch_node": "generated-d36-source1"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/CMakeLists.txt",
+      "sha256": "097934c05a0fc551ce79e1015e5d3f28d86381570f0753c6daa640ed568d2720",
+      "size_bytes": 1630,
+      "last_patch_node": "task5-memory-23"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/CMakeLists.txt",
+      "sha256": "5efb5cebe2ea5011ead0cfe3e27b9721e8dc3dde75cbfc5c1a129a89ff693568",
+      "size_bytes": 2104,
+      "last_patch_node": "task5-memory-43"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/CPUFeatures.cpp",
+      "sha256": "6ac1c8dff1295e7bc9b32225682a6e7e92e3ed57562316cd92f634556432e79a",
+      "size_bytes": 8365,
+      "last_patch_node": "task5-services-02"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/CRT/Misc.cpp",
+      "sha256": "41946004123dc79da6c2d8d365f56ec1366b38e5cea12a12481bd14b0c7109e0",
+      "size_bytes": 7519,
+      "last_patch_node": "task5-memory-27"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/CRT/PearCheckedEnvironment.h",
+      "sha256": "ec96b961925118ce4878f9b3f7cce314aa75c140bf599234d651f3803a2cea39",
+      "size_bytes": 969,
+      "last_patch_node": "task5-memory-21"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/DarwinConfigPolicy.cpp",
+      "sha256": "6a0d801be1f77abe01a2605a9b04a13ae156f85dd4554d30ca48d1af52d26dd3",
+      "size_bytes": 2000,
+      "last_patch_node": "task5-memory-06"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/DarwinConfigPolicy.h",
+      "sha256": "24a09f91b100112da8076fa5099929e80e0ad44e1882e4feb795fb49986904d3",
+      "size_bytes": 2032,
+      "last_patch_node": "task5-memory-06"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/InvalidationTracker.cpp",
+      "sha256": "2f6c3c801da432fe3a8a1529df013690f1a261cb87f1c5b3d6ca013aa84a001c",
+      "size_bytes": 15176,
+      "last_patch_node": "task5-integration-02"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/InvalidationTracker.h",
+      "sha256": "bddbd92cbee13eb5709fd84e1bd47e29de665192c3ed05fd9e3ecf2ef23298ba",
+      "size_bytes": 3454,
+      "last_patch_node": "task5-integration-02"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/OvercommitTracker.h",
+      "sha256": "cb0d569bd1f9189160da36fd3f74af510e6a4016072bc0c76859923ae45bfea7",
+      "size_bytes": 3223,
+      "last_patch_node": "task5-integration-06"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/PearFEXMemory.cpp",
+      "sha256": "380ca354c1d424fb8f94278f834e81e339a8008a5d1c43b89e16d3376edf3f7f",
+      "size_bytes": 108871,
+      "last_patch_node": "generated-d36-source1"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/Common/WinAPI/Alloc.cpp",
+      "sha256": "319e789426f98f4a607e8f6ab7b063f824b36661ae3c3f663c36503b84463681",
+      "size_bytes": 8402,
+      "last_patch_node": "task8-fex-01"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/CMakeLists.txt",
+      "sha256": "e9202b3af6a6c0255e568216ac28eeb7584a477591314e20c4744c6af29d77b6",
+      "size_bytes": 1070,
+      "last_patch_node": "task5-memory-23"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.cpp",
+      "sha256": "4906d7d58cb7200e4ee537b55ea392394114d633b7b7d1ed787a9d9dd729c008",
+      "size_bytes": 26540,
+      "last_patch_node": "task5-memory-49"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/CheckedCRT.h",
+      "sha256": "9a6e7978bf35691562020cee4ce08fc0ca1050e313ba160a6e9777710a905180",
+      "size_bytes": 1834,
+      "last_patch_node": "task5-memory-48"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/Fixture.cpp",
+      "sha256": "a564d8821d5ec0ba92eca440fab1d3aa2c7e4d5efda0af1d7f89e0daf2bbaf21",
+      "size_bytes": 12417,
+      "last_patch_node": "task5-memory-64"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/Fixture.def",
+      "sha256": "42c3727c1473d7e43da199c6949c3d65b6fd2c502ddae667bc321633ba9521ca",
+      "size_bytes": 59,
+      "last_patch_node": "task5-memory-23"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/PearEmptyInitProof.h",
+      "sha256": "931ef3c21508c13bb5b3f8a0410d00de9e9dae4eb2d258b09efa553e45458aaa",
+      "size_bytes": 1798,
+      "last_patch_node": "task5-memory-85"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/PearEmptyInit/Report.h",
+      "sha256": "9360ef88c8e6857583023c9813d0dd8a5157dc3838de394d248ff4dc495a8381",
+      "size_bytes": 2040,
+      "last_patch_node": "task5-memory-23"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/UnixLib/CMakeLists.txt",
+      "sha256": "6e51fd10338f8cd3868f985a5ae68b955ad42e371aa737792314df52cdbcbe66",
+      "size_bytes": 698,
+      "last_patch_node": "task5-services-01"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/UnixLib/FEXUnixLib.h",
+      "sha256": "546d82072faebb63206ccc131086a5d585f8fd7ae32c70f44a86b4fb544588b5",
+      "size_bytes": 1637,
+      "last_patch_node": "task5-services-01"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/UnixLib/FEXUnixLibDarwin.cpp",
+      "sha256": "6b9e52f9a4951752ca0d6606c4109283d13d621e784255ba0553ff8e980f66e8",
+      "size_bytes": 5161,
+      "last_patch_node": "task5-services-01"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/WOW64/CMakeLists.txt",
+      "sha256": "55e3d82783941a76d0337dc553a129b46c577f9842bfedb50ce7c93dfff416cc",
+      "size_bytes": 688,
+      "last_patch_node": "task5-services-03"
+    },
+    {
+      "component": "fex",
+      "path": "Source/Windows/WOW64/Module.cpp",
+      "sha256": "4a9211abb2155c1d633ac4d52d7dd49fa4727771d97c10f7e0ff540529e9f221",
+      "size_bytes": 49398,
+      "last_patch_node": "task5-memory-16"
+    },
+    {
+      "component": "fex",
+      "path": "Tests/Windows/PearEmptyInit/caller.cpp",
+      "sha256": "6084fe624b8a0eddefea9d39c59637df03fcd3648b02dee739d022b5c6a7623b",
+      "size_bytes": 3365,
+      "last_patch_node": "task5-memory-23"
+    }
+  ],
+  "generic_payloads": [
+    {
+      "name": "PearAbortObservation.h",
+      "sha256": "da52c81da2051d3c255dc953f1c49758d76920f065de076de2adfa53c6f324a5",
+      "owner": "runtime"
+    },
+    {
+      "name": "PearAttachObservation.h",
+      "sha256": "8d084762e3b6d58d195b91c191cce0ad4154cc41f5762671aeb6aae10ce0a854",
+      "owner": "fex"
+    },
+    {
+      "name": "PearBindingCensus.h",
+      "sha256": "1efaebc7bf521a2af1b3de5e77ebb8e74d7f65192cf564a87bfdc990b032502c",
+      "owner": "fex"
+    },
+    {
+      "name": "PearBindingCensusEmit.h",
+      "sha256": "af906beb8ad6e4f70b465dca1140ebcdf100f9b8614f20ac4d1c9d846846d9d9",
+      "owner": "fex"
+    },
+    {
+      "name": "PearMismatchObservation.h",
+      "sha256": "466ff7a0a5d67580c295465decf5c21121901f7015bc825415fab0b6e5f40f5e",
+      "owner": "fex"
+    },
+    {
+      "name": "PearSlotLifetime.h",
+      "sha256": "da0a68d651adbafbebc03f196b6da2533ad1231814a03bab4d8729b10cf9f43d",
+      "owner": "fex"
+    },
+    {
+      "name": "PearSlotLifetimeMemory.inc",
+      "sha256": "87a7c0731e08f043600a048334df4187bb4a8aba0fca7652de1b9a83b6bbabd6",
+      "owner": "fex"
+    },
+    {
+      "name": "PearSlotLifetimeRuntime.inc",
+      "sha256": "a389e934d0bba22b98a3e0d1b32290e6afedc4a9dae715cc707c9a1f2e0932e9",
+      "owner": "fex"
+    },
+    {
+      "name": "PearTargetObservation.h",
+      "sha256": "99e29c2f5ab72731864b7a4e8d0fed0113f8d5362e36e946213cdf6958f6f4a2",
+      "owner": "fex"
+    },
+    {
+      "name": "PearThreadCreateObservation.h",
+      "sha256": "4e845abacb95bd4c85aee18cecbf22671ce89416c998083b63039ba4d153c041",
+      "owner": "fex"
+    },
+    {
+      "name": "PearThreadCreateRuntime.inc",
+      "sha256": "d6bfa37d532b5e0765c01801585845e45c3a970c1b3b07ce661bff2525313354",
+      "owner": "fex"
+    },
+    {
+      "name": "PearWriterObservation.h",
+      "sha256": "5087c8a87de6aac1ce8fefc89e2990c3bc88812de4e27ccce3a47fce5d5d1a1f",
+      "owner": "fex"
+    },
+    {
+      "name": "PearWriterRing.h",
+      "sha256": "7323887c88cd02dd5fb488766cdeeff489ae3b801adbdcfaf32697275faacdf3",
+      "owner": "fex"
+    },
+    {
+      "name": "PearPhaseCopy.cpp",
+      "sha256": "dcfd01c3e5cb109c37d357b94e8efd6b2b9f4364023594fc8a4b8ba987e6d4a3",
+      "owner": "fex"
+    },
+    {
+      "name": "PearPhaseJIT.inc",
+      "sha256": "2877433556c248768a559033b39d984cd919be643e4b069aa85bc77b3c47bd69",
+      "owner": "fex"
+    },
+    {
+      "name": "PearPhaseObservation.h",
+      "sha256": "18ddd49a6e7fc852c846298d16cf4e6206131caed1ff5ef9dc2fa3269027333a",
+      "owner": "fex"
+    },
+    {
+      "name": "PearPhaseRuntime.inc",
+      "sha256": "a577e5a2165354910eac610427f094c2433f6c173df9e6745151ee5023b9333f",
+      "owner": "fex"
+    }
+  ],
+  "excluded_inputs": [
+    "game-derived phase selector",
+    "owned game image/spec/roles",
+    "authentication/prefix/save state",
+    "private diagnostics and signing material"
+  ],
+  "d25_original": {
+    "sha256": "3e83e11f7806b639d091052e140a103c2d3dd0eda6187cacc9117f9aae8ab84c",
+    "size_bytes": 9057,
+    "recovered": true,
+    "executed": false,
+    "method": "Reconstructed original source declaration and three literal source edits from retained local source-edit history; exact recorded producer digest matched."
+  },
+  "prior_audit": {
+    "wine_manifest_sha256": "783c839b8ba252ca494f4ac8175f68939557efcefe643f740ca56c9b76546340",
+    "fex_manifest_sha256": "424b037c87eaadfe7efed2ba0aacf3c6846646a626ebc6a12f3cbb7ca836966d"
+  },
+  "verification_limits": [
+    "Source hashes do not prove a new full build.",
+    "Accepted/candidate history, modes, notices and ownership must be verified during import.",
+    "No runtime execution, source cutover or player qualification occurred."
+  ]
+}

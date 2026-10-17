@@ -1,0 +1,170 @@
+{
+  "base_commit": "914725732a17b9e13886bc906625df9ca9ba07b3",
+  "checks": [
+    {
+      "check": "selector-regression-final",
+      "finished_monotonic_ns": 8184653760250,
+      "finished_utc": "2026-10-17T13:04:45.009610+00:00",
+      "receipt_bytes": 1025,
+      "receipt_sha256": "74ec72672a035e61d79199e5d5400417a7d97aee4e0f0b69c98eb17eddc51cbf",
+      "returncode": 0,
+      "scope": "current source check",
+      "seconds": 6.550976167,
+      "started_monotonic_ns": 8178102784083,
+      "started_utc": "2026-10-17T13:04:38.463018+00:00",
+      "tests_run": [
+        47
+      ]
+    },
+    {
+      "check": "game-policy-regression",
+      "finished_monotonic_ns": 7962223119708,
+      "finished_utc": "2026-10-17T13:01:02.586884+00:00",
+      "receipt_bytes": 1144,
+      "receipt_sha256": "a82b2dce47e49534654f24fcc0db9930cb8a73e8bb3fbcca00b92425186589c0",
+      "returncode": 0,
+      "scope": "current source check",
+      "seconds": 1.140658375,
+      "started_monotonic_ns": 7961082461333,
+      "started_utc": "2026-10-17T13:01:01.446207+00:00",
+      "tests_run": [
+        133
+      ]
+    },
+    {
+      "check": "documentation-regression",
+      "finished_monotonic_ns": 8026019838458,
+      "finished_utc": "2026-10-17T13:02:06.384533+00:00",
+      "receipt_bytes": 1003,
+      "receipt_sha256": "5c9c63acf85663dbe91c10384eb8f245335ab1a9ac01747bcbddc42d0579a7c7",
+      "returncode": 0,
+      "scope": "current source check",
+      "seconds": 6.223958042,
+      "started_monotonic_ns": 8019795880416,
+      "started_utc": "2026-10-17T13:02:00.160483+00:00",
+      "tests_run": [
+        94
+      ]
+    },
+    {
+      "check": "p1-old-source-negative-control-final",
+      "finished_monotonic_ns": 8212051565375,
+      "finished_utc": "2026-10-17T13:05:12.400449+00:00",
+      "receipt_bytes": 970,
+      "receipt_sha256": "eb42ca008eef6c2e6a50c818b6d8c7b8eee691eb24fc2e3dc1c43620c0484b39",
+      "returncode": 0,
+      "scope": "expected prior-source defect",
+      "seconds": 0.434113292,
+      "started_monotonic_ns": 8211617452083,
+      "started_utc": "2026-10-17T13:05:11.966376+00:00",
+      "tests_run": [
+        1
+      ]
+    },
+    {
+      "check": "p2-old-source-negative-control",
+      "finished_monotonic_ns": 8012810937833,
+      "finished_utc": "2026-10-17T13:01:53.175441+00:00",
+      "receipt_bytes": 970,
+      "receipt_sha256": "77ba622ce1b52d3e5e6c6941025d34c6155e99b8ca0c1b7e8c3b950d979c07ea",
+      "returncode": 0,
+      "scope": "expected prior-source defect",
+      "seconds": 0.103923042,
+      "started_monotonic_ns": 8012707014791,
+      "started_utc": "2026-10-17T13:01:53.071514+00:00",
+      "tests_run": [
+        1
+      ]
+    },
+    {
+      "check": "p2-provenance-audit",
+      "finished_monotonic_ns": 7929039346708,
+      "finished_utc": "2026-10-17T13:00:29.402626+00:00",
+      "receipt_bytes": 1109,
+      "receipt_sha256": "7468be6bda9de377260cb0aadfb50c183b59308a9d3e1898d8da44ca3520c44a",
+      "returncode": 0,
+      "scope": "current source check",
+      "seconds": 0.283941125,
+      "started_monotonic_ns": 7928755405583,
+      "started_utc": "2026-10-17T13:00:29.118684+00:00",
+      "tests_run": []
+    },
+    {
+      "check": "source-notices",
+      "finished_monotonic_ns": 8070620234916,
+      "finished_utc": "2026-10-17T13:02:50.985579+00:00",
+      "receipt_bytes": 983,
+      "receipt_sha256": "e30fb8ba7f462555071e7940660b0602e5326a3be7d62131fd8978b1a2a87913",
+      "returncode": 0,
+      "scope": "current source check",
+      "seconds": 0.145911541,
+      "started_monotonic_ns": 8070474323375,
+      "started_utc": "2026-10-17T13:02:50.839665+00:00",
+      "tests_run": []
+    },
+    {
+      "check": "stage6-1-diff-check",
+      "finished_monotonic_ns": 8070702685708,
+      "finished_utc": "2026-10-17T13:02:51.068031+00:00",
+      "receipt_bytes": 895,
+      "receipt_sha256": "329237f9b2dbbb6d36b171aaae679db6f17c40a66755ead740ebcd9624017610",
+      "returncode": 0,
+      "scope": "current source check",
+      "seconds": 0.011304792,
+      "started_monotonic_ns": 8070691380916,
+      "started_utc": "2026-10-17T13:02:51.056726+00:00",
+      "tests_run": []
+    }
+  ],
+  "files": [
+    {
+      "path": "tools/development/runtime_candidate.py",
+      "sha256": "681ce999b122a6c5c2b652c0a657e147ec9f0da98731b79dbc5817f4d699821f",
+      "size_bytes": 26561
+    },
+    {
+      "path": "tests/development/test_runtime_candidate.py",
+      "sha256": "91745841affe0cd1d738d52c055ec2d1dd34dfd5e0b4c5e61a64c7680c0e3060",
+      "size_bytes": 29862
+    },
+    {
+      "path": "tools/development/game/handoff.py",
+      "sha256": "ec9daa8bfa018b2eb2f22e858091649fe433172d04ab5577dfe7fbd9941c8ff2",
+      "size_bytes": 8811
+    },
+    {
+      "path": "tests/development/game/test_manual_play_joint.py",
+      "sha256": "f25c2d9a681b72fb8a601ec4b5647972efa8ab28e79096f0544d7424ff2f9d5c",
+      "size_bytes": 11581
+    },
+    {
+      "path": "tools/development/game/import-provenance.json",
+      "sha256": "bd17b11e88046be9cc3f0cf40b01a5453650c4e2c57035ba583c29260d9592f5",
+      "size_bytes": 218625
+    },
+    {
+      "path": ".github/workflows/documentation.yml",
+      "sha256": "7ab6884cc4036ebc9326400850443a4cb63f515665dba5c7e34065cfdd3f1892",
+      "size_bytes": 6731
+    }
+  ],
+  "fixture_execution": "portable synthetic only",
+  "game_execution": false,
+  "interactive_feedback_endpoint": "not measured; no interactive runtime iteration",
+  "machine": "arm64",
+  "native_build_or_runtime_execution": false,
+  "new_live_metadata_admission": "pending Stage6.2",
+  "provenance": {
+    "new_manual_methods": 3,
+    "new_manual_scenario_cases": 7,
+    "new_selector_methods": 9,
+    "origin_file_records_preserved": 21,
+    "original_destination_units_verified": 149,
+    "original_manual_joint_bodies_unchanged": 3
+  },
+  "python": "3.14.4",
+  "schema_version": 1,
+  "scope": "task56_pr58_stage6_1_source_remediation",
+  "status": "passed",
+  "timing_scope": "Serial whole-suite and source-check intervals; no per-test admission/build phases or runtime performance inference."
+}

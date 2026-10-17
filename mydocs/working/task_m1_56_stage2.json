@@ -1,0 +1,198 @@
+{
+  "task": 56,
+  "stage": 2,
+  "scope": "Local source/history import, private repository publication and portable source/contract checks",
+  "repositories": [
+    {
+      "repository": "https://github.com/postmelee/pear-wine",
+      "branch": "codex/task56",
+      "commit": "1b76db6902345388c589ba3909b22badf751dfd5",
+      "visibility": "private",
+      "remote_identity": "pending_initial_upload",
+      "source_authority": "pending_final_owner_acceptance"
+    },
+    {
+      "repository": "https://github.com/postmelee/pear-fex",
+      "branch": "codex/task56",
+      "commit": "c62ed75aa6a33809ddb76c7f40aabbe4f4fbdda6",
+      "visibility": "private",
+      "remote_identity": "verified_equal",
+      "source_authority": "pending_final_owner_acceptance"
+    },
+    {
+      "repository": "https://github.com/postmelee/pear-dxmt",
+      "branch": "codex/task56",
+      "commit": "e800e770006fc7c37831ab857000a4781c85f6fd",
+      "visibility": "private",
+      "remote_identity": "verified_equal",
+      "source_authority": "pending_final_owner_acceptance"
+    },
+    {
+      "repository": "https://github.com/postmelee/pear-runtime",
+      "branch": "codex/task56",
+      "commit": "7ae0dc29bceb6d032e89f2cecddfdceb2f15acd9",
+      "visibility": "private",
+      "remote_identity": "verified_equal",
+      "source_authority": "pending_final_owner_acceptance"
+    }
+  ],
+  "history": {
+    "at_utc": "2026-10-15T15:11:38.379111+00:00",
+    "repositories": [
+      {
+        "repository": "pear-wine",
+        "pin": "4e819f054dd2d9ee855ee3f1e30d8c1bb8f80fcf",
+        "tree": "10b47b2965a7b3e1e9694ec506a3d13525211892",
+        "shallow": "false",
+        "ancestor_count": 185803,
+        "independent": true,
+        "allocated_kib": 1702628,
+        "dependencies": []
+      },
+      {
+        "repository": "pear-fex",
+        "pin": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+        "tree": "7509ab443d32692ac72ee51c0697ccf86d0a66af",
+        "shallow": "false",
+        "ancestor_count": 15210,
+        "independent": true,
+        "allocated_kib": 180112,
+        "dependencies": [
+          {
+            "path": "External/fmt",
+            "commit": "c07e2aa4b130b4fd359a1c6455a5201b17af01fa",
+            "shallow": "false"
+          },
+          {
+            "path": "External/range-v3",
+            "commit": "ca1388fb9da8e69314dda222dc7b139ca84e092f",
+            "shallow": "false"
+          },
+          {
+            "path": "External/rpmalloc",
+            "commit": "09142d726429416bfa7b459151515fe3ab7622dd",
+            "shallow": "false"
+          },
+          {
+            "path": "External/unordered_dense",
+            "commit": "3234af2c03549bc85656bfd3a86993bf1cd8aef1",
+            "shallow": "false"
+          },
+          {
+            "path": "External/xxhash",
+            "commit": "e626a72bc2321cd320e953a0ccf1584cad60f363",
+            "shallow": "false"
+          },
+          {
+            "path": "Source/Common/cpp-optparse",
+            "commit": "9f94388a339fcbb0bc95c17768eb786c85988f6e",
+            "shallow": "false"
+          }
+        ]
+      },
+      {
+        "repository": "pear-dxmt",
+        "pin": "7c8dee1c2d73415301ceb7d1fa810861cef4cd67",
+        "tree": "c273b79a2bfa47e62e8526786559f4d18911625a",
+        "shallow": "false",
+        "ancestor_count": 1360,
+        "independent": true,
+        "allocated_kib": 20124,
+        "dependencies": [
+          {
+            "path": "include/native/directx",
+            "commit": "9df86f2341616ef1888ae59919feaa6d4fad693d",
+            "shallow": "false"
+          }
+        ]
+      }
+    ],
+    "filesystem_free_bytes": 31012356096
+  },
+  "selected_sources": [
+    {
+      "repository": "pear-wine",
+      "selected_files": 58,
+      "mismatched": [],
+      "untracked_selected": [],
+      "manifest_sha256": "2a875d84b71c057a0b19c0f0d37f7a00a6125a2fd0e06ae1573acc8082fd27f0"
+    },
+    {
+      "repository": "pear-fex",
+      "selected_files": 99,
+      "mismatched": [],
+      "untracked_selected": [],
+      "manifest_sha256": "730467cc0c0637aa05908224222a2e45502146cc19cc0b548ca9ab21d727c743"
+    },
+    {
+      "repository": "pear-dxmt",
+      "selected_files": 6,
+      "mismatched": [],
+      "untracked_selected": [],
+      "manifest_sha256": "27bb5164daca70a3558ae154bfd48c7704b42b518e2aa60f9c4924d77aeaaebd"
+    }
+  ],
+  "interfaces": [
+    {
+      "interface": "wine ABI",
+      "sha256": "a089b475fe6d6f2401977319eb4f0702e85c0753063f5748093131088f9f8b55",
+      "copy_matches": true
+    },
+    {
+      "interface": "Metal v1",
+      "sha256": "7a19ce6b49c19ab7603ff875d6e9d92ababa92dd1202fb3c912f02c2f6e5275d",
+      "copy_matches": true
+    },
+    {
+      "interface": "Metal v2",
+      "sha256": "c2da86219c1c90939339c39086b24d68a86d672cf72f239a88df3ac402be0eb9",
+      "copy_matches": true
+    },
+    {
+      "interface": "winemetal",
+      "sha256": "0602671b1a3dd3994dfa12492ec1dfb4001e02534f2b7429949eea840ec8940c",
+      "copy_matches": true
+    },
+    {
+      "interface": "thunks",
+      "sha256": "c424046b565f99e0b99cf8aa95c28008c64d5812dd1c0d6d15753aab76445215",
+      "copy_matches": true
+    },
+    {
+      "interface": "Abort",
+      "sha256": "da52c81da2051d3c255dc953f1c49758d76920f065de076de2adfa53c6f324a5",
+      "copy_matches": true
+    }
+  ],
+  "test_ownership": {
+    "total_rows": 185,
+    "unique_sources": 185,
+    "ownership_conflicts": []
+  },
+  "tests": {
+    "runtime_contract": 154,
+    "runtime_shared": 11,
+    "fex": 45,
+    "wine_source": 9,
+    "dxmt_source": 9
+  },
+  "protected": {
+    "protected_identities_checked": 29,
+    "unchanged": true,
+    "mismatches": []
+  },
+  "evidence_digests": {
+    "parent-source-import-verification.json": "52524a39c24edcd7bb1571285105e9d91bc6669df43c285ad396ea368bd6b1c7",
+    "parent-interface-verification.json": "fde24da40fdf3073731946b910198d05fcb0a87c4cc164418bc3a5a4cfb46bd9",
+    "parent-test-ownership-verification.json": "4722b2cd055227b5636cc6fc8184061e53b124a6cdccd0c138b6016e73bb1930",
+    "stage2-protected-recheck.json": "06ae601c67fbb812e356f9151ceb792592c8eaabe13459c86700b929bae6a21c",
+    "runtime-map/package-verification.json": "29940a45dbc15965688e0dd2bd050991c333c558d5b8ddc93612e9fe8eb50671",
+    "storage/bounded-reconstruction-estimate.json": "edfd9c09d3ca61d702b1966d915bcb120eb69c4a4dd15ff95804f2e0d4160754"
+  },
+  "remaining": [
+    "Wine initial upload/ref equality",
+    "Portable builds and affected host controls",
+    "Pending test/source ownership adaptations",
+    "Final source-owner cutover"
+  ]
+}

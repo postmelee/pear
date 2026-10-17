@@ -80,6 +80,24 @@ Pear owns the following contracts even when their implementations reuse upstream
 - **Validation contract:** executable tests, expected results, versioned evidence, and a definition of Rosetta-independent execution.
 - **Release contract:** source availability, notices, reproducible build procedure, artifact identity, and upgrade compatibility.
 
+Task #56 assigns source implementation to explicit repositories while retaining
+these contracts. The component links require collaborator access:
+
+| Component | Source and responsibility |
+| --- | --- |
+| [Wine](https://github.com/postmelee/pear-wine) | Native/PE Windows implementation, memory owner and wire/graphics ABI providers |
+| [FEX](https://github.com/postmelee/pear-fex) | Translator/frontend and canonical CPU source corpus |
+| [DXMT](https://github.com/postmelee/pear-dxmt) | Renderer and typed graphics consumers; reverse Metal header providers |
+| [Common runtime](https://github.com/postmelee/pear-runtime) | Compatible locks, explicit-input reconstruction, assembly, shared diagnostics and integration verification |
+| [Pear](https://github.com/postmelee/pear) | App, manager, game/account policy and development selection |
+
+The [selected reconstruction and handoff](../mydocs/report/task_m1_56_report.md) are a bounded development result using
+identified preserved lower layers. It does not establish the complete target
+architecture or player qualification. [Current developer guidance](development/rosetta-free.md#split-native-development-components)
+separates source/build pins, later test revisions, active selection and the accepted
+source-owner cutover. Accepted source ownership does not activate a runtime. Wine's memory wire ABI, the two-way Wine/DXMT header
+providers and the common diagnostic Abort schema retain distinct authorities.
+
 The initial engine is therefore a maintained integration with its own correctness and release responsibilities. It can progressively acquire original host-port or translation code without requiring a ground-up replacement of every dependency.
 
 ### 3.2 CPU and Windows boundary
