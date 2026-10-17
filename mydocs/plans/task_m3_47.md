@@ -343,3 +343,18 @@ master-only Pages deployment and public HTML. User approval covers implementatio
 PR integration and publication of this reviewed layout. No new app builds.
 Artifact lifecycle: generate a small ignored site under .build; reuse existing
 source/data; no runtime copies. Delete disposable validation output after publish.
+
+## Approved README follow-up — 2026-10-17
+
+After the requester merged PR #58, they resumed the approved README cleanup.
+Location: retain README.md as the brief public entry point; link the existing
+native developer guide and exact #56 report rather than repeat dated diagnostics.
+Change the homepage link label to Website & game reports. Summarize source
+ownership and development checks without claiming native gameplay qualification.
+Preserve #58's development-guide routing and all Preview release details.
+About homepage registration was explicitly authorized and completed.
+
+Reuse the existing documentation and report; no new subsystem or source code.
+Verify local links/governance, unchanged download URLs, and incremental notices.
+No substantial build, host execution or resource coordination is needed; temporary
+text-only verification output is disposable. Existing private evidence is untouched.
