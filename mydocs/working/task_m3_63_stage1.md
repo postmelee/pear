@@ -66,3 +66,57 @@ copy. The held unsigned release candidate is a baseline only. Next: resolve nati
 public access, local durable store/serialized transport, observer ownership and
 history/consent UI; then Sparkle integration and full signed validation. No release
 or milestone completion is claimed.
+
+
+## No-login capability experiment — 2026-10-18 follow-up
+The requester selected public collection without extra ChatGPT login, with
+per-report modification/deletion capabilities. Replaced the private-only handler,
+then deployed source 30262c1d6caaf4e8f018c6d2bf0e9f89b36f0d05 successfully as
+appgdep_6ad3b46b3c0c8191bf5ef749f9dc47c9 while private. Only afterwards changed the
+Site audience to public. The public site still accepts fixed synthetic fixtures,
+not player records. No admin/list route exists. The former unrestricted fixed-ID
+handler is no longer served. Source/schema/client snapshots are retained under
+preview/reporting-probe; the source repository remains the full build authority.
+
+Native Swift URLSession, without Site service token or ChatGPT login, verified:
+missing capability 401; create/retry 200; wrong-owner read/write/delete 404;
+revision update 200; stale revision 409; unexpected field 400; oversize 413;
+owner read/delete/repeated delete 200; deleted read 404; replay after deletion 410.
+A second native burst observed 120 rejected unauthenticated requests (401), then
+10 rate-limited requests (429). A preceding Python urllib attempt received 403
+from the network/access path and did not establish application rate behavior;
+only the native client result supports the rate claim.
+
+Capabilities are 32 cryptographically random bytes; only SHA-256 hashes stored.
+No report enumeration. Fixed-window global admission limit 120/minute, 512-byte
+body limit, maximum 64 synthetic rows, 24-hour lazy expiry. Deleted payload values
+are removed while a short tombstone prevents retry resurrection. This is an
+experiment, not production abuse resistance: global exhaustion can deny service,
+per-client limits and deployment operational quotas remain unresolved. Expiry is
+request-triggered, not a scheduled deletion promise. Synthetic payload was deleted;
+its tombstone remains until expiry cleanup. IP/access-log and backup retention
+are still unverified; do not claim anonymity or final production admission.
+
+## Durable local foundation — implementation in progress
+ReportingStore atomically saves one Codable snapshot, retains local run records
+and immutable pending payloads, rejects corrupt/unknown-schema state without
+resetting it, and blocks transport on storage failure. Main-thread coordinator
+serializes consent mutation and send admission, cancels active automatic transfers
+before withdrawal, ignores late callbacks and retains manual sharing. Reopening
+the store preserved local-only withdrawal. Tests also passed default silence,
+failed-transfer identical retry, successful acknowledgement, retained explicit note,
+out-of-space fail-closed behavior and corrupt-file preservation. If withdrawal
+cannot be persisted, the UI must explain that error; no durable-off claim is made.
+
+This uses an injected fake transport: it does not establish actual network
+cancellation, Keychain storage, production report schema, retention pruning,
+observer lifetime or app UI. Those are outstanding implementation/verification.
+The probe's contiguous revision protocol must not be copied blindly into the
+production queue: consent cancellation can skip local queued revisions. Production
+needs an acknowledged server revision/precondition and conflict handling.
+
+No signed artifacts, runtime, Steam sessions, saves or existing installations were
+modified. Prepared/source work ran about 02:40–02:53 KST; detailed monotonic phase
+baseline was not captured, and no user-operable app window was tested. Retain
+small probe sources and receipts plus existing Sites dependencies for integration;
+no full runtime copy or release publication. Both #62/#63 remain in progress.

@@ -63,8 +63,13 @@ platform tool/docs do not currently specify these. Do not adopt based solely on
 D1 availability or successful privileged HTTP. If unsuitable, report exact failed
 criteria and evaluate a supported alternative without weakening access controls.
 
-API candidate: per-install keypair/token enrollment with rate limits and per-report
-random IDs; hashed owner capability server-side, secrets in Keychain only. No
+Requester selected no additional ChatGPT login on 2026-10-18: use a public
+collection API and a random capability per report. The synthetic Site audience was
+changed to public only after replacing the old private-only route with capability
+checks. This is not permission to accept real records before integration checks.
+
+API candidate: client-generated report UUID plus 256-bit random owner capability;
+hashed owner capability server-side, secrets in Keychain only. No
 public admin key/shared client secret. Strict JSON allowlist, size ceilings,
 transactional revision/idempotency checks, bounded backoff and durable offline queue.
 Admin reviewer identity checked server-side; only approved projection is exported

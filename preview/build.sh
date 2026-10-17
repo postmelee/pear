@@ -16,6 +16,8 @@ if [ -f "$repo/LICENSE" ]; then cp "$repo/LICENSE" "$app/Contents/Resources/LICE
 if [ -d "$repo/preview/licenses" ]; then cp -R "$repo/preview/licenses" "$app/Contents/Resources/"; fi
 if [ -f "$repo/preview/THIRD_PARTY_NOTICES.md" ]; then cp "$repo/preview/THIRD_PARTY_NOTICES.md" "$app/Contents/Resources/"; fi
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift" "$repo/preview/test_reporting_policy.swift" -o "$out/reporting-policy-tests"
+xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift" "$repo/preview/ReportingStore.swift" "$repo/preview/test_reporting_store.swift" -o "$out/reporting-store-tests"
+"$out/reporting-store-tests"
 "$out/reporting-policy-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/test_presentation.swift" -o "$out/presentation-tests"
 "$out/presentation-tests"
