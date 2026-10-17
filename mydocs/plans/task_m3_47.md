@@ -450,3 +450,16 @@ test is necessary for version/label-only changes. Stable numbering does not clai
 all-game or macOS 15 gameplay qualification. Use hosted temporary build roots and
 small local final-artifact roots; preserve private installation and saves. Existing
 runtime cache is read-only input; no full runtime copy is needed locally.
+
+## Superseding release hold — 2026-10-18
+
+The requester explicitly paused version-only v0.1.0 and authorized #62 Sparkle
+updates and #63 consent-based run reports before release. #47 remains the final
+integration/distribution owner; no other chats are invoked. Run 39050680766 passed
+portable/build/macOS15 checks and waited for signing. It was cancelled before
+signing; PEAR_SIGNING_APPROVED_SHA was removed. Its 5.5 MiB unsigned artifacts and
+receipt are retained in .build/held-v010-6afc8f2. They are baseline evidence, not
+releasable final assets. Published preview.4 and pinned runtime are preserved.
+No v0.1.0 tag/release, new public download links or Pages publication is permitted
+until both feature gates and the requested local UI review pass. Feature branches
+may start at 6afc8f2 to reuse the macOS15 and approved website preparation.
