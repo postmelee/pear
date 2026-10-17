@@ -26,6 +26,7 @@ def validate(snapshot):
     return snapshot
 
 def cards(items):
+    if not items: return '<p>No app-submitted reports have been published yet.</p>'
     out='';e=lambda v:html.escape(str(v),quote=True)
     for item in items:
         r=item['report'];s=r.get('supplemental',{})
