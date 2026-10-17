@@ -417,3 +417,17 @@ isolated in RUNNER_TEMP (up to 6 GiB per job estimated); logs/artifacts bounded 
 14 days. Local audit only; 17 GiB free measured before any material local build.
 CI artifacts retained until final signing/release comparison; synthetic roots
 removed after owned processes stop. Existing recovery/private state is retained.
+
+### Approved Homebrew extension — 2026-10-18
+
+Requester added Homebrew distribution and guidance for this same candidate.
+Reuse existing postmelee/homebrew-tap with a Pear cask pointing to the exact
+signed DMG and SHA-256; no runtime rebuild or alternate payload. Require arm64
+and Sequoia. Do not add zap/data deletion or terminate unrelated Wine processes.
+Document install, upgrade, uninstall and manual-install migration in existing
+README/player guide/catalog download panel after checks, keeping the optional
+CLI separate. Public requirements remain unchanged until release is ready.
+Test cask parsing/style and install/uninstall in a disposable app directory; never
+overwrite /Applications/Pear.app or remove private data. Source and package docs
+stay at existing approved locations. Final signed-app CI reuses runtime evidence
+from d0cbbbc and checks only changed signed app/CLI bytes on macOS 15.

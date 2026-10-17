@@ -4,6 +4,19 @@ name: Preview candidate
 
 'on':
   workflow_dispatch:
+    inputs:
+      signed_run_id:
+        description: 'Optional successful signing run to verify on macOS 15'
+        type: string
+        default: ''
+      signed_revision:
+        description: 'Exact source SHA of signed packages'
+        type: string
+        default: ''
+      signed_attempt:
+        description: 'Signing run attempt'
+        type: string
+        default: '1'
   push:
     branches: [codex/publish-task47]
     paths:
@@ -19,6 +32,7 @@ name: Preview candidate
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: preview-candidate-${{ github.ref }}
@@ -26,6 +40,7 @@ concurrency:
 
 jobs:
   portable:
+    if: ${{ inputs.signed_run_id == '' }}
     name: Portable Preview fixtures
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -313,3 +328,36 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
+
+  signed-compatibility:
+    name: Signed macOS 15 app verification
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.signed_run_id != '' }}
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pear-preview-signed-candidate-${{ inputs.signed_revision }}-${{ inputs.signed_attempt }}
+          run-id: ${{ inputs.signed_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/pear-signed-input
+      - name: Check final signatures and execute the exact signed app and CLI
+        env:
+          EXPECTED_REVISION: ${{ inputs.signed_revision }}
+        run: python3 -B preview/check_minimum_os.py --packages "$RUNNER_TEMP/pear-signed-input" --output "$RUNNER_TEMP/pear-signed-check" --expected-revision "$EXPECTED_REVISION" --signed-app-only
+      - name: Retain final compatibility receipt
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-signed-macos15-check-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pear-signed-check/receipt.json
+            ${{ runner.temp }}/pear-signed-check/*.log
+          retention-days: 14
+          if-no-files-found: warn

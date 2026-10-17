@@ -28,16 +28,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--packages', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--expected-revision')
+    parser.add_argument('--signed-app-only', action='store_true')
     args = parser.parse_args()
+    revision = args.expected_revision or os.environ.get('GITHUB_SHA')
     args.output.mkdir(parents=True, exist_ok=False)
     receipt = {'scope': 'macOS 15 startup only; no Steam UI, Metal rendering or gameplay qualification',
-               'passed': False, 'started': time.time(), 'source': os.environ.get('GITHUB_SHA')}
+               'passed': False, 'started': time.time(), 'source': revision}
     try:
         receipt['os'] = command('sw_vers', '-productVersion')
         receipt['arch'] = command('uname', '-m')
         assert receipt['os'].split('.')[0] == '15' and receipt['arch'] == 'arm64'
         manifest = json.loads((args.packages / 'package-manifest.json').read_text())
-        assert manifest['source_revision'] == os.environ['GITHUB_SHA'] and not manifest['source_dirty']
+        assert manifest['source_revision'] == revision and not manifest['source_dirty']
         for name, expected in manifest['artifacts'].items():
             assert Path(name).name == name
             path = args.packages / name
@@ -49,6 +52,13 @@ def main():
         with (app / 'Contents/Info.plist').open('rb') as f:
             assert plistlib.load(f)['LSMinimumSystemVersion'] == '15.0'
         cli = app / 'Contents/Resources/pear-preview'
+        if args.signed_app_only:
+            assert not manifest['candidate']
+            command('/usr/bin/codesign', '--verify', '--deep', '--strict', str(app))
+            command('/usr/bin/xcrun', 'stapler', 'validate', str(app))
+            command('/usr/sbin/spctl', '--assess', '--type', 'execute', str(app))
+            command('/usr/bin/codesign', '--verify', '--strict', '-R=notarized', '--check-notarization', str(cli))
+            receipt['signed_app_checks'] = True
         for binary in [app / 'Contents/MacOS/PearPreview', cli]:
             build = command('xcrun', 'vtool', '-show-build', str(binary))
             assert re.search(r'minos\s+15\.0\b', build)
@@ -72,6 +82,10 @@ def main():
                     except subprocess.TimeoutExpired:
                         child.kill()
                         child.wait(timeout=10)
+        if args.signed_app_only:
+            receipt['runtime_scope'] = 'Unchanged pin; runtime checks retained from source-matched candidate CI'
+            receipt['passed'] = True
+            return
         # Immutable, already published runtime: verify before extracting it.
         pin = Path(__file__).with_name('src').joinpath('runtime_pin.rs').read_text()
         url = re.search(r'url: "([^"]+)"', pin)[1]
