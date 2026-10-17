@@ -456,3 +456,13 @@ Increased the gap after the complete title/date/summary header from 24px to a
 reusable 2em article-header token, leaving the internal header spacing intact.
 Rebuilt the local preview and checked the rendered gap (33.45px at the current
 690px viewport). Screenshot: article-header-spacing.png. Whitespace check passed.
+
+## Header responsive and theme review
+
+Visually checked 1440x1000 desktop and 390x844 mobile in both light and dark.
+Header/body gaps remain 37.2px and 31.95px respectively, with no horizontal page
+ overflow. The summary becomes two lines on mobile while retaining the same
+separation from prose. Kept the gap unchanged. Prevented the author name from
+splitting within its link; the full name now moves together to the next line.
+Rebuilt local output, checked whitespace, and saved header-desktop-light/dark.png
+and header-mobile-light/dark.png. Restored light mode and default viewport.
