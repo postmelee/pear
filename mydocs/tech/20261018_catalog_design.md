@@ -178,3 +178,11 @@ Rebuilt the local preview and passed all seven catalog-site tests and whitespace
 checks. Browser input confirmed both checked states, actual `:hover` matching,
 computed highlight colors and unchanged knob travel. Screenshot:
 `.build/catalog-design/theme-svg-hover.png`.
+
+## Constant toggle-knob color
+
+The requester asked to preserve the dark-theme knob color in both themes.
+Added the theme-independent `--color-theme-knob: #cecdc3` token. Rebuilt the
+local site; browser checks confirmed `rgb(206, 205, 195)` in both light and dark
+states. Whitespace validation passed. Screenshot:
+`.build/catalog-design/theme-knob-constant.png`.

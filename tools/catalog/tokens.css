@@ -35,6 +35,7 @@
   --theme-switch-width: 44px;
   --theme-switch-height: 24px;
   --theme-icon-size: 16px;
+  --color-theme-knob: #cecdc3;
   --theme-switch-travel: 20px;
   --motion-ease: cubic-bezier(.2, 0, 0, 1);
   --color-bg: #fffcf0;

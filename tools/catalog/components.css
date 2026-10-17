@@ -40,7 +40,7 @@ kbd { font-family: inherit; font-size: var(--font-size-xs); font-weight: 400; }
 .theme-toggle { position: relative; display: flex; align-items: center; justify-content: space-between; width: var(--theme-switch-width); height: var(--theme-switch-height); padding: 3px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); background: var(--color-surface); color: var(--color-muted); }
 .theme-sun, .theme-moon { display: block; width: var(--theme-icon-size); height: var(--theme-icon-size); }
 .theme-toggle:hover, .theme-toggle:focus-visible { color: var(--color-theme-hover); }
-.theme-knob { position: absolute; left: 3px; top: 3px; width: var(--theme-icon-size); height: var(--theme-icon-size); border-radius: 50%; background: var(--color-text); transition: transform var(--motion-fast) var(--motion-ease); }
+.theme-knob { position: absolute; left: 3px; top: 3px; width: var(--theme-icon-size); height: var(--theme-icon-size); border-radius: 50%; background: var(--color-theme-knob); transition: transform var(--motion-fast) var(--motion-ease); }
 [data-theme="dark"] .theme-knob { transform: translateX(var(--theme-switch-travel)); }
 .sidebar { position: fixed; top: var(--sidebar-top); left: var(--sidebar-left); width: var(--sidebar-width); max-height: calc(100dvh - var(--sidebar-top) - 20px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; font-size: var(--font-size-small); }
 .page-navigation, .toc-outline { display: grid; gap: var(--space-2); list-style: none; padding: 0; margin: 0; }
