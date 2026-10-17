@@ -1,21 +1,22 @@
-# Pear Windows Steam preview
+# Pear for Windows Steam
 
-Status: **[Pear 0.1.0-preview.3](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3) is available.**
-[Download the Mac app](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg) or use the
+Status: **[Pear 0.1.0](https://github.com/postmelee/pear/releases/tag/v0.1.0) is available.**
+[Download the Mac app](https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.dmg) or use the
 [download guide](https://postmelee.github.io/pear/download.html). This release uses
-**Wine 11.0 and DXMT 0.80** and requires Rosetta. Signing, notarization, public
-download checks and owner-confirmed fresh standard-account installation passed.
-The second account was on the same Mac, not a second physical Mac.
+**Wine 11.0 and DXMT 0.80** and requires Rosetta. The new app/CLI and DMG are signed and notarized. The runtime is unchanged from
+preview.3; its prior fresh-account and gameplay evidence retains its original scope.
 
-Pear is intended to be free and open source. The preview prepares Windows Steam
+Pear is intended to be free and open source. Pear prepares Windows Steam
 on Apple Silicon so you can use your library without installing or configuring
 Wine yourself. It currently requires Rosetta; the final Rosetta-free goal remains
 in the [delivery plan](delivery-plan.md).
 
 ## Before using a release
 
-The release is built for Apple Silicon and macOS 26 or later; actual execution
-has only been observed on M4 Pro, macOS 26.5.2. Broader support is unverified.
+The release targets Apple Silicon and macOS 15 or later. Final signed app/CLI
+startup was checked on macOS 15.7.9 in CI and macOS 26.5.2 locally. The unchanged
+Wine runtime started in macOS 15.7.9 CI. Steam UI and gameplay on macOS 15, exact
+15.0 execution and broader hardware compatibility remain unverified.
 Rosetta, internet access, a Steam account and ownership of games are required.
 Allow several GB for setup plus each game's requirements. Steam's first update
 can be larger than Pear itself. Runtime and game installation require storage
@@ -50,10 +51,42 @@ You do not need a separate Whisky app or macOS Steam. Pear's status window can b
 closed after Steam opens; that does not quit Steam or a running game. Quit games
 and Steam through their own menus. Other games are selectable but unverified.
 
+## Homebrew
+
+Install the Mac app from Pear's maintained tap:
+
+```sh
+brew install --cask postmelee/tap/pear
+```
+
+Open Pear from Applications and review the first-run downloads. This installs the
+same signed and notarized Mac app as the DMG download. Apple Silicon, macOS 15 or
+later and Rosetta are required. The optional standalone CLI remains a separate
+download; the cask does not add a command to PATH.
+
+Quit games, Steam and Pear before updating:
+
+```sh
+brew update
+brew upgrade --cask postmelee/tap/pear
+```
+
+Remove the app:
+
+```sh
+brew uninstall --cask pear
+```
+
+Steam, installed games and saves remain in `~/Library/Application Support/Pear Preview`.
+Pear does not currently provide a complete-removal interface. Keep this folder
+unless you intentionally want to remove all installed games and local saves.
+If you already installed Pear manually, keep using it or remove only Pear.app
+before installing through Homebrew. Do not delete its Application Support folder.
+
 ## Optional CLI
 
 The CLI uses the same setup and state as the app. It does not require Node.js,
-Python, Xcode or Rust on the player's Mac. Download the [CLI archive](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/pear-preview-0.1.0-preview.3-macos-arm64-cli.zip),
+Python, Xcode or Rust on the player's Mac. Download the [CLI archive](https://github.com/postmelee/pear/releases/download/v0.1.0/pear-preview-0.1.0-macos-arm64-cli.zip),
 extract it and run:
 
 ```sh

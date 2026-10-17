@@ -431,3 +431,22 @@ Test cask parsing/style and install/uninstall in a disposable app directory; nev
 overwrite /Applications/Pear.app or remove private data. Source and package docs
 stay at existing approved locations. Final signed-app CI reuses runtime evidence
 from d0cbbbc and checks only changed signed app/CLI bytes on macOS 15.
+
+## Approved first stable release — 2026-10-18
+
+The requester approved the local website and explicitly requested v0.1.0 public
+release, documentation, download links and deployment. Retain macOS 15.0 and the
+exact signed-v3 runtime. Change app/CLI package version and user-visible Preview
+wording only; preserve bundle ID, executable names, data paths and runtime pins.
+Reuse existing candidate/signing/Pages workflows and Homebrew tap. Existing files
+README, docs/README.md, docs/rosetta-preview.md, docs/development/preview-release.md
+and catalog generator are approved publication locations; historical evidence and
+M3 milestone identities remain intact. Publish only after final package checks.
+Required checks: portable fixtures, current CI candidate checks, protected signing
+and notarization, final signed macOS 15 check, local signature/CLI/startup checks,
+Homebrew hash/install checks and documentation/catalog checks. Reuse the owner's
+preview.4 gameplay confirmation for unchanged runtime behavior; no new 20-minute
+test is necessary for version/label-only changes. Stable numbering does not claim
+all-game or macOS 15 gameplay qualification. Use hosted temporary build roots and
+small local final-artifact roots; preserve private installation and saves. Existing
+runtime cache is read-only input; no full runtime copy is needed locally.

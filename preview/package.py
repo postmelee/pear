@@ -11,7 +11,7 @@ import subprocess
 import tempfile
 
 REPO = Path(__file__).resolve().parent.parent
-VERSION = "0.1.0-preview.4"
+VERSION = "0.1.0"
 REQUIRED = {
     "Contents/Info.plist", "Contents/MacOS/PearPreview", "Contents/Resources/Pear.icns",
     "Contents/Resources/pear-preview", "Contents/Resources/THIRD_PARTY_NOTICES.md",

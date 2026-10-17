@@ -299,10 +299,10 @@ if (form) {
 for (const button of document.querySelectorAll('.copy-command')) {
   button.addEventListener('click', async () => {
     const code = document.getElementById(button.dataset.copy);
-    const status = document.querySelector('#command-status');
+    const status = document.getElementById(button.dataset.status || 'command-status');
     try {
       await navigator.clipboard.writeText(code.textContent);
-      status.textContent = 'Command copied. Run it from the extracted CLI folder.';
+      status.textContent = button.dataset.message || 'Command copied. Run it from the extracted CLI folder.';
     } catch {
       status.textContent = 'Copy the displayed command manually.';
     }

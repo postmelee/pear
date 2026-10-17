@@ -1,14 +1,15 @@
 # Building and releasing the Steam preview
 
-Status: preview.3 is public as of October 15, 2026. Its signed app/CLI/DMG,
-public downloads and same-Mac fresh-account installation have passed their checks. See the [player guide](../rosetta-preview.md)
+Status: v0.1.0 retains the preview.4 change that lowers the app/CLI deployment target to macOS 15 and reuses the
+exact preview.3 runtime. Final signed startup checks passed on macOS 15.7.9 and
+26.5.2; earlier fresh-account/gameplay checks retain their original artifact scope. See the [player guide](../rosetta-preview.md)
 and [component record](../../preview/THIRD_PARTY_NOTICES.md).
 
 ## Build one shared core
 
 Use an Apple Silicon Mac with the Xcode command-line tools and Rust 1.94 or later.
 Current evidence uses Rust 1.94.1 and Swift 6.3.3. These are developer prerequisites;
-players use prebuilt artifacts. The candidate targets macOS 26.0 and ARM64.
+players use prebuilt artifacts. The candidate targets macOS 15.0 and ARM64.
 
 From the repository root, obtain only Cargo.lock's dependencies, then build:
 

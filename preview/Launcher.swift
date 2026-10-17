@@ -141,7 +141,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
     @objc func showAbout() {
         let alert = NSAlert()
         alert.messageText = "Pear"
-        let version = info?.version ?? "0.1.0-preview.3"
+        let version = info?.version ?? "0.1.0"
         alert.informativeText = "Version \(version)\nRuntime: Wine 11.0 · DXMT 0.80\nRosetta required\n\nFree and open source · GPL-3.0-or-later\n\nSteam, games and saves are kept in your user’s Library/Application Support/Pear Preview folder."
         alert.addButton(withTitle: "OK")
         alert.beginSheetModal(for: window)
@@ -251,7 +251,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
                     self.busy.stopAnimation(nil)
                     self.busy.isHidden = true
                     self.progress.isHidden = true
-                    self.titleLabel.stringValue = child.terminationStatus == 0 ? "Windows Steam · Preview" : "Setup paused"
+                    self.titleLabel.stringValue = child.terminationStatus == 0 ? "Windows Steam" : "Setup paused"
                     self.button.title = child.terminationStatus == 0 ? "Open Steam again" : "Retry"
                     self.button.isEnabled = true
                     if child.terminationStatus == 0 && !self.stopping { self.observeSteam() }

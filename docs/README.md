@@ -12,7 +12,7 @@ planned feature is not a usable release.
 |---|---|
 | Learn by doing | [First Steam session](rosetta-preview.md#app-experience); [first local check/build](development/getting-started.md) today |
 | Complete a task | [Report a game result](compatibility/README.md#submit-a-result), [get help](SUPPORT.md), [submit a change](contributing.md#propose-and-submit-a-change), [build/sign a candidate](development/preview-release.md) |
-| Look up details | [Preview requirements](rosetta-preview.md#before-using-a-release), [CLI](rosetta-preview.md#optional-cli), [data location](rosetta-preview.md#data-and-recovery), [record meanings](compatibility/README.md#read-the-records), technical references below |
+| Look up details | [System requirements](rosetta-preview.md#before-using-a-release), [CLI](rosetta-preview.md#optional-cli), [data location](rosetta-preview.md#data-and-recovery), [record meanings](compatibility/README.md#read-the-records), technical references below |
 | Understand the design | [One delivery plan](delivery-plan.md), [architecture](architecture.md), [Rosetta-free contribution path](development/rosetta-free.md), [evidence and community boundaries](community.md) |
 
 ## Technical references and engineering guides
@@ -20,7 +20,7 @@ planned feature is not a usable release.
 - [Split native development components](development/rosetta-free.md#split-native-development-components): private source repositories, selected reconstruction/fixture/recovery interfaces and isolated Pear development selection; source and execution gates remain explicit.
 - [Common runtime developer guide](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md): collaborator-access build/input locks, isolated assembly and bounded recovery. Historical Wine/FEX/DXMT guides below retain their original evidence scope.
 
-- [Preview release procedure](development/preview-release.md): maintainer signing and distribution gates.
+- [App release procedure](development/preview-release.md): maintainer signing and distribution gates.
 - [Contributor guide](contributing.md): scope, verification, upstream policies and licensing.
 - [Runtime contracts](runtime-contracts.md): seven experimental record kinds, reference validation, source handoff, and supervisor/observer ownership.
 - [Native supervisor CLI](development/runtime-supervisor.md): read-only fixture setup, activation, prepared contexts, cancellation and preservation-first recovery; real-runtime execution remains unavailable.
