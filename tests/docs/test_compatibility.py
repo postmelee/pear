@@ -117,7 +117,7 @@ class CatalogTests(unittest.TestCase):
     def test_empty_catalog_is_explicit(self):
         empty = catalog.validate({'schema_version': 1, 'records': []})
         self.assertIn('No reviewed observations yet.', catalog.markdown(empty))
-        page = catalog.webpage(empty, {'schema_version': 1, 'github_forms_live': False, 'games': []})
+        page = catalog.games_page(empty, {'schema_version': 1, 'github_forms_live': False, 'games': []})
         self.assertIn('0 games', page)
         self.assertNotIn('data-game data-name=', page)
 
@@ -129,7 +129,7 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(groups), 1)
         self.assertEqual(len(groups[0]['records']), 2)
         self.assertEqual(groups[0]['records'][0]['tested_on'], '2026-10-11')
-        self.assertEqual(catalog.webpage(self.data, self.games).count('data-game data-name='), 1)
+        self.assertEqual(catalog.games_page(self.data, self.games).count('data-game data-name='), 1)
 
     def test_pass_partial_failed_do_not_grant_qualification(self):
         self.assertEqual(catalog.outcome(self.row), 'partial')

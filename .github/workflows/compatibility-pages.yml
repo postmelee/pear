@@ -8,7 +8,10 @@ name: Reviewed compatibility catalog
     paths:
       - docs/compatibility/**
       - docs/assets/**
+      - docs/blog/**
       - tools/compatibility.py
+      - tools/catalog_site.py
+      - tools/catalog_icons.py
       - tools/steam_catalog.py
       - tools/reporting_sync.py
       - tools/community_reports.py

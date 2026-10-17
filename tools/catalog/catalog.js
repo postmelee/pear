@@ -299,10 +299,10 @@ if (form) {
 for (const button of document.querySelectorAll('.copy-command')) {
   button.addEventListener('click', async () => {
     const code = document.getElementById(button.dataset.copy);
-    const status = document.querySelector('#command-status');
+    const status = document.getElementById(button.dataset.status || 'command-status');
     try {
       await navigator.clipboard.writeText(code.textContent);
-      status.textContent = 'Command copied. Run it from the extracted CLI folder.';
+      status.textContent = button.dataset.message || 'Command copied. Run it from the extracted CLI folder.';
     } catch {
       status.textContent = 'Copy the displayed command manually.';
     }
@@ -333,8 +333,7 @@ if (downloadMethods) {
     for (const panel of panels) panel.hidden = panel.id !== selected.dataset.method;
     if (updateHash) history.replaceState(null, '', `#${selected.dataset.method}`);
     if (focus) selected.focus();
-    const status = document.querySelector('#command-status');
-    if (status) status.textContent = '';
+    for (const status of document.querySelectorAll('.copy-status')) status.textContent = '';
   }
   for (const [index, tab] of tabs.entries()) {
     tab.addEventListener('click', event => {
@@ -355,5 +354,8 @@ if (downloadMethods) {
     });
   }
   selectMethod(location.hash.slice(1));
-  window.addEventListener('hashchange', () => selectMethod(location.hash.slice(1)));
+  window.addEventListener('hashchange', () => {
+    const method = location.hash.slice(1);
+    if (tabs.some(tab => tab.dataset.method === method)) selectMethod(method);
+  });
 }
