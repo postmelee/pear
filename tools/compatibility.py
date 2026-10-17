@@ -304,7 +304,7 @@ def download_page():
 <div class="download-guides"><a class="text-link external" href="https://github.com/postmelee/pear/blob/master/docs/rosetta-preview.md#app-experience">First Steam session</a><a class="text-link external" href="https://github.com/postmelee/pear/discussions/51">Release updates</a><a class="text-link external" href="https://github.com/postmelee/pear/blob/master/docs/development/getting-started.md">Build from source</a></div></div>''', 'download')
 
 
-def build_site(data, out, catalog=None, steam_catalog=None):
+def build_site(data, out, catalog=None, steam_catalog=None, community=None):
     validate(data)
     catalog = validate_catalog(catalog or json.loads(CATALOG.read_text()), data)
     if steam_catalog is not None:
@@ -315,6 +315,18 @@ def build_site(data, out, catalog=None, steam_catalog=None):
     pages = {'index.html': webpage(data, catalog), 'about.html': about_page(),
              'download.html': download_page(), 'report.html': intake_page(catalog, 'report', steam_catalog is not None), 'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
     pages.update({f'game-{g["app_id"]}.html': game_page(g) for g in groups})
+    if community is not None:
+        from community_reports import validate as validate_community, cards as community_cards
+        validate_community(community)
+        content='<h1>Community run reports</h1><p>Reviewed for publication. User reports are separate from qualified compatibility evidence.</p>'+community_cards(community['reports'])
+        pages['community.html']=shell('Community run reports',content)
+        for game in groups:
+            entries=[r for r in community['reports'] if str(r['report']['appID'])==game['app_id']]
+            if entries:
+                key=f"game-{game['app_id']}.html"
+                pages[key]=pages[key].replace('</main>','<section><h2>App-submitted reports</h2>'+community_cards(entries)+'</section></main>')
+        pages['index.html']=pages['index.html'].replace('</main>','<p><a class="inline-link" href="community.html">Browse reviewed app reports</a></p></main>')
+        pages['community-reports.json']=json.dumps(community,indent=2)+'\n'
     allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | set(pages)
     out = Path(out)
     require(not out.is_symlink(), 'Site output must not be a symlink')
@@ -344,6 +356,7 @@ def main():
     parser.add_argument('--check', action='store_true', help='Fail if committed Markdown is stale')
     parser.add_argument('--site', type=Path, help='Render only the public allowlist into this directory')
     parser.add_argument('--steam-catalog', type=Path, help='Optional sanitized Steam game identity snapshot')
+    parser.add_argument('--community-reports', type=Path, help='Reviewed public app-report snapshot')
     args = parser.parse_args()
     steam_catalog = None
     if args.steam_catalog:
@@ -357,7 +370,7 @@ def main():
     else:
         TABLE.write_text(text, encoding='utf-8')
     if args.site:
-        print('Public files:', ', '.join(build_site(data, args.site, catalog, steam_catalog)))
+        print('Public files:', ', '.join(build_site(data, args.site, catalog, steam_catalog, json.loads(args.community_reports.read_text()) if args.community_reports else None)))
     print(f"Validated {len(data['records'])} reviewed record(s); content approval remains a human review.")
 
 

@@ -1,0 +1,13 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
+{
+  "name": "pear-reports",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-17",
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {"enabled": false},
+  "vars": {"INGEST_ENABLED": "true", "ADMIN_GITHUB_ID": "65849802"},
+  "d1_databases": [{"binding":"DB","database_name":"pear-reports","database_id":"16ff47ea-67ea-4574-9623-e7ffaff7fa48","migrations_dir":"migrations"}],
+  "triggers": {"crons": ["43 23 * * *"]}
+}

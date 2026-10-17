@@ -127,3 +127,26 @@ Consent disclosure v2 adds reviewed GitHub/catalog publication; old automatic
 consent cannot authorize this scope. Supplemental observations are manual-only.
 Catalog mapping preserves unknowns and separates process minutes, active play and
 user result; no automatic Pass or qualification. Private notes are never exported.
+
+## Approved Cloudflare migration (2026-10-18)
+Requester selected direct Workers + D1, administrator access/log review, GitHub
+source linking and daily approved-catalog deployment. Reuse the D1 projection and
+revision design and existing Pages action. Use jose's maintained MIT JWT/JWKS
+implementation instead of hand-written JWT cryptography. Worker source/config and
+migrations live in preview/reporting-worker; operator/privacy instructions belong
+in docs/reporting-and-privacy.md (previously approved location). Initial ingest
+remains disabled until account configuration and hosted negative tests pass.
+GitHub links retain their original source and identifiers; do not post duplicate
+Issues or collect GitHub authors/private bodies. Only operator-selected labeled
+Issues/discussion categories are imported. CI exports only reviewed public fields.
+
+## Payment-free reviewer authentication (approved 2026-10-18)
+Replace Access with GitHub OAuth using no additional scopes, S256 PKCE, a
+browser-bound single-use ten-minute transaction and one-hour opaque D1 sessions.
+Allow only immutable GitHub user ID 65849802 (postmelee), verified with GitHub API.
+Reuse Workers Web Crypto/Fetch and D1 primitives; no custom cryptography or password
+database. Client secret remains Worker-only; GitHub access token is used once for
+identity and is not persisted. Secure HttpOnly SameSite=Lax host-only cookies,
+Origin validation for mutations, bounded provider responses and no redirects.
+Sources: GitHub authorizing-oauth-apps and scopes-for-oauth-apps official docs,
+reviewed 2026-10-18. No card/Zero Trust subscription is activated.
