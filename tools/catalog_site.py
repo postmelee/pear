@@ -37,6 +37,7 @@ class BlogPost:
     images: tuple
     published: str | None = None
     topics: tuple = ()
+    series: str = "Pear development journal"
 
     @property
     def path(self):
@@ -45,7 +46,16 @@ class BlogPost:
 
 POSTS = (BlogPost(ARTICLE_SLUG, ARTICLE_TITLE, ARTICLE_SUMMARY, 'Taegyu Lee',
                   'v0.1.0', ARTICLE_IMAGES, '2026-10-18', ('development', 'megabonk', 'apple-silicon')),)
-BLOG_FILES = {'blog/index.html', *(post.path for post in POSTS),
+def topic_path(label):
+    return 'blog/topics/' + re.sub(r'[^a-z0-9]+', '-', label.lower()).strip('-') + '/index.html'
+
+
+def post_topics(post):
+    return tuple(label for label in (post.series, post.edition) if label)
+
+
+BLOG_FILES = {'blog/index.html', 'blog/topics/index.html', 'blog/writing.html',
+              *(topic_path(label) for post in POSTS for label in post_topics(post)), *(post.path for post in POSTS),
               *(f'blog/images/{name}' for post in POSTS for name in post.images)}
 NAVIGATION = (
     ('home', 'Introduction', 'index.html'),
@@ -356,17 +366,27 @@ def blog_pages(base_pages=None):
         sources[path] = (title, content, plain_text(paragraph[1]) if paragraph else '')
     contents = {post.slug: article_content(post) for post in posts}
     sources.update({post.path: (post.title, contents[post.slug], post.summary) for post in posts})
-    rows = ''.join(blog_list_item(post) for post in posts)
-    listing = f'<h1>Blog</h1><p class="page-intro">Experiments, observations, and the work behind Pear.</p><section><h2 id="posts">Posts</h2><div class="article-list" aria-label="Articles">{rows}</div></section>{update_links("../")}'
-    pages = {'blog/index.html': shell('Blog', listing, 'blog', root='../')}
+    topics = sorted({label for post in posts for label in post_topics(post)}, key=str.casefold)
+    def topic_links(source):
+        return ', '.join(f'<a href="{posixpath.relpath(topic_path(label), source)}">{html.escape(label)}</a>' for label in topics)
+    rows = writing_list(posts)
+    latest = latest_item(posts[0], contents[posts[0].slug]) if posts else ''
+    listing = f'<h1>Blog</h1><p class="page-intro">Experiments, observations, and the work behind Pear.</p><div class="blog-index"><section><h2 id="latest"><a href="{posts[0].slug + ".html" if posts else "#latest"}">Latest</a></h2>{latest}</section><section><h2 id="topics"><a href="topics/index.html">Topics</a></h2><p>{topic_links("blog")}</p></section><section><h2 id="writing"><a href="writing.html">Writing</a></h2>{rows}</section></div>'
+    pages = {'blog/index.html': shell('Blog', listing, 'blog', root='../'),
+             'blog/writing.html': shell('Writing', f'<h1>Writing</h1>{rows}', 'blog', root='../'),
+             'blog/topics/index.html': shell('Topics', f'<h1>Topics</h1><p>{topic_links("blog/topics")}</p>', 'blog', root='../../')}
+    for label in topics:
+        path = topic_path(label)
+        selected = [post for post in posts if label in post_topics(post)]
+        content = f'<h1><a href="../index.html">Topics</a> / {html.escape(label)}</h1><p class="page-intro">{len(selected)} {"entry" if len(selected) == 1 else "entries"} about this topic</p>{writing_list(selected, "../../")}'
+        pages[path] = shell(f'Topics / {label}', content, 'blog', root='../../../')
     for post in posts:
         title, subtitle, byline, body = article_parts(contents[post.slug])
         title = title.replace("<h1>", '<h1 id="article-title">', 1)
         minutes = reading_minutes(body)
         timing = f'{minutes} minute{"s" if minutes != 1 else ""} read'
         metadata = f'{publication_label(post)} · {timing}' if post.published else timing
-        byline = byline.replace(html.escape(post.author), author_link(post.author), 1)
-        header = f'<header class="article-header">{title}<div class="article-byline"><div class="article-author">{byline}</div><p class="article-meta">{metadata}</p></div><div class="article-subtitle">{subtitle}</div></header>'
+        header = f'<header class="article-header">{title}<p class="article-meta">{metadata} · {author_link(post.author)}</p><div class="article-subtitle">{subtitle}</div></header>'
         article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{header}{body}</article>{article_connections(post, posts, sources)}'
         pages[post.path] = shell(post.title, article, 'blog', root='../', article=True, description=post.summary)
     return pages
@@ -380,9 +400,15 @@ def author_link(name):
     return f'<a href="{profiles[name]}" rel="author">{label}</a>'
 
 
-def blog_list_item(post):
-    e = html.escape
-    return f'''<div class="article-list-item"><div class="article-list-meta"><span class="article-date">{publication_label(post, compact=True)}</span><span class="article-author">{author_link(post.author)}</span></div><div><h3 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h3><p>{e(post.summary)}</p></div></div>'''
+def writing_list(posts, prefix=''):
+    return '<ul class="writing-list">' + ''.join(
+        f'<li><a href="{prefix}{html.escape(post.slug)}.html"><span class="article-date">{publication_label(post, compact=True)}</span><span class="writing-title">{html.escape(post.title)}</span></a></li>'
+        for post in posts) + '</ul>'
+
+
+def latest_item(post, content):
+    minutes = reading_minutes(article_parts(content)[3])
+    return f'''<article class="latest-item"><h3><a class="latest-link" href="{html.escape(post.slug)}.html">{html.escape(post.title)}</a></h3><p class="article-meta">{publication_label(post)} · {minutes} min read · {author_link(post.author)}</p><p class="latest-summary">{html.escape(post.summary)} <span class="keep-reading">Keep reading →</span></p></article>'''
 
 
 def search_index(pages):

@@ -175,7 +175,10 @@ class WebsiteTests(unittest.TestCase):
     def test_blog_navigation_and_updates_destinations(self):
         listing = (self.output / 'blog/index.html').read_text()
         nav = re.search(r'<nav id="sidebar".*?</nav>', listing, re.S)[0]
-        self.assertIn('href="#posts"', nav)
+        self.assertIn('href="#latest"', nav)
+        self.assertIn('href="#topics"', nav)
+        self.assertIn('href="#writing"', nav)
+        self.assertNotIn('id="receive-updates"', listing)
         self.assertNotIn(site.ARTICLE_TITLE, nav)
         article = (self.output / site.ARTICLE_PATH).read_text()
         nav = re.search(r'<nav id="sidebar".*?</nav>', article, re.S)[0]
@@ -187,6 +190,23 @@ class WebsiteTests(unittest.TestCase):
         updates = (self.output / 'updates.html').read_text()
         self.assertIn('https://x.com/meleeisgloom2', updates)
         self.assertIn('href="updates.html" aria-current="page"', updates)
+
+    def test_topics_group_posts_and_article_metadata_hides_categories(self):
+        first = site.POSTS[0]
+        second = replace(first, slug='second', title='Second', edition='v0.2.0')
+        source = '<h1>Example</h1><p>Subtitle</p><p>By Taegyu Lee</p><p>Body</p>'
+        with patch.object(site, 'POSTS', (first, second)), patch.object(site, 'article_content', return_value=source):
+            pages = site.blog_pages()
+        series = pages[site.topic_path(first.series)]
+        self.assertIn('2 entries about this topic', series)
+        version = pages[site.topic_path(first.edition)]
+        self.assertIn('1 entry about this topic', version)
+        self.assertNotIn('second.html', version)
+        header = re.search(r'<header class="article-header">.*?</header>', pages[first.path], re.S)[0]
+        self.assertNotIn(first.series, header)
+        self.assertNotIn(first.edition, header)
+        self.assertIn('1 minute read · <a href="https://x.com/meleeisgloom2"', header)
+        self.assertNotIn('rel="author"', pages['blog/writing.html'])
 
     def test_rebuild_is_deterministic_and_does_not_publish_article_source(self):
         before = {name: (self.output / name).read_bytes() for name in self.files}

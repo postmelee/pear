@@ -58,7 +58,8 @@ reports and download panels. New page styles should consume semantic tokens.
 - `navigation(active, outline, root)` and `footer(root)`: one shared navigation
   definition, including root-relative resolution for nested output pages.
 - `explore_cards(items)`: semantic links from `(title, summary, href)` tuples.
-- `blog_list_item(post)` and `blog_pages()`: the article index and article shell.
+- `latest_item(post, content)`, `writing_list(posts, prefix)` and `blog_pages()`:
+  latest preview, chronological writing rows, topic archives and article shell.
 - `search_index(pages)`: public page/section records from rendered main content.
   Forms, drafts and conditional empty states are omitted.
 
@@ -83,7 +84,10 @@ and local GitHub draft behavior. Global search does not replace Steam lookup.
 3. Add a `BlogPost` record to `POSTS` in `tools/catalog_site.py`. Supply title,
    summary, author, edition, the exact image tuple, an approved ISO publication
    date (`published`) and a tuple of topic identifiers (`topics`). The list sorts
-   newest first and shows year/month alongside the title and existing subtitle.
+   newest first. Latest shows the full date, computed reading time, linked author
+   and summary; Writing shows year/month and title. `series` (default Pear
+   development journal) and `edition` generate Topics and their filtered archives.
+   The separate `topics` identifiers continue to rank related articles.
    Omit the date if unknown; it is never inferred from build time or file dates.
 4. Rebuild and run the checks below. The registry derives the public page/image
    allowlist and index cards; rendered content supplies the search index and TOC.

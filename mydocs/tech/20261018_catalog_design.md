@@ -346,3 +346,27 @@ separation between metadata and title. Source article content remains intact.
 Rebuilt local output and passed all 11 catalog tests. Browser verified both
 rendered author links target https://x.com/meleeisgloom2 and inspected both
 layouts. Screenshots: article-author-link.png and list-author-link.png.
+
+## Latest, Topics and Writing
+
+Requester approved a reference-led index and larger article metadata. Inspected
+stephango.com/saw, /writing, /topics and /topics/competition/. At a 1280px
+viewport the reference title measured 31.61px, weight 500, line-height 1.25;
+date metadata measured 18.2px. Dedicated reusable blog title/metadata tokens
+match these desktop sizes with mobile bounds. Article headers show date,
+computed reading time and linked author without series/edition labels.
+
+The index now has Latest, Topics and Writing and no Receive updates block or
+outline entry. Latest uses a stretched semantic title link, with a separate
+raised author link (no nested anchors). Writing uses date/title rows. Series
+and edition metadata produce distinct topic archives and entry counts, with
+root-aware navigation and generated output allowlisting. Existing related-post
+ranking remains based on its separate topic identifiers. Updated the existing
+approved contributor guide at docs/development/catalog.md for the new reusable
+renderers and metadata; no documentation move or new destination was needed.
+
+All 106 Python documentation tests passed, including multi-post series/version
+filtering and header metadata assertions. Browser verified full Latest summary
+click navigation, desktop index/article, topic archive, and 390px/320px mobile
+views. Removed the temporary responsive harness. Screenshots include
+blog-latest-topics-writing.png; local loopback preview remains active.
