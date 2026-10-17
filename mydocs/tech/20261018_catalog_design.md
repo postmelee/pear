@@ -207,3 +207,13 @@ light/dark themes. Stacked artwork fills the content width without cropping;
 wide cards use the side-by-side layout. Result filtering and reset remained
 functional. Screenshots: `game-card-responsive.png`, `game-card-desktop.png` in
 `.build/catalog-design/`. Removed the temporary responsive review page.
+
+## Restore game-card action emphasis
+
+The requester preferred the original button emphasis. Restored the filled small
+primary View game action and outlined small Request support action, retaining
+the responsive artwork and other card refinements. Rebuilt locally and checked
+the rendered classes/fill and whitespace. Screenshot:
+`.build/catalog-design/game-buttons-restored.png`.
+Recommended normal body color for page introductions and muted color for
+metadata; no introduction-color change was made while discussing that choice.
