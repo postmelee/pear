@@ -176,3 +176,16 @@ publication and public byte verification follow integration. Sharing services ma
 retain earlier previews until their caches refresh; no service-specific rendering
 is claimed. Retention: keep the small public asset; generated local site is
 disposable after verification. Private evidence and other tasks are untouched.
+
+## Social-preview revision — 2026-10-18
+
+Applied the approved v3 image: black 140 px Pear title and gray 35 px subtitle
+“Play Windows Steam games on Mac”. The existing pear and favicon are preserved.
+Shared image URLs now include v=20261018 and alternative text includes the subtitle.
+94 catalog/document tests, governance (37 documents, 372 local targets), incremental
+notices against 599c382 and diff checks passed. All six HTML heads and the exact
+approved 1200×630 PNG bytes were verified; SHA-256: `d794aa23682f82296a9eb430eff8afccb1ccf9bd6b2ad515c95d0f93263f8511`.
+The requester approved the visual before implementation. Existing Pages workflow
+performs publication after integration; third-party cache refresh remains external.
+No runtime changes. Retain public PNG; generated site is disposable after live
+verification. Private state and other worktrees remain untouched.
