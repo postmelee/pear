@@ -365,15 +365,24 @@ def blog_pages(base_pages=None):
         minutes = reading_minutes(body)
         timing = f'{minutes} minute{"s" if minutes != 1 else ""} read'
         metadata = f'{publication_label(post)} · {timing}' if post.published else timing
-        header = f'<header class="article-header">{title}<p class="article-meta">{metadata}</p><div class="article-subtitle">{subtitle}</div><div class="article-author">{byline}</div></header>'
+        byline = byline.replace(html.escape(post.author), author_link(post.author), 1)
+        header = f'<header class="article-header">{title}<div class="article-byline"><div class="article-author">{byline}</div><p class="article-meta">{metadata}</p></div><div class="article-subtitle">{subtitle}</div></header>'
         article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{header}{body}</article>{article_connections(post, posts, sources)}'
         pages[post.path] = shell(post.title, article, 'blog', root='../', article=True, description=post.summary)
     return pages
 
 
+def author_link(name):
+    profiles = {'Taegyu Lee': 'https://x.com/meleeisgloom2'}
+    label = html.escape(name)
+    if name not in profiles:
+        return label
+    return f'<a href="{profiles[name]}" rel="author">{label}</a>'
+
+
 def blog_list_item(post):
     e = html.escape
-    return f'''<div class="article-list-item"><span class="article-date">{publication_label(post, compact=True)}</span><div><h3 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h3><p>{e(post.summary)}</p><p class="article-author">By {e(post.author)}</p></div></div>'''
+    return f'''<div class="article-list-item"><div class="article-list-meta"><span class="article-date">{publication_label(post, compact=True)}</span><span class="article-author">{author_link(post.author)}</span></div><div><h3 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h3><p>{e(post.summary)}</p></div></div>'''
 
 
 def search_index(pages):

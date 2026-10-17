@@ -332,3 +332,17 @@ headers retain their existing visible source byline. Authored article prose and
 summaries remain unchanged. Rebuilt the preview, passed 11 catalog tests and
 whitespace checks, and verified both bylines and Updates copy in the browser.
 Screenshot: blog-author.png.
+
+## Author links and metadata grouping
+
+Moved listing authors below dates into a separate metadata column; summaries
+remain in the title column. Article headers group the original byline with the
+publication date and reading time directly below the title, before the subtitle.
+A reusable author-link renderer maps Taegyu Lee to the approved personal X URL
+and leaves unknown authors as escaped text. Links inherit shared muted text,
+underline, hover and focus tokens. Mobile retains a single-column layout with
+separation between metadata and title. Source article content remains intact.
+
+Rebuilt local output and passed all 11 catalog tests. Browser verified both
+rendered author links target https://x.com/meleeisgloom2 and inspected both
+layouts. Screenshots: article-author-link.png and list-author-link.png.

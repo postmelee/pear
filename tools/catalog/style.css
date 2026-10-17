@@ -16,8 +16,9 @@
 .steps-panel a { text-decoration: none; }
 .page-intro { margin-bottom: var(--space-11); }
 .article-list { display: grid; gap: var(--space-7); margin-block: var(--space-11); }
-.article-list-item { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-6); align-items: baseline; }
+.article-list-item { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--space-6); align-items: baseline; }
 .article-date, .article-meta, .article-author { font-size: var(--font-size-small); color: var(--color-muted); }
+.article-list-meta { display: grid; gap: var(--space-1); }
 .article-date { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .article-title { margin: 0; font-size: var(--font-size-body); font-weight: var(--weight-heading); text-decoration: none; }
 .article-title a { text-decoration: none; }
@@ -25,10 +26,11 @@
 .article-list-item p { color: var(--color-muted); font-size: var(--font-size-small); margin: var(--space-1) 0 0; }
 .article-header { margin-bottom: var(--space-11); }
 .article-header h1 { margin-bottom: var(--space-3); }
-.article-meta { margin: 0 0 var(--space-7); }
+.article-byline { margin-bottom: var(--space-7); }
+.article-meta { margin: var(--space-1) 0 0; }
 .article-subtitle { color: var(--color-muted); }
 .article-subtitle em { font-style: normal; }
-.article-author p { margin: var(--space-3) 0 0; }
+.article-author p { margin: 0; }
 .article-connections { border-top: 1px solid var(--color-border); margin-top: var(--space-11); }
 .article-connections h2, .blog-updates h2 { font-size: var(--font-size-subheading); font-weight: 400; color: var(--color-muted); }
 .blog-updates h2 a { text-decoration: none; }
@@ -38,7 +40,7 @@
 .mention-list p { color: var(--color-muted); font-size: var(--font-size-small); margin: var(--space-1) 0 0; }
 .blog-updates { margin-top: var(--space-11); }
 @media (max-width: 480px) {
-  .article-list-item { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .article-list-item { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
 }
 .article-body figure { margin: var(--space-8) 0 var(--space-3); }
 .article-body figure img { display: block; width: 100%; background: #fff; border-radius: var(--radius-small); }
