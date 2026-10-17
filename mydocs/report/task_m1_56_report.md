@@ -7,7 +7,7 @@ Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
 The approved source split and developer-runtime preparation are complete. Wine, FEX, DXMT and common-runtime histories, selected modifications, tests and single-owner interfaces are available in four private repositories. Owners #11, #10 and #12 accepted the exact mapped transfer. The selected runtime was reconstructed with declared retained inputs, verified with required bounded controls, and connected to a separate Pear development selector. Megabonk was not copied or executed, and gameplay, ordinary-user distribution and complete no-Rosetta qualification are not completion claims.
 
-Six stages were reported and committed, with Stage 5 separated into source and actual-selection checkpoints. Public Pear publication is pending explicit authorization; this is separate from the completed technical handoff. Issue #56 remains open.
+Six original stages were reported and committed, followed by review-remediation Stages 6.1 and 6.2. PR #58 review found runtime-import precedence and manual-confirmation identity defects; both are corrected and regression-tested, with fresh isolated fixture/game metadata admission. The requester authorized the PR update, conditional merge, Issue #56 closure and limited branch cleanup. Current GitHub state records the subsequent merge/closure outcome.
 
 ## Changed Files and Impact Area
 
@@ -53,7 +53,7 @@ The [machine-readable handoff](../tech/task_m1_56_source_cutover.json) is the ex
 | [pear-dxmt](https://github.com/postmelee/pear-dxmt/tree/d0ad50946ab64bbe4dc3584a5d91f8e99a6e492c) | `d0ad50946ab64bbe4dc3584a5d91f8e99a6e492c` |
 | [pear-runtime](https://github.com/postmelee/pear-runtime/tree/9be1545f5a0845d3b14d4b845bf6bd413a224df3) | `9be1545f5a0845d3b14d4b845bf6bd413a224df3` |
 
-These documentation/ownership tips are not the compiled or executed revisions. The selected build uses Wine `1b76db6902345388c589ba3909b22badf751dfd5`, FEX `c62ed75aa6a33809ddb76c7f40aabbe4f4fbdda6`, DXMT `e800e770006fc7c37831ab857000a4781c85f6fd`. The executed selector uses runtime `6f0202b457f0e585c5c7621a63d203e77d07386d`, FEX tool `9c9b602c07b57a08500862abfdf62e1bac351640` and Pear source `0453474ba59b5a853d58d9556d849c175ad4677a`; those consumed source files remain unchanged at final handoff.
+These documentation/ownership tips are not the compiled or executed revisions. The selected build uses Wine `1b76db6902345388c589ba3909b22badf751dfd5`, FEX `c62ed75aa6a33809ddb76c7f40aabbe4f4fbdda6`, DXMT `e800e770006fc7c37831ab857000a4781c85f6fd`. The executed selector uses runtime `6f0202b457f0e585c5c7621a63d203e77d07386d`, FEX tool `9c9b602c07b57a08500862abfdf62e1bac351640` and historical Pear source `0453474ba59b5a853d58d9556d849c175ad4677a`. That original handoff remains historical. Corrected Pear source is `400da1145b20ff787ad30b251ea5c810ed291c29`: three producer rows changed (selector, handoff and provenance), and a new 92-file game closure plus separate fixture/game descriptors and state passed current admission. Runtime/FEX tool pins, candidate and native-control inputs remain unchanged. The subsequent report-only commit is not substituted for the clean source pin recorded during capture.
 
 Candidate3 runtime SHA-256 is `b9bee774f596c4f7bf908dc30ef1c11745797af2837ee4b42016bdf152086fc7`; final assembly operation is `0de34ec5eb5afcf7d088f3032995ccf4d6a69a73b6225d47e27bad1947fc6b59`. The [development lock](../../tools/development/locks/task56-development-v1.json) retains its separate historical reconstruction reference. The enclosing Pear merge commit carries this final report without a recursive self-pin.
 
@@ -64,7 +64,7 @@ Candidate3 runtime SHA-256 is `b9bee774f596c4f7bf908dc30ef1c11745797af2837ee4b42
 | Planned split and source-authority transfer | PASS — full upstream history, exact selected source/test maps, canonical shared headers and all three owner acceptances; frozen legacy records retained |
 | Developer reconstruction and required checks | PASS — explicit-input partial compilation, output comparison, corrected candidate3 assembly and bounded host controls; no Git-only/full lower-layer clean-build claim |
 | Build, selection, diagnosis and recovery documentation | PASS — exercised source/prepare/select/inspect/fixture/release paths; implemented game request reviewed without executing it; selection and limited input recovery scope explicit |
-| README/dependency links match state | PASS — final private refs, local/provenance references and preserved command interfaces checked; Pear immutable document links remain explicitly pending public reachability |
+| README/dependency links match state | PASS — final private refs, local/provenance references and preserved command interfaces checked; current immutable Pear links are published through PR #58; changed guide links are checked before update |
 | Current Megabonk failure and next work handed off | PASS — #12 accepted D36 refusal, WGI uncertainty, source locations, reproduction inputs and manual diagnostic route |
 | #47 and existing environment preserved | PASS within recorded protection scope — 307 frozen source identities, 29 selected original identities, 5 inherited Preview files and 92 producer files matched; no game copy/run or original-state selection change |
 
@@ -78,16 +78,20 @@ Candidate3 runtime SHA-256 is `b9bee774f596c4f7bf908dc30ef1c11745797af2837ee4b42
 - [Stage 5.2](../working/task_m1_56_stage5.2.md): seven fresh selector-driven operations, three fresh independent release groups covering fifteen operations, game input/producer inspection and selection-metadata recovery. Narrow Wine/DXMT audit-tool metadata allowlists were tested without altering runtime implementations or historical build pins.
 - [Stage 6](../working/task_m1_56_stage6.md): owner cutover, exact private refs, merge preservation, final metadata inspection, documentation and evidence retention. No new compilation or native/game execution.
 
-The final actual game-context `inspect` passed after the documentation/master integration. Selection metadata stayed identical and the game output remained empty. This is readiness inspection, not live execution authority or a game result.
+- [Stage 6.1](../working/task_m1_56_stage6.1.md): P1/P2 fixes; 47 selector, 133 game-policy and 94 documentation test executions passed. Both regressions reproduce against the old source, and original failure/cleanup oracles and provenance remain intact. The selector suite is added to portable CI.
+- [Stage 6.2](../working/task_m1_56_stage6.2.md): six fresh prepare/select/inspect commands passed with 69 game inputs and 92 producer files; new output roots remain empty. An exact missing 494-byte historical request was restored from its archive. Prior controls retain their original identities. New metadata and state are separate; original selection is unchanged.
+
+The original Stage 6 inspection and current Stage 6.2 inspection are distinct readiness observations, not live execution authority or game results. Remote CI must pass on the updated PR head before the approved merge.
 
 ## Retention Handoff
 
 | Retained material | Owner/consumer and recovery boundary | Release condition |
 |---|---|---|
+| Old and corrected Pear producer worktrees | Old v5 and new corrected game closures consume their exact paths; keep both detached/locked at merge | Every consumer has accepted separately reviewed successor bindings; branch cleanup alone is not release |
 | Clean selected runtime/FEX roots and ten absolute builder paths | Current candidate admission and producer identities; source equality alone does not permit relocation | Reviewed successor assembly/bindings and every affected consumer transition |
 | Exact object/config/generated/toolchain/SDK/helper/seed packs and compiled builds | Bounded reconstruction, candidate admission, replay and recovery | Explicit replacement/recovery proof and last-consumer release |
 | Candidate2, candidate3 and failure/reuse records | Historical CPU/graphics claims, current runtime and comparisons | Evidence claims and recovery dependencies independently replaced |
-| Exact historical 494-byte frame request | Current predecessor packet; byte-exact backup and private restoration map exist | Consumer migration; restore at the original path if lost, refusing unrelated overwrite |
+| Exact historical 494-byte frame request | Current predecessor packet; byte-exact backup retained; Stage 6.2 restored the missing exact file | Consumer migration; restore at the original path if lost, refusing unrelated overwrite |
 | Private descriptors, game inputs, signing and user state | Separate runtime/Pear authorities; outside Git | No release granted; never infer permission from task completion |
 | Evidence checkpoints | Initial 516 mappings/427 unique objects plus committed-stage addendum; raw owner decisions and exact report joins retained | Final metadata backed by Git and private archive; archives do not replace external payloads |
 
@@ -97,6 +101,8 @@ Approved cleanup already completed: 3,030 historical Task4 PE/archive files remo
 
 Additional reviewed groups remain KEEP: approximately 5.06 GB of six failed native-prefix file sets and 0.375 GB of residual failed-build inputs/evidence still have replay/recovery consumers. No additional deletion list is proposed. Source-owner acceptance does not release them. Final protection inspection observed 20,172,984,320 free bytes; this is a dated whole-filesystem observation, not space exclusively recovered by Task #56.
 
+The remediation evidence adds 86 private files, 728,699 logical / 917,504 allocated bytes, with index SHA-256 `469a4a6a7ae89ebdf3cb8b7dd6bf05c867ba019fb60f58cf7dae339f1494f089`. Canonical live metadata, both new prepared records, original state, recovery scripts/maps and old failure evidence are preserved. New protection inspection found no changes in 34,182 analysis/research files, 190 Preview/#47 files, 92 old producers, ten builders, three ignored records and three old selection records. Merge cleanup removes only confirmed unnecessary Pear branch labels, with no worktree or artifact deletion and no material space-recovery claim.
+
 ## Residual Risks and Follow-up Work
 
 The original D36/runtime12 observation reached a responsive menu and loading, then `owner_refused` / `ECGate.exit` status 3. Later owner SIGTERM is cleanup, not a proven independent crash cause. Sixty-four occupied bindings do not prove failure-time liveness, capacity exhaustion or safe reclamation. D37 remains parked and separate.
@@ -105,8 +111,8 @@ Candidate3 and runtime12 WGI PE bytes match, but source-to-installed-PE binding 
 
 FEX EC-gate/lifecycle investigation belongs in `Source/Windows/ARM64EC/Module.cpp` and `Source/Windows/Common/PearFEXMemory.cpp`, with Wine as the canonical paired-memory owner and runtime as the common diagnostic/lifecycle owner. [The developer handoff](../../docs/development/rosetta-free.md#continue-the-developer-megabonk-investigation) supplies the implemented next command and independent release route.
 
-The reviewed future game plan requires 2,440,580,183 additional bytes plus a 6,442,450,944-byte reserve: 8,883,031,127 free bytes, without assumed clone savings. Recheck exact inputs, current producers, capacity, predecessor resources, live authority and lease/deadline immediately before a separately admitted run. A saved inspection is not permission. Cold-prefix initialization, full input-pack/candidate restoration, Steamworks/audio/save/gameplay and all-process/all-library no-Rosetta qualification remain open under their existing scopes.
+The reviewed future game plan requires 2,440,587,694 additional bytes plus a 6,442,450,944-byte reserve: 8,883,038,638 free bytes, without assumed clone savings. Recheck exact inputs, current producers, capacity, predecessor resources, live authority and lease/deadline immediately before a separately admitted run. A saved inspection is not permission. Cold-prefix initialization, full input-pack/candidate restoration, Steamworks/audio/save/gameplay and all-process/all-library no-Rosetta qualification remain open under their existing scopes.
 
 ## Approval Request to Task Requester
 
-Technical preparation is complete; the next engineering work can use the split owners and isolated development route. Review this report and the prepared publication bundle before authorizing a public Pear branch/PR and Issue update. The four component repositories remain private. Issue closure, merging, game execution, additional deletion and existing-environment changes are not requested or implied.
+Technical preparation and the two PR corrections are complete. The requester has explicitly authorized updating PR #58, merging after successful verification, closing #56 and removing unnecessary Pear branches. Preserve both producer worktrees, private component defaults, required inputs/artifacts, #47 and the existing environment. Game execution and additional artifact deletion are outside this approval. The next engineering work can use the corrected isolated route and split source owners.

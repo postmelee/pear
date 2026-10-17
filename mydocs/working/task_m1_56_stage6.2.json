@@ -1,0 +1,196 @@
+{
+  "admission": {
+    "current_authority_assessed": false,
+    "fixture": "input_admitted",
+    "game": "input_admitted",
+    "game_execution_performed": false,
+    "game_input_count": 69,
+    "game_producer_count": 92,
+    "game_qualified": false,
+    "new_output_roots_empty": true,
+    "runtime_execution_performed": false
+  },
+  "archive": {
+    "allocated_bytes": 917504,
+    "file_count": 86,
+    "index_sha256": "469a4a6a7ae89ebdf3cb8b7dd6bf05c867ba019fb60f58cf7dae339f1494f089",
+    "index_size_bytes": 23367,
+    "logical_bytes": 728699
+  },
+  "changed_source_rows": [
+    {
+      "path": "tools/development/game/handoff.py",
+      "root": "pear",
+      "sha256": "ec9daa8bfa018b2eb2f22e858091649fe433172d04ab5577dfe7fbd9941c8ff2",
+      "size_bytes": 8811
+    },
+    {
+      "path": "tools/development/game/import-provenance.json",
+      "root": "pear",
+      "sha256": "bd17b11e88046be9cc3f0cf40b01a5453650c4e2c57035ba583c29260d9592f5",
+      "size_bytes": 218625
+    },
+    {
+      "path": "tools/development/runtime_candidate.py",
+      "root": "pear",
+      "sha256": "681ce999b122a6c5c2b652c0a657e147ec9f0da98731b79dbc5817f4d699821f",
+      "size_bytes": 26561
+    }
+  ],
+  "checks": [
+    {
+      "finished_monotonic_ns": 8503313108291,
+      "finished_utc": "2026-10-17T13:10:03.659485+00:00",
+      "name": "metadata-restore",
+      "receipt_sha256": "184a5b3926038d918a7fb995fa321a9dbc20c83cba93bc588086711a4dfede98",
+      "receipt_size_bytes": 1077,
+      "returncode": 0,
+      "seconds": 0.152356041,
+      "started_monotonic_ns": 8503160752250,
+      "started_utc": "2026-10-17T13:10:03.507127+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8516663550166,
+      "finished_utc": "2026-10-17T13:10:17.009876+00:00",
+      "name": "metadata-write",
+      "receipt_sha256": "8e41a30620d433372a0bc5fae795733e5901c331cda75c705e061d82b2b0eea4",
+      "receipt_size_bytes": 1145,
+      "returncode": 0,
+      "seconds": 3.489458416,
+      "started_monotonic_ns": 8513174091750,
+      "started_utc": "2026-10-17T13:10:13.520429+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8537534569375,
+      "finished_utc": "2026-10-17T13:10:37.880817+00:00",
+      "name": "fixture-prepare",
+      "receipt_sha256": "876446e31a57df90c4c165eab900550d3555a9ebae13addedd989087d5d1de04",
+      "receipt_size_bytes": 1166,
+      "returncode": 0,
+      "seconds": 3.977058167,
+      "started_monotonic_ns": 8533557511208,
+      "started_utc": "2026-10-17T13:10:33.903771+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8556567176875,
+      "finished_utc": "2026-10-17T13:10:56.913351+00:00",
+      "name": "fixture-select",
+      "receipt_sha256": "8a2b9b835feceb255248405d83d3a2d8e10f0056a7678c8d7455a832c92d8a97",
+      "receipt_size_bytes": 1238,
+      "returncode": 0,
+      "seconds": 2.606110875,
+      "started_monotonic_ns": 8553961066000,
+      "started_utc": "2026-10-17T13:10:54.307249+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8571207211416,
+      "finished_utc": "2026-10-17T13:11:11.553336+00:00",
+      "name": "fixture-inspect",
+      "receipt_sha256": "d0dc4f219d15b998f28149f8083d376c7fcf9784b6dc97ed346349e30e3991a8",
+      "receipt_size_bytes": 1186,
+      "returncode": 0,
+      "seconds": 3.141769125,
+      "started_monotonic_ns": 8568065442291,
+      "started_utc": "2026-10-17T13:11:08.411573+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8597273432041,
+      "finished_utc": "2026-10-17T13:11:37.619454+00:00",
+      "name": "game-prepare",
+      "receipt_sha256": "3aa2a6960e13cd4727ce2e64ce23b10612bb47bf82dac7923018bbbb37db0772",
+      "receipt_size_bytes": 1163,
+      "returncode": 0,
+      "seconds": 3.316308583,
+      "started_monotonic_ns": 8593957123458,
+      "started_utc": "2026-10-17T13:11:34.303157+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8634717059000,
+      "finished_utc": "2026-10-17T13:12:15.062940+00:00",
+      "name": "game-select",
+      "receipt_sha256": "1c6b067daa65e964b3c8036d529acaa81903ee3b6069916650cc98d8fff4e87a",
+      "receipt_size_bytes": 1238,
+      "returncode": 0,
+      "seconds": 3.574961125,
+      "started_monotonic_ns": 8631142097875,
+      "started_utc": "2026-10-17T13:12:11.487993+00:00"
+    },
+    {
+      "finished_monotonic_ns": 8657423759166,
+      "finished_utc": "2026-10-17T13:12:37.769565+00:00",
+      "name": "game-inspect",
+      "receipt_sha256": "f7c6335a3b446d5ff3d6dd9e7702cb7fa81687ba7edea7b68520a60e219c7184",
+      "receipt_size_bytes": 1182,
+      "returncode": 0,
+      "seconds": 4.541454083,
+      "started_monotonic_ns": 8652882305083,
+      "started_utc": "2026-10-17T13:12:33.228116+00:00"
+    }
+  ],
+  "fixture_producers_unchanged": true,
+  "metadata": {
+    "fixture-context.json": {
+      "sha256": "9688c61a17a224d8e1df2275a98e2b067b024b7c7908c64f5bbb1cd10afa6867",
+      "size_bytes": 209455
+    },
+    "fixture-selection.json": {
+      "sha256": "7e8ff7ecf52d434eeb896c883d878d57f2b2ecc50c91d222702882a6307ce595",
+      "size_bytes": 1117
+    },
+    "game-context.json": {
+      "sha256": "c4226ab37e0d3a074bdf79dae752ab06a9b6d041408f580d5d85295d3c0c55ac",
+      "size_bytes": 236595
+    },
+    "game-producers.json": {
+      "sha256": "fee607c54e2d7778ed6b5af7fe46dc99d837219d05b9959c4a329c97c2545239",
+      "size_bytes": 19272
+    },
+    "game-request.json": {
+      "sha256": "4c33771920e55ea13f45299b5710c82fc30d7190a9af53deac8e7ed12bfde087",
+      "size_bytes": 487
+    },
+    "game-selection.json": {
+      "sha256": "3e7deb7b98652d6d961bd76ebea499aa87b792532f3339b8b7ec7ada089bfe27",
+      "size_bytes": 1339
+    }
+  },
+  "nonpear_sources_unchanged": true,
+  "preservation": {
+    "builder_refs": 10,
+    "ignored_task56_files": 3,
+    "main_untracked_preserved_files": 34182,
+    "old_selection": 3,
+    "preview_and_master_files": 190,
+    "producer_refs": 92
+  },
+  "prior_control_records_reused_verbatim": true,
+  "producer_counts": {
+    "fex": 5,
+    "pear": 14,
+    "runtime": 73
+  },
+  "restore": {
+    "exact_archived_bytes": true,
+    "sha256": "e73899f272b566e32d28765de159e379e772afff93f607697f3f7c1fd8573664",
+    "size_bytes": 494
+  },
+  "schema_version": 1,
+  "scope": "task56_pr58_stage6_2_binding_validation",
+  "source_pins": {
+    "fex": "9c9b602c07b57a08500862abfdf62e1bac351640",
+    "pear": "400da1145b20ff787ad30b251ea5c810ed291c29",
+    "runtime": "6f0202b457f0e585c5c7621a63d203e77d07386d"
+  },
+  "status": "passed",
+  "storage": {
+    "additional_peak_bytes": 2440587694,
+    "observed_at": {
+      "monotonic_seconds": 8657.376492583,
+      "wall_utc": "2026-10-17T13:12:37.722287+00:00"
+    },
+    "observed_free_bytes": 16778289152,
+    "required_free_bytes": 8883038638,
+    "reserve_bytes": 6442450944
+  },
+  "timing_scope": "Separate serial metadata command intervals only; no native build/run or interactive feedback endpoint"
+}

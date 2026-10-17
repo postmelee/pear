@@ -78,9 +78,11 @@ admission. Run it from the reviewed Pear checkout with an explicitly admitted
 ARM64 Python interpreter. Its spec uses scope `pear_development_selection` and
 purpose `development_diagnostics`, an exact clean runtime checkout commit, a
 separate development lock, exact fixture descriptor, optional exact game
-descriptor, isolated state root and explicit protected roots. Use the exact clean Stage 5.1 source checkpoint and reviewed descriptor/producer
-identities; the historical reconstruction lock remains unchanged. Keep that
-selected source-only checkout at `.worktrees/runtime-task56`, detached at runtime
+descriptor, isolated state root and explicit protected roots. Use Pear source
+`400da1145b20ff787ad30b251ea5c810ed291c29` for the corrected selector and manual
+confirmation policy, with its newly reviewed descriptor/producer identities.
+The historical reconstruction lock and runtime tool pin remain unchanged. Keep
+the selected runtime source-only checkout at `.worktrees/runtime-task56`, detached at runtime
 `6f0202b457f0e585c5c7621a63d203e77d07386d`. Later report/documentation edits use
 `.worktrees/runtime-development-v1` on `codex/task56`. Creating another source
 worktree needs fresh capacity review: the exercised allowance was 128 MiB plus
@@ -129,8 +131,13 @@ route. The game root map additionally contains `pear` and the consumed `fex`
 root; the selected seven-fixture map needs only `runtime`. The selector checks
 clean runtime/FEX state and every consumed file against its independent tool
 commit before importing it. FEX generated/private inputs are separate from its
-Python tool-source checkout.
-Do not copy old producer hashes or reuse a saved current-authority result.
+Python tool-source checkout. The selector promotes the admitted runtime root
+even if it already appears later in `sys.path`, validates bootstrap source/package
+resolution before import, and rejects incompatible loaded modules. Start a fresh
+process when changing tool roots.
+Do not copy old producer hashes or reuse a saved current-authority result. Keep
+source worktrees at their recorded paths while any producer manifest consumes
+them; report-only commits do not replace the source commit recorded at capture.
 
 Keep selection state separate from the existing private metadata directory.
 For example, set these exported variables under a canonical existing local
@@ -188,9 +195,12 @@ PY
 
 This creates data, not admission or execution authority. Run `prepare` next: it
 checks the exact clean checkout, lock and selected context before creating its
-owned metadata. Run the seven fixture cases and their independent release checks
-first. Only then prepare the game descriptor/control packet and a new selection
-spec with that descriptor. Its inspect/select operations still do not copy or run
+owned metadata. Initial integration requires the seven fixture cases and their
+independent release checks before preparing the game descriptor/control packet.
+For a later admission-only rebind, an explicitly reviewed reuse decision may
+retain those exact operations and release records when their runtime, payloads
+and oracles are unchanged. Re-admit their complete input references; do not
+relabel them as new executions. Prepare a new selection spec with that descriptor. Its inspect/select operations still do not copy or run
 the game. Requests and output names must be fresh for a later explicitly admitted
 diagnostic operation.
 
@@ -277,6 +287,10 @@ The future game request is a closed local JSON object with integer
 selected D36 settings and manual input policy. An admitted diagnostic observation
 may record a guest refusal or nonzero exit; operation completion is not gameplay
 qualification. Its harness, current authority and owned cleanup must still pass.
+The corrected manual policy verifies a copy of the confirmation, applies the
+verifier-derived expiry, and retains the original control identity for repeated
+ticks and the matching finish request. Altered identity, expiry and terminal
+states still refuse or end the hold; no automatic game input is introduced.
 
 After the worker exits, preserve its exact final `operation_ref`. Create a fresh
 release request with exactly `schema_version: 1`, scope
@@ -314,8 +328,8 @@ extra polling or injected input. EC gate/lifecycle changes belong in
 `Source/Windows/Common/PearFEXMemory.cpp`. Keep existing capacity, ownership and
 failure guards; an occupied-slot count is not a reclamation proof.
 
-The conservative plan is 2,440,580,183 additional bytes (about 2.44 GB) plus a
-6 GiB reserve: 8,883,031,127 free bytes in total, without assumed clone savings.
+The conservative plan is 2,440,587,694 additional bytes (about 2.44 GB) plus a
+6 GiB reserve: 8,883,038,638 free bytes in total, without assumed clone savings.
 Remeasure and re-admit all inputs, predecessor resources, the live lease/deadline
 and current authority immediately before execution. Inspection is not a grant.
 Retain human-only input, terminal/expiry priority and the independent release
