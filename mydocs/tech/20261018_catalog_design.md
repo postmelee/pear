@@ -249,3 +249,36 @@ request/report introductions. Games, Blog and article introductions already
 use the same token. Existing spacing and normal body text remain unchanged.
 Rebuilt the local site and checked whitespace. Browser checks confirmed light
 `#6f6e69` and dark `#878580`; screenshot: `.build/catalog-design/intro-muted.png`.
+
+## Blog metadata, connections and updates
+
+The requester authorized a Stephango-inspired article list retaining subtitles,
+automatic article metadata/connections, and the three supplied social accounts.
+They explicitly selected 2026-10-18 as the first article's publication date.
+Inspected stephango.com, /vcware and /subscribe. Reused the existing Python
+registry, source validator and shared tokens, without introducing dependencies.
+Implementation stays in tools; the existing contributor guide in
+`docs/development/catalog.md` documents metadata and reuse. This location follows
+the previously approved official documentation destination.
+
+The index renders date, linked title and muted subtitle. Article headers preserve
+the source title, subtitle and byline while adding approved publication date and
+body-based reading time (220 words/minute, rounded up; current article: 11 min).
+Backlinks are computed from editorial main/source content before generated
+sections exist; the homepage is a real mention. Related articles rank by shared
+topics, then publication date and slug, capped at three. Empty sections are
+omitted, so a single-article registry does not show invented recommendations.
+The shared Receive updates section distinguishes official Pear X from personal
+developer X and Threads. No social account interaction or subscription occurs.
+
+Validation now permits reviewed local relative article links inside the site
+prefix. Tests cover traversal rejection, fragment resolution, duplicate and
+self/external-link exclusion, multi-post recommendations, generated-link cycle
+avoidance, dates, reading time and empty recommendation behavior. All 104 Python
+documentation tests and six Steam-search tests passed. Governance: 38 documents,
+373 targets. Whitespace checks passed. Desktop light and mobile 390px dark views
+were inspected; TOC navigation reaches Linked mentions and updates. Source prose,
+tables and image bytes remain unchanged. Screenshots under `.build/catalog-design/`:
+`blog-list-refined.png`, `blog-article-header.png`, `blog-connections.png`, and
+`blog-mobile-refined.png`. Temporary responsive review HTML was removed. The
+existing loopback server remains available; no Issue or publication was created.

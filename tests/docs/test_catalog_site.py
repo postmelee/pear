@@ -8,6 +8,8 @@ import re
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
+from unittest.mock import patch
 from urllib.parse import unquote, urljoin, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -124,6 +126,51 @@ class WebsiteTests(unittest.TestCase):
         body, outline = site.prepare_content('<h2>A &amp; B</h2><h3>Detail</h3><h2>A &amp; B</h2>', (2, 3))
         self.assertEqual(outline, [(2, 'a-b', 'A & B'), (3, 'detail', 'Detail'), (2, 'a-b-2', 'A & B')])
         self.assertIn('id="a-b-2"', body)
+
+    def test_blog_dates_reading_time_mentions_and_recommendations(self):
+        first = site.POSTS[0]
+        second = replace(first, slug='second', title='Second article', images=(),
+                         published='2026-10-17', topics=('development',))
+        third = replace(second, slug='third', title='Third article', topics=('unrelated',))
+        source = '<h1>Example</h1><p><em>Subtitle</em></p><p>By Author</p><p>' + 'word ' * 221 + '</p>'
+        second_source = source + f'<p><a href="{first.slug}.html#section">Earlier work</a></p>'
+        with patch.object(site, 'POSTS', (first, second, third)), patch.object(
+                site, 'article_content', side_effect=lambda post: second_source if post == second else source):
+            pages = site.blog_pages()
+        article = pages[first.path]
+        self.assertIn('October 18, 2026', article)
+        self.assertIn('2 minutes read', article)
+        self.assertIn('id="linked-mentions"', article)
+        self.assertIn('id="you-might-also-enjoy"', article)
+        self.assertEqual(site.related_posts(first, (first, second, third)), [second])
+        self.assertNotIn('id="linked-mentions"', pages[second.path])
+        self.assertEqual(site.reading_minutes(''), 1)
+        self.assertNotIn('<time', site.publication_label(replace(first, published=None)))
+
+    def test_backlinks_resolve_relative_fragments_without_external_or_self_mentions(self):
+        target = site.POSTS[0].path
+        sources = {
+            'index.html': ('Home', f'<a href="{target}#one">One</a><a href="{target}">Two</a>', 'Intro'),
+            'blog/second.html': ('Second', f'<a href="{site.ARTICLE_SLUG}.html">Link</a>', 'Summary'),
+            'about.html': ('About', f'<a href="https://example.com/{target}">External</a>', ''),
+            target: ('Self', '<a href="#one">Self</a>', ''),
+        }
+        self.assertEqual([row[0] for row in site.linked_mentions(target, sources)],
+                         ['index.html', 'blog/second.html'])
+        for href in ('../../private.html', '//example.com/x', '%2e%2e/%2e%2e/private.html'):
+            self.assertIsNone(site.internal_target(href, target))
+        site.ArticleValidator().feed('<p><a href="../about.html">About</a></p>')
+        with self.assertRaises(ValueError):
+            site.ArticleValidator().feed('<a href="../../private.html">Private</a>')
+
+    def test_single_post_hides_empty_recommendations_and_uses_real_update_channels(self):
+        article = (self.output / site.ARTICLE_PATH).read_text()
+        self.assertNotIn('id="you-might-also-enjoy"', article)
+        self.assertIn('id="linked-mentions"', article)
+        self.assertIn('datetime="2026-10-18"', article)
+        for link in ('https://x.com/najukoreanpear', 'https://x.com/meleeisgloom2',
+                     'https://www.threads.com/@postmelee'):
+            self.assertIn(link, article)
 
     def test_rebuild_is_deterministic_and_does_not_publish_article_source(self):
         before = {name: (self.output / name).read_bytes() for name in self.files}

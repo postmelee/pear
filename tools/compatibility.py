@@ -321,7 +321,7 @@ def build_site(data, out, catalog=None, steam_catalog=None):
              'report.html': intake_page(catalog, 'report', steam_catalog is not None),
              'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
     pages.update({f'game-{g["app_id"]}.html': game_page(g) for g in groups})
-    pages.update(site.blog_pages())
+    pages.update(site.blog_pages(pages))
     allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | set(pages)
     allowed_dirs = {str(parent) for name in allowed for parent in Path(name).parents if str(parent) != '.'}
     out = Path(out)

@@ -80,9 +80,11 @@ and local GitHub draft behavior. Global search does not replace Steam lookup.
 2. Add any reviewed PNG figures to `docs/assets/blog/`. Use unique filenames,
    meaningful alt text and article-relative `images/<filename>.png` sources.
    The renderer reads intrinsic image dimensions to reserve layout space.
-3. Add a `BlogPost` record to `POSTS` in `tools/catalog_site.py`, in the desired
-   index order. Supply title, summary, author, edition and the exact image tuple.
-   A publication date is not invented when the source does not provide one.
+3. Add a `BlogPost` record to `POSTS` in `tools/catalog_site.py`. Supply title,
+   summary, author, edition, the exact image tuple, an approved ISO publication
+   date (`published`) and a tuple of topic identifiers (`topics`). The list sorts
+   newest first and shows year/month alongside the title and existing subtitle.
+   Omit the date if unknown; it is never inferred from build time or file dates.
 4. Rebuild and run the checks below. The registry derives the public page/image
    allowlist and index cards; rendered content supplies the search index and TOC.
 
@@ -91,6 +93,29 @@ unbalanced elements. Expand the supported format only with appropriate tests.
 The first article came solely from the requester-supplied HTML, credited to
 Taegyu Lee; its prose, HTTPS links, two tables and original PNG bytes are retained.
 Its release-specific statements are independent of current download metadata.
+
+## Automatic article components
+
+The article renderer preserves the source title, subtitle, byline and body while
+placing the publication date and estimated reading time directly below the title.
+Reading time is rounded up at 220 words per minute, with a one-minute minimum;
+it uses body text, including headings and captions, but excludes generated
+navigation, recommendations, title, subtitle and byline.
+
+`linked_mentions` scans actual links in editorial page content and source
+articles before adding generated recommendation sections. Local relative links
+resolve from the source page, including fragments; external links, self-links,
+navigation and generated backlinks do not produce mentions. Each source appears
+once. Article sources can link to known published local pages as well as public
+HTTPS URLs; private paths and paths escaping the site prefix are rejected.
+
+`related_posts` ranks other registered articles by shared topics, then date and
+slug, with at most three results. Sections with no matches are omitted. With only
+one article, no recommendation is fabricated. `update_links` renders the shared
+Receive updates section using the official Pear X account and the developer's
+personal X and Threads accounts. These are ordinary links, not subscriptions or
+embedded social widgets. First-article publication date 2026-10-18 was explicitly
+supplied by the requester.
 
 ## Verify a change
 
