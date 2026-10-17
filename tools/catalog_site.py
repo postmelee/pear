@@ -314,7 +314,7 @@ def update_links(root=''):
 
 def updates_page():
     content = f'''<h1>Receive updates</h1>
-<p class="page-intro">We post project updates on <a href="https://x.com/najukoreanpear">X (Pear)</a>. For personal notes and work in progress, follow Taegyu Lee on <a href="https://x.com/meleeisgloom2">X (Taegyu Lee)</a> and <a href="https://www.threads.com/@postmelee">Threads (Taegyu Lee)</a>.</p>
+<p class="page-intro">We post project updates on <a href="https://x.com/najukoreanpear">X (Pear)</a>.<br>For personal notes and work in progress, follow Taegyu Lee on <a href="https://x.com/meleeisgloom2">X</a> and <a href="https://www.threads.com/@postmelee">Threads</a>.</p>
 <h2>Ways to follow</h2>
 <ul><li>X.com (Pear): <a href="https://x.com/najukoreanpear">@najukoreanpear</a></li>
 <li>X.com (Taegyu Lee): <a href="https://x.com/meleeisgloom2">@meleeisgloom2</a></li>
