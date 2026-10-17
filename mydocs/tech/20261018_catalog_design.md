@@ -321,3 +321,14 @@ All 105 Python documentation tests passed, including new checks for index/articl
 navigation, nested Updates paths and active navigation. Local site rebuilt;
 browser verified Posts, article-only navigation and the Updates link destination.
 Screenshots: article-toc.png and updates-page.png. Existing local server retained.
+
+## Project voice and visible authors
+
+Updated shared headings to Receive updates and the channel sentence to Follow
+updates via. Updates uses We for official project posts and separately identifies
+Taegyu Lee's personal notes. Both X entries in Ways to follow now use X.com.
+Blog index rows render the existing registry author as By Taegyu Lee; article
+headers retain their existing visible source byline. Authored article prose and
+summaries remain unchanged. Rebuilt the preview, passed 11 catalog tests and
+whitespace checks, and verified both bylines and Updates copy in the browser.
+Screenshot: blog-author.png.

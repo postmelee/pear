@@ -285,16 +285,16 @@ def article_parts(content):
 
 
 def update_links(root=''):
-    return f'''<section class="blog-updates"><h2 id="receive-updates"><a href="{root}updates.html">Receive my updates</a></h2>
-<p>Follow me via <a href="https://x.com/najukoreanpear">X</a>, <a href="https://www.threads.com/@postmelee">Threads</a>, <a href="{REPO}">GitHub</a>, and <a href="{root}updates.html">other options</a>.</p></section>'''
+    return f'''<section class="blog-updates"><h2 id="receive-updates"><a href="{root}updates.html">Receive updates</a></h2>
+<p>Follow updates via <a href="https://x.com/najukoreanpear">X</a>, <a href="https://www.threads.com/@postmelee">Threads</a>, <a href="{REPO}">GitHub</a>, and <a href="{root}updates.html">other options</a>.</p></section>'''
 
 
 def updates_page():
-    content = f'''<h1>Receive my updates</h1>
-<p class="page-intro">I post project updates on <a href="https://x.com/najukoreanpear">X (Pear)</a>, and personal notes and work in progress on <a href="https://x.com/meleeisgloom2">X (Taegyu Lee)</a> and <a href="https://www.threads.com/@postmelee">Threads (Taegyu Lee)</a>.</p>
+    content = f'''<h1>Receive updates</h1>
+<p class="page-intro">We post project updates on <a href="https://x.com/najukoreanpear">X (Pear)</a>. For personal notes and work in progress, follow Taegyu Lee on <a href="https://x.com/meleeisgloom2">X (Taegyu Lee)</a> and <a href="https://www.threads.com/@postmelee">Threads (Taegyu Lee)</a>.</p>
 <h2>Ways to follow</h2>
-<ul><li>X (Pear): <a href="https://x.com/najukoreanpear">@najukoreanpear</a></li>
-<li>X (Taegyu Lee): <a href="https://x.com/meleeisgloom2">@meleeisgloom2</a></li>
+<ul><li>X.com (Pear): <a href="https://x.com/najukoreanpear">@najukoreanpear</a></li>
+<li>X.com (Taegyu Lee): <a href="https://x.com/meleeisgloom2">@meleeisgloom2</a></li>
 <li>Threads (Taegyu Lee): <a href="https://www.threads.com/@postmelee">@postmelee</a></li>
 <li>GitHub (Pear): <a href="{REPO}">postmelee/pear</a></li></ul>'''
     return shell('Updates', content, 'updates')
@@ -373,7 +373,7 @@ def blog_pages(base_pages=None):
 
 def blog_list_item(post):
     e = html.escape
-    return f'''<div class="article-list-item"><span class="article-date">{publication_label(post, compact=True)}</span><div><h3 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h3><p>{e(post.summary)}</p></div></div>'''
+    return f'''<div class="article-list-item"><span class="article-date">{publication_label(post, compact=True)}</span><div><h3 class="article-title"><a href="{e(post.slug)}.html">{e(post.title)}</a></h3><p>{e(post.summary)}</p><p class="article-author">By {e(post.author)}</p></div></div>'''
 
 
 def search_index(pages):
