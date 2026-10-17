@@ -170,7 +170,7 @@ class WebsiteTests(unittest.TestCase):
         self.assertIn('datetime="2026-10-18"', article)
         for link in ('https://x.com/najukoreanpear', 'https://github.com/postmelee/pear',
                      'https://www.threads.com/@postmelee'):
-            self.assertIn(link, article)
+            self.assertIn(link, (self.output / 'updates.html').read_text())
 
     def test_blog_navigation_and_updates_destinations(self):
         listing = (self.output / 'blog/index.html').read_text()
@@ -185,8 +185,9 @@ class WebsiteTests(unittest.TestCase):
         self.assertIn('href="#article-title"', nav)
         self.assertIn(site.ARTICLE_TITLE, nav)
         self.assertNotIn('Introduction', nav)
-        self.assertIn('href="../updates.html"', nav)
-        self.assertIn('href="../updates.html">other options', article)
+        self.assertNotIn('updates.html', article)
+        self.assertNotIn('Receive updates', article)
+        self.assertIn('</ul></li><li><a href="#linked-mentions" data-toc-link>', nav)
         updates = (self.output / 'updates.html').read_text()
         self.assertIn('https://x.com/meleeisgloom2', updates)
         self.assertIn('href="updates.html" aria-current="page"', updates)

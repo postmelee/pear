@@ -16,10 +16,11 @@
 .steps-panel a { text-decoration: none; }
 .page-intro { margin-bottom: var(--space-11); }
 .article-date { color: var(--color-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.article-header { margin-bottom: var(--space-11); }
+.article-header { margin-bottom: var(--space-7); }
 .article-header h1 { font-size: var(--blog-title-size); line-height: 1.25; font-weight: 500; margin-bottom: var(--space-2); }
 .article-meta { color: var(--color-muted); font-size: var(--blog-meta-size); margin: 0; }
-.article-subtitle { color: var(--color-muted); margin-top: var(--space-9); }
+.article-subtitle { color: var(--color-muted); margin-top: var(--space-4); }
+.article-subtitle p { margin: 0; }
 .article-subtitle em { font-style: normal; }
 .blog-index > section + section { border-top: 1px solid var(--color-border); margin-top: var(--space-11); padding-top: var(--space-11); }
 .blog-index h2 { color: var(--color-muted); font-size: var(--font-size-body); font-weight: 400; margin: 0 0 var(--space-7); }

@@ -370,3 +370,16 @@ filtering and header metadata assertions. Browser verified full Latest summary
 click navigation, desktop index/article, topic archive, and 390px/320px mobile
 views. Removed the temporary responsive harness. Screenshots include
 blog-latest-topics-writing.png; local loopback preview remains active.
+
+## Article supporting navigation and spacing
+
+Clarified that Linked mentions is generated from incoming internal editorial
+links, not outgoing references such as the GitHub compatibility README. Kept
+that behavior. Promoted supporting Linked mentions (and any related-article
+section) to article-title-level sidebar entries. Removed Updates from the article
+sidebar and footer, and removed the article Receive updates section; the Updates
+page remains available elsewhere. Reduced subtitle top spacing from 32px to
+16px, removed its paragraph margins and reduced header bottom spacing from 48px
+to 24px. Catalog tests (12) pass, including hierarchy and Updates absence checks.
+Rebuilt and visually checked the local article; article-spacing-toc.png records
+the result.

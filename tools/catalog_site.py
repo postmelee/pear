@@ -115,7 +115,9 @@ def local_link(path, root):
 
 def navigation(active, outline, root, article_title=None):
     items = []
-    entries = (('article', article_title, '#article-title'), ('updates', 'Updates', 'updates.html')) if article_title else NAVIGATION
+    siblings = [item for item in outline if item[1] in {'linked-mentions', 'you-might-also-enjoy'}] if article_title else []
+    outline = [item for item in outline if item not in siblings]
+    entries = (('article', article_title, '#article-title'),) if article_title else NAVIGATION
     if article_title:
         active = 'article'
     for key, label, path in entries:
@@ -126,6 +128,7 @@ def navigation(active, outline, root, article_title=None):
                 f'<li class="toc-depth-{level}"><a href="#{html.escape(anchor)}" data-toc-link>{html.escape(title)}</a></li>'
                 for level, anchor, title in outline) + '</ul>'
         items.append(item + '</li>')
+    items.extend(f'<li><a href="#{html.escape(anchor)}" data-toc-link>{html.escape(title)}</a></li>' for _, anchor, title in siblings)
     return '<ul class="page-navigation">' + ''.join(items) + '</ul>'
 
 
@@ -136,8 +139,8 @@ def explore_cards(items):
         for title, summary, href in items) + '</div>'
 
 
-def footer(root):
-    links = ''.join(f'<a href="{local_link(path, root)}">{label}</a>' for _, label, path in NAVIGATION)
+def footer(root, article=False):
+    links = ''.join(f'<a href="{local_link(path, root)}">{label}</a>' for key, label, path in NAVIGATION if not (article and key == 'updates'))
     return f'''<footer class="site-footer"><p>Pear is <a href="{REPO}">open source</a> under the <a href="{REPO}/blob/master/LICENSE">GPL-3.0-or-later license</a>.</p>
 <nav class="footer-nav" aria-label="Footer">{links}<a href="{REPO}">GitHub</a></nav>
 <a class="footer-author" href="{REPO}"><img src="{root}pear.png" alt="" width="32" height="32"><span><span class="muted">by</span> Pear contributors</span></a></footer>'''
@@ -173,7 +176,7 @@ def shell(title, content, active='games', *, root='', article=False, description
 <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)">{SUN_ICON}{MOON_ICON}<span class="theme-knob" aria-hidden="true"></span></button>
 <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu <span aria-hidden="true">☰</span></button></div></header>
 <nav id="sidebar" class="sidebar" aria-label="{'Article contents' if article else 'Site navigation'}">{nav}</nav>
-<div class="page-layout"><main id="main" class="{'article-body' if article else 'page-content'}" tabindex="-1">{content}</main>{footer(root)}</div>
+<div class="page-layout"><main id="main" class="{'article-body' if article else 'page-content'}" tabindex="-1">{content}</main>{footer(root, article)}</div>
 {search_dialog()}</body></html>'''
 
 
@@ -352,7 +355,7 @@ def article_connections(post, posts, sources):
     if related:
         items = ''.join(f'<li><a href="{html.escape(other.slug, quote=True)}.html">{html.escape(other.title)}</a></li>' for other in related)
         parts.append(f'<section><h2 id="you-might-also-enjoy">You might also enjoy</h2><ul>{items}</ul></section>')
-    return '<div class="article-connections">' + ''.join(parts) + update_links('../') + '</div>'
+    return '<div class="article-connections">' + ''.join(parts) + '</div>'
 
 
 def blog_pages(base_pages=None):
