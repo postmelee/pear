@@ -146,3 +146,21 @@ as did the whitespace check. Browser checks confirmed h2/h3 sizes, SVG geometry,
 light/dark states and search open/close. Screenshot:
 `.build/catalog-design/download-icons-hierarchy.png`. Earlier handoff digests
 and timings do not cover this follow-up.
+
+## Theme restoration and mobile review
+
+At the requester's direction, restored the 44 by 24px switch with a circular
+sliding knob and text sun/moon symbols. Enlarged the sun from 13px to 16px and
+requested text presentation to avoid emoji rendering. Removed unused Heroicons
+definitions and notices; the shared Search SVG and its upstream notices remain.
+Heading hierarchy and Search alignment are unchanged. On mobile, an invisible
+pseudo-element expands the switch hit area to 44px high without changing its
+visible dimensions or header spacing.
+
+Reviewed Download at 390px and Games at 320px using local iframe viewports in
+both themes, and exercised mobile Search open/close and theme switching.
+Desktop inspection confirms the enlarged sun and restored knob. Seven site
+tests and whitespace validation passed after rebuilding. Screenshots are
+`mobile-theme-restored.png` and `desktop-theme-restored.png` under the ignored
+`.build/catalog-design/` directory. Removed the temporary review HTML from the
+served output; the existing local server remains available.

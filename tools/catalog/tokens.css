@@ -32,10 +32,10 @@
   --section-gap: 56px;
   --anchor-offset: 32px;
   --motion-fast: 150ms;
-  --theme-switch-width: 36px;
-  --theme-switch-height: 20px;
-  --theme-icon-size: 18px;
-  --theme-switch-travel: 15px;
+  --theme-switch-width: 44px;
+  --theme-switch-height: 24px;
+  --theme-icon-size: 16px;
+  --theme-switch-travel: 20px;
   --motion-ease: cubic-bezier(.2, 0, 0, 1);
   --color-bg: #fffcf0;
   --color-surface: #f2f0e5;
