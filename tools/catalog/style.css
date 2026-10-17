@@ -178,3 +178,12 @@
   .game-row { grid-template-columns: minmax(0, 1fr); }
   .row-actions .meta { width: 100%; margin: 0; }
 }
+
+/* Article reading measure follows the reference independently of the site shell. */
+.article-page { --reading-width: var(--article-reading-width); }
+.article-body { font-size: var(--article-font-size); line-height: var(--article-line-height); font-family: -apple-system, BlinkMacSystemFont, Inter, "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif; }
+.article-body article > p { margin-block: 1em; }
+.article-body .article-meta { font-size: inherit; line-height: inherit; }
+.article-body video { display: block; width: auto; max-width: 100%; height: auto; max-height: 75vh; margin-inline: auto; background: #000; border-radius: var(--radius-small); }
+.article-body figcaption { margin-top: var(--space-3); font-size: .875em; line-height: 1.4; color: var(--color-muted); }
+@media (max-width: 860px) { .article-page { --reading-width: 88vw; } }

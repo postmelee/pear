@@ -340,6 +340,9 @@ def build_site(data, out, catalog=None, steam_catalog=None):
     assets.update({name: ROOT / 'docs/assets' / name for name in ['pear.png', 'favicon.png', 'social-card.png']})
     assets.update({f'blog/images/{name}': ROOT / 'docs/assets/blog' / name
                    for post in site.POSTS for name in post.images})
+    assets.update({f'blog/media/{name}': ROOT / 'docs/assets/blog/media' / name
+                   for video in site.ARTICLE_VIDEOS
+                   for name in (video, f'{Path(video).stem}.jpg')})
     for source in assets.values():
         require(source.is_file() and not source.is_symlink(), 'Missing or symlinked public asset')
     out.mkdir(parents=True, exist_ok=True)

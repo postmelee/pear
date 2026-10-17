@@ -410,3 +410,42 @@ formulas in Pear's 16px root units. At 1280px, both sites now measure: label
 600 at the reference's 860px breakpoint. No reference stylesheet was vendored.
 Rebuilt preview, checked whitespace and verified computed sizes and screenshot
 latest-font-matched.png. Existing article-header sizing is unchanged.
+
+## Article reading typography and recordings
+
+Authorized follow-up: match the saw article's body typography and insert the two
+requester-supplied recordings. Location: retain the existing docs/blog article and
+keep its reviewed web media under docs/assets/blog/media; no new product docs.
+Reused the browser's native video controls, existing article validator and fixed
+public asset allowlist. No playback library or reference stylesheet was copied.
+
+Article-only tokens now use 15px + 0.25vw, line height 1.5, a 37em desktop measure
+and 88vw below 860px, with matching system font fallback and 1em paragraph margins.
+Live comparison at 690px: both reference and Pear body measured 16.725px font,
+25.0875px line height, 607.195px width and 16.725px paragraph margins. Different
+prose naturally has different break positions; the wrapping constraints match.
+
+Inputs remain untouched in Downloads: gameplay.mov (104,585,803 bytes, 77.72s)
+and demo.MOV (981,242,477 bytes, 145.35s). ffmpeg produced H.264/yuv420p + AAC
+MP4s with faststart, metadata removed, CRF 25, fast preset: gameplay 960x1280,
+demo 1600x1040 at 30fps. JPEG posters come from 25s and 8s respectively.
+The requester supplied and authorized these recordings; no ownership of game
+artwork or other third-party UI is asserted. Binary files carry no SPDX header.
+
+Storage: original files are not copied into Git. Web derivatives total roughly
+70MiB, with one additional local-preview copy; temporary review frames are under
+.build/catalog-design/media-review and disposable. No measured free-space delta
+or allocated-size claim. Source media and preview copies remain needed for this
+local review. No external upload or publication performed.
+
+Gameplay is placed alongside the Rosetta observation; the screen recording is
+placed after the Pear-to-Steam flow. Captions describe their scope. Video sources
+and posters must be allowlisted; the renderer adds controls, playsinline and
+preload=none with no autoplay. Both recordings reached readyState 4 and advanced
+time after native Play input in the local browser. Responsive preview screenshot:
+article-video-preview.png. The focused catalog suite passes 14 tests, including
+rejection of unapproved/remote media and autoplay attributes.
+
+Full docs suite: 108 tests passed. The worktree notice scan includes unrelated
+untracked analysis/ files with missing headers; those files were not modified.
+Use the exact committed diff for the scoped source-notice verification.

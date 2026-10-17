@@ -24,6 +24,7 @@ ARTICLE_SLUG = 'running-megabonk-on-an-apple-silicon-mac'
 ARTICLE_TITLE = 'Running Megabonk on an Apple Silicon Mac'
 ARTICLE_SUMMARY = 'How one Windows game led me to build Pear, and where I want to take it next.'
 ARTICLE_PATH = f'blog/{ARTICLE_SLUG}.html'
+ARTICLE_VIDEOS = {'gameplay.mp4': (960, 1280), 'demo.mp4': (1600, 1040)}
 ARTICLE_IMAGES = ('current-runtime.png', 'rosetta-free-runtime.png')
 
 
@@ -56,7 +57,9 @@ def post_topics(post):
 
 BLOG_FILES = {'blog/index.html', 'blog/topics/index.html', 'blog/writing.html',
               *(topic_path(label) for post in POSTS for label in post_topics(post)), *(post.path for post in POSTS),
-              *(f'blog/images/{name}' for post in POSTS for name in post.images)}
+              *(f'blog/images/{name}' for post in POSTS for name in post.images),
+              *(f'blog/media/{name}' for name in ARTICLE_VIDEOS),
+              *(f'blog/media/{Path(name).stem}.jpg' for name in ARTICLE_VIDEOS)}
 NAVIGATION = (
     ('home', 'Introduction', 'index.html'),
     ('games', 'Games', 'games.html'),
@@ -170,7 +173,7 @@ def shell(title, content, active='games', *, root='', article=False, description
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Pear · {e(title, quote=True)}"><meta name="twitter:description" content="{e(description, quote=True)}"><meta name="twitter:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta name="twitter:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right"><meta name="referrer" content="no-referrer">
 <link rel="icon" type="image/png" href="{root}favicon.png"><link rel="stylesheet" href="{root}tokens.css"><link rel="stylesheet" href="{root}components.css"><link rel="stylesheet" href="{root}style.css">
 <script src="{root}steam-search.js" defer></script><script src="{root}catalog.js" defer></script><script src="{root}site.js" defer></script></head>
-<body data-root="{root}"><a class="skip-link" href="#main">Skip to content</a>
+<body class="{'article-page' if article else 'site-page'}" data-root="{root}"><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><a class="wordmark" href="{root}index.html" aria-label="Pear home">Pear</a>
 <div class="header-tools"><button class="search-trigger" type="button" aria-label="Search" aria-keyshortcuts="Meta+K Control+K" data-search-open>{SEARCH_ICON}<span>Search</span><kbd class="search-shortcut">⌘K</kbd></button>
 <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)">{SUN_ICON}{MOON_ICON}<span class="theme-knob" aria-hidden="true"></span></button>
@@ -211,7 +214,7 @@ def internal_target(href, source_path):
 class ArticleValidator(HTMLParser):
     """Only publish the reviewed article's inert text, links, tables and images."""
     TAGS = {'a', 'blockquote', 'code', 'div', 'em', 'strong', 'figure', 'figcaption',
-            'h1', 'h2', 'h3', 'img', 'p', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'ul', 'ol', 'li'}
+            'h1', 'h2', 'h3', 'img', 'video', 'p', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'ul', 'ol', 'li'}
 
     def __init__(self, images=ARTICLE_IMAGES, source_path=f'blog/{ARTICLE_SLUG}.html'):
         super().__init__(convert_charrefs=True)
@@ -241,9 +244,16 @@ class ArticleValidator(HTMLParser):
                 if (any(c.isspace() for c in value) or '\\' in value
                         or not (public_https or internal in known)):
                     raise ValueError('Article links must be public HTTPS or known local pages')
-            if key == 'src' and (tag != 'img' or value not in {f'images/{name}' for name in self.images}):
+            if key == 'src' and not ((tag == 'img' and value in {f'images/{name}' for name in self.images})
+                                     or (tag == 'video' and value in {f'media/{name}' for name in ARTICLE_VIDEOS})):
                 raise ValueError('Unapproved article image')
             rendered.append(f' {key}="{html.escape(value, quote=True)}"')
+        if tag == 'video':
+            name = Path(dict(attrs).get('src', '')).name
+            if name not in ARTICLE_VIDEOS:
+                raise ValueError('Video requires a reviewed local source')
+            width, height = ARTICLE_VIDEOS[name]
+            rendered.append(f' controls playsinline preload="none" width="{width}" height="{height}" poster="media/{Path(name).stem}.jpg"')
         if tag == 'img':
             if 'src' not in dict(attrs) or 'alt' not in dict(attrs):
                 raise ValueError('Article images need a source and alt text')

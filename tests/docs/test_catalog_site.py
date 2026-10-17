@@ -29,6 +29,23 @@ class Elements(HTMLParser):
 
 
 class WebsiteTests(unittest.TestCase):
+    def test_reviewed_videos_only(self):
+        content = site.article_content()
+        videos = [attrs for tag, attrs in Elements(content).elements if tag == 'video']
+        self.assertEqual(len(videos), 2)
+        for attrs in videos:
+            self.assertIn('controls', attrs)
+            self.assertIn('playsinline', attrs)
+            self.assertEqual(attrs['preload'], 'none')
+            self.assertNotIn('autoplay', attrs)
+            self.assertIn('blog/' + attrs['src'], site.BLOG_FILES)
+            self.assertIn('blog/' + attrs['poster'], site.BLOG_FILES)
+        for markup in ('<video src="https://example.com/video.mp4"></video>',
+                       '<video src="media/private.mp4"></video>',
+                       '<video src="media/demo.mp4" autoplay></video>'):
+            with self.assertRaises(ValueError):
+                site.ArticleValidator().feed(markup)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

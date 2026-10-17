@@ -13,6 +13,7 @@
 <blockquote>
 <p>The Wine host used Rosetta.</p>
 </blockquote>
+<figure class="article-video"><video src="media/gameplay.mp4"></video><figcaption>Megabonk running on my Mac, filmed with the Metal HUD enabled. The HUD identifies Rosetta execution in this session; the recording shows the current compatibility path, not the Rosetta-free goal.</figcaption></figure>
 <p>That result gave me a working reference. I could see that this Windows build could run on my Mac through a compatibility stack. It also gave the next question a concrete shape: which parts of the stack still needed Intel execution, and what would it take to remove that dependency?</p>
 <p>I had to distinguish several things that can look identical from the outside. A native Mac launcher can start an Intel process. A game can display its menu while failing later in a session. A successful launch can depend on files and settings accumulated during development.</p>
 <p>Those distinctions became useful engineering questions. Could I repeat the installation? Could I identify the exact runtime that worked? Would Steam sign-in still work in a fresh environment? Would my saved progress survive quitting and starting again?</p>
@@ -21,6 +22,7 @@
 <p>The visible app is a small native interface written in Swift with AppKit. It calls a Rust executable that handles preparation and launching. The optional command-line interface uses that same Rust core, so both entry points work with the same installation and state. The <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/Launcher.swift">launcher</a> and <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/src/lib.rs">bootstrap implementation</a> are in the repository.</p>
 <p>On first setup, Pear shows the downloads it needs, obtains the pinned runtime and Valve&#39;s Steam installer, checks their SHA-256 hashes, and prepares an isolated Wine environment. A Wine <em>prefix</em> is the directory that holds that environment&#39;s Windows-style filesystem, registry, and application state. It is where this Steam installation and its games live.</p>
 <p>Pear then opens the official Windows Steam client. Steam handles authentication, the library, game downloads, and its normal Play flow. I wanted people to use the account and library they already understand. The shipping app does not depend on a separate macOS Steam installation.</p>
+<figure class="article-video"><video src="media/demo.mp4"></video><figcaption>A screen recording of Pear on macOS, showing the app, Steam, and Megabonk in use.</figcaption></figure>
 <p>The runtime has three main responsibilities:</p>
 <div class="table-scroll" tabindex="0"><table>
 <thead>
