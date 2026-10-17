@@ -14,6 +14,7 @@ struct SharingConsent: Codable, Equatable {
     var mode: SharingMode = .localOnly
     var fields: Set<ReportField> = []
     var generation: UInt64 = 0
+    var disclosureVersion: Int? = nil
     var showExitPrompt = true
     var notifyAutomaticCompletion = false
 }
@@ -36,6 +37,7 @@ struct RunObservation: Codable {
     var observedExit: ObservedExit = .unknown
     var result: UserRunResult = .unknown
     var note: String = ""
+    var supplemental: SupplementalReport? = nil
 
     func payload(fields: Set<ReportField>, shareNote: Bool) -> SharedRun {
         var shared = SharedRun(reportID: id, userResult: result)
@@ -60,6 +62,7 @@ struct RunObservation: Codable {
         }
         // Deliberately no Pass, actual-play duration, account, path or raw log field.
         if shareNote, !note.isEmpty { shared.note = note }
+        shared.supplemental = supplemental
         return shared
     }
 }
@@ -79,12 +82,25 @@ struct SharedRun: Codable, Equatable {
     var processMinutes: Int?
     var observedExit: ObservedExit?
     var note: String?
+    var supplemental: SupplementalReport? = nil
+}
+
+// Optional user observations are distinct from process observations.
+struct SupplementalReport: Codable, Equatable {
+    var furthestResult: String = "unknown"
+    var activePlayMinutes: Int?
+    var input: String = "unknown"
+    var audio: String = "unknown"
+    var saveReload: String = "unknown"
+    var recovery: String = "unknown"
+    var settings: String = ""
 }
 
 struct PendingReport: Codable, Equatable {
     // Stable across retries; changing result/note creates a new request revision
     // for the same reportID. Server still needs ownership and revision checks.
     var requestID: UUID
+    var disclosureVersion: Int? = 2
     var createdAt: Date? = nil
     var revision: UInt64
     var origin: SendOrigin
@@ -99,6 +115,7 @@ struct ReportingPolicy: Codable {
 
     mutating func configure(mode: SharingMode, fields: Set<ReportField>) {
         consent.generation += 1
+        consent.disclosureVersion = 2
         consent.mode = mode
         consent.fields = fields
         // Changing either scope or mode revokes previously queued auto payloads.
@@ -119,13 +136,14 @@ struct ReportingPolicy: Codable {
     @discardableResult
     mutating func enqueue(_ run: RunObservation, origin: SendOrigin,
                           explicitlyShareNote: Bool = false, now: Date = Date()) -> UUID? {
-        guard origin == .manual || (consent.mode == .automatic && !consent.fields.isEmpty) else { return nil }
+        guard origin == .manual || (consent.mode == .automatic && consent.disclosureVersion == 2 && !consent.fields.isEmpty) else { return nil }
         let revision = (revisions[run.id] ?? 0) + 1
         revisions[run.id] = revision
+        var payload = run.payload(fields: consent.fields, shareNote: origin == .manual && explicitlyShareNote)
+        if origin == .automatic { payload.supplemental = nil }
         let request = PendingReport(requestID: UUID(), createdAt: now, revision: revision, origin: origin,
             consentGeneration: consent.generation,
-            payload: run.payload(fields: consent.fields,
-                                 shareNote: origin == .manual && explicitlyShareNote))
+            payload: payload)
         pending.append(request)
         return request.requestID
     }
@@ -135,8 +153,9 @@ struct ReportingPolicy: Codable {
     // generation changes. This model alone makes no network cancellation claim.
     func authorizedRequest(_ id: UUID) -> PendingReport? {
         guard let request = pending.first(where: { $0.requestID == id }) else { return nil }
+        guard request.disclosureVersion == 2 else { return nil }
         guard request.origin == .manual ||
-            (consent.mode == .automatic && consent.generation == request.consentGeneration) else { return nil }
+            (consent.mode == .automatic && consent.disclosureVersion == 2 && consent.generation == request.consentGeneration) else { return nil }
         return request
     }
 

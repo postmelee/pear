@@ -126,7 +126,7 @@ import UniformTypeIdentifiers
         detailsHeading.font = .systemFont(ofSize: 20, weight: .semibold)
         let content = stack([pageTitle, introduction, header, privacy, availability,
                              list, emptyLabel, divider, detailsHeading, selectedTitle, details, resultRow, noteHeading,
-                             notes, shareNote, actions, button("Delete local record…", #selector(deleteLocal)), timing])
+                             notes, shareNote, button("Optional test details…", #selector(editSupplemental)), actions, button("Delete local record…", #selector(deleteLocal)), timing])
         content.spacing = 10
         content.translatesAutoresizingMaskIntoConstraints=false; window.contentView!.addSubview(content)
         NSLayoutConstraint.activate([
@@ -209,6 +209,34 @@ import UniformTypeIdentifiers
         run.result = result.indexOfSelectedItem == 1 ? .normal : result.indexOfSelectedItem == 2 ? .problems : .unknown
         run.note=note.string; return run
     }
+    @objc private func editSupplemental() {
+        guard let run = editedRun() else { return }
+        let old = run.supplemental ?? SupplementalReport()
+        let alert = NSAlert(); alert.messageText = "Optional test details"
+        alert.informativeText = "Leave anything you did not check as Unknown. These are your observations, not automatic checks. Details are included only when you manually share and may be published after review. Do not include account information or paths."
+        let outcomes = ["unknown", "observed", "failed", "not-tested"]
+        func picker(_ values: [String], _ value: String) -> NSPopUpButton {
+            let p = NSPopUpButton(); p.addItems(withTitles: values); p.selectItem(withTitle: value); return p
+        }
+        let stage = picker(["unknown", "launch-failed", "launched-unusable", "menu-interactive", "active-gameplay", "regression"], old.furthestResult)
+        let checks = [old.input,old.audio,old.saveReload,old.recovery].map { picker(outcomes,$0) }
+        let minutes = NSTextField(string: old.activePlayMinutes.map(String.init) ?? "")
+        minutes.placeholderString = "Optional · actual active play, not process time"
+        let settings = NSTextField(string: old.settings); settings.placeholderString = "Optional · resolution and graphics settings"
+        var views: [NSView] = [text("Furthest result",bold:true),stage,text("Active play minutes",bold:true),minutes]
+        for (name,p) in zip(["Input","Audio","Save / reload","Recovery"],checks) { views += [stack([text(name),p],horizontal:true)] }
+        views += [text("Game settings",bold:true),settings]
+        let options=stack(views); options.frame=NSRect(x:0,y:0,width:540,height:310)
+        alert.accessoryView=options;alert.addButton(withTitle:"Save details");alert.addButton(withTitle:"Cancel")
+        alert.beginSheetModal(for:window) { response in
+            guard response == .alertFirstButtonReturn else { return }
+            let raw=minutes.stringValue.trimmingCharacters(in:.whitespaces)
+            guard raw.isEmpty || (Int(raw).map { $0 >= 0 && $0 <= 1440 } ?? false), settings.stringValue.count <= 500 else { self.failure(ReportingStoreError.unavailable); return }
+            var updated=run
+            updated.supplemental=SupplementalReport(furthestResult:stage.titleOfSelectedItem ?? "unknown",activePlayMinutes:Int(raw),input:checks[0].titleOfSelectedItem!,audio:checks[1].titleOfSelectedItem!,saveReload:checks[2].titleOfSelectedItem!,recovery:checks[3].titleOfSelectedItem!,settings:settings.stringValue)
+            do { try self.store.record(updated);self.refresh() } catch { self.failure(error) }
+        }
+    }
     private func failure(_ error: Error) {
         let alert=NSAlert(); alert.messageText="Could not save this change"
         alert.informativeText="No further reports will be sent if local storage is unavailable. \(error.localizedDescription)"
@@ -216,6 +244,7 @@ import UniformTypeIdentifiers
     }
     @objc private func save() { guard let run=editedRun() else { return }; do { try store.record(run); refresh() } catch { failure(error) } }
     @objc private func share() {
+        guard store.snapshot.policy.consent.disclosureVersion == 2 else { settings(); return }
         guard let run=editedRun(),let submit else { return }
         do { try store.record(run); try submit(run,shareNote.state == .on); refresh() } catch { failure(error) }
     }
@@ -310,12 +339,15 @@ import UniformTypeIdentifiers
             self.showingFinished = false; self.refresh(); self.showNextFinished()
         }
     }
+    func showSharingIntroductionIfNeeded() {
+        if store.snapshot.policy.consent.disclosureVersion != 2 { settings() }
+    }
     @objc private func settings() {
         let consent=store.snapshot.policy.consent
         let alert=NSAlert();alert.messageText="Sharing settings"
-        alert.informativeText="Nothing is sent until you choose to share.\n\nSelected report fields may appear in the catalog after review. Notes stay private and are sent only when you explicitly include them.\n\nSteam accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac."
-        let mode=NSPopUpButton();mode.addItems(withTitles:["Do not share automatically","Ask after each game","Automatically share selected fields"])
-        mode.selectItem(at:consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
+        alert.informativeText="Help improve support for more games. Selected reports help Pear investigate problems and collaborate with contributors. Sharing is optional; Pear works without it.\n\nReports are reviewed privately first. Selected fields and your result may then appear on the public catalog and GitHub. Approval permits publication, not a compatibility certification.\n\nNotes are sent only when explicitly included and remain private. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.\n\nYou can stop sharing at any time. Already published information may remain in external copies. Choose the fields below; optional test details are sent only with a manual report."
+        let mode=NSPopUpButton();mode.addItems(withTitles:["Do not share — local records and manual sharing only","Ask after each game","Automatically share selected fields"])
+        mode.selectItem(at:consent.disclosureVersion != 2 || consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
         let fields:[(ReportField,String)] = [(.environment,"macOS version, chip and memory"),(.components,"Pear, Wine and DXMT versions"),(.game,"Steam App ID and available game build"),(.execution,"Date, process minutes and observed exit status")]
         let checks=fields.map { field,title in
             let check=NSButton(checkboxWithTitle:title,target:nil,action:nil);check.state=consent.fields.contains(field) ? .on : .off;return check

@@ -37,6 +37,19 @@ import Foundation
   let oldScope = policy.enqueue(run, origin: .automatic)!
   policy.configure(mode: .automatic, fields: [.game])
   precondition(policy.authorizedRequest(oldScope) == nil)
+  var detailed = run
+  detailed.supplemental = SupplementalReport(furthestResult:"active-gameplay",activePlayMinutes:1,input:"observed")
+  policy.configure(mode:.automatic,fields:[.game])
+  let automaticDetails = policy.enqueue(detailed,origin:.automatic)!
+  precondition(policy.authorizedRequest(automaticDetails)!.payload.supplemental == nil)
+  let manualDetails = policy.enqueue(detailed,origin:.manual)!
+  precondition(policy.authorizedRequest(manualDetails)!.payload.supplemental?.activePlayMinutes == 1)
+  var old = try JSONSerialization.jsonObject(with:JSONEncoder().encode(policy)) as! [String:Any]
+  var consent = old["consent"] as! [String:Any];consent.removeValue(forKey:"disclosureVersion");old["consent"] = consent
+  var pending = old["pending"] as! [[String:Any]]
+  for i in pending.indices { pending[i].removeValue(forKey:"disclosureVersion") };old["pending"] = pending
+  let legacy = try JSONDecoder().decode(ReportingPolicy.self,from:JSONSerialization.data(withJSONObject:old))
+  precondition(legacy.authorizedRequest(manualDetails) == nil && legacy.authorizedRequest(automaticDetails) == nil)
   print("PASS: default silence, prompt suppression, field projection, note privacy, retries, stable report identity, withdrawal and Codable restart")
  }
 }

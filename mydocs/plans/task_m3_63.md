@@ -115,3 +115,15 @@ build, runtime preparation and user input; report missing baseline explicitly.
 Never infer playtime or qualified support from process duration. Public review and
 signing approval remain gates. Feature changes require affected app validation;
 unchanged runtime long-duration tests are reused within original scope.
+
+## Approved local reporting rehearsal (2026-10-18)
+Requester approved expanded disclosure, catalog mapping, optional supplementary
+observations and a user-operable reporting rehearsal before Sparkle integration.
+Use existing AppKit history/coordinator and a separate loopback-only test receiver;
+never weaken production HTTPS admission. Test reports stay on this Mac. No runtime
+copy, game launch, production upload or public deployment. Source in preview/reporting-review;
+small private state under .build/task63-review, retained until user review.
+Consent disclosure v2 adds reviewed GitHub/catalog publication; old automatic
+consent cannot authorize this scope. Supplemental observations are manual-only.
+Catalog mapping preserves unknowns and separates process minutes, active play and
+user result; no automatic Pass or qualification. Private notes are never exported.

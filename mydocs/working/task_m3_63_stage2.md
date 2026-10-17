@@ -84,3 +84,42 @@ store. No material runtime/signing/CI build or private-state copy. df -h reporte
 15 GiB free on /System/Volumes/Data; not a cleanup/reclaimed-space measurement.
 No continuous source-to-confirmed-manual-input timing was captured for this
 iteration. Compilation and synthetic checks do not establish that endpoint.
+
+## Local end-to-end rehearsal follow-up
+The requester approved a local report-flow review before Sparkle/Steam integration.
+Added disclosure v2 explaining improvement purpose, private review and possible
+GitHub/catalog publication, optional sharing, excluded data and external copies.
+Legacy queued requests lacking the disclosure version cannot transmit; legacy
+automatic consent cannot enqueue. The local review app shows disclosure on first
+launch; production-launch onboarding wiring is still an integration task.
+
+Optional furthest result, active-play minutes, input/audio/save/recovery checks and
+settings remain unknown unless supplied. These supplements are manual-only; notes
+remain separately opt-in and never enter the public projection. Missing App ID
+prevents catalog approval. Store links derive only from a supplied App ID.
+
+A separately compiled AppKit rehearsal uses the real store, coordinator, history
+UI and URLSession over a fixed loopback test endpoint. Production HTTPS admission
+is unchanged; the rehearsal transport is never compiled into the shipped app.
+The loopback Python receiver uses SQLite, per-report capability hashes, bounded
+input, idempotent revisions and same-origin/CSRF-protected local review forms.
+It is not production authentication or Sites admission. Data never leaves this
+Mac. Existing Steam, games, saves and runtime files were not touched.
+
+Verification: policy/store tests pass, including legacy consent/queued request
+blocking and manual-only supplementary fields. Native URLSession sent a synthetic
+report to the actual local HTTP receiver, matched its receipt and persisted shared
+state. Receiver test covers duplicate retry, ownership rejection, approval without
+publication, batch publication without notes and revision update requiring review
+while retaining the previous public version. Full launcher compilation and existing
+transport suite are checked separately. UI accessibility inspection confirmed the
+initial disclosure, all field checkboxes off and local-only default. User interaction
+confirmation is pending; no continuous source-to-confirmed-input timing is claimed.
+
+Local review: http://127.0.0.1:8964/ and /catalog. Test app and private local state
+are in .build/task63-review. One synthetic fixture uses this host's OS/memory but
+does not represent an actual game session; no actual play claim is made. The local
+catalog reproduces report fields/cards; the existing Pages generator and hosted
+Sites workflow are not yet integrated with this new supplemental schema. The
+Apply button simulates the daily batch; no scheduled publication was enabled.
+Retain small test artifacts until requester review; no runtime copy or release.
