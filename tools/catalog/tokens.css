@@ -10,6 +10,7 @@
   --latest-detail-size: calc(.8203125rem + .21875vw);
   --article-font-size: calc(.9375rem + .25vw);
   --article-line-height: 1.5;
+  --article-header-gap: 2em;
   --article-reading-width: calc(var(--article-font-size) * 37);
   --blog-title-size: clamp(1.75rem, 2.47vw, 2.25rem);
   --blog-meta-size: clamp(1rem, 1.422vw, 1.25rem);

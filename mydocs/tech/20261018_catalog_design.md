@@ -449,3 +449,10 @@ rejection of unapproved/remote media and autoplay attributes.
 Full docs suite: 108 tests passed. The worktree notice scan includes unrelated
 untracked analysis/ files with missing headers; those files were not modified.
 Use the exact committed diff for the scoped source-notice verification.
+
+## Article header breathing room
+
+Increased the gap after the complete title/date/summary header from 24px to a
+reusable 2em article-header token, leaving the internal header spacing intact.
+Rebuilt the local preview and checked the rendered gap (33.45px at the current
+690px viewport). Screenshot: article-header-spacing.png. Whitespace check passed.
