@@ -21,6 +21,10 @@
   --space-5: 18px; --space-6: 20px; --space-7: 24px; --space-8: 28px;
   --space-9: 32px; --space-10: 40px; --space-11: 48px; --space-12: 64px;
   --space-13: 72px;
+  --panel-padding: var(--space-5);
+  --panel-gap: var(--space-5);
+  --game-art-ratio: 616 / 353;
+  --game-card-art-width: 200px;
   --radius-small: 6px; --radius-panel: 12px; --radius-pill: 999px;
   --reading-width: calc(var(--font-size-body) * 42);
   --page-width: 88vw;

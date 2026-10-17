@@ -186,3 +186,24 @@ Added the theme-independent `--color-theme-knob: #cecdc3` token. Rebuilt the
 local site; browser checks confirmed `rgb(206, 205, 195)` in both light and dark
 states. Whitespace validation passed. Screenshot:
 `.build/catalog-design/theme-knob-constant.png`.
+
+## Game-card consistency and responsive artwork
+
+The requester reported inconsistent game-card styling and unused space beside
+artwork at intermediate widths. The mobile 240px cover-height cap interacted
+with its aspect ratio, reducing the image width. Removed that cap and set an
+explicit full-width cover and media link. Card layout now follows a 520px list
+container breakpoint rather than the global mobile-navigation breakpoint.
+
+Introduced reusable panel padding/gap and game-art ratio/column tokens. Game
+titles use the shared subheading size, metadata uses the common small type,
+and status badges retain the shared semantic backgrounds. The card's primary
+fill override and secondary boxed action were replaced by the shared standard
+button and text-link styles. Other page controls and theme behavior are intact.
+
+Rebuilt the site; 25 compatibility tests and seven catalog-site tests passed.
+Browser review covered 390px, 580px and 675px iframe viewports plus desktop in
+light/dark themes. Stacked artwork fills the content width without cropping;
+wide cards use the side-by-side layout. Result filtering and reset remained
+functional. Screenshots: `game-card-responsive.png`, `game-card-desktop.png` in
+`.build/catalog-design/`. Removed the temporary responsive review page.
