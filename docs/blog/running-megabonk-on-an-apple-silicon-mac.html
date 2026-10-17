@@ -1,0 +1,126 @@
+<!-- SPDX-FileCopyrightText: 2026 Taegyu Lee
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Article supplied by the requester; author: Taegyu Lee. Presentation extracted from the original HTML; prose and figures preserved. -->
+<h1>Running Megabonk on an Apple Silicon Mac</h1>
+<p><em>How one Windows game led me to build Pear, and where I want to take it next.</em></p>
+<p>By Taegyu Lee · Pear development journal · v0.1.0</p>
+<p>I wanted to play Megabonk on my Mac. I owned the game, but it did not have a native macOS version. That small, personal problem became the starting point for Pear.</p>
+<p>Getting the game to run was the first milestone. Turning that setup into something another person could install and use became Pear. Version 0.1.0 is now available: a free, open-source Mac app that prepares a Windows Steam environment on Apple Silicon. You open Pear, sign in through the official Steam client, install a game you own, and launch it from your library.</p>
+<p>Megabonk is the game that brought me here and the first game I have tested through that flow. The current release uses Wine 11.0, DXMT 0.80, and Apple&#39;s Rosetta 2. My longer-term goal is to run Windows games on Apple Silicon without Rosetta, but the downloadable release still depends on it.</p>
+<p>This first post is about the path between wanting to play a game and having an application I could share: the working experiment, the compatibility layers underneath it, and the less visible work of making installation and recovery usable.</p>
+<h2 id="the-first-working-game">The first working game</h2>
+<p>The earliest working setup used Wine 11.0 and DXMT 0.80 from the <code>frankea/Whisky</code> Libraries 3.1.1 package. On my M4 Pro, Megabonk reached its menu and a Forest Tier 1 session after I signed in through the official Windows Steam client. My <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/research/local-evidence.md">early experiment notes</a> describe an essential detail in one sentence:</p>
+<blockquote>
+<p>The Wine host used Rosetta.</p>
+</blockquote>
+<p>That result gave me a working reference. I could see that this Windows build could run on my Mac through a compatibility stack. It also gave the next question a concrete shape: which parts of the stack still needed Intel execution, and what would it take to remove that dependency?</p>
+<p>I had to distinguish several things that can look identical from the outside. A native Mac launcher can start an Intel process. A game can display its menu while failing later in a session. A successful launch can depend on files and settings accumulated during development.</p>
+<p>Those distinctions became useful engineering questions. Could I repeat the installation? Could I identify the exact runtime that worked? Would Steam sign-in still work in a fresh environment? Would my saved progress survive quitting and starting again?</p>
+<p>Pear grew around answering those questions.</p>
+<h2 id="what-happens-when-i-open-pear">What happens when I open Pear</h2>
+<p>The visible app is a small native interface written in Swift with AppKit. It calls a Rust executable that handles preparation and launching. The optional command-line interface uses that same Rust core, so both entry points work with the same installation and state. The <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/Launcher.swift">launcher</a> and <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/src/lib.rs">bootstrap implementation</a> are in the repository.</p>
+<p>On first setup, Pear shows the downloads it needs, obtains the pinned runtime and Valve&#39;s Steam installer, checks their SHA-256 hashes, and prepares an isolated Wine environment. A Wine <em>prefix</em> is the directory that holds that environment&#39;s Windows-style filesystem, registry, and application state. It is where this Steam installation and its games live.</p>
+<p>Pear then opens the official Windows Steam client. Steam handles authentication, the library, game downloads, and its normal Play flow. I wanted people to use the account and library they already understand. The shipping app does not depend on a separate macOS Steam installation.</p>
+<p>The runtime has three main responsibilities:</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>Responsibility</th>
+<th>What handles it in v0.1.0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Executing the Intel code used by the current runtime on Apple Silicon</td>
+<td>Rosetta 2</td>
+</tr>
+<tr>
+<td>Providing the Windows interfaces expected by Steam and the game</td>
+<td>Wine 11.0</td>
+</tr>
+<tr>
+<td>Translating Megabonk&#39;s Direct3D 11 graphics into Metal operations</td>
+<td>DXMT 0.80, together with Wine&#39;s Metal integration</td>
+</tr>
+</tbody></table></div>
+<figure><img src="images/current-runtime.png" alt="Pear v0.1.0 architecture: native setup and launch controls above parallel CPU, Windows API, and graphics responsibilities."></figure>
+<p class="caption">Figure 1. The v0.1.0 runtime, grouped by responsibility. Dashed arrows show setup and launch control; solid arrows show execution responsibilities. These boxes are not separate processes or a sequential frame-rendering pipeline.</p>
+<p>The distinction I had to keep clear was that translating CPU instructions does not supply Windows operating-system services or translate a graphics API. All three responsibilities have to work together inside the running environment.</p>
+<p>The picture shows Megabonk&#39;s selected graphics path. The runtime&#39;s <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/THIRD_PARTY_NOTICES.md">component inventory</a> contains additional libraries; a component&#39;s presence in the package does not make it a required stage in every game&#39;s rendering path.</p>
+<p>The foundational compatibility work comes from Wine, DXMT, Rosetta, and the projects around them. My work in Pear has been to choose and integrate the pieces, manage the environment, handle failure, and package the result as a usable Mac application.</p>
+<h2 id="turning-the-experiment-into-a-release">Turning the experiment into a release</h2>
+<p>Once I could run the game, the next challenge was making that result repeatable outside my development setup. Several parts of that work were less obvious than the first screenshot of a running game.</p>
+<h3>Knowing what was inside the runtime</h3>
+<p>A working collection of libraries was a starting point. For a release, I also needed to know where the files came from, which patches were applied, and which artifact a user would actually install.</p>
+<p>The runtime used by this release builds Wine and several dependencies from pinned sources, including the CodeWeavers 26.3.0 FOSS Wine source. DXMT and some other components come from pinned upstream release binaries with their source revisions and notices recorded. The <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/runtime_build.py">build recipe</a> and <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/runtime-inputs.json">input record</a> make those choices inspectable.</p>
+<p>This gives me a specific runtime to investigate when something breaks. I can compare the installed files with the intended artifact and trace changes back to recorded inputs. There is still a distinction between recording all of those inputs and reproducing every binary byte for byte; the release does not claim the latter for every component.</p>
+<h3>Getting through Steam&#39;s front door</h3>
+<p>The game was only part of the launch experience. An intermediate runtime candidate failed to render Steam&#39;s login window on my test machine. Another problem involved browser helper processes remaining after the login window closed. These failures were recorded during the <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/THIRD_PARTY_NOTICES.md">runtime investigation</a> and <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/rosetta-preview.md">release work</a>.</p>
+<p>They mattered because Steam was the route into the game. If a player could not sign in, the fact that I had previously reached Megabonk&#39;s menu was of little help.</p>
+<p>Pear&#39;s <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/patches/steam-inprocess.patch">Steam compatibility patch</a> makes a targeted change to the main Steam webhelper&#39;s GPU-process behavior and ties selected browser children to that browser&#39;s lifetime. Steam itself and running games are outside that cleanup group.</p>
+<p>There is a related distinction in the Mac interface: successfully starting a process does not tell me that the Steam window is visible. Pear observes the window separately and can keep showing launch progress or offer a retry. That is a small piece of UI, but it communicates a much more useful state than the return code of a launch command.</p>
+<h3>Treating saved progress as part of the product</h3>
+<p>During development, it is tempting to fix a broken environment by deleting it and starting again. That becomes a poor default once the directory contains someone&#39;s installed games, Steam session, and saved progress.</p>
+<p>Pear keeps the downloaded runtime, cached downloads, and private Wine environment separate. Runtime preparation uses a staging directory before activation, and the launcher checks existing state before continuing. The <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/src/lib.rs">bootstrap</a> makes preservation part of the setup flow rather than leaving it entirely to the user.</p>
+<p>The environment currently lives under <code>~/Library/Application Support/Pear Preview</code>. Removing or replacing the Mac app does not by itself remove that data. Recovery testing covered interrupted preparation and specific reinstall and restore cases; a general automatic repair system is still future work. The <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/rosetta-preview.md">user guide</a> describes that boundary.</p>
+<p>Closing Pear&#39;s status window also leaves Steam and the game running. The app helps establish the session, and the player can continue using Steam and quit the game normally.</p>
+<h3>Making the application practical to distribute</h3>
+<p>The release packages are signed with Developer ID and notarized by Apple. A player can install the Mac app without setting up a compiler or enrolling in a developer program. The app shows preparation progress, allows cancellation and retry, and reuses an existing installation on subsequent launches. The underlying packaging and verification work is recorded in the <a href="https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.4">release notes</a>.</p>
+<p>Version 0.1.0 also adds updates through Sparkle and an in-app bug-reporting entry point. They give the project a practical way to deliver fixes and hear about failures as more people try it.</p>
+<h2 id="what-v0-1-0-has-actually-demonstrated">What v0.1.0 has actually demonstrated</h2>
+<p>Megabonk is my first validation game. On my M4 Pro, I have checked more than twenty minutes of active play, input and audio, and saved progress after quitting and relaunching. I also repeated installation from a fresh standard user account on the same Mac. These observations are in the <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/compatibility/records.md">game report</a>.</p>
+<p>Here is the scope of this release:</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Platform target</td>
+<td>Apple Silicon, macOS 15 or later; Rosetta 2 required</td>
+</tr>
+<tr>
+<td>Gameplay testing</td>
+<td>Megabonk on an M4 Pro with 24 GB RAM, running macOS 26.5.2</td>
+</tr>
+<tr>
+<td>Play and persistence</td>
+<td>Owner-confirmed 20+ active minutes, input, audio, saved progress after relaunch, and specific recovery checks</td>
+</tr>
+<tr>
+<td>Fresh installation</td>
+<td>Checked from a fresh standard account on the same physical Mac</td>
+</tr>
+<tr>
+<td>macOS 15 checks</td>
+<td>App and CLI startup, plus Wine startup through Rosetta, checked on macOS 15.7.9; full Steam UI and gameplay checks are still pending</td>
+</tr>
+<tr>
+<td>Other games and configurations</td>
+<td>Selectable through Steam, but not established as compatible by these tests</td>
+</tr>
+<tr>
+<td>Rosetta-free runtime</td>
+<td>Experimental development; not the runtime shipped in v0.1.0</td>
+</tr>
+</tbody></table></div>
+<p>These are my own tests on one physical Mac. <a href="https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.4">Preview.4</a> lowered the deployment target to macOS 15 without changing the gameplay-tested runtime. Full Steam and gameplay testing on macOS 15 is still pending. I have not yet measured comparative performance or separately verified controller and Steam Cloud behavior.</p>
+<p>I want the <a href="https://postmelee.github.io/pear/">game catalog</a> to preserve that context as it grows. A result should say what was tried, on which machine, and what happened. Reaching a menu, playing a session, and restoring saved progress answer different questions.</p>
+<h2 id="the-next-goal-running-without-rosetta">The next goal: running without Rosetta</h2>
+<p>The current release gives me a usable application and a working reference for Megabonk. The next major technical goal is to run the same owned Windows game without Rosetta anywhere in the required runtime.</p>
+<p>The intended architecture keeps Wine for Windows compatibility and DXMT for Direct3D 11 graphics, while moving the macOS host components to ARM64 and using FEX for guest CPU translation. This is the <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/architecture.md">research architecture</a>, separate from the v0.1.0 execution path.</p>
+<figure><img src="images/rosetta-free-runtime.png" alt="Proposed Rosetta-free architecture: FEX guest CPU translation, ARM64 Wine, and an ARM64-compatible DXMT and Metal path, all subject to full runtime validation."></figure>
+<p class="caption">Figure 2. The Rosetta-free research target. This is not a description of the runtime included with v0.1.0.</p>
+<p>FEX&#39;s intended job is to translate the x86/x64 instructions used by Windows guest code into instructions the ARM64 host can execute. Wine still has to provide the Windows APIs, and the graphics path still has to reach Metal correctly. Calls crossing between translated code and native components have to agree on how arguments, callbacks, and results are represented.</p>
+<p>That means the work extends beyond replacing one executable. Memory protections, generated-code lifetime, threads, exceptions, and transitions between execution modes all become part of the integration. Steam brings its own helper processes and libraries into that same runtime boundary.</p>
+<p>The test for success must follow the whole session. A native Pear app does not prove that the Wine host is native. A native Wine host does not prove that every required helper is native. Windows x64 game files are expected guest inputs; the dependency to eliminate is Rosetta execution in the required macOS host processes and libraries.</p>
+<p><a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/README.md">Experimental builds have reached Megabonk&#39;s menu</a>, but sustained gameplay and complete verification of Rosetta independence remain unfinished. The <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/development/rosetta-free.md">development guide</a> records the remaining work. Its current setup also depends on prepared development artifacts and component repositories that require collaborator access, so it is not yet a public, clean-clone player runtime.</p>
+<p>For me, this work is valuable because it makes the execution path something I can inspect, understand, and improve further. Whether it is faster or more efficient will depend on measurements. Removing Rosetta is a dependency goal; performance is a separate engineering question.</p>
+<p>I want the eventual player experience to stay familiar: open Pear, sign in to Steam, choose a game. Replacing the runtime underneath that experience will also require checking migration and saved progress, just as the current release does.</p>
+<h2 id="where-i-want-to-take-pear">Where I want to take Pear</h2>
+<p>I started with a game I wanted to play. Working on Pear has brought me into Windows compatibility, CPU translation, graphics, process management, and Mac application distribution. Each layer has supplied a different reason why a program that launches successfully might still fail to become a usable game session.</p>
+<p>The near-term work is to improve the release through concrete installation and game reports while continuing the Rosetta-free investigation. I plan to use this blog to explain those experiments: what I changed, what I tested, and what the results let me conclude.</p>
+<p>If you try Pear, a report with your Mac model, macOS and Pear versions, game, and the point where something worked or failed is useful. Input, audio, and saved progress after relaunch are especially helpful observations. The repository has a <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/compatibility/README.md">guide to reporting results</a>.</p>
+<p>You can <a href="https://postmelee.github.io/pear/">download Pear and browse the game catalog</a>, or explore the <a href="https://github.com/postmelee/pear">source on GitHub</a>. Sign-in and game installation happen through official Windows Steam, using games you own. Pear&#39;s original code is GPL-3.0-or-later; the reused components retain their own licenses and attribution.</p>
+<p>For now, I can open Pear and play the game that started the project. In the next posts, I want to follow the work of getting that same Windows game to run without Rosetta.</p>

@@ -1,0 +1,277 @@
+# SPDX-FileCopyrightText: 2026 Pear contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+"""Reusable presentation components for the static Pear website.
+
+Compatibility data and release decisions remain in compatibility.py. This module
+owns the page shell, navigation, article presentation and public search projection.
+"""
+import html
+from html.parser import HTMLParser
+from pathlib import Path
+import re
+import struct
+from dataclasses import dataclass
+from urllib.parse import urlsplit
+
+ROOT = Path(__file__).resolve().parent.parent
+REPO = 'https://github.com/postmelee/pear'
+DOCS = REPO + '/blob/master/docs/README.md'
+ARTICLE_SLUG = 'running-megabonk-on-an-apple-silicon-mac'
+ARTICLE_TITLE = 'Running Megabonk on an Apple Silicon Mac'
+ARTICLE_SUMMARY = 'How one Windows game led me to build Pear, and where I want to take it next.'
+ARTICLE_PATH = f'blog/{ARTICLE_SLUG}.html'
+ARTICLE_IMAGES = ('current-runtime.png', 'rosetta-free-runtime.png')
+
+
+@dataclass(frozen=True)
+class BlogPost:
+    slug: str
+    title: str
+    summary: str
+    author: str
+    edition: str
+    images: tuple
+
+    @property
+    def path(self):
+        return f'blog/{self.slug}.html'
+
+
+POSTS = (BlogPost(ARTICLE_SLUG, ARTICLE_TITLE, ARTICLE_SUMMARY, 'Taegyu Lee',
+                  'v0.1.0', ARTICLE_IMAGES),)
+BLOG_FILES = {'blog/index.html', *(post.path for post in POSTS),
+              *(f'blog/images/{name}' for post in POSTS for name in post.images)}
+NAVIGATION = (
+    ('home', 'Introduction', 'index.html'),
+    ('games', 'Games', 'games.html'),
+    ('download', 'Download', 'download.html'),
+    ('blog', 'Blog', 'blog/index.html'),
+    ('about', 'About', 'about.html'),
+    ('docs', 'Documentation', DOCS),
+)
+SEARCH_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 5 5"/></svg>'
+
+
+class PlainText(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.parts = []
+
+    def handle_data(self, data):
+        self.parts.append(data)
+
+
+def plain_text(value):
+    parser = PlainText()
+    parser.feed(value)
+    return ' '.join(' '.join(parser.parts).split())
+
+
+def prepare_content(content, levels=(2,)):
+    """Generate stable unique section anchors and a shared navigation outline."""
+    used = set(re.findall(r'\bid="([^"]+)"', content))
+    outline = []
+
+    def heading(match):
+        level, attrs, inner = match.groups()
+        existing = re.search(r'\bid="([^"]+)"', attrs)
+        title = plain_text(inner)
+        if existing:
+            anchor = existing[1]
+        else:
+            base = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-') or 'section'
+            anchor, count = base, 2
+            while anchor in used:
+                anchor = f'{base}-{count}'
+                count += 1
+            used.add(anchor)
+            attrs += f' id="{anchor}"'
+        if int(level) in levels and anchor not in {'install-the-mac-app', 'run-from-terminal', 'install-with-homebrew'}:
+            outline.append((int(level), anchor, title))
+        return f'<h{level}{attrs}>{inner}</h{level}>'
+
+    return re.sub(r'<h([23])([^>]*)>(.*?)</h\1>', heading, content, flags=re.S), outline
+
+
+def local_link(path, root):
+    return path if urlsplit(path).scheme else root + path
+
+
+def navigation(active, outline, root):
+    items = []
+    for key, label, path in NAVIGATION:
+        current = ' aria-current="page"' if key == active else ''
+        item = f'<li><a href="{local_link(path, root)}"{current}>{label}</a>'
+        if key == active and outline:
+            item += '<ul class="toc-outline">' + ''.join(
+                f'<li class="toc-depth-{level}"><a href="#{html.escape(anchor)}" data-toc-link>{html.escape(title)}</a></li>'
+                for level, anchor, title in outline) + '</ul>'
+        items.append(item + '</li>')
+    return '<ul class="page-navigation">' + ''.join(items) + '</ul>'
+
+
+def explore_cards(items):
+    """Each card is one semantic link; titles and summaries remain escaped text."""
+    return '<div class="explore-grid">' + ''.join(
+        f'<a class="explore-card" href="{html.escape(href, quote=True)}"><h3>{html.escape(title)}</h3><p>{html.escape(summary)}</p></a>'
+        for title, summary, href in items) + '</div>'
+
+
+def footer(root):
+    links = ''.join(f'<a href="{local_link(path, root)}">{label}</a>' for _, label, path in NAVIGATION)
+    return f'''<footer class="site-footer"><p>Pear is <a href="{REPO}">open source</a> under the <a href="{REPO}/blob/master/LICENSE">GPL-3.0-or-later license</a>.</p>
+<nav class="footer-nav" aria-label="Footer">{links}<a href="{REPO}">GitHub</a></nav>
+<a class="footer-author" href="{REPO}"><img src="{root}pear.png" alt="" width="32" height="32"><span><span class="muted">by</span> Pear contributors</span></a></footer>'''
+
+
+def search_dialog():
+    return f'''<dialog class="search-dialog" id="site-search" aria-labelledby="search-label">
+<div class="search-head">{SEARCH_ICON}<label class="sr-only" id="search-label" for="site-search-input">Search Pear</label><input id="site-search-input" type="search" placeholder="Search Pear…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="site-search-results"><button type="button" data-search-close aria-label="Close search"><kbd>esc</kbd></button></div>
+<p class="search-status" id="site-search-status" role="status" aria-live="polite">Search pages, games and the development journal.</p>
+<div class="search-results" id="site-search-results" role="listbox" aria-label="Search results"></div>
+<div class="search-help"><span><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span><span><kbd>↵</kbd> to open</span></div></dialog>'''
+
+
+def shell(title, content, active='games', *, root='', article=False, description=None):
+    content, outline = prepare_content(content, (2, 3) if article else (2,))
+    description = description or 'Windows games on Mac. Free and open source. Building a Rosetta-free way to play.'
+    e = html.escape
+    nav = navigation(active, outline, root)
+    return f'''<!doctype html>
+<!-- SPDX-FileCopyrightText: 2026 Pear contributors
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pear · {e(title)}</title><meta name="description" content="{e(description, quote=True)}">
+<meta name="color-scheme" content="light dark"><script src="{root}theme.js"></script>
+<meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="Pear"><meta property="og:title" content="Pear · {e(title, quote=True)}"><meta property="og:description" content="{e(description, quote=True)}"><meta property="og:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Pear · {e(title, quote=True)}"><meta name="twitter:description" content="{e(description, quote=True)}"><meta name="twitter:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta name="twitter:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right"><meta name="referrer" content="no-referrer">
+<link rel="icon" type="image/png" href="{root}favicon.png"><link rel="stylesheet" href="{root}tokens.css"><link rel="stylesheet" href="{root}components.css"><link rel="stylesheet" href="{root}style.css">
+<script src="{root}steam-search.js" defer></script><script src="{root}catalog.js" defer></script><script src="{root}site.js" defer></script></head>
+<body data-root="{root}"><a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><a class="wordmark" href="{root}index.html" aria-label="Pear home">Pear</a>
+<div class="header-tools"><button class="search-trigger" type="button" aria-label="Search" aria-keyshortcuts="Meta+K Control+K" data-search-open>{SEARCH_ICON}<span>Search</span><kbd class="search-shortcut">⌘K</kbd></button>
+<button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" title="Toggle dark mode (D)"><span aria-hidden="true" class="theme-sun">☀</span><span aria-hidden="true" class="theme-moon">☾</span><span class="theme-knob"></span></button>
+<button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu <span aria-hidden="true">☰</span></button></div></header>
+<nav id="sidebar" class="sidebar" aria-label="Site navigation">{nav}</nav>
+<div class="page-layout"><main id="main" class="{'article-body' if article else 'page-content'}" tabindex="-1">{content}</main>{footer(root)}</div>
+{search_dialog()}</body></html>'''
+
+
+def home_content():
+    return f'''<section class="home-intro"><h1 class="sr-only">Pear — Windows games on Mac</h1><img class="hero-logo" src="pear.png" alt="A golden Asian pear" width="120" height="120">
+<p class="lede">Pear is a free, <a href="{REPO}">open-source</a> Mac app for playing <a href="download.html">Windows Steam games</a> on Apple Silicon.</p></section>
+<section class="home-section"><h2 id="how-it-works">How it works</h2><p>Open Pear, sign in to Steam, and choose a game you own. Pear takes care of the setup so you can get to your library.</p>
+<ol class="steps-panel"><li><span class="step-number">01</span><div><a href="download.html">Install Pear</a><p>Download the Mac app and let it prepare Windows Steam.</p></div></li><li><span class="step-number">02</span><div>Open your library<p>Sign in through the official Steam client.</p></div></li><li><span class="step-number">03</span><div>Choose a game<p>Install a game you own, then select Play in Steam.</p></div></li></ol>
+<p>Start with the <a href="games.html">game reports</a> to see what has been tried, on which Mac, and what happened.</p></section>
+<section class="home-section"><h2 id="current-preview">The current Preview</h2><p>The downloadable Preview uses <a href="https://www.winehq.org/">Wine</a>, <a href="https://github.com/3Shain/dxmt">DXMT</a> and Apple’s Rosetta. Megabonk is our first validation game.</p><p>Play, input, audio and saved progress after relaunch have been checked on one M4 Pro. Other games and Macs remain unverified. Every report keeps its configuration and limitations visible.</p><p><a href="download.html">Download Pear</a> · <a href="game-3405340.html">Read the Megabonk reports</a></p></section>
+<section class="home-section" id="games"><h2 id="explore">Explore</h2>{explore_cards([
+    ('Download', 'Get Pear and open your Steam library.', 'download.html'),
+    ('Games', 'Browse tested configurations and player reports.', 'games.html'),
+    ('Blog', 'Follow the experiments behind Pear.', 'blog/index.html'),
+    ('Documentation', 'Setup, development and contribution guides.', DOCS),
+])}</section>
+<section class="home-section"><h2 id="pear-in-development">Pear in development</h2><p>Pear began with wanting to play <a href="blog/{ARTICLE_SLUG}.html">Megabonk on a Mac</a>. The next goal is an experience without Rosetta across every required process and library. That runtime is still in development.</p><p>Pear is <a href="{REPO}">open source</a>. Help with the runtime, improve the app, or <a href="report.html">share a game result</a>. Small, concrete observations make the project better.</p></section>'''
+
+
+class ArticleValidator(HTMLParser):
+    """Only publish the reviewed article's inert text, links, tables and images."""
+    TAGS = {'a', 'blockquote', 'code', 'div', 'em', 'strong', 'figure', 'figcaption',
+            'h1', 'h2', 'h3', 'img', 'p', 'table', 'tbody', 'td', 'th', 'thead', 'tr', 'ul', 'ol', 'li'}
+
+    def __init__(self, images=ARTICLE_IMAGES):
+        super().__init__(convert_charrefs=True)
+        self.images = images
+        self.output = []
+        self.stack = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag not in self.TAGS:
+            raise ValueError(f'Unapproved article element: {tag}')
+        rendered = []
+        for key, value in attrs:
+            if key not in {'id', 'class', 'href', 'src', 'alt', 'tabindex'} or value is None:
+                raise ValueError(f'Unapproved article attribute: {key}')
+            if key == 'tabindex' and (tag != 'div' or value != '0'):
+                raise ValueError('Only scrollable article regions may receive focus')
+            if key in {'id', 'class'} and not re.fullmatch(r'[a-zA-Z0-9 _-]+', value):
+                raise ValueError('Invalid article identifier')
+            if key == 'href':
+                parsed = urlsplit(value)
+                if (parsed.scheme != 'https' or not parsed.hostname or parsed.username
+                        or parsed.password or any(c.isspace() for c in value)):
+                    raise ValueError('Article links must be public HTTPS links')
+            if key == 'src' and (tag != 'img' or value not in {f'images/{name}' for name in self.images}):
+                raise ValueError('Unapproved article image')
+            rendered.append(f' {key}="{html.escape(value, quote=True)}"')
+        if tag == 'img':
+            if 'src' not in dict(attrs) or 'alt' not in dict(attrs):
+                raise ValueError('Article images need a source and alt text')
+            image = ROOT / 'docs/assets/blog' / Path(dict(attrs)['src']).name
+            with image.open('rb') as source:
+                header = source.read(24)
+            if len(header) != 24 or header[:8] != b'\x89PNG\r\n\x1a\n':
+                raise ValueError('Expected a reviewed PNG figure')
+            width, height = struct.unpack('>II', header[16:24])
+            rendered.append(f' width="{width}" height="{height}"')
+            rendered.append(' loading="lazy"')
+        else:
+            self.stack.append(tag)
+        self.output.append(f'<{tag}{"".join(rendered)}>')
+
+    def handle_endtag(self, tag):
+        if not self.stack or self.stack.pop() != tag:
+            raise ValueError('Unbalanced article content')
+        self.output.append(f'</{tag}>')
+
+    def handle_data(self, data):
+        self.output.append(html.escape(data, quote=False))
+
+
+def article_content(post=POSTS[0]):
+    parser = ArticleValidator(post.images)
+    parser.feed((ROOT / 'docs/blog' / f'{post.slug}.html').read_text(encoding='utf-8'))
+    parser.close()
+    if parser.stack:
+        raise ValueError('Unclosed article element')
+    return ''.join(parser.output)
+
+
+def blog_pages():
+    cards = ''.join(blog_list_item(post) for post in POSTS)
+    listing = f'<h1>Blog</h1><p class="page-intro">Experiments, observations, and the work behind Pear.</p><section class="article-list" aria-label="Articles">{cards}</section>'
+    pages = {'blog/index.html': shell('Blog', listing, 'blog', root='../')}
+    for post in POSTS:
+        article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{article_content(post)}</article>'
+        pages[post.path] = shell(post.title, article, 'blog', root='../', article=True, description=post.summary)
+    return pages
+
+
+def blog_list_item(post):
+    e = html.escape
+    return f'''<a class="article-list-item" href="{e(post.slug)}.html"><span class="article-category">Development journal · {e(post.edition)}</span><h2>{e(post.title)}</h2><p>{e(post.summary)}</p><span class="article-byline">{e(post.author)} <span aria-hidden="true">↗</span></span></a>'''
+
+
+def search_index(pages):
+    """Index only rendered main content, never navigation or arbitrary files."""
+    entries = []
+    for path, page in pages.items():
+        title = plain_text(re.search(r'<title>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
+        content = re.search(r'<main\b[^>]*>(.*?)</main>', page, re.S)[1]
+        # Form controls, conditional drafts and empty-state messages are not
+        # destinations. Never index personal text entered into the live forms.
+        for tag in ('form', 'noscript', 'select', 'nav', 'h1'):
+            content = re.sub(fr'<{tag}\b[^>]*>.*?</{tag}>', '', content, flags=re.S)
+        content = re.sub(r'<section\b[^>]*\bid="draft"[^>]*>.*?</section>', '', content, flags=re.S)
+        content = re.sub(r'<div class="empty-state"[^>]*>.*?</div>', '', content, flags=re.S)
+        headings = list(re.finditer(r'<h([23])[^>]*\bid="([^"]+)"[^>]*>(.*?)</h\1>', content, re.S))
+        intro_end = headings[0].start() if headings else len(content)
+        entries.append({'title': title, 'page': title, 'url': path, 'text': plain_text(content[:intro_end])})
+        for i, heading in enumerate(headings):
+            end = headings[i + 1].start() if i + 1 < len(headings) else len(content)
+            anchor = heading[2]
+            if path == 'download.html':
+                anchor = {'install-the-mac-app': 'app', 'run-from-terminal': 'cli',
+                          'install-with-homebrew': 'homebrew'}.get(anchor, anchor)
+            entries.append({'title': plain_text(heading[3]), 'page': title,
+                            'url': f'{path}#{anchor}', 'text': plain_text(content[heading.end():end])})
+    return entries

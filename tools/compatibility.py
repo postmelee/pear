@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import catalog_site as site
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -118,6 +119,8 @@ CATALOG = ROOT / 'docs/compatibility/games.json'
 ASSETS = ROOT / 'tools/catalog'
 PUBLIC_FILES = {'index.html', 'style.css', 'catalog.js', 'reports.json', 'games.json',
                 'pear.png', 'favicon.png', 'social-card.png', 'steam-search.js', 'report.html', 'request.html', 'about.html', 'download.html'}
+PUBLIC_FILES |= {'games.html', 'tokens.css', 'components.css', 'theme.js', 'site.js',
+                 'search-index.json'} | site.BLOG_FILES
 OPTIONAL_PUBLIC_FILES = {'steam-games.json'}
 OUTCOMES = {'pass': 'Pass', 'partial': 'Partial', 'failed': 'Failed'}
 
@@ -204,10 +207,7 @@ def demand_label(game):
 
 
 def shell(title, content, active='games'):
-    e = html.escape
-    return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)} · Pear</title><meta name="description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta property="og:type" content="website"><meta property="og:site_name" content="Pear"><meta property="og:title" content="{e(title)} · Pear"><meta property="og:description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta property="og:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)} · Pear"><meta name="twitter:description" content="Windows games on Mac. Free and open source. Building a Rosetta-free way to play."><meta name="twitter:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta name="twitter:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right"><meta name="referrer" content="no-referrer"><link rel="icon" type="image/png" href="favicon.png"><link rel="stylesheet" href="style.css"><script src="steam-search.js" defer></script><script src="catalog.js" defer></script></head>
-<body><div class="wrap"><header class="site-header"><a class="brand" href="index.html" aria-label="Pear home"><img src="pear.png" alt="" width="39" height="39">Pear</a><nav aria-label="Main"><a class="{'current' if active=='games' else ''}" href="index.html#games">Games</a><a class="{'current' if active=='download' else ''}" href="download.html">Download</a><a class="{'current' if active=='about' else ''}" href="about.html">About</a><a class="nav-docs" href="https://github.com/postmelee/pear/blob/master/docs/README.md">Docs</a><a class="external nav-github" href="https://github.com/postmelee/pear">GitHub</a></nav></header><main>{content}</main><footer class="site-footer"><span>Pear · Free and open source.</span><div class="footer-links"><a href="about.html#results">How results work</a><a href="reports.json">Open data</a><a class="external" href="https://github.com/postmelee/pear">GitHub</a></div></footer></div></body></html>'''
+    return site.shell(title, content, active)
 
 
 def game_card(game):
@@ -224,12 +224,16 @@ def game_card(game):
 
 
 def webpage(data, catalog=None):
+    return site.shell('Windows games on Mac', site.home_content(), 'home')
+
+
+def games_page(data, catalog=None):
     catalog = catalog or json.loads(CATALOG.read_text())
     games = group_games(data, catalog)
     reports = sum(bool(g['records']) for g in games)
     requests = sum(bool(g['request']['discussion_url']) for g in games)
     cards = ''.join(game_card(g) for g in games)
-    return shell('Windows games on Mac', f'''<section class="hero"><div><h1>Windows games<br>on Mac.</h1><p class="lead">Free and open source.<br>Building a Rosetta-free way to play.</p><div class="actions"><a class="button primary" href="download.html">Download Pear <span aria-hidden="true">↓</span></a><a class="button quiet" href="#games">Explore games →</a></div></div><div class="hero-art" aria-hidden="true"><img src="pear.png" alt="" width="245" height="245"></div></section><div class="preview-strip"><span class="dot"></span><span><strong>Preview 0.1.0-preview.3</strong> · Available now · Rosetta required</span><a href="about.html#preview">Current status →</a></div><section class="catalog" id="games"><div class="section-top"><div><h2>Find your game</h2><p>Community reports, one Mac at a time.</p></div><a class="text-link" href="report.html">Share a result ↗</a></div><div class="tabs" aria-label="Game lists"><button class="tab" type="button" data-tab="all" aria-pressed="true">All games <span class="count">{len(games)}</span></button><button class="tab" type="button" data-tab="reported" aria-pressed="false">With reports <span class="count">{reports}</span></button><button class="tab" type="button" data-tab="requests" aria-pressed="false">Requests <span class="count">{requests}</span></button></div><div class="toolbar"><label class="search-wrap"><span class="sr-only">Search games</span><input type="search" id="search" placeholder="Search games or Steam App ID" autocomplete="off"></label><label><span class="sr-only">Result filter</span><select id="result-filter"><option value="all">All results</option><option value="pass">Has Pass reports</option><option value="partial">Has Partial reports</option><option value="failed">Has Failed reports</option><option value="qualified">Verified configuration</option><option value="untested">Not tested</option></select></label><label><span class="sr-only">Runtime filter</span><select id="track-filter"><option value="all">All runtimes</option><option value="rosetta-preview">Rosetta Preview</option><option value="rosetta-free-development">Rosetta-free development</option></select></label><label><span class="sr-only">Sort games</span><select id="sort"><option value="recent">Recently tested</option><option value="votes">Most requested</option><option value="reports">Most reports</option><option value="name">Name A–Z</option></select></label></div><div class="list-meta"><span id="result-count" role="status" aria-live="polite">{len(games)} {'game' if len(games)==1 else 'games'}</span><a href="about.html#results">Pass, Partial & Failed ⓘ</a></div><noscript><p class="no-js">All games are shown. Enable JavaScript to search, filter and sort.</p></noscript><div class="game-list">{cards}</div><div class="empty-state" id="no-results" hidden><h3 id="empty-heading">No games found</h3><p id="empty-copy">Try a different search or filter.</p><button class="button small" type="button" id="reset-filters">Clear filters</button><a class="button small" href="request.html">Request a game</a></div><div class="contribute-strip"><div><h3>Your game could be next.</h3><p>Request a game, vote for support, or share what worked.</p></div><a class="button" href="request.html">Request a game <span aria-hidden="true">↗</span></a></div></section>''')
+    return shell('Games', f'''<h1>Games</h1><p class="page-intro">Community reports, one Mac at a time. Find a game and read what happened on a specific configuration.</p><section class="catalog" id="games"><div class="section-top"><div><h2>Find your game</h2><p>Community reports, one Mac at a time.</p></div><a class="text-link" href="report.html">Share a result ↗</a></div><div class="tabs" aria-label="Game lists"><button class="tab" type="button" data-tab="all" aria-pressed="true">All games <span class="count">{len(games)}</span></button><button class="tab" type="button" data-tab="reported" aria-pressed="false">With reports <span class="count">{reports}</span></button><button class="tab" type="button" data-tab="requests" aria-pressed="false">Requests <span class="count">{requests}</span></button></div><div class="toolbar"><label class="search-wrap"><span class="sr-only">Search games</span><input type="search" id="search" placeholder="Search games or Steam App ID" autocomplete="off"></label><label><span class="sr-only">Result filter</span><select id="result-filter"><option value="all">All results</option><option value="pass">Has Pass reports</option><option value="partial">Has Partial reports</option><option value="failed">Has Failed reports</option><option value="qualified">Verified configuration</option><option value="untested">Not tested</option></select></label><label><span class="sr-only">Runtime filter</span><select id="track-filter"><option value="all">All runtimes</option><option value="rosetta-preview">Rosetta Preview</option><option value="rosetta-free-development">Rosetta-free development</option></select></label><label><span class="sr-only">Sort games</span><select id="sort"><option value="recent">Recently tested</option><option value="votes">Most requested</option><option value="reports">Most reports</option><option value="name">Name A–Z</option></select></label></div><div class="list-meta"><span id="result-count" role="status" aria-live="polite">{len(games)} {'game' if len(games)==1 else 'games'}</span><a href="about.html#results">Pass, Partial & Failed ⓘ</a></div><noscript><p class="no-js">All games are shown. Enable JavaScript to search, filter and sort.</p></noscript><div class="game-list">{cards}</div><div class="empty-state" id="no-results" hidden><h3 id="empty-heading">No games found</h3><p id="empty-copy">Try a different search or filter.</p><button class="button small" type="button" id="reset-filters">Clear filters</button><a class="button small" href="request.html">Request a game</a></div><div class="contribute-strip"><div><h3>Your game could be next.</h3><p>Request a game, vote for support, or share what worked.</p></div><a class="button" href="request.html">Request a game <span aria-hidden="true">↗</span></a></div></section>''')
 
 
 def report_card(r):
@@ -262,7 +266,7 @@ def game_page(game):
     vote_text = str(request['upvotes']) if request['upvotes'] is not None else '—'
     votes = f'<p class="big-number">{vote_text}</p><p>{"votes · synced "+request["synced_at"] if request["synced_at"] else "Vote count unavailable"}</p>' if request['discussion_url'] else '<p>No support request yet. Start the conversation on GitHub.</p>'
     cards = ''.join(report_card(r) for r in records)
-    return shell(game['name'], f'''<p class="crumb"><a href="index.html#games">← All games</a></p><section class="detail-hero">{cover(game)}<div><h1>{e(game['name'])}</h1><p class="meta">Steam App {game['app_id']}</p><div class="badges"><span class="badge {'pass' if qualified else 'partial'}">{'Verified configuration' if qualified else 'Community reports' if records else 'Not tested'}</span></div><div class="actions"><a class="button" href="https://store.steampowered.com/app/{game['app_id']}/" rel="noreferrer">View on Steam ↗</a><a class="button primary" href="report.html?app={game['app_id']}">Share a result</a></div></div></section><div class="detail-layout"><section><div class="detail-section-head"><h2>Player reports <span class="meta">{len(records)}</span></h2><div class="report-filters"><label><span class="sr-only">Filter report runtime</span><select id="report-track"><option value="all">All runtimes</option><option value="rosetta-preview">Rosetta Preview</option><option value="rosetta-free-development">Rosetta-free development</option></select></label><label><span class="sr-only">Filter report result</span><select id="report-result"><option value="all">All results</option><option value="pass">Pass</option><option value="partial">Partial</option><option value="failed">Failed</option></select></label></div></div>{report_counts(records)}<p class="meta" style="margin:12px 0 18px">Reports describe individual configurations. They are not votes or unique-player counts.</p><div id="reports">{cards}</div><div class="empty-state" id="no-reports" {'hidden' if records else ''}><h3>No reports for this selection</h3><p>Change the filters or share your own result.</p><a class="button small" href="report.html?app={game['app_id']}">Share a result</a></div><p class="art-credit">{e(game['image_credit'])} <a class="inline-link" href="{e(game['image_source_url'] or 'https://store.steampowered.com/app/'+game['app_id']+'/')}">Source</a></p></section><aside><div class="aside-card"><h2>Want better support?</h2>{votes}<a class="button" href="{demand_link(game)}">{demand_label(game)}</a><p>Votes show demand. Test reports show what happened.</p></div><div class="aside-card"><h2>Know before you play</h2><ul><li>Current Preview requires Rosetta.</li><li><a href="download.html">Download the Preview</a>.</li><li>Check the version and Mac in each report.</li></ul><a class="text-link" href="about.html#results">How results work →</a></div></aside></div>''')
+    return shell(game['name'], f'''<p class="crumb"><a href="games.html">← All games</a></p><section class="detail-hero">{cover(game)}<div><h1>{e(game['name'])}</h1><p class="meta">Steam App {game['app_id']}</p><div class="badges"><span class="badge {'pass' if qualified else 'partial'}">{'Verified configuration' if qualified else 'Community reports' if records else 'Not tested'}</span></div><div class="actions"><a class="button" href="https://store.steampowered.com/app/{game['app_id']}/" rel="noreferrer">View on Steam ↗</a><a class="button primary" href="report.html?app={game['app_id']}">Share a result</a></div></div></section><div class="detail-layout"><section><div class="detail-section-head"><h2>Player reports <span class="meta">{len(records)}</span></h2><div class="report-filters"><label><span class="sr-only">Filter report runtime</span><select id="report-track"><option value="all">All runtimes</option><option value="rosetta-preview">Rosetta Preview</option><option value="rosetta-free-development">Rosetta-free development</option></select></label><label><span class="sr-only">Filter report result</span><select id="report-result"><option value="all">All results</option><option value="pass">Pass</option><option value="partial">Partial</option><option value="failed">Failed</option></select></label></div></div>{report_counts(records)}<p class="meta" style="margin:12px 0 18px">Reports describe individual configurations. They are not votes or unique-player counts.</p><div id="reports">{cards}</div><div class="empty-state" id="no-reports" {'hidden' if records else ''}><h3>No reports for this selection</h3><p>Change the filters or share your own result.</p><a class="button small" href="report.html?app={game['app_id']}">Share a result</a></div><p class="art-credit">{e(game['image_credit'])} <a class="inline-link" href="{e(game['image_source_url'] or 'https://store.steampowered.com/app/'+game['app_id']+'/')}">Source</a></p></section><aside><div class="aside-card"><h2>Want better support?</h2>{votes}<a class="button" href="{demand_link(game)}">{demand_label(game)}</a><p>Votes show demand. Test reports show what happened.</p></div><div class="aside-card"><h2>Know before you play</h2><ul><li>Current Preview requires Rosetta.</li><li><a href="download.html">Download the Preview</a>.</li><li>Check the version and Mac in each report.</li></ul><a class="text-link" href="about.html#results">How results work →</a></div></aside></div>''')
 
 
 def about_page():
@@ -286,7 +290,7 @@ def intake_page(catalog, kind, steam_available=False):
     category = 'show-and-tell' if report else 'ideas'
     live = f'<p><a class="button external" href="https://github.com/postmelee/pear/discussions/new?category={category}">Use the GitHub form</a></p>' if report and catalog['github_forms_live'] else ''
     intro = 'Share what happened on your Mac. Short runs and failures are useful too.' if report else 'Tell the community what you want to play. Requests and votes stay together on GitHub.'
-    return shell(name, f'''<div class="readable"><p class="crumb"><a href="index.html#games">← Back to games</a></p><h1>{name}.</h1><p>{intro}</p>{notice}{live}<noscript><p class="no-js">Enable JavaScript to prepare a local draft, or <a class="inline-link" href="https://github.com/postmelee/pear/discussions/new?category={category}">write directly on GitHub</a>.</p></noscript><form id="intake" data-kind="{kind}">{common}{report_fields if report else request_fields}<label class="check-line"><input type="checkbox" name="privacy" required><span>{'I used a legitimately owned game. ' if report else 'I checked existing requests. '}I have removed account details, passwords, QR codes, private logs, saves and game files.</span></label><button class="button primary" type="submit">Prepare GitHub draft →</button></form><section id="draft" class="draft" hidden><h2>Ready for GitHub</h2><p>Copy the title and use the draft below to fill the fields on GitHub. This does not submit or store anything in Pear.</p><div class="field"><label for="draft-title">Discussion title</label><input id="draft-title" readonly></div><label for="draft-body" class="sr-only">Discussion body</label><textarea id="draft-body" readonly></textarea><div class="actions"><button class="button" id="copy-title" type="button">Copy title</button><button class="button primary" id="copy-body" type="button">Copy body</button><a class="button external" id="github-handoff" href="https://github.com/postmelee/pear/discussions/new?category={category}" target="_blank" rel="noopener noreferrer">Open GitHub</a></div><p class="copy-status" id="copy-status" role="status" aria-live="polite"></p></section></div>''', '')
+    return shell(name, f'''<div class="readable"><p class="crumb"><a href="games.html">← Back to games</a></p><h1>{name}.</h1><p>{intro}</p>{notice}{live}<noscript><p class="no-js">Enable JavaScript to prepare a local draft, or <a class="inline-link" href="https://github.com/postmelee/pear/discussions/new?category={category}">write directly on GitHub</a>.</p></noscript><form id="intake" data-kind="{kind}">{common}{report_fields if report else request_fields}<label class="check-line"><input type="checkbox" name="privacy" required><span>{'I used a legitimately owned game. ' if report else 'I checked existing requests. '}I have removed account details, passwords, QR codes, private logs, saves and game files.</span></label><button class="button primary" type="submit">Prepare GitHub draft →</button></form><section id="draft" class="draft" hidden><h2>Ready for GitHub</h2><p>Copy the title and use the draft below to fill the fields on GitHub. This does not submit or store anything in Pear.</p><div class="field"><label for="draft-title">Discussion title</label><input id="draft-title" readonly></div><label for="draft-body" class="sr-only">Discussion body</label><textarea id="draft-body" readonly></textarea><div class="actions"><button class="button" id="copy-title" type="button">Copy title</button><button class="button primary" id="copy-body" type="button">Copy body</button><a class="button external" id="github-handoff" href="https://github.com/postmelee/pear/discussions/new?category={category}" target="_blank" rel="noopener noreferrer">Open GitHub</a></div><p class="copy-status" id="copy-status" role="status" aria-live="polite"></p></section></div>''', '')
 
 
 def download_page():
@@ -299,7 +303,7 @@ def download_page():
 <section id="homebrew" class="download-panel" data-download-panel aria-labelledby="method-homebrew"><h2>Install with Homebrew</h2><p>Homebrew distribution is planned. The installation command will appear here once a tested cask is published.</p><a class="text-link external" href="https://github.com/postmelee/pear/discussions/51">Follow Preview updates</a></section>
 </div>
 <details class="release-details"><summary>Release details</summary><p>Runtime: Wine 11.0 · DXMT 0.80</p></details>
-<section class="download-common"><h2>Sign in and play</h2><p>Pear prepares Windows Steam for you. Sign in through the official Steam window, install a game you own, and select Play.</p><p><a class="inline-link" href="index.html#games">Check game reports</a> for results on specific Macs and configurations.</p>
+<section class="download-common"><h2>Sign in and play</h2><p>Pear prepares Windows Steam for you. Sign in through the official Steam window, install a game you own, and select Play.</p><p><a class="inline-link" href="games.html">Check game reports</a> for results on specific Macs and configurations.</p>
 <h2>System requirements</h2><ul class="system-requirements"><li>Mac with Apple Silicon</li><li>macOS 26 or later</li><li>Rosetta</li><li>Internet access and a Steam account</li><li>Several GB for setup, plus space for your games</li></ul><p>Tested on M4 Pro / macOS 26.5.2, including owner-confirmed installation in a fresh standard account on that Mac. Other hardware remains unverified.</p><p>A Rosetta-free runtime is in development. <a class="inline-link" href="about.html#preview">About the Preview</a></p></section>
 <div class="download-guides"><a class="text-link external" href="https://github.com/postmelee/pear/blob/master/docs/rosetta-preview.md#app-experience">First Steam session</a><a class="text-link external" href="https://github.com/postmelee/pear/discussions/51">Preview updates</a><a class="text-link external" href="https://github.com/postmelee/pear/blob/master/docs/development/getting-started.md">Build from source</a></div></div>''', 'download')
 
@@ -308,35 +312,53 @@ def build_site(data, out, catalog=None, steam_catalog=None):
     validate(data)
     catalog = validate_catalog(catalog or json.loads(CATALOG.read_text()), data)
     if steam_catalog is not None:
-        # Imported only for builds using the optional public snapshot.
         from steam_catalog import validate_snapshot
         validate_snapshot(steam_catalog)
     groups = group_games(data, catalog)
-    pages = {'index.html': webpage(data, catalog), 'about.html': about_page(),
-             'download.html': download_page(), 'report.html': intake_page(catalog, 'report', steam_catalog is not None), 'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
+    pages = {'index.html': webpage(data, catalog), 'games.html': games_page(data, catalog),
+             'about.html': about_page(), 'download.html': download_page(),
+             'report.html': intake_page(catalog, 'report', steam_catalog is not None),
+             'request.html': intake_page(catalog, 'request', steam_catalog is not None)}
     pages.update({f'game-{g["app_id"]}.html': game_page(g) for g in groups})
+    pages.update(site.blog_pages())
     allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | set(pages)
+    allowed_dirs = {str(parent) for name in allowed for parent in Path(name).parents if str(parent) != '.'}
     out = Path(out)
     require(not out.is_symlink(), 'Site output must not be a symlink')
     if out.exists():
-        require(all(p.is_file() and not p.is_symlink() and p.name in allowed for p in out.iterdir()),
-                'Site output contains unexpected or stale files; use an empty directory')
+        # Validate the complete tree before overwriting anything. Only the fixed
+        # blog paths may be directories; no recursive copy of docs or private data.
+        for path in out.rglob('*'):
+            name = path.relative_to(out).as_posix()
+            require(not path.is_symlink() and ((path.is_file() and name in allowed)
+                    or (path.is_dir() and name in allowed_dirs)),
+                    'Site output contains unexpected or stale files; use an empty directory')
+    assets = {name: ASSETS / name for name in
+              ['tokens.css', 'components.css', 'style.css', 'theme.js', 'site.js', 'catalog.js', 'steam-search.js']}
+    assets.update({name: ROOT / 'docs/assets' / name for name in ['pear.png', 'favicon.png', 'social-card.png']})
+    assets.update({f'blog/images/{name}': ROOT / 'docs/assets/blog' / name
+                   for post in site.POSTS for name in post.images})
+    for source in assets.values():
+        require(source.is_file() and not source.is_symlink(), 'Missing or symlinked public asset')
     out.mkdir(parents=True, exist_ok=True)
     for name, text in pages.items():
-        (out / name).write_text(text, encoding='utf-8')
-    for name in ['style.css', 'catalog.js', 'steam-search.js']:
-        shutil.copyfile(ASSETS / name, out / name)
-    for name, content in [('reports.json', data), ('games.json', catalog)]:
-        (out / name).write_text(json.dumps(content, indent=2) + '\n', encoding='utf-8')
-    for name in ['pear.png', 'favicon.png', 'social-card.png']:
-        shutil.copyfile(ROOT / 'docs/assets' / name, out / name)
+        target = out / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(text, encoding='utf-8')
+    for name, source in assets.items():
+        target = out / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+    for name, content in [('reports.json', data), ('games.json', catalog),
+                          ('search-index.json', site.search_index(pages))]:
+        (out / name).write_text(json.dumps(content, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     snapshot = out / 'steam-games.json'
     if steam_catalog is not None:
         from steam_catalog import write_snapshot
         write_snapshot(steam_catalog, snapshot)
     elif snapshot.exists():
         snapshot.unlink()
-    return sorted(p.name for p in out.iterdir())
+    return sorted(p.relative_to(out).as_posix() for p in out.rglob('*') if p.is_file())
 
 
 def main():
