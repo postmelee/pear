@@ -233,3 +233,9 @@ Request a game stays on one line and card actions move to separate rows on the
 narrow viewport. Rebuilt the site and passed whitespace validation. Removed
 both temporary review pages. Screenshot:
 `.build/catalog-design/button-nowrap-responsive.png`.
+
+## Request-support label
+
+Removed the upward arrow from Request support at the requester's direction.
+Rebuilt and verified the label in both Games and the game detail output.
+Existing vote labels and button styles remain unchanged.

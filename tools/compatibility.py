@@ -203,7 +203,7 @@ def demand_label(game):
     votes = game['request']['upvotes']
     if game['request']['discussion_url']:
         return '↑ Vote on GitHub' if votes is None else f'↑ {votes} · Vote on GitHub'
-    return '↑ Request support'
+    return 'Request support'
 
 
 def shell(title, content, active='games'):
