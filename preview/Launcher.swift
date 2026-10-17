@@ -3,7 +3,7 @@
 import AppKit
 
 // Presentation only. The same Rust binary serves this window and the CLI.
-final class PreviewApp: NSObject, NSApplicationDelegate {
+@MainActor final class PreviewApp: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     var titleLabel: NSTextField!
     var label: NSTextField!
@@ -18,6 +18,82 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
     var closing = false
     var stopping = false
     var openingGeneration = 0
+    var history: HistoryWindow?
+    var historyStore: ReportingStore?
+    var historyOwner: ReportingSessionOwner?
+    var runObserver = RunObserverState()
+    var observationGeneration = 0
+    var observedOwnedSession = false
+    var observerStarted = Date()
+    var sawOwnedSession = false
+    var historyError: String?
+
+    @objc func showHistory() {
+        if let history { history.show(); return }
+        let alert = NSAlert(); alert.messageText = "Run history is unavailable"
+        alert.informativeText = historyError ?? "Wait for Pear to check the installation."
+        alert.beginSheetModal(for: window)
+    }
+
+    func prepareHistory(_ setup: SetupInfo) {
+        guard historyStore == nil, historyError == nil else { return }
+        let env = ProcessInfo.processInfo.environment
+        let root = URL(fileURLWithPath: env["PEAR_PREVIEW_ROOT"] ??
+            NSHomeDirectory() + "/Library/Application Support/Pear Preview").standardizedFileURL.resolvingSymlinksInPath()
+        do {
+            let directory = root.appendingPathComponent("history")
+            let store = try ReportingStore(directory: directory)
+            let owner = try ReportingSessionOwner(directory: directory)
+            // Reopening cannot establish the end of an observation interrupted by Quit.
+            try store.transaction { state in
+                for i in state.runs.indices where state.runs[i].endedAt == nil {
+                    state.runs[i].observedExit = .unknown
+                }
+            }
+            historyOwner = owner; historyStore = store; history = HistoryWindow(store: store)
+            observationGeneration += 1
+            pollRuns(OwnedProcessProbe(root: root, runtime: setup.runtime_id), generation: observationGeneration)
+        } catch { historyError = "Another Pear observer may be running, or local storage is unavailable. No reports will be sent." }
+    }
+
+    func pollRuns(_ probe: OwnedProcessProbe, generation: Int) {
+        guard !closing, generation == observationGeneration else { return }
+        let previous = runObserver.previous
+        windowQueue.async {
+            let snapshot = probe.snapshot(previous: previous)
+            DispatchQueue.main.async {
+                guard !self.closing, generation == self.observationGeneration, let store = self.historyStore else { return }
+                self.observedOwnedSession = !snapshot.complete || !snapshot.processes.isEmpty
+                if !snapshot.processes.isEmpty { self.sawOwnedSession = true }
+                let (started, finished) = self.runObserver.consume(snapshot, now: Date(), monotonic: ProcessInfo.processInfo.systemUptime)
+                do {
+                    for session in started {
+                        let version = ProcessInfo.processInfo.operatingSystemVersion
+                        let run = RunObservation(id: session.id, startedAt: session.began,
+                            macOS: "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)",
+                            memoryGiB: Int(ProcessInfo.processInfo.physicalMemory / (1024 * 1024 * 1024)),
+                            pear: self.info?.version ?? "Unknown", wine: "11.0", dxmt: "0.80", appID: session.appID)
+                        try store.record(run)
+                    }
+                    for finish in finished {
+                        guard var run = store.snapshot.runs.first(where: { $0.id == finish.session.id }) else { continue }
+                        run.endedAt = finish.observedEnd; run.observedExit = finish.exit
+                        try store.record(run)
+                        self.history?.confirmFinished(run.id)
+                    }
+                    self.history?.refresh()
+                } catch { self.historyError = "Run history could not be saved. Sharing is stopped." }
+                if snapshot.complete, snapshot.processes.isEmpty, self.task == nil,
+                   !self.window.isVisible, !(self.history?.isVisible ?? false),
+                   self.sawOwnedSession || Date().timeIntervalSince(self.observerStarted) > 120 {
+                    NSApp.terminate(nil); return
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                    self?.pollRuns(probe, generation: generation)
+                }
+            }
+        }
+    }
     let windowQueue = DispatchQueue(label: "org.pear.steam-window", qos: .utility)
 
     func observeSteam() {
@@ -89,7 +165,9 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
         cancelButton.isHidden = true
         let about = NSButton(title: "About Pear", target: self, action: #selector(showAbout))
         about.frame = NSRect(x: 24, y: 24, width: 116, height: 32)
-        for view in [titleLabel!, label!, progress!, busy!, button!, cancelButton!, about] {
+        let historyButton = NSButton(title: "Run history", target: self, action: #selector(showHistory))
+        historyButton.frame = NSRect(x: 145, y: 24, width: 94, height: 32)
+        for view in [historyButton, titleLabel!, label!, progress!, busy!, button!, cancelButton!, about] {
             window.contentView!.addSubview(view)
         }
         window.center(); window.makeKeyAndOrderFront(nil)
@@ -116,6 +194,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
 
     func showSetup(_ value: SetupInfo) {
         info = value
+        prepareHistory(value)
         if value.ready {
             start()
             return
@@ -262,9 +341,18 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        window.makeKeyAndOrderFront(nil); return true
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        // Retain the observation owner after the window closes; explicit Quit
+        // still leaves Steam and games running. No global Wine termination.
+        return historyOwner == nil
+    }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         closing = true
+        observationGeneration += 1
         openingGeneration += 1
         guard let task, task.isRunning else { return .terminateNow }
         task.interrupt()

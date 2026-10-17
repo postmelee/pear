@@ -2,11 +2,17 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import Foundation
 
+struct DeliveryAttempt: Codable {
+    var failures: Int = 0
+    var nextAttempt: Date?
+}
+
 struct ReportingSnapshot: Codable {
     var schemaVersion = 1
     var policy = ReportingPolicy()
     var runs: [RunObservation] = []
     var shared: [UUID: SharedRun] = [:]
+    var delivery: [UUID: DeliveryAttempt]? = nil
 }
 
 enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
@@ -74,13 +80,21 @@ enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
 @MainActor final class ReportingCoordinator {
     let store: ReportingStore
     private let transport: ReportTransport
+    private let now: () -> Date
+    var changed: (() -> Void)?
     private var active: (id: UUID, origin: SendOrigin, transfer: ReportTransfer)?
-    init(store: ReportingStore, transport: ReportTransport) { self.store = store; self.transport = transport }
+    init(store: ReportingStore, transport: ReportTransport, now: @escaping () -> Date = Date.init) {
+        self.store = store; self.transport = transport; self.now = now
+    }
 
     func configure(mode: SharingMode, fields: Set<ReportField>) throws {
         // Cancellation is immediate even if persistence subsequently fails.
         if active?.origin == .automatic { active?.transfer.cancel(); active = nil }
-        do { try store.transaction { $0.policy.configure(mode: mode, fields: fields) } }
+        do { try store.transaction {
+            $0.policy.configure(mode: mode, fields: fields)
+            let remaining = Set($0.policy.pending.map(\.requestID))
+            $0.delivery = $0.delivery?.filter { remaining.contains($0.key) }
+        }; changed?() }
         catch { active?.transfer.cancel(); active = nil; throw error }
     }
 
@@ -88,24 +102,72 @@ enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
         try configure(mode: .localOnly, fields: store.snapshot.policy.consent.fields)
     }
 
-    // Call after an explicit manual share or a permitted automatic enqueue, and
-    // after bounded retry delay. No recursive retry loop and no timer on consent-off.
-    func sendNext() {
-        guard store.available, active == nil,
-              let request = store.snapshot.policy.pending.first,
-              store.snapshot.policy.authorizedRequest(request.requestID) != nil else { return }
+    func enqueue(_ run: RunObservation, origin: SendOrigin, shareNote: Bool = false) throws {
+        try store.transaction { $0.policy.enqueue(run, origin: origin, explicitlyShareNote: shareNote, now: now()) }
+        changed?(); sendNext()
+    }
+
+    // Retry the already approved immutable payload, not a newly edited note.
+    func retry(reportID: UUID) throws {
+        guard let request = store.snapshot.policy.pending.first(where: { $0.payload.reportID == reportID }) else { return }
+        try store.transaction {
+            var delivery = $0.delivery ?? [:]
+            delivery[request.requestID] = DeliveryAttempt(nextAttempt: now())
+            $0.delivery = delivery
+        }
+        changed?(); sendNext(explicitRequest: request.requestID)
+    }
+
+    func deleteLocal(reportID: UUID) throws {
+        if let active, store.snapshot.policy.pending.contains(where: {
+            $0.requestID == active.id && $0.payload.reportID == reportID
+        }) { active.transfer.cancel(); self.active = nil }
+        try store.transaction {
+            let ids = Set($0.policy.pending.filter { $0.payload.reportID == reportID }.map(\.requestID))
+            $0.policy.removePending(reportID: reportID)
+            $0.delivery = $0.delivery?.filter { !ids.contains($0.key) }
+            $0.runs.removeAll { $0.id == reportID }
+            // Keep the shared receipt and ownership separately for server deletion.
+        }
+        changed?()
+    }
+
+    // A host timer may call this; no recursive retry. Requests older than 14 days
+    // require explicit retry. A failed report does not block unrelated reports;
+    // revisions for the same report remain ordered.
+    func sendNext(explicitRequest: UUID? = nil) {
+        guard store.available, active == nil else { return }
+        var seen = Set<UUID>()
+        let time = now()
+        let request = store.snapshot.policy.pending.first { item in
+            guard seen.insert(item.payload.reportID).inserted,
+                  store.snapshot.policy.authorizedRequest(item.requestID) != nil else { return false }
+            if explicitRequest == item.requestID { return true }
+            guard let created = item.createdAt, time >= created,
+                  time.timeIntervalSince(created) < 14 * 86400 else { return false }
+            return (store.snapshot.delivery?[item.requestID]?.nextAttempt ?? .distantPast) <= time
+        }
+        guard let request else { return }
         let id = request.requestID
-        // Completion is dispatched to a later main-thread turn by the adapter.
         let transfer = transport.start(request) { [weak self] success in
             guard let self, self.active?.id == id else { return }
             self.active = nil
-            guard success else { return } // Same immutable payload stays queued.
             do {
                 try self.store.transaction { state in
-                    state.shared[request.payload.reportID] = request.payload
-                    state.policy.acknowledge(id)
+                    var delivery = state.delivery ?? [:]
+                    if success {
+                        state.shared[request.payload.reportID] = request.payload
+                        state.policy.acknowledge(id)
+                        delivery.removeValue(forKey: id)
+                    } else {
+                        let failures = min(20, (delivery[id]?.failures ?? 0) + 1)
+                        let delay = min(3600.0, 5 * pow(2, Double(failures - 1)))
+                        delivery[id] = DeliveryAttempt(failures: failures, nextAttempt: self.now().addingTimeInterval(delay))
+                    }
+                    state.delivery = delivery
                 }
-            } catch { /* Unavailable store blocks subsequent sends. UI surfaces status. */ }
+            } catch { /* An unavailable store blocks all subsequent sends. */ }
+            self.changed?()
         }
         active = (id, request.origin, transfer)
     }

@@ -32,6 +32,7 @@ struct RunObservation: Codable {
     var dxmt: String
     var appID: UInt32?
     var gameBuild: String?
+    var gameName: String? = nil
     var observedExit: ObservedExit = .unknown
     var result: UserRunResult = .unknown
     var note: String = ""
@@ -84,6 +85,7 @@ struct PendingReport: Codable, Equatable {
     // Stable across retries; changing result/note creates a new request revision
     // for the same reportID. Server still needs ownership and revision checks.
     var requestID: UUID
+    var createdAt: Date? = nil
     var revision: UInt64
     var origin: SendOrigin
     var consentGeneration: UInt64
@@ -107,6 +109,7 @@ struct ReportingPolicy: Codable {
         configure(mode: .localOnly, fields: consent.fields)
     }
 
+    mutating func setExitPrompt(_ enabled: Bool) { consent.showExitPrompt = enabled }
     mutating func suppressExitPrompt() { consent.showExitPrompt = false }
     mutating func setExitNotifications(_ enabled: Bool) { consent.notifyAutomaticCompletion = enabled }
 
@@ -115,11 +118,11 @@ struct ReportingPolicy: Codable {
 
     @discardableResult
     mutating func enqueue(_ run: RunObservation, origin: SendOrigin,
-                          explicitlyShareNote: Bool = false) -> UUID? {
+                          explicitlyShareNote: Bool = false, now: Date = Date()) -> UUID? {
         guard origin == .manual || (consent.mode == .automatic && !consent.fields.isEmpty) else { return nil }
         let revision = (revisions[run.id] ?? 0) + 1
         revisions[run.id] = revision
-        let request = PendingReport(requestID: UUID(), revision: revision, origin: origin,
+        let request = PendingReport(requestID: UUID(), createdAt: now, revision: revision, origin: origin,
             consentGeneration: consent.generation,
             payload: run.payload(fields: consent.fields,
                                  shareNote: origin == .manual && explicitlyShareNote))
@@ -135,6 +138,10 @@ struct ReportingPolicy: Codable {
         guard request.origin == .manual ||
             (consent.mode == .automatic && consent.generation == request.consentGeneration) else { return nil }
         return request
+    }
+
+    mutating func removePending(reportID: UUID) {
+        pending.removeAll { $0.payload.reportID == reportID }
     }
 
     mutating func acknowledge(_ id: UUID) { pending.removeAll { $0.requestID == id } }

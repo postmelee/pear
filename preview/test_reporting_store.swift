@@ -34,11 +34,41 @@ import Foundation
         try store.transaction { $0.policy.enqueue(run, origin:.manual, explicitlyShareNote:true) }
         coordinator.sendNext(); let request = transport.calls.last!
         transport.completions.last!(false)
-        coordinator.sendNext(); precondition(transport.calls.last == request)
+        let callsBeforeRetry = transport.calls.count
+        coordinator.sendNext(); precondition(transport.calls.count == callsBeforeRetry)
+        try coordinator.retry(reportID: run.id); precondition(transport.calls.last == request)
         transport.completions.last!(true)
         precondition(store.snapshot.policy.pending.isEmpty && store.snapshot.shared[run.id]?.note == "private")
         let reread = try ReportingStore(directory: root)
         precondition(reread.snapshot.shared[run.id]?.note == "private")
+        var clock = Date(timeIntervalSince1970: 1_800_000_000)
+        let queued = try ReportingStore(directory: root.appendingPathComponent("queue"))
+        let queuedTransport = FakeTransport()
+        let queue = ReportingCoordinator(store: queued, transport: queuedTransport, now: { clock })
+        try queue.enqueue(run, origin: .manual, shareNote: true)
+        let first = queuedTransport.calls[0]
+        queuedTransport.completions[0](false)
+        queue.sendNext(); precondition(queuedTransport.calls.count == 1)
+        let restart = try ReportingStore(directory: root.appendingPathComponent("queue"))
+        precondition(restart.snapshot.delivery?[first.requestID]?.failures == 1)
+        var other = run; other.id = UUID()
+        try queue.enqueue(other, origin: .manual)
+        precondition(queuedTransport.calls.count == 2 && queuedTransport.calls[1].payload.reportID == other.id)
+        queuedTransport.completions[1](true)
+        clock.addTimeInterval(5)
+        queue.sendNext(); precondition(queuedTransport.calls.last == first)
+        queuedTransport.completions.last!(false)
+        clock.addTimeInterval(14 * 86400)
+        queue.sendNext(); precondition(queuedTransport.calls.count == 3)
+        try queue.retry(reportID: run.id)
+        precondition(queuedTransport.calls.count == 4 && queuedTransport.calls.last == first)
+        try queue.deleteLocal(reportID: run.id)
+        precondition(queuedTransport.transfers.last!.cancelled)
+        queuedTransport.completions.last!(true)
+        precondition(queued.snapshot.policy.pending.isEmpty && queued.snapshot.shared[run.id] == nil)
+        precondition(queued.snapshot.shared[other.id] != nil)
+        try queue.deleteLocal(reportID: other.id)
+        precondition(queued.snapshot.shared[other.id] != nil) // Receipt retained; no server delete implied.
         let broken = try ReportingStore(directory:root,save:{_,_ in throw CocoaError(.fileWriteOutOfSpace)})
         let brokenTransport = FakeTransport(), brokenCoordinator = ReportingCoordinator(store:broken,transport:brokenTransport)
         do { try brokenCoordinator.configure(mode:.automatic,fields:[.game]); preconditionFailure("expected disk error") } catch {}
@@ -48,6 +78,6 @@ import Foundation
         do { _ = try ReportingStore(directory:root); preconditionFailure("must preserve corrupt file") } catch {}
         let preserved = try Data(contentsOf:file)
         precondition(preserved == Data("incomplete JSON".utf8))
-        print("PASS: durable consent, restart, default silence, cancellation, late callback, manual sharing, immutable retry, disk failure, corrupt-file preservation")
+        print("PASS: durable consent, restart, default silence, cancellation, late callback, manual sharing, immutable retry, disk failure, corrupt-file preservation, bounded durable retry, expiry, unrelated-report progress, delete cancellation")
     }
 }
