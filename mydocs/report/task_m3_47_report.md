@@ -103,3 +103,15 @@ release assets or home download routing change. This is a bounded #47 follow-up.
 
 Retention handoff: small generated validation output is disposable after public
 HTML verification. Existing private runtime/save evidence is outside this change.
+
+## README follow-up — 2026-10-17
+
+Following requester confirmation that PR #58 was merged, the README homepage label
+is Website & game reports. The dated native experiment narrative is replaced by
+a concise source-ownership/development-validation summary, retaining explicit
+incomplete gameplay and full no-Rosetta qualification. Existing #58 guide routing
+and exact Preview download URLs remain. The exact #56 report is linked for scope.
+Governance passed (37 documents, 372 local targets); incremental source notices
+and diff checks passed. This documentation-only change performs no runtime tests.
+The repository About homepage is https://postmelee.github.io/pear/.
+No material build output or change to retained private state.
