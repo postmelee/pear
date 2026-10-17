@@ -123,3 +123,8 @@ catalog reproduces report fields/cards; the existing Pages generator and hosted
 Sites workflow are not yet integrated with this new supplemental schema. The
 Apply button simulates the daily batch; no scheduled publication was enabled.
 Retain small test artifacts until requester review; no runtime copy or release.
+
+Requester UI follow-up: local private review now uses compact game/date/process
+time/result/review-state rows. Native details/summary disclosure opens report
+fields, private notes and approval controls on demand, one report at a time.
+Stored reports and approval/publication behavior are unchanged.

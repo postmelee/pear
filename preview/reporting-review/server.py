@@ -41,6 +41,7 @@ def card(r):
     return f'<article><h2>{e(name)}</h2>{link}<p class="badge {e(r["userResult"])}">User report · {e(result)}</p><p>Process time is not verified play time. This report is not a Pass or qualification.</p><dl>'+''.join(f'<dt>{e(k)}</dt><dd>{e(v)}</dd>' for k,v in rows)+'</dl></article>'
 
 STYLE='body{font:16px system-ui;color:#263027;background:#faf9f3;margin:40px auto;max-width:1050px;padding:0 24px}h1{font-size:36px}h2{font-size:25px}article{background:white;border:1px solid #dedfd7;border-radius:14px;padding:24px;margin:20px 0}a{color:#40643a}button{padding:12px 18px;background:#40643a;color:white;border:0;border-radius:8px;cursor:pointer;margin:8px}dl{display:grid;grid-template-columns:240px 1fr;gap:12px}dt{font-weight:600}dd{margin:0}.badge{display:inline-block;padding:8px 12px;border-radius:8px;background:#eee}.normal{background:#e4f1e3}.problems{background:#f9e3df}.notice{padding:18px;background:#eeefe5;border-radius:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere}'
+STYLE += '.report-row{border-bottom:1px solid #dedfd7;background:#fff}.report-row>summary{list-style:none;display:grid;grid-template-columns:minmax(180px,1fr) 180px 140px 16px;align-items:center;gap:16px;padding:16px;cursor:pointer}.report-row>summary::-webkit-details-marker{display:none}.report-row>summary::after{content:"›";font-size:24px;color:#687463}.report-row[open]>summary::after{content:"⌄"}.report-row>summary:hover{background:#f0f3e9}.report-row>summary:focus-visible{outline:2px solid #40643a;outline-offset:-2px}.report-name{font-weight:650}.report-name small{display:block;font-size:13px;font-weight:400;color:#687463;margin-top:4px}.result{font-size:13px;padding:6px 9px;border-radius:6px;justify-self:start}.review-state{font-size:13px;color:#586650}.report-detail{padding:8px 24px 24px;border-top:1px solid #e5e7df;background:#fafbf7}.report-detail article{margin:12px 0}.private-note summary{cursor:pointer;padding:12px 0}.report-detail h2{font-size:21px}@media(max-width:650px){.report-row>summary{grid-template-columns:1fr auto;gap:8px}.report-name{grid-column:1}.result{grid-column:1}.review-state{grid-column:2;grid-row:2}.report-row>summary::after{grid-column:2;grid-row:1;justify-self:end}dl{grid-template-columns:1fr;gap:5px}dd{margin-bottom:12px}.report-detail{padding:8px 16px 16px}}'
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
     def send(self,code,value,kind='application/json'):
@@ -101,7 +102,14 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/catalog':
                 if published: page+=card(json.loads(published))
             else:
-                r=json.loads(payload);page+=card(project(r))+f'<p><strong>{html.escape(state)}</strong> · Revision {rev}</p><details><summary>Private note · never in catalog</summary><pre>{html.escape(r.get("note", "No note shared"))}</pre></details><form action="/approve" method="post">{token}<input type="hidden" name="id" value="{rid}"><input type="hidden" name="revision" value="{rev}"><button>Approve for next update</button></form>'
+                r=json.loads(payload)
+                app=r.get('appID')
+                name='Megabonk' if app==3405340 else f'Steam App {app}' if app else 'Game not shared'
+                date=r.get('dateUTC','Date not shared')
+                duration=f"{r['processMinutes']} min process" if 'processMinutes' in r else 'Duration unknown'
+                result={'normal':'Worked normally','problems':'Had problems','unknown':'Not confirmed'}[r['userResult']]
+                e=html.escape
+                page+=f'<details class="report-row" name="report"><summary><span class="report-name">{e(name)}<small>{e(date)} · {e(duration)}</small></span><span class="result {e(r["userResult"])}">{e(result)}</span><span class="review-state">{e(state)}</span></summary><div class="report-detail"><h2>Report details</h2><p>Revision {rev} · App ID: {app if app else "Not shared"}</p>'+card(project(r))+f'<details class="private-note"><summary>Private note · never in catalog</summary><pre>{e(r.get("note", "No note shared"))}</pre></details><form action="/approve" method="post">{token}<input type="hidden" name="id" value="{rid}"><input type="hidden" name="revision" value="{rev}"><button>Approve for next update</button></form></div></details>'
         if not rows: page+='<p>No reports yet. Share a result from Pear Reporting Review.</p>'
         self.send(200,'<!doctype html><meta charset="utf-8"><title>Pear · Local report review</title><style>'+STYLE+'</style>'+page,'text/html')
 
