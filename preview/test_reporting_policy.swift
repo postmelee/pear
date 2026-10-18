@@ -8,13 +8,23 @@ import Foundation
   let run = RunObservation(id: UUID(), startedAt: start, endedAt: start.addingTimeInterval(125),
       macOS: "26.5.2", chip: "Apple M4 Pro", memoryGiB: 24, pear: "0.1.0", wine: "11.0",
       dxmt: "0.80", appID: 3405340, gameBuild: nil, note: "private note")
+  precondition(policy.needsSharingIntroduction)
+  policy.markSharingIntroductionSeen()
+  precondition(!policy.needsSharingIntroduction)
+  precondition(policy.consent.mode == .localOnly && policy.consent.fields.isEmpty)
+  let seen = try JSONDecoder().decode(ReportingPolicy.self, from:JSONEncoder().encode(policy))
+  precondition(!seen.needsSharingIntroduction && seen.consent.disclosureVersion == nil)
   precondition(policy.enqueue(run, origin: .automatic) == nil)
   precondition(!policy.shouldShowExitPrompt && !policy.shouldNotifyExit)
   policy.configure(mode: .askAfterExit, fields: Set(ReportField.allCases))
   precondition(policy.shouldShowExitPrompt)
   policy.suppressExitPrompt()
-  precondition(!policy.shouldShowExitPrompt && policy.consent.mode == .askAfterExit)
+  precondition(!policy.shouldShowExitPrompt && policy.consent.mode == .localOnly)
   precondition(policy.enqueue(run, origin: .automatic) == nil)
+  policy.configure(mode:.askAfterExit,fields:[.game])
+  precondition(policy.shouldShowExitPrompt)
+  policy.disableAutomaticSharing()
+  precondition(!policy.shouldShowExitPrompt && policy.consent.mode == .localOnly)
   policy.configure(mode: .automatic, fields: [.game, .execution])
   let auto = policy.enqueue(run, origin: .automatic, explicitlyShareNote: true)!
   let payload = policy.authorizedRequest(auto)!.payload

@@ -45,6 +45,10 @@ enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
             try data.write(to: url, options: [.atomic])
             try fm.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
         }
+        // Preserve a legacy request for no questions without enabling any sharing.
+        if snapshot.policy.consent.mode == .askAfterExit && !snapshot.policy.consent.showExitPrompt {
+            try transaction { $0.policy.disableAutomaticSharing() }
+        }
     }
 
     func transaction(_ edit: (inout ReportingSnapshot) throws -> Void) throws {

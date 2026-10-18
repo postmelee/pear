@@ -214,3 +214,17 @@ at the bottom. Keep About and history in the app menu and add direct sharing
 settings. Use native text-editor colors and a bezel for identifiable inputs, muted
 field captions with stronger values, and an explicit Sharing mode heading. Reuse
 the UI-only harness; no runtime, consent, or transport behavior change.
+
+## Unified settings and first-run disclosure (approved 2026-10-19)
+Requester approved a 340-point launcher with grouped header/body spacing, a Settings
+window with Sharing sidebar and separate Window > Run history access. Reuse the
+tracked transparent docs/assets/pear.png for the titlebar, preserving the app icon.
+First-run draft preselects automatic mode and all fields, but durable policy stays
+local-only until explicit Enable automatic sharing. Display-once state is separate
+from disclosure consent; close/skip/restart never grants consent. Existing consent
+is not replaced. Ask mode no longer exposes a separate prompt checkbox; choosing
+it explicitly enables questions, and exit suppression becomes manual sharing.
+Legacy suppressed ask preferences migrate durably to manual sharing, preserving silence.
+Update the existing docs/reporting-and-privacy.md for these approved user-facing
+semantics; no new document location. Verify policy/store restart and no-send
+boundaries plus isolated UI. Reuse app-only outputs (<50 MiB); no runtime copies.

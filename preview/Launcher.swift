@@ -202,21 +202,25 @@ import UserNotifications
         let runsItem = NSMenuItem(title: "Run history", action: #selector(showHistory), keyEquivalent: "h"); runsItem.target = self
         let aboutItem = NSMenuItem(title: "About Pear", action: #selector(showAbout), keyEquivalent: ""); aboutItem.target = self
         appMenu.addItem(aboutItem); appMenu.addItem(.separator())
-        appMenu.addItem(runsItem)
-        let sharingItem = NSMenuItem(title:"Sharing settings…",action:#selector(showSharingSettings),keyEquivalent:",");sharingItem.target=self
+        let sharingItem = NSMenuItem(title:"Settings…",action:#selector(showSharingSettings),keyEquivalent:",");sharingItem.target=self
         appMenu.addItem(sharingItem); appMenu.addItem(.separator())
         appMenu.addItem(NSMenuItem(title: "Quit Pear", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-        appItem.submenu = appMenu; menu.addItem(appItem); NSApp.mainMenu = menu
+        appItem.submenu = appMenu; menu.addItem(appItem)
+        let windowItem=NSMenuItem(title:"Window",action:nil,keyEquivalent:"")
+        let windowMenu=NSMenu(title:"Window");windowMenu.addItem(runsItem)
+        runsItem.keyEquivalentModifierMask=[.command,.shift]
+        windowItem.submenu=windowMenu;menu.addItem(windowItem);NSApp.windowsMenu=windowMenu
+        NSApp.mainMenu = menu
         inspectSetup()
     }
 
     // Shared by the shipped launcher and the isolated, network-free UI review.
     func buildMainWindow() {
-        window = NSWindow(contentRect:NSRect(x:0,y:0,width:600,height:430),
+        window = NSWindow(contentRect:NSRect(x:0,y:0,width:600,height:340),
                           styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
         window.title = "Pear"; window.isReleasedWhenClosed = false; PearStyle.window(window)
         let titlebar = NSTitlebarAccessoryViewController()
-        let mark = NSImageView(image:NSApp.applicationIconImage)
+        let mark = NSImageView(image:Bundle.main.url(forResource:"PearMark",withExtension:"png").flatMap { NSImage(contentsOf:$0) } ?? NSApp.applicationIconImage)
         mark.widthAnchor.constraint(equalToConstant:16).isActive=true
         mark.heightAnchor.constraint(equalToConstant:16).isActive=true
         let titleContent = PearStyle.stack([mark,PearStyle.label("Pear",size:13,weight:.semibold)],horizontal:true,spacing:6)
@@ -236,6 +240,8 @@ import UserNotifications
         cancelButton = PearStyle.button("Cancel",target:self,action:#selector(cancelSetup));cancelButton.isHidden=true
         let actions = PearStyle.stack([NSView(),cancelButton!,button!],horizontal:true,spacing:16)
         let page=PearStyle.stack([titleLabel!,label!,downloadHost,status,NSView(),actions],spacing:16)
+        page.setCustomSpacing(8,after:titleLabel!)
+        page.setCustomSpacing(26,after:label!)
         PearStyle.pin(page,in:window.contentView!)
         for view in [label!,downloadHost!,status,actions] {
             view.widthAnchor.constraint(equalTo:page.widthAnchor).isActive=true

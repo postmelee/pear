@@ -7,6 +7,7 @@ import AppKit
     let launcher = PreviewApp()
     var history: HistoryWindow!
     var store: ReportingStore!
+    var introHistory: HistoryWindow?
     func applicationDidFinishLaunching(_ notification: Notification) {
         do {
             let directory=Bundle.main.bundleURL.deletingLastPathComponent().appendingPathComponent("ui-fixtures")
@@ -28,22 +29,30 @@ import AppKit
             launcher.cancelButton.target=self;launcher.cancelButton.action=#selector(setup)
             let menu=NSMenu();let app=NSMenuItem();let appMenu=NSMenu()
             let about=NSMenuItem(title:"About Pear",action:#selector(PreviewApp.showAbout),keyEquivalent:"");about.target=launcher;appMenu.addItem(about)
-            let runsEntry=NSMenuItem(title:"Run history",action:#selector(PreviewApp.showHistory),keyEquivalent:"h");runsEntry.target=launcher;appMenu.addItem(runsEntry)
-            let settings=NSMenuItem(title:"Sharing settings…",action:#selector(PreviewApp.showSharingSettings),keyEquivalent:",");settings.target=launcher;appMenu.addItem(settings)
+            let runsEntry=NSMenuItem(title:"Run history",action:#selector(PreviewApp.showHistory),keyEquivalent:"h");runsEntry.target=launcher;runsEntry.keyEquivalentModifierMask=[.command,.shift]
+            let settings=NSMenuItem(title:"Settings…",action:#selector(PreviewApp.showSharingSettings),keyEquivalent:",");settings.target=launcher;appMenu.addItem(settings)
             appMenu.addItem(.separator())
             appMenu.addItem(withTitle:"Quit UI review",action:#selector(NSApplication.terminate(_:)),keyEquivalent:"q")
             app.submenu=appMenu;menu.addItem(app)
+            let windowItem=NSMenuItem(title:"Window",action:nil,keyEquivalent:"")
+            let windowMenu=NSMenu(title:"Window");windowMenu.addItem(runsEntry);windowItem.submenu=windowMenu;menu.addItem(windowItem)
             let item=NSMenuItem(title:"Preview screens",action:nil,keyEquivalent:"");let screens=NSMenu()
             for (title,action,key) in [("Run history",#selector(runs),"1"),("First installation",#selector(setup),"2"),
                                        ("Downloading · with Cancel",#selector(downloading),"3"),("Opening Steam",#selector(opening),"4"),
                                        ("Steam window open",#selector(ready),"5"),("After a game",#selector(prompt),"6"),
-                                       ("Light appearance",#selector(light),"7"),("Dark appearance",#selector(dark),"8")] {
+                                       ("Light appearance",#selector(light),"7"),("Dark appearance",#selector(dark),"8"),("First-run sharing",#selector(introduction),"9")] {
                 let entry=NSMenuItem(title:title,action:action,keyEquivalent:key);entry.target=self;screens.addItem(entry)
             }
             item.submenu=screens;menu.addItem(item);NSApp.mainMenu=menu
             launcher.window.center();ready();runs()
             print("UI review ready; synthetic records only; no transport or Steam execution.")
         } catch { fputs("UI review failed: \(error)\n",stderr);NSApp.terminate(nil) }
+    }
+    @objc func introduction() {
+        let directory=Bundle.main.bundleURL.deletingLastPathComponent().appendingPathComponent("ui-fixtures/onboarding-" + UUID().uuidString)
+        if let sample=try? ReportingStore(directory:directory) {
+            introHistory=HistoryWindow(store:sample);introHistory?.showSharingIntroductionIfNeeded()
+        }
     }
     @objc func runs() { history.show() }
     func resetMain() {

@@ -19,7 +19,14 @@ import Foundation
         let transport = FakeTransport(), coordinator = ReportingCoordinator(store: store, transport: transport)
         coordinator.sendNext(); precondition(transport.calls.isEmpty)
         let run = RunObservation(id: UUID(), startedAt: Date(), endedAt: Date(), pear:"test",wine:"11.0",dxmt:"0.80",note:"private")
+        try store.transaction { $0.policy.markSharingIntroductionSeen() }
         try store.record(run)
+        try store.transaction { $0.policy.enqueue(run,origin:.automatic) }
+        coordinator.sendNext();precondition(transport.calls.isEmpty)
+        let seenRestart=try ReportingStore(directory:root)
+        precondition(!seenRestart.snapshot.policy.needsSharingIntroduction)
+        precondition(seenRestart.snapshot.policy.consent.mode == .localOnly)
+        precondition(seenRestart.snapshot.policy.consent.fields.isEmpty)
         try coordinator.configure(mode: .automatic, fields: [.game])
         try store.transaction { $0.policy.enqueue(run, origin:.automatic) }
         coordinator.sendNext(); precondition(transport.calls.count == 1)
@@ -83,6 +90,21 @@ import Foundation
         let brokenTransport = FakeTransport(), brokenCoordinator = ReportingCoordinator(store:broken,transport:brokenTransport)
         do { try brokenCoordinator.configure(mode:.automatic,fields:[.game]); preconditionFailure("expected disk error") } catch {}
         brokenCoordinator.sendNext(); precondition(!broken.available && brokenTransport.calls.isEmpty)
+        let legacyRoot=root.appendingPathComponent("legacy")
+        let legacyStore=try ReportingStore(directory:legacyRoot)
+        try legacyStore.transaction { $0.policy.configure(mode:.askAfterExit,fields:[.game]) }
+        let legacyFile=legacyRoot.appendingPathComponent("history.json")
+        var legacyJSON=try JSONSerialization.jsonObject(with:Data(contentsOf:legacyFile)) as! [String:Any]
+        var legacyPolicy=legacyJSON["policy"] as! [String:Any]
+        var legacyConsent=legacyPolicy["consent"] as! [String:Any]
+        legacyConsent["showExitPrompt"]=false;legacyConsent.removeValue(forKey:"introductionSeen")
+        legacyPolicy["consent"]=legacyConsent;legacyJSON["policy"]=legacyPolicy
+        try JSONSerialization.data(withJSONObject:legacyJSON).write(to:legacyFile)
+        let migrated=try ReportingStore(directory:legacyRoot)
+        precondition(migrated.snapshot.policy.consent.mode == .localOnly)
+        precondition(!migrated.snapshot.policy.shouldShowExitPrompt && !migrated.snapshot.policy.needsSharingIntroduction)
+        let migratedRestart=try ReportingStore(directory:legacyRoot)
+        precondition(migratedRestart.snapshot.policy.consent.mode == .localOnly)
         let file = root.appendingPathComponent("history.json")
         try Data("incomplete JSON".utf8).write(to:file)
         do { _ = try ReportingStore(directory:root); preconditionFailure("must preserve corrupt file") } catch {}

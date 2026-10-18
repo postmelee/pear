@@ -41,6 +41,11 @@ import UniformTypeIdentifiers
     var submit: ((RunObservation, Bool) throws -> Void)?
     private var window: NSWindow!
     private let table = NSTableView()
+    private var settingsWindow: NSWindow?
+    private var saveSharingAction: (() -> Void)?
+    private var cancelSharingAction: (() -> Void)?
+    private var updateSharingDraft: (() -> Void)?
+    private let modeDescription = PearStyle.label("",size:12,muted:true)
     private let modeLabel = NSTextField(labelWithString: "")
     private let selectedTitle = NSTextField(labelWithString: "Selected run")
     private let emptyLabel = NSTextField(labelWithString: "No runs yet. Games opened through Pear will appear here.")
@@ -57,7 +62,7 @@ import UniformTypeIdentifiers
     private let disableButton = NSButton()
     private let more = NSPopUpButton(frame: .zero, pullsDown: true)
     private let sharedSummary = PearStyle.label("", muted: true)
-    var isVisible: Bool { window?.isVisible ?? false }
+    var isVisible: Bool { (window?.isVisible ?? false) || (settingsWindow?.isVisible ?? false) }
     private let availability = NSTextField(wrappingLabelWithString: "")
     private var pendingFinished: [UUID] = []
     private var showingFinished = false
@@ -88,8 +93,8 @@ import UniformTypeIdentifiers
         modeLabel.font = .systemFont(ofSize: 12, weight: .medium); modeLabel.textColor = PearStyle.foreground
         disableButton.title = "Turn off automatic sharing"; disableButton.bezelStyle = .rounded
         disableButton.target = self; disableButton.action = #selector(disableSharing)
-        let sharingMode = PearStyle.stack([PearStyle.label("Sharing mode",size:12,muted:true),modeLabel],spacing:4)
-        let sharing = stack([sharingMode, NSView(), button("Sharing settings…",#selector(settings)), disableButton], horizontal: true)
+        let sharingMode = PearStyle.stack([PearStyle.label("Report sharing",size:12,muted:true),modeLabel,modeDescription],spacing:4)
+        let sharing = stack([sharingMode, button("Change…",#selector(settings)), disableButton, NSView()], horizontal: true)
         for (id,title,width) in [("game","Game",205.0),("date","Date · time open",190.0),
                                   ("result","Your result",165.0),("shared","Sharing",160.0)] {
             let column = NSTableColumn(identifier:NSUserInterfaceItemIdentifier(id)); column.title=title; column.width=width
@@ -165,8 +170,10 @@ import UniformTypeIdentifiers
     func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? { PearHistoryRow() }
     func refresh() {
         guard window != nil else { return }
-        let modes: [SharingMode:String] = [.localOnly:"Not sharing",.askAfterExit:"Ask after each game",.automatic:"Automatic sharing"]
+        let modes: [SharingMode:String] = [.localOnly:"Manual sharing",.askAfterExit:"Ask after each game",.automatic:"Automatic sharing"]
         modeLabel.stringValue = modes[store.snapshot.policy.consent.mode]!
+        let descriptions: [SharingMode:String] = [.localOnly:"Nothing is sent automatically. Share from your run history.", .askAfterExit:"Nothing is sent until you choose Share result.", .automatic:"Selected fields are sent after games. Notes are never sent automatically."]
+        modeDescription.stringValue=descriptions[store.snapshot.policy.consent.mode]!
         disableButton.isHidden = store.snapshot.policy.consent.mode != .automatic
         availability.stringValue = !store.available ? "Local storage is unavailable. Sharing is stopped; reopen Pear after resolving the storage problem." : submit == nil ? "Local records and export are available. Report sharing is not connected in this development build." : "Shared results help improve Pear. Publication follows review."
         emptyLabel.isHidden = !rows.isEmpty
@@ -409,11 +416,11 @@ import UniformTypeIdentifiers
         let scroll = PearStyle.editor(notes, height:90)
         scroll.widthAnchor.constraint(equalToConstant: 440).isActive = true
         notes.isVerticallyResizable = true; notes.textContainer?.widthTracksTextView = true
-        let suppress = NSButton(checkboxWithTitle: "Do not show this window after games", target: nil, action: nil)
+        let suppress = NSButton(checkboxWithTitle: "Switch to manual sharing after this game", target: nil, action: nil)
         let game = PearStyle.label(run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game",size:14,weight:.medium)
         let content = stack([introduction, PearStyle.label("Game name",size:12,muted:true), game, PearStyle.label("Your result",size:12,muted:true), outcome, PearStyle.label("Note (optional)",size:12,muted:true), scroll,
                              PearStyle.label("Share result sends this note privately. Skip keeps it on this Mac.",size:12,muted:true), suppress,
-                             PearStyle.label("Hiding this window does not turn on automatic sharing.",size:12,muted:true)])
+                             PearStyle.label("Future games stay local until you share them from Run history.",size:12,muted:true)])
         content.setCustomSpacing(22, after:introduction)
         content.layoutSubtreeIfNeeded()
         content.setFrameSize(NSSize(width:440,height:content.fittingSize.height))
@@ -426,7 +433,11 @@ import UniformTypeIdentifiers
             updated.note = notes.string
             do {
                 try self.store.record(updated)
-                if suppress.state == .on { try self.store.transaction { $0.policy.suppressExitPrompt() } }
+                if suppress.state == .on {
+                    let fields=self.store.snapshot.policy.consent.fields
+                    if let configure=self.configureSharing { try configure(.localOnly,fields) }
+                    else { try self.store.transaction { $0.policy.configure(mode:.localOnly,fields:fields) } }
+                }
                 if response == .alertFirstButtonReturn { try self.submit?(updated, true) }
             } catch { self.failure(error) }
             self.displayedID = nil
@@ -434,56 +445,101 @@ import UniformTypeIdentifiers
         }
     }
     func showSharingIntroductionIfNeeded() {
-        if store.snapshot.policy.consent.disclosureVersion != 2 { show(); settings() }
+        guard store.snapshot.policy.needsSharingIntroduction else { return }
+        // Remember display independently of consent. Closing never enables sharing.
+        do { try store.transaction { $0.policy.markSharingIntroductionSeen() } }
+        catch { show(); failure(error); return }
+        openSharingSettings(firstRun:true)
     }
-    func showSharingSettings() {
-        show()
-        guard window.attachedSheet == nil else { return }
-        settings()
-    }
-    @objc private func settings() {
+    func showSharingSettings() { openSharingSettings(firstRun:false) }
+    @objc private func settings() { showSharingSettings() }
+    @objc private func saveSharingSettings() { saveSharingAction?() }
+    @objc private func cancelSharingSettings() { cancelSharingAction?() }
+    @objc private func sharingModeChanged() { updateSharingDraft?() }
+
+    private func openSharingSettings(firstRun:Bool) {
+        if let existing=settingsWindow,existing.isVisible { existing.makeKeyAndOrderFront(nil);return }
         let consent=store.snapshot.policy.consent
-        let alert=NSAlert();alert.messageText="Sharing settings"
-        let introduction = PearStyle.label("Help improve support for more games. Your reports help Pear investigate problems and work with contributors. Sharing is optional; Pear works without it.\n\nSelected fields, your result and manually added test details may be published on the catalog and GitHub after private review. Approval is not a compatibility certification.",size:13)
-        let mode=NSPopUpButton();mode.addItems(withTitles:["Do not share — local records and manual sharing only","Ask after each game","Automatically share selected fields"])
-        mode.selectItem(at:consent.disclosureVersion != 2 || consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
+        let panel=NSWindow(contentRect:NSRect(x:0,y:0,width:firstRun ? 640 : 800,height:650),
+                           styleMask:[.titled,.closable],backing:.buffered,defer:false)
+        settingsWindow=panel;panel.isReleasedWhenClosed=false
+        panel.title=firstRun ? "Pear · Welcome" : "Pear · Settings";PearStyle.window(panel)
+        let width:CGFloat=firstRun ? 584 : 580
+        let introduction=PearStyle.label("Your reports help Pear support more games, investigate problems and work with contributors. Sharing is optional; Pear works without it.")
+        let publication=PearStyle.label("Selected fields, your result and manually added test details may be published on the catalog and GitHub after private review. Approval is not a compatibility certification.",size:12,muted:true)
+        let mode=NSPopUpButton();mode.addItems(withTitles:["Manual sharing","Ask after each game","Automatic sharing"])
+        mode.selectItem(at:firstRun ? 2 : consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
+        mode.target=self;mode.action=#selector(sharingModeChanged)
+        let explanation=PearStyle.label("",size:12,muted:true)
         let fields:[(ReportField,String)] = [(.environment,"macOS version, chip and memory"),(.components,"Pear, Wine and DXMT versions"),(.game,"Steam App ID and available game build"),(.execution,"Date, process minutes and observed exit status")]
         let checks=fields.map { field,title in
-            let check=NSButton(checkboxWithTitle:title,target:nil,action:nil);check.state=consent.fields.contains(field) ? .on : .off;return check
+            let check=NSButton(checkboxWithTitle:title,target:nil,action:nil)
+            check.state=firstRun || consent.fields.contains(field) ? .on : .off;return check
         }
-        let prompt=NSButton(checkboxWithTitle:"Show the result window in ask mode",target:nil,action:nil);prompt.state=consent.showExitPrompt ? .on : .off
-        let notify=NSButton(checkboxWithTitle:"Notify me after games in automatic mode",target:nil,action:nil);notify.state=consent.notifyAutomaticCompletion ? .on : .off
-        let privacy = PearStyle.label("Notes stay private and are sent only when explicitly included. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.",size:12,muted:true)
-        let retention = PearStyle.label("You can stop sharing at any time. Local history: 90 days. Server reports: up to 180 days, or 365 days after the latest update for published reports. Delete shared reports separately from local records; external copies may remain. Cloudflare operates the service; network processing is not completely anonymous.",size:12,muted:true)
-        let options=stack([introduction,text("When to share",bold:true), mode, text("Choose what to share",bold:true)] + checks
-                          + [privacy,text("After a game",bold:true),prompt,notify,retention])
-        options.spacing=10
-        options.setCustomSpacing(22, after:introduction)
-        for label in [introduction,privacy,retention] { label.widthAnchor.constraint(equalToConstant:560).isActive=true }
-        options.layoutSubtreeIfNeeded()
-        options.setFrameSize(NSSize(width:560,height:options.fittingSize.height))
-        alert.accessoryView=options
-        alert.addButton(withTitle:"Save settings").bezelColor=PearStyle.buttonFill
-        alert.addButton(withTitle:"Cancel")
-        alert.beginSheetModal(for:window) { response in
-            guard response == .alertFirstButtonReturn else { return }
+        let privacy=PearStyle.label("Notes stay private and are sent only when you explicitly include them. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.",size:12,muted:true)
+        let notify=NSButton(checkboxWithTitle:"Remind me to add a result or note after games",target:nil,action:nil)
+        notify.state=consent.notifyAutomaticCompletion ? .on : .off
+        let notificationHelp=PearStyle.label("Open Run history from the notification. Adding a result or note is optional; notes are never sent automatically.",size:12,muted:true)
+        let notificationGroup=stack([notify,notificationHelp]);notificationGroup.spacing=6
+        let retention=PearStyle.label("Local history: 90 days. Server reports: up to 180 days, or 365 days after the latest update for published reports. Delete shared reports separately from local records; external copies may remain. Cloudflare operates the service and network processing is not completely anonymous.",size:12,muted:true)
+        let location=PearStyle.label("You can change this anytime in Pear → Settings → Sharing (⌘,).",size:12,muted:true)
+        let options=PearFormStack(views:[PearStyle.label(firstRun ? "Help improve Pear" : "Sharing",size:24,weight:.semibold),introduction,
+                           text("When to share",bold:true),mode,explanation,text("Choose what to share",bold:true)] + checks + [publication,privacy,notificationGroup,retention,location])
+        options.orientation = .vertical;options.alignment = .leading;options.spacing=12
+        for label in [introduction,publication,explanation,privacy,notificationHelp,retention,location] {
+            label.widthAnchor.constraint(equalToConstant:width).isActive=true
+        }
+        options.widthAnchor.constraint(equalToConstant:width).isActive=true
+        options.layoutSubtreeIfNeeded();options.setFrameSize(NSSize(width:width,height:options.fittingSize.height))
+        let scroll=NSScrollView();scroll.hasVerticalScroller=true;scroll.drawsBackground=false;scroll.documentView=options
+        let save=PearStyle.button("Save settings",target:self,action:#selector(saveSharingSettings),primary:true)
+        // First-run consent requires a deliberate click; Return is not consent.
+        let cancel=PearStyle.button(firstRun ? "Continue without sharing" : "Cancel",target:self,action:#selector(cancelSharingSettings))
+        let actions=stack([NSView(),cancel,save],horizontal:true)
+        let page=stack([scroll,actions]);page.spacing=20
+        for view in [scroll,actions] { view.widthAnchor.constraint(equalToConstant:width).isActive=true }
+        if firstRun { PearStyle.pin(page,in:panel.contentView!) }
+        else {
+            let sidebar=stack([PearStyle.label("Settings",size:16,weight:.semibold),PearStyle.label("Sharing",size:13,weight:.semibold),NSView()])
+            sidebar.widthAnchor.constraint(equalToConstant:140).isActive=true
+            let divider=NSBox();divider.boxType = .separator
+            let layout=stack([sidebar,divider,page],horizontal:true);layout.spacing=12
+            PearStyle.pin(layout,in:panel.contentView!,inset:24)
+            sidebar.heightAnchor.constraint(equalTo:layout.heightAnchor).isActive=true
+            divider.heightAnchor.constraint(equalTo:layout.heightAnchor).isActive=true
+            page.heightAnchor.constraint(equalTo:layout.heightAnchor).isActive=true
+        }
+        updateSharingDraft = {
+            let index=mode.indexOfSelectedItem
+            explanation.stringValue = index == 0 ? "No automatic sending or after-game questions. Share manually from Run history." : index == 1 ? "After each game, choose Share result or Skip this time. Nothing is sent without your choice." : "After games, selected fields are sent automatically. Results and notes can be added later."
+            notificationGroup.isHidden=index != 2
+            save.title=firstRun ? (index == 2 ? "Enable automatic sharing" : index == 1 ? "Enable after-game questions" : "Continue with manual sharing") : "Save settings"
+            options.layoutSubtreeIfNeeded();options.setFrameSize(NSSize(width:width,height:options.fittingSize.height))
+        }
+        updateSharingDraft?()
+        cancelSharingAction = { [weak self, weak panel] in
+            if firstRun {
+                do { try self?.store.transaction { $0.policy.configure(mode:.localOnly,fields:[]) } }
+                catch { self?.show();self?.failure(error);return }
+            }
+            panel?.close();self?.refresh()
+        }
+        saveSharingAction = { [weak self, weak panel] in
+            guard let self, let panel else { return }
             let selected=Set(zip(fields,checks).filter{$0.1.state == .on}.map{$0.0.0})
-            let selectedMode:SharingMode = mode.indexOfSelectedItem == 0 ? .localOnly : mode.indexOfSelectedItem == 1 ? .askAfterExit : .automatic
+            let selectedMode:SharingMode=mode.indexOfSelectedItem == 0 ? .localOnly : mode.indexOfSelectedItem == 1 ? .askAfterExit : .automatic
             guard selectedMode == .localOnly || !selected.isEmpty else {
-                let explanation = NSAlert(); explanation.messageText = "Choose at least one field"
-                explanation.informativeText = "No sharing setting was changed. Choose which fields to share in Sharing settings."
-                explanation.beginSheetModal(for:self.window); return
+                let alert=NSAlert();alert.messageText="Choose at least one field";alert.informativeText="Select the fields you want to share, or choose Manual sharing.";alert.beginSheetModal(for:panel);return
             }
             do {
                 if let configure=self.configureSharing { try configure(selectedMode,selected) }
                 else { try self.store.transaction { $0.policy.configure(mode:selectedMode,fields:selected) } }
-                try self.store.transaction {
-                    $0.policy.setExitPrompt(prompt.state == .on)
-                    $0.policy.setExitNotifications(notify.state == .on)
-                }
-                if notify.state == .on && !consent.notifyAutomaticCompletion { self.enableNotifications?() }
-                self.refresh()
-            } catch { self.failure(error) }
+                try self.store.transaction { $0.policy.setExitNotifications(notify.state == .on) }
+                if selectedMode == .automatic && notify.state == .on && !consent.notifyAutomaticCompletion { self.enableNotifications?() }
+                panel.close();self.refresh()
+            } catch { let alert=NSAlert();alert.messageText="Settings could not be saved";alert.informativeText="Sharing is stopped. Reopen Pear after checking available storage.";alert.beginSheetModal(for:panel) }
         }
+        panel.center();panel.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true)
+        options.scroll(NSPoint(x:0,y:0))
     }
 }

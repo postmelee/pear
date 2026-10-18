@@ -10,6 +10,7 @@ cargo test --manifest-path "$repo/preview/Cargo.toml" --locked --offline
 cargo build --manifest-path "$repo/preview/Cargo.toml" --locked --offline --release
 app="$out/Pear.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+cp "$repo/docs/assets/pear.png" "$app/Contents/Resources/PearMark.png"
 sh "$repo/preview/build-icon.sh" "$app/Contents/Resources/Pear.icns"
 cp "$CARGO_TARGET_DIR/release/pear-preview" "$app/Contents/Resources/pear-preview"
 if [ -f "$repo/LICENSE" ]; then cp "$repo/LICENSE" "$app/Contents/Resources/LICENSE"; fi

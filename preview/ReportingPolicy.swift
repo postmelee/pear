@@ -15,6 +15,7 @@ struct SharingConsent: Codable, Equatable {
     var fields: Set<ReportField> = []
     var generation: UInt64 = 0
     var disclosureVersion: Int? = nil
+    var introductionSeen: Bool? = nil
     var showExitPrompt = true
     var notifyAutomaticCompletion = false
 }
@@ -116,6 +117,8 @@ struct ReportingPolicy: Codable {
     mutating func configure(mode: SharingMode, fields: Set<ReportField>) {
         consent.generation += 1
         consent.disclosureVersion = 2
+        consent.introductionSeen = true
+        consent.showExitPrompt = true
         consent.mode = mode
         consent.fields = fields
         // Changing either scope or mode revokes previously queued auto payloads.
@@ -126,11 +129,14 @@ struct ReportingPolicy: Codable {
         configure(mode: .localOnly, fields: consent.fields)
     }
 
-    mutating func setExitPrompt(_ enabled: Bool) { consent.showExitPrompt = enabled }
-    mutating func suppressExitPrompt() { consent.showExitPrompt = false }
+    var needsSharingIntroduction: Bool { consent.introductionSeen != true && consent.disclosureVersion == nil }
+    mutating func markSharingIntroductionSeen() { consent.introductionSeen = true }
+
+    mutating func setExitPrompt(_ enabled: Bool) { if !enabled { disableAutomaticSharing() }; consent.showExitPrompt = true }
+    mutating func suppressExitPrompt() { disableAutomaticSharing() }
     mutating func setExitNotifications(_ enabled: Bool) { consent.notifyAutomaticCompletion = enabled }
 
-    var shouldShowExitPrompt: Bool { consent.mode == .askAfterExit && consent.showExitPrompt }
+    var shouldShowExitPrompt: Bool { consent.mode == .askAfterExit }
     var shouldNotifyExit: Bool { consent.mode == .automatic && consent.notifyAutomaticCompletion }
 
     @discardableResult

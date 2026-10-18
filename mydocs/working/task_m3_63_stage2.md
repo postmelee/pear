@@ -336,3 +336,44 @@ input boundaries and text entry. Synthetic note persisted after Skip and reopeni
 No real report was sent. Source notices and whitespace checks passed. Exact phase
 timestamps were not captured; no latency measurement is claimed. Retain the small
 UI harness output for requester review; unchanged runtime was not rebuilt.
+
+
+### Unified settings and first-run review (2026-10-19)
+The main window is now 600 by 340 points, with a closer title/description group
+and separate setup/progress content. About remains in the Pear menu; Settings
+(Command-comma) opens a dedicated window with a Sharing sidebar section. Run
+history remains a separate Window menu action (Command-Shift-H). The titlebar
+uses the existing transparent docs/assets/pear.png unchanged as PearMark.png;
+the Dock icon is unchanged. Asset SHA256:
+ea213ca4c626f12a60289d768e7a35b59e32290d7c68f9b929907f1b98d2ac8b.
+
+The first-run draft selects Automatic sharing and all four field groups as
+requested, but persisted consent remains localOnly with no fields until explicit
+confirmation. The affirmative action names the selected behavior and has no
+Return-key default. Continue without sharing or closing the welcome leaves
+sharing disabled. A durable introductionSeen flag prevents repeated unsolicited
+welcome windows. Existing consent is preserved. Legacy ask-mode configurations
+with questions disabled migrate to manual sharing, preserving their silent choice.
+Ask mode now always asks; the exit-form opt-out explicitly switches future games
+to manual sharing. Automatic-mode reminders are optional and off by default, with
+copy explaining that they invite a result or note and never automatically send notes.
+History groups the current sharing mode, behavior explanation and Change action;
+automatic sharing can be turned off immediately without confirmation.
+
+Verification: policy and store/coordinator Swift test executables passed, including
+welcome dismissal persistence, no automatic enqueue before consent, legacy
+migration, withdrawal, note privacy and existing retry/idempotency coverage. The
+isolated native UI build, incremental source notices, shell syntax, whitespace
+and ad hoc signature checks passed. Native interactions verified settings mode
+changes, auto-only reminder visibility, immediate manual switching, compact main
+layout, transparent titlebar image and the first-run preselection. Synthetic
+fixture inspection before confirmation showed localOnly, empty fields, no
+pending reports and introductionSeen=true; after explicit confirmation it showed
+automatic, the four selected groups and reminders off. No production preference,
+Steam state, runtime, save or report was modified by these UI checks.
+
+These are local synthetic UI and policy checks, not signed distribution or final
+user acceptance. The small .build/task63-ui output is retained for requester
+review and may be replaced by the next admitted UI build. No runtime copy or
+runtime rebuild was needed. Phase timestamps were not captured continuously for
+this iteration, so no end-to-end latency or reclaimed-storage claim is made.

@@ -6,6 +6,7 @@ repo="$(cd "$(dirname "$0")/../.." && pwd)"
 out="$repo/.build/task63-ui"
 app="$out/Pear UI Review.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+cp "$repo/docs/assets/pear.png" "$app/Contents/Resources/PearMark.png"
 # Small app-only build. No installed application, runtime or authenticated prefix copy.
 sources=(AppStyle Presentation SteamWindow ReportingPolicy ReportingStore ReportingTransport HistoryWindow RunObserver Launcher)
 args=()

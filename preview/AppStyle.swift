@@ -72,3 +72,8 @@ import AppKit
         NSBezierPath(roundedRect: bounds.insetBy(dx: 0, dy: 2), xRadius: 6, yRadius: 6).fill()
     }
 }
+
+// Flipped document coordinates keep short settings forms aligned to the top.
+@MainActor final class PearFormStack: NSStackView {
+    override var isFlipped: Bool { true }
+}
