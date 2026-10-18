@@ -121,6 +121,7 @@ PUBLIC_FILES = {'index.html', 'style.css', 'catalog.js', 'reports.json', 'games.
                 'pear.png', 'favicon.png', 'social-card.png', 'steam-search.js', 'report.html', 'request.html', 'about.html', 'download.html'}
 PUBLIC_FILES |= {'games.html', 'tokens.css', 'components.css', 'theme.js', 'site.js',
                  'search-index.json', 'updates.html'} | site.BLOG_FILES
+PUBLIC_FILES |= {site.public_path(name) for name in PUBLIC_FILES if name.endswith('.html')} | {'redirect.js'}
 OPTIONAL_PUBLIC_FILES = {'steam-games.json'}
 OUTCOMES = {'pass': 'Pass', 'partial': 'Partial', 'failed': 'Failed'}
 
@@ -338,20 +339,24 @@ def build_site(data, out, catalog=None, steam_catalog=None, community=None):
     pages.update(site.blog_pages(pages))
     # Keep the machine-readable snapshot out of HTML search and backlink parsing.
     payloads = {'community-reports.json': json.dumps(community, indent=2) + '\n'} if community is not None else {}
-    allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | site.blog_files(site.POSTS) | set(pages) | set(payloads)
+    search = site.search_index(pages)
+    for entry in search:
+        entry['url'] = site.public_url(entry['url'])
+    pages = site.publish_pages(pages)
+    allowed = PUBLIC_FILES | OPTIONAL_PUBLIC_FILES | site.blog_files(site.POSTS) | set(pages) | set(payloads) | {'redirect.js'}
     allowed_dirs = {str(parent) for name in allowed for parent in Path(name).parents if str(parent) != '.'}
     out = Path(out)
     require(not out.is_symlink(), 'Site output must not be a symlink')
     if out.exists():
         # Validate the complete tree before overwriting anything. Only the fixed
-        # blog paths may be directories; no recursive copy of docs or private data.
+        # approved page/asset paths may be directories; never copy private data.
         for path in out.rglob('*'):
             name = path.relative_to(out).as_posix()
             require(not path.is_symlink() and ((path.is_file() and name in allowed)
                     or (path.is_dir() and name in allowed_dirs)),
                     'Site output contains unexpected or stale files; use an empty directory')
     assets = {name: ASSETS / name for name in
-              ['tokens.css', 'components.css', 'style.css', 'theme.js', 'site.js', 'catalog.js', 'steam-search.js']}
+              ['tokens.css', 'components.css', 'style.css', 'theme.js', 'site.js', 'catalog.js', 'steam-search.js', 'redirect.js']}
     assets.update({name: ROOT / 'docs/assets' / name for name in ['pear.png', 'favicon.png', 'social-card.png']})
     assets.update(site.blog_assets(site.POSTS))
     for source in assets.values():
@@ -366,7 +371,7 @@ def build_site(data, out, catalog=None, steam_catalog=None, community=None):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
     for name, content in [('reports.json', data), ('games.json', catalog),
-                          ('search-index.json', site.search_index(pages))]:
+                          ('search-index.json', search)]:
         (out / name).write_text(json.dumps(content, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     snapshot = out / 'steam-games.json'
     if steam_catalog is not None:

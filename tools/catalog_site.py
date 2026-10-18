@@ -14,7 +14,7 @@ import struct
 from dataclasses import dataclass
 from datetime import date
 from math import ceil
-from urllib.parse import urlsplit, urljoin, unquote
+from urllib.parse import urlsplit, urljoin, urlunsplit, unquote
 import posixpath
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -89,7 +89,7 @@ def validate_posts(posts):
     slugs, topic_slugs, videos = set(), {}, {}
     for post in posts:
         if (not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', post.slug)
-                or post.slug in slugs | {'index', 'writing'}):
+                or post.slug in slugs | {'index', 'writing', 'topics'}):
             raise ValueError('Invalid, reserved or duplicate blog slug')
         slugs.add(post.slug)
         if not all(value.strip() for value in (post.title, post.summary, post.author)):
@@ -244,9 +244,87 @@ def shell(title, content, active='games', *, root='', article=False, description
 {search_dialog()}</body></html>'''
 
 
+def public_path(path):
+    """Map renderer identities to directory indexes, independent of host prefix."""
+    return path if path.endswith('/index.html') or path == 'index.html' else path.removesuffix('.html') + '/index.html'
+
+
+def public_url(path):
+    parsed = urlsplit(path)
+    route = public_path(parsed.path).removesuffix('index.html') or './'
+    return urlunsplit(('', '', route, parsed.query, parsed.fragment))
+
+
+def publish_pages(pages):
+    """Rebase page assets and navigation once, after backlink/search extraction."""
+    if len({public_path(path) for path in pages}) != len(pages):
+        raise ValueError('Pages must have unique directory routes')
+    output = {}
+    for source, content in pages.items():
+        destination = public_path(source)
+        directory = posixpath.dirname(destination) or '.'
+        root = '../' * destination.count('/')
+
+        def rewrite_url(value):
+            parsed = urlsplit(value)
+            if not value or value.startswith(('#', '/')) or parsed.scheme or parsed.netloc:
+                return value
+            target = posixpath.normpath(posixpath.join(posixpath.dirname(source), unquote(parsed.path)))
+            if target in pages:
+                target = posixpath.dirname(public_path(target)) or '.'
+                path = posixpath.relpath(target, directory)
+                path = './' if path == '.' else path + '/'
+            else:
+                path = posixpath.relpath(target, directory)
+            return urlunsplit(('', '', path, parsed.query, parsed.fragment))
+
+        class Rebase(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.offsets = [0]
+                self.replacements = []
+                for line in content.splitlines(keepends=True):
+                    self.offsets.append(self.offsets[-1] + len(line))
+
+            def handle_starttag(self, tag, attrs):
+                original = self.get_starttag_text()
+
+                def attribute(match):
+                    key, quote, value = match.groups()
+                    value = root if key == 'data-root' else rewrite_url(html.unescape(value))
+                    return f'{key}={quote}{html.escape(value, quote=True)}{quote}'
+
+                updated = re.sub(r'\b(href|src|poster|data-steam-index|data-root)=([\"\'])(.*?)\2', attribute, original)
+                line, column = self.getpos()
+                start = self.offsets[line - 1] + column
+                self.replacements.append((start, start + len(original), updated))
+
+        parser = Rebase()
+        parser.feed(content)
+        # Edit only parsed start tags, once; never cascade into rewritten URLs,
+        # code examples, scripts or prose with similar text.
+        for start, end, updated in reversed(parser.replacements):
+            content = content[:start] + updated + content[end:]
+        canonical = 'https://postmelee.github.io/pear/' + public_url(source).removeprefix('./')
+        metadata = f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">'
+        # Explicit index.html requests share the same file as directory requests.
+        content = content.replace('</head>', metadata + f'<script src="{root}redirect.js" data-redirect="./" defer></script></head>')
+        output[destination] = content
+        if destination != source:
+            target = posixpath.relpath(posixpath.dirname(destination), posixpath.dirname(source) or '.') + '/'
+            legacy_root = '../' * source.count('/')
+            output[source] = f'''<!doctype html>
+<!-- SPDX-FileCopyrightText: 2026 Pear contributors
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pear · Page moved</title>{metadata}
+<script src="{legacy_root}redirect.js" data-redirect="{target}" defer></script></head>
+<body><p>This page has moved. <a href="{target}">Continue to Pear</a>.</p></body></html>'''
+    return output
+
+
 def home_content():
     return f'''<section class="home-intro"><h1 class="sr-only">Pear — Windows games on Mac</h1><img class="hero-logo" src="pear.png" alt="A golden Asian pear" width="120" height="120">
-<p class="lede intro-copy">Pear is a free, <a href="{REPO}">open-source</a> Mac app for playing <a href="download.html">Windows Steam games</a> on Apple Silicon.</p></section>
+<p class="lede intro-copy"><span class="intro-name">Pear</span> is a free, <a href="{REPO}">open-source</a> Mac app for playing <a href="download.html">Windows Steam games</a> on Apple Silicon.</p></section>
 <section class="home-section"><h2 id="how-it-works">How it works</h2><p>Open Pear, sign in to Steam, and choose a game you own. Pear takes care of the setup so you can get to your library.</p>
 <ol class="steps-panel"><li><span class="step-number">01</span><div><a href="download.html">Install Pear</a><p>Download the Mac app and let it prepare Windows Steam.</p></div></li><li><span class="step-number">02</span><div>Open your library<p>Sign in through the official Steam client.</p></div></li><li><span class="step-number">03</span><div>Choose a game<p>Install a game you own, then select Play in Steam.</p></div></li></ol>
 <p>Start with the <a href="games.html">game reports</a> to see what has been tried, on which Mac, and what happened.</p></section>

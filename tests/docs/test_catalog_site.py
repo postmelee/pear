@@ -29,6 +29,31 @@ class Elements(HTMLParser):
 
 
 class WebsiteTests(unittest.TestCase):
+    def test_directory_routes_preserve_links_assets_and_old_bookmarks(self):
+        source = 'blog/example.html'
+        pages = {'index.html': site.shell('Home', '<h1>Home</h1>'),
+                 'download.html': site.shell('Download', '<h1>Download</h1>'),
+                 source: site.shell('Example', '<h1 id="top">Example</h1>'
+                    '<a href="../download.html?from=blog&amp;tab=cli#cli">Install</a>'
+                    '<a href="#top">Top</a><a href="https://example.org/file.html">External</a>'
+                    '<video src="media/demo.mp4" poster="media/demo.jpg"></video>', root='../')}
+        published = site.publish_pages(pages)
+        article = published['blog/example/index.html']
+        self.assertIn('href="../../download/?from=blog&amp;tab=cli#cli"', article)
+        self.assertIn('href="#top"', article)
+        self.assertIn('href="https://example.org/file.html"', article)
+        self.assertIn('src="../media/demo.mp4" poster="../media/demo.jpg"', article)
+        self.assertIn('data-root="../../"', article)
+        self.assertIn('src="../../site.js"', article)
+        self.assertIn('data-redirect="./"', article)
+        self.assertIn('data-redirect="example/"', published[source])
+        self.assertIn('href="example/">Continue to Pear', published[source])
+        self.assertIn('href="https://postmelee.github.io/pear/blog/example/"', article)
+        for entry in json.loads((self.output / 'search-index.json').read_text()):
+            self.assertNotIn('.html', urlsplit(entry['url']).path)
+        with self.assertRaises(ValueError):
+            site.publish_pages({'blog/topics.html': '', 'blog/topics/index.html': ''})
+
     def test_reviewed_videos_only(self):
         content = site.article_content()
         videos = [attrs for tag, attrs in Elements(content).elements if tag == 'video']
@@ -49,6 +74,7 @@ class WebsiteTests(unittest.TestCase):
     def test_registry_rejects_ambiguous_or_unsafe_publication_metadata(self):
         first = site.POSTS[0]
         invalid = [replace(first, slug='../escape'), replace(first, slug='index'),
+                   replace(first, slug='topics'),
                    replace(first, published='2026-13-01'), replace(first, summary=''),
                    replace(first, author_url='javascript:alert(1)'),
                    replace(first, images=('../private.png',)),
@@ -98,11 +124,11 @@ class WebsiteTests(unittest.TestCase):
         expected = ['Introduction', 'Games', 'Download', 'Blog', 'About', 'Updates', 'Documentation']
         self.assertEqual([label for _, label, _ in site.NAVIGATION], expected)
         for name in ('index.html', 'games.html', 'download.html', 'blog/index.html', 'about.html', 'updates.html'):
-            content = (self.output / name).read_text()
+            content = (self.output / site.public_path(name)).read_text()
             nav = re.search(r'<nav id="sidebar".*?</nav>', content, re.S)[0]
             offsets = [nav.index('>' + label + '</a>') for label in expected]
             self.assertEqual(offsets, sorted(offsets), name)
-        article = (self.output / site.ARTICLE_PATH).read_text()
+        article = (self.output / site.public_path(site.ARTICLE_PATH)).read_text()
         nav = re.search(r'<nav id="sidebar".*?</nav>', article, re.S)[0]
         anchors = [attrs['href'][1:] for tag, attrs in Elements(nav).elements
                    if tag == 'a' and 'data-toc-link' in attrs]
@@ -117,19 +143,19 @@ class WebsiteTests(unittest.TestCase):
                         'appID': 3405340, 'userResult': 'normal', 'chip': 'Synthetic <chip>',
                         'processMinutes': 25}}]}
         compatibility.build_site(self.data, self.output, community=snapshot)
-        game = (self.output / 'game-3405340.html').read_text()
+        game = (self.output / 'game-3405340/index.html').read_text()
         self.assertIn('href="#app-submitted-reports" data-toc-link', game)
         self.assertIn('Synthetic &lt;chip&gt;', game)
         self.assertIn('Publication approval does not establish Pass.', game)
         self.assertEqual(game.count('data-report data-track='), 2)
         self.assertEqual(json.loads((self.output / 'community-reports.json').read_text()), snapshot)
         index = json.loads((self.output / 'search-index.json').read_text())
-        self.assertTrue(any(item['url'] == 'community.html#app-submitted-reports' for item in index))
+        self.assertTrue(any(item['url'] == 'community/#app-submitted-reports' for item in index))
         self.assertFalse(any(item['url'].endswith('.json') for item in index))
-        self.assertTrue((self.output / site.ARTICLE_PATH).is_file())
+        self.assertTrue((self.output / site.public_path(site.ARTICLE_PATH)).is_file())
         for page in ('community.html', 'index.html', 'game-3405340.html'):
-            content = (self.output / page).read_text()
-            self.assertIn('href="tokens.css"', content)
+            content = (self.output / site.public_path(page)).read_text()
+            self.assertIn('href="' + ('../' if page != 'index.html' else '') + 'tokens.css"', content)
             for tag, attrs in Elements(content).elements:
                 if tag == 'a' and attrs.get('href', '').startswith('#'):
                     self.assertIn('id="' + attrs['href'][1:] + '"', content)
@@ -141,13 +167,13 @@ class WebsiteTests(unittest.TestCase):
     def test_empty_community_snapshot_remains_a_searchable_page(self):
         snapshot = {'schemaVersion': 1, 'batchID': '00000000-0000-4000-8000-000000000001', 'reports': []}
         compatibility.build_site(self.data, self.output, community=snapshot)
-        content = (self.output / 'community.html').read_text()
+        content = (self.output / 'community/index.html').read_text()
         self.assertIn('No app-submitted reports have been published yet.', content)
-        self.assertIn('href="community.html"', (self.output / 'index.html').read_text())
-        self.assertNotIn('id="app-submitted-reports"', (self.output / 'game-3405340.html').read_text())
+        self.assertIn('href="community/"', (self.output / 'index.html').read_text())
+        self.assertNotIn('id="app-submitted-reports"', (self.output / 'game-3405340/index.html').read_text())
 
     def test_homebrew_command_has_its_own_copy_feedback_and_heading(self):
-        content = (self.output / 'download.html').read_text()
+        content = (self.output / 'download/index.html').read_text()
         self.assertIn('brew install --cask postmelee/tap/pear', content)
         self.assertIn('data-status="brew-command-status"', content)
         self.assertIn('id="brew-command-status"', content)
@@ -173,14 +199,16 @@ class WebsiteTests(unittest.TestCase):
             ids = [attrs['id'] for _, attrs in nodes if 'id' in attrs]
             self.assertEqual(len(ids), len(set(ids)), name)
             for _, attrs in nodes:
-                for key in ('href', 'src'):
-                    if key not in attrs:
+                for key in ('href', 'src', 'poster', 'data-steam-index'):
+                    if key not in attrs or not attrs[key]:
                         continue
                     url = urlsplit(urljoin(base + name, attrs[key]))
                     if url.netloc != 'example.invalid':
                         continue
                     self.assertTrue(url.path.startswith('/pear/'), (name, attrs[key]))
                     target = self.output / unquote(url.path.removeprefix('/pear/'))
+                    if target.is_dir():
+                        target /= 'index.html'
                     self.assertTrue(target.is_file(), (name, attrs[key]))
                     if url.fragment:
                         target_ids = {a.get('id') for _, a in Elements(target.read_text()).elements}
@@ -236,15 +264,15 @@ class WebsiteTests(unittest.TestCase):
 
     def test_search_targets_real_sections_and_download_tabs_without_form_states(self):
         entries = json.loads((self.output / 'search-index.json').read_text())
-        self.assertTrue(any(row['url'].startswith(site.ARTICLE_PATH + '#') and 'Rosetta' in row['title'] for row in entries))
-        self.assertTrue(any(row['url'] == 'download.html#cli' for row in entries))
+        self.assertTrue(any(row['url'].startswith(site.public_url(site.ARTICLE_PATH) + '#') and 'Rosetta' in row['title'] for row in entries))
+        self.assertTrue(any(row['url'] == 'download/#cli' for row in entries))
         self.assertTrue(any('3405340' in row['text'] for row in entries))
         for row in entries:
             parsed = urlsplit(row['url'])
             self.assertNotIn('draft', parsed.fragment)
             self.assertNotIn('no-results', parsed.fragment)
             self.assertNotIn('Prepare GitHub draft', row['text'])
-            content = (self.output / parsed.path).read_text()
+            content = (self.output / parsed.path / 'index.html').read_text()
             if parsed.fragment:
                 self.assertIn(parsed.fragment, {a.get('id') for _, a in Elements(content).elements})
 
@@ -290,13 +318,13 @@ class WebsiteTests(unittest.TestCase):
             site.ArticleValidator().feed('<a href="../../private.html">Private</a>')
 
     def test_single_post_hides_empty_recommendations_and_uses_real_update_channels(self):
-        article = (self.output / site.ARTICLE_PATH).read_text()
+        article = (self.output / site.public_path(site.ARTICLE_PATH)).read_text()
         self.assertNotIn('id="you-might-also-enjoy"', article)
         self.assertIn('id="linked-mentions"', article)
         self.assertIn('datetime="2026-10-18"', article)
         for link in ('https://x.com/najukoreanpear', 'https://github.com/postmelee/pear',
                      'https://www.threads.com/@postmelee'):
-            self.assertIn(link, (self.output / 'updates.html').read_text())
+            self.assertIn(link, (self.output / 'updates/index.html').read_text())
 
     def test_blog_navigation_and_updates_destinations(self):
         listing = (self.output / 'blog/index.html').read_text()
@@ -306,7 +334,7 @@ class WebsiteTests(unittest.TestCase):
         self.assertIn('href="#writing"', nav)
         self.assertNotIn('id="receive-updates"', listing)
         self.assertNotIn(site.ARTICLE_TITLE, nav)
-        article = (self.output / site.ARTICLE_PATH).read_text()
+        article = (self.output / site.public_path(site.ARTICLE_PATH)).read_text()
         nav = re.search(r'<nav id="sidebar".*?</nav>', article, re.S)[0]
         self.assertIn('href="#article-title"', nav)
         self.assertIn(site.ARTICLE_TITLE, nav)
@@ -315,9 +343,9 @@ class WebsiteTests(unittest.TestCase):
         self.assertNotIn('Receive updates', article)
         self.assertIn('</ul></li><li><a href="#references" data-toc-link>', nav)
         self.assertIn('<li><a href="#linked-mentions" data-toc-link>', nav)
-        updates = (self.output / 'updates.html').read_text()
+        updates = (self.output / 'updates/index.html').read_text()
         self.assertIn('https://x.com/meleeisgloom2', updates)
-        self.assertIn('href="updates.html" aria-current="page"', updates)
+        self.assertIn('href="./" aria-current="page"', updates)
 
     def test_topics_group_posts_and_article_metadata_hides_categories(self):
         first = site.POSTS[0]
@@ -343,7 +371,7 @@ class WebsiteTests(unittest.TestCase):
         self.assertEqual(links, ['https://example.org/a?x=1&y=2', 'https://example.org/b'])
         self.assertIn('First &amp; label', result)
         self.assertEqual(site.references('<p>No external links</p>'), '')
-        article = (self.output / site.ARTICLE_PATH).read_text()
+        article = (self.output / site.public_path(site.ARTICLE_PATH)).read_text()
         section = re.search(r'<section><h2 id="references">.*?</section>', article, re.S)[0]
         self.assertIn('https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/compatibility/README.md', section)
         self.assertNotIn('https://x.com/meleeisgloom2', section)
@@ -353,7 +381,7 @@ class WebsiteTests(unittest.TestCase):
         second = compatibility.build_site(self.data, self.output)
         self.assertEqual(self.files, second)
         self.assertEqual(before, {name: (self.output / name).read_bytes() for name in second})
-        self.assertEqual(set(self.files), compatibility.PUBLIC_FILES | {'game-3405340.html'})
+        self.assertEqual(set(self.files), compatibility.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html'})
         self.assertFalse((self.output / 'docs').exists())
 
 
