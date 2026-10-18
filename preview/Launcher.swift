@@ -1,13 +1,15 @@
 // SPDX-FileCopyrightText: 2026 Pear contributors
 // SPDX-License-Identifier: GPL-3.0-or-later
 import AppKit
+import UserNotifications
 
 // Presentation only. The same Rust binary serves this window and the CLI.
-final class PreviewApp: NSObject, NSApplicationDelegate {
+@MainActor final class PreviewApp: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: NSWindow!
     var titleLabel: NSTextField!
     var label: NSTextField!
     var downloads: NSGridView!
+    var downloadHost: NSStackView!
     var progress: NSProgressIndicator!
     var busy: NSProgressIndicator!
     var button: NSButton!
@@ -18,6 +20,129 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
     var closing = false
     var stopping = false
     var openingGeneration = 0
+    var history: HistoryWindow?
+    var historyStore: ReportingStore?
+    var historyOwner: ReportingSessionOwner?
+    var reporting: ReportingCoordinator?
+    var reportingTransport: URLSessionReportTransport?
+    var serverDeletes: [UUID: ReportTransfer] = [:]
+    var runObserver = RunObserverState()
+    var observationGeneration = 0
+    var observedOwnedSession = false
+    var observerStarted = Date()
+    var sawOwnedSession = false
+    var historyError: String?
+
+    @objc func showHistory() {
+        if let history { history.show(); return }
+        let alert = NSAlert(); alert.messageText = "Run history is unavailable"
+        alert.informativeText = historyError ?? "Wait for Pear to check the installation."
+        alert.beginSheetModal(for: window)
+    }
+
+    @objc func showSharingSettings() {
+        guard let history else { showHistory(); return }
+        history.showSharingSettings()
+    }
+
+    func prepareHistory(_ setup: SetupInfo) {
+        guard historyStore == nil, historyError == nil else { return }
+        let env = ProcessInfo.processInfo.environment
+        let root = URL(fileURLWithPath: env["PEAR_PREVIEW_ROOT"] ??
+            NSHomeDirectory() + "/Library/Application Support/Pear Preview").standardizedFileURL.resolvingSymlinksInPath()
+        do {
+            let directory = root.appendingPathComponent("history")
+            // Acquire ownership before decoding or migrating any persistent state.
+            let owner = try ReportingSessionOwner(directory: directory)
+            let store = try ReportingStore(directory: directory)
+            // Reopening cannot establish the end of an observation interrupted by Quit.
+            try store.transaction { state in
+                for i in state.runs.indices where state.runs[i].endedAt == nil {
+                    state.runs[i].observedExit = .unknown
+                }
+            }
+            let transport = try URLSessionReportTransport(endpoint: URL(string: "https://pear-reports.postmelee.workers.dev/reports")!, capabilities: KeychainReportCapabilities())
+            let coordinator = ReportingCoordinator(store: store, transport: transport)
+            try coordinator.pruneLocalHistory()
+            let view = HistoryWindow(store: store)
+            historyOwner = owner; historyStore = store; history = view
+            reporting = coordinator; reportingTransport = transport
+            view.submit = { run, note in try coordinator.enqueue(run, origin: .manual, shareNote: note) }
+            view.configureSharing = { mode, fields in try coordinator.configure(mode: mode, fields: fields) }
+            view.retryReport = { id in try coordinator.retry(reportID: id) }
+            view.deleteLocalRecord = { id in try coordinator.deleteLocal(reportID: id) }
+            view.deleteServerReport = { [weak self] id, done in
+                guard let self, self.serverDeletes[id] == nil else { return }
+                do {
+                    try coordinator.prepareServerDeletion(reportID: id)
+                    self.serverDeletes[id] = transport.delete(reportID: id) { [weak self] success in
+                        self?.serverDeletes.removeValue(forKey: id)
+                        do {
+                            if success { try coordinator.confirmServerDeletion(reportID: id) }
+                            done(success)
+                        } catch { done(false) }
+                    }
+                } catch { done(false) }
+            }
+            view.enableNotifications = { UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in } }
+            coordinator.changed = { [weak view] in view?.refresh() }
+            view.showSharingIntroductionIfNeeded()
+            observationGeneration += 1
+            pollRuns(OwnedProcessProbe(root: root, runtime: setup.runtime_id), generation: observationGeneration)
+        } catch { historyError = "Another Pear observer may be running, or local storage is unavailable. No reports will be sent." }
+    }
+
+    func pollRuns(_ probe: OwnedProcessProbe, generation: Int) {
+        guard !closing, generation == observationGeneration else { return }
+        let previous = runObserver.previous
+        windowQueue.async {
+            let snapshot = probe.snapshot(previous: previous)
+            DispatchQueue.main.async {
+                guard !self.closing, generation == self.observationGeneration, let store = self.historyStore else { return }
+                self.observedOwnedSession = !snapshot.complete || !snapshot.processes.isEmpty
+                if !snapshot.processes.isEmpty { self.sawOwnedSession = true }
+                let (started, finished) = self.runObserver.consume(snapshot, now: Date(), monotonic: ProcessInfo.processInfo.systemUptime)
+                do {
+                    for session in started {
+                        let version = ProcessInfo.processInfo.operatingSystemVersion
+                        let identity = installedGameIdentity(root: probe.root, appID: session.appID)
+                        let run = RunObservation(id: session.id, startedAt: session.began,
+                            macOS: "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)",
+                            chip: reportingChipName(), memoryGiB: Int(ProcessInfo.processInfo.physicalMemory / (1024 * 1024 * 1024)),
+                            pear: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? self.info?.version ?? "Unknown", wine: "11.0", dxmt: "0.80", appID: session.appID, gameBuild: identity.build, gameName: identity.name)
+                        try store.record(run)
+                    }
+                    for finish in finished {
+                        guard var run = store.snapshot.runs.first(where: { $0.id == finish.session.id }) else { continue }
+                        run.endedAt = finish.observedEnd; run.observedExit = finish.exit
+                        try store.record(run)
+                        if store.snapshot.policy.consent.mode == .automatic {
+                            try self.reporting?.enqueue(run, origin: .automatic)
+                            if store.snapshot.policy.shouldNotifyExit {
+                                let content = UNMutableNotificationContent()
+                                content.title = "Run recorded"
+                                content.body = "Open Pear’s Run history to add a result or note."
+                                UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: run.id.uuidString, content: content, trigger: nil))
+                            }
+                        } else { self.history?.confirmFinished(run.id) }
+                    }
+                    self.history?.refresh()
+                    self.reporting?.sendNext()
+                } catch {
+                    self.reporting?.stop()
+                    self.historyError = "Run history could not be saved. Sharing is stopped."
+                }
+                if snapshot.complete, snapshot.processes.isEmpty, self.task == nil,
+                   !self.window.isVisible, !(self.history?.isVisible ?? false),
+                   self.sawOwnedSession || Date().timeIntervalSince(self.observerStarted) > 120 {
+                    NSApp.terminate(nil); return
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                    self?.pollRuns(probe, generation: generation)
+                }
+            }
+        }
+    }
     let windowQueue = DispatchQueue(label: "org.pear.steam-window", qos: .utility)
 
     func observeSteam() {
@@ -60,41 +185,71 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
         }
     }
 
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        Task { @MainActor in self.showHistory() }
+        completionHandler()
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 580, height: 370),
-                          styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
-        window.title = "Pear"
-        window.isReleasedWhenClosed = false
-        titleLabel = NSTextField(labelWithString: "Set up Pear")
-        titleLabel.font = .boldSystemFont(ofSize: 23)
-        titleLabel.frame = NSRect(x: 24, y: 306, width: 532, height: 34)
-        label = NSTextField(wrappingLabelWithString: "Checking your installation…")
-        label.frame = NSRect(x: 24, y: 218, width: 532, height: 78)
-        progress = NSProgressIndicator(frame: NSRect(x: 24, y: 83, width: 532, height: 18))
-        progress.style = .bar
-        progress.isIndeterminate = false
-        progress.setAccessibilityLabel("Setup progress")
-        progress.isHidden = true
-        busy = NSProgressIndicator(frame: NSRect(x: 24, y: 83, width: 18, height: 18))
-        busy.style = .spinning
-        busy.isIndeterminate = true
-        busy.setAccessibilityLabel("Preparing")
-        busy.isHidden = true
-        button = NSButton(title: "Download and install", target: self, action: #selector(start))
-        button.frame = NSRect(x: 342, y: 24, width: 214, height: 32)
-        button.keyEquivalent = "\r"
-        button.isEnabled = false
-        cancelButton = NSButton(title: "Cancel", target: self, action: #selector(cancelSetup))
-        cancelButton.frame = NSRect(x: 238, y: 24, width: 96, height: 32)
-        cancelButton.isHidden = true
-        let about = NSButton(title: "About Pear", target: self, action: #selector(showAbout))
-        about.frame = NSRect(x: 24, y: 24, width: 116, height: 32)
-        for view in [titleLabel!, label!, progress!, busy!, button!, cancelButton!, about] {
-            window.contentView!.addSubview(view)
-        }
+        UNUserNotificationCenter.current().delegate = self
+        buildMainWindow()
         window.center(); window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+        let menu = NSMenu()
+        let appItem = NSMenuItem(); let appMenu = NSMenu()
+        let runsItem = NSMenuItem(title: "Run history", action: #selector(showHistory), keyEquivalent: "h"); runsItem.target = self
+        let aboutItem = NSMenuItem(title: "About Pear", action: #selector(showAbout), keyEquivalent: ""); aboutItem.target = self
+        appMenu.addItem(aboutItem); appMenu.addItem(.separator())
+        let sharingItem = NSMenuItem(title:"Settings…",action:#selector(showSharingSettings),keyEquivalent:",");sharingItem.target=self
+        appMenu.addItem(sharingItem); appMenu.addItem(.separator())
+        appMenu.addItem(NSMenuItem(title: "Quit Pear", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        appItem.submenu = appMenu; menu.addItem(appItem)
+        let windowItem=NSMenuItem(title:"Window",action:nil,keyEquivalent:"")
+        let windowMenu=NSMenu(title:"Window");windowMenu.addItem(runsItem)
+        runsItem.keyEquivalentModifierMask=[.command,.shift]
+        windowItem.submenu=windowMenu;menu.addItem(windowItem);NSApp.windowsMenu=windowMenu
+        NSApp.mainMenu = menu
         inspectSetup()
+    }
+
+    // Shared by the shipped launcher and the isolated, network-free UI review.
+    func buildMainWindow() {
+        window = NSWindow(contentRect:NSRect(x:0,y:0,width:600,height:340),
+                          styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
+        window.title = "Pear"; window.isReleasedWhenClosed = false; PearStyle.window(window)
+        let titlebar = NSTitlebarAccessoryViewController()
+        let mark = NSImageView(image:Bundle.main.url(forResource:"PearMark",withExtension:"png").flatMap { NSImage(contentsOf:$0) } ?? NSApp.applicationIconImage)
+        mark.widthAnchor.constraint(equalToConstant:16).isActive=true
+        mark.heightAnchor.constraint(equalToConstant:16).isActive=true
+        let titleContent = PearStyle.stack([mark,PearStyle.label("Pear",size:13,weight:.semibold)],horizontal:true,spacing:6)
+        titleContent.frame = NSRect(x:0,y:0,width:72,height:24)
+        titlebar.view=titleContent;titlebar.layoutAttribute = .left
+        window.titleVisibility = .hidden;window.addTitlebarAccessoryViewController(titlebar)
+        titleLabel = PearStyle.label("Set up Pear",size:28,weight:.semibold)
+        label = PearStyle.label("Checking your installation…",size:14,muted:true)
+        downloadHost = PearStyle.stack([])
+        progress = NSProgressIndicator();progress.style = .bar;progress.isIndeterminate=false
+        progress.setAccessibilityLabel("Setup progress");progress.isHidden=true
+        busy = NSProgressIndicator();busy.style = .spinning;busy.isIndeterminate=true
+        busy.controlSize = .small;busy.setAccessibilityLabel("Preparing");busy.isHidden=true
+        let status = PearStyle.stack([busy!,progress!],horizontal:true)
+        button = PearStyle.button("Download and install",target:self,action:#selector(start),primary:true)
+        button.keyEquivalent="\r";button.isEnabled=false
+        cancelButton = PearStyle.button("Cancel",target:self,action:#selector(cancelSetup));cancelButton.isHidden=true
+        let actions = PearStyle.stack([NSView(),cancelButton!,button!],horizontal:true,spacing:16)
+        let page=PearStyle.stack([titleLabel!,label!,downloadHost,status,NSView(),actions],spacing:16)
+        page.setCustomSpacing(8,after:titleLabel!)
+        page.setCustomSpacing(26,after:label!)
+        PearStyle.pin(page,in:window.contentView!)
+        for view in [label!,downloadHost!,status,actions] {
+            view.widthAnchor.constraint(equalTo:page.widthAnchor).isActive=true
+        }
+        busy.widthAnchor.constraint(equalToConstant:18).isActive=true
+        busy.heightAnchor.constraint(equalToConstant:18).isActive=true
+        progress.widthAnchor.constraint(equalTo:status.widthAnchor).isActive=true
     }
 
     func process(_ command: String) -> Process {
@@ -116,11 +271,17 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
 
     func showSetup(_ value: SetupInfo) {
         info = value
+        prepareHistory(value)
+        if let historyError {
+            label.stringValue = historyError
+            button.isEnabled = false
+            return
+        }
         if value.ready {
             start()
             return
         }
-        label.stringValue = "Pear needs these files to open Windows Steam. Download sizes are shown below. Steam updates and games download separately; their sizes vary."
+        label.stringValue = "Install the files below to get started. Steam updates and games download separately."
         downloads?.removeFromSuperview()
         downloads = NSGridView(views: [
             [NSTextField(labelWithString: "Required files"), NSTextField(labelWithString: "Download")],
@@ -129,11 +290,18 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
             [NSTextField(labelWithString: "Steam installer"),
              NSTextField(labelWithString: value.steam_present ? "Installed" : downloadSize(value.steam_bytes))]
         ])
-        downloads.frame = NSRect(x: 24, y: 113, width: 532, height: 90)
         downloads.columnSpacing = 30
         downloads.rowSpacing = 12
         downloads.column(at: 1).xPlacement = .trailing
-        window.contentView!.addSubview(downloads)
+        for row in 0..<downloads.numberOfRows {
+            for col in 0..<downloads.numberOfColumns {
+                if let text=downloads.cell(atColumnIndex:col,rowIndex:row).contentView as? NSTextField {
+                    text.font = .systemFont(ofSize:12,weight:row == 0 ? .medium : .regular)
+                    text.textColor = row == 0 ? PearStyle.muted : PearStyle.foreground
+                }
+            }
+        }
+        downloadHost.addArrangedSubview(downloads)
         button.title = "Download and install"
         button.isEnabled = true
     }
@@ -262,9 +430,20 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        window.makeKeyAndOrderFront(nil); return true
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        // Retain the observation owner after the window closes; explicit Quit
+        // still leaves Steam and games running. No global Wine termination.
+        return historyOwner == nil
+    }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        reporting?.stop()
+        for transfer in serverDeletes.values { transfer.cancel() }
         closing = true
+        observationGeneration += 1
         openingGeneration += 1
         guard let task, task.isRunning else { return .terminateNow }
         task.interrupt()
@@ -272,6 +451,7 @@ final class PreviewApp: NSObject, NSApplicationDelegate {
     }
 }
 
+#if !PEAR_UI_REVIEW
 @main
 struct PearMain {
     static func main() {
@@ -282,3 +462,5 @@ struct PearMain {
         app.run()
     }
 }
+
+#endif

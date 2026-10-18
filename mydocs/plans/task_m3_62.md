@@ -79,3 +79,49 @@ build, runtime preparation and user input; report missing baseline explicitly.
 Never infer playtime or qualified support from process duration. Public review and
 signing approval remain gates. Feature changes require affected app validation;
 unchanged runtime long-duration tests are reused within original scope.
+
+
+## Stage 2 readiness after accepted reporting UI (2026-10-19)
+The requester accepted #63 UI at 1411152 and its pre-Sparkle audit. Preserve its
+main-window layout, Settings > Sharing, independent Window > Run history and
+explicit sharing consent. Source/UI audit and the lock-before-store fix are on
+codex/task63; Stage 1 policy remains on codex/task62 at cad0580. Reuse both; do not
+recreate Stage 1 or overwrite #63 with the older Launcher/build script.
+
+Integration order:
+1. Inspect clean worktree/branch status, then integrate the accepted #63 checkpoint
+   into codex/task62, resolving build.sh by preserving all reporting tests and adding
+   the existing update policy test. Preserve newer master catalog PR66/67 changes
+   (latest observed 07691fb); revalidate their affected catalog bytes after merge.
+2. Admit Sparkle 2.10.0 official release archive, validate its digest and bundled
+   licenses/framework identity, retain upstream installation and signature engine.
+   Official archive metadata checked: Sparkle-2.10.0.tar.xz, 16,319,840 bytes,
+   SHA256 c2bf58aa8387266ac179357b1415d6f2635f044da8be41042af32425dae6da0c.
+   This metadata is not a completed download, signature or license admission.
+3. Implement the MainActor adapter/driver and bounded check watchdog. Launch
+   inspection and sharing introduction must not let updater prompts overlap or
+   implicitly grant data consent. Cancel/ignore late update callbacks after release.
+4. Treat incomplete owned-process snapshots as unknown, defer replacement, and
+   recheck immediately at install boundaries. Separate observer ownership from
+   Steam launch: a running observer must receive an open/activate request rather
+   than a second steam command. Existing history admission failures currently
+   block showSetup; handle lock contention and unavailable history deliberately
+   during the launch coordinator integration, never silently create another owner.
+5. Implement conservative Homebrew ownership and one-use restart intent, preserved
+   outside the signed bundle. Validate across a new process; the Stage 1 in-memory
+   launch gate alone is not cross-process de-duplication or authenticated relaunch.
+6. Embed/sign the framework and helpers in the right order; use distinct increasing
+   build numbers for the signed older/newer test pair. Preserve org.pear.rosetta-preview
+   and the existing data root/Keychain scope. Disable profiling and automatic
+   background installation, keep reporting consent separate, and show local UI.
+7. Run the required real signed update/recovery/session/data-preservation checks,
+   then hand the exact passing revision to #47 for release integration.
+
+Rechecked official custom UI/SPUUpdaterDelegate docs on 2026-10-19: custom drivers
+must handle permission, authorization and different update states; delegate checks
+can suppress updates during setup and restrict profile keys. Sources remain the
+URLs above. Actual framework pin admission, update keys/appcast, adapter, Homebrew
+ownership, signed pair and macOS 15 final execution are still outstanding; do not
+represent the passed policy test as Sparkle integration. No new user permission is
+needed to begin the previously authorized implementation; existing GitHub protected
+signing approval is retained when CI reaches that gate. No other chat is involved.
