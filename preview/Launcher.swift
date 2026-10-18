@@ -9,6 +9,7 @@ import UserNotifications
     var titleLabel: NSTextField!
     var label: NSTextField!
     var downloads: NSGridView!
+    var downloadHost: NSStackView!
     var progress: NSProgressIndicator!
     var busy: NSProgressIndicator!
     var button: NSButton!
@@ -188,39 +189,7 @@ import UserNotifications
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         UNUserNotificationCenter.current().delegate = self
-        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 580, height: 370),
-                          styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
-        window.title = "Pear"
-        window.isReleasedWhenClosed = false
-        titleLabel = NSTextField(labelWithString: "Set up Pear")
-        titleLabel.font = .boldSystemFont(ofSize: 23)
-        titleLabel.frame = NSRect(x: 24, y: 306, width: 532, height: 34)
-        label = NSTextField(wrappingLabelWithString: "Checking your installation…")
-        label.frame = NSRect(x: 24, y: 218, width: 532, height: 78)
-        progress = NSProgressIndicator(frame: NSRect(x: 24, y: 83, width: 532, height: 18))
-        progress.style = .bar
-        progress.isIndeterminate = false
-        progress.setAccessibilityLabel("Setup progress")
-        progress.isHidden = true
-        busy = NSProgressIndicator(frame: NSRect(x: 24, y: 83, width: 18, height: 18))
-        busy.style = .spinning
-        busy.isIndeterminate = true
-        busy.setAccessibilityLabel("Preparing")
-        busy.isHidden = true
-        button = NSButton(title: "Download and install", target: self, action: #selector(start))
-        button.frame = NSRect(x: 342, y: 24, width: 214, height: 32)
-        button.keyEquivalent = "\r"
-        button.isEnabled = false
-        cancelButton = NSButton(title: "Cancel", target: self, action: #selector(cancelSetup))
-        cancelButton.frame = NSRect(x: 238, y: 24, width: 96, height: 32)
-        cancelButton.isHidden = true
-        let about = NSButton(title: "About Pear", target: self, action: #selector(showAbout))
-        about.frame = NSRect(x: 24, y: 24, width: 116, height: 32)
-        let historyButton = NSButton(title: "Run history", target: self, action: #selector(showHistory))
-        historyButton.frame = NSRect(x: 145, y: 24, width: 94, height: 32)
-        for view in [historyButton, titleLabel!, label!, progress!, busy!, button!, cancelButton!, about] {
-            window.contentView!.addSubview(view)
-        }
+        buildMainWindow()
         window.center(); window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
         let menu = NSMenu()
@@ -230,6 +199,40 @@ import UserNotifications
         appMenu.addItem(NSMenuItem(title: "Quit Pear", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         appItem.submenu = appMenu; menu.addItem(appItem); NSApp.mainMenu = menu
         inspectSetup()
+    }
+
+    // Shared by the shipped launcher and the isolated, network-free UI review.
+    func buildMainWindow() {
+        window = NSWindow(contentRect:NSRect(x:0,y:0,width:600,height:430),
+                          styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
+        window.title = "Pear"; window.isReleasedWhenClosed = false; PearStyle.window(window)
+        let mark = NSImageView(image:NSApp.applicationIconImage)
+        mark.widthAnchor.constraint(equalToConstant:40).isActive=true
+        mark.heightAnchor.constraint(equalToConstant:40).isActive=true
+        let brand = PearStyle.stack([mark,PearStyle.label("Pear",size:20,weight:.semibold)],horizontal:true)
+        titleLabel = PearStyle.label("Set up Pear",size:28,weight:.semibold)
+        label = PearStyle.label("Checking your installation…",size:14,muted:true)
+        downloadHost = PearStyle.stack([])
+        progress = NSProgressIndicator();progress.style = .bar;progress.isIndeterminate=false
+        progress.setAccessibilityLabel("Setup progress");progress.isHidden=true
+        busy = NSProgressIndicator();busy.style = .spinning;busy.isIndeterminate=true
+        busy.controlSize = .small;busy.setAccessibilityLabel("Preparing");busy.isHidden=true
+        let status = PearStyle.stack([busy!,progress!],horizontal:true)
+        button = PearStyle.button("Download and install",target:self,action:#selector(start),primary:true)
+        button.keyEquivalent="\r";button.isEnabled=false
+        cancelButton = PearStyle.button("Cancel",target:self,action:#selector(cancelSetup));cancelButton.isHidden=true
+        let actions = PearStyle.stack([NSView(),cancelButton!,button!],horizontal:true,spacing:16)
+        let divider=NSBox();divider.boxType = .separator
+        let footer=PearStyle.stack([PearStyle.button("Run history",target:self,action:#selector(showHistory)),NSView(),
+                                   PearStyle.button("About Pear",target:self,action:#selector(showAbout))],horizontal:true)
+        let page=PearStyle.stack([brand,titleLabel!,label!,downloadHost,status,NSView(),actions,divider,footer],spacing:16)
+        PearStyle.pin(page,in:window.contentView!)
+        for view in [label!,downloadHost!,status,actions,divider,footer] {
+            view.widthAnchor.constraint(equalTo:page.widthAnchor).isActive=true
+        }
+        busy.widthAnchor.constraint(equalToConstant:18).isActive=true
+        busy.heightAnchor.constraint(equalToConstant:18).isActive=true
+        progress.widthAnchor.constraint(equalTo:status.widthAnchor).isActive=true
     }
 
     func process(_ command: String) -> Process {
@@ -261,7 +264,7 @@ import UserNotifications
             start()
             return
         }
-        label.stringValue = "Pear needs these files to open Windows Steam. Download sizes are shown below. Steam updates and games download separately; their sizes vary."
+        label.stringValue = "Install the files below to get started. Steam updates and games download separately."
         downloads?.removeFromSuperview()
         downloads = NSGridView(views: [
             [NSTextField(labelWithString: "Required files"), NSTextField(labelWithString: "Download")],
@@ -270,11 +273,18 @@ import UserNotifications
             [NSTextField(labelWithString: "Steam installer"),
              NSTextField(labelWithString: value.steam_present ? "Installed" : downloadSize(value.steam_bytes))]
         ])
-        downloads.frame = NSRect(x: 24, y: 113, width: 532, height: 90)
         downloads.columnSpacing = 30
         downloads.rowSpacing = 12
         downloads.column(at: 1).xPlacement = .trailing
-        window.contentView!.addSubview(downloads)
+        for row in 0..<downloads.numberOfRows {
+            for col in 0..<downloads.numberOfColumns {
+                if let text=downloads.cell(atColumnIndex:col,rowIndex:row).contentView as? NSTextField {
+                    text.font = .systemFont(ofSize:12,weight:row == 0 ? .medium : .regular)
+                    text.textColor = row == 0 ? PearStyle.muted : PearStyle.foreground
+                }
+            }
+        }
+        downloadHost.addArrangedSubview(downloads)
         button.title = "Download and install"
         button.isEnabled = true
     }
@@ -424,6 +434,7 @@ import UserNotifications
     }
 }
 
+#if !PEAR_UI_REVIEW
 @main
 struct PearMain {
     static func main() {
@@ -434,3 +445,5 @@ struct PearMain {
         app.run()
     }
 }
+
+#endif

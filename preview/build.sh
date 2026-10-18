@@ -27,7 +27,7 @@ xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift
 "$out/reporting-policy-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/test_presentation.swift" -o "$out/presentation-tests"
 "$out/presentation-tests"
-xcrun swiftc -O -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/SteamWindow.swift" "$repo/preview/ReportingPolicy.swift" "$repo/preview/ReportingStore.swift" "$repo/preview/ReportingTransport.swift" "$repo/preview/HistoryWindow.swift" "$repo/preview/RunObserver.swift" "$repo/preview/Launcher.swift" -o "$app/Contents/MacOS/PearPreview"
+xcrun swiftc -O -target arm64-apple-macosx15.0 "$repo/preview/AppStyle.swift" "$repo/preview/Presentation.swift" "$repo/preview/SteamWindow.swift" "$repo/preview/ReportingPolicy.swift" "$repo/preview/ReportingStore.swift" "$repo/preview/ReportingTransport.swift" "$repo/preview/HistoryWindow.swift" "$repo/preview/RunObserver.swift" "$repo/preview/Launcher.swift" -o "$app/Contents/MacOS/PearPreview"
 cat > "$app/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict>
 <key>CFBundleIdentifier</key><string>org.pear.rosetta-preview</string>

@@ -177,3 +177,26 @@ with Windows argv[0] and no SteamAppId. Reuse the unchanged runtime/CLI; small
 candidate .build/task63-game-id is retained through manual exit/send confirmation.
 User guide location stays docs/reporting-and-privacy.md; clarify the same feature's
 observation limits there. No other task or source tree is modified.
+
+## Player-facing UI revision (approved 2026-10-19)
+Requester confirmed manual and ask-mode reporting and requested a complete native
+presentation pass. Reuse AppKit controls and Pear's published design tokens from
+master efd9ed7 (tools/catalog/tokens.css; live CSS checked 2026-10-19). Adapt the
+cream/charcoal/olive palette, 4-point spacing and type hierarchy to native light
+and dark appearances. No WebView, new UI dependency or runtime change. #63 owns
+history/consent/exit UI; its launcher presentation integrates into #47 later.
+#63 was closed by PR65 but reopened for its remaining approved app work.
+
+Use a compact history list with explicit detail navigation, primary share/save
+actions and a secondary menu for technical data/export/deletion. Keep consent,
+withdrawal and privacy disclosure available; do not hide required consent facts.
+Main-window actions use Auto Layout with separate secondary and primary rows.
+Exit prompt names the game explicitly. Preserve reporting semantics and unknown
+observations. Reuse existing synthetic fixtures in a network-free UI review
+harness that exercises the actual main/history views without Steam or user data.
+
+Source: preview/AppStyle.swift and existing native presentation; preview/ui-review
+for a separate, non-shipped UI harness. No product-document relocation or website
+edit is needed. Record evidence in this plan's existing stage2 report. Owned
+.build/task63-ui outputs budget <50 MiB, no runtime/prefix copy; retain through
+user UI review, then discard superseded candidates. Signed delivery remains later.

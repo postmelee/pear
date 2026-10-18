@@ -244,3 +244,63 @@ The game was already open, so this is not a new-game source-to-manual-input timi
 Exact handoff/response arrival boundaries were not captured; no summed timing is
 presented as that endpoint. Final signed release and manual/ask-mode game checks
 remain distinct gates. Candidate and small fixtures are retained for those checks.
+
+
+## Player-facing native presentation checkpoint (2026-10-19)
+
+Requester confirmed manual reporting and ask-after-each-game reporting passed
+before this UI revision. Combined with the recorded automatic-mode receipt/admin
+verification, all three reporting modes have requester-facing rehearsal evidence.
+This does not complete Sparkle integration, final signing or v0.1.0 publication.
+Issue #63 had been closed by PR65; reopened for this remaining authorized app work.
+
+Reused native AppKit and Pear's published tokens (master efd9ed7,
+https://postmelee.github.io/pear/tokens.css, checked 2026-10-19). Added semantic
+cream/charcoal/olive colors with dynamic appearance, native fonts, semantic result
+badges and consistent spacing. Main window now uses Auto Layout; setup/launch and
+Cancel occupy their own action row, separated from history/About. No process,
+launch, observer, transport or runtime ownership behavior changed.
+
+History now begins with the compact list and opens a separate detail page on row
+activation. Result and note are primary; environment/version/exit, supplementary
+tests, export, sent content and local/server deletion remain under More. Automatic
+withdrawal is visible in automatic mode and still applies immediately. Existing
+shared records use Update shared result, and retry appears when queued. Navigation
+saves the local draft only; it does not enqueue a report. The exit sheet explicitly
+names the game and retains an existing note/result. Sharing disclosure is grouped
+by purpose/publication, sharing mode, selected fields and after-game preferences;
+privacy, retention and deletion boundaries remain visible before consent.
+
+Verification: existing Swift policy, durable-store and presentation suites passed.
+Full native launcher build and ad hoc deep/strict signature validation passed;
+source-notice check (six original source/build files), shell syntax and whitespace
+checks passed. A separate UI-only harness reuses actual presentation, has no
+transport or CLI resource, and never runs Steam. Native UI interactions confirmed
+list/detail/back, local draft persistence across another run, disabled sent-content
+menu for an unsent record, setup table, separated Cancel, named-game exit prompt,
+light/dark appearance and the final grouped consent sheet. No real report or
+sharing setting was changed, and no game/runtime test was repeated.
+
+Artifacts retained for requester review:
+- .build/task63-ui/Pear UI Review.app: synthetic UI only, reproducible with
+  `bash preview/ui-review/build.sh`; Preview screens menu switches states/themes.
+- .build/task63-ui-candidate/Pear Reporting.app: full app compile against the same
+  verified installed CLI, not launched; ad hoc local build, not notarized delivery.
+- Final UI executable SHA256: fbccf6da09952bff5f975d10e85e4d7274c6bd626f89fdbc0af9053fbf8dd4e9.
+- Full candidate executable SHA256: 81c8aa536113f3756492d144dcca7d21bdcfc58c0aceea4739d8cec93812b5c6.
+
+UI source freeze UTC 2026-10-18T15:26:51.548504+00:00 / monotonic
+82799.195151166; ready UTC 15:27:01.995382 / monotonic 82809.642160833,
+build 10.447 s. Full candidate build 9.834 s, ready UTC 15:27:11.857974.
+Final automated UI confirmation: 2026-10-18T15:34:51.246025+00:00 /
+monotonic 83278.897525. An earlier review-app
+launch was blocked by the Mac lock; requester confirmed unlocking. Exact human
+waiting boundaries and preparation/admission baseline were not captured. These
+build durations and automated UI observations are not a confirmed human-input
+end-to-end endpoint. User design review remains pending.
+
+Combined logical artifact size at checkpoint: 12,400,818 bytes; allocated size
+was 5,748 KiB UI plus 6,404 KiB full candidate before this small timing update.
+Filesystem available was about 11 GiB; no reclaimed-space claim. No runtime or
+prefix copies. Preserve these small candidates through UI review and discard
+superseded output on the next admitted handoff.
