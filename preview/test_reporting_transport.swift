@@ -60,6 +60,16 @@ final class ReportProtocol: URLProtocol, @unchecked Sendable {
         precondition(capabilities.services == ["https://example.invalid/reports"])
         precondition(ReportProtocol.captured?.httpMethod == "PUT")
         precondition(ReportProtocol.captured?.value(forHTTPHeaderField:"Authorization") == "Bearer " + String(repeating:"a",count:64))
+        ReportProtocol.prepare(body: Data("{\"deleted\":true}".utf8))
+        let deleted: Bool = await withCheckedContinuation { continuation in
+            _ = transport.delete(reportID: run.id) { continuation.resume(returning: $0) }
+        }
+        precondition(deleted && ReportProtocol.captured?.httpMethod == "DELETE")
+        ReportProtocol.prepare(body: Data("{\"deleted\":false}".utf8))
+        let deniedDelete: Bool = await withCheckedContinuation { continuation in
+            _ = transport.delete(reportID: run.id) { continuation.resume(returning: $0) }
+        }
+        precondition(!deniedDelete)
         let wrong = try JSONEncoder().encode(ReportReceipt(reportID: UUID(), requestID: request.requestID, revision: request.revision))
         let wrongSuccess = await send(wrong); precondition(!wrongSuccess)
         let emptySuccess = await send(Data("{}".utf8)); precondition(!emptySuccess)

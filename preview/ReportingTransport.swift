@@ -43,6 +43,7 @@ struct ReportEnvelope: Codable {
     let revision: UInt64
     let report: SharedRun
 }
+private struct DeleteReceipt: Decodable { let deleted: Bool }
 struct ReportReceipt: Codable {
     let reportID: UUID
     let requestID: UUID
@@ -54,9 +55,9 @@ struct ReportReceipt: Codable {
 private final class ReportExchange: NSObject, URLSessionDataDelegate, @unchecked Sendable {
     private var bytes = Data()
     private var accepted = false
-    private let expected: PendingReport
+    private let expected: PendingReport?
     private let completion: @MainActor (Bool) -> Void
-    init(expected: PendingReport, completion: @escaping @MainActor (Bool) -> Void) {
+    init(expected: PendingReport?, completion: @escaping @MainActor (Bool) -> Void) {
         self.expected = expected; self.completion = completion
     }
     func urlSession(_ session: URLSession, task: URLSessionTask,
@@ -79,8 +80,13 @@ private final class ReportExchange: NSObject, URLSessionDataDelegate, @unchecked
     }
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         let receipt = try? JSONDecoder().decode(ReportReceipt.self, from: bytes)
-        let success = accepted && error == nil && receipt?.reportID == expected.payload.reportID &&
-            receipt?.requestID == expected.requestID && receipt?.revision == expected.revision
+        let matches: Bool
+        if let expected {
+            matches = receipt?.reportID == expected.payload.reportID && receipt?.requestID == expected.requestID && receipt?.revision == expected.revision
+        } else {
+            matches = (try? JSONDecoder().decode(DeleteReceipt.self, from: bytes).deleted) == true
+        }
+        let success = accepted && error == nil && matches
         session.finishTasksAndInvalidate()
         Task { @MainActor in completion(success) }
     }
@@ -102,6 +108,26 @@ private final class ReportExchange: NSObject, URLSessionDataDelegate, @unchecked
               endpoint.query == nil, endpoint.fragment == nil else { throw ReportNetworkError.endpoint }
         self.endpoint = endpoint; self.capabilities = capabilities; self.configuration = configuration
     }
+    func delete(reportID: UUID, completion: @escaping @MainActor (Bool) -> Void) -> ReportTransfer {
+        let transfer = NetworkReportTransfer()
+        do {
+            let cap = try capabilities.capability(reportID: reportID, service: endpoint.absoluteString)
+            var request = URLRequest(url: endpoint.appendingPathComponent(reportID.uuidString.lowercased()))
+            request.httpMethod = "DELETE"
+            request.setValue("Bearer " + cap, forHTTPHeaderField: "Authorization")
+            let config = configuration()
+            config.httpCookieStorage = nil; config.httpShouldSetCookies = false
+            config.urlCredentialStorage = nil; config.urlCache = nil
+            config.timeoutIntervalForRequest = 15; config.timeoutIntervalForResource = 20
+            config.waitsForConnectivity = false
+            let delegate = ReportExchange(expected: nil, completion: completion)
+            let queue = OperationQueue(); queue.maxConcurrentOperationCount = 1
+            let session = URLSession(configuration: config, delegate: delegate, delegateQueue: queue)
+            transfer.session = session; session.dataTask(with: request).resume()
+        } catch { Task { @MainActor in completion(false) } }
+        return transfer
+    }
+
     func start(_ request: PendingReport, completion: @escaping @MainActor (Bool) -> Void) -> ReportTransfer {
         let transfer = NetworkReportTransfer()
         do {

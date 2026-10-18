@@ -11,6 +11,17 @@ struct OwnedProcess: Hashable {
 }
 struct OwnedProcessSnapshot { var processes: Set<OwnedProcess>; var complete: Bool }
 
+// Kernel paths may use /private/var while launch arguments use /var.
+// Resolve both sides identically without relaxing runtime or prefix ownership.
+func processIdentityPath(_ path: String) -> String? {
+    guard path.hasPrefix("/") else { return nil }
+    if let resolved = realpath(path, nil) {
+        defer { free(resolved) }
+        return String(cString: resolved)
+    }
+    return URL(fileURLWithPath: path).standardizedFileURL.path
+}
+
 // Decode only allowlisted identity fields; never persist argv or environment.
 func ownedGameID(_ data: Data, executable: String, prefix: String) -> (owned: Bool, appID: UInt32?) {
     let bytes=[UInt8](data); guard bytes.count >= 4 else { return (false,nil) }
@@ -21,7 +32,7 @@ func ownedGameID(_ data: Data, executable: String, prefix: String) -> (owned: Bo
         guard at < bytes.count,let end=bytes[at...].firstIndex(of:0) else { return nil }
         defer { at=end+1 }; return String(bytes:bytes[at..<end],encoding:.utf8)
     }
-    guard take()==executable else { return (false,nil) }
+    guard let argumentPath = take(), processIdentityPath(argumentPath)==processIdentityPath(executable) else { return (false,nil) }
     while at < bytes.count && bytes[at]==0 { at+=1 }
     var steam=false
     for _ in 0..<argc {
@@ -37,7 +48,7 @@ func ownedGameID(_ data: Data, executable: String, prefix: String) -> (owned: Bo
         if entry.hasPrefix("WINEPREFIX=") { prefixes.append(String(entry.dropFirst(11))) }
         if entry.hasPrefix("SteamAppId=") { ids.append(String(entry.dropFirst(11))) }
     }
-    guard prefixes == [prefix] else { return (false,nil) }
+    guard prefixes.count == 1, let actualPrefix = processIdentityPath(prefixes[0]), actualPrefix == processIdentityPath(prefix) else { return (false,nil) }
     let id = ids.count == 1 ? UInt32(ids[0]) : nil
     return (true, !steam && id != 0 ? id : nil)
 }
@@ -47,7 +58,7 @@ struct OwnedProcessProbe {
     let runtime: String
     func snapshot(previous: Set<OwnedProcess>) -> OwnedProcessSnapshot {
         let base=root.appendingPathComponent("runtimes/\(runtime)/Libraries/Wine/lib/wine/x86_64-unix")
-        let executables=Set([base.appendingPathComponent("wine").path,base.appendingPathComponent("wine64").path])
+        let executables=Set([base.appendingPathComponent("wine").path,base.appendingPathComponent("wine64").path].compactMap(processIdentityPath))
         let prefix=root.appendingPathComponent("private/prefix").path
         let count=proc_listallpids(nil,0)
         guard count > 0 else { return .init(processes:[],complete:false) }
@@ -61,7 +72,7 @@ struct OwnedProcessProbe {
                 if previous.contains(where:{$0.pid==pid}) { complete=false };continue
             }
             let executable=String(cString:path)
-            guard executables.contains(executable) else { continue }
+            guard let canonicalExecutable = processIdentityPath(executable), executables.contains(canonicalExecutable) else { continue }
             var before=proc_bsdinfo(),after=proc_bsdinfo()
             let size=Int32(MemoryLayout<proc_bsdinfo>.size)
             guard proc_pidinfo(pid,PROC_PIDTBSDINFO,0,&before,size)==size else { complete=false;continue }
@@ -134,4 +145,32 @@ final class ReportingSessionOwner {
         guard flock(descriptor,LOCK_EX|LOCK_NB)==0 else { close(descriptor);throw CocoaError(.fileLocking) }
     }
     deinit { flock(descriptor,LOCK_UN);close(descriptor) }
+}
+
+// Read only the three public identity fields from an app's installation manifest.
+// Never parse Steam account/configuration files or persist the manifest path.
+func installedGameIdentity(root: URL, appID: UInt32) -> (name: String?, build: String?) {
+    let canonical = root.standardizedFileURL.resolvingSymlinksInPath()
+    let file = canonical.appendingPathComponent("private/prefix/drive_c/Program Files (x86)/Steam/steamapps/appmanifest_\(appID).acf").resolvingSymlinksInPath()
+    guard file.path.hasPrefix(canonical.path + "/"),
+          let size = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= 262144,
+          let text = try? String(contentsOf: file, encoding: .utf8) else { return (nil,nil) }
+    func value(_ key: String) -> String? {
+        let pattern = "(?m)^\\s*\"" + key + "\"\\s+\"([^\"\\r\\n]{1,300})\"\\s*$"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return nil }
+        let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+        guard matches.count == 1, let range = Range(matches[0].range(at: 1), in: text) else { return nil }
+        return String(text[range])
+    }
+    guard value("appid") == String(appID) else { return (nil,nil) }
+    let build = value("buildid")
+    return (value("name"), build.flatMap { UInt64($0) == nil ? nil : $0 })
+}
+
+func reportingChipName() -> String? {
+    var size = 0
+    guard sysctlbyname("machdep.cpu.brand_string",nil,&size,nil,0) == 0, size > 0, size <= 256 else { return nil }
+    var bytes = [CChar](repeating:0,count:size)
+    guard sysctlbyname("machdep.cpu.brand_string",&bytes,&size,nil,0) == 0 else { return nil }
+    return String(cString:bytes)
 }

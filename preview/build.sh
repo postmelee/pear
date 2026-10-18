@@ -22,6 +22,8 @@ xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift
 "$out/reporting-transport-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift" "$repo/preview/RunObserver.swift" "$repo/preview/test_run_observer.swift" -o "$out/run-observer-tests"
 "$out/run-observer-tests"
+xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift" "$repo/preview/RunObserver.swift" "$repo/preview/test_run_observer_host.swift" -o "$out/run-observer-host-tests"
+"$out/run-observer-host-tests"
 "$out/reporting-policy-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/test_presentation.swift" -o "$out/presentation-tests"
 "$out/presentation-tests"

@@ -69,6 +69,16 @@ import Foundation
         precondition(queued.snapshot.shared[other.id] != nil)
         try queue.deleteLocal(reportID: other.id)
         precondition(queued.snapshot.shared[other.id] != nil) // Receipt retained; no server delete implied.
+        try coordinator.prepareServerDeletion(reportID: run.id)
+        precondition(store.snapshot.serverDeletions?[run.id] == false)
+        do { try coordinator.enqueue(run, origin: .manual); preconditionFailure("resending deleted report") } catch {}
+        try coordinator.confirmServerDeletion(reportID: run.id)
+        precondition(store.snapshot.shared[run.id] == nil && store.snapshot.serverDeletions?[run.id] == true)
+        let deletedRestart = try ReportingStore(directory: root)
+        precondition(deletedRestart.snapshot.serverDeletions?[run.id] == true)
+        var ancient = run; ancient.id = UUID(); ancient.startedAt = clock.addingTimeInterval(-91 * 86400)
+        try queued.record(ancient); try queue.pruneLocalHistory()
+        precondition(!queued.snapshot.runs.contains { $0.id == ancient.id })
         let broken = try ReportingStore(directory:root,save:{_,_ in throw CocoaError(.fileWriteOutOfSpace)})
         let brokenTransport = FakeTransport(), brokenCoordinator = ReportingCoordinator(store:broken,transport:brokenTransport)
         do { try brokenCoordinator.configure(mode:.automatic,fields:[.game]); preconditionFailure("expected disk error") } catch {}

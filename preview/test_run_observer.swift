@@ -36,6 +36,14 @@ import Foundation
         let root=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at:root,withIntermediateDirectories:true)
         defer { try? FileManager.default.removeItem(at:root) }
+        let manifests = root.appendingPathComponent("private/prefix/drive_c/Program Files (x86)/Steam/steamapps")
+        try FileManager.default.createDirectory(at: manifests, withIntermediateDirectories: true)
+        let manifest = manifests.appendingPathComponent("appmanifest_3405340.acf")
+        try "\"appid\" \"3405340\"\n\"name\" \"Fixture Game\"\n\"buildid\" \"12345\"\n".write(to:manifest,atomically:true,encoding:.utf8)
+        let identity = installedGameIdentity(root:root,appID:3405340)
+        precondition(identity.name == "Fixture Game" && identity.build == "12345")
+        try "\"appid\" \"1\"\n".write(to:manifest,atomically:true,encoding:.utf8)
+        precondition(installedGameIdentity(root:root,appID:3405340).name == nil)
         let owner=try ReportingSessionOwner(directory:root)
         withExtendedLifetime(owner) {
             do { _=try ReportingSessionOwner(directory:root);preconditionFailure("second owner") } catch {}

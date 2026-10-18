@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: 2026 Pear contributors
 // SPDX-License-Identifier: GPL-3.0-or-later
 import AppKit
+import UserNotifications
 
 // Presentation only. The same Rust binary serves this window and the CLI.
-@MainActor final class PreviewApp: NSObject, NSApplicationDelegate {
+@MainActor final class PreviewApp: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: NSWindow!
     var titleLabel: NSTextField!
     var label: NSTextField!
@@ -21,6 +22,9 @@ import AppKit
     var history: HistoryWindow?
     var historyStore: ReportingStore?
     var historyOwner: ReportingSessionOwner?
+    var reporting: ReportingCoordinator?
+    var reportingTransport: URLSessionReportTransport?
+    var serverDeletes: [UUID: ReportTransfer] = [:]
     var runObserver = RunObserverState()
     var observationGeneration = 0
     var observedOwnedSession = false
@@ -50,7 +54,32 @@ import AppKit
                     state.runs[i].observedExit = .unknown
                 }
             }
-            historyOwner = owner; historyStore = store; history = HistoryWindow(store: store)
+            let transport = try URLSessionReportTransport(endpoint: URL(string: "https://pear-reports.postmelee.workers.dev/reports")!, capabilities: KeychainReportCapabilities())
+            let coordinator = ReportingCoordinator(store: store, transport: transport)
+            try coordinator.pruneLocalHistory()
+            let view = HistoryWindow(store: store)
+            historyOwner = owner; historyStore = store; history = view
+            reporting = coordinator; reportingTransport = transport
+            view.submit = { run, note in try coordinator.enqueue(run, origin: .manual, shareNote: note) }
+            view.configureSharing = { mode, fields in try coordinator.configure(mode: mode, fields: fields) }
+            view.retryReport = { id in try coordinator.retry(reportID: id) }
+            view.deleteLocalRecord = { id in try coordinator.deleteLocal(reportID: id) }
+            view.deleteServerReport = { [weak self] id, done in
+                guard let self, self.serverDeletes[id] == nil else { return }
+                do {
+                    try coordinator.prepareServerDeletion(reportID: id)
+                    self.serverDeletes[id] = transport.delete(reportID: id) { [weak self] success in
+                        self?.serverDeletes.removeValue(forKey: id)
+                        do {
+                            if success { try coordinator.confirmServerDeletion(reportID: id) }
+                            done(success)
+                        } catch { done(false) }
+                    }
+                } catch { done(false) }
+            }
+            view.enableNotifications = { UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in } }
+            coordinator.changed = { [weak view] in view?.refresh() }
+            view.showSharingIntroductionIfNeeded()
             observationGeneration += 1
             pollRuns(OwnedProcessProbe(root: root, runtime: setup.runtime_id), generation: observationGeneration)
         } catch { historyError = "Another Pear observer may be running, or local storage is unavailable. No reports will be sent." }
@@ -69,20 +98,33 @@ import AppKit
                 do {
                     for session in started {
                         let version = ProcessInfo.processInfo.operatingSystemVersion
+                        let identity = installedGameIdentity(root: probe.root, appID: session.appID)
                         let run = RunObservation(id: session.id, startedAt: session.began,
                             macOS: "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)",
-                            memoryGiB: Int(ProcessInfo.processInfo.physicalMemory / (1024 * 1024 * 1024)),
-                            pear: self.info?.version ?? "Unknown", wine: "11.0", dxmt: "0.80", appID: session.appID)
+                            chip: reportingChipName(), memoryGiB: Int(ProcessInfo.processInfo.physicalMemory / (1024 * 1024 * 1024)),
+                            pear: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? self.info?.version ?? "Unknown", wine: "11.0", dxmt: "0.80", appID: session.appID, gameBuild: identity.build, gameName: identity.name)
                         try store.record(run)
                     }
                     for finish in finished {
                         guard var run = store.snapshot.runs.first(where: { $0.id == finish.session.id }) else { continue }
                         run.endedAt = finish.observedEnd; run.observedExit = finish.exit
                         try store.record(run)
-                        self.history?.confirmFinished(run.id)
+                        if store.snapshot.policy.consent.mode == .automatic {
+                            try self.reporting?.enqueue(run, origin: .automatic)
+                            if store.snapshot.policy.shouldNotifyExit {
+                                let content = UNMutableNotificationContent()
+                                content.title = "Run recorded"
+                                content.body = "Open Pear’s Run history to add a result or note."
+                                UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: run.id.uuidString, content: content, trigger: nil))
+                            }
+                        } else { self.history?.confirmFinished(run.id) }
                     }
                     self.history?.refresh()
-                } catch { self.historyError = "Run history could not be saved. Sharing is stopped." }
+                    self.reporting?.sendNext()
+                } catch {
+                    self.reporting?.stop()
+                    self.historyError = "Run history could not be saved. Sharing is stopped."
+                }
                 if snapshot.complete, snapshot.processes.isEmpty, self.task == nil,
                    !self.window.isVisible, !(self.history?.isVisible ?? false),
                    self.sawOwnedSession || Date().timeIntervalSince(self.observerStarted) > 120 {
@@ -136,7 +178,16 @@ import AppKit
         }
     }
 
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        Task { @MainActor in self.showHistory() }
+        completionHandler()
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
+        UNUserNotificationCenter.current().delegate = self
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 580, height: 370),
                           styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
         window.title = "Pear"
@@ -172,6 +223,12 @@ import AppKit
         }
         window.center(); window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+        let menu = NSMenu()
+        let appItem = NSMenuItem(); let appMenu = NSMenu()
+        let runsItem = NSMenuItem(title: "Run history", action: #selector(showHistory), keyEquivalent: "h"); runsItem.target = self
+        appMenu.addItem(runsItem); appMenu.addItem(.separator())
+        appMenu.addItem(NSMenuItem(title: "Quit Pear", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        appItem.submenu = appMenu; menu.addItem(appItem); NSApp.mainMenu = menu
         inspectSetup()
     }
 
@@ -195,6 +252,11 @@ import AppKit
     func showSetup(_ value: SetupInfo) {
         info = value
         prepareHistory(value)
+        if let historyError {
+            label.stringValue = historyError
+            button.isEnabled = false
+            return
+        }
         if value.ready {
             start()
             return
@@ -351,6 +413,8 @@ import AppKit
         return historyOwner == nil
     }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        reporting?.stop()
+        for transfer in serverDeletes.values { transfer.cancel() }
         closing = true
         observationGeneration += 1
         openingGeneration += 1

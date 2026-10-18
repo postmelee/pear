@@ -150,3 +150,16 @@ identity and is not persisted. Secure HttpOnly SameSite=Lax host-only cookies,
 Origin validation for mutations, bounded provider responses and no redirects.
 Sources: GitHub authorizing-oauth-apps and scopes-for-oauth-apps official docs,
 reviewed 2026-10-18. No card/Zero Trust subscription is activated.
+
+## Approved playable reporting integration (2026-10-18)
+Requester asked to complete automatic/manual reporting before their own game test.
+Connect the existing Swift coordinator/transport and history UI to the admitted
+Workers origin. Keep the existing runtime and Rust launcher unchanged for the
+local rehearsal; build only a separate app wrapper with the installed signed CLI.
+Reuse process ownership and window-lifetime observer, add manifest-only name/build
+metadata, explicit server-deletion controls and opt-in completion notifications.
+Local app output: .build/task63-live/Pear Reporting.app (under 50 MiB); no runtime
+copy, prefix copy or game launch needed before handoff. This is a local candidate,
+not signed/notarized release evidence. Keep it until manual reporting scenarios
+complete. Document scenarios in docs/reporting-and-privacy.md, the approved user
+privacy/reporting guide; do not edit the other chat's catalog-design checkout.

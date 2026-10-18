@@ -36,6 +36,8 @@ import UniformTypeIdentifiers
     var configureSharing: ((SharingMode, Set<ReportField>) throws -> Void)?
     var retryReport: ((UUID) throws -> Void)?
     var deleteLocalRecord: ((UUID) throws -> Void)?
+    var deleteServerReport: ((UUID, @escaping (Bool) -> Void) -> Void)?
+    var enableNotifications: (() -> Void)?
     var submit: ((RunObservation, Bool) throws -> Void)?
     private var window: NSWindow!
     private let table = NSTableView()
@@ -116,7 +118,7 @@ import UniformTypeIdentifiers
         let actions = stack([button("Save changes",#selector(save)),shareButton,
                              button("Export…",#selector(exportRecord)),button("View shared content",#selector(viewShared)), retryButton],horizontal:true)
         let resultRow = stack([text("Your result", bold: true), result], horizontal: true)
-        let noteHeading = stack([text("Note", bold: true), text("Optional · kept on this Mac")], horizontal: true)
+        let noteHeading = stack([text("Note", bold: true), text("Optional · up to 4,000 characters · kept on this Mac")], horizontal: true)
         let divider = NSBox(); divider.boxType = .separator
         let privacy = text("Turning sharing off keeps local records and reports already sent.")
         privacy.font = .systemFont(ofSize: 12); privacy.textColor = .secondaryLabelColor
@@ -126,7 +128,7 @@ import UniformTypeIdentifiers
         detailsHeading.font = .systemFont(ofSize: 20, weight: .semibold)
         let content = stack([pageTitle, introduction, header, privacy, availability,
                              list, emptyLabel, divider, detailsHeading, selectedTitle, details, resultRow, noteHeading,
-                             notes, shareNote, button("Optional test details…", #selector(editSupplemental)), actions, button("Delete local record…", #selector(deleteLocal)), timing])
+                             notes, shareNote, button("Optional test details…", #selector(editSupplemental)), actions, stack([button("Delete local record…", #selector(deleteLocal)), button("Shared reports…", #selector(manageSharedReports))], horizontal: true), timing])
         content.spacing = 10
         content.translatesAutoresizingMaskIntoConstraints=false; window.contentView!.addSubview(content)
         NSLayoutConstraint.activate([
@@ -143,14 +145,14 @@ import UniformTypeIdentifiers
         guard window != nil else { return }
         let modes: [SharingMode:String] = [.localOnly:"Not sharing",.askAfterExit:"Ask after each game",.automatic:"Automatic sharing"]
         modeLabel.stringValue = "Sharing: \(modes[store.snapshot.policy.consent.mode]!)"
-        availability.stringValue = submit == nil ? "Local records and export are available. Report sharing is not connected in this development build." : ""
+        availability.stringValue = !store.available ? "Local storage is unavailable. Sharing is stopped; reopen Pear after resolving the storage problem." : submit == nil ? "Local records and export are available. Report sharing is not connected in this development build." : "Reports go to Pear’s private review queue. Approval is required before catalog publication."
         emptyLabel.isHidden = !rows.isEmpty
         reloading = true
         table.reloadData()
         reloading = false
         if selection == nil, let first = rows.first { selection = first.id }
         if let selection, let row=rows.firstIndex(where:{$0.id==selection}) { table.selectRowIndexes(IndexSet(integer:row),byExtendingSelection:false) }
-        shareButton.isEnabled = submit != nil && selection != nil && store.available
+        shareButton.isEnabled = submit != nil && selection != nil && store.available && selection.map { store.snapshot.serverDeletions?[$0] == nil } == true
         retryButton.isEnabled = retryReport != nil && store.snapshot.policy.pending.contains { $0.payload.reportID == selection }
     }
     func numberOfRows(in tableView: NSTableView) -> Int { rows.count }
@@ -177,7 +179,8 @@ import UniformTypeIdentifiers
             let failed = request.map { (store.snapshot.delivery?[$0.requestID]?.failures ?? 0) > 0 } ?? false
             let expired = request.map { Date().timeIntervalSince($0.createdAt ?? .distantPast) >= 14 * 86400 } ?? false
             let shared = store.snapshot.shared[run.id] != nil
-            value = HistoryBadge(failed ? "Send failed" : expired ? "Retry needed" : pending ? "Pending" : shared ? "Shared" : "Not shared",
+            let deletion = store.snapshot.serverDeletions?[run.id]
+            value = HistoryBadge(deletion == true ? "Deleted from server" : deletion == false ? "Deletion needs retry" : failed ? "Send failed" : expired ? "Retry needed" : pending ? "Pending" : shared ? "Shared" : "Not shared",
                 symbol: pending ? "clock" : shared ? "arrow.up.circle.fill" : "lock",
                 tint: pending ? .systemOrange : shared ? .systemBlue : .secondaryLabelColor)
         }
@@ -201,7 +204,7 @@ import UniformTypeIdentifiers
             note.string=run.note; shareNote.state = .off
             displayedID=run.id
         }
-        shareButton.isEnabled = submit != nil && store.available
+        shareButton.isEnabled = submit != nil && store.available && store.snapshot.serverDeletions?[run.id] == nil
         retryButton.isEnabled = retryReport != nil && store.snapshot.policy.pending.contains { $0.payload.reportID == run.id }
     }
     private func editedRun() -> RunObservation? {
@@ -244,7 +247,7 @@ import UniformTypeIdentifiers
     }
     @objc private func save() { guard let run=editedRun() else { return }; do { try store.record(run); refresh() } catch { failure(error) } }
     @objc private func share() {
-        guard store.snapshot.policy.consent.disclosureVersion == 2 else { settings(); return }
+        guard store.snapshot.policy.consent.disclosureVersion == 2, !store.snapshot.policy.consent.fields.isEmpty else { settings(); return }
         guard let run=editedRun(),let submit else { return }
         do { try store.record(run); try submit(run,shareNote.state == .on); refresh() } catch { failure(error) }
     }
@@ -293,6 +296,32 @@ import UniformTypeIdentifiers
             } catch { self.failure(error) }
         }
     }
+    @objc private func manageSharedReports() {
+        let ids = Set(store.snapshot.shared.keys).union(store.snapshot.serverDeletions?.filter { !$0.value }.map { $0.key } ?? []).sorted { $0.uuidString < $1.uuidString }
+        let alert = NSAlert(); alert.messageText = "Shared reports"
+        guard !ids.isEmpty else {
+            alert.informativeText = "No shared reports or pending deletions on this Mac. Local records are separate."
+            alert.beginSheetModal(for: window); return
+        }
+        alert.informativeText = "Delete a report from Pear’s server. This keeps your local record, stops its queued sends and prevents resending the same record. Public removal follows the next successful catalog update. Backups, GitHub originals and external copies are separate."
+        let picker = NSPopUpButton()
+        picker.addItems(withTitles: ids.map { id in
+            let r = store.snapshot.shared[id]
+            return (r?.appID.map { "Steam App \($0)" } ?? "Report") + " · " + (r?.dateUTC ?? "Date not shared") + " · " + id.uuidString
+        })
+        picker.frame = NSRect(x:0,y:0,width:590,height:30)
+        alert.accessoryView = picker
+        alert.addButton(withTitle: "Cancel"); alert.addButton(withTitle: "Delete from server")
+        alert.beginSheetModal(for: window) { response in
+            guard response == .alertSecondButtonReturn, ids.indices.contains(picker.indexOfSelectedItem), let remove = self.deleteServerReport else { return }
+            remove(ids[picker.indexOfSelectedItem]) { success in
+                let result = NSAlert(); result.messageText = success ? "Server report deleted" : "Deletion not confirmed"
+                result.informativeText = success ? "Your local history is kept. Published catalog removal follows the next successful update." : "The report may still be on the server. Its pending uploads are stopped. Use Shared reports to retry deletion when online."
+                self.refresh(); result.beginSheetModal(for:self.window)
+            }
+        }
+    }
+
     @objc private func viewShared() {
         guard let id=selection,let shared=store.snapshot.shared[id] else { return }
         let alert=NSAlert();alert.messageText="Last shared content"
@@ -340,12 +369,12 @@ import UniformTypeIdentifiers
         }
     }
     func showSharingIntroductionIfNeeded() {
-        if store.snapshot.policy.consent.disclosureVersion != 2 { settings() }
+        if store.snapshot.policy.consent.disclosureVersion != 2 { show(); settings() }
     }
     @objc private func settings() {
         let consent=store.snapshot.policy.consent
         let alert=NSAlert();alert.messageText="Sharing settings"
-        alert.informativeText="Help improve support for more games. Selected reports help Pear investigate problems and collaborate with contributors. Sharing is optional; Pear works without it.\n\nReports are reviewed privately first. Selected fields and your result may then appear on the public catalog and GitHub. Approval permits publication, not a compatibility certification.\n\nNotes are sent only when explicitly included and remain private. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.\n\nYou can stop sharing at any time. Already published information may remain in external copies. Choose the fields below; optional test details are sent only with a manual report."
+        alert.informativeText="Help improve support for more games. Selected reports help Pear investigate problems and collaborate with contributors. Sharing is optional; Pear works without it.\n\nReports are reviewed privately first. Selected fields and your result may then appear on the public catalog and GitHub. Approval permits publication, not a compatibility certification.\n\nNotes are sent only when explicitly included and remain private. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.\n\nYou can stop sharing at any time. Already published information may remain in external copies. Choose the fields below; optional test details are sent only with a manual report.\n\nThe collection service is operated on Cloudflare. Network processing is not completely anonymous. Local history is kept for 90 days; server reports for up to 180 days, or up to 365 days for published reports since their latest update. Shared reports can be deleted separately from local history."
         let mode=NSPopUpButton();mode.addItems(withTitles:["Do not share — local records and manual sharing only","Ask after each game","Automatically share selected fields"])
         mode.selectItem(at:consent.disclosureVersion != 2 || consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
         let fields:[(ReportField,String)] = [(.environment,"macOS version, chip and memory"),(.components,"Pear, Wine and DXMT versions"),(.game,"Steam App ID and available game build"),(.execution,"Date, process minutes and observed exit status")]
@@ -360,6 +389,11 @@ import UniformTypeIdentifiers
             guard response == .alertFirstButtonReturn else { return }
             let selected=Set(zip(fields,checks).filter{$0.1.state == .on}.map{$0.0.0})
             let selectedMode:SharingMode = mode.indexOfSelectedItem == 0 ? .localOnly : mode.indexOfSelectedItem == 1 ? .askAfterExit : .automatic
+            guard selectedMode == .localOnly || !selected.isEmpty else {
+                let explanation = NSAlert(); explanation.messageText = "Choose at least one field"
+                explanation.informativeText = "No sharing setting was changed. Choose which fields to share in Sharing settings."
+                explanation.beginSheetModal(for:self.window); return
+            }
             do {
                 if let configure=self.configureSharing { try configure(selectedMode,selected) }
                 else { try self.store.transaction { $0.policy.configure(mode:selectedMode,fields:selected) } }
@@ -367,6 +401,7 @@ import UniformTypeIdentifiers
                     $0.policy.setExitPrompt(prompt.state == .on)
                     $0.policy.setExitNotifications(notify.state == .on)
                 }
+                if notify.state == .on && !consent.notifyAutomaticCompletion { self.enableNotifications?() }
                 self.refresh()
             } catch { self.failure(error) }
         }

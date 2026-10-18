@@ -134,3 +134,59 @@ with counts and a compact queued summary. Approval preserves the current tab;
 Queued exposes revision-checked cancellation and the local batch action. Existing
 published snapshots survive cancellation of a newer revision. Receiver tests
 exercise queue cancellation and reapproval before publication.
+
+
+## Playable hosted reporting candidate (2026-10-18)
+
+This section supersedes the earlier unconnected-launcher and retention-preparation
+statements. Stage 2 remains in progress until the requester's real game/report
+checks and final integration qualification; no public app release is claimed.
+
+The native launcher now connects its durable coordinator to the admitted Workers
+HTTPS origin. It wires manual/ask/automatic sends, two-second queue servicing,
+immediate automatic-withdrawal cancellation, report-scoped Keychain ownership,
+optional notifications (default off), manual supplements and separate server/local
+deletion. Server deletion first stops queued sends, persists retry state and blocks
+resending that record; confirmation removes the local shared-content receipt.
+Local retention is 90 days except queued runs. No report/admin shared secret is
+embedded. First launch shows disclosure v2 with fields unchecked and local-only.
+
+Game identity reads only appid/name/buildid from its installation manifest. Chip
+name comes from sysctl. Actual macOS fixture execution exposed /var versus
+/private/var aliases in process paths; canonical realpath comparison now preserves
+exact runtime/prefix isolation across those aliases. The fixture tests a natural
+process exit and another-root exclusion without running Wine or a game. It is
+included in the macOS build checks. Actual owned Steam observation found 15
+processes and zero game processes; that does not yet establish game observation.
+
+Verification: the five Swift suites (policy, durable store, URLSession transport,
+pure observer, live Darwin process fixture) passed. New cases cover server-deletion
+state/restart/resend prevention, local retention, manifest identity, native DELETE
+receipts and exact process path aliases. Incremental source notices, shell syntax
+and git diff whitespace checks passed. The production Worker and daily Pages path
+reuse the hosted evidence in task_m3_63_cloudflare.md; no new synthetic report was
+published. The new app's actual user-game reporting remains a manual check.
+
+Local candidate: .build/task63-live/Pear Reporting.app, ad hoc development signing,
+not Developer ID/notarization. Reuses /Applications/Pear.app's existing signed CLI
+and installed runtime; no runtime build, copy or authenticated prefix duplication.
+CLI SHA256: 9585e2bc13fa67caf604b6b9e741cd784ed4d3ddb2730948162fcb3d1f4e8631.
+Launcher SHA256: 8a32d2821c2bb53519756237fed23294c317936874ad35feb46ab7f141446841.
+Candidate metadata: org.pear.reporting-test, 0.1.0-reporting-test; observations
+identify this app version separately from the reused preview.3 CLI. The user
+confirmed old game/Steam/Pear termination before opening the candidate. First
+sharing sheet AX and screenshot inspection show the disclosed public/private
+boundary, no fields selected, notifications off. Persisted state confirms
+localOnly, zero queued requests, zero shared records and zero runs. No real report
+has been sent by the agent. The candidate is open for the requester to operate.
+
+Timing (UTC, monotonic in seconds): source freeze 2026-10-17T23:51:03.444168 /
+30749.033903166; build ready 23:51:10.512081 / 30756.101783291 (7.068 s);
+launch request 23:51:28.946158 / 30774.535907416; UI inspection recorded
+2026-10-18T00:02:50.974683 / 31456.561814333. Continuous freeze-to-inspection
+707.528 s includes a 580.522 s UI-tool response delay. This is not a measured
+source-to-confirmed-human-input endpoint: manual response remains pending.
+No resource-slot coordination or additional runtime preparation was needed.
+Owned .build/task63-live uses 10,432 KiB allocated; retained for requester testing,
+not a reclaimed-space claim. User scenarios belong in the already approved
+product guide docs/reporting-and-privacy.md. No other checkout was edited.

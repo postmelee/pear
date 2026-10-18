@@ -13,6 +13,8 @@ struct ReportingSnapshot: Codable {
     var runs: [RunObservation] = []
     var shared: [UUID: SharedRun] = [:]
     var delivery: [UUID: DeliveryAttempt]? = nil
+    // false = deletion requested/retry needed; true = server confirmed.
+    var serverDeletions: [UUID: Bool]? = nil
 }
 
 enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
@@ -103,6 +105,8 @@ enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
     }
 
     func enqueue(_ run: RunObservation, origin: SendOrigin, shareNote: Bool = false) throws {
+        guard store.snapshot.serverDeletions?[run.id] == nil,
+              !shareNote || run.note.count <= 4000 else { throw ReportingStoreError.unavailable }
         try store.transaction { $0.policy.enqueue(run, origin: origin, explicitlyShareNote: shareNote, now: now()) }
         changed?(); sendNext()
     }
@@ -116,6 +120,33 @@ enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
             $0.delivery = delivery
         }
         changed?(); sendNext(explicitRequest: request.requestID)
+    }
+
+    func stop() { active?.transfer.cancel(); active = nil }
+
+    func prepareServerDeletion(reportID: UUID) throws {
+        if let active, store.snapshot.policy.pending.contains(where: {
+            $0.requestID == active.id && $0.payload.reportID == reportID
+        }) { active.transfer.cancel(); self.active = nil }
+        try store.transaction {
+            $0.policy.removePending(reportID: reportID)
+            var deleted = $0.serverDeletions ?? [:]; deleted[reportID] = false
+            $0.serverDeletions = deleted
+        }
+        changed?()
+    }
+
+    func confirmServerDeletion(reportID: UUID) throws {
+        try store.transaction { $0.serverDeletions?[reportID] = true; $0.shared.removeValue(forKey: reportID) }
+        changed?()
+    }
+
+    func pruneLocalHistory() throws {
+        let cutoff = now().addingTimeInterval(-90 * 86400)
+        try store.transaction { state in
+            let queued = Set(state.policy.pending.map { $0.payload.reportID })
+            state.runs.removeAll { $0.startedAt < cutoff && !queued.contains($0.id) }
+        }
     }
 
     func deleteLocal(reportID: UUID) throws {
@@ -140,7 +171,8 @@ enum ReportingStoreError: Error { case unsafePath, unknownSchema, unavailable }
         var seen = Set<UUID>()
         let time = now()
         let request = store.snapshot.policy.pending.first { item in
-            guard seen.insert(item.payload.reportID).inserted,
+            guard store.snapshot.serverDeletions?[item.payload.reportID] == nil,
+                  seen.insert(item.payload.reportID).inserted,
                   store.snapshot.policy.authorizedRequest(item.requestID) != nil else { return false }
             if explicitRequest == item.requestID { return true }
             guard let created = item.createdAt, time >= created,
