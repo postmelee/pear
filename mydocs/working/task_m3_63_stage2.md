@@ -323,3 +323,16 @@ opens its sheet, compact titlebar branding and reduced sharing-settings gap.
 The final game-exit sheet is left open for requester review. This is synthetic
 UI validation only; no production report was transmitted. Build, source-notice
 and whitespace checks passed. Human design acceptance remains pending.
+
+### Menu and input refinement verification (2026-10-19)
+Main content now has only setup/status and bottom-aligned primary/cancel actions.
+About and history remain in the app menu, with Sharing settings (Command-comma)
+opening the existing consent sheet directly. History has an explicit Sharing mode
+caption. Exit-form captions are muted, game value stronger; shared text editors
+use native text/background/caret colors and a bezel instead of the brand surface.
+The isolated build passed after fixing a harness-only local-name collision. Native
+inspection confirmed bottom actions, direct settings shortcut, and light/dark
+input boundaries and text entry. Synthetic note persisted after Skip and reopening.
+No real report was sent. Source notices and whitespace checks passed. Exact phase
+timestamps were not captured; no latency measurement is claimed. Retain the small
+UI harness output for requester review; unchanged runtime was not rebuilt.

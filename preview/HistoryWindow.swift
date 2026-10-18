@@ -85,10 +85,11 @@ import UniformTypeIdentifiers
                           styleMask:[.titled,.closable,.miniaturizable,.resizable],backing:.buffered,defer:false)
         window.title = "Pear · Run history"; window.isReleasedWhenClosed = false
         window.minSize = NSSize(width:760,height:600); PearStyle.window(window)
-        modeLabel.font = .systemFont(ofSize: 12, weight: .medium); modeLabel.textColor = PearStyle.muted
+        modeLabel.font = .systemFont(ofSize: 12, weight: .medium); modeLabel.textColor = PearStyle.foreground
         disableButton.title = "Turn off automatic sharing"; disableButton.bezelStyle = .rounded
         disableButton.target = self; disableButton.action = #selector(disableSharing)
-        let sharing = stack([modeLabel, NSView(), button("Sharing settings…",#selector(settings)), disableButton], horizontal: true)
+        let sharingMode = PearStyle.stack([PearStyle.label("Sharing mode",size:12,muted:true),modeLabel],spacing:4)
+        let sharing = stack([sharingMode, NSView(), button("Sharing settings…",#selector(settings)), disableButton], horizontal: true)
         for (id,title,width) in [("game","Game",205.0),("date","Date · time open",190.0),
                                   ("result","Your result",165.0),("shared","Sharing",160.0)] {
             let column = NSTableColumn(identifier:NSUserInterfaceItemIdentifier(id)); column.title=title; column.width=width
@@ -409,8 +410,8 @@ import UniformTypeIdentifiers
         scroll.widthAnchor.constraint(equalToConstant: 440).isActive = true
         notes.isVerticallyResizable = true; notes.textContainer?.widthTracksTextView = true
         let suppress = NSButton(checkboxWithTitle: "Do not show this window after games", target: nil, action: nil)
-        let game = PearStyle.label(run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game",size:13)
-        let content = stack([introduction, text("Game name", bold: true), game, text("Your result", bold: true), outcome, text("Note (optional)", bold: true), scroll,
+        let game = PearStyle.label(run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game",size:14,weight:.medium)
+        let content = stack([introduction, PearStyle.label("Game name",size:12,muted:true), game, PearStyle.label("Your result",size:12,muted:true), outcome, PearStyle.label("Note (optional)",size:12,muted:true), scroll,
                              PearStyle.label("Share result sends this note privately. Skip keeps it on this Mac.",size:12,muted:true), suppress,
                              PearStyle.label("Hiding this window does not turn on automatic sharing.",size:12,muted:true)])
         content.setCustomSpacing(22, after:introduction)
@@ -434,6 +435,11 @@ import UniformTypeIdentifiers
     }
     func showSharingIntroductionIfNeeded() {
         if store.snapshot.policy.consent.disclosureVersion != 2 { show(); settings() }
+    }
+    func showSharingSettings() {
+        show()
+        guard window.attachedSheet == nil else { return }
+        settings()
     }
     @objc private func settings() {
         let consent=store.snapshot.policy.consent

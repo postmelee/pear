@@ -28,6 +28,8 @@ import AppKit
             launcher.cancelButton.target=self;launcher.cancelButton.action=#selector(setup)
             let menu=NSMenu();let app=NSMenuItem();let appMenu=NSMenu()
             let about=NSMenuItem(title:"About Pear",action:#selector(PreviewApp.showAbout),keyEquivalent:"");about.target=launcher;appMenu.addItem(about)
+            let runsEntry=NSMenuItem(title:"Run history",action:#selector(PreviewApp.showHistory),keyEquivalent:"h");runsEntry.target=launcher;appMenu.addItem(runsEntry)
+            let settings=NSMenuItem(title:"Sharing settings…",action:#selector(PreviewApp.showSharingSettings),keyEquivalent:",");settings.target=launcher;appMenu.addItem(settings)
             appMenu.addItem(.separator())
             appMenu.addItem(withTitle:"Quit UI review",action:#selector(NSApplication.terminate(_:)),keyEquivalent:"q")
             app.submenu=appMenu;menu.addItem(app)

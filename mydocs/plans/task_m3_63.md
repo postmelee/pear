@@ -207,3 +207,10 @@ the large alert-text gap. Present Game name as a heading with a body-sized value
 Move About Pear to a small muted upper-right button and retain a native app menu
 entry. Replace body branding with a small native titlebar accessory. Reuse the
 existing isolated harness and output budget; no runtime or reporting changes.
+
+## Menu and input refinement (approved 2026-10-19)
+Remove About/history controls from the main content and put installation actions
+at the bottom. Keep About and history in the app menu and add direct sharing
+settings. Use native text-editor colors and a bezel for identifiable inputs, muted
+field captions with stronger values, and an explicit Sharing mode heading. Reuse
+the UI-only harness; no runtime, consent, or transport behavior change.

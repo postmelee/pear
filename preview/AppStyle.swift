@@ -52,12 +52,13 @@ import AppKit
     static func window(_ window: NSWindow) { window.backgroundColor = background }
     static func editor(_ text: NSTextView, height: CGFloat = 100) -> NSScrollView {
         text.isRichText = false; text.font = .systemFont(ofSize: 14)
-        text.textColor = foreground; text.backgroundColor = surface
-        text.insertionPointColor = accent; text.textContainerInset = NSSize(width: 10, height: 10)
+        text.textColor = .textColor; text.backgroundColor = .textBackgroundColor
+        text.insertionPointColor = .textColor; text.textContainerInset = NSSize(width: 10, height: 10)
         text.isVerticallyResizable = true; text.isHorizontallyResizable = false
         text.autoresizingMask = [.width]; text.textContainer?.widthTracksTextView = true
         let scroll = NSScrollView(); scroll.documentView = text; scroll.hasVerticalScroller = true
-        scroll.drawsBackground = true; scroll.backgroundColor = surface
+        scroll.drawsBackground = true; scroll.backgroundColor = .textBackgroundColor
+        scroll.borderType = .bezelBorder
         scroll.wantsLayer = true; scroll.layer?.cornerRadius = 6; scroll.layer?.masksToBounds = true
         scroll.heightAnchor.constraint(equalToConstant: height).isActive = true
         return scroll
