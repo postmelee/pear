@@ -1,0 +1,115 @@
+/* SPDX-FileCopyrightText: 2026 Pear contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * Shared design contract. Semantic tokens are the customization surface.
+ */
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter Variable", Inter, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --latest-label-size: calc(.9375rem + .25vw);
+  --latest-title-size: calc(.9375rem + .45vw);
+  --latest-detail-size: calc(.8203125rem + .21875vw);
+  --article-font-family: -apple-system, BlinkMacSystemFont, Inter, "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --article-small-size: .875em;
+  --article-caption-line-height: 1.4;
+  --article-font-size: calc(.9375rem + .25vw);
+  --article-line-height: 1.5;
+  --article-header-gap: 2em;
+  --article-reading-width: calc(var(--article-font-size) * 37);
+  --blog-title-size: clamp(1.75rem, 2.47vw, 2.25rem);
+  --blog-meta-size: clamp(1rem, 1.422vw, 1.25rem);
+  --font-size-title: clamp(2rem, 4vw, 2.5rem);
+  --font-size-heading: 1.25rem;
+  --font-size-subheading: var(--font-size-body);
+  --font-size-body: clamp(1rem, .875rem + .2vw, 1.125rem);
+  --font-size-lede: 1.42rem;
+  --font-size-small: .875rem;
+  --font-size-xs: .75rem;
+  --line-height-body: 1.55;
+  --line-height-heading: 1.4;
+  --weight-body: 400;
+  --weight-heading: 500;
+  --weight-brand: 700;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 18px; --space-6: 20px; --space-7: 24px; --space-8: 28px;
+  --space-9: 32px; --space-10: 40px; --space-11: 48px; --space-12: 64px;
+  --space-13: 72px;
+  --panel-padding: var(--space-5);
+  --panel-gap: var(--space-5);
+  --game-art-ratio: 616 / 353;
+  --game-card-art-width: 200px;
+  --radius-small: 6px; --radius-panel: 12px; --radius-pill: 999px;
+  --reading-width: calc(var(--font-size-body) * 42);
+  --page-width: 88vw;
+  --sidebar-width: 180px;
+  --sidebar-gap: clamp(40px, 3.5vw, 56px);
+  --sidebar-left: max(24px, calc((100vw - var(--reading-width)) / 2 - var(--sidebar-width) - var(--sidebar-gap)));
+  --sidebar-top: 152px;
+  --header-height: 64px;
+  --section-gap: 56px;
+  --anchor-offset: 32px;
+  --motion-fast: 150ms;
+  --theme-switch-width: 44px;
+  --theme-switch-height: 24px;
+  --theme-icon-size: 16px;
+  --color-theme-knob: #cecdc3;
+  --theme-switch-travel: 20px;
+  --motion-ease: cubic-bezier(.2, 0, 0, 1);
+  --color-bg: #fffcf0;
+  --color-surface: #f2f0e5;
+  --color-surface-hover: #eae8de;
+  --color-text: #100f0f;
+  --color-muted: #6f6e69;
+  --color-faint: #878580;
+  --color-border: #e6e4d9;
+  --color-border-strong: #cecdc3;
+  --color-link-hover: #66800b;
+  --color-theme-hover: #24837b;
+  --color-focus: #66800b;
+  --color-selection: #e0e7c5;
+  --color-positive: #536907;
+  --color-positive-bg: #e8edce;
+  --color-warning: #8a6800;
+  --color-warning-bg: #f4eccc;
+  --color-negative: #af3029;
+  --color-negative-bg: #fae2dc;
+  --color-backdrop: #fffcf0d9;
+  --color-shadow: #100f0f14;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --color-bg: #100f0f;
+  --color-surface: #1c1b1a;
+  --color-surface-hover: #222120;
+  --color-text: #cecdc3;
+  --color-muted: #878580;
+  --color-faint: #575653;
+  --color-border: #282726;
+  --color-border-strong: #403e3c;
+  --color-theme-hover: #3aa99f;
+  --color-link-hover: #f2f0e5;
+  --color-focus: #a0af54;
+  --color-selection: #fffcf026;
+  --color-positive: #a0af54;
+  --color-positive-bg: #22291b;
+  --color-warning: #dfb431;
+  --color-warning-bg: #302819;
+  --color-negative: #e8705f;
+  --color-negative-bg: #321d1b;
+  --color-backdrop: #100f0fd9;
+  --color-shadow: #00000040;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #100f0f; --color-surface: #1c1b1a; --color-surface-hover: #222120;
+    --color-text: #cecdc3; --color-muted: #878580; --color-faint: #575653;
+    --color-border: #282726; --color-border-strong: #403e3c;
+    --color-theme-hover: #3aa99f;
+  --color-link-hover: #f2f0e5; --color-focus: #a0af54; --color-selection: #fffcf026;
+    --color-positive: #a0af54; --color-positive-bg: #22291b;
+    --color-warning: #dfb431; --color-warning-bg: #302819;
+    --color-negative: #e8705f; --color-negative-bg: #321d1b;
+    --color-backdrop: #100f0fd9; --color-shadow: #00000040;
+    color-scheme: dark;
+  }
+}

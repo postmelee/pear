@@ -97,7 +97,7 @@ class CatalogTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / 'site'
             files = catalog.build_site(catalog.validate(self.data), output)
-            self.assertEqual(set(files), catalog.PUBLIC_FILES | {'game-3405340.html'})
+            self.assertEqual(set(files), catalog.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html'})
             self.assertEqual(json.loads((output / 'reports.json').read_text()), self.data)
             self.assertEqual((output / 'pear.png').read_bytes(), (ROOT / 'docs/assets/pear.png').read_bytes())
             self.assertIn('href="favicon.png"', (output / 'index.html').read_text())
@@ -117,7 +117,7 @@ class CatalogTests(unittest.TestCase):
     def test_empty_catalog_is_explicit(self):
         empty = catalog.validate({'schema_version': 1, 'records': []})
         self.assertIn('No reviewed observations yet.', catalog.markdown(empty))
-        page = catalog.webpage(empty, {'schema_version': 1, 'github_forms_live': False, 'games': []})
+        page = catalog.games_page(empty, {'schema_version': 1, 'github_forms_live': False, 'games': []})
         self.assertIn('0 games', page)
         self.assertNotIn('data-game data-name=', page)
 
@@ -129,7 +129,7 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(groups), 1)
         self.assertEqual(len(groups[0]['records']), 2)
         self.assertEqual(groups[0]['records'][0]['tested_on'], '2026-10-11')
-        self.assertEqual(catalog.webpage(self.data, self.games).count('data-game data-name='), 1)
+        self.assertEqual(catalog.games_page(self.data, self.games).count('data-game data-name='), 1)
 
     def test_pass_partial_failed_do_not_grant_qualification(self):
         self.assertEqual(catalog.outcome(self.row), 'partial')
@@ -213,13 +213,16 @@ class CatalogTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             out = Path(temp) / 'site'
             catalog.build_site(self.data, out, self.games)
-            for file in out.glob('*.html'):
+            for file in out.rglob('*.html'):
                 parser = Links()
                 parser.feed(file.read_text())
                 for target in parser.links:
                     url = urlsplit(target)
                     if not url.scheme and url.path:
-                        self.assertTrue((out / url.path).is_file(), (file.name, target))
+                        resolved = file.parent / url.path
+                        if resolved.is_dir():
+                            resolved /= 'index.html'
+                        self.assertTrue(resolved.is_file(), (file.name, target))
 
     def test_metadata_cannot_add_unreviewed_private_fields(self):
         self.games['games'][0]['private_prefix'] = 'sensitive sentinel'
@@ -296,12 +299,12 @@ class SteamSiteBoundaryTests(unittest.TestCase):
             self.assertIn('steam-games.json', files)
             self.assertNotIn('game-123.html', files)
             self.assertNotIn('Synthetic lookup only', (output / 'index.html').read_text())
-            self.assertIn('data-steam-index="steam-games.json"', (output / 'report.html').read_text())
+            self.assertIn('data-steam-index="../steam-games.json"', (output / 'report/index.html').read_text())
             self.assertEqual(json.loads((output / 'steam-games.json').read_text()), snapshot)
             self.assertEqual(json.loads((output / 'reports.json').read_text()), data)
             catalog.build_site(data, output)
             self.assertFalse((output / 'steam-games.json').exists())
-            self.assertIn('data-steam-index=""', (output / 'request.html').read_text())
+            self.assertIn('data-steam-index=""', (output / 'request/index.html').read_text())
 
     def test_snapshot_extra_fields_rejected_before_site_output(self):
         data = json.loads(catalog.SOURCE.read_text())
