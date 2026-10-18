@@ -406,3 +406,67 @@ includes tool coordination and UI relaunch; preparation/admission were not
 separately timed. Requester input response/acceptance remains pending, so this is
 not a confirmed human handoff latency. Retain the existing small UI harness for
 review under the approved <50 MiB budget; no runtime copy or storage-recovery claim.
+
+
+## UI acceptance and pre-Sparkle audit (2026-10-19)
+Requester explicitly accepted the 1411152 UI and requested overall review before
+Sparkle implementation. This supersedes prior pending visual-acceptance notes;
+freeze the accepted presentation unless a functional/accessibility defect requires
+repair. This checkpoint is not final signed release qualification or Issue closure.
+
+Review found that prepareHistory opened/migrated the reporting store before
+acquiring its observer lock. A second instance could therefore migrate persisted
+preferences before failing ownership admission. Acquire the existing per-root lock
+first; its initializer now safely creates a fresh canonical history directory and
+rejects symlink aliases. Added fresh-directory competing-owner/release/reopen and
+symlink controls. Existing single-owner, PID identity and exact-prefix boundaries
+remain unchanged. No global process termination or live user data access occurred.
+
+Verification on the admitted app sources:
+- Six Swift suites passed: reporting policy, durable store/coordinator, URLSession
+  transport, pure observer, actual Darwin synthetic-process observer and presentation.
+- Full native launcher (including the actual @main entry) compiled for macOS 15.
+- Worker: 7 tests passed, including OAuth identity/state, private routes, ownership,
+  idempotency, public projection, publication acknowledgement and deletion/replay.
+- Local review-server synthetic report round trip: 1 test passed.
+- Catalog: 25 tests passed; compatibility --check validated 2 reviewed records.
+- Incremental source notices and git diff --check passed.
+- Existing #62 UpdateLaunchPolicy and tests from cad0580 were extracted unchanged
+  into the audit output and passed. No Sparkle framework was embedded or exercised.
+
+Commands: swiftc -target arm64-apple-macosx15.0 with each suite's declared Swift
+sources; node --test preview/reporting-worker/test.mjs; python3 -B -m unittest
+discover -s preview/reporting-review -p test_server.py; python3 -B -m unittest
+discover -s tests/docs -p test_compatibility.py; python3 -B tools/compatibility.py
+--check. Node was not on PATH; the configured bundled Node executable was used.
+Swift per-suite compilation/execution seconds are retained in the audit receipt:
+- policy: build 1.128; execution 1.361.
+- store: build 0.786; execution 0.715.
+- transport: build 0.964; execution 0.822.
+- observer: build 0.876; execution 0.709.
+- observer-host: build 0.818; execution 9.831.
+- presentation: build 0.397; execution 0.890.
+
+Read-only hosted checks: PEAR_REPORTS_ENABLED and PEAR_PAGES_ENABLED are true;
+latest observed catalog deployment 39151950523 succeeded at master
+07691fbda993998a920db59a707a6d2353665d50. The five newer master commits concern
+catalog clean URLs and media layout (PR66/67), not native reporting. Preserve them
+when integrating #62/#63; the local 25-test catalog result applies to this branch,
+not the newer master bytes. No new real report or approval was sent in this audit.
+Earlier automatic/manual/ask game reports remain valid within their recorded
+input scope; no unchanged-runtime long-duration game test was repeated.
+
+Artifact disposition: .build/task63-audit contains 3827130 logical bytes and
+3756 KiB allocated at this checkpoint, retained for #62 integration review;
+remove its reproducible executables after handoff, keeping sanitized evidence in
+this report. Existing exact CLI/runtime and signed candidates are preserved.
+No runtime or authenticated-prefix copies; no filesystem-reclaimed-space claim.
+This audit did not launch a new interactive production app, so it makes no new
+source-to-human-input timing claim. UI acceptance refers to the reviewed candidate.
+
+Next boundary: #62 Stage 2 may begin using this accepted UI and the existing
+cad0580 policy. Final app integration must still validate actual signed old-to-new
+Sparkle update, cancellation/offline/timeout/corruption/recovery, owned-session
+installation deferral, app relaunch/Steam de-duplication, and data preservation.
+#47 retains final signing/notarization, Homebrew, release/docs/download/catalog
+alignment. Do not publish v0.1.0 or close #63 on this audit alone.

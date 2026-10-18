@@ -153,6 +153,10 @@ struct RunObserverState {
 final class ReportingSessionOwner {
     private let descriptor: Int32
     init(directory: URL) throws {
+        let canonical = directory.standardizedFileURL
+        guard canonical.resolvingSymlinksInPath().path == canonical.path else { throw CocoaError(.fileWriteInvalidFileName) }
+        try FileManager.default.createDirectory(at:canonical,withIntermediateDirectories:true,
+                                               attributes:[.posixPermissions:0o700])
         descriptor=open(directory.appendingPathComponent("observer.lock").path,O_CREAT|O_RDWR|O_NOFOLLOW,0o600)
         guard descriptor >= 0 else { throw CocoaError(.fileWriteUnknown) }
         guard flock(descriptor,LOCK_EX|LOCK_NB)==0 else { close(descriptor);throw CocoaError(.fileLocking) }

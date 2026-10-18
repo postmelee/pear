@@ -52,8 +52,9 @@ import UserNotifications
             NSHomeDirectory() + "/Library/Application Support/Pear Preview").standardizedFileURL.resolvingSymlinksInPath()
         do {
             let directory = root.appendingPathComponent("history")
-            let store = try ReportingStore(directory: directory)
+            // Acquire ownership before decoding or migrating any persistent state.
             let owner = try ReportingSessionOwner(directory: directory)
+            let store = try ReportingStore(directory: directory)
             // Reopening cannot establish the end of an observation interrupted by Quit.
             try store.transaction { state in
                 for i in state.runs.indices where state.runs[i].endedAt == nil {

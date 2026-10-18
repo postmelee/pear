@@ -70,6 +70,17 @@ import Foundation
         withExtendedLifetime(owner) {
             do { _=try ReportingSessionOwner(directory:root);preconditionFailure("second owner") } catch {}
         }
+        let fresh = root.appendingPathComponent("fresh/history")
+        var freshOwner:ReportingSessionOwner? = try ReportingSessionOwner(directory:fresh)
+        withExtendedLifetime(freshOwner) {
+            do { _=try ReportingSessionOwner(directory:fresh);preconditionFailure("fresh second owner") } catch {}
+        }
+        freshOwner=nil
+        let reopened=try ReportingSessionOwner(directory:fresh)
+        withExtendedLifetime(reopened) {}
+        let alias=root.appendingPathComponent("history-alias")
+        try FileManager.default.createSymbolicLink(at:alias,withDestinationURL:fresh)
+        do { _=try ReportingSessionOwner(directory:alias);preconditionFailure("symlink owner") } catch {}
         print("PASS: exact runtime/prefix, allowlisted game identity, helper exclusion, PID reuse, missed samples, sleep gap, single observer ownership")
     }
 }

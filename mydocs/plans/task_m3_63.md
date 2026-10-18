@@ -240,3 +240,16 @@ and fixed bottom sharing status/settings/immediate-off controls below a divider.
 No policy, transport, runtime or public-document changes. Reuse the isolated UI
 harness and existing <50 MiB retention budget. Record native interaction evidence
 in the existing stage2 report; no new subsystem or dependency is introduced.
+
+
+## Accepted UI and integration admission audit (2026-10-19)
+Requester accepted the UI at 1411152 and requested an overall audit before Sparkle.
+Freeze this visual layout. Re-run the native reporting/presentation/owned-process
+checks, Worker tests and catalog validation; reuse actual three-mode gameplay
+reporting evidence without replaying games. Correct ownership admission so the
+observer lock is acquired before store decoding/migration, preventing a second
+instance from migrating an active owner's settings. Reuse the existing lock and
+canonical-path checks; add fresh-root, competing-owner and symlink controls.
+Retain small test executables and a full native compile under .build/task63-audit
+(<100 MiB); no runtime copies or production data mutations. #62's existing stage1
+policy on cad0580 is reusable and will be validated separately before integration.
