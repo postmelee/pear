@@ -200,3 +200,10 @@ for a separate, non-shipped UI harness. No product-document relocation or websit
 edit is needed. Record evidence in this plan's existing stage2 report. Owned
 .build/task63-ui outputs budget <50 MiB, no runtime/prefix copy; retain through
 user UI review, then discard superseded candidates. Signed delivery remains later.
+
+## Approved UI follow-up (2026-10-19)
+Keep the sharing introduction inside the content-sized accessory stack to remove
+the large alert-text gap. Present Game name as a heading with a body-sized value.
+Move About Pear to a small muted upper-right button and retain a native app menu
+entry. Replace body branding with a small native titlebar accessory. Reuse the
+existing isolated harness and output budget; no runtime or reporting changes.

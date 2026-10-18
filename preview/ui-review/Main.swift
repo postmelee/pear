@@ -27,6 +27,8 @@ import AppKit
             launcher.button.target=self;launcher.button.action=#selector(ready)
             launcher.cancelButton.target=self;launcher.cancelButton.action=#selector(setup)
             let menu=NSMenu();let app=NSMenuItem();let appMenu=NSMenu()
+            let about=NSMenuItem(title:"About Pear",action:#selector(PreviewApp.showAbout),keyEquivalent:"");about.target=launcher;appMenu.addItem(about)
+            appMenu.addItem(.separator())
             appMenu.addItem(withTitle:"Quit UI review",action:#selector(NSApplication.terminate(_:)),keyEquivalent:"q")
             app.submenu=appMenu;menu.addItem(app)
             let item=NSMenuItem(title:"Preview screens",action:nil,keyEquivalent:"");let screens=NSMenu()

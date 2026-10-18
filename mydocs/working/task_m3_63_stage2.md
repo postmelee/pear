@@ -304,3 +304,22 @@ was 5,748 KiB UI plus 6,404 KiB full candidate before this small timing update.
 Filesystem available was about 11 GiB; no reclaimed-space claim. No runtime or
 prefix copies. Preserve these small candidates through UI review and discard
 superseded output on the next admitted handoff.
+
+### UI follow-up, pending visual confirmation (2026-10-19)
+Applied the requester-approved spacing, Game name hierarchy, upper-right About
+Pear control, native About menu and compact titlebar branding. Sharing disclosure
+now belongs to the same content-sized stack as its controls; all disclosure text
+and consent behavior are retained. The isolated app compiled successfully and
+incremental notices and whitespace checks passed. During old-harness dismissal
+the Mac locked; final new-binary visual inspection and user handoff are pending.
+No Steam, runtime, production data or network reporting was exercised. Retain the
+small existing UI output until the requester reviews it. Detailed timing boundaries
+were not captured for this iteration; no end-to-end input-response claim is made.
+
+Final UI follow-up verification: after requester unlock, the rebuilt harness
+visibly shows the corrected introduction-to-Game name spacing and body-sized
+Megabonk value. Earlier native interaction confirmed the upper-right About action
+opens its sheet, compact titlebar branding and reduced sharing-settings gap.
+The final game-exit sheet is left open for requester review. This is synthetic
+UI validation only; no production report was transmitted. Build, source-notice
+and whitespace checks passed. Human design acceptance remains pending.

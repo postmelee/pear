@@ -195,6 +195,8 @@ import UserNotifications
         let menu = NSMenu()
         let appItem = NSMenuItem(); let appMenu = NSMenu()
         let runsItem = NSMenuItem(title: "Run history", action: #selector(showHistory), keyEquivalent: "h"); runsItem.target = self
+        let aboutItem = NSMenuItem(title: "About Pear", action: #selector(showAbout), keyEquivalent: ""); aboutItem.target = self
+        appMenu.addItem(aboutItem); appMenu.addItem(.separator())
         appMenu.addItem(runsItem); appMenu.addItem(.separator())
         appMenu.addItem(NSMenuItem(title: "Quit Pear", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
         appItem.submenu = appMenu; menu.addItem(appItem); NSApp.mainMenu = menu
@@ -206,10 +208,19 @@ import UserNotifications
         window = NSWindow(contentRect:NSRect(x:0,y:0,width:600,height:430),
                           styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
         window.title = "Pear"; window.isReleasedWhenClosed = false; PearStyle.window(window)
+        let titlebar = NSTitlebarAccessoryViewController()
         let mark = NSImageView(image:NSApp.applicationIconImage)
-        mark.widthAnchor.constraint(equalToConstant:40).isActive=true
-        mark.heightAnchor.constraint(equalToConstant:40).isActive=true
-        let brand = PearStyle.stack([mark,PearStyle.label("Pear",size:20,weight:.semibold)],horizontal:true)
+        mark.widthAnchor.constraint(equalToConstant:16).isActive=true
+        mark.heightAnchor.constraint(equalToConstant:16).isActive=true
+        let titleContent = PearStyle.stack([mark,PearStyle.label("Pear",size:13,weight:.semibold)],horizontal:true,spacing:6)
+        titleContent.frame = NSRect(x:0,y:0,width:72,height:24)
+        titlebar.view=titleContent;titlebar.layoutAttribute = .left
+        window.titleVisibility = .hidden;window.addTitlebarAccessoryViewController(titlebar)
+        let about = PearStyle.button("About Pear",target:self,action:#selector(showAbout))
+        about.controlSize = .small;about.font = .systemFont(ofSize:12)
+        about.isBordered=false;about.showsBorderOnlyWhileMouseInside=true
+        about.contentTintColor=PearStyle.muted;about.toolTip="About Pear"
+        let top = PearStyle.stack([NSView(),about],horizontal:true)
         titleLabel = PearStyle.label("Set up Pear",size:28,weight:.semibold)
         label = PearStyle.label("Checking your installation…",size:14,muted:true)
         downloadHost = PearStyle.stack([])
@@ -223,11 +234,10 @@ import UserNotifications
         cancelButton = PearStyle.button("Cancel",target:self,action:#selector(cancelSetup));cancelButton.isHidden=true
         let actions = PearStyle.stack([NSView(),cancelButton!,button!],horizontal:true,spacing:16)
         let divider=NSBox();divider.boxType = .separator
-        let footer=PearStyle.stack([PearStyle.button("Run history",target:self,action:#selector(showHistory)),NSView(),
-                                   PearStyle.button("About Pear",target:self,action:#selector(showAbout))],horizontal:true)
-        let page=PearStyle.stack([brand,titleLabel!,label!,downloadHost,status,NSView(),actions,divider,footer],spacing:16)
+        let footer=PearStyle.stack([PearStyle.button("Run history",target:self,action:#selector(showHistory)),NSView()],horizontal:true)
+        let page=PearStyle.stack([top,titleLabel!,label!,downloadHost,status,NSView(),actions,divider,footer],spacing:16)
         PearStyle.pin(page,in:window.contentView!)
-        for view in [label!,downloadHost!,status,actions,divider,footer] {
+        for view in [top,label!,downloadHost!,status,actions,divider,footer] {
             view.widthAnchor.constraint(equalTo:page.widthAnchor).isActive=true
         }
         busy.widthAnchor.constraint(equalToConstant:18).isActive=true

@@ -400,7 +400,8 @@ import UniformTypeIdentifiers
         guard let run = store.snapshot.runs.first(where: { $0.id == id }) else { showNextFinished(); return }
         show(); showingFinished = true
         let alert = NSAlert(); alert.messageText = "How did the game run?"
-        alert.informativeText = "Share your experience to help improve Pear. You can also skip and add a result later."
+        let introduction = PearStyle.label("Share your experience to help improve Pear. You can also skip and add a result later.")
+        introduction.widthAnchor.constraint(equalToConstant:440).isActive=true
         let outcome = NSPopUpButton(); outcome.addItems(withTitles: ["Not confirmed", "Worked normally", "Had problems"])
         outcome.selectItem(at:run.result == .normal ? 1 : run.result == .problems ? 2 : 0)
         let notes = NSTextView(); notes.string = run.note; notes.isRichText = false; notes.font = .systemFont(ofSize: 13)
@@ -408,11 +409,13 @@ import UniformTypeIdentifiers
         scroll.widthAnchor.constraint(equalToConstant: 440).isActive = true
         notes.isVerticallyResizable = true; notes.textContainer?.widthTracksTextView = true
         let suppress = NSButton(checkboxWithTitle: "Do not show this window after games", target: nil, action: nil)
-        let game = PearStyle.label(run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game",size:23,weight:.semibold)
-        let content = stack([game, text("Your result", bold: true), outcome, text("Note (optional)", bold: true), scroll,
+        let game = PearStyle.label(run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game",size:13)
+        let content = stack([introduction, text("Game name", bold: true), game, text("Your result", bold: true), outcome, text("Note (optional)", bold: true), scroll,
                              PearStyle.label("Share result sends this note privately. Skip keeps it on this Mac.",size:12,muted:true), suppress,
                              PearStyle.label("Hiding this window does not turn on automatic sharing.",size:12,muted:true)])
-        content.frame = NSRect(x: 0, y: 0, width: 440, height: 310)
+        content.setCustomSpacing(22, after:introduction)
+        content.layoutSubtreeIfNeeded()
+        content.setFrameSize(NSSize(width:440,height:content.fittingSize.height))
         alert.accessoryView = content
         alert.addButton(withTitle: "Share result").isEnabled = submit != nil
         alert.addButton(withTitle: "Skip this time")
@@ -435,7 +438,7 @@ import UniformTypeIdentifiers
     @objc private func settings() {
         let consent=store.snapshot.policy.consent
         let alert=NSAlert();alert.messageText="Sharing settings"
-        alert.informativeText="Help improve support for more games. Your reports help Pear investigate problems and work with contributors. Sharing is optional; Pear works without it.\n\nSelected fields, your result and manually added test details may be published on the catalog and GitHub after private review. Approval is not a compatibility certification."
+        let introduction = PearStyle.label("Help improve support for more games. Your reports help Pear investigate problems and work with contributors. Sharing is optional; Pear works without it.\n\nSelected fields, your result and manually added test details may be published on the catalog and GitHub after private review. Approval is not a compatibility certification.",size:13)
         let mode=NSPopUpButton();mode.addItems(withTitles:["Do not share — local records and manual sharing only","Ask after each game","Automatically share selected fields"])
         mode.selectItem(at:consent.disclosureVersion != 2 || consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
         let fields:[(ReportField,String)] = [(.environment,"macOS version, chip and memory"),(.components,"Pear, Wine and DXMT versions"),(.game,"Steam App ID and available game build"),(.execution,"Date, process minutes and observed exit status")]
@@ -446,11 +449,13 @@ import UniformTypeIdentifiers
         let notify=NSButton(checkboxWithTitle:"Notify me after games in automatic mode",target:nil,action:nil);notify.state=consent.notifyAutomaticCompletion ? .on : .off
         let privacy = PearStyle.label("Notes stay private and are sent only when explicitly included. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.",size:12,muted:true)
         let retention = PearStyle.label("You can stop sharing at any time. Local history: 90 days. Server reports: up to 180 days, or 365 days after the latest update for published reports. Delete shared reports separately from local records; external copies may remain. Cloudflare operates the service; network processing is not completely anonymous.",size:12,muted:true)
-        let options=stack([text("When to share",bold:true), mode, text("Choose what to share",bold:true)] + checks
+        let options=stack([introduction,text("When to share",bold:true), mode, text("Choose what to share",bold:true)] + checks
                           + [privacy,text("After a game",bold:true),prompt,notify,retention])
         options.spacing=10
-        options.frame=NSRect(x:0,y:0,width:560,height:430)
-        for label in [privacy,retention] { label.widthAnchor.constraint(equalToConstant:560).isActive=true }
+        options.setCustomSpacing(22, after:introduction)
+        for label in [introduction,privacy,retention] { label.widthAnchor.constraint(equalToConstant:560).isActive=true }
+        options.layoutSubtreeIfNeeded()
+        options.setFrameSize(NSSize(width:560,height:options.fittingSize.height))
         alert.accessoryView=options
         alert.addButton(withTitle:"Save settings").bezelColor=PearStyle.buttonFill
         alert.addButton(withTitle:"Cancel")
