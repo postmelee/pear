@@ -669,3 +669,29 @@ workflow and public routes after merge. Record remote CI/deployment evidence in
 the PR. Preserve the local preview and screenshots for the requester; retain all
 unrelated analysis/research and other task worktrees. After confirmed merge,
 return this checkout to master and delete only this task's merged branches.
+
+## Post-deployment anchor correction — 2026-10-19
+
+PR #66 merged at 7325c79; all ten CI checks and Pages run 39151571522 passed,
+including snapshot acknowledgement. Public home confirms the restored muted
+introduction in both themes, and the old download URL retains query and CLI tab.
+However, the first uncached public article load exposed an existing media-layout
+shift: video posters establish intrinsic dimensions after native fragment
+navigation, moving References about 978px below its intended position. Local
+cached checks had not exposed this network-timing condition.
+
+Within the authorized deployment verification, reserve each reviewed video's
+aspect ratio before its poster arrives. Reuse the validated media dimensions,
+existing 75vh height cap and reading-column width; no media bytes, autoplay,
+article text or routing changes. Keep the correction in a separate publication
+PR. A task-owned temporary server delays JPG responses by 15 seconds to exercise
+the cold-loading case; stop that server after verification and retain the small
+script/log as evidence alongside the existing preview. This does not require a
+new dependency, runtime build or additional Issue.
+
+Correction verification: all 116 Python documentation tests pass. With poster
+responses delayed 15 seconds, References remains 32px from the top both while
+interactive and after document completion; videos already occupy 405x540 and
+673x438 before loading. At 390px viewport, portrait/landscape media use 343x458
+and 343x223 without horizontal overflow. Existing 75vh cap is preserved.
+Governance and whitespace pass. No additional runtime verification applies.

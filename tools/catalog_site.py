@@ -393,7 +393,7 @@ class ArticleValidator(HTMLParser):
             if name not in self.videos:
                 raise ValueError('Video requires a reviewed local source')
             width, height = self.videos[name].width, self.videos[name].height
-            rendered.append(f' controls playsinline preload="none" width="{width}" height="{height}" poster="media/{Path(name).stem}.jpg"')
+            rendered.append(f' controls playsinline preload="none" width="{width}" height="{height}" style="--video-ratio: {width} / {height}" poster="media/{Path(name).stem}.jpg"')
         if tag == 'img':
             if 'src' not in dict(attrs) or 'alt' not in dict(attrs):
                 raise ValueError('Article images need a source and alt text')
