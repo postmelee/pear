@@ -586,3 +586,86 @@ available for the requester. Video bytes and source are unchanged. Other worktre
 private state, signed artifacts, analysis/ and research/ are preserved. The local
 synthetic snapshot must never be deployed. Runtime, Worker, consent, and final
 release verification remain owned by #63.
+
+## Clean URLs and introductory emphasis — 2026-10-19 plan
+
+Requester asks to emphasize only the opening Pear name and remove visible HTML
+extensions. Continue the existing Issue-registration waiver in a separate
+codex/catalog-clean-urls branch; retain #63's report integration and release copy.
+Base: efd9ed7. No other open PR overlaps this change; #63 remains active.
+
+Reuse the existing Python static generator and semantic color-text token.
+GitHub Pages serves directory index files, so canonical public routes will use
+/pear/, /pear/download/, /pear/blog/ and corresponding nested directories.
+A single publication transform will rewrite internal links, assets and search
+targets without rewriting dated article source. Keep old .html entry points as
+redirects preserving query and fragment, with an ordinary link when JavaScript
+is disabled. Explicit index.html requests will also canonicalize. Do not use a
+404 router or require server configuration. External links remain unchanged.
+
+Document location: append evidence here and update the existing
+docs/development/catalog.md routing contract only, within the previously approved
+catalog guidance scope. No new product-documentation root or task Issue.
+Verify all page/asset/anchor targets under a /pear/ prefix, redirect query/hash
+preservation, search and download tabs, both themes and mobile. Run the existing
+documentation and source-notice checks. No runtime qualification is affected.
+Generated preview/evidence belongs in .build/catalog-clean-urls, disposable after
+review; reuse existing media bytes, no runtime copies or media conversion.
+Publication is separate from this local implementation/review.
+
+Implemented with the existing color-text token (dark #cecdc3, light #100f0f).
+The remaining introductory text retains color-muted. Canonical directory routes,
+legacy redirects and search links share one publication mapping; explicit index
+requests normalize too. Query strings and fragments are copied by redirect.js.
+Route collisions are rejected, including a post slug colliding with Topics.
+The publication allowlist and private-file/symlink guards remain enforced.
+
+Verification:
+- 116 Python documentation tests passed, including every local HTML, script,
+  image, poster, Steam index and section target under a synthetic /pear/ prefix;
+  empty/populated community report integration and deterministic rebuilds pass.
+- Six JavaScript Steam identity tests and governance (40 documents / 377 targets)
+  passed. Whitespace passed. Six touched original source files have preserved
+  notices; unrelated untracked analysis/research notice failures were excluded
+  from this task's pre-commit scope, without modifying those files.
+- Browser: /index.html lands at /; /download lands at /download/;
+  /download.html?from=bookmark#cli retains query and selected CLI tab;
+  the old article .html#references lands at the clean route with References
+  at the viewport top. Search opens from the nested download route and navigates
+  to the clean article route. Video/poster URLs resolve to the unchanged assets.
+- Desktop and 390px mobile light/dark presentations checked; mobile has no
+  horizontal overflow. Pear uses the normal text color while the surrounding
+  introduction remains muted. Screenshots are in .build/catalog-clean-urls.
+- The earlier preview output retained an optional community snapshot and was
+  correctly rejected when built without that input. A fresh owned output was
+  used instead. The local server on port 8765 serves this fresh output.
+- No remote deployment or runtime verification ran. JavaScript-disabled legacy
+  entry points use a continuation link; canonical pages render without scripts.
+  Python suite took about nine seconds; a continuous frozen-source-to-manual-input
+  interval was not recorded, so no feedback-time improvement is claimed.
+
+Retention: keep .build/catalog-clean-urls for requester review. It contains public
+static assets and small test logs/screenshots only; removable after review.
+Original media, other worktrees and untracked research remain untouched.
+
+## Publication and color reversion — 2026-10-19
+
+The requester explicitly authorized deployment and asked to revert the opening
+Pear color change. This supersedes the introductory emphasis above: remove the
+extra span and CSS rule, restoring the shared muted introduction in both themes.
+Keep the clean directory URLs and all legacy-link compatibility. The existing
+Issue-registration waiver remains in effect; do not invent an Issue or close #63.
+
+Final candidate verification: 116 Python documentation tests passed in 8.364s,
+six JavaScript tests passed, governance passed (40 documents / 377 local targets),
+and whitespace passed. Rebuilt the owned local static preview. Browser inspection
+confirmed the entire introduction shares rgb(135, 133, 128) in dark mode and
+rgb(111, 110, 105) in light mode, with no special name wrapper. Routing evidence
+above remains applicable because the only subsequent source change removes that
+color treatment. No runtime or release qualification claim is added.
+
+Publish through a normal PR to master, require passing CI, and verify the Pages
+workflow and public routes after merge. Record remote CI/deployment evidence in
+the PR. Preserve the local preview and screenshots for the requester; retain all
+unrelated analysis/research and other task worktrees. After confirmed merge,
+return this checkout to master and delete only this task's merged branches.

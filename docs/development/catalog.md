@@ -73,6 +73,24 @@ switch, mobile navigation, current/read TOC state and search. `catalog.js` and
 `steam-search.js` retain the catalog filters, download tabs, game identity lookup
 and local GitHub draft behavior. Global search does not replace Steam lookup.
 
+## Public routes
+
+Renderer identities and authored relative links retain their `.html` paths.
+After backlink and search extraction, `publish_pages` maps them to directory
+indexes: `download.html` becomes `download/index.html`, served as `/download/`.
+Existing index pages use their containing directory, including `/` for home.
+The transform rebases local navigation, images, videos, styles, scripts, the
+Steam lookup URL and the shared search root. Search entries use the same clean
+routes. External URLs and same-page fragments retain their original meaning.
+
+Legacy `.html` entry points link and redirect to the canonical directory route;
+the redirect retains query parameters and fragments. Explicit `index.html`
+requests also redirect. With JavaScript disabled, legacy pages provide a normal
+continuation link. GitHub Pages and the local static server may add a trailing
+slash to directory URLs. Do not replace this with a catch-all 404 router or
+strip the slash using browser history: nested relative assets depend on it.
+The same routing pass supplies canonical metadata and future article routes.
+
 ## Add a blog post
 
 1. Read the [scoped authoring rules](../blog/AGENTS.md). Add a reviewed HTML article fragment to `docs/blog/<slug>.html`, with one
