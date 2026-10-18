@@ -31,6 +31,14 @@ import UniformTypeIdentifiers
     override func viewDidChangeEffectiveAppearance() { super.viewDidChangeEffectiveAppearance(); needsDisplay = true }
 }
 
+@MainActor private final class HistoryTable: NSTableView {
+    override func keyDown(with event: NSEvent) {
+        if (event.keyCode == 36 || event.keyCode == 76), selectedRow >= 0, let action {
+            sendAction(action, to: target)
+        } else { super.keyDown(with: event) }
+    }
+}
+
 @MainActor final class HistoryWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate {
     let store: ReportingStore
     var configureSharing: ((SharingMode, Set<ReportField>) throws -> Void)?
@@ -40,7 +48,7 @@ import UniformTypeIdentifiers
     var enableNotifications: (() -> Void)?
     var submit: ((RunObservation, Bool) throws -> Void)?
     private var window: NSWindow!
-    private let table = NSTableView()
+    private let table = HistoryTable()
     private var settingsWindow: NSWindow?
     private var saveSharingAction: (() -> Void)?
     private var cancelSharingAction: (() -> Void)?
@@ -54,7 +62,6 @@ import UniformTypeIdentifiers
     private let note = NSTextView()
     private let shareNote = NSButton(checkboxWithTitle: "Include this note when I share", target: nil, action: nil)
     private let shareButton = NSButton()
-    private var openRunButton: NSButton!
     private let retryButton = NSButton()
     private var listPage: NSStackView!
     private var detailPage: NSStackView!
@@ -94,29 +101,38 @@ import UniformTypeIdentifiers
         disableButton.title = "Turn off automatic sharing"; disableButton.bezelStyle = .rounded
         disableButton.target = self; disableButton.action = #selector(disableSharing)
         let sharingMode = PearStyle.stack([PearStyle.label("Report sharing",size:12,muted:true),modeLabel,modeDescription],spacing:4)
-        let sharing = stack([sharingMode, button("Change…",#selector(settings)), disableButton, NSView()], horizontal: true)
-        for (id,title,width) in [("game","Game",205.0),("date","Date · time open",190.0),
-                                  ("result","Your result",165.0),("shared","Sharing",160.0)] {
+        let sharingActions = stack([NSView(), disableButton, button("Sharing settings…",#selector(settings))],horizontal:true)
+        let sharing = stack([sharingMode,sharingActions]);sharing.spacing=12
+        let divider=NSBox();divider.boxType = .separator
+        let listTools=NSPopUpButton(frame:.zero,pullsDown:true)
+        listTools.addItem(withTitle:"More…");listTools.menu?.autoenablesItems=false
+        let sharedReports=NSMenuItem(title:"Shared reports…",action:#selector(manageSharedReports),keyEquivalent:"")
+        sharedReports.target=self;listTools.menu?.addItem(sharedReports)
+        let heading=stack([PearStyle.label("Run history",size:28,weight:.semibold),NSView(),listTools],horizontal:true)
+        for (id,title,width) in [("game","Game",195.0),("date","Date · time open",185.0),
+                                  ("result","Your result",155.0),("shared","Sharing",145.0)] {
             let column = NSTableColumn(identifier:NSUserInterfaceItemIdentifier(id)); column.title=title; column.width=width
             column.minWidth = id == "game" ? 140 : 130
+            column.resizingMask = .autoresizingMask
             table.addTableColumn(column)
         }
         table.dataSource=self; table.delegate=self; table.rowHeight=54; table.style = .fullWidth
+        table.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
         table.backgroundColor = PearStyle.background; table.usesAlternatingRowBackgroundColors = false
         table.target = self; table.action = #selector(openSelected)
-        table.setAccessibilityLabel("Game runs. Select a run to add a result or note.")
+        table.setAccessibilityLabel("Game runs. Click a row, or select with arrow keys and press Return, to open details.")
         let list = NSScrollView(); list.documentView=table; list.hasVerticalScroller=true
         list.backgroundColor = PearStyle.background
         list.heightAnchor.constraint(greaterThanOrEqualToConstant:200).isActive=true
         emptyLabel.textColor = PearStyle.muted
         availability.font = .systemFont(ofSize: 12); availability.textColor = PearStyle.muted
-        openRunButton=button("Open selected run",#selector(openSelected));openRunButton.keyEquivalent="\r"
-        let footer = stack([button("Shared reports…",#selector(manageSharedReports)), NSView(), openRunButton!],horizontal:true)
-        listPage = stack([PearStyle.label("Run history",size:28,weight:.semibold),
-                          PearStyle.label("Your recent games. Share what worked, or help us fix a problem.", muted:true),
-                          sharing, list, emptyLabel, availability, footer])
+        listPage = stack([heading,
+                          PearStyle.label("Review a run or share your experience.", muted:true),
+                          list, emptyLabel, availability, divider, sharing])
         listPage.spacing = 16
-        for view in [sharing,list,footer] { view.widthAnchor.constraint(equalTo:listPage.widthAnchor).isActive=true }
+        for view in [heading,list,divider,sharing,sharingMode,sharingActions,modeDescription,availability] {
+            view.widthAnchor.constraint(equalTo:listPage.widthAnchor).isActive=true
+        }
         PearStyle.pin(listPage,in:window.contentView!)
 
         selectedTitle.font = .systemFont(ofSize:26,weight:.semibold); selectedTitle.textColor = PearStyle.foreground
@@ -177,7 +193,6 @@ import UniformTypeIdentifiers
         disableButton.isHidden = store.snapshot.policy.consent.mode != .automatic
         availability.stringValue = !store.available ? "Local storage is unavailable. Sharing is stopped; reopen Pear after resolving the storage problem." : submit == nil ? "Local records and export are available. Report sharing is not connected in this development build." : "Shared results help improve Pear. Publication follows review."
         emptyLabel.isHidden = !rows.isEmpty
-        openRunButton.isEnabled = selection != nil
         reloading = true
         table.reloadData()
         reloading = false
@@ -196,7 +211,12 @@ import UniformTypeIdentifiers
         switch tableColumn?.identifier.rawValue {
         case "game":
             let label = NSTextField(labelWithString: run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game")
-            label.font = .systemFont(ofSize: 14, weight: .medium); label.textColor = PearStyle.foreground; value = label
+            label.font = .systemFont(ofSize: 14, weight: .medium); label.textColor = PearStyle.foreground
+            let arrow=NSImageView(image:NSImage(systemSymbolName:"chevron.right",accessibilityDescription:"Open run details") ?? NSImage())
+            arrow.contentTintColor=PearStyle.muted
+            arrow.widthAnchor.constraint(equalToConstant:8).isActive=true
+            arrow.heightAnchor.constraint(equalToConstant:12).isActive=true
+            value=PearStyle.stack([label,arrow],horizontal:true,spacing:10)
         case "date":
             let date = DateFormatter.localizedString(from:run.startedAt,dateStyle:.medium,timeStyle:.none)
             let minutes=run.endedAt.map { max(0,Int($0.timeIntervalSince(run.startedAt)/60)) }
@@ -216,6 +236,7 @@ import UniformTypeIdentifiers
             value = HistoryBadge(deletion == true ? "Deleted from server" : deletion == false ? "Deletion needs retry" : failed ? "Send failed" : expired ? "Retry needed" : pending ? "Pending" : shared ? "Shared" : "Not shared",
                 symbol: pending ? "clock" : shared ? "arrow.up.circle.fill" : "lock",
                 tint: pending ? .systemOrange : shared ? PearStyle.accent : PearStyle.muted)
+
         }
         value.translatesAutoresizingMaskIntoConstraints = false; cell.addSubview(value)
         NSLayoutConstraint.activate([value.leadingAnchor.constraint(equalTo:cell.leadingAnchor,constant:4),
@@ -235,7 +256,6 @@ import UniformTypeIdentifiers
             do { try store.record(draft) } catch { failure(error); return }
         }
         selection=run.id
-        openRunButton.isEnabled=true
         runDate.stringValue = DateFormatter.localizedString(from:run.startedAt,dateStyle:.long,timeStyle:.short)
             + " · " + (run.endedAt.map { "\(max(0,Int($0.timeIntervalSince(run.startedAt)/60))) min open" } ?? "End not observed")
         selectedTitle.stringValue = run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game"
@@ -477,14 +497,14 @@ import UniformTypeIdentifiers
             check.state=firstRun || consent.fields.contains(field) ? .on : .off;return check
         }
         let privacy=PearStyle.label("Notes stay private and are sent only when you explicitly include them. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.",size:12,muted:true)
-        let notify=NSButton(checkboxWithTitle:"Remind me to add a result or note after games",target:nil,action:nil)
+        let notify=NSButton(checkboxWithTitle:"Remind me to add a result or note",target:nil,action:nil)
         notify.state=consent.notifyAutomaticCompletion ? .on : .off
-        let notificationHelp=PearStyle.label("Open Run history from the notification. Adding a result or note is optional; notes are never sent automatically.",size:12,muted:true)
+        let notificationHelp=PearStyle.label("Get a notification after each game to add your experience.",size:12,muted:true)
         let notificationGroup=stack([notify,notificationHelp]);notificationGroup.spacing=6
         let retention=PearStyle.label("Local history: 90 days. Server reports: up to 180 days, or 365 days after the latest update for published reports. Delete shared reports separately from local records; external copies may remain. Cloudflare operates the service and network processing is not completely anonymous.",size:12,muted:true)
         let location=PearStyle.label("You can change this anytime in Pear → Settings → Sharing (⌘,).",size:12,muted:true)
         let options=PearFormStack(views:[PearStyle.label(firstRun ? "Help improve Pear" : "Sharing",size:24,weight:.semibold),introduction,
-                           text("When to share",bold:true),mode,explanation,text("Choose what to share",bold:true)] + checks + [publication,privacy,notificationGroup,retention,location])
+                           text("When to share",bold:true),mode,explanation,notificationGroup,text("Choose what to share",bold:true)] + checks + [text("How your reports are used",bold:true),publication,privacy,text("Storage and deletion",bold:true),retention,location])
         options.orientation = .vertical;options.alignment = .leading;options.spacing=12
         for label in [introduction,publication,explanation,privacy,notificationHelp,retention,location] {
             label.widthAnchor.constraint(equalToConstant:width).isActive=true

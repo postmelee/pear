@@ -228,3 +228,15 @@ Legacy suppressed ask preferences migrate durably to manual sharing, preserving 
 Update the existing docs/reporting-and-privacy.md for these approved user-facing
 semantics; no new document location. Verify policy/store restart and no-send
 boundaries plus isolated UI. Reuse app-only outputs (<50 MiB); no runtime copies.
+
+
+## History navigation and grouped disclosure (approved 2026-10-19)
+Move the automatic-only reminder directly below mode selection/explanation. Group
+public-use and retention disclosure under explicit headings without removing
+consent facts. Reuse AppKit table navigation: single click or keyboard Return opens
+a run, with a chevron affordance. Remove the duplicate Open selected run action.
+Keep history focused on records, with shared-report management in its More menu
+and fixed bottom sharing status/settings/immediate-off controls below a divider.
+No policy, transport, runtime or public-document changes. Reuse the isolated UI
+harness and existing <50 MiB retention budget. Record native interaction evidence
+in the existing stage2 report; no new subsystem or dependency is introduced.

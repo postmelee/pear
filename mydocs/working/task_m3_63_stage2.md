@@ -377,3 +377,32 @@ user acceptance. The small .build/task63-ui output is retained for requester
 review and may be replaced by the next admitted UI build. No runtime copy or
 runtime rebuild was needed. Phase timestamps were not captured continuously for
 this iteration, so no end-to-end latency or reclaimed-storage claim is made.
+
+
+### History footer and disclosure grouping (2026-10-19)
+Moved the automatic-only optional reminder below the sharing mode and its short
+explanation. Added public-use and storage/deletion headings without removing
+privacy or publication disclosure. History now leads with the record list; a
+separator divides the fixed bottom mode/explanation/settings/off area. Shared
+report management is available in the top More menu. Removed Open selected run;
+rows open on click or keyboard Return, with a chevron beside the game name.
+
+The native UI harness compiled and passed ad hoc signature, incremental source
+notice and whitespace checks. Native interaction verified click and Return detail
+navigation, More > Shared reports presence, bottom Sharing settings opening the
+separate settings window, ask-mode reminder hiding and automatic-mode reminder
+placement. Final light-mode rendering confirms visible chevrons and separated
+footer. Only synthetic fixture data was used; no production report, consent,
+game, Steam session or runtime was changed. Policy/transport sources are unchanged;
+the prior checkpoint's policy/store evidence retains its exact scope.
+
+Final source frozen at 2026-10-18T17:45:58.728750+00:00 / monotonic
+90967.074706041; build and ad hoc signing completed at
+2026-10-18T17:46:08.459590+00:00 / monotonic 90976.805799333
+(9.731 seconds combined; signing not separately timed). Automated settings
+input response/render verification finished by 2026-10-18T17:50:23.861752+00:00
+/ monotonic 91232.217380916. The continuous interval
+includes tool coordination and UI relaunch; preparation/admission were not
+separately timed. Requester input response/acceptance remains pending, so this is
+not a confirmed human handoff latency. Retain the existing small UI harness for
+review under the approved <50 MiB budget; no runtime copy or storage-recovery claim.
