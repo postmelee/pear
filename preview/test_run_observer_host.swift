@@ -28,6 +28,28 @@ import Darwin
         let last = probe.snapshot(previous:first.processes)
         let ended = state.consume(last,now:Date(),monotonic:ProcessInfo.processInfo.systemUptime)
         precondition(ended.1.count == 1 && ended.1[0].exit == .exited)
+        // Match Wine's actual layout: the PE path is argv[0], without native SteamAppId.
+        let library = root.appendingPathComponent("private/prefix/drive_c/Program Files (x86)/Steam/steamapps")
+        let game = library.appendingPathComponent("common/Fixture Game/Game.exe")
+        try FileManager.default.createDirectory(at:game.deletingLastPathComponent(),withIntermediateDirectories:true)
+        try Data().write(to:game)
+        try "\"appid\" \"3405340\"\n\"installdir\" \"Fixture Game\"\n".write(to:library.appendingPathComponent("appmanifest_3405340.acf"),atomically:true,encoding:.utf8)
+        let arguments = ["C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fixture Game\\Game.exe", "--child"].map { (value: String) in value.withCString { strdup($0) } }
+        let environment = ["WINEPREFIX=" + root.appendingPathComponent("private/prefix").path].map { (value: String) in value.withCString { strdup($0) } }
+        defer { for item in arguments + environment { free(item) } }
+        var argv = arguments + [nil], env = environment + [nil], pid:pid_t = 0
+        let status = posix_spawn(&pid,executable.path,nil,nil,&argv,&env)
+        precondition(status == 0)
+        var waited = false
+        defer { if !waited { kill(pid,SIGTERM);var status:Int32=0;waitpid(pid,&status,0) } }
+        Thread.sleep(forTimeInterval:0.2)
+        let fallback = probe.snapshot(previous:[])
+        precondition(fallback.processes.contains { $0.pid == pid && $0.appID == 3405340 })
+        var fallbackState = RunObserverState()
+        precondition(fallbackState.consume(fallback,now:Date(),monotonic:ProcessInfo.processInfo.systemUptime).0.count == 1)
+        var exitStatus:Int32=0;precondition(waitpid(pid,&exitStatus,0) == pid);waited=true
+        let fallbackEnd = fallbackState.consume(probe.snapshot(previous:fallback.processes),now:Date(),monotonic:ProcessInfo.processInfo.systemUptime)
+        precondition(fallbackEnd.1.count == 1 && fallbackEnd.1[0].exit == .exited)
         print("PASS: real macOS PID/start/argv/prefix observation and natural exit; synthetic executable, no Wine/game execution")
     }
 }

@@ -44,6 +44,28 @@ import Foundation
         precondition(identity.name == "Fixture Game" && identity.build == "12345")
         try "\"appid\" \"1\"\n".write(to:manifest,atomically:true,encoding:.utf8)
         precondition(installedGameIdentity(root:root,appID:3405340).name == nil)
+        let folder = manifests.appendingPathComponent("common/Fixture Game")
+        try FileManager.default.createDirectory(at:folder,withIntermediateDirectories:true)
+        for name in ["Game.exe", "UnityCrashHandler64.exe"] { try Data().write(to:folder.appendingPathComponent(name)) }
+        try "\"appid\" \"3405340\"\n\"installdir\" \"Fixture Game\"\n".write(to:manifest,atomically:true,encoding:.utf8)
+        let installations = installedGames(root:root)
+        precondition(installations.count == 1)
+        let gamePrefix = root.appendingPathComponent("private/prefix").path
+        let image = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fixture Game\\Game.exe"
+        let environment = ["WINEPREFIX=" + gamePrefix]
+        func identify(_ argv: [String], _ env: [String]) -> UInt32? {
+            ownedGameID(args(argv,env),executable:executable,prefix:gamePrefix,installations:installations).appID
+        }
+        precondition(identify([image],environment) == 3405340)
+        precondition(identify(["helper.exe",image],environment) == nil)
+        precondition(identify([image.replacingOccurrences(of:"Game.exe",with:"UnityCrashHandler64.exe")],environment) == nil)
+        precondition(identify([image],environment+["SteamAppId=2"]) == nil)
+        precondition(identify([image],["WINEPREFIX=/other"]) == nil)
+        precondition(installedAppID(image:"Game.exe",prefix:gamePrefix,installations:installations) == nil)
+        precondition(installedAppID(image:image,prefix:gamePrefix,installations:installations + [.init(appID:2,directory:installations[0].directory)]) == nil)
+        let outside = root.appendingPathComponent("outside.exe");try Data().write(to:outside)
+        try FileManager.default.createSymbolicLink(at:folder.appendingPathComponent("Escape.exe"),withDestinationURL:outside)
+        precondition(identify([image.replacingOccurrences(of:"Game.exe",with:"Escape.exe")],environment) == nil)
         let owner=try ReportingSessionOwner(directory:root)
         withExtendedLifetime(owner) {
             do { _=try ReportingSessionOwner(directory:root);preconditionFailure("second owner") } catch {}

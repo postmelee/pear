@@ -163,3 +163,17 @@ copy, prefix copy or game launch needed before handoff. This is a local candidat
 not signed/notarized release evidence. Keep it until manual reporting scenarios
 complete. Document scenarios in docs/reporting-and-privacy.md, the approved user
 privacy/reporting guide; do not edit the other chat's catalog-design checkout.
+
+
+## Game identification repair (2026-10-18)
+The requester found no records after an automatic-mode game exit. Actual owned
+Megabonk execution exposed no native SteamAppId in KERN_PROCARGS2. Reuse the
+existing manifest reader and ownership probe: match only the PE image argv[0]
+against a unique installation in this prefix's primary Steam library. Ignore
+known crash/overlay/Steam helpers, reject ambiguous mappings and conflicting IDs,
+and never persist argument/environment dumps. External libraries without a proven
+mapping remain unknown. Add both decoder fixtures and actual macOS exec fixtures
+with Windows argv[0] and no SteamAppId. Reuse the unchanged runtime/CLI; small
+candidate .build/task63-game-id is retained through manual exit/send confirmation.
+User guide location stays docs/reporting-and-privacy.md; clarify the same feature's
+observation limits there. No other task or source tree is modified.

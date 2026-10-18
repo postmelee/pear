@@ -190,3 +190,57 @@ No resource-slot coordination or additional runtime preparation was needed.
 Owned .build/task63-live uses 10,432 KiB allocated; retained for requester testing,
 not a reclaimed-space claim. User scenarios belong in the already approved
 product guide docs/reporting-and-privacy.md. No other checkout was edited.
+
+
+## Real-game identification failure and repair (2026-10-18)
+
+The requester selected automatic sharing, played and exited, but no local run was
+created. Durable consent was automatic with all four fields selected; queue and
+shared receipts were empty. This was an observation defect, not a network failure.
+The previous native fixture supplied SteamAppId, whereas the actual Wine children
+for Megabonk exposed no SteamAppId in macOS KERN_PROCARGS2. This invalidates the
+previous fixture's applicability to actual Steam-launched game identification.
+No earlier play duration/result was reconstructed or fabricated.
+
+While the requester left Megabonk at its menu, sanitized live inspection established
+that argv[0] was its Windows executable path. Reused the existing installation
+manifest reader and exact runtime/prefix/PID-start ownership checks. A bounded
+primary-library manifest index maps only argv[0] to one owned installation, never
+an arbitrary later argument. Known Unity crash/Steam/overlay helper images are
+excluded; conflicting IDs, ambiguous installations, missing/relative images,
+symlink escapes and other prefixes remain unidentified. No raw argv/environment,
+Steam account data or logs were persisted as reports. Additional Steam libraries
+without a proven mapping remain outside the fallback's scope.
+
+The pure observer suite passed new no-SteamAppId, helper, wrong-prefix, conflicting
+ID, argument-reference, ambiguous-directory and escaping-symlink controls. The
+actual Darwin fixture now also uses posix_spawn with a Windows PE argv[0] and no
+native SteamAppId, and passes start and natural-exit observation. Full app build,
+source notices and whitespace checks passed. The prior consent/store/transport
+checks apply unchanged; no runtime rebuild or long gameplay test was repeated.
+
+Live read-only probe changed from 18 owned processes / zero game processes to 18 /
+one game process. The old Pear alone was quit through its normal Quit action;
+Steam and Megabonk stayed running. New candidate
+.build/task63-game-id/Pear Reporting.app (0.1.0-reporting-test.2) created the
+Megabonk record with App ID 3405340 and build 21750826. Requester then confirmed
+normal game exit. App persisted observedExit=exited, acknowledged one automatic
+report with zero pending requests, and displayed Shared. Actual authenticated
+administrator UI showed the same UUID/revision 1 in Needs review, with userResult
+unknown, processMinutes 4 and no private note. This was menu/diagnostic observation,
+not evidence of four minutes of active play. No approval/public publication was
+performed. Direct Wrangler D1 verification returned API authorization error 7403;
+the independent verification used normal GitHub OAuth administrator UI instead.
+The expired admin session was renewed through the existing authorized login flow.
+
+Launcher SHA256 ff16ba792622f8a6899cd4d50db0bcc5ea5ef63d5ed1bbbce96e71bbf2c82b54.
+Unchanged installed CLI/runtime inputs match the previous checkpoint. Source freeze
+UTC 2026-10-18T14:34:56.101542+00:00 / monotonic 79683.644485375; local build
+8.643 s; launch requested 2026-10-18T14:36:28.515097+00:00 /
+79776.058042916. UI button interaction and record rendering were
+verified; requester exit/send/admin checks recorded at
+2026-10-18T14:47:14.033358+00:00 / 80421.657510666.
+The game was already open, so this is not a new-game source-to-manual-input timing.
+Exact handoff/response arrival boundaries were not captured; no summed timing is
+presented as that endpoint. Final signed release and manual/ask-mode game checks
+remain distinct gates. Candidate and small fixtures are retained for those checks.

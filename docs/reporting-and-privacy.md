@@ -56,7 +56,12 @@ separate deletion controls. D1 backup retention is separate from live-data delet
 Open **Pear Reporting**, then use **Run history** in the Pear window or app menu.
 Do not run the old Pear app at the same time. Existing Steam login, games and saves
 are retained. Games opened through this Pear installation are observed; unrelated
-Wine environments are excluded. Closing the Pear window keeps the observer alive
+Wine environments are excluded. When Wine does not expose a Steam App ID to
+macOS, Pear matches the running executable to a unique installed-game manifest in
+this prefix's primary Steam library. Known Steam, overlay and crash helpers are
+excluded. Games in other libraries without a proven mapping remain unidentified.
+Observation starts when Pear sees the process; it cannot reconstruct earlier
+unobserved time. Closing the Pear window keeps the observer alive
 while its Steam or games run. Explicitly choosing Quit Pear stops observation;
 interrupted observations remain unknown.
 
