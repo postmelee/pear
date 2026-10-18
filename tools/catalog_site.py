@@ -324,7 +324,7 @@ def publish_pages(pages):
 
 def home_content():
     return f'''<section class="home-intro"><h1 class="sr-only">Pear — Windows games on Mac</h1><img class="hero-logo" src="pear.png" alt="A golden Asian pear" width="120" height="120">
-<p class="lede intro-copy"><span class="intro-name">Pear</span> is a free, <a href="{REPO}">open-source</a> Mac app for playing <a href="download.html">Windows Steam games</a> on Apple Silicon.</p></section>
+<p class="lede intro-copy">Pear is a free, <a href="{REPO}">open-source</a> Mac app for playing <a href="download.html">Windows Steam games</a> on Apple Silicon.</p></section>
 <section class="home-section"><h2 id="how-it-works">How it works</h2><p>Open Pear, sign in to Steam, and choose a game you own. Pear takes care of the setup so you can get to your library.</p>
 <ol class="steps-panel"><li><span class="step-number">01</span><div><a href="download.html">Install Pear</a><p>Download the Mac app and let it prepare Windows Steam.</p></div></li><li><span class="step-number">02</span><div>Open your library<p>Sign in through the official Steam client.</p></div></li><li><span class="step-number">03</span><div>Choose a game<p>Install a game you own, then select Play in Steam.</p></div></li></ol>
 <p>Start with the <a href="games.html">game reports</a> to see what has been tried, on which Mac, and what happened.</p></section>

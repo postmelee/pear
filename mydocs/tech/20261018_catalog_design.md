@@ -647,3 +647,25 @@ Verification:
 Retention: keep .build/catalog-clean-urls for requester review. It contains public
 static assets and small test logs/screenshots only; removable after review.
 Original media, other worktrees and untracked research remain untouched.
+
+## Publication and color reversion — 2026-10-19
+
+The requester explicitly authorized deployment and asked to revert the opening
+Pear color change. This supersedes the introductory emphasis above: remove the
+extra span and CSS rule, restoring the shared muted introduction in both themes.
+Keep the clean directory URLs and all legacy-link compatibility. The existing
+Issue-registration waiver remains in effect; do not invent an Issue or close #63.
+
+Final candidate verification: 116 Python documentation tests passed in 8.364s,
+six JavaScript tests passed, governance passed (40 documents / 377 local targets),
+and whitespace passed. Rebuilt the owned local static preview. Browser inspection
+confirmed the entire introduction shares rgb(135, 133, 128) in dark mode and
+rgb(111, 110, 105) in light mode, with no special name wrapper. Routing evidence
+above remains applicable because the only subsequent source change removes that
+color treatment. No runtime or release qualification claim is added.
+
+Publish through a normal PR to master, require passing CI, and verify the Pages
+workflow and public routes after merge. Record remote CI/deployment evidence in
+the PR. Preserve the local preview and screenshots for the requester; retain all
+unrelated analysis/research and other task worktrees. After confirmed merge,
+return this checkout to master and delete only this task's merged branches.
