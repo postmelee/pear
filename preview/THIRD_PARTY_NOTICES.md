@@ -275,3 +275,15 @@ notices rather than Pear's source header. Build/signing admission is not a claim
 that signed old-to-new update qualification has completed.
 
 `update-public.json` contains only public update configuration and a public Ed25519 key; JSON cannot carry source comment headers. Private signing keys remain outside the repository.
+
+## First-install recovery JSON recognition (0.1.1)
+
+The Rust launcher reuses serde_json 1.0.151 (https://github.com/serde-rs/json,
+MIT OR Apache-2.0) to recognize a preserved 0.1.0 reporting snapshot. Its bounded
+input is not rewritten and recognition does not grant sharing consent. Swift
+continues to decode the complete reporting schema. The existing manager JSON
+parser only accepts integers and cannot read Swift Date values, so it is not
+extended for this unrelated contract. Cargo.lock pins serde/serde_core, itoa,
+memchr and zmij; upstream license files, including conservatively retained
+locked proc-macro dependencies, are included under licenses/. The existing
+crate sources are unmodified.

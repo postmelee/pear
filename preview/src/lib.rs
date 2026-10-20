@@ -44,6 +44,7 @@ pub struct Artifact {
     pub sha: &'static str,
     pub size: u64,
 }
+mod history_adoption;
 mod migration;
 mod runtime_pin;
 pub use runtime_pin::{RUNTIME, RUNTIME_ID};
@@ -200,12 +201,13 @@ impl Session {
         let parent = path.parent().ok_or("Invalid state path.")?.canonicalize()?;
         let root = parent.join(path.file_name().ok_or("Invalid state path.")?);
         private_dir(&root)?;
-        if !root.join(".owner").exists() {
-            need(
-                fs::read_dir(&root)?.all(|e| e.is_ok_and(|e| e.file_name() == ".lock")),
-                "This folder contains unrelated files. Select a new empty preview folder.",
-            )?;
-        }
+        // Recognize the 0.1.0 first-run history layout before writing even a lock.
+        // Keep its observer lock through adoption; never alter the history bytes.
+        let legacy = if !root.join(".owner").exists() {
+            Some(history_adoption::admit(&root)?)
+        } else {
+            None
+        };
         // The lock is held across all setup and install-wait steps, including first adoption.
         let lock = OpenOptions::new()
             .read(true)
@@ -223,10 +225,10 @@ impl Session {
         )?;
         let owner = root.join(".owner");
         if !owner.exists() {
-            need(
-                fs::read_dir(&root)?.all(|e| e.is_ok_and(|e| e.file_name() == ".lock")),
-                "This folder contains unrelated files. Select a new empty preview folder.",
-            )?;
+            legacy
+                .as_ref()
+                .ok_or("State ownership changed. Close Pear and retry.")?
+                .recheck(&root)?;
             write_new(&owner, OWNER.as_bytes())?;
         }
         need(
@@ -453,9 +455,7 @@ impl Session {
             Command::new("/usr/bin/arch").args(["-x86_64", "/usr/bin/true"]),
             15,
         )
-        .map_err(|_| {
-            "Rosetta is required. Install it through macOS, then open Pear again."
-        })?;
+        .map_err(|_| "Rosetta is required. Install it through macOS, then open Pear again.")?;
         let lib = self.runtime(runtime, notify)?;
         self.upgrade_prefix(&lib, notify)?;
         let ready = self.root.join("private/prefix.ready");
@@ -837,6 +837,96 @@ mod tests {
         let link = t.path.join("link");
         symlink(&root, &link).unwrap();
         assert!(Session::open(&link).is_err());
+    }
+    fn legacy_history(root: &Path) -> Vec<u8> {
+        fs::create_dir_all(root.join("history")).unwrap();
+        fs::write(root.join("history/observer.lock"), b"").unwrap();
+        let data = br#"{"schemaVersion":1,"policy":{"consent":{"mode":"automatic","fields":["game"],"generation":3},"pending":[],"revisions":[]},"runs":[{"startedAt":123.5,"note":"keep this note"}],"shared":[]}"#.to_vec();
+        fs::write(root.join("history/history.json"), &data).unwrap();
+        data
+    }
+    #[test]
+    fn failed_first_install_preserves_history_bytes_and_reopens() {
+        let t = scratch();
+        let root = t.path.join("failed");
+        let data = legacy_history(&root);
+        let s = Session::open(&root).unwrap();
+        assert_eq!(fs::read(root.join("history/history.json")).unwrap(), data);
+        assert_eq!(text(&root.join(".owner"), 100).unwrap(), OWNER);
+        drop(s);
+        assert!(Session::open(&root).is_ok());
+        assert_eq!(fs::read(root.join("history/history.json")).unwrap(), data);
+    }
+    #[test]
+    fn interrupted_history_creation_with_only_lock_is_recoverable() {
+        let t = scratch();
+        let root = t.path.join("failed");
+        fs::create_dir_all(root.join("history")).unwrap();
+        fs::write(root.join("history/observer.lock"), b"").unwrap();
+        assert!(Session::open(&root).is_ok());
+        assert!(!root.join("history/history.json").exists());
+    }
+    #[test]
+    fn legacy_history_unknown_files_and_invalid_schema_are_not_adopted() {
+        for extra in [true, false] {
+            let t = scratch();
+            let root = t.path.join("failed");
+            legacy_history(&root);
+            if extra {
+                fs::write(root.join("history/unrelated"), b"keep").unwrap();
+            } else {
+                fs::write(root.join("history/history.json"), b"{}").unwrap();
+            }
+            let before = inventory(&root).unwrap();
+            assert!(Session::open(&root).is_err());
+            assert_eq!(inventory(&root).unwrap(), before);
+        }
+    }
+    #[test]
+    fn legacy_history_links_are_rejected_without_writes() {
+        for name in ["history.json", "observer.lock"] {
+            for hard in [true, false] {
+                let t = scratch();
+                let root = t.path.join("failed");
+                legacy_history(&root);
+                let path = root.join("history").join(name);
+                let outside = t.path.join("outside");
+                fs::rename(&path, &outside).unwrap();
+                if hard {
+                    fs::hard_link(&outside, &path).unwrap();
+                } else {
+                    symlink(&outside, &path).unwrap();
+                }
+                assert!(Session::open(&root).is_err());
+                assert!(!root.join(".owner").exists());
+                assert!(!root.join(".lock").exists());
+            }
+        }
+        let t = scratch();
+        let root = t.path.join("failed");
+        legacy_history(&root);
+        fs::rename(root.join("history"), t.path.join("elsewhere")).unwrap();
+        symlink(t.path.join("elsewhere"), root.join("history")).unwrap();
+        assert!(Session::open(&root).is_err());
+        assert!(!root.join(".owner").exists());
+    }
+    #[test]
+    fn legacy_active_observer_prevents_adoption() {
+        let t = scratch();
+        let root = t.path.join("failed");
+        let data = legacy_history(&root);
+        let observer = plain_file(&root.join("history/observer.lock")).unwrap();
+        // SAFETY: live fixture-owned file descriptor.
+        assert_eq!(
+            unsafe { libc::flock(observer.as_raw_fd(), libc::LOCK_EX | libc::LOCK_NB) },
+            0
+        );
+        assert!(Session::open(&root).is_err());
+        assert!(!root.join(".owner").exists());
+        assert!(!root.join(".lock").exists());
+        drop(observer);
+        assert!(Session::open(&root).is_ok());
+        assert_eq!(fs::read(root.join("history/history.json")).unwrap(), data);
     }
     #[test]
     fn artifact_hash_size_and_symlink_checks() {

@@ -39,6 +39,8 @@ xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift
 "$out/run-observer-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/ReportingPolicy.swift" "$repo/preview/RunObserver.swift" "$repo/preview/test_run_observer_host.swift" -o "$out/run-observer-host-tests"
 "$out/run-observer-host-tests"
+xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/ReportingPolicy.swift" "$repo/preview/ReportingStore.swift" "$repo/preview/RunObserver.swift" "$repo/preview/test_first_install.swift" -o "$out/first-install-tests"
+"$out/first-install-tests" "$app/Contents/Resources/pear-preview"
 "$out/reporting-policy-tests"
 xcrun swiftc -target arm64-apple-macosx15.0 "$repo/preview/Presentation.swift" "$repo/preview/test_presentation.swift" -o "$out/presentation-tests"
 "$out/presentation-tests"
@@ -52,7 +54,7 @@ cat > "$app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleExecutable</key><string>PearPreview</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleVersion</key><string>5</string>
-<key>CFBundleShortVersionString</key><string>0.1.0</string>
+<key>CFBundleShortVersionString</key><string>0.1.1</string>
 <key>LSMinimumSystemVersion</key><string>15.0</string>
 <key>NSHighResolutionCapable</key><true/>
 </dict></plist>

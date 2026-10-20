@@ -25,3 +25,9 @@ Reuse unchanged admitted Wine/DXMT archives and Sparkle from retained task47 wor
 
 ## Timing
 Record wall and monotonic phase boundaries from frozen source through local build and operable UI; user response waiting separately. No invented baseline or summation of unrelated runs.
+
+### JSON reuse decision
+Reviewed serde_json 1.0.151 upstream API and MIT/Apache terms. Reuse its bounded
+Value decoder for recognition; the existing manager parser does not support
+fractional Swift timestamps. Lock the full dependency graph and retain licenses.
+No custom parser or change to the manager contract.

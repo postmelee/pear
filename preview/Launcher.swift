@@ -389,9 +389,10 @@ import UserNotifications
         return child
     }
 
-    // No state creation or network: only the core's read-only metadata command.
+    // Establish local ownership before reporting creates its history directory.
+    // This command performs no downloads or runtime execution.
     func inspectSetup() {
-        launch(process("setup-info"), inspecting: true)
+        launch(process("initialize"), inspecting: true)
     }
 
     func showSetup(_ value: SetupInfo) {
@@ -434,7 +435,7 @@ import UserNotifications
     @objc func showAbout() {
         let alert = NSAlert()
         alert.messageText = "Pear"
-        let version = info?.version ?? "0.1.0"
+        let version = info?.version ?? "0.1.1"
         let ownership=UpdateOwnership.inspect(app:Bundle.main.bundleURL)
         let updateHelp=ownership == .homebrew ? "Updates are managed by Homebrew. Use brew upgrade --cask postmelee/tap/pear." : ownership == .uncertain ? "Install Pear in Applications to use app updates." : "Pear checks for app updates before opening Steam."
         alert.informativeText = "Version \(version)\nRuntime: Wine 11.0 · DXMT 0.80\nRosetta required\n\nFree and open source · GPL-3.0-or-later\n\nSteam, games and saves are kept in your user’s Library/Application Support/Pear Preview folder.\n\n\(updateHelp)"
@@ -547,7 +548,7 @@ import UserNotifications
                        let value = try? JSONDecoder().decode(SetupInfo.self, from: result) {
                         self.showSetup(value)
                     } else {
-                        self.label.stringValue = "Cannot check installation. Close Pear and try again."
+                        self.label.stringValue = String(data: result, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "Cannot check installation. Close Pear and try again."
                         self.button.title = "Retry"
                         self.button.isEnabled = true
                     }
