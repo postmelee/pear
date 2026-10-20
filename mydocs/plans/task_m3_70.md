@@ -159,3 +159,9 @@ The original registered article already described 0.1.0 as available; explain th
 premature claim instead of silently moving its publication date. Correct current
 release/source links and reporting descriptions; retain historical Preview.4 links.
 These edits belong in the existing article and page templates, not a new guide.
+
+## Publication approval — October 20, 2026
+After reviewing the local preview, the requester explicitly instructed integration
+and deployment. This authorizes Stage 3, final reporting, PR publication, merge
+after required checks, and the existing Pages-only deployment. App/runtime
+rebuilding and new compatibility claims remain out of scope.

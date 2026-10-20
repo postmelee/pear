@@ -42,3 +42,13 @@ compact evidence until review. Unrelated private/runtime artifacts are excluded.
 ## Handoff
 Report/commit each completed stage using the stage-report procedure. Stage 2
 ends with a local preview for requester review, not a deployment or public PR.
+
+## Stage 3 — Approved integration and publication
+The requester approved the local preview and explicitly requested deployment.
+Recheck integration against current master, run the approved documentation/locale
+checks, write Stage 3 and final reports, publish a PR and preserve stage commits
+when merging after CI. Use the existing master-triggered Pages workflow with its
+real approved snapshot and prepare/deploy/ack sequence. Confirm live English and
+Korean routes, article dates/correction and unchanged signed appcast after deploy.
+Retain the reused worktree's prior release evidence; retire only #70 disposable
+preview output after the live site is verified.
