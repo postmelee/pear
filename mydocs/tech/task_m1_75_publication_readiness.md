@@ -1,6 +1,6 @@
 # Task #75 — Component source-publication readiness
 
-Review date: 2026-10-20. Tracking: [#75](https://github.com/postmelee/pear/issues/75).
+Initial review: 2026-10-20; notice and PR successor review: 2026-10-21. Tracking: [#75](https://github.com/postmelee/pear/issues/75).
 This is a review of exact private source refs and observed GitHub surfaces. No
 repository visibility, default branch, inherited history or runtime was changed.
 
@@ -9,7 +9,7 @@ repository visibility, default branch, inherited history or runtime was changed.
 | Repository | Decision | Required interpretation/action |
 |---|---|---|
 | Wine | READY WITH LIMITS | Bounded downstream history and metadata review; retain upstream/license caveats and experimental-source status |
-| FEX | BLOCKED | Resolve adjacent notice documentation for three exact generated diagnostic headers; do not invent missing authorship or rewrite frozen inputs |
+| FEX | READY WITH LIMITS | Stage4 PR successor includes reviewed adjacent notices; missing original holder information remains disclosed, and the default branch still requires integration |
 | DXMT | READY WITH LIMITS | Bounded downstream history review, unchanged submodule pins and upstream contribution policy; no full inherited-history rescan |
 | Common runtime | READY WITH LIMITS | Reviewed own history, documentation successor and final Task75 WGI delta below |
 
@@ -18,7 +18,7 @@ public, exhaustive legal clearance, clean-clone build support or game qualificat
 The requester must see these findings before a visibility decision. All four remain
 private. A later visibility operation needs a fresh ref and remote-surface check.
 
-## Exact reviewed scope
+## Initial Stage2 reviewed scope (dated snapshot)
 
 | Repository | Published private ref (`codex/task56`) | Inherited upstream boundary | Downstream commits / new blob versions / logical bytes |
 |---|---|---|---|
@@ -38,8 +38,8 @@ Local Stage1 successors were separately reviewed: Wine
 `6684cba19474dabbf6bdb5de4019427e0c958938`, DXMT
 `28fe386342ae849e746564eae3ca94e9612bd912`, runtime
 `17516d76d02d5ddd15d477bf5604cf7fda6be5b1`. Their changes are documentation and
-bundled stage reports only; source and frozen inputs are unchanged. They have
-not been pushed and do not replace published/build/tool refs. Wine/DXMT add four
+bundled stage reports only; source and frozen inputs are unchanged. At the Stage2 snapshot they had not been pushed. Stage4 PR publication is
+recorded below; none replaces default/build/tool refs. Wine/DXMT add four
 Markdown blob versions (31,400 bytes), all scanned without findings. Runtime's
 four-Markdown successor likewise passed its incremental content/path review.
 
@@ -52,11 +52,11 @@ exclusion rules, synthetic fixtures and deliberately invalid path tests are not
 private operational records. Pattern absence is not a guarantee against every
 encoded or novel secret. Raw matches/private operational records remain local.
 
-Each repository has one private `codex/task56` branch and no tags. Final live
-branch/privacy reads matched the initial pins. All four have zero observed Issues,
+At the Stage2 snapshot each repository had one private `codex/task56` branch and no tags. Final live
+branch/privacy reads matched the initial pins. All four then had zero observed Issues,
 comments, PRs, workflows, runs, Actions artifacts and releases, so there were no
-listed logs/release payloads to inspect. FEX/runtime also report zero Actions
-caches. Wine/DXMT additionally report zero deployments/environments. Wiki and
+listed logs/release payloads to inspect. FEX/runtime also reported zero Actions
+caches. Wine/DXMT additionally reported zero deployments/environments. Wiki and
 discussions are disabled in Wine/DXMT metadata; the Pages endpoint is unreadable
 (404). FEX/runtime metadata report Pages/wiki disabled. Unreadable endpoints and
 previously deleted/hidden objects are not asserted to be fully inspected.
@@ -96,7 +96,7 @@ the current adjacent import notice describes them as unmarked legacy bytes.
 FEX's upstream LICENSE cannot silently supply the Pear template's copyright
 holder. The same applies to a sibling runtime file's collective attribution.
 
-Before public conversion, add reviewed adjacent provenance/notice documentation
+The Stage2 prerequisite was to add reviewed adjacent provenance/notice documentation
 that binds these exact output/template hashes, preserves all known notices,
 records the absent original holder notice and reproduces the MIT permission and
 warranty text without inventing ownership. Keep frozen header/import-manifest
@@ -105,7 +105,9 @@ resolve absent attribution by assumption or claim blanket legal clearance.
 
 ## Conditions for a later public source release
 
-1. Resolve the FEX notice-documentation finding and audit the actual successor.
+1. Integrate the reviewed Task75 PRs, including the FEX notice successor below,
+   then recheck the exact integrated refs. The old FEX default alone does not
+   contain the correction.
 2. Preserve the completed Stage3 delta review below; review any later successor separately.
 3. Recheck all branch/tag heads and GitHub exposure surfaces immediately before
    an authorized visibility change; preserve component default branches until
@@ -123,8 +125,8 @@ delta passed notice, privacy-pattern/manual and whitespace review. The final
 test-only change adds license comments to synthetic source fixtures; 43 guarded
 tests passed again. Executed adapter/recipe bytes are unchanged from the successful
 reconstruction. This local commit is READY WITH LIMITS under the same retained-input,
-inherited-history and experimental-support boundaries; it has not been pushed
-and does not replace the selected runtime tool or candidate pins.
+inherited-history and experimental-support boundaries. It was unpushed at the Stage3 snapshot; Stage4 publishes its
+review PR without replacing selected runtime tools or candidate pins.
 
 Final delta-review SHA-256: `990b954d3c333fff63624312b013921eefc0c9f53933ec3b8976cb10744b9251`.
 The [WGI note](task_m1_75_wgi_binding.md) separates source reconstruction from
@@ -137,7 +139,52 @@ relabel the earlier dated exposure-surface inventory as newly rescanned.
 Downstream author/committer identities were separately compared with public
 Pear history at `2c151f1d074fab5a55bc2d77e25b5fb81aedc257`; no newly exposed
 identity was found. No raw personal identity is exported in this note.
-FEX's adjacent-notice prerequisite is unchanged.
+FEX's adjacent-notice prerequisite was still open at this Stage3 snapshot;
+the following Stage4 addendum supersedes that current disposition.
+
+## Stage4 notice and PR successor review — 2026-10-21
+
+All four reviewed successors are READY WITH LIMITS for a later source-visibility
+decision. They are published as private, open review PRs. The existing default
+branches remain `codex/task56`; each PR uses `codex/publish-task75`. No merge or
+visibility conversion has occurred.
+
+| Repository | Reviewed PR head | Review |
+|---|---|---|
+| Wine | `6684cba19474dabbf6bdb5de4019427e0c958938` | [PR #1](https://github.com/postmelee/pear-wine/pull/1) |
+| FEX | `97a52dd11128ffc866a127dc43fdca9e8a1c5dd9` | [PR #1](https://github.com/postmelee/pear-fex/pull/1) |
+| DXMT | `28fe386342ae849e746564eae3ca94e9612bd912` | [PR #1](https://github.com/postmelee/pear-dxmt/pull/1) |
+| Runtime | `db95ed3278d9d20233fbd395665f3d39c3a4b13d` | [PR #1](https://github.com/postmelee/pear-runtime/pull/1) |
+
+FEX `97a52dd11128ffc866a127dc43fdca9e8a1c5dd9` changes three Markdown files only:
+`Pear/Diagnostics/include/NOTICE.md`, its existing README link and the bundled
+Stage4 report. The notice binds three exact header outputs to six retained
+MIT-marked sources, discloses the missing original holder/introducing-commit
+information and reproduces the MIT clauses without inventing attribution.
+It includes the later 56-byte target-header addition. All 99 imported source
+identities/modes, 42 retained origin references and 17 protected metadata/source
+paths were verified; the frozen headers and manifests remain unchanged.
+
+Independent final notice review:
+`becf12c57ca66f35cb8c8b4aa40670e0b87e61c47bba9fb0eb4a87c4831f66d1`.
+This resolves the specific documentation prerequisite on the reviewed successor;
+it does not manufacture missing authorship or provide exhaustive legal clearance.
+The dated detail JSON and Stage1–3 reports remain unchanged.
+
+A fresh prepublication inventory at 2026-10-20T15:28:54Z verified all four private
+defaults and zero listed workflows/runs/artifacts/caches/releases/Issues/PRs/
+comments/deployments/environments. Its receipt is
+`1c2d834c99af81f3858a10aeaa3bbc214a08afce4a30197897060a787c2a35c1`.
+The [Stage4 report](../working/task_m1_75_stage4.md) records the separate
+post-publication check, new branch/PR surfaces and CI availability. A new PR is
+new reviewed remote content, not evidence that the earlier zero-count snapshot
+still describes the repository.
+
+The unchanged runtime adapter, recipe, tests and Stage3 receipt were rejoined
+before reusing the 43-test/build evidence. No runtime result was rerun or
+broadened by this documentation-only extension. Public source access still
+requires a separate requester decision after reviewing these findings, plus a
+fresh check of the actual refs and surfaces immediately before conversion.
 
 ## Evidence and limits
 

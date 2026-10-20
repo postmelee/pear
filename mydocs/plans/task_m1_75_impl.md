@@ -16,6 +16,7 @@ inputs/artifacts remain excluded. This approval does not broaden the task scope.
 | 1 | Current baseline and document reconciliation | Existing guides and exact role table | Link/status review, document suite, protected identities |
 | 2 | Four-repository publication review | `mydocs/tech/task_m1_75_publication_readiness.md` | Reachable refs/content coverage and remote surface dispositions |
 | 3 | WGI source-to-PE investigation | `mydocs/tech/task_m1_75_wgi_binding.md` and bounded recipe if needed | Exact inputs, isolated reproduction/comparison, limits and next work |
+| 4 | Approved notice/publication extension | FEX adjacent notice and five review PRs | Exact provenance/source checks, documentation integration and remote PR verification |
 
 ## Document Location Check
 
@@ -215,3 +216,70 @@ worktrees; Wine uses a sparse documentation checkout to keep the initial
   silently use a newer generator or substitute a different installed module.
 - **Disk pressure:** 512 MiB initial non-build ceiling; calculate actual WGI
   build peak before a substantial operation. No old-artifact deletion.
+
+## Stage 4 — Complete FEX adjacent notices and publish review PRs
+
+On 2026-10-21 the requester explicitly authorized correcting and verifying the
+three FEX generated-header provenance/license notices, then publishing Task75
+changes as PRs. This is a bounded completion extension, not a visibility change,
+merge, game run, source behavior change or deletion. Stage verification, reports
+and commits remain required; the instruction authorizes continuous progression
+from notice correction to verified PR publication without another approval.
+
+### Locations and ownership
+
+- In an isolated FEX `codex/task75` worktree based on `4ae26ddf9a21b52cd50d096504c4d0ea5ab49204`,
+  add `Pear/Diagnostics/include/NOTICE.md` adjacent to the three unchanged headers.
+  Bind exact header/template/schema hashes, first known import and missing original
+  holder/Git-revision facts; reproduce the MIT grant/warranty without inventing
+  attribution or converting terms. Preserve all frozen headers/manifests.
+- Link that notice from existing `Pear/README.md`; keep historical import metadata
+  as historical evidence. Record component checks in `mydocs/working/task_m1_75_stage4.md`.
+  Adjacent component attribution belongs with its source, not in Pear's product docs.
+- Update current Pear publication-readiness findings, final report and daily board;
+  preserve dated Stage1–3 reports and detail JSON as snapshots. Record Stage4 in
+  `mydocs/working/task_m1_75_stage4.md`; update these task/implementation plans.
+- Publish Pear as `codex/publish-task75` targeting `master`. Publish reviewed
+  component branches under the same publication name targeting their existing
+  `codex/task56` default branches; no new integration/default branch is created.
+  Create four private component PRs and one coordinating Pear PR with exact links.
+  Do not merge, close #75 or change visibility. Show final reviewed refs and limits.
+
+### Verification and reuse
+
+1. Check exact retained origin proof and per-header producer joins; independently
+   review the notice and unchanged MIT grant text. Copyright absence stays explicit.
+2. Verify all 99 FEX imported source/payload bytes and modes, original upstream
+   ancestry, no tracked private selector and shared provider hashes using the
+   existing `Pear/Tools/check_source.py` with explicit Wine/runtime roots.
+3. Confirm the three frozen headers and provenance manifests remain identical to
+   the imported ref; run incremental notice, local-link, whitespace and bounded
+   privacy checks on the documentation delta. No synthetic test that merely
+   asserts prose is added. No native/code behavior changed, so no rebuild is needed.
+4. Reuse Stage3 WGI build/test evidence only after checking its source/recipe/test
+   and committed identities are unchanged. Recheck affected docs using the existing
+   governance checker; run the document suite if integration changes its inputs.
+5. Refresh component branch/tag/privacy and reviewable remote exposure inventory.
+   Audit new content since the earlier pinned inventory. After publishing, verify
+   exact remote heads/base branches/PR diffs and inspect any CI results; list absent
+   or unavailable checks explicitly. Reconcile final readiness with actual PR refs.
+6. Verify a clean task worktree and source notices before each commit/PR. Preserve
+   old execution and all debug inputs/outputs; no cleanup is authorized.
+
+### Retention and peak storage
+
+The FEX sparse checkout materializes the needed source-check paths and `Pear/`
+only: 159 blobs, 2,583,062 logical bytes at planning. Share existing Git objects;
+no clone, toolchain/runtime copy, build or submodule initialization. Reserve an
+additional 32 MiB for this checkout, notices and audit/PR text; observed available
+space was 15,839,916,032 bytes. Preserve existing Task75 worktrees/evidence, exact
+original inputs, #47 and all private state. Retain new review records for PR review
+and any later authorized visibility decision. Report actual logical/allocated
+usage separately; no reclaimed-space claim.
+
+### Commit and publication gate
+
+Component: `Task #75 Stage 4: document generated-header provenance and MIT terms`.
+Pear: `Task #75 Stage 4 + final report: complete source notices and publish review handoff`.
+The existing `task-final-report` procedure applies to the authorized Open PR
+publication after verification. Visibility and merge require separate decisions.

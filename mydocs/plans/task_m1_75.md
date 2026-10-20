@@ -187,3 +187,13 @@ Verification, reports and commits remain required at each boundary. Repository
 visibility change, game execution and deletion of existing inputs/artifacts
 remain excluded. Build tools may run only under the bounded Stage 3 procedure;
 no runtime or guest execution is part of this approval.
+
+## Approved completion extension — 2026-10-21
+
+The requester authorized repairing the three FEX generated-header adjacent
+provenance/license notices, verifying them, and publishing the completed #75
+changes as PRs. Stage4 in the implementation plan records exact component notice,
+README/report locations, unchanged inputs, checks and retention. Publish review
+branches/PRs for Pear and the four private components; leave visibility, default
+branches, merge, game execution and existing artifacts unchanged. The final
+publication-readiness result must be presented before any visibility decision.
