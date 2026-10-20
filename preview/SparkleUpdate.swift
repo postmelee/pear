@@ -155,7 +155,9 @@ import Sparkle
         watchdog?.cancel();cancelTransfer=nil
         targetBuild=build
         choice=reply;choiceStage=stage
-        offer(version) { [weak self] accepted in self?.choose(accepted) }
+        let current=bundle.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String
+        let display=current == version ? "\(version) (build \(build))" : version
+        offer(display) { [weak self] accepted in self?.choose(accepted) }
     }
     func showUpdateReleaseNotes(with downloadData:SPUDownloadData) {
         guard policy.phase == .offering else { return }

@@ -31,6 +31,7 @@ class UpdatePackagingTests(unittest.TestCase):
         for key in ('SUEnableAutomaticChecks', 'SUAllowsAutomaticUpdates', 'SUAutomaticallyUpdate', 'SUEnableSystemProfiling', 'SUSendProfileInfo'):
             self.assertIs(p[key], False)
         self.assertIs(p['SUVerifyUpdateBeforeExtraction'], True)
+        self.assertIs(p['SURequireSignedFeed'], True)
         self.assertNotIn('sharing', str(p).lower())
 
     def test_invalid_or_partial_config_rejected(self):

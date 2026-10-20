@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import plistlib
 import shutil
 import subprocess
 import tempfile
@@ -106,8 +107,14 @@ def main():
     for p in [app_zip, cli_zip]:
         artifacts[p.name] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "size": p.stat().st_size}
     (out / "SHA256SUMS").write_text("".join(f"{v['sha256']}  {n}\n" for n, v in artifacts.items()))
+    app_info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
     (out / "package-manifest.json").write_text(json.dumps({
         "version": VERSION,
+        "app_build": app_info.get('CFBundleVersion'),
+        "app_version": app_info.get('CFBundleShortVersionString'),
+        "update_feed": app_info.get('SUFeedURL'),
+        "update_public_key": app_info.get('SUPublicEDKey'),
+        "signed_feed_required": app_info.get('SURequireSignedFeed', False),
         "candidate": not args.release,
         "source_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
         "source_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=REPO)),

@@ -139,3 +139,39 @@ Bound notes to 256 KiB and show an independent eight-second fallback. Missing
 notes do not reject a valid app update or hold the Steam launch gate.
 UI fixtures are marked sample content and do not represent a published release.
 No official document location changes are needed for this presentation change.
+
+## Stage 3 candidate preparation — 2026-10-20
+Use a dedicated Pear Ed25519 account in login Keychain, with only its public key
+tracked in preview/update-public.json (JSON notice exception: public configuration,
+not source code; no secret or capability). Keep private key material off CI and Git.
+Both qualification apps use an explicitly selected qualification feed, separated
+from the eventual stable Pages feed. Enable Sparkle signed-feed validation as well
+as pre-extraction archive validation. Same marketing versions show build numbers
+in the offer, so the baseline and target remain distinguishable.
+
+The protected signing run signs/notarizes the target, then derives the baseline
+from that exact app while retaining verified nested signatures. Only the baseline's
+Info.plist build number and outer app signature change; separately notarize and
+staple that app. Record hashes, source, configuration and increasing build numbers.
+This tests actual Sparkle replacement between two notarized applications; it is not
+a claim that legacy preview.4 has an updater. Keep the baseline outside homepage
+and Homebrew downloads. Prepare the feed with upstream generate_appcast and the
+same release Markdown, and retain both exact archives through final qualification.
+
+Build/publishing helpers remain in preview; protected CI remains in the existing
+preview-candidate workflow. No credential export, signing-gate bypass or runtime
+rebuild. Public stable release and final docs remain behind the original checks.
+
+### Update-notes spacing refinement — 2026-10-20
+The requester asked to use the empty area above the footer buttons. In the update
+offer only, hide the launcher status row and flexible action spacer, and let the
+notes view consume the available vertical space with a minimum readable height.
+Keep the existing footer inset and 16-point separation from the notes. Other
+launcher states retain their spacer and progress row. Verify scrolling and the
+offer/download/continue transitions in the isolated UI app before signed builds.
+
+The requester accepted the final expanded-notes layout and explicitly continued
+signed qualification on 2026-10-20. Run the workflow with qualification_pair=true;
+skip the redundant push-triggered run using the preparation commit's skip-ci
+marker. The manual run retains all portable, native, macOS 15 and protected
+signing checks. No check or signing approval is removed.

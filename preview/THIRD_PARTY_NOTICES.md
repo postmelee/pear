@@ -273,3 +273,5 @@ The upstream file/link inventory is recorded in `sparkle-files.json` (JSON does
 not carry comment headers). Framework headers and binaries retain their original
 notices rather than Pear's source header. Build/signing admission is not a claim
 that signed old-to-new update qualification has completed.
+
+`update-public.json` contains only public update configuration and a public Ed25519 key; JSON cannot carry source comment headers. Private signing keys remain outside the repository.

@@ -61,7 +61,7 @@ struct UpdateReleaseNotes {
             heading.leadingAnchor.constraint(equalTo:leadingAnchor),heading.topAnchor.constraint(equalTo:topAnchor),
             sourceButton.trailingAnchor.constraint(equalTo:trailingAnchor),sourceButton.centerYAnchor.constraint(equalTo:heading.centerYAnchor),
             status.leadingAnchor.constraint(equalTo:leadingAnchor,constant:16),status.trailingAnchor.constraint(equalTo:trailingAnchor,constant:-16),
-            status.topAnchor.constraint(equalTo:heading.bottomAnchor,constant:28),heightAnchor.constraint(equalToConstant:270)])
+            status.topAnchor.constraint(equalTo:heading.bottomAnchor,constant:28),heightAnchor.constraint(greaterThanOrEqualToConstant:270)])
         let config=WKWebViewConfiguration()
         config.websiteDataStore = .nonPersistent()
         config.defaultWebpagePreferences.allowsContentJavaScript=false

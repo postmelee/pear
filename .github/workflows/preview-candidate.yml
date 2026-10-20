@@ -5,6 +5,10 @@ name: Preview candidate
 'on':
   workflow_dispatch:
     inputs:
+      qualification_pair:
+        description: 'Build the signed Sparkle target and older qualification baseline'
+        type: boolean
+        default: false
       signed_run_id:
         description: 'Optional successful signing run to verify on macOS 15'
         type: string
@@ -95,6 +99,21 @@ jobs:
         run: |
           rustup toolchain install 1.94.1 --profile minimal
           cargo fetch --manifest-path preview/Cargo.toml --locked
+      - name: Select committed public Sparkle qualification configuration
+        if: ${{ inputs.qualification_pair }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          config = json.loads(Path('preview/update-public.json').read_text())
+          values = dict(PEAR_APP_BUILD=config['target_build'], PEAR_UPDATE_FEED=config['qualification_feed'],
+                        PEAR_UPDATE_PUBLIC_KEY=config['public_key'])
+          if any('\n' in value or '\r' in value for value in values.values()):
+              raise SystemExit('Invalid public update configuration')
+          with Path(os.environ['GITHUB_ENV']).open('a') as out:
+              for name, value in values.items():
+                  out.write(name + '=' + value + '\n')
+          PYTHON
       - name: Test and build the existing app and CLI
         run: |
           python3 -B preview/ci_checks.py
@@ -213,6 +232,21 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Select committed public Sparkle qualification configuration
+        if: ${{ inputs.qualification_pair }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          config = json.loads(Path('preview/update-public.json').read_text())
+          values = dict(PEAR_APP_BUILD=config['target_build'], PEAR_UPDATE_FEED=config['qualification_feed'],
+                        PEAR_UPDATE_PUBLIC_KEY=config['public_key'])
+          if any('\n' in value or '\r' in value for value in values.values()):
+              raise SystemExit('Invalid public update configuration')
+          with Path(os.environ['GITHUB_ENV']).open('a') as out:
+              for name, value in values.items():
+                  out.write(name + '=' + value + '\n')
+          PYTHON
       - name: Build and verify before loading any signing secret
         run: |
           export CARGO_HOME="$RUNNER_TEMP/pear-sign-cargo"
@@ -303,6 +337,17 @@ jobs:
               swift=command('xcrun', 'swiftc', '--version'), rust=command('rustc', '-Vv'),
               public_release=False, runtime_included=False), indent=2) + '\n')
           PYTHON
+      - name: Derive and notarize the older update baseline
+        if: ${{ inputs.qualification_pair }}
+        env:
+          PEAR_CERTIFICATE_SHA1: ${{ vars.PEAR_CERTIFICATE_SHA1 }}
+        run: |
+          python3 -B preview/update_baseline.py \
+            --packages "$RUNNER_TEMP/pear-signed-packages" \
+            --output "$RUNNER_TEMP/pear-signed-packages/baseline" \
+            --identity "$PEAR_CERTIFICATE_SHA1" --team XH6JHKYXV8 \
+            --keychain "$RUNNER_TEMP/pear-sign-credentials/signing.keychain-db" \
+            --notary-profile pear-ci-notary --revision "$GITHUB_SHA"
       - name: Remove the job-owned credentials on every outcome
         if: ${{ always() }}
         run: |
@@ -322,6 +367,7 @@ jobs:
         with:
           name: pear-preview-signed-candidate-${{ github.sha }}-${{ github.run_attempt }}
           path: |
+            ${{ runner.temp }}/pear-signed-packages/baseline/*
             ${{ runner.temp }}/pear-signed-packages/*.zip
             ${{ runner.temp }}/pear-signed-packages/*.dmg
             ${{ runner.temp }}/pear-signed-packages/SHA256SUMS

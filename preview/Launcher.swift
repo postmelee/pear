@@ -12,6 +12,8 @@ import UserNotifications
     var downloadHost: NSStackView!
     var updateNotes: UpdateNotesView!
     var updateVersions: NSStackView!
+    var launchStatus: NSStackView!
+    var actionSpacer: NSView!
     var installedVersion: NSTextField!
     var availableVersion: NSTextField!
     var progress: NSProgressIndicator!
@@ -52,6 +54,7 @@ import UserNotifications
     }
     func hideUpdateOffer() {
         updateNotes.isHidden=true;updateVersions.isHidden=true
+        launchStatus.isHidden=false;actionSpacer.isHidden=false
         window.setContentSize(NSSize(width:600,height:340))
     }
     func presentUpdateOffer(current:String,new:String) {
@@ -59,6 +62,7 @@ import UserNotifications
         busy.stopAnimation(nil);busy.isHidden=true
         installedVersion.stringValue=current;availableVersion.stringValue=new
         updateVersions.isHidden=false;updateNotes.isHidden=false;updateNotes.loading()
+        launchStatus.isHidden=true;actionSpacer.isHidden=true
         window.setContentSize(NSSize(width:640,height:580))
         button.title="Update and launch";button.isEnabled=true
         cancelButton.title="Later"
@@ -100,7 +104,9 @@ import UserNotifications
                     present:{ [weak self] in self?.presentUpdate($0,$1,$2) },
                     offer:{ [weak self] version,choose in
                         guard let self else { return }
-                        self.presentUpdateOffer(current:Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "Unknown",new:version)
+                        let current=Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "Unknown"
+                        let build=Bundle.main.object(forInfoDictionaryKey:"CFBundleVersion") as? String ?? "Unknown"
+                        self.presentUpdateOffer(current:version.hasPrefix(current+" (build ") ? "\(current) (build \(build))" : current,new:version)
                         self.updateChoice=choose
                     }, releaseNotes:{ [weak self] notes in
                         guard let self else { return }
@@ -354,11 +360,12 @@ import UserNotifications
         busy = NSProgressIndicator();busy.style = .spinning;busy.isIndeterminate=true
         busy.controlSize = .small;busy.setAccessibilityLabel("Preparing");busy.isHidden=true
         let status = PearStyle.stack([busy!,progress!],horizontal:true)
+        launchStatus=status;actionSpacer=NSView()
         button = PearStyle.button("Download and install",target:self,action:#selector(start),primary:true)
         button.keyEquivalent="\r";button.isEnabled=false
         cancelButton = PearStyle.button("Cancel",target:self,action:#selector(cancelSetup));cancelButton.isHidden=true
         let actions = PearStyle.stack([NSView(),cancelButton!,button!],horizontal:true,spacing:16)
-        let page=PearStyle.stack([titleLabel!,label!,downloadHost,updateVersions!,updateNotes!,status,NSView(),actions],spacing:16)
+        let page=PearStyle.stack([titleLabel!,label!,downloadHost,updateVersions!,updateNotes!,status,actionSpacer!,actions],spacing:16)
         page.setCustomSpacing(8,after:titleLabel!)
         page.setCustomSpacing(26,after:label!)
         PearStyle.pin(page,in:window.contentView!)

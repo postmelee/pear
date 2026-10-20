@@ -31,7 +31,7 @@ def configure(path, env):
     data.update(CFBundleVersion=build, SUEnableAutomaticChecks=False,
                 SUAllowsAutomaticUpdates=False, SUAutomaticallyUpdate=False,
                 SUEnableSystemProfiling=False, SUSendProfileInfo=False,
-                SUVerifyUpdateBeforeExtraction=True)
+                SUVerifyUpdateBeforeExtraction=True, SURequireSignedFeed=bool(feed))
     path.write_bytes(plistlib.dumps(data, sort_keys=False))
 
 
