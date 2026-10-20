@@ -38,7 +38,7 @@ plans/latest reports, contributor checks and task/retention workflow guidance.
 | Pear README.md | Project entry / contributors | Existing root README | No new overview needed |
 | Pear docs/README.md, docs/architecture.md, docs/development/rosetta-free.md | Official index/design/development | Existing docs paths | mydocs is inappropriate for current guidance |
 | Wine README.md, pear/README.md | Component entry/maintenance | Existing component paths | No ownership or source relocation |
-| FEX Readme.md, docs/pear/README.md | Component entry/maintenance | Existing component paths | Preserve upstream structure and notices |
+| FEX Readme.md, Pear/README.md | Component entry/maintenance | Existing component paths | Preserve upstream structure and notices |
 | DXMT README.md, pear/README.md | Component entry/maintenance | Existing component paths | Preserve upstream structure and notices |
 | Runtime README.md, docs/development.md | Assembly/development | Existing component paths | Preserve exact execution/input recipes |
 | mydocs/plans/task_m1_77*.md, working/task_m1_77_stage*.md, report/task_m1_77_report.md, orders/20261021.md | Task records / maintainers | Existing mydocs types | Do not replace current product docs with task prose |
