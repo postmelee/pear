@@ -11,12 +11,17 @@ Use an Apple Silicon Mac with the Xcode command-line tools and Rust 1.94 or late
 Current evidence uses Rust 1.94.1 and Swift 6.3.3. These are developer prerequisites;
 players use prebuilt artifacts. The candidate targets macOS 15.0 and ARM64.
 
-From the repository root, obtain only Cargo.lock's dependencies, then build:
+From the repository root, admit pinned Sparkle and fetch locked dependencies,
+then build:
 
 ```sh
+python3 -B preview/sparkle_input.py --download --output .build/task62/admitted
 cargo fetch --manifest-path preview/Cargo.toml --locked
 preview/build.sh
 ```
+
+The admission helper verifies the official Sparkle 2.10.0 archive digest, framework
+inventory and upstream signature. Do not use an arbitrary installed framework.
 
 The script runs locked/offline tests and a release build, then builds the Swift
 window and seals a local development app. Outputs are under `.build/task47/preview`;
@@ -140,7 +145,45 @@ Before any release upload or public-download claim:
 - Preserve M1/R1 identities, task stage/report/commit requirements and remaining
   failures. Packaging success does not close Issue #47 or authorize a merge.
 
-Publish only the approved exact artifacts and source revision as a clearly named
-preview release. Keep the player guide and README download status synchronized
+Publish only the approved exact artifacts and source revision. A preview remains
+a pre-release; the authorized first stable release is v0.1.0/build 8. Keep the player guide and README download status synchronized
 with actual availability. Do not replace failed tests with a disclaimer to promote
 a release. Performance or Rust-port work is outside this delivery task.
+
+
+## Sparkle feed and release coordination
+
+The public key, stable feed URL and increasing build numbers are in
+`preview/update-public.json`. The private Ed25519 key remains in the maintainer's
+Keychain; it is not a CI secret or a client credential. Protected dispatch with
+`stable_candidate=true` selects the stable feed; `qualification_pair=true` creates
+a separate test pair. These inputs are mutually exclusive. Preserve the required
+reviewer and exact approved SHA gate. Verify exact returned signed packages with
+the separate `signed_run_id`/`signed_revision` macOS 15 workflow dispatch.
+
+Build 8 is source `51fbe6f2dea42c82691d803ef02ae1663c087dd9`. Documentation/feed
+changes after this revision do not change its admitted binary identity. Supply
+that exact source archive alongside the release; do not describe a later docs
+commit as the app's build source. Future app changes need new increasing builds,
+new signing and affected verification.
+
+Keep the GitHub body in `preview/updates/release-notes.md`. Convert that same
+Markdown to HTML for upstream `generate_appcast --embed-release-notes`, select
+the final GitHub release ZIP URL, disable deltas unless separately qualified,
+and sign the feed with upstream `sign_update`. The app requires both a signed
+feed and a signed archive. Independently verify both signatures with the public
+key and match archive size/hash to the admitted manifest. Never hand-edit a
+signed XML file. Its generated signature comments are retained rather than
+adding a source notice that would invalidate the signature.
+
+`preview/updates/appcast.xml` is copied byte-for-byte to `updates/appcast.xml`
+by the catalog renderer, including scheduled catalog publications. Publish the
+referenced exact release assets before deploying the feed. Check an anonymous
+GET of the deployed feed, its signature, download URL and archive digest. Avoid
+advertising a release before its assets are available. Keep existing preview and
+runtime assets immutable. Update `postmelee/homebrew-tap` with the final DMG hash;
+recognized Caskroom installations defer Sparkle replacement to Homebrew.
+
+Legacy previews require a manual first installation. Keep successful signed
+qualification evidence, source/notary manifests and recovery inputs until final
+handoff; never publish authenticated prefixes, history or private diagnostics.

@@ -35,9 +35,15 @@ and games remain unverified.
 Install with Homebrew: `brew install --cask postmelee/tap/pear`.
 See [installation, updates and removal](docs/rosetta-preview.md#homebrew).
 
-The preview.4 candidate app/CLI startup and the reused Wine runtime were checked in macOS
+The final 0.1.0 signed app/CLI startup and the reused Wine runtime were checked in macOS
 15.7.9 CI; this does not establish Steam UI or gameplay compatibility on macOS 15.
 The gameplay evidence above remains from the unchanged runtime on macOS 26.
+
+Pear checks for app updates at launch and offers optional game reporting.
+Use **Window → Run history** to review runs and **Pear → Settings → Sharing**
+to choose what to share. Nothing is sent until you confirm a sharing choice.
+See [app updates](docs/rosetta-preview.md#app-updates) and
+[reporting and privacy](docs/reporting-and-privacy.md).
 
 ## Two tracks, one goal
 

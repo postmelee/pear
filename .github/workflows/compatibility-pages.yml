@@ -16,6 +16,7 @@ name: Reviewed compatibility catalog
       - tools/reporting_sync.py
       - tools/community_reports.py
       - tools/catalog/**
+      - preview/updates/appcast.xml
       - .github/workflows/compatibility-pages.yml
   schedule:
     - cron: '17 0 * * *' # 09:17 Asia/Seoul; GitHub scheduling may be delayed.

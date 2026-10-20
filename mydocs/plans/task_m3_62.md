@@ -194,3 +194,23 @@ release, Homebrew and website are not published by this dispatch. Verify returne
 signed configuration before release integration; retain builds 6/7 as recovery and
 updater-enabled baseline evidence. Reuse app-source evidence only for unchanged
 bytes; the new Info.plist/signature/package require fresh artifact admission.
+
+## Final delivery preparation — 2026-10-20
+Build 8 admission is recorded in Stage 3.4. Preserve its signed bytes/source identity
+51fbe6f2; documentation and static delivery changes do not trigger a new app build.
+Use approved README, player/privacy guides, documentation index and release guide
+locations. Update existing catalog download/report copy without changing historical
+observations. Keep release Markdown and signed appcast in preview/updates; the
+catalog renderer copies only the exact appcast bytes to updates/appcast.xml. XML
+signature comments are generated upstream and must not be altered for notices.
+The daily catalog workflow must include this feed on every deployment and trigger
+on its changes. Homebrew changes stay in the existing external tap's Casks/pear.rb.
+This is a delivery extension of the already authorized update/feed and website
+scope, not a new runtime or reporting subsystem.
+
+Local review precedes public changes. Prepare release notes, source archive and
+checksums against the exact admitted source, then bind the appcast to the final
+v0.1.0 ZIP URL with the existing Keychain key. Reuse official Sparkle tools and
+independent public-key verification; never export the signing key. Retain small
+feed/source/package staging under .build/task62/release through final download
+verification; no runtime copy or rebuild. Budget below 500 MiB additional output.

@@ -1,9 +1,8 @@
-# Report review and publication
+# Report sharing and privacy
 
-The reporting service is connected to the local reporting test app. The released
-Preview app does not upload reports. The test app uses the existing Steam and game
-installation and sends nothing until you confirm a sharing mode and fields.
-This local candidate is not the final signed release.
+Pear 0.1.0 includes local run history and optional reporting. Sharing is not
+required to use Pear. No report is transmitted until you confirm a sharing
+choice; app-update approval does not enable sharing.
 
 Reports sent with consent enter a private review queue. The administrator signs in
 with GitHub; only the configured administrator's numeric account ID is admitted.
@@ -51,9 +50,9 @@ this is not a promise of complete anonymity. Local history and server reports ha
 separate deletion controls. D1 backup retention is separate from live-data deletion.
 
 
-## Using the reporting test app
+## Using run history
 
-Open **Pear Reporting**, then use **Window → Run history** (Command-Shift-H).
+Open **Pear**, then use **Window → Run history** (Command-Shift-H).
 Do not run the old Pear app at the same time. Existing Steam login, games and saves
 are retained. Games opened through this Pear installation are observed; unrelated
 Wine environments are excluded. When Wine does not expose a Steam App ID to
@@ -72,7 +71,7 @@ keeps sharing off. The introduction is remembered across restarts and is not sho
 on ordinary updates. Existing choices are preserved.
 
 Use **Pear → Settings → Sharing** (Command-comma) to change these choices, or
-**Change…** beside **Report sharing** in Run history. Choose one of three modes:
+**Sharing settings…** at the bottom of Run history. Choose one of three modes:
 
 - **Manual sharing**: keep local records; share an individual record only when you
   choose **Share result**. Select fields before a manual submission.
@@ -82,8 +81,7 @@ Use **Pear → Settings → Sharing** (Command-comma) to change these choices, o
 - **Automatic sharing**: enqueue the selected observations
   after game exit. Results stay **Not confirmed** until you supply a result.
   Notes and optional test details are never sent automatically. Completion
-  notifications are optional and off by default. **Remind me to add a result or note
-  after games** opens Run history from a notification; it never sends notes automatically.
+  notifications are optional and off by default. **Remind me to add a result or note** opens Run history from a notification; it never sends notes automatically.
 
 **Save changes** saves only on this Mac. **Share result** submits the saved result
 and selected fields; check **Include this note when I share** to send a private
