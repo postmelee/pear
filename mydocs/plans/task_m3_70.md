@@ -148,7 +148,14 @@ waiting; do not substitute build time or a screenshot for confirmed interaction.
   must be optional and never override explicit URLs.
 - Scope growth: technical docs and native apps stay English in this task.
 
-## Approval Request
-Approve this scope, document locations, locale/route approach and verification
-plan, then proceed to the implementation plan and Stage 1. The current approval
-covers registration and this task plan only; no product source is changed yet.
+## Approval and expanded editorial scope
+On 2026-10-20 the requester explicitly approved implementation through a local
+preview, including Korean translation, language switching, stale current-Preview
+wording on the home/about pages, and a dated blog correction. Public deployment
+remains pending local review. This continuation covers Stages 1 and 2.
+
+Keep the article publication date 2026-10-18 and add updated date 2026-10-20.
+The original registered article already described 0.1.0 as available; explain that
+premature claim instead of silently moving its publication date. Correct current
+release/source links and reporting descriptions; retain historical Preview.4 links.
+These edits belong in the existing article and page templates, not a new guide.

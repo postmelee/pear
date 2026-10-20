@@ -194,7 +194,7 @@ class WebsiteTests(unittest.TestCase):
             if not name.endswith('.html'):
                 continue
             content = (self.output / name).read_text()
-            self.assertRegex(content, r'<title>Pear · [^<]+</title>')
+            self.assertRegex(content, r'<title\b[^>]*>Pear · [^<]+</title>')
             nodes = Elements(content).elements
             ids = [attrs['id'] for _, attrs in nodes if 'id' in attrs]
             self.assertEqual(len(ids), len(set(ids)), name)
@@ -381,7 +381,7 @@ class WebsiteTests(unittest.TestCase):
         second = compatibility.build_site(self.data, self.output)
         self.assertEqual(self.files, second)
         self.assertEqual(before, {name: (self.output / name).read_bytes() for name in second})
-        self.assertEqual(set(self.files), compatibility.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html'})
+        self.assertEqual(set(self.files), compatibility.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html', 'ko/game-3405340.html', 'ko/game-3405340/index.html'})
         self.assertFalse((self.output / 'docs').exists())
 
 

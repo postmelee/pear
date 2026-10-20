@@ -191,3 +191,10 @@
 .article-body video { display: block; width: min(100%, calc(75vh * var(--video-ratio))); aspect-ratio: var(--video-ratio); height: auto; max-height: 75vh; margin-inline: auto; background: #000; border-radius: var(--radius-small); }
 .article-body figcaption { margin-top: var(--space-3); font-size: var(--article-small-size); line-height: var(--article-caption-line-height); color: var(--color-muted); }
 @media (max-width: 860px) { .article-page { --reading-width: 88vw; } }
+
+/* Explicit locale links work without scripting or stored preferences. */
+.language-switch { display:flex; gap:.5rem; align-items:center; font-size:.82rem; white-space:nowrap; }
+.language-switch a { color:var(--color-muted); text-decoration:none; padding:.35rem .15rem; }
+.language-switch a[aria-current="page"] { color:var(--color-text); font-weight:650; text-decoration:underline; text-underline-offset:.3em; }
+html[lang="ko"] { word-break:keep-all; overflow-wrap:anywhere; }
+@media(max-width:420px) { .header-tools { gap:.5rem; } .search-trigger span,.search-shortcut { display:none; } .language-switch { gap:.25rem; } }

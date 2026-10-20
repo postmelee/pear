@@ -5,6 +5,18 @@
 // All components are optional so the same controller works on every page.
 (() => {
   const root = document.documentElement;
+  for (const link of document.querySelectorAll('[data-language]')) {
+    const destination = new URL(link.href);
+    function preserveLocation() {
+      destination.search = location.search;
+      destination.hash = location.hash;
+      link.href = destination.href;
+    }
+    preserveLocation();
+    window.addEventListener('hashchange', preserveLocation);
+    link.addEventListener('pointerdown', preserveLocation);
+    link.addEventListener('focus', preserveLocation);
+  }
   const toggle = document.querySelector('.theme-toggle');
   const preference = matchMedia('(prefers-color-scheme: dark)');
   let explicit = false;

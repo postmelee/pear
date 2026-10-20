@@ -6,6 +6,7 @@ Compatibility data and release decisions remain in compatibility.py. This module
 owns the page shell, navigation, article presentation and public search projection.
 """
 import html
+import catalog_locale as locale
 from catalog_icons import ICON_NOTICES, SEARCH_ICON, SUN_ICON, MOON_ICON
 from html.parser import HTMLParser
 from pathlib import Path
@@ -291,7 +292,7 @@ def publish_pages(pages):
 
                 def attribute(match):
                     key, quote, value = match.groups()
-                    value = root if key == 'data-root' else rewrite_url(html.unescape(value))
+                    value = ('../' * (destination.count('/') - (1 if source.startswith('ko/') else 0))) if key == 'data-root' else rewrite_url(html.unescape(value))
                     return f'{key}={quote}{html.escape(value, quote=True)}{quote}'
 
                 updated = re.sub(r'\b(href|src|poster|data-steam-index|data-root)=([\"\'])(.*?)\2', attribute, original)
@@ -307,6 +308,20 @@ def publish_pages(pages):
             content = content[:start] + updated + content[end:]
         canonical = 'https://postmelee.github.io/pear/' + public_url(source).removeprefix('./')
         metadata = f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">'
+        english = source.removeprefix('ko/')
+        counterparts = {'en': english, 'ko': 'ko/' + english}
+        if all(path in pages for path in counterparts.values()):
+            choices = []
+            for language, path in counterparts.items():
+                absolute = 'https://postmelee.github.io/pear/' + public_url(path).removeprefix('./')
+                metadata += f'<link rel="alternate" hreflang="{language}" href="{absolute}">'
+                target = posixpath.relpath(posixpath.dirname(public_path(path)) or '.', directory)
+                target = './' if target == '.' else target + '/'
+                current = ' aria-current="page"' if path == source else ''
+                choices.append(f'<a href="{target}" lang="{language}" hreflang="{language}" data-language{current}>{"English" if language == "en" else "한국어"}</a>')
+            metadata += '<link rel="alternate" hreflang="x-default" href="https://postmelee.github.io/pear/' + public_url(english).removeprefix('./') + '">'
+            switch = '<nav class="language-switch" aria-label="' + ('언어' if source.startswith('ko/') else 'Language') + '">' + ''.join(choices) + '</nav>'
+            content = content.replace('<div class="header-tools">', '<div class="header-tools">' + switch, 1)
         # Explicit index.html requests share the same file as directory requests.
         content = content.replace('</head>', metadata + f'<script src="{root}redirect.js" data-redirect="./" defer></script></head>')
         output[destination] = content
@@ -316,7 +331,7 @@ def publish_pages(pages):
             output[source] = f'''<!doctype html>
 <!-- SPDX-FileCopyrightText: 2026 Pear contributors
      SPDX-License-Identifier: GPL-3.0-or-later -->
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pear · Page moved</title>{metadata}
+<html lang="{'ko' if source.startswith('ko/') else 'en'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pear · Page moved</title>{metadata}
 <script src="{legacy_root}redirect.js" data-redirect="{target}" defer></script></head>
 <body><p>This page has moved. <a href="{target}">Continue to Pear</a>.</p></body></html>'''
     return output
@@ -570,7 +585,7 @@ def blog_pages(base_pages=None):
     for path, page in (base_pages or {}).items():
         # Inspect editorial main content before adding generated recommendations.
         content = re.search(r'<main\b[^>]*>(.*?)</main>', page, re.S)[1]
-        title = plain_text(re.search(r'<title>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
+        title = plain_text(re.search(r'<title\b[^>]*>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
         paragraph = re.search(r'<p\b[^>]*>(.*?)</p>', content, re.S)
         sources[path] = (title, content, plain_text(paragraph[1]) if paragraph else '')
     contents = {post.slug: article_content(post) for post in posts}
@@ -621,7 +636,7 @@ def search_index(pages):
     """Index only rendered main content, never navigation or arbitrary files."""
     entries = []
     for path, page in pages.items():
-        title = plain_text(re.search(r'<title>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
+        title = plain_text(re.search(r'<title\b[^>]*>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
         content = re.search(r'<main\b[^>]*>(.*?)</main>', page, re.S)[1]
         # Form controls, conditional drafts and empty-state messages are not
         # destinations. Never index personal text entered into the live forms.
