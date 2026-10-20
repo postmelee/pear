@@ -69,3 +69,13 @@ anonymous-download verification remains delivery work.
 The requester authorized final publication after validation and accepted the UI and
 public page. Proceed with the integrated release without renewing broad approval;
 retain explicit consent and private review for each report.
+
+## Public Delivery — 2026-10-20
+[PR #68](https://github.com/postmelee/pear/pull/68) merged and closed #63. Stable
+v0.1.0, the website and Homebrew are public. Pages run 39388280794 successfully
+imported GitHub source links, rendered the approved snapshot and acknowledged
+publication only after deployment. The daily 00:17 UTC schedule remains active;
+private reports and notes are not promoted automatically. See the
+[Task #62 public delivery receipt](task_m3_62_report.md#public-delivery--2026-10-20)
+for anonymous-download, feed and tap verification and retained recovery evidence.
+This does not extend prior real reporting tests to an additional build 8 game run.
