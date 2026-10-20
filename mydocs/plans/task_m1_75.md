@@ -176,13 +176,14 @@ They do not validate new WGI output or authorize execution.
 - **Concurrent work:** Task47 cleanup belongs to its owner; shared/runtime roots
   remain read-only, and existing uncommitted source is never overwritten.
 
-## Approval Record and Request
+## Approval Record
 
 The requester explicitly authorized this Issue-backed work and the preceding
 document/baseline proposal on 2026-10-20. Registration and planning implement
 that request. The implementation plan supplies concrete stage gates.
 
-Confirm whether the three stages may proceed continuously with verification,
-reports and commits at each boundary, or whether individual stage continuation
-should be requested under `AGENTS.md`. Repository visibility change, game/native
-execution and unrelated deletion remain excluded either way.
+The requester explicitly approved all three stages continuously on 2026-10-20.
+Verification, reports and commits remain required at each boundary. Repository
+visibility change, game execution and deletion of existing inputs/artifacts
+remain excluded. Build tools may run only under the bounded Stage 3 procedure;
+no runtime or guest execution is part of this approval.

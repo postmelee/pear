@@ -4,9 +4,10 @@ Task plan: [task_m1_75.md](task_m1_75.md)
 GitHub Issue: [#75](https://github.com/postmelee/pear/issues/75)
 Milestone: M1 — Megabonk on Apple Silicon without Rosetta
 
-This implements the requester's approved three-part scope; continuous stage
-transition authorization is pending. Read-only planning/audits may continue.
-Do not change product/source files before the documented implementation gate.
+The requester approved all three stages continuously on 2026-10-20, including
+the document locations below, with verification, reports and commits at every
+stage boundary. Visibility changes, game execution and deletion of existing
+inputs/artifacts remain excluded. This approval does not broaden the task scope.
 
 ## Stage Overview
 
@@ -143,13 +144,30 @@ end. Hash retained private records; scan public summary for private material.
 
 ### Verification
 
-The concrete build command and storage estimate are an admission prerequisite
-to compilation and will be added here after the read-only closure is known.
+Read-only closure identifies 65 original actions (36 generation, 28 compilation,
+one ARM64X link), 173 source/header inputs and 11 preserved lower-layer libraries.
+Implement the bounded adapter, when required, in common-runtime
+`pear_runtime/recipes/wgi.py`, `recipes/wine/wgi-v1.json` and
+`tests/build/test_wgi.py`; document it in existing `recipes/wine/README.md`.
+The generated original Makefile/log-derived argv are reused; no upstream module
+or existing candidate source is changed. New original adapter/tests retain Pear
+GPL-3.0-or-later notices. No implicit fallback to the old source tree is allowed.
+
+Before compilation, the private exact action/input plan must be admitted by hash.
+The planned additional ceiling is 128 MiB: 60 MiB for the 57,077,930-byte input
+pack (57,659,392 stat-allocated bytes), 32 MiB for generated/object/link/comparison
+output, 32 MiB for diagnostics and 4 MiB for small evidence. Keep a separate
+6 GiB reserve: at least 6,576,668,672 available bytes. Remeasure at execution.
+Reuse the 782,265,656-byte LLVM tree read-only; no toolchain/runtime/game/prefix
+copy. Record exact CLI, admitted digest and actual storage in Stage 3 evidence.
+All original inputs remain immutable. Compiler dependency and linker diagnostics
+must identify actual inputs; unknown dependencies prevent a reproduction claim.
 Verify existing module inputs before/after, reject unknown/shadow dependencies,
 record emitted compiler/link commands, compare the untouched candidate module
 and fresh output, and independently review the conclusion. Test rejection of
 missing/mismatched inputs and unexplained byte differences if new tooling is
-introduced. No native/PE execution, install, signing or game result is required.
+introduced. Only admitted build tools may execute. No Wine/runtime/guest execution, install,
+signing or game result is part of this task.
 
 ### Commit
 
@@ -172,12 +190,14 @@ introduced. No native/PE execution, install, signing or game result is required.
 
 ## Stage Dependencies and Approval
 
-Stage 1 implementation begins after the concrete plan/location gate. Stages 2
-and 3 require completed prior-stage verification/report/commit and explicit
-continuation or a user-approved continuous-stage scope. Read-only audits may
-run concurrently. The current user instruction already authorizes registration,
-planning and the listed substantive scope; the pending question concerns the
-repository's stage-gate procedure, not renewed permission for that scope.
+The requester approved the concrete three-stage plan and continuous progression
+on 2026-10-20. Stages remain ordered by completed verification, report and commit;
+read-only supporting audits may run concurrently. No renewed stage approval is
+needed within this scope. Actual public conversion, game execution and deletion
+remain excluded. Component documentation changes use separate `codex/task75`
+worktrees; Wine uses a sparse documentation checkout to keep the initial
+512 MiB non-build allowance. Component stage reports use their existing
+`mydocs/working/` role and are committed with the corresponding documentation.
 
 ## Risks and Responses
 
