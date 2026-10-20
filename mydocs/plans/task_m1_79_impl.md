@@ -11,7 +11,7 @@ Context, location judgment, source-policy limits and retention are in the task p
 ## Document Location Check
 
 Use only existing README/component/docs locations listed in the task plan.
-Repair the historical research link with its existing record's exact commit.
+Repair the historical research link and component Stage6 links with their existing record's exact commit.
 New task records stay in mydocs; raw path-bearing inventories remain local.
 
 ## Stage Overview
@@ -41,9 +41,9 @@ require exact equality, PATCH only default_branch=master, verify default and
 symbolic remote HEAD. Re-read state after any ambiguous network result before
 retrying a mutation. Keep old refs until Stage3. Retarget open PRs only if found;
 closed PRs retain history and immutable document references.
-Update downstream Markdown only, preserving all existing 40-hex pins, commands,
+Update downstream Markdown only, preserving all existing 40-hex pins, commands except the obsolete branch-fetch argument,
 upstream text and runtime sources. State new PR base and distinguish retained
-local task56 worktrees. Repair one dated clickable URL to its recorded commit.
+local task56 worktrees. Repair five dated clickable URLs to its recorded commit.
 Run from Pear task checkout:
 
 ```sh

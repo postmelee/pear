@@ -51,7 +51,7 @@ the recorded claim. A default branch is never a substitute for a build/tool SHA.
 |---|---|---|---|
 | Pear README and existing docs index, native guide, supervisor and runtime contracts | Official contributor guidance | Existing README/docs paths | No new guide or manual; keep current discovery and reference paths |
 | Four component root READMEs and Wine/DXMT pear/README, FEX Pear/README, runtime docs/development | Component integration guidance | Existing component locations | Preserve upstream sections and established downstream entrypoints |
-| Historical split research URL | Dated research | Existing mydocs/tech/20261015_runtime_repository_split.md | Repair one target with exact immutable historical commit; no revised history |
+| Historical split research and four component Stage6 URLs | Dated research | Existing mydocs/tech/20261015_runtime_repository_split.md and component mydocs/working/task_m1_56_stage6.md | Repair five targets with exact immutable historical commit; no revised history |
 | Plan/reports/board | Task records | Existing mydocs types | Not product documentation; private inventories remain external |
 
 ## Expected Changed Files
@@ -59,7 +59,7 @@ the recorded claim. A default branch is never a substitute for a build/tool SHA.
 Pear README.md, docs/README.md, docs/development/rosetta-free.md,
 docs/development/runtime-supervisor.md, docs/runtime-contracts.md and the one
 historical split-research link. Component files are the eight existing guides
-listed above. Automation changes only if an actual task56 dependency is found;
+listed above, plus link-only repairs in each component mydocs/working/task_m1_56_stage6.md. Automation changes only if an actual task56 dependency is found;
 do not enable inherited workflows or change unrelated upstream triggers.
 Task artifacts: mydocs/plans/task_m1_79{,_impl}.md,
 mydocs/working/task_m1_79_stage{1,2,3}.md,
