@@ -175,3 +175,22 @@ signed qualification on 2026-10-20. Run the workflow with qualification_pair=tru
 skip the redundant push-triggered run using the preparation commit's skip-ci
 marker. The manual run retains all portable, native, macOS 15 and protected
 signing checks. No check or signing approval is removed.
+
+## Stable candidate handoff — 2026-10-20
+The real signed build 6 -> 7 replacement, archive rejection, no-update, Later,
+active-session reuse and pre-install cancellation checks have passed. Process-only
+network denial exercised the signed updater failure path and Steam launch handoff;
+it is not offline Steam/game qualification. Installer/authorization/relaunch errors
+and restart-store denial are covered by adapter callbacks with an injected engine.
+Preserve those explicit evidence boundaries in the final report.
+
+Prepare build 8 with the existing committed stable Pages feed and same Ed25519
+public key. Add an explicit stable_candidate dispatch option, mutually exclusive
+with qualification_pair; default development behavior stays unchanged. Keep all
+protected signing/macOS15 checks and no runtime rebuild. These changes stay in
+preview public configuration, the existing workflow and task reports. Existing
+approved user/release-guide destinations remain unchanged. The stable feed, final
+release, Homebrew and website are not published by this dispatch. Verify returned
+signed configuration before release integration; retain builds 6/7 as recovery and
+updater-enabled baseline evidence. Reuse app-source evidence only for unchanged
+bytes; the new Info.plist/signature/package require fresh artifact admission.

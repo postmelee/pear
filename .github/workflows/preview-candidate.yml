@@ -9,6 +9,10 @@ name: Preview candidate
         description: 'Build the signed Sparkle target and older qualification baseline'
         type: boolean
         default: false
+      stable_candidate:
+        description: 'Build a release candidate using the committed stable update feed'
+        type: boolean
+        default: false
       signed_run_id:
         description: 'Optional successful signing run to verify on macOS 15'
         type: string
@@ -52,6 +56,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Reject conflicting update channels
+        if: ${{ inputs.qualification_pair && inputs.stable_candidate }}
+        run: |
+          echo 'Select qualification_pair or stable_candidate, not both.' >&2
+          exit 1
       - name: Run synthetic checks without skips
         run: python3 -B preview/ci_checks.py
       - name: Check documentation and whitespace
@@ -99,14 +108,20 @@ jobs:
         run: |
           rustup toolchain install 1.94.1 --profile minimal
           cargo fetch --manifest-path preview/Cargo.toml --locked
-      - name: Select committed public Sparkle qualification configuration
-        if: ${{ inputs.qualification_pair }}
+      - name: Select committed public Sparkle configuration
+        if: ${{ inputs.qualification_pair || inputs.stable_candidate }}
+        env:
+          PEAR_STABLE_CANDIDATE: ${{ inputs.stable_candidate }}
         run: |
           python3 -B - <<'PYTHON'
           import json, os
           from pathlib import Path
           config = json.loads(Path('preview/update-public.json').read_text())
-          values = dict(PEAR_APP_BUILD=config['target_build'], PEAR_UPDATE_FEED=config['qualification_feed'],
+          stable = os.environ['PEAR_STABLE_CANDIDATE'] == 'true'
+          if int(config['release_build']) <= int(config['target_build']):
+              raise SystemExit('Release build must follow the qualification target')
+          values = dict(PEAR_APP_BUILD=config['release_build' if stable else 'target_build'],
+                        PEAR_UPDATE_FEED=config['stable_feed' if stable else 'qualification_feed'],
                         PEAR_UPDATE_PUBLIC_KEY=config['public_key'])
           if any('\n' in value or '\r' in value for value in values.values()):
               raise SystemExit('Invalid public update configuration')
@@ -232,14 +247,20 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Select committed public Sparkle qualification configuration
-        if: ${{ inputs.qualification_pair }}
+      - name: Select committed public Sparkle configuration
+        if: ${{ inputs.qualification_pair || inputs.stable_candidate }}
+        env:
+          PEAR_STABLE_CANDIDATE: ${{ inputs.stable_candidate }}
         run: |
           python3 -B - <<'PYTHON'
           import json, os
           from pathlib import Path
           config = json.loads(Path('preview/update-public.json').read_text())
-          values = dict(PEAR_APP_BUILD=config['target_build'], PEAR_UPDATE_FEED=config['qualification_feed'],
+          stable = os.environ['PEAR_STABLE_CANDIDATE'] == 'true'
+          if int(config['release_build']) <= int(config['target_build']):
+              raise SystemExit('Release build must follow the qualification target')
+          values = dict(PEAR_APP_BUILD=config['release_build' if stable else 'target_build'],
+                        PEAR_UPDATE_FEED=config['stable_feed' if stable else 'qualification_feed'],
                         PEAR_UPDATE_PUBLIC_KEY=config['public_key'])
           if any('\n' in value or '\r' in value for value in values.values()):
               raise SystemExit('Invalid public update configuration')

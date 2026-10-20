@@ -11,7 +11,11 @@ import Sparkle
 }
 private final class FixtureRestart: UpdateRestartHandling {
     var receipts:[UpdateRestartReceipt]=[]
-    func write(_ receipt:UpdateRestartReceipt) throws { receipts.append(receipt) }
+    var failWrite=false
+    func write(_ receipt:UpdateRestartReceipt) throws {
+        if failWrite { throw NSError(domain:NSOSStatusErrorDomain,code:-25293) }
+        receipts.append(receipt)
+    }
     func clear() { receipts=[] }
 }
 @main struct SparkleAdapterTests {
@@ -27,10 +31,11 @@ private final class FixtureRestart: UpdateRestartHandling {
         var state=UpdateLaunchPolicy.Session.idle
         var ownership=UpdateOwnership.direct
         var engine=FixtureEngine()
+        var restart=FixtureRestart()
         var accept:((Bool)->Void)?
         func make()->PearUpdater {
-            count=0;offers=0;cancels=0;notes=0;accept=nil;engine=FixtureEngine()
-            return PearUpdater(bundle:bundle,restart:FixtureRestart(),makeEngine:{ _,_,_ in engine },session:{ state },ownership:{ ownership },
+            count=0;offers=0;cancels=0;notes=0;accept=nil;engine=FixtureEngine();restart=FixtureRestart()
+            return PearUpdater(bundle:bundle,restart:restart,makeEngine:{ _,_,_ in engine },session:{ state },ownership:{ ownership },
                 present:{ _,_,_ in },offer:{ _,reply in offers += 1;accept=reply },releaseNotes:{ _ in notes += 1 },proceed:{ count += 1 })
         }
         var driver=make();driver.begin();driver.begin();precondition(engine.checks==1)
@@ -71,6 +76,28 @@ private final class FixtureRestart: UpdateRestartHandling {
         driver=make();driver.begin()
         driver.showUpdaterError(NSError(domain:NSURLErrorDomain,code:NSURLErrorNotConnectedToInternet),acknowledgement:{})
         precondition(count==1)
+        // An installer/authorization failure must clear the one-use relaunch
+        // intent and release Steam once, even if Sparkle repeats its error.
+        for code in [4001,4004,4005] {
+            driver=make();driver.begin();choices=[]
+            driver.receiveOffer(version:"test",build:"7",informationOnly:false,stage:.notDownloaded,reply:{choices.append($0)})
+            accept?(true)
+            driver.showReady(toInstallAndRelaunch:{choices.append($0)})
+            precondition(driver.isInstalling && restart.receipts.count==1 && count==0)
+            var acknowledgements=0
+            let error=NSError(domain:"SUSparkleErrorDomain",code:code)
+            driver.showUpdaterError(error,acknowledgement:{acknowledgements += 1})
+            driver.showUpdaterError(error,acknowledgement:{acknowledgements += 1})
+            precondition(!driver.isInstalling && restart.receipts.isEmpty)
+            precondition(count==1 && acknowledgements==2 && choices == [.install,.install])
+        }
+        // If Keychain cannot retain the restart intent, never start installation.
+        driver=make();restart.failWrite=true;driver.begin();choices=[]
+        driver.receiveOffer(version:"test",build:"7",informationOnly:false,stage:.notDownloaded,reply:{choices.append($0)})
+        accept?(true)
+        driver.showReady(toInstallAndRelaunch:{choices.append($0)})
+        precondition(count==1 && !driver.isInstalling && restart.receipts.isEmpty)
+        precondition(choices == [.install,.skip])
         driver=make();driver.begin();driver.showUserInitiatedUpdateCheck { cancels += 1 }
         let start=ProcessInfo.processInfo.systemUptime
         while count==0 && ProcessInfo.processInfo.systemUptime-start < 9 {
@@ -79,6 +106,6 @@ private final class FixtureRestart: UpdateRestartHandling {
         precondition(count==1 && cancels==1 && ProcessInfo.processInfo.systemUptime-start < 8.5)
         driver.receiveOffer(version:"late",build:"7",informationOnly:false,stage:.notDownloaded,reply:{ _ in })
         precondition(offers==0 && count==1)
-        print("PASS: adapter engine/callback integration; real 8-second watchdog, exactly-once release, Later, offline/start failure, download cancel, late ready-to-install rejection, live-session and Homebrew deferral. Synthetic engine; no installer/Keychain/report/Steam execution.")
+        print("PASS: adapter engine/callback integration; real 8-second watchdog, exactly-once release, Later, offline/start failure, download cancel, late ready-to-install rejection, live-session and Homebrew deferral, installer/authentication/relaunch error callbacks and restart-store denial. Synthetic engine; no installer/Keychain/report/Steam execution.")
     }
 }

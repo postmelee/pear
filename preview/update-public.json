@@ -5,5 +5,6 @@
   "qualification_feed": "https://github.com/postmelee/pear/releases/download/sparkle-qualification/appcast.xml",
   "stable_feed": "https://postmelee.github.io/pear/updates/appcast.xml",
   "baseline_build": "6",
-  "target_build": "7"
+  "target_build": "7",
+  "release_build": "8"
 }
