@@ -97,7 +97,7 @@ class CatalogTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / 'site'
             files = catalog.build_site(catalog.validate(self.data), output)
-            self.assertEqual(set(files), catalog.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html'})
+            self.assertEqual(set(files), catalog.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html', 'ko/game-3405340.html', 'ko/game-3405340/index.html'})
             self.assertEqual(json.loads((output / 'reports.json').read_text()), self.data)
             self.assertEqual((output / 'pear.png').read_bytes(), (ROOT / 'docs/assets/pear.png').read_bytes())
             self.assertEqual((output / 'updates/appcast.xml').read_bytes(),

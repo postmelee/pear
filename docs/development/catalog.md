@@ -163,7 +163,7 @@ supplied by the requester.
 ## Authoring contract and navigation order
 
 Use the same components for every article, regardless of author or topic. Keep
-article content in English and preserve the author’s voice; project-level UI uses
+the original article in English, provide reviewed translations separately, and preserve the author’s voice; project-level UI uses
 Pear/we rather than a personal “me.” Do not invent dates, authors, evidence,
 compatibility claims, categories or related posts. Cite revision-specific sources
 for release claims. An older article is a dated account, not current download
@@ -243,3 +243,46 @@ Escape/focus return, direct section URLs, browser history, mobile navigation,
 tables/figures, game filters, download tabs and draft forms. Static-site checks
 never establish runtime or game compatibility. Review deployment separately;
 local preview does not publish the site.
+
+## Languages and dated corrections
+
+English keeps its existing routes; Korean pages live under `ko/`. Header links
+switch to the same page, preserving query/fragment state. URLs are authoritative:
+there is no automatic redirect based on browser language or stored preference.
+Canonical/hreflang links and locale-scoped search indexes are generated together.
+Assets and signed appcast bytes remain shared; no translated copy of a binary is
+published. GitHub documentation and report sources may remain in English.
+
+`tools/catalog/locales/ko.json` contains reviewed exact presentation messages.
+`catalog_locale.py` parses text/accessible attributes, not arbitrary global HTML
+substitutions. Generated `locale.js` serves those messages to explicit UI sinks.
+JSON cannot carry comments; its original Pear messages are GPL-3.0-or-later,
+copyright 2026 Pear contributors, as recorded here and in the generating module.
+Preserve raw game names, report evidence, notes, paths, commands, and identifiers.
+Use `translate="no"` around untrusted/free-form display values. Never translate
+submission enums or option values; only labels change. A new template or dynamic
+UI message needs a corresponding reviewed message and a coverage check. Do not
+pass arbitrary user text to the message lookup.
+
+A translated article belongs in `docs/blog/ko/<slug>.html`, retaining the original
+copyright/author and media references. Translate the registered title/summary via
+the message resource. Keep exactly the English section IDs, including h3 IDs,
+so bookmarks survive language switching. Missing translations show an explicit
+notice and mark the original body `lang="en" translate="no"`. Article figures
+may retain English text; describe them in Korean alt text/captions rather than
+silently changing the source images. Reading time is an approximate word-based
+estimate, not a measured reading duration.
+
+Keep `published` unchanged when correcting an article. Set the approved ISO
+`updated` date in its BlogPost and explain substantive corrections in the body
+of both languages. Do not silently rewrite historical claims to match a release.
+Current implementation/user-guide links may move to the corrected release;
+links supporting historic experiments stay pinned to their original revision.
+For the first article, the requester approved the October 20, 2026 correction of
+premature 0.1.0 availability and the reporting description, retaining October 18.
+
+Before publication, check both locales at desktop/mobile sizes, search, keyboard
+navigation, download tabs, GitHub form values, protected report text, all local
+links/fragments, original attribution, and dated notices. Run the documentation
+tests plus `node --test tests/docs/test_catalog_locale.cjs` for interactive
+translation and draft behavior. Do not publish synthetic report fixtures.

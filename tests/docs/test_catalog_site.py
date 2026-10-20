@@ -194,7 +194,7 @@ class WebsiteTests(unittest.TestCase):
             if not name.endswith('.html'):
                 continue
             content = (self.output / name).read_text()
-            self.assertRegex(content, r'<title>Pear · [^<]+</title>')
+            self.assertRegex(content, r'<title\b[^>]*>Pear · [^<]+</title>')
             nodes = Elements(content).elements
             ids = [attrs['id'] for _, attrs in nodes if 'id' in attrs]
             self.assertEqual(len(ids), len(set(ids)), name)
@@ -361,7 +361,9 @@ class WebsiteTests(unittest.TestCase):
         header = re.search(r'<header class="article-header">.*?</header>', pages[first.path], re.S)[0]
         self.assertNotIn(first.series, header)
         self.assertNotIn(first.edition, header)
-        self.assertIn('1 minute read · <a href="https://x.com/meleeisgloom2"', header)
+        self.assertIn('1 minute read', header)
+        self.assertIn('datetime="2026-10-20"', header)
+        self.assertIn('href="https://x.com/meleeisgloom2"', header)
         self.assertNotIn('rel="author"', pages['blog/writing.html'])
 
     def test_references_use_body_links_deduplicate_and_escape(self):
@@ -373,7 +375,7 @@ class WebsiteTests(unittest.TestCase):
         self.assertEqual(site.references('<p>No external links</p>'), '')
         article = (self.output / site.public_path(site.ARTICLE_PATH)).read_text()
         section = re.search(r'<section><h2 id="references">.*?</section>', article, re.S)[0]
-        self.assertIn('https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/compatibility/README.md', section)
+        self.assertIn('https://github.com/postmelee/pear/blob/v0.1.0/docs/compatibility/README.md', section)
         self.assertNotIn('https://x.com/meleeisgloom2', section)
 
     def test_rebuild_is_deterministic_and_does_not_publish_article_source(self):
@@ -381,7 +383,7 @@ class WebsiteTests(unittest.TestCase):
         second = compatibility.build_site(self.data, self.output)
         self.assertEqual(self.files, second)
         self.assertEqual(before, {name: (self.output / name).read_bytes() for name in second})
-        self.assertEqual(set(self.files), compatibility.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html'})
+        self.assertEqual(set(self.files), compatibility.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html', 'ko/game-3405340.html', 'ko/game-3405340/index.html'})
         self.assertFalse((self.output / 'docs').exists())
 
 

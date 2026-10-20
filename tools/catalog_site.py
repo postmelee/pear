@@ -6,6 +6,7 @@ Compatibility data and release decisions remain in compatibility.py. This module
 owns the page shell, navigation, article presentation and public search projection.
 """
 import html
+import catalog_locale as locale
 from catalog_icons import ICON_NOTICES, SEARCH_ICON, SUN_ICON, MOON_ICON
 from html.parser import HTMLParser
 from pathlib import Path
@@ -51,6 +52,7 @@ class BlogPost:
     series: str = "Pear development journal"
     author_url: str | None = None
     videos: tuple[BlogVideo, ...] = ()
+    updated: str | None = None
 
     @property
     def path(self):
@@ -59,7 +61,7 @@ class BlogPost:
 
 POSTS = (BlogPost(ARTICLE_SLUG, ARTICLE_TITLE, ARTICLE_SUMMARY, 'Taegyu Lee',
                   'v0.1.0', ARTICLE_IMAGES, '2026-10-18', ('development', 'megabonk', 'apple-silicon'),
-                  author_url='https://x.com/meleeisgloom2',
+                  author_url='https://x.com/meleeisgloom2', updated='2026-10-20',
                   videos=(BlogVideo('gameplay.mp4', 960, 1280), BlogVideo('demo.mp4', 1600, 1040))),)
 def topic_path(label):
     return 'blog/topics/' + re.sub(r'[^a-z0-9]+', '-', label.lower()).strip('-') + '/index.html'
@@ -97,6 +99,10 @@ def validate_posts(posts):
         if post.published:
             if date.fromisoformat(post.published).isoformat() != post.published:
                 raise ValueError('Publication dates must use YYYY-MM-DD')
+        if post.updated:
+            if (not post.published or date.fromisoformat(post.updated).isoformat() != post.updated
+                    or date.fromisoformat(post.updated) < date.fromisoformat(post.published)):
+                raise ValueError('Updated date must not precede publication')
         if post.author_url:
             url = urlsplit(post.author_url)
             if (url.scheme != 'https' or not url.hostname or url.username or url.password
@@ -233,7 +239,7 @@ def shell(title, content, active='games', *, root='', article=False, description
 <meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="Pear"><meta property="og:title" content="Pear · {e(title, quote=True)}"><meta property="og:description" content="{e(description, quote=True)}"><meta property="og:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Pear · {e(title, quote=True)}"><meta name="twitter:description" content="{e(description, quote=True)}"><meta name="twitter:image" content="https://postmelee.github.io/pear/social-card.png?v=20261018"><meta name="twitter:image:alt" content="Pear — Play Windows Steam games on Mac, with a golden Asian pear on the right"><meta name="referrer" content="no-referrer">
 <link rel="icon" type="image/png" href="{root}favicon.png"><link rel="stylesheet" href="{root}tokens.css"><link rel="stylesheet" href="{root}components.css"><link rel="stylesheet" href="{root}style.css">
-<script src="{root}steam-search.js" defer></script><script src="{root}catalog.js" defer></script><script src="{root}site.js" defer></script></head>
+<script src="{root}locale.js" defer></script><script src="{root}steam-search.js" defer></script><script src="{root}catalog.js" defer></script><script src="{root}site.js" defer></script></head>
 <body class="{'article-page' if article else 'site-page'}" data-root="{root}"><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><a class="wordmark" href="{root}index.html" aria-label="Pear home">Pear</a>
 <div class="header-tools"><button class="search-trigger" type="button" aria-label="Search" aria-keyshortcuts="Meta+K Control+K" data-search-open>{SEARCH_ICON}<span>Search</span><kbd class="search-shortcut">⌘K</kbd></button>
@@ -291,7 +297,7 @@ def publish_pages(pages):
 
                 def attribute(match):
                     key, quote, value = match.groups()
-                    value = root if key == 'data-root' else rewrite_url(html.unescape(value))
+                    value = ('../' * (destination.count('/') - (1 if source.startswith('ko/') else 0))) if key == 'data-root' else rewrite_url(html.unescape(value))
                     return f'{key}={quote}{html.escape(value, quote=True)}{quote}'
 
                 updated = re.sub(r'\b(href|src|poster|data-steam-index|data-root)=([\"\'])(.*?)\2', attribute, original)
@@ -307,6 +313,20 @@ def publish_pages(pages):
             content = content[:start] + updated + content[end:]
         canonical = 'https://postmelee.github.io/pear/' + public_url(source).removeprefix('./')
         metadata = f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">'
+        english = source.removeprefix('ko/')
+        counterparts = {'en': english, 'ko': 'ko/' + english}
+        if all(path in pages for path in counterparts.values()):
+            choices = []
+            for language, path in counterparts.items():
+                absolute = 'https://postmelee.github.io/pear/' + public_url(path).removeprefix('./')
+                metadata += f'<link rel="alternate" hreflang="{language}" href="{absolute}">'
+                target = posixpath.relpath(posixpath.dirname(public_path(path)) or '.', directory)
+                target = './' if target == '.' else target + '/'
+                current = ' aria-current="page"' if path == source else ''
+                choices.append(f'<a href="{target}" lang="{language}" hreflang="{language}" data-language{current}>{"English" if language == "en" else "한국어"}</a>')
+            metadata += '<link rel="alternate" hreflang="x-default" href="https://postmelee.github.io/pear/' + public_url(english).removeprefix('./') + '">'
+            switch = '<nav class="language-switch" aria-label="' + ('언어' if source.startswith('ko/') else 'Language') + '">' + ''.join(choices) + '</nav>'
+            content = content.replace('<div class="header-tools">', '<div class="header-tools">' + switch, 1)
         # Explicit index.html requests share the same file as directory requests.
         content = content.replace('</head>', metadata + f'<script src="{root}redirect.js" data-redirect="./" defer></script></head>')
         output[destination] = content
@@ -316,9 +336,11 @@ def publish_pages(pages):
             output[source] = f'''<!doctype html>
 <!-- SPDX-FileCopyrightText: 2026 Pear contributors
      SPDX-License-Identifier: GPL-3.0-or-later -->
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pear · Page moved</title>{metadata}
+<html lang="{'ko' if source.startswith('ko/') else 'en'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pear · Page moved</title>{metadata}
 <script src="{legacy_root}redirect.js" data-redirect="{target}" defer></script></head>
 <body><p>This page has moved. <a href="{target}">Continue to Pear</a>.</p></body></html>'''
+            if source.startswith('ko/'):
+                output[source] = locale.translate(output[source])
     return output
 
 
@@ -328,7 +350,7 @@ def home_content():
 <section class="home-section"><h2 id="how-it-works">How it works</h2><p>Open Pear, sign in to Steam, and choose a game you own. Pear takes care of the setup so you can get to your library.</p>
 <ol class="steps-panel"><li><span class="step-number">01</span><div><a href="download.html">Install Pear</a><p>Download the Mac app and let it prepare Windows Steam.</p></div></li><li><span class="step-number">02</span><div>Open your library<p>Sign in through the official Steam client.</p></div></li><li><span class="step-number">03</span><div>Choose a game<p>Install a game you own, then select Play in Steam.</p></div></li></ol>
 <p>Start with the <a href="games.html">game reports</a> to see what has been tried, on which Mac, and what happened.</p></section>
-<section class="home-section"><h2 id="current-preview">The current Preview</h2><p>The downloadable Preview uses <a href="https://www.winehq.org/">Wine</a>, <a href="https://github.com/3Shain/dxmt">DXMT</a> and Apple’s Rosetta. Megabonk is our first validation game.</p><p>Play, input, audio and saved progress after relaunch have been checked on one M4 Pro. Other games and Macs remain unverified. Every report keeps its configuration and limitations visible.</p><p><a href="download.html">Download Pear</a> · <a href="game-3405340.html">Read the Megabonk reports</a></p></section>
+<section class="home-section"><h2 id="current-preview">The current release</h2><p>Pear 0.1.0 uses <a href="https://www.winehq.org/">Wine</a>, <a href="https://github.com/3Shain/dxmt">DXMT</a> and Apple’s Rosetta. Megabonk is our first validation game.</p><p>Play, input, audio and saved progress after relaunch have been checked on one M4 Pro. Other games and Macs remain unverified. Every report keeps its configuration and limitations visible.</p><p><a href="download.html">Download Pear</a> · <a href="game-3405340.html">Read the Megabonk reports</a></p></section>
 <section class="home-section" id="games"><h2 id="explore">Explore</h2>{explore_cards([
     ('Download', 'Get Pear and open your Steam library.', 'download.html'),
     ('Games', 'Browse tested configurations and player reports.', 'games.html'),
@@ -418,15 +440,18 @@ class ArticleValidator(HTMLParser):
         self.output.append(html.escape(data, quote=False))
 
 
-def article_content(post=POSTS[0]):
+def article_content(post=POSTS[0], language='en'):
     parser = ArticleValidator(post.images, post.path, post.videos)
-    parser.feed((ROOT / 'docs/blog' / f'{post.slug}.html').read_text(encoding='utf-8'))
+    source = ROOT / 'docs/blog' / ('ko' if language == 'ko' else '') / f'{post.slug}.html'
+    parser.feed(source.read_text(encoding='utf-8'))
     parser.close()
     if parser.stack:
         raise ValueError('Unclosed article element')
     content = ''.join(parser.output)
     title, subtitle, byline, body = article_parts(content)
-    if plain_text(title) != post.title or plain_text(subtitle) != post.summary:
+    expected_title = locale.message(post.title) if language == 'ko' else post.title
+    expected_summary = locale.message(post.summary) if language == 'ko' else post.summary
+    if plain_text(title) != expected_title or plain_text(subtitle) != expected_summary:
         raise ValueError('Article title and summary must match the post registry')
     if plain_text(byline).split(' · ', 1)[0] != f'By {post.author}':
         raise ValueError('Article byline must match the registered author')
@@ -563,17 +588,18 @@ def article_categories(post):
     return f'<div class="article-categories" aria-label="Article categories">{links}</div>' if links else ''
 
 
-def blog_pages(base_pages=None):
+def blog_pages(base_pages=None, language='en'):
     validate_posts(POSTS)
     posts = sorted(POSTS, key=lambda post: (post.published or '', post.slug), reverse=True)
     sources = {}
     for path, page in (base_pages or {}).items():
         # Inspect editorial main content before adding generated recommendations.
         content = re.search(r'<main\b[^>]*>(.*?)</main>', page, re.S)[1]
-        title = plain_text(re.search(r'<title>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
+        title = plain_text(re.search(r'<title\b[^>]*>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
         paragraph = re.search(r'<p\b[^>]*>(.*?)</p>', content, re.S)
         sources[path] = (title, content, plain_text(paragraph[1]) if paragraph else '')
-    contents = {post.slug: article_content(post) for post in posts}
+    translated = {post.slug: language == 'ko' and (ROOT / 'docs/blog/ko' / f'{post.slug}.html').is_file() for post in posts}
+    contents = {post.slug: (article_content(post, 'ko') if translated[post.slug] else article_content(post)) for post in posts}
     sources.update({post.path: (post.title, contents[post.slug], post.summary) for post in posts})
     topics = sorted({label for post in posts for label in post_topics(post)}, key=str.casefold)
     def topic_links(source):
@@ -595,7 +621,12 @@ def blog_pages(base_pages=None):
         minutes = reading_minutes(body)
         timing = f'{minutes} minute{"s" if minutes != 1 else ""} read'
         metadata = f'{publication_label(post)} · {timing}' if post.published else timing
+        if post.updated:
+            updated = date.fromisoformat(post.updated)
+            metadata += f' · <span>Updated</span> <time datetime="{post.updated}">{updated:%B} {updated.day}, {updated.year}</time>'
         header = f'<header class="article-header">{title}<p class="article-meta">{metadata} · {author_link(post.author, post.author_url)}</p><div class="article-subtitle">{subtitle}</div></header>'
+        if language == 'ko' and not translated[post.slug]:
+            body = '<p class="notice">The Korean translation is not available yet. The original English article follows.</p><div lang="en" translate="no">' + body + '</div>'
         article = f'<p class="crumb"><a href="index.html">← All posts</a></p><article>{header}{body}{article_categories(post)}</article>{article_connections(post, posts, sources)}'
         pages[post.path] = shell(post.title, article, 'blog', root='../', article=True, description=post.summary)
     return pages
@@ -621,7 +652,7 @@ def search_index(pages):
     """Index only rendered main content, never navigation or arbitrary files."""
     entries = []
     for path, page in pages.items():
-        title = plain_text(re.search(r'<title>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
+        title = plain_text(re.search(r'<title\b[^>]*>(.*?)</title>', page, re.S)[1]).removeprefix('Pear · ')
         content = re.search(r'<main\b[^>]*>(.*?)</main>', page, re.S)[1]
         # Form controls, conditional drafts and empty-state messages are not
         # destinations. Never index personal text entered into the live forms.

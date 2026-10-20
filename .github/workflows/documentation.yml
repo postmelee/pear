@@ -32,7 +32,7 @@ jobs:
         run: python3 -m unittest discover -s tests/docs -p 'test_*.py' -v
 
       - name: Test Steam game identity matching
-        run: node --test tests/docs/test_steam_search.cjs
+        run: node --test tests/docs/test_steam_search.cjs tests/docs/test_catalog_locale.cjs
 
   portable-verifiers:
     name: Portable verifier (${{ matrix.suite }})
