@@ -77,7 +77,8 @@ needed for documentation-only changes.
 
 ### Artifacts
 
-- `mydocs/tech/task_m1_75_publication_readiness.md`.
+- `mydocs/tech/task_m1_75_publication_readiness.md` and adjacent sanitized
+  `task_m1_75_publication_details.json` evidence data.
 - Private exact ref/object inventories, audit commands and redacted/manual
   dispositions for Wine/FEX/DXMT/runtime.
 - `mydocs/working/task_m1_75_stage2.md`.

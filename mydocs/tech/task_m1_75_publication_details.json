@@ -1,0 +1,227 @@
+{
+  "coverage_limits": [
+    "All reachable downstream blobs and commit objects from the observed remote branches/tags were scanned. FEX's verified public upstream ancestor content was excluded.",
+    "No tags or extra remote branches were observed. GitHub currently lists zero issues/comments, PRs, workflows, runs, artifacts, caches or releases; there were no associated logs/assets to retrieve.",
+    "Deleted/unreachable remote objects, hidden server refs, historical deleted Actions logs and nonrepository external storage are not observable through this inventory.",
+    "Pattern matching and targeted source/provenance review do not prove absence of every secret format or constitute blanket license clearance.",
+    "Private headers, game payloads, profiles, credentials, prefixes and execution logs were not copied into these reports.",
+    "No tests, builds, native/game processes, source changes, Git mutations or visibility changes were performed by this audit.",
+    "Any later source/history/ref or GitHub surface change requires a scoped delta review before a separate publication decision."
+  ],
+  "fex_header_notice_finding": {
+    "adjacent_notice": "The published README/import inventory identifies unmarked bytes but does not provide a per-header MIT-template attribution/grant binding.",
+    "blocking_action": "Add a reviewed adjacent per-header provenance/notice record and unchanged MIT permission/warranty text. State that the original templates specify MIT but omit a holder; do not invent a holder, original Git commit, new terms or edits to frozen headers.",
+    "emitted_notice": "All three omit a copyright/license notice.",
+    "exact_sources": [
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/mismatch_source.py",
+        "sha256": "a3386badc5cea238afbff019ec2d6002aff7ae0d3e29b4320cf0b7d476f02fe6",
+        "size_bytes": 6046,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/mismatch_observation.py",
+        "sha256": "05b0763b4451e13834f481af0122220f48a341fbc9d9d43224e24be75c8b7452",
+        "size_bytes": 4345,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/target_source.py",
+        "sha256": "982b445370aae9347b4bfe0e60d0aa55cdd871c286cc3093647cdce3d7061a28",
+        "size_bytes": 8586,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/target_value_source.py",
+        "sha256": "b2c8610a351dd2d313e0b2e4e7e07dd6a59ebe89096df74458d3e491028b5a93",
+        "size_bytes": 10629,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/target_value2_source.py",
+        "sha256": "79d88092193e2d609148e3524fa4906af178fd9c733c0c855a75c51528e87bfd",
+        "size_bytes": 11056,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/target_observation.py",
+        "sha256": "5f2574ae04e1bbd2d1d963cc4c308b5d98b7a2e99f6638ae1b233541dce4caf8",
+        "size_bytes": 3337,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/writer_source.py",
+        "sha256": "ca46e5986420e62342cc149a95c0f9c1f3675b2408cacd340bee99d0328026f2",
+        "size_bytes": 13061,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/writer_observation.py",
+        "sha256": "e9d790acb38ab8d2ae615cae87f534a5440ad9d6012f1ebad7e7172027fbb3b4",
+        "size_bytes": 4370,
+        "source_spdx": "MIT"
+      },
+      {
+        "original_holder_notice": "absent",
+        "path": "tools/steam/abort_observation.py",
+        "sha256": "5061529b0d983b1d2450a6135597a1e0c505dc3baae5fa5dc3d9e94492f0cfe3",
+        "size_bytes": 5349,
+        "source_spdx": "MIT"
+      }
+    ],
+    "original_source_git_revision": "No reachable local Git commit for these retained original generator/schema paths.",
+    "outputs": [
+      {
+        "blob": "7b3ab852623c2a43ebcd1dac0558ded47fef80cc",
+        "first_known_git_introduction": "52fd8a95955ad33cc589bcd8c5837b84cb21705e",
+        "path": "Pear/Diagnostics/include/PearMismatchObservation.h",
+        "sha256": "466ff7a0a5d67580c295465decf5c21121901f7015bc825415fab0b6e5f40f5e",
+        "size_bytes": 2981
+      },
+      {
+        "blob": "8448fb82c121671338be8ce5ba92abde12bdc9fe",
+        "first_known_git_introduction": "52fd8a95955ad33cc589bcd8c5837b84cb21705e",
+        "path": "Pear/Diagnostics/include/PearTargetObservation.h",
+        "sha256": "99e29c2f5ab72731864b7a4e8d0fed0113f8d5362e36e946213cdf6958f6f4a2",
+        "size_bytes": 3348
+      },
+      {
+        "blob": "2ebc4b95a4db67b1b99d9a479dfa92f1ef041a90",
+        "first_known_git_introduction": "52fd8a95955ad33cc589bcd8c5837b84cb21705e",
+        "path": "Pear/Diagnostics/include/PearWriterObservation.h",
+        "sha256": "5087c8a87de6aac1ce8fefc89e2990c3bc88812de4e27ccce3a47fce5d5d1a1f",
+        "size_bytes": 865
+      }
+    ],
+    "owner_review_limit": "Task56 accepted editing responsibility; it explicitly did not transfer copyright or grant a new license.",
+    "paths": [
+      "Pear/Diagnostics/include/PearMismatchObservation.h",
+      "Pear/Diagnostics/include/PearTargetObservation.h",
+      "Pear/Diagnostics/include/PearWriterObservation.h"
+    ],
+    "positive_evidence": "All three selected outputs match exact MIT-marked template/schema data and retained preparation/output joins; no license inferred from the destination.",
+    "private_proof_identity": {
+      "sha256": "e9bc1efef2b586704e0506ce0ff7c7c18a259372eebd6bf7e00c61368740caee",
+      "size_bytes": 29245
+    },
+    "root_license": "Upstream MIT copyright 2019 Ryan Houdek is retained, but does not establish a Pear-template copyright holder."
+  },
+  "license_scope": [
+    "Upstream FEX history, original licenses and contribution policy remain preserved; this audit does not authorize an upstream contribution.",
+    "Sixteen FEX gitlinks are unchanged from the verified public upstream pin; their histories and payloads are outside this downstream-blob scan.",
+    "Pear's GPL, retained MIT imports, explicit combined terms and CPU-source notices remain distinct. Original missing inline notices are checked against their recorded adjacent notices/provenance.",
+    "The three FEX header notice gap is a bounded publication blocker; exact MIT origin is known, while an original holder notice is absent.",
+    "Runtime's stale ownership/publication narrative is corrected by the four-Markdown successor; no license terms or captured source bytes change."
+  ],
+  "manual_scan_dispositions": {
+    "fex": "Nine matched blob/category rows are generic external-input identifiers or exclusion documentation.",
+    "not_a_universal_secret_absence_claim": true,
+    "runtime": "Twenty-five matched blob/category rows are fixed shared-lock names, synthetic test inputs, OS paths, a CI compiler banner, or provisioning/game-input schema names.",
+    "secret_signatures": "No matches for the audited private-key and GitHub/OpenAI/AWS/Slack credential signatures."
+  },
+  "observed_at_utc": "2026-10-20T14:35:48.768272+00:00",
+  "publication_authorized_by_this_review": false,
+  "repositories": [
+    {
+      "actions_enabled": true,
+      "confirmed_sensitive_payload_findings": 0,
+      "downstream_blob_logical_bytes_scanned": 3491896,
+      "downstream_commits": 9,
+      "github_exposure_inventory": {
+        "artifacts": 0,
+        "branches": 1,
+        "caches": 0,
+        "issue_comments": 0,
+        "issues": 0,
+        "pages_enabled": false,
+        "pull_requests": 0,
+        "releases": 0,
+        "runs": 0,
+        "tags": 0,
+        "wiki_enabled": false,
+        "workflows": 0
+      },
+      "new_binary_blobs": 0,
+      "pattern_hit_blob_category_rows": 9,
+      "public_upstream_ancestry_excluded": "59f85d6b7df4eb053d2cc1b9d33411b4f31bfbaa",
+      "readiness": "BLOCKED",
+      "remote_branch": "codex/task56",
+      "remote_head": "4ae26ddf9a21b52cd50d096504c4d0ea5ab49204",
+      "remote_refs_unchanged_at_final_read": true,
+      "repository": "pear-fex",
+      "skipped_downstream_blobs": 0,
+      "tracked_private_payload_filenames": 0,
+      "unique_downstream_blobs_scanned": 183,
+      "visibility": "private",
+      "workflow_permissions": {
+        "can_approve_pull_request_reviews": false,
+        "default_workflow_permissions": "read"
+      }
+    },
+    {
+      "actions_enabled": true,
+      "confirmed_sensitive_payload_findings": 0,
+      "downstream_blob_logical_bytes_scanned": 18974948,
+      "downstream_commits": 9,
+      "github_exposure_inventory": {
+        "artifacts": 0,
+        "branches": 1,
+        "caches": 0,
+        "issue_comments": 0,
+        "issues": 0,
+        "pages_enabled": false,
+        "pull_requests": 0,
+        "releases": 0,
+        "runs": 0,
+        "tags": 0,
+        "wiki_enabled": false,
+        "workflows": 0
+      },
+      "new_binary_blobs": 0,
+      "pattern_hit_blob_category_rows": 25,
+      "public_upstream_ancestry_excluded": null,
+      "readiness": "READY WITH LIMITS",
+      "remote_branch": "codex/task56",
+      "remote_head": "9be1545f5a0845d3b14d4b845bf6bd413a224df3",
+      "remote_refs_unchanged_at_final_read": true,
+      "repository": "pear-runtime",
+      "skipped_downstream_blobs": 0,
+      "tracked_private_payload_filenames": 0,
+      "unique_downstream_blobs_scanned": 372,
+      "visibility": "private",
+      "workflow_permissions": {
+        "can_approve_pull_request_reviews": false,
+        "default_workflow_permissions": "read"
+      }
+    }
+  ],
+  "retention": "Retain private audit scripts, exact object inventories, remote GET metadata and header-origin receipts through the publication decision and any notice correction review. Do not treat this report as permission to delete retained runtime inputs.",
+  "review_completed": true,
+  "runtime_documentation_successor": {
+    "base": "9be1545f5a0845d3b14d4b845bf6bd413a224df3",
+    "changed_paths": [
+      "NOTICE.md",
+      "README.md",
+      "docs/development.md",
+      "mydocs/working/task_m1_75_stage1.md"
+    ],
+    "commit": "17516d76d02d5ddd15d477bf5604cf7fda6be5b1",
+    "incremental_evidence_identity": {
+      "sha256": "ad560516d2eea4fd8d5a6868e79ea37e8ed2e91c0eb12ffcd6a70881f1e7977d",
+      "size_bytes": 1750
+    },
+    "readiness": "READY WITH LIMITS",
+    "source_and_frozen_inputs_unchanged": true
+  },
+  "schema_version": 1,
+  "scope": "Read-only public-publication readiness of exact private remote heads plus the named runtime documentation successor",
+  "task": 75
+}
