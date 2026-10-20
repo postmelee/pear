@@ -38,7 +38,7 @@ source languages, file-specific notices and contribution policies remain intact.
 | [Common runtime](https://github.com/postmelee/pear-runtime) | Compatible locks, explicit-input reconstruction, assembly, shared diagnostics and integration verification |
 | [Pear](https://github.com/postmelee/pear) | App, manager, game/account policy and development selection |
 
-The [runtime development guide](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md) supplies the selected source/build lock,
+The [runtime development guide](https://github.com/postmelee/pear-runtime/blob/master/docs/development.md) supplies the selected source/build lock,
 exact retained-input prerequisites, exercised assembly/fixture commands and
 bounded recovery procedure. The Stage 3 reconstruction and seven-fixture
 checkpoint have bounded passing evidence recorded in the [final report](../../mydocs/report/task_m1_56_report.md). Candidate3 assembly and all fifteen fresh controls passed with independent
@@ -63,7 +63,7 @@ selection or the existing manager's fixture-only admission; see the [native mana
 The selected source/test exports and accepted 196-method reconciliation are
 recorded in the [local Stage 4 report](../../mydocs/working/task_m1_56_stage4.md).
 The #11, #10 and #12 owners accepted the exact selected implementation, tests
-and development boundary. The [canonical source-cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+and development boundary. The [canonical source-cutover record](https://github.com/postmelee/pear-runtime/blob/master/provenance/source-cutover-task56.json)
 and [final repository references](../../mydocs/tech/task_m1_56_source_cutover.json)
 separate accepted source revisions, published documentation tips, compiled source
 pins and executed tool pins. The four component source repositories are publicly
@@ -100,9 +100,10 @@ PR #1s are merged. Their integrated source/tooling baselines are:
 | DXMT | [`e02987b`](https://github.com/postmelee/pear-dxmt/commit/e02987bbe1bfee6b56759f6d1a35090e3404568a) |
 | Common runtime | [`d49869e`](https://github.com/postmelee/pear-runtime/commit/d49869e94ab6c2f7e40d4370aa623a9e99541527) |
 
-The component integration/default branch remains `codex/task56`; later
-publication-documentation commits do not replace these source/tooling baselines
-or the selected build and executed-tool pins above. Task #77 rechecked the
+The four component repositories use `master` as their default and integration
+branch following [Task #79](https://github.com/postmelee/pear/issues/79). New
+component PRs target `master`. Later documentation commits do not replace these
+source/tooling baselines or the selected build and executed-tool pins above. Task #77 rechecked the
 [integrated audit](https://github.com/postmelee/pear/issues/75#issuecomment-6295812832)
 and made all four repositories public. Existing builds, private prerequisites
 and selected tool roots remain retained. Public source access does not recover
@@ -121,7 +122,10 @@ confirmation policy, with its newly reviewed descriptor/producer identities.
 The historical reconstruction lock and runtime tool pin remain unchanged. Keep
 the selected runtime source-only checkout at `.worktrees/runtime-task56`, detached at runtime
 `6f0202b457f0e585c5c7621a63d203e77d07386d`. Later report/documentation edits use
-`.worktrees/runtime-development-v1` on `codex/task56`. Creating another source
+the retained `.worktrees/runtime-development-v1` checkout on its local
+`codex/task56` branch. That local branch is a preserved historical worktree, not
+the remote integration branch. Start new work from `origin/master` in a separate
+checkout; do not switch or move a frozen producer root. Creating another source
 worktree needs fresh capacity review: the exercised allowance was 128 MiB plus
 a separate 6 GiB reserve, with no runtime bundle, prefix, input pack or game copy.
 Retain the selected root until all consumers accept a successor.
@@ -312,7 +316,7 @@ This restores a development selection only. It does not restore a runtime,
 object/toolchain pack, prefix, save, credential or private state, and it does not
 reuse an earlier execution grant. The separate input-recovery exercise restored
 only exact binding metadata and one 3,634-byte common header; see the
-[runtime recovery limits](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md#bounded-exact-input-recovery).
+[runtime recovery limits](https://github.com/postmelee/pear-runtime/blob/master/docs/development.md#bounded-exact-input-recovery).
 
 ### Finish a future game diagnostic with independent release
 
@@ -348,7 +352,7 @@ game. Preserve both diagnostic and independent-release outcomes.
 
 ### Continue the developer Megabonk investigation
 
-The [accepted source-cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+The [accepted source-cutover record](https://github.com/postmelee/pear-runtime/blob/master/provenance/source-cutover-task56.json)
 identifies the single editable owners and exact reviewed checkpoints. It does not
 activate the candidate or replace the historical compilation and executed-tool
 pins. Task #56 inspected all 69 owned inputs and exercised metadata selection and

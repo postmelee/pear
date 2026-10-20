@@ -62,8 +62,10 @@ Megabonk's menu, but gameplay and verification that every required process and
 library runs without Rosetta remain incomplete.
 
 Wine, FEX, DXMT and common-runtime source ownership are established. Their four
-source repositories are publicly readable. Bounded runtime reconstruction and
-development-selector checks have passed; retained build inputs are still required.
+source repositories are publicly readable and use `master` for default access
+and integration PRs. Selected runtime builds retain their exact commit pins.
+Bounded runtime reconstruction and development-selector checks have passed;
+retained build inputs are still required.
 These checks do not qualify game compatibility. See the
 [native development guide](docs/development/rosetta-free.md#split-native-development-components)
 for prerequisites and ongoing work, and the

@@ -76,7 +76,7 @@ mydocs/report/task_m1_79_report.md and mydocs/orders/20261021.md.
 
 No substantial build or runtime copy: material build-space planning is not
 applicable. New sparse clones, a Pear worktree and text receipts have a conservative
-512 MiB allowance; filesystem observed 16,239,882,240 available bytes before setup
+512 MiB allowance; filesystem observed 16,238,858,240 available bytes before setup
 (`df -k`, local Data volume; concurrent allocations are not attributed).
 
 ## Tentative Stages

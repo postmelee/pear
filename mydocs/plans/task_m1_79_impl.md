@@ -62,6 +62,8 @@ Commit: Task #79 Stage 2: adopt master and align integration guidance.
 
 Independent review of exact diffs. Push codex/publish-task79, create component PRs
 against master and merge only unchanged reviewed heads with checks satisfied.
+The old refs remain until the coordinating Pear documentation PR also merges,
+so its still-published links never lose their target during migration.
 Before old remote deletion, confirm master contains the recorded tip, old ref
 still equals that tip, no open PR/branch rule/automation/default consumer remains,
 and all reviewed live doc links point at master or an immutable commit. Record
@@ -74,7 +76,9 @@ tip, without moving any existing ref or replacing selected producer roots.
 Run final governance/notices/diff checks after report-only edits. Reuse Stage2
 document-test results only if tests/checkers/fixtures and relevant guides are
 unchanged; otherwise rerun affected checks. Stage3 and final report record actual
-component merges/cleanup; Pear publication/CI/merge readback goes in the Issue.
+component merges and the prepared cleanup gates; Pear publication/CI/merge and
+post-merge old-ref retirement readback go in the Issue. Do not mark pending
+remote cleanup as completed in the prepublication report.
 Publish coordinating Pear PR against master, inspect available CI and exact
 reviewed tree before merge. Check preserved roots and pins after integration;
 only reviewed docs may advance Pear main. Close Issue after confirmed merge.
