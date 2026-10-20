@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 [package]
 name = "pear-preview"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.94"
 publish = false
@@ -11,6 +11,7 @@ license = "GPL-3.0-or-later"
 [dependencies]
 pear-manager = { path = "../manager" }
 libc = "=0.2.186"
+serde_json = "=1.0.151"
 
 [profile.release]
 opt-level = 3

@@ -15,13 +15,14 @@ into official Windows Steam, then choose an owned game from your library. The ap
 and optional CLI share the same setup. Routine players should not need Terminal,
 Xcode, a developer account or a paid compatibility app.
 
-**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.dmg)** · [Website & game reports](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.0)
+**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.1/Pear-0.1.1-macos-arm64.dmg)** · [Website & game reports](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.1)
 
-Pear **0.1.0** uses **Wine 11.0 and DXMT 0.80** and requires
+Pear **0.1.1** uses **Wine 11.0 and DXMT 0.80** and requires
 Apple Silicon, macOS 15+ and Rosetta. Megabonk gameplay, input/audio, saved
-progress, recovery and a fresh standard-account installation were checked on
-one M4 Pro / macOS 26.5.2. The second account is on the same Mac; other hardware
-and games remain unverified.
+progress, recovery and a fresh standard-account installation were checked with
+earlier releases on one M4 Pro / macOS 26.5.2 using the unchanged runtime.
+Those results do not establish first-install correctness for every later app
+version. Other hardware and games remain unverified.
 
 | Start here | What you will find |
 |---|---|
@@ -32,10 +33,14 @@ and games remain unverified.
 | [Develop without Rosetta](docs/development/rosetta-free.md) | Native component repositories, bounded reconstruction, current Issues and prerequisites |
 | [Read the documentation](docs/README.md) | Tutorials, task guides, reference and explanation |
 
+If 0.1.0 setup stopped with “This folder contains unrelated files”, quit Pear
+with Command-Q and install the current app. Keep your Application Support data;
+see [first-install recovery](docs/rosetta-preview.md#first-install-recovery).
+
 Install with Homebrew: `brew install --cask postmelee/tap/pear`.
 See [installation, updates and removal](docs/rosetta-preview.md#homebrew).
 
-The final 0.1.0 signed app/CLI startup and the reused Wine runtime were checked in macOS
+The final 0.1.1 signed app/CLI startup and the reused Wine runtime were checked in macOS
 15.7.9 CI; this does not establish Steam UI or gameplay compatibility on macOS 15.
 The gameplay evidence above remains from the unchanged runtime on macOS 26.
 
@@ -49,7 +54,7 @@ See [app updates](docs/rosetta-preview.md#app-updates) and
 
 | Track | Current scope | Status |
 |---|---|---|
-| Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Public v0.1.0; macOS 15 startup checked; prior gameplay and recovery evidence on one macOS 26 Mac |
+| Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Public v0.1.1; macOS 15 startup checked; prior gameplay and recovery evidence on one macOS 26 Mac |
 | Rosetta-free runtime (M1) | Run owned Windows Megabonk with every required host process and library free of Rosetta | Under development; no player-ready native preview |
 
 The Rosetta-free runtime remains in development. Experimental builds have reached

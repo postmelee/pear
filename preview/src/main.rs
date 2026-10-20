@@ -24,6 +24,7 @@ fn execute() -> Result<()> {
         return Ok(());
     }
     if command != "setup-info"
+        && command != "initialize"
         && command != "steam"
         && command != "megabonk"
         && command != "play"
@@ -56,6 +57,11 @@ fn execute() -> Result<()> {
         return Ok(());
     }
     let session = Session::open(&root)?;
+    if command == "initialize" {
+        // Local ownership only: no downloads, runtime execution or reporting.
+        println!("{}", pear_preview::setup_info(&root)?);
+        return Ok(());
+    }
     let notify = |s: &str| {
         if !events && s.starts_with("@download\t") {
             let fields: Vec<_> = s.split('\t').collect();

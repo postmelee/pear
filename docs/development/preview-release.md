@@ -146,7 +146,7 @@ Before any release upload or public-download claim:
   failures. Packaging success does not close Issue #47 or authorize a merge.
 
 Publish only the approved exact artifacts and source revision. A preview remains
-a pre-release; the authorized first stable release is v0.1.0/build 8. Keep the player guide and README download status synchronized
+a pre-release; the first stable release is v0.1.0/build 8. The approved first-install hotfix is v0.1.1/build 9. Keep the player guide and README download status synchronized
 with actual availability. Do not replace failed tests with a disclaimer to promote
 a release. Performance or Rust-port work is outside this delivery task.
 
@@ -160,6 +160,11 @@ Keychain; it is not a CI secret or a client credential. Protected dispatch with
 a separate test pair. These inputs are mutually exclusive. Preserve the required
 reviewer and exact approved SHA gate. Verify exact returned signed packages with
 the separate `signed_run_id`/`signed_revision` macOS 15 workflow dispatch.
+
+Build 9 (0.1.1) is source `c582c93fddaf31c5ef271d85f4c60081299e6bad`.
+Its final signed app completed empty-root and history-only recovery installations
+on macOS 26.5.2, and signed startup checks on macOS 15.7.9. Keep these checks
+separate from the earlier fresh-account and gameplay evidence.
 
 Build 8 is source `51fbe6f2dea42c82691d803ef02ae1663c087dd9`. Documentation/feed
 changes after this revision do not change its admitted binary identity. Supply
