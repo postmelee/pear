@@ -26,7 +26,8 @@ an Issue on this list is not necessarily unassigned or a beginner task.
 ## Split native development components
 
 [Task #56](https://github.com/postmelee/pear/issues/56) establishes separate source repositories. The component
-repositories are private and require collaborator access. Upstream history,
+repositories are public as of October 21, 2026 under
+[Task #77](https://github.com/postmelee/pear/issues/77). Upstream history,
 source languages, file-specific notices and contribution policies remain intact.
 
 | Component | Source and responsibility |
@@ -65,8 +66,8 @@ The #11, #10 and #12 owners accepted the exact selected implementation, tests
 and development boundary. The [canonical source-cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
 and [final repository references](../../mydocs/tech/task_m1_56_source_cutover.json)
 separate accepted source revisions, published documentation tips, compiled source
-pins and executed tool pins. The four component repositories are private and
-require collaborator access. Historical pending-cutover records remain dated
+pins and executed tool pins. The four component source repositories are publicly
+readable. Historical pending-cutover records remain dated
 evidence; future edits to the accepted range belong to the mapped new owners.
 Preserve legacy consumer copies and private recovery inputs until their owners
 release them. This does not activate a runtime or qualify the game.
@@ -78,20 +79,34 @@ including the runtime-selection and manual-confirmation corrections, at Pear
 `26927fa2cc4e5d606ac02f2c1c1eceb54e83f60e`. Use the corrected selector source
 `400da1145b20ff787ad30b251ea5c810ed291c29` with its reviewed descriptors.
 A later source or documentation tip does not change any retained build or tool
-identity. The final Task #56 component documentation tips are:
+identity. The historical final Task #56 component documentation tips are:
 
-| Repository | Final private source/documentation tip | Candidate build or executed-tool pin |
+| Repository | Historical Task56 source/documentation tip | Candidate build or executed-tool pin |
 | --- | --- | --- |
 | Wine | `007291b81de386fd8886770c33b5d385c078635d` | Task56 selected bounded build `1b76db6902345388c589ba3909b22badf751dfd5`; retained WGI producer is identified separately below |
 | FEX | `4ae26ddf9a21b52cd50d096504c4d0ea5ab49204` | Build `c62ed75aa6a33809ddb76c7f40aabbe4f4fbdda6`; diagnostic tool `9c9b602c07b57a08500862abfdf62e1bac351640` |
 | DXMT | `d0ad50946ab64bbe4dc3584a5d91f8e99a6e492c` | Build `e800e770006fc7c37831ab857000a4781c85f6fd` |
 | Common runtime | `9be1545f5a0845d3b14d4b845bf6bd413a224df3` | Executed tool `6f0202b457f0e585c5c7621a63d203e77d07386d` |
 
-[Task #75](https://github.com/postmelee/pear/issues/75) tracks documentation
-reconciliation, source-publication readiness and WGI source-to-PE evidence.
-The repositories remain private during review. Existing builds, private
-prerequisites and selected tool roots remain retained; review does not authorize
-public conversion or a new game run.
+[Task #75](https://github.com/postmelee/pear/issues/75) completed documentation
+reconciliation, source-publication review and bounded WGI source-to-PE evidence.
+Pear [PR #76](https://github.com/postmelee/pear/pull/76) and the four component
+PR #1s are merged. Their integrated source/tooling baselines are:
+
+| Component | Task75 integrated baseline |
+| --- | --- |
+| Wine | [`921039a`](https://github.com/postmelee/pear-wine/commit/921039a56a45544990895910d2a4dca801af4007) |
+| FEX | [`b210b27`](https://github.com/postmelee/pear-fex/commit/b210b272fb2784a1a1d04b4d16415c9edefa3519) |
+| DXMT | [`e02987b`](https://github.com/postmelee/pear-dxmt/commit/e02987bbe1bfee6b56759f6d1a35090e3404568a) |
+| Common runtime | [`d49869e`](https://github.com/postmelee/pear-runtime/commit/d49869e94ab6c2f7e40d4370aa623a9e99541527) |
+
+The component integration/default branch remains `codex/task56`; later
+publication-documentation commits do not replace these source/tooling baselines
+or the selected build and executed-tool pins above. Task #77 rechecked the
+[integrated audit](https://github.com/postmelee/pear/issues/75#issuecomment-6295812832)
+and made all four repositories public. Existing builds, private prerequisites
+and selected tool roots remain retained. Public source access does not recover
+missing inputs, activate a runtime, authorize a game run or qualify gameplay.
 
 ## Select an isolated development candidate
 

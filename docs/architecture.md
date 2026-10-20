@@ -81,7 +81,7 @@ Pear owns the following contracts even when their implementations reuse upstream
 - **Release contract:** source availability, notices, reproducible build procedure, artifact identity, and upgrade compatibility.
 
 Task #56 assigns source implementation to explicit repositories while retaining
-these contracts. The component links require collaborator access:
+these contracts. The component source repositories are publicly readable:
 
 | Component | Source and responsibility |
 | --- | --- |
