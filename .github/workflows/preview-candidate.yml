@@ -98,6 +98,8 @@ jobs:
       - name: Test and build the existing app and CLI
         run: |
           python3 -B preview/ci_checks.py
+          export PEAR_SPARKLE_ROOT="$RUNNER_TEMP/pear-sparkle"
+          python3 -B preview/sparkle_input.py --download --output "$PEAR_SPARKLE_ROOT"
           sh preview/build.sh
           "$CARGO_TARGET_DIR/release/pear-preview" --help
       - name: Package only allowlisted candidate contents
@@ -231,6 +233,8 @@ jobs:
           rustup toolchain install 1.94.1 --profile minimal
           cargo fetch --manifest-path preview/Cargo.toml --locked
           python3 -B preview/ci_checks.py
+          export PEAR_SPARKLE_ROOT="$RUNNER_TEMP/pear-sparkle"
+          python3 -B preview/sparkle_input.py --download --output "$PEAR_SPARKLE_ROOT"
           sh preview/build.sh
           git diff --exit-code
       - name: Provision the approved identity in an isolated temporary keychain

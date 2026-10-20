@@ -40,13 +40,31 @@ import AppKit
             for (title,action,key) in [("Run history",#selector(runs),"1"),("First installation",#selector(setup),"2"),
                                        ("Downloading · with Cancel",#selector(downloading),"3"),("Opening Steam",#selector(opening),"4"),
                                        ("Steam window open",#selector(ready),"5"),("After a game",#selector(prompt),"6"),
-                                       ("Light appearance",#selector(light),"7"),("Dark appearance",#selector(dark),"8"),("First-run sharing",#selector(introduction),"9")] {
+                                       ("Light appearance",#selector(light),"7"),("Dark appearance",#selector(dark),"8"),("First-run sharing",#selector(introduction),"9"),
+                                       ("App update available (fixture)",#selector(updateAvailable),"0")] {
                 let entry=NSMenuItem(title:title,action:action,keyEquivalent:key);entry.target=self;screens.addItem(entry)
             }
             item.submenu=screens;menu.addItem(item);NSApp.mainMenu=menu
             launcher.window.center();ready();runs()
             print("UI review ready; synthetic records only; no transport or Steam execution.")
         } catch { fputs("UI review failed: \(error)\n",stderr);NSApp.terminate(nil) }
+    }
+    @objc func updateAvailable() {
+        resetMain()
+        launcher.presentUpdateOffer(current:"0.1.0",new:"0.1.1")
+        launcher.updateNotes.show(UpdateReleaseNotes(body:"""
+        <h2>Release notes preview</h2><p>This is sample content for UI review, not a published release.</p>
+        <h3>Improvements</h3><ul><li>See the current and new Pear versions before updating.</li><li>Read what changed without leaving Pear.</li></ul>
+        <h3>Your games and settings</h3><p>App updates keep your installed games, saved progress and sharing settings.</p>
+        <h3>Updating</h3><p>Choose Update and launch to install the new app, or Later to keep using this version.</p>
+        <p>Wine and DXMT use Pear’s existing installation and verification process.</p>
+        """,isHTML:true))
+        launcher.button.target=self;launcher.button.action=#selector(updateDownloading)
+        launcher.cancelButton.title="Later";launcher.cancelButton.target=self;launcher.cancelButton.action=#selector(ready)
+    }
+    @objc func updateDownloading() {
+        launcher.presentUpdate("Downloading Pear update","Your games and saved progress will be kept.",0.35)
+        launcher.cancelButton.target=self;launcher.cancelButton.action=#selector(ready)
     }
     @objc func introduction() {
         let directory=Bundle.main.bundleURL.deletingLastPathComponent().appendingPathComponent("ui-fixtures/onboarding-" + UUID().uuidString)
@@ -56,6 +74,9 @@ import AppKit
     }
     @objc func runs() { history.show() }
     func resetMain() {
+        launcher.hideUpdateOffer()
+        launcher.button.target=self;launcher.button.action=#selector(ready)
+        launcher.cancelButton.target=self;launcher.cancelButton.action=#selector(setup);launcher.cancelButton.title="Cancel"
         launcher.downloads?.isHidden=true;launcher.busy.stopAnimation(nil);launcher.busy.isHidden=true
         launcher.progress.isHidden=true;launcher.cancelButton.isHidden=true;launcher.button.isEnabled=true
         launcher.window.makeKeyAndOrderFront(nil)

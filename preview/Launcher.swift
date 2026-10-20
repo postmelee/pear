@@ -10,6 +10,10 @@ import UserNotifications
     var label: NSTextField!
     var downloads: NSGridView!
     var downloadHost: NSStackView!
+    var updateNotes: UpdateNotesView!
+    var updateVersions: NSStackView!
+    var installedVersion: NSTextField!
+    var availableVersion: NSTextField!
     var progress: NSProgressIndicator!
     var busy: NSProgressIndicator!
     var button: NSButton!
@@ -32,6 +36,103 @@ import UserNotifications
     var observerStarted = Date()
     var sawOwnedSession = false
     var historyError: String?
+    var appUpdater: PearUpdater?
+    var updateLease: UpdateInstallLease?
+    var updateChoice: ((Bool) -> Void)?
+    var launchPending = false
+    var startupUpdateChecked = false
+    var rootURL: URL {
+        URL(fileURLWithPath:ProcessInfo.processInfo.environment["PEAR_PREVIEW_ROOT"] ??
+            NSHomeDirectory()+"/Library/Application Support/Pear Preview").standardizedFileURL.resolvingSymlinksInPath()
+    }
+    func ownedSession() -> UpdateLaunchPolicy.Session {
+        guard let info else { return .unknown }
+        let snapshot=OwnedProcessProbe(root:rootURL,runtime:info.runtime_id).snapshot(previous:runObserver.previous)
+        return !snapshot.complete ? .unknown : snapshot.processes.isEmpty ? .idle : .active
+    }
+    func hideUpdateOffer() {
+        updateNotes.isHidden=true;updateVersions.isHidden=true
+        window.setContentSize(NSSize(width:600,height:340))
+    }
+    func presentUpdateOffer(current:String,new:String) {
+        presentUpdate("A Pear update is available","Update Pear, then continue to Steam. Your games and saves will be kept.",nil)
+        busy.stopAnimation(nil);busy.isHidden=true
+        installedVersion.stringValue=current;availableVersion.stringValue=new
+        updateVersions.isHidden=false;updateNotes.isHidden=false;updateNotes.loading()
+        window.setContentSize(NSSize(width:640,height:580))
+        button.title="Update and launch";button.isEnabled=true
+        cancelButton.title="Later"
+    }
+    func presentUpdate(_ title:String, _ detail:String, _ fraction:Double?) {
+        hideUpdateOffer()
+        openingGeneration += 1
+        titleLabel.stringValue=title;label.stringValue=detail
+        downloadHost.isHidden=true
+        button.title=appUpdater?.installationDeferred == true ? "Finish update" : appUpdater?.isInstalling == true ? "Installing…" : "Please wait…"
+        button.isEnabled=appUpdater?.installationDeferred == true
+        cancelButton.isHidden=appUpdater?.isInstalling == true;cancelButton.isEnabled=true
+        cancelButton.title="Continue without updating"
+        progress.setAccessibilityLabel("App update progress")
+        progress.isHidden=fraction == nil
+        if let fraction { progress.minValue=0;progress.maxValue=1;progress.doubleValue=fraction }
+        busy.isHidden=fraction != nil
+        if fraction == nil { busy.startAnimation(nil) } else { busy.stopAnimation(nil) }
+    }
+    func beginLaunchGate() {
+        guard info != nil,!closing,task == nil,!(appUpdater?.isBusy ?? false) else { return }
+        if history?.isSharingOpen == true {
+            launchPending=true
+            titleLabel.stringValue="Welcome to Pear"
+            label.stringValue="Choose your sharing preference in the Welcome window to continue."
+            return
+        }
+        launchPending=false
+        if !startupUpdateChecked {
+            startupUpdateChecked=true
+            let build=Bundle.main.object(forInfoDictionaryKey:"CFBundleVersion") as? String ?? ""
+            if UpdateRestartStore().consume(build:build) { continueSteam();return }
+            if info?.ready == true, ownedSession() == .idle,
+               UpdateOwnership.inspect(app:Bundle.main.bundleURL) == .direct,
+               let lease=try? UpdateInstallLease(root:rootURL) {
+                updateLease=lease
+                appUpdater=PearUpdater(session:{ [weak self] in self?.ownedSession() ?? .unknown },
+                    ownership:{ UpdateOwnership.inspect(app:Bundle.main.bundleURL) },
+                    present:{ [weak self] in self?.presentUpdate($0,$1,$2) },
+                    offer:{ [weak self] version,choose in
+                        guard let self else { return }
+                        self.presentUpdateOffer(current:Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "Unknown",new:version)
+                        self.updateChoice=choose
+                    }, releaseNotes:{ [weak self] notes in
+                        guard let self else { return }
+                        if let notes { self.updateNotes.show(notes) } else { self.updateNotes.unavailable() }
+                    }, proceed:{ [weak self] in
+                        guard let self,!self.closing else { return }
+                        self.updateLease=nil;self.updateChoice=nil
+                        self.continueSteam()
+                    })
+                appUpdater?.begin();return
+            }
+        }
+        continueSteam()
+    }
+    func continueSteam() {
+        guard !closing else { return }
+        hideUpdateOffer()
+        cancelButton.title="Cancel";cancelButton.isHidden=true
+        progress.isHidden=true;busy.stopAnimation(nil);busy.isHidden=true
+        if info?.ready == true {
+            switch ownedSession() {
+            case .active: observeSteam();return
+            case .unknown:
+                titleLabel.stringValue="Steam status is unavailable"
+                label.stringValue="Pear could not confirm whether Steam is running. Try again when the current session has finished."
+                button.title="Try again";button.isEnabled=true;return
+            case .idle: break
+            }
+        }
+        launchSteam()
+    }
+
 
     @objc func showHistory() {
         if let history { history.show(); return }
@@ -86,6 +187,10 @@ import UserNotifications
             }
             view.enableNotifications = { UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in } }
             coordinator.changed = { [weak view] in view?.refresh() }
+            view.sharingClosed = { [weak self] in
+                guard let self,self.launchPending else { return }
+                self.beginLaunchGate()
+            }
             view.showSharingIntroductionIfNeeded()
             observationGeneration += 1
             pollRuns(OwnedProcessProbe(root: root, runtime: setup.runtime_id), generation: observationGeneration)
@@ -132,7 +237,7 @@ import UserNotifications
                     self.reporting?.stop()
                     self.historyError = "Run history could not be saved. Sharing is stopped."
                 }
-                if snapshot.complete, snapshot.processes.isEmpty, self.task == nil,
+                if snapshot.complete, snapshot.processes.isEmpty, self.task == nil, !(self.appUpdater?.isBusy ?? false),
                    !self.window.isVisible, !(self.history?.isVisible ?? false),
                    self.sawOwnedSession || Date().timeIntervalSince(self.observerStarted) > 120 {
                     NSApp.terminate(nil); return
@@ -194,6 +299,12 @@ import UserNotifications
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // LaunchServices normally reuses one process; also handle explicit open -n.
+        if ProcessInfo.processInfo.environment["PEAR_PREVIEW_ROOT"] == nil,
+           let id=Bundle.main.bundleIdentifier,
+           let existing=NSRunningApplication.runningApplications(withBundleIdentifier:id).first(where: { $0.processIdentifier < ProcessInfo.processInfo.processIdentifier && !$0.isTerminated }) {
+            existing.activate(options:[.activateAllWindows]);NSApp.terminate(nil);return
+        }
         UNUserNotificationCenter.current().delegate = self
         buildMainWindow()
         window.center(); window.makeKeyAndOrderFront(nil)
@@ -231,6 +342,13 @@ import UserNotifications
         titleLabel = PearStyle.label("Set up Pear",size:28,weight:.semibold)
         label = PearStyle.label("Checking your installation…",size:14,muted:true)
         downloadHost = PearStyle.stack([])
+        installedVersion=PearStyle.label("",size:18,weight:.semibold)
+        availableVersion=PearStyle.label("",size:18,weight:.semibold)
+        let current=PearStyle.stack([PearStyle.label("Current version",size:12,muted:true),installedVersion!],spacing:4)
+        let next=PearStyle.stack([PearStyle.label("New version",size:12,muted:true),availableVersion!],spacing:4)
+        updateVersions=PearStyle.stack([current,PearStyle.label("→",size:20,muted:true),next,NSView()],horizontal:true,spacing:28)
+        updateVersions.isHidden=true
+        updateNotes=UpdateNotesView();updateNotes.isHidden=true
         progress = NSProgressIndicator();progress.style = .bar;progress.isIndeterminate=false
         progress.setAccessibilityLabel("Setup progress");progress.isHidden=true
         busy = NSProgressIndicator();busy.style = .spinning;busy.isIndeterminate=true
@@ -240,11 +358,11 @@ import UserNotifications
         button.keyEquivalent="\r";button.isEnabled=false
         cancelButton = PearStyle.button("Cancel",target:self,action:#selector(cancelSetup));cancelButton.isHidden=true
         let actions = PearStyle.stack([NSView(),cancelButton!,button!],horizontal:true,spacing:16)
-        let page=PearStyle.stack([titleLabel!,label!,downloadHost,status,NSView(),actions],spacing:16)
+        let page=PearStyle.stack([titleLabel!,label!,downloadHost,updateVersions!,updateNotes!,status,NSView(),actions],spacing:16)
         page.setCustomSpacing(8,after:titleLabel!)
         page.setCustomSpacing(26,after:label!)
         PearStyle.pin(page,in:window.contentView!)
-        for view in [label!,downloadHost!,status,actions] {
+        for view in [label!,downloadHost!,updateVersions!,updateNotes!,status,actions] {
             view.widthAnchor.constraint(equalTo:page.widthAnchor).isActive=true
         }
         busy.widthAnchor.constraint(equalToConstant:18).isActive=true
@@ -278,7 +396,7 @@ import UserNotifications
             return
         }
         if value.ready {
-            start()
+            beginLaunchGate()
             return
         }
         label.stringValue = "Install the files below to get started. Steam updates and games download separately."
@@ -310,12 +428,21 @@ import UserNotifications
         let alert = NSAlert()
         alert.messageText = "Pear"
         let version = info?.version ?? "0.1.0"
-        alert.informativeText = "Version \(version)\nRuntime: Wine 11.0 · DXMT 0.80\nRosetta required\n\nFree and open source · GPL-3.0-or-later\n\nSteam, games and saves are kept in your user’s Library/Application Support/Pear Preview folder."
+        let ownership=UpdateOwnership.inspect(app:Bundle.main.bundleURL)
+        let updateHelp=ownership == .homebrew ? "Updates are managed by Homebrew. Use brew upgrade --cask postmelee/tap/pear." : ownership == .uncertain ? "Install Pear in Applications to use app updates." : "Pear checks for app updates before opening Steam."
+        alert.informativeText = "Version \(version)\nRuntime: Wine 11.0 · DXMT 0.80\nRosetta required\n\nFree and open source · GPL-3.0-or-later\n\nSteam, games and saves are kept in your user’s Library/Application Support/Pear Preview folder.\n\n\(updateHelp)"
         alert.addButton(withTitle: "OK")
         alert.beginSheetModal(for: window)
     }
 
     @objc func start() {
+        if info == nil { inspectSetup();return }
+        if appUpdater?.installationDeferred == true { appUpdater?.resumeDeferredInstallation();return }
+        if let choose=updateChoice { updateChoice=nil;choose(true);return }
+        guard !(appUpdater?.isBusy ?? false) else { return }
+        beginLaunchGate()
+    }
+    func launchSteam() {
         guard task == nil else { return }
         // Retry a failed metadata inspection before offering any download action.
         guard info != nil else { inspectSetup(); return }
@@ -324,6 +451,7 @@ import UserNotifications
         downloads?.isHidden = true
         titleLabel.stringValue = "Preparing Steam"
         label.stringValue = "Checking the installed files…"
+        progress.setAccessibilityLabel("Setup progress")
         progress.isHidden = true
         busy.isHidden = false
         busy.startAnimation(nil)
@@ -335,6 +463,8 @@ import UserNotifications
     }
 
     @objc func cancelSetup() {
+        if let choose=updateChoice { updateChoice=nil;choose(false);return }
+        if appUpdater?.isBusy == true { appUpdater?.cancel();return }
         guard let task, task.isRunning else { return }
         stopping = true
         cancelButton.isEnabled = false
@@ -440,6 +570,16 @@ import UserNotifications
         return historyOwner == nil
     }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if appUpdater?.isInstalling == true, ownedSession() != .idle {
+            window.makeKeyAndOrderFront(nil)
+            label.stringValue="Close Steam and your games before Pear can finish the update."
+            return .terminateCancel
+        }
+        if appUpdater?.installationDeferred == true {
+            DispatchQueue.main.async { [weak self] in self?.appUpdater?.resumeDeferredInstallation() }
+            return .terminateCancel
+        }
+        appUpdater?.stopForQuit()
         reporting?.stop()
         for transfer in serverDeletes.values { transfer.cancel() }
         closing = true

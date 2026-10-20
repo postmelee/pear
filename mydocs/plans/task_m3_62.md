@@ -125,3 +125,17 @@ ownership, signed pair and macOS 15 final execution are still outstanding; do no
 represent the passed policy test as Sparkle integration. No new user permission is
 needed to begin the previously authorized implementation; existing GitHub protected
 signing approval is retained when CI reaches that gate. No other chat is involved.
+
+## Accepted update-screen direction — 2026-10-19
+The requester asked for explicit current and target versions with a release-notes
+web view below. Keep Update and launch / Later fixed below the scrollable notes.
+Reuse Sparkle's appcast description/release-notes callbacks and WebKit rather
+than embed the authenticated GitHub page or build another download service.
+The publishing step must derive the appcast notes from the same GitHub release
+body. Inline HTML/plain text and HTTPS notes under the Pear Pages updates path
+are admitted. Nonpersistent WebKit disables scripts and resource requests;
+external navigation is restricted to explicit Pear GitHub release links.
+Bound notes to 256 KiB and show an independent eight-second fallback. Missing
+notes do not reject a valid app update or hold the Steam launch gate.
+UI fixtures are marked sample content and do not represent a published release.
+No official document location changes are needed for this presentation change.

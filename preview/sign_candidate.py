@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import tempfile
 import package as packages
+from sign_sparkle import sign_framework
 
 
 def run(*args):
@@ -103,6 +104,8 @@ def sign_candidate(app, output, identity, keychain, profile, revision, team):
         staged = root / app.name
         run('/usr/bin/ditto', app, staged)
         cli = staged / 'Contents/Resources/pear-preview'
+        framework = staged / 'Contents/Frameworks/Sparkle.framework'
+        if framework.exists(): sign_framework(framework, identity, keychain)
         for target in (cli, staged):
             run('/usr/bin/codesign', '--force', '--options', 'runtime', '--timestamp',
                 '--keychain', keychain, '--sign', identity, target)

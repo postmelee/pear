@@ -5,13 +5,15 @@ set -euo pipefail
 repo="$(cd "$(dirname "$0")/../.." && pwd)"
 out="$repo/.build/task63-ui"
 app="$out/Pear UI Review.app"
-mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources" "$app/Contents/Frameworks"
+sparkle="${PEAR_SPARKLE_ROOT:-$repo/.build/task62/admitted}"
+/usr/bin/ditto "$sparkle/Sparkle.framework" "$app/Contents/Frameworks/Sparkle.framework"
 cp "$repo/docs/assets/pear.png" "$app/Contents/Resources/PearMark.png"
 # Small app-only build. No installed application, runtime or authenticated prefix copy.
-sources=(AppStyle Presentation SteamWindow ReportingPolicy ReportingStore ReportingTransport HistoryWindow RunObserver Launcher)
+sources=(AppStyle Presentation SteamWindow ReportingPolicy ReportingStore ReportingTransport HistoryWindow RunObserver UpdateLaunchPolicy UpdateEnvironment UpdateReleaseNotes SparkleUpdate Launcher)
 args=()
 for source in "${sources[@]}"; do args+=("$repo/preview/$source.swift"); done
-xcrun swiftc -O -D PEAR_UI_REVIEW -target arm64-apple-macosx15.0 "${args[@]}" "$repo/preview/ui-review/Main.swift" -o "$app/Contents/MacOS/PearUIReview"
+xcrun swiftc -F "$sparkle" -framework Sparkle -Xlinker -rpath -Xlinker @executable_path/../Frameworks -O -D PEAR_UI_REVIEW -target arm64-apple-macosx15.0 "${args[@]}" "$repo/preview/ui-review/Main.swift" -o "$app/Contents/MacOS/PearUIReview"
 cp "$repo/preview/assets/pear_icon.png" "$app/Contents/Resources/Pear.png"
 cat > "$app/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict>

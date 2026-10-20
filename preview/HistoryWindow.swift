@@ -39,12 +39,19 @@ import UniformTypeIdentifiers
     }
 }
 
-@MainActor final class HistoryWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate {
+@MainActor final class HistoryWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate {
     let store: ReportingStore
     var configureSharing: ((SharingMode, Set<ReportField>) throws -> Void)?
     var retryReport: ((UUID) throws -> Void)?
     var deleteLocalRecord: ((UUID) throws -> Void)?
     var deleteServerReport: ((UUID, @escaping (Bool) -> Void) -> Void)?
+    var sharingClosed: (() -> Void)?
+    var isSharingOpen: Bool { settingsWindow?.isVisible ?? false }
+    func windowWillClose(_ notification: Notification) {
+        if let closed=notification.object as? NSWindow, closed === settingsWindow {
+            DispatchQueue.main.async { [weak self] in self?.sharingClosed?() }
+        }
+    }
     var enableNotifications: (() -> Void)?
     var submit: ((RunObservation, Bool) throws -> Void)?
     private var window: NSWindow!
@@ -482,7 +489,7 @@ import UniformTypeIdentifiers
         let consent=store.snapshot.policy.consent
         let panel=NSWindow(contentRect:NSRect(x:0,y:0,width:firstRun ? 640 : 800,height:650),
                            styleMask:[.titled,.closable],backing:.buffered,defer:false)
-        settingsWindow=panel;panel.isReleasedWhenClosed=false
+        settingsWindow=panel;panel.isReleasedWhenClosed=false;panel.delegate=self
         panel.title=firstRun ? "Pear · Welcome" : "Pear · Settings";PearStyle.window(panel)
         let width:CGFloat=firstRun ? 584 : 580
         let introduction=PearStyle.label("Your reports help Pear support more games, investigate problems and work with contributors. Sharing is optional; Pear works without it.")

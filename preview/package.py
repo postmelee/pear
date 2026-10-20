@@ -9,6 +9,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+from sparkle_input import verify_framework
 
 REPO = Path(__file__).resolve().parent.parent
 VERSION = "0.1.0"
@@ -17,15 +18,22 @@ REQUIRED = {
     "Contents/Resources/pear-preview", "Contents/Resources/THIRD_PARTY_NOTICES.md",
     "Contents/_CodeSignature/CodeResources",
 }
-OPTIONAL = {"Contents/Resources/LICENSE", "Contents/CodeResources"}
+OPTIONAL = {"Contents/Resources/LICENSE", "Contents/Resources/PearMark.png", "Contents/CodeResources"}
 
 
 def audit_app(app):
     if app.is_symlink() or not app.is_dir() or app.name != "Pear.app":
         raise ValueError("Expected the built Pear.app directory, not a link.")
     found = set()
+    framework = app / "Contents/Frameworks/Sparkle.framework"
+    framework_files = verify_framework(framework) if framework.exists() else set()
+    if framework_files and not (app / "Contents/Resources/licenses/Sparkle.txt").is_file():
+        raise ValueError("Sparkle license is missing")
     for p in app.rglob("*"):
         relative = p.relative_to(app).as_posix()
+        if relative.startswith("Contents/Frameworks/Sparkle.framework/"):
+            if p.is_file() or p.is_symlink(): found.add(relative)
+            continue
         if p.is_symlink():
             raise ValueError(f"Unexpected package symlink: {relative}")
         if not p.is_file():
