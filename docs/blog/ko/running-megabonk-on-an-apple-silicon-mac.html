@@ -1,0 +1,86 @@
+<!-- SPDX-FileCopyrightText: 2026 Taegyu Lee
+     SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Korean translation of the registered article; original author: Taegyu Lee. -->
+<h1>Apple Silicon Mac에서 Megabonk 실행하기</h1>
+<p><em>한 Windows 게임에서 시작한 Pear, 그리고 앞으로 가고 싶은 방향.</em></p>
+<p>By Taegyu Lee · Pear development journal · v0.1.0</p>
+<p class="notice"><strong>업데이트 — 2026년 10월 20일:</strong> 오늘 Pear v0.1.0이 정식 출시되었습니다. 이 글의 이전 버전에는 실제 출시 전에 이미 이용할 수 있다는 표현이 있었습니다. 아래의 출시 상태와 기능 설명을 바로잡았습니다. 최초 작성일은 그대로 유지합니다.</p>
+<p>Mac에서 Megabonk를 하고 싶었습니다. 게임은 보유하고 있었지만 macOS용 네이티브 버전은 없었습니다. 이 작고 개인적인 문제가 Pear의 출발점이 되었습니다.</p>
+<p>게임을 실행하는 것이 첫 번째 목표였습니다. 그 실행 환경을 다른 사람도 설치하고 사용할 수 있는 형태로 만들면서 Pear가 되었습니다. 2026년 10월 20일 출시한 0.1.0은 Apple Silicon에서 Windows Steam 환경을 준비하는 무료 오픈 소스 Mac 앱입니다. Pear를 열고 공식 Steam 클라이언트에서 로그인한 뒤, 보유한 게임을 설치해 라이브러리에서 실행할 수 있습니다.</p>
+<p>Megabonk는 이 프로젝트를 시작하게 한 게임이자 이 흐름으로 처음 테스트한 게임입니다. 현재 릴리스는 Wine 11.0, DXMT 0.80, Apple의 Rosetta 2를 사용합니다. 장기 목표는 Apple Silicon에서 Rosetta 없이 Windows 게임을 실행하는 것이지만, 지금 내려받을 수 있는 릴리스에는 여전히 Rosetta가 필요합니다.</p>
+<p>첫 글에서는 게임을 하고 싶다는 마음에서 다른 사람에게 공유할 수 있는 앱을 만들기까지의 과정을 이야기하려 합니다. 작동하는 실험, 그 아래의 호환 계층, 그리고 설치와 복구를 사용하기 편하게 만드는 눈에 잘 띄지 않는 작업에 관한 이야기입니다.</p>
+<h2 id="the-first-working-game">처음으로 게임이 실행되다</h2>
+<p>초기에 작동했던 환경은 <code>frankea/Whisky</code> Libraries 3.1.1 패키지의 Wine 11.0과 DXMT 0.80을 사용했습니다. M4 Pro에서 공식 Windows Steam 클라이언트로 로그인한 뒤 Megabonk 메뉴와 Forest Tier 1 세션까지 진입했습니다. <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/research/local-evidence.md">초기 실험 기록</a>에는 중요한 사실이 한 문장으로 정리되어 있습니다.</p>
+<blockquote><p>Wine 호스트는 Rosetta를 사용했다.</p></blockquote>
+<figure class="article-video"><video src="media/gameplay.mp4"></video><figcaption>Metal HUD를 켜고 Mac에서 실행한 Megabonk를 촬영했습니다. HUD에서 이 세션의 Rosetta 실행을 확인할 수 있습니다. 영상은 현재의 호환 경로를 보여 주며, Rosetta 없이 실행하는 목표를 달성했다는 증거는 아닙니다.</figcaption></figure>
+<p>이 결과는 작동하는 기준점이 되었습니다. 호환 계층을 통해 Windows용 게임이 Mac에서 실행되는 것을 볼 수 있었습니다. 다음 질문도 구체적이 되었습니다. 이 구성의 어느 부분에 여전히 Intel 코드 실행이 필요하며, 그 의존성을 없애려면 무엇을 해야 할까요?</p>
+<p>겉보기에는 같아 보이는 여러 상태를 구분해야 했습니다. 네이티브 Mac 런처도 Intel 프로세스를 시작할 수 있습니다. 메뉴가 표시된 게임도 플레이 도중 실패할 수 있습니다. 실행 성공이 개발 과정에서 쌓인 파일과 설정에 의존할 수도 있습니다.</p>
+<p>이 구분은 유용한 개발 질문으로 이어졌습니다. 설치를 반복할 수 있을까요? 작동한 런타임을 정확히 식별할 수 있을까요? 새 환경에서도 Steam 로그인이 될까요? 종료하고 다시 실행해도 저장한 진행 상황이 유지될까요?</p>
+<p>Pear는 이 질문에 답하는 과정에서 자랐습니다.</p>
+<h2 id="what-happens-when-i-open-pear">Pear를 열면 일어나는 일</h2>
+<p>화면에 보이는 앱은 Swift와 AppKit으로 작성한 작은 네이티브 인터페이스입니다. 준비와 실행을 담당하는 Rust 실행 파일을 호출합니다. 선택적으로 제공하는 CLI도 같은 Rust 코어를 사용하므로 두 진입점은 동일한 설치 환경과 상태를 공유합니다. <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/Launcher.swift">런처</a>와 <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/src/lib.rs">부트스트랩 구현</a>은 저장소에서 볼 수 있습니다.</p>
+<p>첫 설치 시 Pear는 필요한 다운로드를 표시하고, 버전이 고정된 런타임과 Valve의 Steam 설치 파일을 받아 SHA-256 해시를 확인한 뒤 격리된 Wine 환경을 준비합니다. Wine의 <em>prefix</em>는 Windows 형식의 파일 시스템, 레지스트리, 앱 상태를 담는 디렉터리입니다. 이 Steam 설치와 게임들이 그 안에 저장됩니다.</p>
+<p>이후 Pear는 공식 Windows Steam 클라이언트를 엽니다. 인증, 라이브러리, 게임 다운로드, 일반적인 플레이 흐름은 Steam이 담당합니다. 사용자가 익숙한 계정과 라이브러리를 그대로 사용하기를 원했습니다. 배포 앱에는 별도의 macOS용 Steam 설치가 필요하지 않습니다.</p>
+<figure class="article-video"><video src="media/demo.mp4"></video><figcaption>macOS에서 Pear 앱, Steam, Megabonk를 사용하는 모습을 담은 화면 녹화입니다.</figcaption></figure>
+<p>런타임에는 세 가지 주요 역할이 있습니다.</p>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>역할</th><th>v0.1.0에서 담당하는 구성 요소</th></tr></thead><tbody>
+<tr><td>현재 런타임이 사용하는 Intel 코드를 Apple Silicon에서 실행</td><td>Rosetta 2</td></tr>
+<tr><td>Steam과 게임이 요구하는 Windows 인터페이스 제공</td><td>Wine 11.0</td></tr>
+<tr><td>Megabonk의 Direct3D 11 그래픽을 Metal 작업으로 변환</td><td>DXMT 0.80 및 Wine의 Metal 통합</td></tr>
+</tbody></table></div>
+<figure><img src="images/current-runtime.png" alt="Pear v0.1.0 구성: 네이티브 설치·실행 제어 아래에 CPU, Windows API, 그래픽의 역할이 나뉘어 있습니다."></figure>
+<p class="caption">그림 1. 역할별로 구분한 v0.1.0 런타임입니다. 점선은 설치·실행 제어, 실선은 실행 역할을 나타냅니다. 각 상자가 별도 프로세스이거나 순차적인 프레임 렌더링 단계라는 뜻은 아닙니다. 그림의 원본 표기는 영어로 유지했습니다.</p>
+<p>분명히 구분해야 했던 점은 CPU 명령어를 변환하는 것만으로 Windows 운영체제 서비스가 제공되거나 그래픽 API가 변환되지는 않는다는 사실입니다. 세 역할이 실행 환경 안에서 함께 작동해야 합니다.</p>
+<p>이 그림은 Megabonk에서 선택한 그래픽 경로를 보여 줍니다. 런타임의 <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/THIRD_PARTY_NOTICES.md">구성 요소 목록</a>에는 다른 라이브러리도 있습니다. 패키지에 포함되어 있다는 이유만으로 모든 게임의 렌더링 경로에 필수인 것은 아닙니다.</p>
+<p>기본적인 호환성 기술은 Wine, DXMT, Rosetta와 관련 프로젝트에서 왔습니다. Pear에서 제가 한 일은 구성 요소를 선택하고 통합하며, 환경과 실패 상황을 관리하고, 사용할 수 있는 Mac 앱으로 패키징하는 것이었습니다.</p>
+<h2 id="turning-the-experiment-into-a-release">실험을 배포 가능한 앱으로 만들기</h2>
+<p>게임 실행에 성공한 다음 과제는 개발 환경 밖에서도 같은 결과를 반복하는 것이었습니다. 이 작업의 여러 부분은 게임이 실행되는 첫 스크린샷만큼 눈에 잘 띄지는 않았습니다.</p>
+<h3 id="knowing-what-was-inside-the-runtime">런타임 안에 무엇이 있는지 알기</h3>
+<p>작동하는 라이브러리 묶음은 출발점이었습니다. 배포하려면 파일의 출처, 적용된 패치, 사용자가 실제로 설치할 산출물도 알아야 했습니다.</p>
+<p>이번 릴리스의 런타임은 CodeWeavers 26.3.0 FOSS Wine 소스를 포함해 고정된 소스에서 Wine과 여러 의존성을 빌드합니다. DXMT와 일부 구성 요소는 소스 리비전과 고지를 기록한 고정 버전의 업스트림 릴리스 바이너리를 사용합니다. <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/runtime_build.py">빌드 절차</a>와 <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/runtime-inputs.json">입력 기록</a>에서 이 선택을 확인할 수 있습니다.</p>
+<p>문제가 생겼을 때 조사할 런타임이 구체적으로 정해집니다. 설치된 파일을 의도한 산출물과 비교하고, 기록된 입력까지 거슬러 변경 사항을 추적할 수 있습니다. 다만 모든 입력을 기록하는 것과 모든 바이너리를 바이트 단위로 재현하는 것은 다릅니다. 이번 릴리스는 모든 구성 요소에 대해 후자를 보장하지 않습니다.</p>
+<h3 id="getting-through-steam-s-front-door">Steam의 첫 화면까지 도달하기</h3>
+<p>게임은 실행 경험의 일부였습니다. 중간 런타임 후보에서는 테스트 기기에 Steam 로그인 창이 표시되지 않았습니다. 로그인 창을 닫은 뒤 브라우저 보조 프로세스가 남는 문제도 있었습니다. 이 실패들은 <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/preview/THIRD_PARTY_NOTICES.md">런타임 조사</a>와 <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/rosetta-preview.md">릴리스 작업</a>에 기록되어 있습니다.</p>
+<p>Steam은 게임으로 들어가는 통로이므로 중요한 문제였습니다. 사용자가 로그인할 수 없다면 제가 이전에 Megabonk 메뉴에 도달했다는 사실은 별 도움이 되지 않습니다.</p>
+<p>Pear의 <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/patches/steam-inprocess.patch">Steam 호환성 패치</a>는 메인 Steam webhelper의 GPU 프로세스 동작을 제한적으로 변경하고, 일부 브라우저 자식 프로세스의 수명을 해당 브라우저에 연결합니다. Steam 자체와 실행 중인 게임은 이 정리 대상에 포함하지 않습니다.</p>
+<p>Mac 인터페이스에서도 비슷한 구분이 필요했습니다. 프로세스 시작에 성공했다고 Steam 창이 보인다는 뜻은 아닙니다. Pear는 창을 별도로 관찰하고, 실행 진행 상태를 계속 표시하거나 재시도를 제안합니다. 작은 UI이지만 실행 명령의 반환 코드보다 훨씬 유용한 상태를 전달합니다.</p>
+<h3 id="treating-saved-progress-as-part-of-the-product">저장된 진행 상황도 제품의 일부로 다루기</h3>
+<p>개발 중에는 망가진 환경을 지우고 처음부터 다시 만드는 방식으로 고치기 쉽습니다. 하지만 그 디렉터리에 사용자의 설치 게임, Steam 세션, 저장된 진행 상황이 들어 있다면 좋은 기본 동작이 아닙니다.</p>
+<p>Pear는 내려받은 런타임, 다운로드 캐시, 비공개 Wine 환경을 분리합니다. 런타임은 임시 준비 디렉터리에서 준비한 뒤 활성화하고, 런처는 기존 상태를 확인한 후 진행합니다. <a href="https://github.com/postmelee/pear/blob/v0.1.0/preview/src/lib.rs">부트스트랩</a>은 데이터 보존을 사용자에게만 맡기지 않고 설치 흐름에 포함합니다.</p>
+<p>현재 환경은 <code>~/Library/Application Support/Pear Preview</code> 아래에 있습니다. Mac 앱을 제거하거나 교체하는 것만으로 이 데이터가 사라지지는 않습니다. 복구 테스트는 준비 중단과 특정 재설치·복원 사례를 다뤘습니다. 일반적인 자동 복구 시스템은 앞으로의 작업입니다. 이 범위는 <a href="https://github.com/postmelee/pear/blob/v0.1.0/docs/rosetta-preview.md">사용자 안내</a>에 설명되어 있습니다.</p>
+<p>Pear 상태 창을 닫아도 Steam과 게임은 계속 실행됩니다. 앱이 세션을 준비한 뒤에는 사용자가 Steam을 계속 사용하고 게임을 정상적으로 종료할 수 있습니다.</p>
+<h3 id="making-the-application-practical-to-distribute">실제로 배포할 수 있는 앱으로 만들기</h3>
+<p>릴리스 패키지는 Developer ID로 서명하고 Apple의 공증을 받습니다. 사용자는 컴파일러를 준비하거나 개발자 프로그램에 가입하지 않고 Mac 앱을 설치할 수 있습니다. 앱은 준비 진행 상황, 취소와 재시도를 제공하고 다음 실행부터 기존 설치를 재사용합니다. 패키징과 검증 작업은 <a href="https://github.com/postmelee/pear/releases/tag/v0.1.0">릴리스 노트</a>에 기록되어 있습니다.</p>
+<p>0.1.0에는 Sparkle을 통한 앱 업데이트, 로컬 실행 기록, 선택적인 게임 호환성 제보가 추가되었습니다. 사용자는 Mac에 기록만 보관하거나, 결과를 수동으로 공유하거나, 게임 종료 후 매번 확인하거나, 선택한 관찰 항목을 자동 공유할 수 있습니다. 공유 선택을 확정하기 전에는 보고서를 보내지 않습니다. 제출된 보고서는 비공개 검토를 거친 후 선택된 항목만 공개 게임 카탈로그에 반영됩니다.</p>
+<p>이전 공개 Preview에는 Sparkle이 없습니다. v0.1.0을 한 번 직접 설치하거나, Homebrew로 설치했다면 Homebrew로 업그레이드하세요. Homebrew 설치는 이후에도 Homebrew로 업데이트합니다. <a href="https://github.com/postmelee/pear/blob/v0.1.0/docs/rosetta-preview.md#app-updates">업데이트 안내</a>와 <a href="https://github.com/postmelee/pear/blob/v0.1.0/docs/reporting-and-privacy.md">제보 및 개인정보 안내</a>를 참고하세요.</p>
+<h2 id="what-v0-1-0-has-actually-demonstrated">v0.1.0에서 실제로 확인한 것</h2>
+<p>Megabonk는 첫 검증 대상 게임입니다. 제 M4 Pro에서 20분 이상의 실제 플레이, 입력과 오디오, 종료 후 재실행했을 때의 저장 진행 상황을 확인했습니다. 같은 Mac의 새 표준 사용자 계정에서도 설치를 반복했습니다. 이 관찰 내용은 <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/compatibility/records.md">게임 제보 기록</a>에 남아 있습니다.</p>
+<p>이번 릴리스에서 확인한 범위는 다음과 같습니다.</p>
+<div class="table-scroll" tabindex="0"><table><thead><tr><th>항목</th><th>현재 상태</th></tr></thead><tbody>
+<tr><td>플랫폼 요구사항</td><td>Apple Silicon, macOS 15 이상, Rosetta 2 필요</td></tr>
+<tr><td>게임 플레이 테스트</td><td>M4 Pro, 메모리 24 GB, macOS 26.5.2에서 Megabonk</td></tr>
+<tr><td>플레이 및 데이터 유지</td><td>소유자가 20분 이상 실제 플레이, 입력, 오디오, 재실행 후 저장 진행 상황, 특정 복구 사례를 확인</td></tr>
+<tr><td>새 환경 설치</td><td>동일한 물리 Mac의 새 표준 계정에서 확인</td></tr>
+<tr><td>macOS 15 점검</td><td>macOS 15.7.9에서 앱·CLI 시작 및 Rosetta를 통한 Wine 시작 확인. 전체 Steam 화면과 게임 플레이 점검은 미완료</td></tr>
+<tr><td>다른 게임과 환경</td><td>Steam에서 선택할 수 있지만, 이번 테스트로 호환성이 입증된 것은 아님</td></tr>
+<tr><td>Rosetta 없는 런타임</td><td>실험적 개발 단계. v0.1.0에 포함된 런타임이 아님</td></tr>
+</tbody></table></div>
+<p>한 대의 물리 Mac에서 직접 수행한 테스트입니다. <a href="https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.4">Preview.4</a>는 게임 플레이를 확인한 런타임을 변경하지 않고 배포 대상을 macOS 15로 낮췄습니다. macOS 15에서의 전체 Steam 및 게임 플레이 테스트는 아직 남아 있습니다. 비교 성능을 측정하거나 컨트롤러와 Steam Cloud 동작을 별도로 검증하지도 않았습니다.</p>
+<p><a href="https://postmelee.github.io/pear/">게임 카탈로그</a>가 커져도 이런 맥락을 보존하고 싶습니다. 결과에는 무엇을 시도했고, 어떤 기기를 사용했고, 어떤 일이 있었는지가 담겨야 합니다. 메뉴에 도달하는 것, 한 세션을 플레이하는 것, 저장된 진행 상황을 복원하는 것은 서로 다른 질문에 답합니다.</p>
+<h2 id="the-next-goal-running-without-rosetta">다음 목표: Rosetta 없이 실행하기</h2>
+<p>현재 릴리스는 사용할 수 있는 앱이자 Megabonk의 작동 기준점입니다. 다음 주요 기술 목표는 필요한 런타임 어디에서도 Rosetta를 사용하지 않고 같은 Windows 게임을 실행하는 것입니다.</p>
+<p>구상 중인 구조는 Windows 호환성을 위해 Wine을, Direct3D 11 그래픽을 위해 DXMT를 유지합니다. macOS 호스트 구성 요소는 ARM64로 옮기고 게스트 CPU 변환에는 FEX를 사용합니다. 이는 v0.1.0 실행 경로와 구분되는 <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/architecture.md">연구 아키텍처</a>입니다.</p>
+<figure><img src="images/rosetta-free-runtime.png" alt="Rosetta 없는 실행을 위한 제안 구조: FEX 게스트 CPU 변환, ARM64 Wine, ARM64 호환 DXMT 및 Metal 경로. 전체 런타임 검증이 필요합니다."></figure>
+<p class="caption">그림 2. Rosetta 없는 실행을 위한 연구 목표입니다. v0.1.0에 포함된 런타임을 설명하는 그림은 아닙니다. 그림의 원본 표기는 영어로 유지했습니다.</p>
+<p>FEX가 맡을 역할은 Windows 게스트 코드의 x86/x64 명령어를 ARM64 호스트에서 실행할 수 있는 명령어로 변환하는 것입니다. Wine은 여전히 Windows API를 제공해야 하고, 그래픽 경로도 Metal에 올바르게 도달해야 합니다. 변환된 코드와 네이티브 구성 요소 사이를 오가는 호출에서는 인수, 콜백, 결과의 표현 방식이 서로 맞아야 합니다.</p>
+<p>따라서 실행 파일 하나를 교체하는 것보다 훨씬 넓은 작업입니다. 메모리 보호, 생성한 코드의 수명, 스레드, 예외, 실행 모드 간 전환이 모두 통합 범위에 들어옵니다. Steam의 보조 프로세스와 라이브러리도 같은 런타임 경계 안에 포함됩니다.</p>
+<p>성공 여부는 전체 세션을 따라가며 판단해야 합니다. Pear 앱이 네이티브라고 Wine 호스트까지 네이티브인 것은 아닙니다. Wine 호스트가 네이티브라고 모든 필수 보조 프로세스가 네이티브인 것도 아닙니다. Windows x64 게임 파일은 예상된 게스트 입력입니다. 제거하려는 의존성은 필요한 macOS 호스트 프로세스와 라이브러리에서의 Rosetta 실행입니다.</p>
+<p><a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/README.md">실험 빌드는 Megabonk 메뉴에 도달했습니다</a>. 하지만 지속적인 플레이와 완전한 Rosetta 독립성 검증은 아직 끝나지 않았습니다. <a href="https://github.com/postmelee/pear/blob/v0.1.0-preview.4/docs/development/rosetta-free.md">개발 안내</a>에 남은 작업을 기록했습니다. 현재 개발 환경은 준비된 산출물과 협업자 권한이 필요한 구성 요소 저장소에도 의존하므로, 공개 저장소를 새로 복제하는 것만으로 쓸 수 있는 사용자용 런타임은 아직 아닙니다.</p>
+<p>제게 이 작업의 가치는 실행 경로를 직접 살펴보고 이해하며 개선할 수 있다는 데 있습니다. 더 빠르거나 효율적인지는 측정으로 확인해야 합니다. Rosetta 제거는 의존성에 관한 목표이며, 성능은 별도의 개발 과제입니다.</p>
+<p>최종 사용자 경험은 익숙하게 유지하고 싶습니다. Pear를 열고, Steam에 로그인하고, 게임을 선택하는 것입니다. 그 아래의 런타임을 교체할 때도 현재 릴리스처럼 마이그레이션과 저장 진행 상황을 확인해야 합니다.</p>
+<h2 id="where-i-want-to-take-pear">Pear를 이끌어 가고 싶은 방향</h2>
+<p>하고 싶은 게임 하나에서 시작했습니다. Pear를 만들면서 Windows 호환성, CPU 변환, 그래픽, 프로세스 관리, Mac 앱 배포를 다루게 되었습니다. 각 계층은 실행에 성공한 프로그램이 왜 실제로 사용할 수 있는 게임 세션이 되지 못하는지 서로 다른 이유를 보여 주었습니다.</p>
+<p>가까운 목표는 구체적인 설치·게임 제보로 릴리스를 개선하면서 Rosetta 없는 실행을 계속 조사하는 것입니다. 이 블로그에는 무엇을 바꿨고, 무엇을 테스트했으며, 결과에서 무엇을 말할 수 있는지 실험 과정을 기록하려 합니다.</p>
+<p>Pear를 사용해 보셨다면 Mac 모델, macOS와 Pear 버전, 게임, 어느 지점에서 성공하거나 실패했는지를 알려 주세요. 입력, 오디오, 재실행 후 저장 진행 상황에 관한 관찰이 특히 도움이 됩니다. 저장소의 <a href="https://github.com/postmelee/pear/blob/v0.1.0/docs/compatibility/README.md">결과 제보 안내</a>를 참고할 수 있습니다.</p>
+<p><a href="https://postmelee.github.io/pear/">Pear를 내려받고 게임 카탈로그를 둘러보거나</a>, <a href="https://github.com/postmelee/pear">GitHub에서 소스</a>를 살펴보세요. 로그인과 게임 설치는 공식 Windows Steam을 통해 진행하며, 보유한 게임을 사용합니다. Pear 자체 코드는 GPL-3.0-or-later이며, 재사용한 구성 요소는 각각의 라이선스와 저작자 표시를 유지합니다.</p>
+<p>지금은 Pear를 열어 이 프로젝트를 시작하게 한 게임을 할 수 있습니다. 다음 글에서는 같은 Windows 게임을 Rosetta 없이 실행하기 위한 과정을 이어가고 싶습니다.</p>

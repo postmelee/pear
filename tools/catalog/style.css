@@ -198,3 +198,6 @@
 .language-switch a[aria-current="page"] { color:var(--color-text); font-weight:650; text-decoration:underline; text-underline-offset:.3em; }
 html[lang="ko"] { word-break:keep-all; overflow-wrap:anywhere; }
 @media(max-width:420px) { .header-tools { gap:.5rem; } .search-trigger span,.search-shortcut { display:none; } .language-switch { gap:.25rem; } }
+
+@media(min-width:761px) { :root { --sidebar-top:196px; } }
+html[lang="ko"] .article-body { line-height:1.75; }

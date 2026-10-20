@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Pear contributors
 // SPDX-License-Identifier: GPL-3.0-or-later
 'use strict';
+const ui = globalThis.PearI18n?.t || (text => text);
 
 // Compatibility content is reviewed repository data; Steam identities are public metadata. No API token or write API.
 for (const image of document.querySelectorAll('.game-art')) {
@@ -42,26 +43,26 @@ if (search) {
       card.hidden = !(hasResult && hasTrack && hasTab && matches);
       if (!card.hidden) shown += 1;
       for (const count of card.querySelectorAll('[data-count]')) count.textContent = reports.filter(row => row.outcome === count.dataset.count).length;
-      card.querySelector('[data-report-total]').textContent = `${reports.length} ${noun(reports.length)}`;
-      card.querySelector('[data-latest]').textContent = reports.length ? `Last tested ${recent(card)}` : 'No reports yet';
+      card.querySelector('[data-report-total]').textContent = ui(`${reports.length} ${noun(reports.length)}`);
+      card.querySelector('[data-latest]').textContent = ui(reports.length ? `Last tested ${recent(card)}` : 'No reports yet');
       const stage = card.querySelector('[data-stage]');
       const latest = reports[0];
       if (stage) {
-        stage.textContent = qualifies ? 'Verified configuration' : latest ? labels[latest.result] : 'Not tested';
+        stage.textContent = ui(qualifies ? 'Verified configuration' : latest ? labels[latest.result] : 'Not tested');
         stage.className = `badge ${qualifies ? 'pass' : latest?.outcome || ''}`;
       }
       const runtime = card.querySelector('[data-runtime]');
       if (runtime) {
         runtime.hidden = !latest;
-        runtime.textContent = latest?.track === 'rosetta-free-development' ? 'Rosetta-free development' : 'Rosetta Preview';
+        runtime.textContent = ui(latest?.track === 'rosetta-free-development' ? 'Rosetta-free development' : 'Rosetta Preview');
       }
       list.append(card);
     }
-    document.querySelector('#result-count').textContent = `${shown} ${shown === 1 ? 'game' : 'games'}`;
+    document.querySelector('#result-count').textContent = ui(`${shown} ${shown === 1 ? 'game' : 'games'}`);
     document.querySelector('#no-results').hidden = shown !== 0;
     const noRequests = currentTab === 'requests' && !cards.some(card => card.dataset.request === 'yes');
-    document.querySelector('#empty-heading').textContent = noRequests ? 'No requests yet' : 'No games found';
-    document.querySelector('#empty-copy').textContent = noRequests ? 'Be the first to request a game on GitHub.' : 'Try a different search or filter, or request a game.';
+    document.querySelector('#empty-heading').textContent = ui(noRequests ? 'No requests yet' : 'No games found');
+    document.querySelector('#empty-copy').textContent = ui(noRequests ? 'Be the first to request a game on GitHub.' : 'Try a different search or filter, or request a game.');
     for (const button of document.querySelectorAll('[data-tab]')) button.setAttribute('aria-pressed', String(button.dataset.tab === currentTab));
   }
   for (const button of document.querySelectorAll('[data-tab]')) button.addEventListener('click', () => { currentTab = button.dataset.tab; update(); });
@@ -133,19 +134,19 @@ if (form) {
   const status = document.querySelector('#copy-status');
   const minutes = document.querySelector('#duration');
   const result = document.querySelector('#result');
-  function invalidateDraft() { document.querySelector('#draft').hidden = true; status.textContent = ''; }
+  function invalidateDraft() { document.querySelector('#draft').hidden = true; status.textContent = ui(''); }
   function resolveGame(syncSearch = true) {
     const id = steamAppId(identity.value);
     const known = games.get(id);
     appID.value = id || '';
     gameName.value = known?.name || '';
-    gameName.placeholder = id ? 'Name not available in this list' : 'Filled from the selected Steam App ID';
+    gameName.placeholder = ui(id ? 'Name not available in this list' : 'Filled from the selected Steam App ID');
     if (syncSearch) searchInput.value = known?.name || '';
-    identity.setCustomValidity(id ? '' : 'Choose a search result, or enter a Steam store link or numeric App ID.');
+    identity.setCustomValidity(ui(id ? '' : 'Choose a search result, or enter a Steam store link or numeric App ID.'));
     steamLink.hidden = !id;
     if (id) steamLink.href = `https://store.steampowered.com/app/${id}/`;
     else steamLink.removeAttribute('href');
-    identityStatus.textContent = !identity.value ? 'Choose a search result, or paste its Steam store link.' : !id ? 'Enter a Steam store link or a valid numeric App ID.' : known ? `Steam App ${id} · ${loaded ? 'Steam game identity' : 'Name from Pear’s reviewed catalog'}.` : `Steam App ${id} · You can submit by ID. The name will be checked before publication.`;
+    identityStatus.textContent = ui(!identity.value ? 'Choose a search result, or paste its Steam store link.' : !id ? 'Enter a Steam store link or a valid numeric App ID.' : known ? `Steam App ${id} · ${loaded ? 'Steam game identity' : 'Name from Pear’s reviewed catalog'}.` : `Steam App ${id} · You can submit by ID. The name will be checked before publication.`);
     invalidateDraft();
   }
   function closeResults() {
@@ -168,7 +169,7 @@ if (form) {
     identity.value = game.app_id;
     resolveGame();
     closeResults();
-    searchStatus.textContent = `${game.name} selected · Steam App ${game.app_id}`;
+    searchStatus.textContent = ui(`${game.name} selected · Steam App ${game.app_id}`);
   }
   function showResults() {
     const query = searchInput.value.trim();
@@ -184,7 +185,7 @@ if (form) {
       const name = document.createElement('span');
       name.textContent = game.name;
       const detail = document.createElement('small');
-      detail.textContent = `Steam App ${game.app_id}${reviewed.some(row => row.app_id === game.app_id) ? ' · In Pear’s catalog' : ''}`;
+      detail.textContent = ui(`Steam App ${game.app_id}${reviewed.some(row => row.app_id === game.app_id) ? ' · In Pear’s catalog' : ''}`);
       item.append(name, detail);
       item.addEventListener('pointerdown', event => event.preventDefault());
       item.addEventListener('click', () => choose(game));
@@ -193,7 +194,7 @@ if (form) {
     results.hidden = !matches.length;
     searchInput.setAttribute('aria-expanded', String(matches.length > 0));
     const state = loaded ? `Steam list updated ${snapshotDate}.` : loading ? 'Loading Steam game list…' : failed ? 'Steam list unavailable. Search Pear games or paste a Steam link.' : 'Steam search is being prepared. Search Pear games or paste a Steam link.';
-    searchStatus.textContent = `${query && !matches.length ? 'No matches. Try another name or paste a Steam link. ' : query ? `${matches.length === 8 ? 'Up to 8' : matches.length} suggestions. ` : ''}${state}`;
+    searchStatus.textContent = ui(`${query && !matches.length ? 'No matches. Try another name or paste a Steam link. ' : query ? `${matches.length === 8 ? 'Up to 8' : matches.length} suggestions. ` : ''}${state}`);
   }
   async function loadGames() {
     if (loaded || loading || !picker.dataset.steamIndex) return loading;
@@ -201,7 +202,7 @@ if (form) {
       retry.hidden = true;
       failed = false;
       searchInput.setAttribute('aria-busy', 'true');
-      searchStatus.textContent = 'Loading Steam game list…';
+      searchStatus.textContent = ui('Loading Steam game list…');
       try {
         const response = await fetch(picker.dataset.steamIndex, {credentials: 'omit', signal: AbortSignal.timeout(12000)});
         if (!response.ok) throw new Error('Game list unavailable');
@@ -211,7 +212,7 @@ if (form) {
         const data = PearSteamSearch.validate(JSON.parse(raw));
         games = new Map([...reviewed, ...data.games].map(game => [game.app_id, game]));
         searchIndex = PearSteamSearch.index([...games.values()]);
-        snapshotDate = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: 'numeric'}).format(new Date(data.fetched_at));
+        snapshotDate = new Intl.DateTimeFormat(document.documentElement.lang === 'ko' ? 'ko-KR' : 'en', {year: 'numeric', month: 'short', day: 'numeric'}).format(new Date(data.fetched_at));
         loaded = true;
         // Resolve the current identity, never the value captured before the fetch.
         if (identity.value) resolveGame();
@@ -222,7 +223,7 @@ if (form) {
         loading = null;
         searchInput.setAttribute('aria-busy', 'false');
         if (document.activeElement === searchInput) showResults();
-        else searchStatus.textContent = loaded ? `Steam list updated ${snapshotDate}.` : 'Steam list unavailable. Search Pear games or paste a Steam link.';
+        else searchStatus.textContent = ui(loaded ? `Steam list updated ${snapshotDate}.` : 'Steam list unavailable. Search Pear games or paste a Steam link.');
       }
     })();
     return loading;
@@ -253,7 +254,7 @@ if (form) {
   searchInput.addEventListener('blur', () => { clearTimeout(typingTimer); closeResults(); });
   retry.addEventListener('click', () => { failed = false; searchInput.focus(); loadGames(); });
   function validateDuration() {
-    if (minutes) minutes.setCustomValidity(result.value === 'Active gameplay' && !(Number(minutes.value) > 0) ? 'Enter the active gameplay minutes you measured.' : '');
+    if (minutes) minutes.setCustomValidity(ui(result.value === 'Active gameplay' && !(Number(minutes.value) > 0) ? 'Enter the active gameplay minutes you measured.' : ''));
   }
   identity.addEventListener('input', () => { closeResults(); resolveGame(); if (steamAppId(identity.value) && !failed) loadGames(); });
   const app = new URLSearchParams(location.search).get('app');
@@ -278,7 +279,7 @@ if (form) {
     const checks = ['input', 'audio', 'save_reload', 'recovery'].map(key => `${({'input':'Input','audio':'Audio','save_reload':'Save / reload','recovery':'Recovery'})[key]}: ${get(key)}`).join('\n');
     area.value = report ? `${game}\n\n## Test date\n${get('date')}\n\n## Runtime path\n${get('track')}\n\n## Mac and macOS\n${get('environment')}\n\n## Versions\n${get('versions')}\n\n## Furthest result\n${get('result')}\n\n## Active play minutes\n${get('minutes') || 'Not measured'}\n\n## Test checks\n${checks}\n\n## Game settings\n${get('settings') || 'Not recorded'}\n\n## Steps and observations\n${get('steps')}\n\nI used a legitimately owned game and removed private data. This is a community observation, not Pear qualification.` : `${game}\n\n## Requested support\n${get('reason')}\n\nI checked existing requests and removed private data. This request expresses interest; it is not a compatibility report.`;
     document.querySelector('#draft').hidden = false;
-    status.textContent = 'Draft ready. Copy it and continue on GitHub.';
+    status.textContent = ui('Draft ready. Copy it and continue on GitHub.');
     title.focus();
   });
   form.addEventListener('input', invalidateDraft);
@@ -286,10 +287,10 @@ if (form) {
   async function copy(field, label) {
     try {
       await navigator.clipboard.writeText(field.value);
-      status.textContent = `${label} copied. Paste it into GitHub.`;
+      status.textContent = ui(`${label} copied. Paste it into GitHub.`);
     } catch {
       field.focus(); field.select();
-      status.textContent = 'Select and copy the text manually, then paste it into GitHub.';
+      status.textContent = ui('Select and copy the text manually, then paste it into GitHub.');
     }
   }
   document.querySelector('#copy-title').addEventListener('click', () => copy(title, 'Title'));
@@ -302,9 +303,9 @@ for (const button of document.querySelectorAll('.copy-command')) {
     const status = document.getElementById(button.dataset.status || 'command-status');
     try {
       await navigator.clipboard.writeText(code.textContent);
-      status.textContent = button.dataset.message || 'Command copied. Run it from the extracted CLI folder.';
+      status.textContent = ui(button.dataset.message || 'Command copied. Run it from the extracted CLI folder.');
     } catch {
-      status.textContent = 'Copy the displayed command manually.';
+      status.textContent = ui('Copy the displayed command manually.');
     }
   });
 }
@@ -333,7 +334,7 @@ if (downloadMethods) {
     for (const panel of panels) panel.hidden = panel.id !== selected.dataset.method;
     if (updateHash) history.replaceState(null, '', `#${selected.dataset.method}`);
     if (focus) selected.focus();
-    for (const status of document.querySelectorAll('.copy-status')) status.textContent = '';
+    for (const status of document.querySelectorAll('.copy-status')) status.textContent = ui('');
   }
   for (const [index, tab] of tabs.entries()) {
     tab.addEventListener('click', event => {

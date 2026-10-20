@@ -11,6 +11,7 @@ name: Reviewed compatibility catalog
       - docs/blog/**
       - tools/compatibility.py
       - tools/catalog_site.py
+      - tools/catalog_locale.py
       - tools/catalog_icons.py
       - tools/steam_catalog.py
       - tools/reporting_sync.py

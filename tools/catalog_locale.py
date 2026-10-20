@@ -15,11 +15,21 @@ VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'met
 
 def message(text):
     key = ' '.join(text.split())
+    if key in MESSAGES:
+        return MESSAGES[key]
+    if key.startswith('· ') and key.endswith(' ·'):
+        return '· ' + message(key[2:-2]) + ' ·'
+    if key.startswith('· '):
+        return '· ' + message(key[2:])
+    if key.endswith(' ·'):
+        return message(key[:-2]) + ' ·'
     if key.startswith('Pear · '):
         return 'Pear · ' + message(key[7:])
     if key in MESSAGES:
         return MESSAGES[key]
     for pattern, replacement in (
+        (r'View (.+) reports', r'\1 제보 보기'), (r'(.+) artwork', r'\1 대표 이미지'),
+        (r'Player reports (\d+)', r'사용자 제보 \1'), (r'(\d+) min', r'\1분'),
         (r'(\d+) reports?', r'제보 \1건'), (r'(\d+) games?', r'게임 \1개'),
         (r'(\d+) (?:minutes? read|min read)', r'읽는 데 약 \1분'),
         (r'(\d+) entr(?:y|ies) about this topic', r'이 주제의 글 \1개'),
@@ -100,6 +110,11 @@ def translate(content):
 def korean_pages(pages):
     """Move page destinations into ko/ while referring to one shared asset tree."""
     output = {}
+    known_routes = {}
+    for name in pages:
+        route = name.removesuffix('index.html') if name.endswith('index.html') else name.removesuffix('.html') + '/'
+        known_routes[name] = name
+        known_routes[route] = name
     for source, content in pages.items():
         destination = 'ko/' + source
         directory = posixpath.dirname(destination) or '.'
@@ -112,7 +127,11 @@ def korean_pages(pages):
                 for key, value in attrs:
                     if key in {'href', 'src', 'poster', 'data-steam-index'} and value and not value.startswith(('#', '/')):
                         parsed = urlsplit(value)
-                        if not parsed.scheme and not parsed.netloc:
+                        if parsed.scheme == 'https' and parsed.netloc == 'postmelee.github.io' and parsed.path.startswith('/pear/'):
+                            target = known_routes.get(parsed.path.removeprefix('/pear/'))
+                            if target:
+                                value = urlunsplit(('', '', posixpath.relpath('ko/' + target, directory), parsed.query, parsed.fragment))
+                        elif not parsed.scheme and not parsed.netloc:
                             target = posixpath.normpath(posixpath.join(posixpath.dirname(source), parsed.path))
                             if target in pages:
                                 target = 'ko/' + target
@@ -131,3 +150,35 @@ def korean_pages(pages):
         parser.feed(translate(content))
         output[destination] = ''.join(parser.output)
     return output
+
+
+def javascript_messages():
+    """Emit the same reviewed messages for explicitly selected interactive UI sinks."""
+    dictionary = json.dumps(MESSAGES, ensure_ascii=False).replace('<', '\\u003c')
+    return '// SPDX-FileCopyrightText: 2026 Pear contributors\n// SPDX-License-Identifier: GPL-3.0-or-later\n' + 'globalThis.PearI18n = (() => {\nconst messages = ' + dictionary + ';\n' + r"""
+const korean = document.documentElement.lang === 'ko';
+function t(text) {
+  if (!korean || typeof text !== 'string' || !text) return text;
+  if (messages[text]) return messages[text];
+  const rules = [
+    [/^(\d+) reports?$/, '$1건의 제보'], [/^(\d+) games?$/, '게임 $1개'],
+    [/^Last tested (.+)$/, '최근 확인 $1'],
+    [/^(\d+) results?$/, '검색 결과 $1개'],
+    [/^0 results — try a page, game, or topic such as Rosetta\.$/, '검색 결과가 없습니다. 게임 이름이나 Rosetta 같은 주제를 검색해 보세요.'],
+    [/^Steam list updated (.+)\.$/, 'Steam 목록 갱신: $1'],
+    [/^(.+) selected · Steam App (\d+)$/, '$1 선택됨 · Steam App $2'],
+    [/^Steam App (\d+) · In Pear’s catalog$/, 'Steam App $1 · Pear 카탈로그에 있음'],
+    [/^Steam App (\d+) · Steam game identity\.$/, 'Steam App $1 · Steam 게임 정보'],
+    [/^Steam App (\d+) · Name from Pear’s reviewed catalog\.$/, 'Steam App $1 · Pear에서 검토한 카탈로그의 이름'],
+    [/^Steam App (\d+) · You can submit by ID\. The name will be checked before publication\.$/, 'Steam App $1 · ID만으로 제출할 수 있습니다. 이름은 공개 전에 확인합니다.'],
+  ];
+  for (const [pattern, replacement] of rules) if (pattern.test(text)) return text.replace(pattern, replacement);
+  const suggestions = text.match(/^(Up to 8|\d+) suggestions\. (.*)$/);
+  if (suggestions) return (suggestions[1] === 'Up to 8' ? '최대 8' : suggestions[1]) + '개 추천 · ' + t(suggestions[2]);
+  const noMatches = 'No matches. Try another name or paste a Steam link. ';
+  if (text.startsWith(noMatches)) return t(noMatches.trim()) + ' ' + t(text.slice(noMatches.length));
+  return text;
+}
+return {t};
+})();
+"""

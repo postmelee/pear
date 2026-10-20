@@ -5,6 +5,7 @@
 // All components are optional so the same controller works on every page.
 (() => {
   const root = document.documentElement;
+  const ui = globalThis.PearI18n?.t || (text => text);
   for (const link of document.querySelectorAll('[data-language]')) {
     const destination = new URL(link.href);
     function preserveLocation() {
@@ -15,6 +16,7 @@
     preserveLocation();
     window.addEventListener('hashchange', preserveLocation);
     link.addEventListener('pointerdown', preserveLocation);
+    link.addEventListener('click', preserveLocation);
     link.addEventListener('focus', preserveLocation);
   }
   const toggle = document.querySelector('.theme-toggle');
@@ -127,21 +129,21 @@
       row.setAttribute('role', 'option'); row.tabIndex = -1;
       const category = document.createElement('small');
       category.textContent = entry.url.includes('#') ? entry.page :
-        entry.url.startsWith('blog/') ? 'Blog' : entry.url.startsWith('game-') ? 'Game' : 'Page';
+        ui(entry.url.startsWith('blog/') ? 'Blog' : entry.url.startsWith('game-') ? 'Game' : 'Page');
       const title = document.createElement('strong'); title.textContent = entry.title;
       const snippet = document.createElement('p');
       const offset = terms.length ? Math.max(0, normalize(entry.text).indexOf(terms[0]) - 45) : 0;
       snippet.textContent = (offset ? '…' : '') + entry.text.slice(offset, offset + 150) + (entry.text.length > offset + 150 ? '…' : '');
       row.append(category, title, snippet); results.append(row);
     }
-    status.textContent = query ? `${results.children.length} ${results.children.length === 1 ? 'result' : 'results'}${results.children.length ? '' : ' — try a page, game, or topic such as Rosetta.'}` : 'Explore Pear, or search for a game, page or topic.';
+    status.textContent = ui(query ? `${results.children.length} ${results.children.length === 1 ? 'result' : 'results'}${results.children.length ? '' : ' — try a page, game, or topic such as Rosetta.'}` : 'Explore Pear, or search for a game, page or topic.');
     input.setAttribute('aria-expanded', String(results.children.length > 0));
     select(results.children.length ? 0 : -1);
   }
   async function loadIndex() {
     if (index) return;
     if (!loading) {
-      status.textContent = 'Loading search…';
+      status.textContent = ui('Loading search…');
       loading = fetch(new URL('search-index.json', siteRoot)).then(response => {
         if (!response.ok) throw new Error('Search unavailable');
         return response.json();
@@ -157,7 +159,7 @@
     closeMenu(); opener = document.activeElement;
     dialog.showModal(); input.focus();
     try { await loadIndex(); render(); }
-    catch { status.textContent = 'Search could not load. Close and reopen to retry. You can still browse using the navigation.'; }
+    catch { status.textContent = ui('Search could not load. Close and reopen to retry. You can still browse using the navigation.'); }
   }
   function closeSearch() { dialog.close(); }
   document.querySelectorAll('[data-search-open]').forEach(button => button.addEventListener('click', openSearch));

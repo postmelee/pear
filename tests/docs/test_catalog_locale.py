@@ -4,9 +4,15 @@
 import sys
 from pathlib import Path
 import unittest
+import json
+import re
+import tempfile
+from dataclasses import replace
+from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
 import catalog_locale as locale
 import catalog_site as site
+import compatibility
 
 
 class LocaleTests(unittest.TestCase):
@@ -34,6 +40,45 @@ class LocaleTests(unittest.TestCase):
         self.assertIn('hreflang="ko" href="https://postmelee.github.io/pear/ko/blog/example/"', korean)
         self.assertIn('data-redirect="example/"', pages['ko/blog/example.html'])
         self.assertIn('<html lang="en">', pages['blog/example/index.html'])
+
+    def test_article_dates_correction_links_and_bookmarks(self):
+        english = site.blog_pages()[site.ARTICLE_PATH]
+        korean = site.blog_pages(language='ko')[site.ARTICLE_PATH]
+        self.assertIn('datetime="2026-10-18"', english)
+        self.assertIn('datetime="2026-10-20"', english)
+        self.assertIn('before its release', english)
+        self.assertIn('실제 출시 전에', korean)
+        self.assertIn('releases/tag/v0.1.0">release notes', english)
+        self.assertIn('releases/tag/v0.1.0-preview.4">Preview.4', english)
+        headings = lambda value: set(re.findall(r'<h[23][^>]*id="([^"]+)"', value))
+        self.assertEqual(headings(english), headings(korean))
+        with self.assertRaises(ValueError):
+            site.validate_posts((replace(site.POSTS[0], updated='2026-10-17'),))
+
+    def test_missing_article_translation_is_explicit(self):
+        with patch.object(Path, 'is_file', return_value=False):
+            page = site.blog_pages(language='ko')[site.ARTICLE_PATH]
+        self.assertIn('The Korean translation is not available yet', page)
+        self.assertIn('lang="en" translate="no"', page)
+        localized = locale.korean_pages({site.ARTICLE_PATH: page})['ko/' + site.ARTICLE_PATH]
+        self.assertIn('아직 한국어 번역이 없습니다', localized)
+        self.assertIn('I wanted to play Megabonk', localized)
+
+    def test_real_render_preserves_evidence_and_scopes_search(self):
+        data = json.loads(compatibility.SOURCE.read_text())
+        data['records'][0]['summary'] = 'Download'
+        data['records'][0]['settings'] = 'Games'
+        with tempfile.TemporaryDirectory() as output:
+            compatibility.build_site(data, output)
+            root = Path(output)
+            page = (root / 'ko/game-3405340/index.html').read_text()
+            self.assertIn('<p translate="no">Download</p>', page)
+            self.assertIn('<dd translate="no">Games</dd>', page)
+            search = json.loads((root / 'ko/search-index.json').read_text())
+            self.assertTrue(any(row['title'] == '시스템 요구사항' for row in search))
+            self.assertTrue(any(row['url'] == 'download/#app' for row in search))
+            self.assertFalse(any(row['url'].startswith('ko/') for row in search))
+            self.assertEqual((root / 'updates/appcast.xml').read_bytes(), (site.ROOT / 'preview/updates/appcast.xml').read_bytes())
 
 if __name__ == '__main__':
     unittest.main()
