@@ -61,9 +61,10 @@ The Rosetta-free runtime remains in development. Experimental builds have reache
 Megabonk's menu, but gameplay and verification that every required process and
 library runs without Rosetta remain incomplete.
 
-Wine, FEX, DXMT and common-runtime source ownership are established, and bounded
-runtime reconstruction and development-selector checks have passed. These checks
-do not qualify game compatibility. See the
+Wine, FEX, DXMT and common-runtime source ownership are established. Their four
+source repositories are publicly readable. Bounded runtime reconstruction and
+development-selector checks have passed; retained build inputs are still required.
+These checks do not qualify game compatibility. See the
 [native development guide](docs/development/rosetta-free.md#split-native-development-components)
 for prerequisites and ongoing work, and the
 [Task #56 handoff report](mydocs/report/task_m1_56_report.md)
