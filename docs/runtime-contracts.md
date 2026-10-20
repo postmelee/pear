@@ -164,7 +164,7 @@ reinterpreted as the product `runtime_lock`, `runtime_artifact` or qualification
 records defined here.
 
 Pear retains the Rust manager, profiles, account/game policy and Preview
-integration. The [accepted cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+integration. The [accepted cutover record](https://github.com/postmelee/pear-runtime/blob/master/provenance/source-cutover-task56.json)
 assigns the imported common contracts and validators to the runtime owner. The
 local paths below remain retained compatibility copies for historical evidence
 and existing Pear consumers; they are not a second editable common source.
@@ -173,7 +173,8 @@ source cutover changes neither schema versions nor admission behavior. The Pear 
 selected candidate without changing these contract schemas. Consult the
 [split development guide](development/rosetta-free.md#split-native-development-components)
 for the separate source/build/test revisions and required private inputs. The
-component repository requires collaborator access.
+component repository is public; new integration work targets `master`, while
+selected consumers keep their exact source and tool pins.
 
 ## Reference validator and reproducible setup
 

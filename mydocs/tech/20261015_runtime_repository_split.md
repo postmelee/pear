@@ -98,7 +98,7 @@ The #12 review found no newer source edits; its selected Wine WGI files match th
 The existing #11 source owner accepted the exact selected implementation, tests
 and runtime/Pear development boundary; #10 and #12 accepted their observation and
 manual-diagnostic scopes without additional blockers. The
-[canonical cutover record](https://github.com/postmelee/pear-runtime/blob/codex/task56/provenance/source-cutover-task56.json)
+[canonical cutover record](https://github.com/postmelee/pear-runtime/blob/9be1545f5a0845d3b14d4b845bf6bd413a224df3/provenance/source-cutover-task56.json)
 binds those accepted checkpoints. The [final reference record](task_m1_56_source_cutover.json)
 separately records verified private publication refs. Historical pending-cutover records retain their original meaning;
 D37 and separate research are not adopted or completed by this decision.

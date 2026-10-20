@@ -7,7 +7,7 @@ The [runtime contracts](../runtime-contracts.md) define independent eligibility 
 ## Separate development candidate path
 
 [Task #56](https://github.com/postmelee/pear/issues/56) provides a separate
-[runtime-owned development reconstruction and diagnostic path](https://github.com/postmelee/pear-runtime/blob/codex/task56/docs/development.md). Its
+[runtime-owned development reconstruction and diagnostic path](https://github.com/postmelee/pear-runtime/blob/master/docs/development.md). Its
 explicit local candidate/operation records and current artifact authorization
 do not change the Rust manager commands documented below. A diagnostic assembly
 receipt is not a product `runtime_artifact` record, and a synthetic caller policy
