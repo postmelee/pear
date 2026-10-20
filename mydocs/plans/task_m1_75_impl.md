@@ -159,6 +159,11 @@ The planned additional ceiling is 128 MiB: 60 MiB for the 57,077,930-byte input
 pack (57,659,392 stat-allocated bytes), 32 MiB for generated/object/link/comparison
 output, 32 MiB for diagnostics and 4 MiB for small evidence. Keep a separate
 6 GiB reserve: at least 6,576,668,672 available bytes. Remeasure at execution.
+Final pack admission measured 281 files, 57,220,780 logical / 57,802,752
+stat-allocated bytes, still below the 60 MiB pack allocation. Preserve a failed
+control-link trace attempt; a fresh retry adds a full 32 MiB output, 4 MiB final
+record and 8 MiB diagnostics allowance to all retained bytes. Its reviewed peak
+was 126,810,798 bytes, below the unchanged aggregate 128 MiB ceiling.
 Reuse the 782,265,656-byte LLVM tree read-only; no toolchain/runtime/game/prefix
 copy. Record exact CLI, admitted digest and actual storage in Stage 3 evidence.
 All original inputs remain immutable. Compiler dependency and linker diagnostics

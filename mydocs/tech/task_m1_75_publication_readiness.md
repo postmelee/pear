@@ -11,7 +11,7 @@ repository visibility, default branch, inherited history or runtime was changed.
 | Wine | READY WITH LIMITS | Bounded downstream history and metadata review; retain upstream/license caveats and experimental-source status |
 | FEX | BLOCKED | Resolve adjacent notice documentation for three exact generated diagnostic headers; do not invent missing authorship or rewrite frozen inputs |
 | DXMT | READY WITH LIMITS | Bounded downstream history review, unchanged submodule pins and upstream contribution policy; no full inherited-history rescan |
-| Common runtime | READY WITH LIMITS | Reviewed own history and documentation successor; Stage3 source additions require their own incremental review |
+| Common runtime | READY WITH LIMITS | Reviewed own history, documentation successor and final Task75 WGI delta below |
 
 These are publication-review dispositions, not authorization to make repositories
 public, exhaustive legal clearance, clean-clone build support or game qualification.
@@ -106,7 +106,7 @@ resolve absent attribution by assumption or claim blanket legal clearance.
 ## Conditions for a later public source release
 
 1. Resolve the FEX notice-documentation finding and audit the actual successor.
-2. Review any Stage3 runtime recipe/tests as a distinct new source delta.
+2. Preserve the completed Stage3 delta review below; review any later successor separately.
 3. Recheck all branch/tag heads and GitHub exposure surfaces immediately before
    an authorized visibility change; preserve component default branches until
    a separate branch-policy decision.
@@ -114,6 +114,30 @@ resolve absent attribution by assumption or claim blanket legal clearance.
    Keep experimental support and retained-input requirements explicit.
 5. Keep installed app/game/private state and existing candidate bytes separate.
    Source availability does not qualify the Rosetta-free player experience.
+
+## Stage3 successor addendum — 2026-10-21
+
+Runtime `db95ed3278d9d20233fbd395665f3d39c3a4b13d` adds the WGI adapter, sealed data recipe, synthetic tests,
+existing recipe README update and bundled Stage3 report. The final five-file
+delta passed notice, privacy-pattern/manual and whitespace review. The final
+test-only change adds license comments to synthetic source fixtures; 43 guarded
+tests passed again. Executed adapter/recipe bytes are unchanged from the successful
+reconstruction. This local commit is READY WITH LIMITS under the same retained-input,
+inherited-history and experimental-support boundaries; it has not been pushed
+and does not replace the selected runtime tool or candidate pins.
+
+Final delta-review SHA-256: `990b954d3c333fff63624312b013921eefc0c9f53933ec3b8976cb10744b9251`.
+The [WGI note](task_m1_75_wgi_binding.md) separates source reconstruction from
+natural-call observation and gameplay. The new JSON is identity/action data
+with separately reviewed provenance, not an inline SPDX-compatible source format.
+
+A final read at 2026-10-20T15:14:07Z confirms all four private remote branch heads,
+default branches and absent tags still match the table above. This does not
+relabel the earlier dated exposure-surface inventory as newly rescanned.
+Downstream author/committer identities were separately compared with public
+Pear history at `2c151f1d074fab5a55bc2d77e25b5fb81aedc257`; no newly exposed
+identity was found. No raw personal identity is exported in this note.
+FEX's adjacent-notice prerequisite is unchanged.
 
 ## Evidence and limits
 
