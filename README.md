@@ -66,7 +66,7 @@ runtime reconstruction and development-selector checks have passed. These checks
 do not qualify game compatibility. See the
 [native development guide](docs/development/rosetta-free.md#split-native-development-components)
 for prerequisites and ongoing work, and the
-[Task #56 handoff report](https://github.com/postmelee/pear/blob/914725732a17b9e13886bc906625df9ca9ba07b3/mydocs/report/task_m1_56_report.md)
+[Task #56 handoff report](mydocs/report/task_m1_56_report.md)
 for the verified scope and remaining limitations.
 
 Megabonk is the first validation game. Selecting another game in Steam does not

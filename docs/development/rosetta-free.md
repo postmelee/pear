@@ -71,6 +71,28 @@ evidence; future edits to the accepted range belong to the mapped new owners.
 Preserve legacy consumer copies and private recovery inputs until their owners
 release them. This does not activate a runtime or qualify the game.
 
+### Current source and execution baseline
+
+PR [#58](https://github.com/postmelee/pear/pull/58) merged the Task #56 handoff,
+including the runtime-selection and manual-confirmation corrections, at Pear
+`26927fa2cc4e5d606ac02f2c1c1eceb54e83f60e`. Use the corrected selector source
+`400da1145b20ff787ad30b251ea5c810ed291c29` with its reviewed descriptors.
+A later source or documentation tip does not change any retained build or tool
+identity. The final Task #56 component documentation tips are:
+
+| Repository | Final private source/documentation tip | Candidate build or executed-tool pin |
+| --- | --- | --- |
+| Wine | `007291b81de386fd8886770c33b5d385c078635d` | Task56 selected bounded build `1b76db6902345388c589ba3909b22badf751dfd5`; retained WGI producer is identified separately below |
+| FEX | `4ae26ddf9a21b52cd50d096504c4d0ea5ab49204` | Build `c62ed75aa6a33809ddb76c7f40aabbe4f4fbdda6`; diagnostic tool `9c9b602c07b57a08500862abfdf62e1bac351640` |
+| DXMT | `d0ad50946ab64bbe4dc3584a5d91f8e99a6e492c` | Build `e800e770006fc7c37831ab857000a4781c85f6fd` |
+| Common runtime | `9be1545f5a0845d3b14d4b845bf6bd413a224df3` | Executed tool `6f0202b457f0e585c5c7621a63d203e77d07386d` |
+
+[Task #75](https://github.com/postmelee/pear/issues/75) tracks documentation
+reconciliation, source-publication readiness and WGI source-to-PE evidence.
+The repositories remain private during review. Existing builds, private
+prerequisites and selected tool roots remain retained; review does not authorize
+public conversion or a new game run.
+
 ## Select an isolated development candidate
 
 This Pear selector is separate from Preview and the Rust manager's supported-play
@@ -319,19 +341,34 @@ recovery; game copying, execution and gameplay remain unperformed.
 
 The original D36 diagnostic still ended `owner_refused` during loading with
 EC-gate status 3, followed by owner-initiated termination. The Down-input report
-and WGI invalid-output path remain hypotheses about the cause. Candidate3's WGI
-PE equals runtime12 byte-for-byte, but its source-to-PE linkage and natural-call
-failure are unknown. Establish that build binding in
-`pear-wine/dlls/windows.gaming.input/`, then observe the existing call without
-extra polling or injected input. EC gate/lifecycle changes belong in
-`pear-fex/Source/Windows/ARM64EC/Module.cpp` and
-`Source/Windows/Common/PearFEXMemory.cpp`. Keep existing capacity, ownership and
-failure guards; an occupied-slot count is not a reclamation proof.
+and WGI invalid-output path remain hypotheses about the cause. Task #75 now
+binds candidate3's WGI module to its original producer and the exact Wine source
+subset; the [WGI investigation](../../mydocs/tech/task_m1_75_wgi_binding.md) records
+the reconstruction result and its retained-input limits. This establishes module
+correspondence, not a natural call or the cause of the D36 refusal.
 
-The conservative plan is 2,440,587,694 additional bytes (about 2.44 GB) plus a
-6 GiB reserve: 8,883,038,638 free bytes in total, without assumed clone savings.
-Remeasure and re-admit all inputs, predecessor resources, the live lease/deadline
-and current authority immediately before execution. Inspection is not a grant.
+Continue in `pear-wine/dlls/windows.gaming.input/{provider,gamepad,controller}.c`
+with bounded observation of the existing call. Preserve its call count, HRESULT,
+return value and output writes; determine output validity from the executed
+branch without reading or initializing an unwritten structure. Distinguish
+initialization from public readings and record lost/unpaired observations as
+unknown. Freeze the new source and module, then assemble a new development
+candidate and satisfy its affected admission/controls before a separately
+authorized game run. Never replace the original candidate or reuse its receipts
+as results for changed bytes.
+
+EC gate/lifecycle changes belong in
+`pear-fex/Source/Windows/ARM64EC/Module.cpp` and
+`Source/Windows/Common/PearFEXMemory.cpp` only when the observed evidence supports
+them. Keep existing capacity, ownership and failure guards; an occupied-slot
+count is not a reclamation proof.
+
+The historical selected-candidate game run plan was 2,440,587,694 additional
+bytes (about 2.44 GB) plus a 6 GiB reserve: 8,883,038,638 free bytes in total,
+without assumed clone savings. This is not the budget for a new source build,
+candidate or its required controls. Remeasure that complete next-task peak,
+then re-admit all inputs, predecessor resources, the live lease/deadline and
+current authority immediately before execution. Inspection is not a grant.
 Retain human-only input, terminal/expiry priority and the independent release
 request above after either success or failure.
 
