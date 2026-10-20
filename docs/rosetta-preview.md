@@ -1,7 +1,7 @@
 # Pear for Windows Steam
 
-Status: **[Pear 0.1.0](https://github.com/postmelee/pear/releases/tag/v0.1.0) is available.**
-[Download the Mac app](https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.dmg) or use the
+Status: **[Pear 0.1.1](https://github.com/postmelee/pear/releases/tag/v0.1.1) is available.**
+[Download the Mac app](https://github.com/postmelee/pear/releases/download/v0.1.1/Pear-0.1.1-macos-arm64.dmg) or use the
 [download guide](https://postmelee.github.io/pear/download.html). This release uses
 **Wine 11.0 and DXMT 0.80** and requires Rosetta. The new app/CLI and DMG are signed and notarized. The runtime is unchanged from
 preview.3; its prior fresh-account and gameplay evidence retains its original scope.
@@ -59,7 +59,7 @@ a failed check continues with the installed version. Checking is bounded to eigh
 seconds so it cannot hold up Steam indefinitely. Steam or games already running
 postpone installation. The update screen shows both versions and release notes.
 
-Legacy preview releases have no Sparkle updater: install 0.1.0 manually once or
+Legacy preview releases have no Sparkle updater: install the current release manually once or
 use Homebrew. Keep the existing data folder. Sparkle updates only Pear; Wine and
 DXMT retain the existing download and validation path. Sparkle system profiling
 is disabled. Update approval is separate from report-sharing consent.
@@ -68,6 +68,20 @@ For a recognized Homebrew installation, Pear defers in-app replacement and point
 you to Homebrew. Use one installation method and quit Pear, Steam and games before
 upgrading. If an update fails, open the installed Pear again; keep your data and
 report the error if needed rather than deleting Steam or saves.
+
+## First-install recovery
+
+Version 0.1.0 could create run history before establishing its installation
+folder, then stop with “This folder contains unrelated files.” Quit Pear using
+**Pear → Quit Pear** (Command-Q), replace only the app with version 0.1.1 or later,
+and open it again. Choose **Download and install** to continue. Keep
+`~/Library/Application Support/Pear Preview`; do not delete history, Steam, games
+or saves to work around this error.
+
+An affected installation cannot reach the normal Sparkle check, so download the
+DMG or upgrade with Homebrew. The fix preserves the recognized history-only
+layout and sharing preferences. Unrecognized files remain protected; if recovery
+is refused, keep the folder and report the error. Quit other Pear instances first.
 
 ## Run history and sharing
 
@@ -117,7 +131,7 @@ before installing through Homebrew. Do not delete its Application Support folder
 ## Optional CLI
 
 The CLI uses the same setup and state as the app. It does not require Node.js,
-Python, Xcode or Rust on the player's Mac. Download the [CLI archive](https://github.com/postmelee/pear/releases/download/v0.1.0/pear-preview-0.1.0-macos-arm64-cli.zip),
+Python, Xcode or Rust on the player's Mac. Download the [CLI archive](https://github.com/postmelee/pear/releases/download/v0.1.1/pear-preview-0.1.1-macos-arm64-cli.zip),
 extract it and run:
 
 ```sh
