@@ -100,6 +100,8 @@ class CatalogTests(unittest.TestCase):
             self.assertEqual(set(files), catalog.PUBLIC_FILES | {'game-3405340.html', 'game-3405340/index.html'})
             self.assertEqual(json.loads((output / 'reports.json').read_text()), self.data)
             self.assertEqual((output / 'pear.png').read_bytes(), (ROOT / 'docs/assets/pear.png').read_bytes())
+            self.assertEqual((output / 'updates/appcast.xml').read_bytes(),
+                             (ROOT / 'preview/updates/appcast.xml').read_bytes())
             self.assertIn('href="favicon.png"', (output / 'index.html').read_text())
             (output / 'private.log').write_text('private sentinel')
             with self.assertRaises(ValueError):
@@ -273,7 +275,7 @@ class CatalogTests(unittest.TestCase):
         controls = Controls()
         controls.feed(catalog.download_page())
         self.assertEqual(controls.disabled, 0)
-        self.assertEqual(controls.assets, ['https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg', 'https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/pear-preview-0.1.0-preview.3-macos-arm64-cli.zip'])
+        self.assertEqual(controls.assets, ['https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.dmg', 'https://github.com/postmelee/pear/releases/download/v0.1.0/pear-preview-0.1.0-macos-arm64-cli.zip'])
 
     def test_game_name_is_canonical_but_reports_remain_identifiable_by_app(self):
         self.row['game'] = 'A different spelling of the same game'

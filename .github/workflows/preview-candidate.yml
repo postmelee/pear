@@ -4,6 +4,27 @@ name: Preview candidate
 
 'on':
   workflow_dispatch:
+    inputs:
+      qualification_pair:
+        description: 'Build the signed Sparkle target and older qualification baseline'
+        type: boolean
+        default: false
+      stable_candidate:
+        description: 'Build a release candidate using the committed stable update feed'
+        type: boolean
+        default: false
+      signed_run_id:
+        description: 'Optional successful signing run to verify on macOS 15'
+        type: string
+        default: ''
+      signed_revision:
+        description: 'Exact source SHA of signed packages'
+        type: string
+        default: ''
+      signed_attempt:
+        description: 'Signing run attempt'
+        type: string
+        default: '1'
   push:
     branches: [codex/publish-task47]
     paths:
@@ -19,6 +40,7 @@ name: Preview candidate
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: preview-candidate-${{ github.ref }}
@@ -26,6 +48,7 @@ concurrency:
 
 jobs:
   portable:
+    if: ${{ inputs.signed_run_id == '' }}
     name: Portable Preview fixtures
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -33,6 +56,11 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Reject conflicting update channels
+        if: ${{ inputs.qualification_pair && inputs.stable_candidate }}
+        run: |
+          echo 'Select qualification_pair or stable_candidate, not both.' >&2
+          exit 1
       - name: Run synthetic checks without skips
         run: python3 -B preview/ci_checks.py
       - name: Check documentation and whitespace
@@ -80,9 +108,32 @@ jobs:
         run: |
           rustup toolchain install 1.94.1 --profile minimal
           cargo fetch --manifest-path preview/Cargo.toml --locked
+      - name: Select committed public Sparkle configuration
+        if: ${{ inputs.qualification_pair || inputs.stable_candidate }}
+        env:
+          PEAR_STABLE_CANDIDATE: ${{ inputs.stable_candidate }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          config = json.loads(Path('preview/update-public.json').read_text())
+          stable = os.environ['PEAR_STABLE_CANDIDATE'] == 'true'
+          if int(config['release_build']) <= int(config['target_build']):
+              raise SystemExit('Release build must follow the qualification target')
+          values = dict(PEAR_APP_BUILD=config['release_build' if stable else 'target_build'],
+                        PEAR_UPDATE_FEED=config['stable_feed' if stable else 'qualification_feed'],
+                        PEAR_UPDATE_PUBLIC_KEY=config['public_key'])
+          if any('\n' in value or '\r' in value for value in values.values()):
+              raise SystemExit('Invalid public update configuration')
+          with Path(os.environ['GITHUB_ENV']).open('a') as out:
+              for name, value in values.items():
+                  out.write(name + '=' + value + '\n')
+          PYTHON
       - name: Test and build the existing app and CLI
         run: |
           python3 -B preview/ci_checks.py
+          export PEAR_SPARKLE_ROOT="$RUNNER_TEMP/pear-sparkle"
+          python3 -B preview/sparkle_input.py --download --output "$PEAR_SPARKLE_ROOT"
           sh preview/build.sh
           "$CARGO_TARGET_DIR/release/pear-preview" --help
       - name: Package only allowlisted candidate contents
@@ -148,9 +199,38 @@ jobs:
           retention-days: 14
           compression-level: 0
 
+  compatibility:
+    name: macOS 15 candidate execution
+    needs: macos
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pear-preview-candidate-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pear-compat-packages
+      - name: Execute exact candidate and reused runtime on macOS 15
+        run: python3 -B preview/check_minimum_os.py --packages "$RUNNER_TEMP/pear-compat-packages" --output "$RUNNER_TEMP/pear-compat-check"
+      - name: Retain bounded compatibility evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-macos15-check-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pear-compat-check/receipt.json
+            ${{ runner.temp }}/pear-compat-check/*.log
+          retention-days: 14
+          if-no-files-found: warn
+
   sign:
     name: Approved Developer ID candidate
-    needs: macos
+    needs: [macos, compatibility]
     if: >-
       github.repository == 'postmelee/pear' &&
       github.ref == 'refs/heads/codex/publish-task47' &&
@@ -167,6 +247,27 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Select committed public Sparkle configuration
+        if: ${{ inputs.qualification_pair || inputs.stable_candidate }}
+        env:
+          PEAR_STABLE_CANDIDATE: ${{ inputs.stable_candidate }}
+        run: |
+          python3 -B - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          config = json.loads(Path('preview/update-public.json').read_text())
+          stable = os.environ['PEAR_STABLE_CANDIDATE'] == 'true'
+          if int(config['release_build']) <= int(config['target_build']):
+              raise SystemExit('Release build must follow the qualification target')
+          values = dict(PEAR_APP_BUILD=config['release_build' if stable else 'target_build'],
+                        PEAR_UPDATE_FEED=config['stable_feed' if stable else 'qualification_feed'],
+                        PEAR_UPDATE_PUBLIC_KEY=config['public_key'])
+          if any('\n' in value or '\r' in value for value in values.values()):
+              raise SystemExit('Invalid public update configuration')
+          with Path(os.environ['GITHUB_ENV']).open('a') as out:
+              for name, value in values.items():
+                  out.write(name + '=' + value + '\n')
+          PYTHON
       - name: Build and verify before loading any signing secret
         run: |
           export CARGO_HOME="$RUNNER_TEMP/pear-sign-cargo"
@@ -187,6 +288,8 @@ jobs:
           rustup toolchain install 1.94.1 --profile minimal
           cargo fetch --manifest-path preview/Cargo.toml --locked
           python3 -B preview/ci_checks.py
+          export PEAR_SPARKLE_ROOT="$RUNNER_TEMP/pear-sparkle"
+          python3 -B preview/sparkle_input.py --download --output "$PEAR_SPARKLE_ROOT"
           sh preview/build.sh
           git diff --exit-code
       - name: Provision the approved identity in an isolated temporary keychain
@@ -255,6 +358,17 @@ jobs:
               swift=command('xcrun', 'swiftc', '--version'), rust=command('rustc', '-Vv'),
               public_release=False, runtime_included=False), indent=2) + '\n')
           PYTHON
+      - name: Derive and notarize the older update baseline
+        if: ${{ inputs.qualification_pair }}
+        env:
+          PEAR_CERTIFICATE_SHA1: ${{ vars.PEAR_CERTIFICATE_SHA1 }}
+        run: |
+          python3 -B preview/update_baseline.py \
+            --packages "$RUNNER_TEMP/pear-signed-packages" \
+            --output "$RUNNER_TEMP/pear-signed-packages/baseline" \
+            --identity "$PEAR_CERTIFICATE_SHA1" --team XH6JHKYXV8 \
+            --keychain "$RUNNER_TEMP/pear-sign-credentials/signing.keychain-db" \
+            --notary-profile pear-ci-notary --revision "$GITHUB_SHA"
       - name: Remove the job-owned credentials on every outcome
         if: ${{ always() }}
         run: |
@@ -274,6 +388,7 @@ jobs:
         with:
           name: pear-preview-signed-candidate-${{ github.sha }}-${{ github.run_attempt }}
           path: |
+            ${{ runner.temp }}/pear-signed-packages/baseline/*
             ${{ runner.temp }}/pear-signed-packages/*.zip
             ${{ runner.temp }}/pear-signed-packages/*.dmg
             ${{ runner.temp }}/pear-signed-packages/SHA256SUMS
@@ -284,3 +399,36 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
+
+  signed-compatibility:
+    name: Signed macOS 15 app verification
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.signed_run_id != '' }}
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: pear-preview-signed-candidate-${{ inputs.signed_revision }}-${{ inputs.signed_attempt }}
+          run-id: ${{ inputs.signed_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/pear-signed-input
+      - name: Check final signatures and execute the exact signed app and CLI
+        env:
+          EXPECTED_REVISION: ${{ inputs.signed_revision }}
+        run: python3 -B preview/check_minimum_os.py --packages "$RUNNER_TEMP/pear-signed-input" --output "$RUNNER_TEMP/pear-signed-check" --expected-revision "$EXPECTED_REVISION" --signed-app-only
+      - name: Retain final compatibility receipt
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pear-signed-macos15-check-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pear-signed-check/receipt.json
+            ${{ runner.temp }}/pear-signed-check/*.log
+          retention-days: 14
+          if-no-files-found: warn

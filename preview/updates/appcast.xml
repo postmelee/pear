@@ -1,0 +1,62 @@
+<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+--><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Pear</title>
+        <item>
+            <title>0.1.0</title>
+            <pubDate>Tue, 20 Oct 2026 16:27:17 +0900</pubDate>
+            <link>https://github.com/postmelee/pear/releases/tag/v0.1.0</link>
+            <sparkle:version>8</sparkle:version>
+            <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <description><![CDATA[
+<h1 id="label-Pear+0.1.0">Pear 0.1.0<span><a href="#label-Pear+0.1.0">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>Pear&#39;s first stable release makes Windows Steam setup, app updates and optional game reports available in one Mac app. Game compatibility still depends on the game and your Mac; this is not a claim that every game works.</p>
+
+<p><strong>Apple Silicon · macOS 15+ · Rosetta required</strong><br> Includes the Pear app and optional CLI. First-run setup downloads <strong>Wine 11.0 and DXMT 0.80</strong> separately, using the unchanged signed runtime.</p>
+
+<h2 id="label-Install+or+upgrade">Install or upgrade<span><a href="#label-Install+or+upgrade">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.dmg">Download Pear for Mac</a>, open the DMG and drag Pear to Applications. Quit games, Steam and the old Pear app before replacing it. Existing Steam login, games, saves and sharing preferences are preserved; keep the Pear Preview folder in Application Support.</p>
+
+<p>Homebrew: <code>brew install --cask postmelee/tap/pear</code>. Existing Homebrew users: <code>brew update</code> then <code>brew upgrade --cask postmelee/tap/pear</code>.</p>
+
+<h2 id="label-What+is+new">What is new<span><a href="#label-What+is+new">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p><strong>App updates with Sparkle.</strong> Pear checks at launch and offers the installed and new versions with release notes. Choose <strong>Update and launch</strong> or <strong>Later</strong>. No update, a declined update, a failed check or a check timeout continues to Steam. Installation is deferred while Steam or games are active. Wine/DXMT keep their existing installation and validation path.</p>
+</li><li>
+<p><strong>Your choice of reporting.</strong> Keep records local, review after each game, or enable automatic sharing of selected observations. Nothing is sent until you confirm a sharing choice. The welcome screen preselects Automatic sharing and the four field groups; <strong>Continue without sharing</strong> keeps sharing off. Update choices do not grant report-sharing consent.</p>
+</li><li>
+<p><strong>Run history and optional details.</strong> Open <strong>Window → Run history</strong> to add a result, share, export or manage a record. Notes require explicit sharing and remain private. Reports enter private review before selected fields may appear in the catalog or on GitHub. Process time is not verified play time and never automatically becomes a Pass.</p>
+</li><li>
+<p><strong>Clearer setup and startup.</strong> Review required downloads, follow progress and cancel preparation. Settings are in <strong>Pear → Settings → Sharing</strong>; the Steam window detection shows when to continue in Steam.</p>
+</li></ul>
+
+<p>Legacy preview apps do not contain Sparkle: install this release manually once, or update with Homebrew. Recognized Homebrew-managed installations defer in-app replacement; use Homebrew to update. Sparkle system profiling is disabled. <a href="https://github.com/postmelee/pear/blob/master/docs/rosetta-preview.md#app-updates">Updates and recovery</a> · <a href="https://github.com/postmelee/pear/blob/master/docs/reporting-and-privacy.md">Reporting and privacy</a>.</p>
+
+<h2 id="label-Verification+scope">Verification scope<span><a href="#label-Verification+scope">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>App, CLI and DMG passed Developer ID signing and Apple notarization. The exact signed app/CLI passed macOS 15.7.9 ARM64 startup checks; Steam UI and gameplay on macOS 15 and exact macOS 15.0 execution remain unverified.</p>
+
+<p>On M4 Pro / macOS 26.5.2, an updater-enabled signed build 6 updated to build 7 and reopened Steam once. Decline, active-session reuse, unavailable/offline update-check fallback, corrupt-archive rejection and pre-install cancellation were checked. Timeout and installer-error callbacks have fixture coverage; arbitrary filesystem or power-loss recovery is not claimed. Final stable-feed build 8 retained login/library, all 11 checked save files, history and sharing preferences.</p>
+
+<p>The unchanged Wine/DXMT runtime retains earlier owner-confirmed Megabonk gameplay, audio, save/relaunch, recovery and same-Mac fresh-account installation evidence. Long gameplay was not repeated for these app changes. Automatic, manual and ask-after-game reporting were checked with the owner; public approval is separate from compatibility qualification. No all-game, performance or second-physical-Mac claim is made.</p>
+
+<h2 id="label-Downloads-2C+source+and+licenses">Downloads, source and licenses<span><a href="#label-Downloads-2C+source+and+licenses">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Use <code>SHA256SUMS</code> to verify the attached downloads. The app ZIP is the Sparkle update archive; ordinary installation uses the DMG. The CLI is optional and has no automatic updater.</p>
+
+<p>App/CLI source: <code>pear-source-51fbe6f.tar.gz</code>, commit <code>51fbe6f2dea42c82691d803ef02ae1663c087dd9</code>, app version 0.1.0/build 8. The unchanged runtime and corresponding source kit remain in the <a href="https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.2">runtime release</a>. Pear original source is GPL-3.0-or-later; Sparkle and other third-party components retain their licenses and bundled notices.</p>
+
+<p><a href="https://github.com/postmelee/pear/actions/runs/39383912617">Build and signing</a> · <a href="https://github.com/postmelee/pear/actions/runs/39385304875">Exact signed macOS 15 check</a></p>
+]]></description>
+            <enclosure url="https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.zip" length="8364949" type="application/octet-stream" sparkle:edSignature="4dKQsivUqb0wPvYT7fumKS7h2/fk5+18D3DRkaNS2U3EMJsAJkOJ57Bb3QfFzAhg92PrWNHyCEmWtxFs3UG/AA=="></enclosure>
+        </item>
+    </channel>
+</rss><!-- sparkle-signatures:
+edSignature: Gm8f0tEgcNdTc+iOHouaB3xQOjjHoh/bXoBhGLobp1QQST8c7I/pmgPZEybvYZxflJaWMuAFMDT8jzdk/lkIAQ==
+length: 6896
+-->

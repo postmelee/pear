@@ -257,3 +257,21 @@ Conservative inclusion does not claim byte-identical reproduction of the upstrea
 DXMT release or prove that every collected library contributes linked code.
 Packaging must bind the final notice inventory, baseline executable hashes and
 source kit. Public distribution admission remains separate.
+
+
+## Sparkle app updater (2.10.0)
+
+The app embeds the unmodified Sparkle 2.10.0 framework from the upstream release
+archive, SHA256 `c2bf58aa8387266ac179357b1415d6f2635f044da8be41042af32425dae6da0c`.
+Origin: https://github.com/sparkle-project/Sparkle/releases/tag/2.10.0.
+The framework retains Sparkle's MIT terms and the bundled BSD/Ed25519 notices;
+the complete upstream license is copied to `licenses/Sparkle.txt` in the app.
+Its signatures are replaced by Pear's approved Developer ID during distribution
+signing, without changing the upstream source or its license. Sparkle updates
+only the Pear app; the Wine/DXMT runtime remains a separately verified input.
+The upstream file/link inventory is recorded in `sparkle-files.json` (JSON does
+not carry comment headers). Framework headers and binaries retain their original
+notices rather than Pear's source header. Build/signing admission is not a claim
+that signed old-to-new update qualification has completed.
+
+`update-public.json` contains only public update configuration and a public Ed25519 key; JSON cannot carry source comment headers. Private signing keys remain outside the repository.

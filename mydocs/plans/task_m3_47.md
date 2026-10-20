@@ -384,3 +384,82 @@ version query in tools/compatibility.py. Existing favicon/layout are unchanged.
 Reuse #47 and its Stage 3/final report; no new document destination or dependency.
 Verify approved bytes, dimensions, six page metadata, existing catalog checks and
 Pages deployment. Only small disposable site output; retain all private state.
+
+## Approved minimum-OS follow-up — 2026-10-18
+
+Requester authorized runtime reuse where possible, app/CLI-only rebuilding,
+necessary compatibility checks and release/documentation updates after success.
+After inspection excluded macOS 14 for unchanged runtime bytes, requester asked
+for the lowest possible version: use macOS 15.0 as the candidate floor. The pinned
+542451640-byte runtime archive matches SHA-256 eb32a9ef8012216d11348c1af089254f2127f28e2b330cf4f1c700f41967d7b0.
+Its 46 Mach-O entries include 42 targeting 14.0, two targeting 12.0 and two DXMT
+winemetal.so copies targeting 15.0. Both modules match the archive exactly.
+No replacement runtime build is authorized or necessary for this candidate.
+
+Location/reuse: existing preview build scripts, package metadata and candidate
+workflow; existing Stage 3/final reports and daily board. Public README, catalog
+and Preview guidance stay at the current release requirements until qualification.
+Reuse the current signed runtime, pinned Cargo inputs, portable tests, signing
+protection and Pages workflow. No other open Issue concerns this Preview scope.
+
+Verification: preserve existing candidate checks; build app/CLI targeting 15.0
+on the pinned macOS 26 builder, then execute the same candidate CLI and isolated
+first-run app on macOS 15. Inspect all reused Mach-O deployment targets and launch
+Wine under Rosetta without credentials/games. Sign only after these checks pass;
+check the final signed artifact on 15 and local 26 before release. CI startup does
+not establish macOS 15 gameplay qualification or exact 15.0 execution coverage.
+Retain recorded OS patch versions. No repeat 20-minute gameplay is required for
+this deployment-target-only change unless new failures justify it.
+
+Artifact lifecycle: immutable cached runtime reused read-only locally, no copies
+of personal prefixes. Hosted runtime download/extraction and candidate build are
+isolated in RUNNER_TEMP (up to 6 GiB per job estimated); logs/artifacts bounded to
+14 days. Local audit only; 17 GiB free measured before any material local build.
+CI artifacts retained until final signing/release comparison; synthetic roots
+removed after owned processes stop. Existing recovery/private state is retained.
+
+### Approved Homebrew extension — 2026-10-18
+
+Requester added Homebrew distribution and guidance for this same candidate.
+Reuse existing postmelee/homebrew-tap with a Pear cask pointing to the exact
+signed DMG and SHA-256; no runtime rebuild or alternate payload. Require arm64
+and Sequoia. Do not add zap/data deletion or terminate unrelated Wine processes.
+Document install, upgrade, uninstall and manual-install migration in existing
+README/player guide/catalog download panel after checks, keeping the optional
+CLI separate. Public requirements remain unchanged until release is ready.
+Test cask parsing/style and install/uninstall in a disposable app directory; never
+overwrite /Applications/Pear.app or remove private data. Source and package docs
+stay at existing approved locations. Final signed-app CI reuses runtime evidence
+from d0cbbbc and checks only changed signed app/CLI bytes on macOS 15.
+
+## Approved first stable release — 2026-10-18
+
+The requester approved the local website and explicitly requested v0.1.0 public
+release, documentation, download links and deployment. Retain macOS 15.0 and the
+exact signed-v3 runtime. Change app/CLI package version and user-visible Preview
+wording only; preserve bundle ID, executable names, data paths and runtime pins.
+Reuse existing candidate/signing/Pages workflows and Homebrew tap. Existing files
+README, docs/README.md, docs/rosetta-preview.md, docs/development/preview-release.md
+and catalog generator are approved publication locations; historical evidence and
+M3 milestone identities remain intact. Publish only after final package checks.
+Required checks: portable fixtures, current CI candidate checks, protected signing
+and notarization, final signed macOS 15 check, local signature/CLI/startup checks,
+Homebrew hash/install checks and documentation/catalog checks. Reuse the owner's
+preview.4 gameplay confirmation for unchanged runtime behavior; no new 20-minute
+test is necessary for version/label-only changes. Stable numbering does not claim
+all-game or macOS 15 gameplay qualification. Use hosted temporary build roots and
+small local final-artifact roots; preserve private installation and saves. Existing
+runtime cache is read-only input; no full runtime copy is needed locally.
+
+## Superseding release hold — 2026-10-18
+
+The requester explicitly paused version-only v0.1.0 and authorized #62 Sparkle
+updates and #63 consent-based run reports before release. #47 remains the final
+integration/distribution owner; no other chats are invoked. Run 39050680766 passed
+portable/build/macOS15 checks and waited for signing. It was cancelled before
+signing; PEAR_SIGNING_APPROVED_SHA was removed. Its 5.5 MiB unsigned artifacts and
+receipt are retained in .build/held-v010-6afc8f2. They are baseline evidence, not
+releasable final assets. Published preview.4 and pinned runtime are preserved.
+No v0.1.0 tag/release, new public download links or Pages publication is permitted
+until both feature gates and the requested local UI review pass. Feature branches
+may start at 6afc8f2 to reuse the macOS15 and approved website preparation.

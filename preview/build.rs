@@ -9,7 +9,7 @@ fn main() {
             "clang",
             "-arch",
             "arm64",
-            "-mmacosx-version-min=26.0",
+            "-mmacosx-version-min=15.0",
             "-O2",
             "-std=c11",
             "-Wall",

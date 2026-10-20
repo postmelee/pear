@@ -189,3 +189,94 @@ The requester approved the visual before implementation. Existing Pages workflow
 performs publication after integration; third-party cache refresh remains external.
 No runtime changes. Retain public PNG; generated site is disposable after live
 verification. Private state and other worktrees remain untouched.
+
+## macOS floor investigation and candidate — 2026-10-18
+
+Pinned public runtime cache was SHA-256 verified against runtime_pin.rs. All 46
+Mach-O entries were inspected: 42 declare 14.0, two 12.0 and two winemetal.so copies
+15.0. Both winemetal bytes match the pinned archive. Therefore unchanged runtime
+reuse selects 15.0, not 14.0, as the candidate floor. This is static compatibility
+evidence, not older-OS gameplay qualification. No runtime or private state changed.
+
+App/CLI build targets and candidate package text now target 15.0; preview.4 keeps
+all preview.3 runtime pins. Existing 68 portable tests, incremental source notices
+and whitespace checks passed. The existing macOS 26 builder remains pinned; a new
+macOS 15 job consumes its exact artifact, checks hashes/targets, executes read-only
+CLI and isolated first-run app startup, audits and starts the unchanged Wine under
+Rosetta. Signing depends on this job and retains existing protected approval.
+Hosted execution is pending; public docs still describe released preview.3.
+
+## macOS 15 and Homebrew delivery — 2026-10-18
+
+Preview.4 source d0cbbbc4987850daf98ed7ded94951bcfff233ed rebuilds only the
+Pear app/CLI for macOS 15.0. The signed-v3 Wine 11.0 / DXMT 0.80 runtime is
+unchanged. Its verified SHA-256 is
+`eb32a9ef8012216d11348c1af089254f2127f28e2b330cf4f1c700f41967d7b0`.
+The highest deployment target in its 46 Mach-O files is 15.0, so 14.0 is excluded.
+
+Verification and release:
+- [Candidate CI](https://github.com/postmelee/pear/actions/runs/39047129494):
+  68 portable tests, build, macOS 15.7.9 arm64 CLI/app process startup, exact
+  archive audit and Wine 11.0 execution under Rosetta passed.
+- [Signing CI](https://github.com/postmelee/pear/actions/runs/39047911515):
+  requester-approved protected environment; app, CLI and DMG Apple notarization
+  accepted. Existing reviewer and branch protection retained.
+- [Final artifact CI](https://github.com/postmelee/pear/actions/runs/39048418706):
+  same signed d0cbbbc artifacts passed Gatekeeper, signatures, tickets, CLI and
+  isolated app process startup on macOS 15.7.9. Workflow dd4d07d consumes the signed
+  artifact directly without rebuilding; unchanged runtime evidence is reused.
+- Local macOS 26.5.2: final DMG verification, Gatekeeper/tickets/signatures, CLI
+  version/setup-info and isolated app process startup passed. No personal prefix
+  or running game was used.
+- Public [preview.4](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.4)
+  includes DMG, app/CLI archives, exact source archive and SHA256SUMS. DMG SHA-256:
+  `1ff1588a24cfe7510d80fe0d78ae19a919d401231bd25b372155df2772342631`.
+- [Homebrew cask](https://github.com/postmelee/homebrew-tap/blob/dd338ce/Casks/pear.rb)
+  uses that DMG and checksum, arm64 and Sequoia constraints. Homebrew style and
+  online audit passed. Install into a disposable app directory, Gatekeeper/CLI
+  execution and uninstall passed; /Applications/Pear.app and private data were
+  preserved. A version-scoped prerelease allowlist admits this intentional
+  preview; livecheck is skipped until a reviewed update. No zap/data deletion.
+- Documentation/catalog suite: 94 tests; Steam identity search: six Node tests;
+  governance: 37 documents / 373 local targets; incremental notices and diff
+  checks passed. Existing download layout retained with Homebrew command/copy
+  control, current links and scoped requirements.
+
+Limits: no macOS 15 Steam UI/gameplay, exact 15.0 execution or fresh-user test of
+preview.4. Prior preview.3 game evidence on macOS 26 retains its original scope.
+No new gameplay/performance claim. Startup checks only establish process/CLI
+execution. Continuous user-operable game timing is not applicable to this bounded
+packaging change; hosted build/signing intervals are retained in linked CI runs,
+with human approval separate. No latency improvement claim.
+
+Retention handoff: public release assets/source/checksums and tap are durable
+inputs; hosted artifacts expire after 14 days. Local .build/preview4-release holds
+small downloaded final packages, receipts, tap clone and generated site for this
+handoff; disposable after publication verification. Temporary test cask was
+uninstalled. Preserve the cached pinned runtime, personal authenticated prefixes,
+saves and all prior recovery evidence. No shared runtime or other task was edited.
+Website/README publication proceeds through the integration PR and existing
+Pages-only workflow; the public release and Homebrew tap are already available.
+
+### Owner confirmation — 2026-10-18
+
+After opening the final signed preview.4 app with the existing local installation,
+the requester reported no problems in response to the Megabonk gameplay and saved
+state check. This is owner-confirmed local macOS 26 evidence, not macOS 15 gameplay
+evidence. No new measured-duration claim is made.
+
+The requester proposed the first v0.1.0 release with the macOS 15 minimum retained,
+and requested local website review before deployment. Website publication is held
+for that review. Existing preview.4 artifacts and links remain unchanged until the
+versioned v0.1.0 app/CLI has been built, signed and checked; the Wine/DXMT runtime
+can remain pinned.
+
+### Stable candidate preparation — 2026-10-18
+
+Requester approved v0.1.0 publication and the reviewed website. Package version
+is 0.1.0, CFBundleVersion is 5, and app presentation no longer says Preview.
+Runtime, data paths and bundle identifier are unchanged. Current download links
+and Homebrew guidance are prepared for v0.1.0, but not published before signed
+artifact acceptance. 68 portable fixtures, 94 documentation tests, governance,
+incremental notices and diff checks passed. Existing signed preview.4 remains
+available while this candidate builds.

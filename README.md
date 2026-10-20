@@ -10,33 +10,46 @@ with **no Rosetta dependency** across every required process and library.
 
 ## Try Pear
 
-The current **Rosetta Preview (M3)** uses Rosetta, Wine and DXMT. Open Pear, sign
+The current **Pear release (Rosetta-based M3 route)** uses Rosetta, Wine and DXMT. Open Pear, sign
 into official Windows Steam, then choose an owned game from your library. The app
 and optional CLI share the same setup. Routine players should not need Terminal,
 Xcode, a developer account or a paid compatibility app.
 
-**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.0-preview.3/Pear-0.1.0-preview.3-macos-arm64.dmg)** · [Website & game reports](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.0-preview.3)
+**[Download Pear for Mac](https://github.com/postmelee/pear/releases/download/v0.1.0/Pear-0.1.0-macos-arm64.dmg)** · [Website & game reports](https://postmelee.github.io/pear/) · [Release notes](https://github.com/postmelee/pear/releases/tag/v0.1.0)
 
-Preview **0.1.0-preview.3** uses **Wine 11.0 and DXMT 0.80** and requires
-Apple Silicon, macOS 26+ and Rosetta. Megabonk gameplay, input/audio, saved
+Pear **0.1.0** uses **Wine 11.0 and DXMT 0.80** and requires
+Apple Silicon, macOS 15+ and Rosetta. Megabonk gameplay, input/audio, saved
 progress, recovery and a fresh standard-account installation were checked on
 one M4 Pro / macOS 26.5.2. The second account is on the same Mac; other hardware
 and games remain unverified.
 
 | Start here | What you will find |
 |---|---|
-| [Use the Preview](docs/rosetta-preview.md) | Availability, first Steam session, optional CLI and data preservation |
+| [Use Pear](docs/rosetta-preview.md) | Availability, first Steam session, optional CLI and data preservation |
 | [Game reports](docs/compatibility/README.md) | Tested configurations, limitations and how to share a result |
 | [Get help](docs/SUPPORT.md) | Questions, bug reports and private reporting routes |
 | [Make a first contribution](docs/development/getting-started.md) | Local checks, Preview build and contribution paths |
 | [Develop without Rosetta](docs/development/rosetta-free.md) | Native component repositories, bounded reconstruction, current Issues and prerequisites |
 | [Read the documentation](docs/README.md) | Tutorials, task guides, reference and explanation |
 
+Install with Homebrew: `brew install --cask postmelee/tap/pear`.
+See [installation, updates and removal](docs/rosetta-preview.md#homebrew).
+
+The final 0.1.0 signed app/CLI startup and the reused Wine runtime were checked in macOS
+15.7.9 CI; this does not establish Steam UI or gameplay compatibility on macOS 15.
+The gameplay evidence above remains from the unchanged runtime on macOS 26.
+
+Pear checks for app updates at launch and offers optional game reporting.
+Use **Window → Run history** to review runs and **Pear → Settings → Sharing**
+to choose what to share. Nothing is sent until you confirm a sharing choice.
+See [app updates](docs/rosetta-preview.md#app-updates) and
+[reporting and privacy](docs/reporting-and-privacy.md).
+
 ## Two tracks, one goal
 
 | Track | Current scope | Status |
 |---|---|---|
-| Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Public preview.3; Megabonk play, save/relaunch, recovery and fresh-account setup verified on one Mac |
+| Rosetta Preview (M3) | Make Windows Steam preparation, launch and recovery easy | Public v0.1.0; macOS 15 startup checked; prior gameplay and recovery evidence on one macOS 26 Mac |
 | Rosetta-free runtime (M1) | Run owned Windows Megabonk with every required host process and library free of Rosetta | Under development; no player-ready native preview |
 
 The Rosetta-free runtime remains in development. Experimental builds have reached

@@ -1,0 +1,572 @@
+// SPDX-FileCopyrightText: 2026 Pear contributors
+// SPDX-License-Identifier: GPL-3.0-or-later
+import AppKit
+import UniformTypeIdentifiers
+
+@MainActor private final class HistoryBadge: NSView {
+    private let tint: NSColor
+    init(_ title: String, symbol: String, tint: NSColor) {
+        self.tint = tint
+        super.init(frame: .zero)
+        wantsLayer = true
+        let icon = NSImageView(image: NSImage(systemSymbolName: symbol, accessibilityDescription: nil) ?? NSImage())
+        icon.contentTintColor = tint
+        let label = NSTextField(labelWithString: title)
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = PearStyle.foreground
+        let row = NSStackView(views: [icon, label]); row.spacing = 5; row.alignment = .centerY
+        row.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(row)
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 13), icon.heightAnchor.constraint(equalToConstant: 13),
+            row.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            row.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            row.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            row.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)])
+        setAccessibilityElement(true); setAccessibilityLabel(title)
+    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) is unavailable") }
+    override var wantsUpdateLayer: Bool { true }
+    override func updateLayer() { layer?.backgroundColor = tint.withAlphaComponent(0.13).cgColor; layer?.cornerRadius = 6 }
+    override func viewDidChangeEffectiveAppearance() { super.viewDidChangeEffectiveAppearance(); needsDisplay = true }
+}
+
+@MainActor private final class HistoryTable: NSTableView {
+    override func keyDown(with event: NSEvent) {
+        if (event.keyCode == 36 || event.keyCode == 76), selectedRow >= 0, let action {
+            sendAction(action, to: target)
+        } else { super.keyDown(with: event) }
+    }
+}
+
+@MainActor final class HistoryWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate {
+    let store: ReportingStore
+    var configureSharing: ((SharingMode, Set<ReportField>) throws -> Void)?
+    var retryReport: ((UUID) throws -> Void)?
+    var deleteLocalRecord: ((UUID) throws -> Void)?
+    var deleteServerReport: ((UUID, @escaping (Bool) -> Void) -> Void)?
+    var sharingClosed: (() -> Void)?
+    var isSharingOpen: Bool { settingsWindow?.isVisible ?? false }
+    func windowWillClose(_ notification: Notification) {
+        if let closed=notification.object as? NSWindow, closed === settingsWindow {
+            DispatchQueue.main.async { [weak self] in self?.sharingClosed?() }
+        }
+    }
+    var enableNotifications: (() -> Void)?
+    var submit: ((RunObservation, Bool) throws -> Void)?
+    private var window: NSWindow!
+    private let table = HistoryTable()
+    private var settingsWindow: NSWindow?
+    private var saveSharingAction: (() -> Void)?
+    private var cancelSharingAction: (() -> Void)?
+    private var updateSharingDraft: (() -> Void)?
+    private let modeDescription = PearStyle.label("",size:12,muted:true)
+    private let modeLabel = NSTextField(labelWithString: "")
+    private let selectedTitle = NSTextField(labelWithString: "Selected run")
+    private let emptyLabel = NSTextField(labelWithString: "No runs yet. Games opened through Pear will appear here.")
+    private let details = NSTextField(wrappingLabelWithString: "Choose a run to see its details.")
+    private let result = NSPopUpButton()
+    private let note = NSTextView()
+    private let shareNote = NSButton(checkboxWithTitle: "Include this note when I share", target: nil, action: nil)
+    private let shareButton = NSButton()
+    private let retryButton = NSButton()
+    private var listPage: NSStackView!
+    private var detailPage: NSStackView!
+    private let runDate = PearStyle.label("", muted: true)
+    private let disableButton = NSButton()
+    private let more = NSPopUpButton(frame: .zero, pullsDown: true)
+    private let sharedSummary = PearStyle.label("", muted: true)
+    var isVisible: Bool { (window?.isVisible ?? false) || (settingsWindow?.isVisible ?? false) }
+    private let availability = NSTextField(wrappingLabelWithString: "")
+    private var pendingFinished: [UUID] = []
+    private var showingFinished = false
+    private var displayedID: UUID?
+    private var reloading = false
+    private var selection: UUID?
+    private var rows: [RunObservation] { store.snapshot.runs.sorted { $0.startedAt > $1.startedAt } }
+
+    init(store: ReportingStore) { self.store = store; super.init() }
+    private func text(_ value: String, bold: Bool = false) -> NSTextField {
+        PearStyle.label(value, size: bold ? 15 : 13, weight: bold ? .semibold : .regular)
+    }
+    private func button(_ title: String, _ action: Selector) -> NSButton {
+        PearStyle.button(title, target: self, action: action)
+    }
+    private func stack(_ views: [NSView], horizontal: Bool = false) -> NSStackView {
+        PearStyle.stack(views, horizontal: horizontal)
+    }
+    func show() {
+        if window == nil { build() }
+        refresh(); window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps:true)
+    }
+    private func build() {
+        window = NSWindow(contentRect:NSRect(x:0,y:0,width:800,height:600),
+                          styleMask:[.titled,.closable,.miniaturizable,.resizable],backing:.buffered,defer:false)
+        window.title = "Pear · Run history"; window.isReleasedWhenClosed = false
+        window.minSize = NSSize(width:760,height:600); PearStyle.window(window)
+        modeLabel.font = .systemFont(ofSize: 12, weight: .medium); modeLabel.textColor = PearStyle.foreground
+        disableButton.title = "Turn off automatic sharing"; disableButton.bezelStyle = .rounded
+        disableButton.target = self; disableButton.action = #selector(disableSharing)
+        let sharingMode = PearStyle.stack([PearStyle.label("Report sharing",size:12,muted:true),modeLabel,modeDescription],spacing:4)
+        let sharingActions = stack([NSView(), disableButton, button("Sharing settings…",#selector(settings))],horizontal:true)
+        let sharing = stack([sharingMode,sharingActions]);sharing.spacing=12
+        let divider=NSBox();divider.boxType = .separator
+        let listTools=NSPopUpButton(frame:.zero,pullsDown:true)
+        listTools.addItem(withTitle:"More…");listTools.menu?.autoenablesItems=false
+        let sharedReports=NSMenuItem(title:"Shared reports…",action:#selector(manageSharedReports),keyEquivalent:"")
+        sharedReports.target=self;listTools.menu?.addItem(sharedReports)
+        let heading=stack([PearStyle.label("Run history",size:28,weight:.semibold),NSView(),listTools],horizontal:true)
+        for (id,title,width) in [("game","Game",195.0),("date","Date · time open",185.0),
+                                  ("result","Your result",155.0),("shared","Sharing",145.0)] {
+            let column = NSTableColumn(identifier:NSUserInterfaceItemIdentifier(id)); column.title=title; column.width=width
+            column.minWidth = id == "game" ? 140 : 130
+            column.resizingMask = .autoresizingMask
+            table.addTableColumn(column)
+        }
+        table.dataSource=self; table.delegate=self; table.rowHeight=54; table.style = .fullWidth
+        table.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+        table.backgroundColor = PearStyle.background; table.usesAlternatingRowBackgroundColors = false
+        table.target = self; table.action = #selector(openSelected)
+        table.setAccessibilityLabel("Game runs. Click a row, or select with arrow keys and press Return, to open details.")
+        let list = NSScrollView(); list.documentView=table; list.hasVerticalScroller=true
+        list.backgroundColor = PearStyle.background
+        list.heightAnchor.constraint(greaterThanOrEqualToConstant:200).isActive=true
+        emptyLabel.textColor = PearStyle.muted
+        availability.font = .systemFont(ofSize: 12); availability.textColor = PearStyle.muted
+        listPage = stack([heading,
+                          PearStyle.label("Review a run or share your experience.", muted:true),
+                          list, emptyLabel, availability, divider, sharing])
+        listPage.spacing = 16
+        for view in [heading,list,divider,sharing,sharingMode,sharingActions,modeDescription,availability] {
+            view.widthAnchor.constraint(equalTo:listPage.widthAnchor).isActive=true
+        }
+        PearStyle.pin(listPage,in:window.contentView!)
+
+        selectedTitle.font = .systemFont(ofSize:26,weight:.semibold); selectedTitle.textColor = PearStyle.foreground
+        details.font = .systemFont(ofSize:13); details.textColor = PearStyle.muted
+        result.addItems(withTitles:["Not confirmed","Worked normally","Had problems"])
+        result.controlSize = .large
+        let notes = PearStyle.editor(note, height:100)
+        shareButton.title="Share result"; shareButton.target=self; shareButton.action = #selector(share)
+        shareButton.bezelStyle = .rounded; shareButton.bezelColor = PearStyle.buttonFill; shareButton.controlSize = .large
+        retryButton.title = "Retry sending"; retryButton.target = self; retryButton.action = #selector(retrySending)
+        retryButton.bezelStyle = .rounded
+        more.addItem(withTitle:"More…");more.menu?.autoenablesItems=false
+        for (title, action) in [("Environment & versions…", #selector(showEnvironment)),
+                                ("Add test details…", #selector(editSupplemental)),
+                                ("Export…", #selector(exportRecord)),
+                                ("View shared content…", #selector(viewShared)),
+                                ("Delete local record…", #selector(deleteLocal)),
+                                ("Manage shared reports…", #selector(manageSharedReports))] {
+            let item = NSMenuItem(title:title,action:action,keyEquivalent:""); item.target=self; more.menu?.addItem(item)
+        }
+        let navigation = stack([button("← All runs",#selector(showList)),NSView(),more],horizontal:true)
+        let actions = stack([button("Save on this Mac",#selector(save)),retryButton,NSView(),shareButton],horizontal:true)
+        let resultRow = stack([text("How did it run?",bold:true),result],horizontal:true)
+        detailPage = stack([navigation,selectedTitle,runDate,resultRow,
+                            PearStyle.label("Note (optional)",size:15,weight:.semibold), notes,shareNote,
+                            PearStyle.label("Your note stays on this Mac unless you include it when sharing.",size:12,muted:true),
+                            NSView(),sharedSummary,actions])
+        detailPage.spacing = 16
+        for view in [navigation,notes,actions,sharedSummary] { view.widthAnchor.constraint(equalTo:detailPage.widthAnchor).isActive=true }
+        PearStyle.pin(detailPage,in:window.contentView!)
+        detailPage.isHidden = true
+        window.center()
+    }
+    @objc private func openSelected() {
+        guard selection != nil else { return }
+        listPage.isHidden = true; detailPage.isHidden = false
+        window.makeFirstResponder(result)
+    }
+    @objc private func showList() {
+        // Navigation saves only the local draft, never a network report.
+        if let draft=editedRun() {
+            do { try store.record(draft) } catch { failure(error); return }
+        }
+        detailPage.isHidden = true; listPage.isHidden = false; refresh(); window.makeFirstResponder(table)
+    }
+    @objc private func showEnvironment() {
+        let alert=NSAlert();alert.messageText="Environment & versions"
+        alert.informativeText=details.stringValue + "\n\nTime open measures the game process, not active play. An observed exit is not a confirmed successful result."
+        alert.beginSheetModal(for:window)
+    }
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? { PearHistoryRow() }
+    func refresh() {
+        guard window != nil else { return }
+        let modes: [SharingMode:String] = [.localOnly:"Manual sharing",.askAfterExit:"Ask after each game",.automatic:"Automatic sharing"]
+        modeLabel.stringValue = modes[store.snapshot.policy.consent.mode]!
+        let descriptions: [SharingMode:String] = [.localOnly:"Nothing is sent automatically. Share from your run history.", .askAfterExit:"Nothing is sent until you choose Share result.", .automatic:"Selected fields are sent after games. Notes are never sent automatically."]
+        modeDescription.stringValue=descriptions[store.snapshot.policy.consent.mode]!
+        disableButton.isHidden = store.snapshot.policy.consent.mode != .automatic
+        availability.stringValue = !store.available ? "Local storage is unavailable. Sharing is stopped; reopen Pear after resolving the storage problem." : submit == nil ? "Local records and export are available. Report sharing is not connected in this development build." : "Shared results help improve Pear. Publication follows review."
+        emptyLabel.isHidden = !rows.isEmpty
+        reloading = true
+        table.reloadData()
+        reloading = false
+
+        if let selection, let row=rows.firstIndex(where:{$0.id==selection}) { table.selectRowIndexes(IndexSet(integer:row),byExtendingSelection:false) }
+        shareButton.isEnabled = submit != nil && selection != nil && store.available && selection.map { store.snapshot.serverDeletions?[$0] == nil } == true
+        retryButton.isEnabled = retryReport != nil && store.snapshot.policy.pending.contains { $0.payload.reportID == selection }
+        retryButton.isHidden = !retryButton.isEnabled
+        updateSharingSummary()
+    }
+    func numberOfRows(in tableView: NSTableView) -> Int { rows.count }
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let run = rows[row]
+        let cell = NSTableCellView()
+        let value: NSView
+        switch tableColumn?.identifier.rawValue {
+        case "game":
+            let label = NSTextField(labelWithString: run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game")
+            label.font = .systemFont(ofSize: 14, weight: .medium); label.textColor = PearStyle.foreground
+            let arrow=NSImageView(image:NSImage(systemSymbolName:"chevron.right",accessibilityDescription:"Open run details") ?? NSImage())
+            arrow.contentTintColor=PearStyle.muted
+            arrow.widthAnchor.constraint(equalToConstant:8).isActive=true
+            arrow.heightAnchor.constraint(equalToConstant:12).isActive=true
+            value=PearStyle.stack([label,arrow],horizontal:true,spacing:10)
+        case "date":
+            let date = DateFormatter.localizedString(from:run.startedAt,dateStyle:.medium,timeStyle:.none)
+            let minutes=run.endedAt.map { max(0,Int($0.timeIntervalSince(run.startedAt)/60)) }
+            let label = NSTextField(labelWithString: date + " · " + (minutes.map { "\($0) min open" } ?? "Unknown duration"))
+            label.font = .systemFont(ofSize: 12); label.textColor = PearStyle.muted; value = label
+        case "result":
+            value = HistoryBadge(resultTitle(run.result),
+                symbol: run.result == .normal ? "checkmark.circle.fill" : run.result == .problems ? "exclamationmark.circle.fill" : "questionmark.circle",
+                tint: run.result == .normal ? PearStyle.accent : run.result == .problems ? PearStyle.negative : PearStyle.muted)
+        default:
+            let request = store.snapshot.policy.pending.first { $0.payload.reportID == run.id }
+            let pending = request != nil
+            let failed = request.map { (store.snapshot.delivery?[$0.requestID]?.failures ?? 0) > 0 } ?? false
+            let expired = request.map { Date().timeIntervalSince($0.createdAt ?? .distantPast) >= 14 * 86400 } ?? false
+            let shared = store.snapshot.shared[run.id] != nil
+            let deletion = store.snapshot.serverDeletions?[run.id]
+            value = HistoryBadge(deletion == true ? "Deleted from server" : deletion == false ? "Deletion needs retry" : failed ? "Send failed" : expired ? "Retry needed" : pending ? "Pending" : shared ? "Shared" : "Not shared",
+                symbol: pending ? "clock" : shared ? "arrow.up.circle.fill" : "lock",
+                tint: pending ? .systemOrange : shared ? PearStyle.accent : PearStyle.muted)
+
+        }
+        value.translatesAutoresizingMaskIntoConstraints = false; cell.addSubview(value)
+        NSLayoutConstraint.activate([value.leadingAnchor.constraint(equalTo:cell.leadingAnchor,constant:4),
+            value.centerYAnchor.constraint(equalTo:cell.centerYAnchor),
+            value.trailingAnchor.constraint(lessThanOrEqualTo:cell.trailingAnchor,constant:-4)])
+        return cell
+    }
+    private func resultTitle(_ value: UserRunResult) -> String {
+        switch value { case .unknown:return "Not confirmed"; case .normal:return "Worked normally"; case .problems:return "Had problems" }
+    }
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        guard !reloading else { return }
+        guard rows.indices.contains(table.selectedRow) else { selection=nil; return }
+        let run=rows[table.selectedRow]
+        // Preserve a local draft when selecting another run; never upload on navigation.
+        if selection != run.id, let draft=editedRun() {
+            do { try store.record(draft) } catch { failure(error); return }
+        }
+        selection=run.id
+        runDate.stringValue = DateFormatter.localizedString(from:run.startedAt,dateStyle:.long,timeStyle:.short)
+            + " · " + (run.endedAt.map { "\(max(0,Int($0.timeIntervalSince(run.startedAt)/60))) min open" } ?? "End not observed")
+        selectedTitle.stringValue = run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game"
+        details.stringValue = "\(run.macOS.map { "macOS \($0)" } ?? "macOS unknown") · \(run.chip ?? "Chip unknown") · \(run.memoryGiB.map { "\($0) GB" } ?? "Memory unknown")\nPear \(run.pear) · Wine \(run.wine) · DXMT \(run.dxmt)\nGame build: \(run.gameBuild ?? "Unknown") · Observed exit: \(run.observedExit.rawValue)"
+        if displayedID != run.id {
+            result.selectItem(at:run.result == .normal ? 1 : run.result == .problems ? 2 : 0)
+            note.string=run.note; shareNote.state = .off
+            displayedID=run.id
+        }
+        shareButton.isEnabled = submit != nil && store.available && store.snapshot.serverDeletions?[run.id] == nil
+        retryButton.isEnabled = retryReport != nil && store.snapshot.policy.pending.contains { $0.payload.reportID == run.id }
+        retryButton.isHidden = !retryButton.isEnabled
+        updateSharingSummary()
+    }
+    private func updateSharingSummary() {
+        let shared = selection.map { store.snapshot.shared[$0] != nil } ?? false
+        shareButton.title = shared ? "Update shared result" : "Share result"
+        sharedSummary.stringValue = shared ? "Already shared. Sharing changes updates this report." : "Only on this Mac. Nothing is sent until you choose to share."
+        if !shared && store.snapshot.policy.consent.mode == .automatic {
+            sharedSummary.stringValue = "Selected fields are shared automatically after a run. Notes are only sent when you include them."
+        }
+        more.item(at:4)?.isEnabled = shared
+        if let id=selection,store.snapshot.policy.pending.contains(where:{$0.payload.reportID == id}) {
+            sharedSummary.stringValue = "Waiting to send. You can retry if the connection was interrupted."
+        }
+        if let id=selection,let deleted=store.snapshot.serverDeletions?[id] {
+            sharedSummary.stringValue = deleted ? "Deleted from the server. Your local record is kept." : "Server deletion needs a retry. This report will not be sent again."
+        }
+    }
+    private func editedRun() -> RunObservation? {
+        guard let id=selection,var run=rows.first(where:{$0.id==id}) else { return nil }
+        run.result = result.indexOfSelectedItem == 1 ? .normal : result.indexOfSelectedItem == 2 ? .problems : .unknown
+        run.note=note.string; return run
+    }
+    @objc private func editSupplemental() {
+        guard let run = editedRun() else { return }
+        let old = run.supplemental ?? SupplementalReport()
+        let alert = NSAlert(); alert.messageText = "Optional test details"
+        alert.informativeText = "Leave anything you did not check as Unknown. These are your observations, not automatic checks. Details are included only when you manually share and may be published after review. Do not include account information or paths."
+        let outcomes = ["unknown", "observed", "failed", "not-tested"]
+        func picker(_ values: [String], _ value: String) -> NSPopUpButton {
+            let p = NSPopUpButton(); p.addItems(withTitles: values); p.selectItem(withTitle: value); return p
+        }
+        let stage = picker(["unknown", "launch-failed", "launched-unusable", "menu-interactive", "active-gameplay", "regression"], old.furthestResult)
+        let checks = [old.input,old.audio,old.saveReload,old.recovery].map { picker(outcomes,$0) }
+        let minutes = NSTextField(string: old.activePlayMinutes.map(String.init) ?? "")
+        minutes.placeholderString = "Optional · actual active play, not process time"
+        let settings = NSTextField(string: old.settings); settings.placeholderString = "Optional · resolution and graphics settings"
+        var views: [NSView] = [text("Furthest result",bold:true),stage,text("Active play minutes",bold:true),minutes]
+        for (name,p) in zip(["Input","Audio","Save / reload","Recovery"],checks) { views += [stack([text(name),p],horizontal:true)] }
+        views += [text("Game settings",bold:true),settings]
+        let options=stack(views); options.frame=NSRect(x:0,y:0,width:540,height:310)
+        alert.accessoryView=options;alert.addButton(withTitle:"Save details");alert.addButton(withTitle:"Cancel")
+        alert.beginSheetModal(for:window) { response in
+            guard response == .alertFirstButtonReturn else { return }
+            let raw=minutes.stringValue.trimmingCharacters(in:.whitespaces)
+            guard raw.isEmpty || (Int(raw).map { $0 >= 0 && $0 <= 1440 } ?? false), settings.stringValue.count <= 500 else { self.failure(ReportingStoreError.unavailable); return }
+            var updated=run
+            updated.supplemental=SupplementalReport(furthestResult:stage.titleOfSelectedItem ?? "unknown",activePlayMinutes:Int(raw),input:checks[0].titleOfSelectedItem!,audio:checks[1].titleOfSelectedItem!,saveReload:checks[2].titleOfSelectedItem!,recovery:checks[3].titleOfSelectedItem!,settings:settings.stringValue)
+            do { try self.store.record(updated);self.refresh() } catch { self.failure(error) }
+        }
+    }
+    private func failure(_ error: Error) {
+        let alert=NSAlert(); alert.messageText="Could not save this change"
+        alert.informativeText="No further reports will be sent if local storage is unavailable. \(error.localizedDescription)"
+        alert.beginSheetModal(for:window)
+    }
+    @objc private func save() {
+        guard let run=editedRun() else { return }
+        do {
+            try store.record(run); refresh()
+            sharedSummary.stringValue = store.snapshot.shared[run.id] == nil
+                ? "Saved on this Mac. You can share this result when you’re ready."
+                : "Saved on this Mac. Choose Update shared result to send your changes."
+        } catch { failure(error) }
+    }
+    @objc private func share() {
+        guard store.snapshot.policy.consent.disclosureVersion == 2, !store.snapshot.policy.consent.fields.isEmpty else { settings(); return }
+        guard let run=editedRun(),let submit else { return }
+        do { try store.record(run); try submit(run,shareNote.state == .on); refresh() } catch { failure(error) }
+    }
+    @objc private func retrySending() {
+        guard let selection, let retryReport else { return }
+        do { try retryReport(selection); refresh() } catch { failure(error) }
+    }
+    @objc private func deleteLocal() {
+        guard let id = selection else { return }
+        let alert = NSAlert(); alert.messageText = "Delete this local run?"
+        alert.informativeText = "This removes the local run and its queued transmissions. Reports already sent and their shared-content receipts remain. This does not delete a report from the server."
+        alert.addButton(withTitle: "Cancel"); alert.addButton(withTitle: "Delete local record")
+        alert.beginSheetModal(for: window) { response in
+            guard response == .alertSecondButtonReturn else { return }
+            do {
+                if let remove = self.deleteLocalRecord { try remove(id) }
+                else {
+                    // No transport exists in this local-only development mode.
+                    try self.store.transaction {
+                        $0.policy.removePending(reportID: id)
+                        $0.runs.removeAll { $0.id == id }
+                    }
+                }
+                self.selection = nil; self.displayedID = nil
+                self.selectedTitle.stringValue = "Selected run"; self.details.stringValue = "Choose a run to see its details."
+                self.note.string = ""; self.showList(); self.refresh()
+            } catch { self.failure(error) }
+        }
+    }
+    @objc private func disableSharing() {
+        do {
+            if let configureSharing { try configureSharing(.localOnly,store.snapshot.policy.consent.fields) }
+            else { try store.transaction { $0.policy.disableAutomaticSharing() } }
+            refresh()
+            availability.stringValue = "Sharing is off. Local records and reports already sent are kept."
+        } catch { failure(error) }
+    }
+    @objc private func exportRecord() {
+        guard let run=editedRun() else { return }
+        let panel=NSSavePanel();panel.allowedContentTypes=[.json];panel.nameFieldStringValue="pear-run-\(run.id.uuidString).json"
+        panel.beginSheetModal(for:window) { response in
+            guard response == .OK,let url=panel.url else { return }
+            do {
+                let encoder=JSONEncoder();encoder.outputFormatting=[.prettyPrinted,.sortedKeys]
+                // Export only the explicit sharing projection, not exact timestamps.
+                try encoder.encode(run.payload(fields:Set(ReportField.allCases),shareNote:self.shareNote.state == .on)).write(to:url,options:.atomic)
+            } catch { self.failure(error) }
+        }
+    }
+    @objc private func manageSharedReports() {
+        let ids = Set(store.snapshot.shared.keys).union(store.snapshot.serverDeletions?.filter { !$0.value }.map { $0.key } ?? []).sorted { $0.uuidString < $1.uuidString }
+        let alert = NSAlert(); alert.messageText = "Shared reports"
+        guard !ids.isEmpty else {
+            alert.informativeText = "No shared reports or pending deletions on this Mac. Local records are separate."
+            alert.beginSheetModal(for: window); return
+        }
+        alert.informativeText = "Delete a report from Pear’s server. This keeps your local record, stops its queued sends and prevents resending the same record. Public removal follows the next successful catalog update. Backups, GitHub originals and external copies are separate."
+        let picker = NSPopUpButton()
+        picker.addItems(withTitles: ids.map { id in
+            let r = store.snapshot.shared[id]
+            return (r?.appID.map { "Steam App \($0)" } ?? "Report") + " · " + (r?.dateUTC ?? "Date not shared") + " · " + id.uuidString
+        })
+        picker.frame = NSRect(x:0,y:0,width:590,height:30)
+        alert.accessoryView = picker
+        alert.addButton(withTitle: "Cancel"); alert.addButton(withTitle: "Delete from server")
+        alert.beginSheetModal(for: window) { response in
+            guard response == .alertSecondButtonReturn, ids.indices.contains(picker.indexOfSelectedItem), let remove = self.deleteServerReport else { return }
+            remove(ids[picker.indexOfSelectedItem]) { success in
+                let result = NSAlert(); result.messageText = success ? "Server report deleted" : "Deletion not confirmed"
+                result.informativeText = success ? "Your local history is kept. Published catalog removal follows the next successful update." : "The report may still be on the server. Its pending uploads are stopped. Use Shared reports to retry deletion when online."
+                self.refresh(); result.beginSheetModal(for:self.window)
+            }
+        }
+    }
+
+    @objc private func viewShared() {
+        guard let id=selection,let shared=store.snapshot.shared[id] else { return }
+        let alert=NSAlert();alert.messageText="Last shared content"
+        let encoder=JSONEncoder();encoder.outputFormatting=[.prettyPrinted,.sortedKeys]
+        alert.informativeText=(try? String(data:encoder.encode(shared),encoding:.utf8)) ?? "Unavailable"
+        alert.beginSheetModal(for:window)
+    }
+    func confirmFinished(_ id: UUID) {
+        guard store.snapshot.policy.shouldShowExitPrompt else { return }
+        pendingFinished.append(id)
+        showNextFinished()
+    }
+    private func showNextFinished() {
+        guard !showingFinished, !pendingFinished.isEmpty else { return }
+        guard store.snapshot.policy.shouldShowExitPrompt else { pendingFinished.removeAll(); return }
+        let id = pendingFinished.removeFirst()
+        guard let run = store.snapshot.runs.first(where: { $0.id == id }) else { showNextFinished(); return }
+        show(); showingFinished = true
+        let alert = NSAlert(); alert.messageText = "How did the game run?"
+        let introduction = PearStyle.label("Share your experience to help improve Pear. You can also skip and add a result later.")
+        introduction.widthAnchor.constraint(equalToConstant:440).isActive=true
+        let outcome = NSPopUpButton(); outcome.addItems(withTitles: ["Not confirmed", "Worked normally", "Had problems"])
+        outcome.selectItem(at:run.result == .normal ? 1 : run.result == .problems ? 2 : 0)
+        let notes = NSTextView(); notes.string = run.note; notes.isRichText = false; notes.font = .systemFont(ofSize: 13)
+        let scroll = PearStyle.editor(notes, height:90)
+        scroll.widthAnchor.constraint(equalToConstant: 440).isActive = true
+        notes.isVerticallyResizable = true; notes.textContainer?.widthTracksTextView = true
+        let suppress = NSButton(checkboxWithTitle: "Switch to manual sharing after this game", target: nil, action: nil)
+        let game = PearStyle.label(run.gameName ?? run.appID.map { "Steam App \($0)" } ?? "Unidentified game",size:14,weight:.medium)
+        let content = stack([introduction, PearStyle.label("Game name",size:12,muted:true), game, PearStyle.label("Your result",size:12,muted:true), outcome, PearStyle.label("Note (optional)",size:12,muted:true), scroll,
+                             PearStyle.label("Share result sends this note privately. Skip keeps it on this Mac.",size:12,muted:true), suppress,
+                             PearStyle.label("Future games stay local until you share them from Run history.",size:12,muted:true)])
+        content.setCustomSpacing(22, after:introduction)
+        content.layoutSubtreeIfNeeded()
+        content.setFrameSize(NSSize(width:440,height:content.fittingSize.height))
+        alert.accessoryView = content
+        alert.addButton(withTitle: "Share result").isEnabled = submit != nil
+        alert.addButton(withTitle: "Skip this time")
+        alert.beginSheetModal(for: window) { response in
+            var updated = run
+            updated.result = outcome.indexOfSelectedItem == 1 ? .normal : outcome.indexOfSelectedItem == 2 ? .problems : .unknown
+            updated.note = notes.string
+            do {
+                try self.store.record(updated)
+                if suppress.state == .on {
+                    let fields=self.store.snapshot.policy.consent.fields
+                    if let configure=self.configureSharing { try configure(.localOnly,fields) }
+                    else { try self.store.transaction { $0.policy.configure(mode:.localOnly,fields:fields) } }
+                }
+                if response == .alertFirstButtonReturn { try self.submit?(updated, true) }
+            } catch { self.failure(error) }
+            self.displayedID = nil
+            self.showingFinished = false; self.refresh(); self.showNextFinished()
+        }
+    }
+    func showSharingIntroductionIfNeeded() {
+        guard store.snapshot.policy.needsSharingIntroduction else { return }
+        // Remember display independently of consent. Closing never enables sharing.
+        do { try store.transaction { $0.policy.markSharingIntroductionSeen() } }
+        catch { show(); failure(error); return }
+        openSharingSettings(firstRun:true)
+    }
+    func showSharingSettings() { openSharingSettings(firstRun:false) }
+    @objc private func settings() { showSharingSettings() }
+    @objc private func saveSharingSettings() { saveSharingAction?() }
+    @objc private func cancelSharingSettings() { cancelSharingAction?() }
+    @objc private func sharingModeChanged() { updateSharingDraft?() }
+
+    private func openSharingSettings(firstRun:Bool) {
+        if let existing=settingsWindow,existing.isVisible { existing.makeKeyAndOrderFront(nil);return }
+        let consent=store.snapshot.policy.consent
+        let panel=NSWindow(contentRect:NSRect(x:0,y:0,width:firstRun ? 640 : 800,height:650),
+                           styleMask:[.titled,.closable],backing:.buffered,defer:false)
+        settingsWindow=panel;panel.isReleasedWhenClosed=false;panel.delegate=self
+        panel.title=firstRun ? "Pear · Welcome" : "Pear · Settings";PearStyle.window(panel)
+        let width:CGFloat=firstRun ? 584 : 580
+        let introduction=PearStyle.label("Your reports help Pear support more games, investigate problems and work with contributors. Sharing is optional; Pear works without it.")
+        let publication=PearStyle.label("Selected fields, your result and manually added test details may be published on the catalog and GitHub after private review. Approval is not a compatibility certification.",size:12,muted:true)
+        let mode=NSPopUpButton();mode.addItems(withTitles:["Manual sharing","Ask after each game","Automatic sharing"])
+        mode.selectItem(at:firstRun ? 2 : consent.mode == .localOnly ? 0 : consent.mode == .askAfterExit ? 1 : 2)
+        mode.target=self;mode.action=#selector(sharingModeChanged)
+        let explanation=PearStyle.label("",size:12,muted:true)
+        let fields:[(ReportField,String)] = [(.environment,"macOS version, chip and memory"),(.components,"Pear, Wine and DXMT versions"),(.game,"Steam App ID and available game build"),(.execution,"Date, process minutes and observed exit status")]
+        let checks=fields.map { field,title in
+            let check=NSButton(checkboxWithTitle:title,target:nil,action:nil)
+            check.state=firstRun || consent.fields.contains(field) ? .on : .off;return check
+        }
+        let privacy=PearStyle.label("Notes stay private and are sent only when you explicitly include them. Accounts, credentials, saves, paths and raw logs are excluded. Exact timestamps stay on this Mac.",size:12,muted:true)
+        let notify=NSButton(checkboxWithTitle:"Remind me to add a result or note",target:nil,action:nil)
+        notify.state=consent.notifyAutomaticCompletion ? .on : .off
+        let notificationHelp=PearStyle.label("Get a notification after each game to add your experience.",size:12,muted:true)
+        let notificationGroup=stack([notify,notificationHelp]);notificationGroup.spacing=6
+        let retention=PearStyle.label("Local history: 90 days. Server reports: up to 180 days, or 365 days after the latest update for published reports. Delete shared reports separately from local records; external copies may remain. Cloudflare operates the service and network processing is not completely anonymous.",size:12,muted:true)
+        let location=PearStyle.label("You can change this anytime in Pear → Settings → Sharing (⌘,).",size:12,muted:true)
+        let options=PearFormStack(views:[PearStyle.label(firstRun ? "Help improve Pear" : "Sharing",size:24,weight:.semibold),introduction,
+                           text("When to share",bold:true),mode,explanation,notificationGroup,text("Choose what to share",bold:true)] + checks + [text("How your reports are used",bold:true),publication,privacy,text("Storage and deletion",bold:true),retention,location])
+        options.orientation = .vertical;options.alignment = .leading;options.spacing=12
+        for label in [introduction,publication,explanation,privacy,notificationHelp,retention,location] {
+            label.widthAnchor.constraint(equalToConstant:width).isActive=true
+        }
+        options.widthAnchor.constraint(equalToConstant:width).isActive=true
+        options.layoutSubtreeIfNeeded();options.setFrameSize(NSSize(width:width,height:options.fittingSize.height))
+        let scroll=NSScrollView();scroll.hasVerticalScroller=true;scroll.drawsBackground=false;scroll.documentView=options
+        let save=PearStyle.button("Save settings",target:self,action:#selector(saveSharingSettings),primary:true)
+        // First-run consent requires a deliberate click; Return is not consent.
+        let cancel=PearStyle.button(firstRun ? "Continue without sharing" : "Cancel",target:self,action:#selector(cancelSharingSettings))
+        let actions=stack([NSView(),cancel,save],horizontal:true)
+        let page=stack([scroll,actions]);page.spacing=20
+        for view in [scroll,actions] { view.widthAnchor.constraint(equalToConstant:width).isActive=true }
+        if firstRun { PearStyle.pin(page,in:panel.contentView!) }
+        else {
+            let sidebar=stack([PearStyle.label("Settings",size:16,weight:.semibold),PearStyle.label("Sharing",size:13,weight:.semibold),NSView()])
+            sidebar.widthAnchor.constraint(equalToConstant:140).isActive=true
+            let divider=NSBox();divider.boxType = .separator
+            let layout=stack([sidebar,divider,page],horizontal:true);layout.spacing=12
+            PearStyle.pin(layout,in:panel.contentView!,inset:24)
+            sidebar.heightAnchor.constraint(equalTo:layout.heightAnchor).isActive=true
+            divider.heightAnchor.constraint(equalTo:layout.heightAnchor).isActive=true
+            page.heightAnchor.constraint(equalTo:layout.heightAnchor).isActive=true
+        }
+        updateSharingDraft = {
+            let index=mode.indexOfSelectedItem
+            explanation.stringValue = index == 0 ? "No automatic sending or after-game questions. Share manually from Run history." : index == 1 ? "After each game, choose Share result or Skip this time. Nothing is sent without your choice." : "After games, selected fields are sent automatically. Results and notes can be added later."
+            notificationGroup.isHidden=index != 2
+            save.title=firstRun ? (index == 2 ? "Enable automatic sharing" : index == 1 ? "Enable after-game questions" : "Continue with manual sharing") : "Save settings"
+            options.layoutSubtreeIfNeeded();options.setFrameSize(NSSize(width:width,height:options.fittingSize.height))
+        }
+        updateSharingDraft?()
+        cancelSharingAction = { [weak self, weak panel] in
+            if firstRun {
+                do { try self?.store.transaction { $0.policy.configure(mode:.localOnly,fields:[]) } }
+                catch { self?.show();self?.failure(error);return }
+            }
+            panel?.close();self?.refresh()
+        }
+        saveSharingAction = { [weak self, weak panel] in
+            guard let self, let panel else { return }
+            let selected=Set(zip(fields,checks).filter{$0.1.state == .on}.map{$0.0.0})
+            let selectedMode:SharingMode=mode.indexOfSelectedItem == 0 ? .localOnly : mode.indexOfSelectedItem == 1 ? .askAfterExit : .automatic
+            guard selectedMode == .localOnly || !selected.isEmpty else {
+                let alert=NSAlert();alert.messageText="Choose at least one field";alert.informativeText="Select the fields you want to share, or choose Manual sharing.";alert.beginSheetModal(for:panel);return
+            }
+            do {
+                if let configure=self.configureSharing { try configure(selectedMode,selected) }
+                else { try self.store.transaction { $0.policy.configure(mode:selectedMode,fields:selected) } }
+                try self.store.transaction { $0.policy.setExitNotifications(notify.state == .on) }
+                if selectedMode == .automatic && notify.state == .on && !consent.notifyAutomaticCompletion { self.enableNotifications?() }
+                panel.close();self.refresh()
+            } catch { let alert=NSAlert();alert.messageText="Settings could not be saved";alert.informativeText="Sharing is stopped. Reopen Pear after checking available storage.";alert.beginSheetModal(for:panel) }
+        }
+        panel.center();panel.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true)
+        options.scroll(NSPoint(x:0,y:0))
+    }
+}

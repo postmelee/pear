@@ -6,26 +6,35 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import plistlib
 import shutil
 import subprocess
 import tempfile
+from sparkle_input import verify_framework
 
 REPO = Path(__file__).resolve().parent.parent
-VERSION = "0.1.0-preview.3"
+VERSION = "0.1.0"
 REQUIRED = {
     "Contents/Info.plist", "Contents/MacOS/PearPreview", "Contents/Resources/Pear.icns",
     "Contents/Resources/pear-preview", "Contents/Resources/THIRD_PARTY_NOTICES.md",
     "Contents/_CodeSignature/CodeResources",
 }
-OPTIONAL = {"Contents/Resources/LICENSE", "Contents/CodeResources"}
+OPTIONAL = {"Contents/Resources/LICENSE", "Contents/Resources/PearMark.png", "Contents/CodeResources"}
 
 
 def audit_app(app):
     if app.is_symlink() or not app.is_dir() or app.name != "Pear.app":
         raise ValueError("Expected the built Pear.app directory, not a link.")
     found = set()
+    framework = app / "Contents/Frameworks/Sparkle.framework"
+    framework_files = verify_framework(framework) if framework.exists() else set()
+    if framework_files and not (app / "Contents/Resources/licenses/Sparkle.txt").is_file():
+        raise ValueError("Sparkle license is missing")
     for p in app.rglob("*"):
         relative = p.relative_to(app).as_posix()
+        if relative.startswith("Contents/Frameworks/Sparkle.framework/"):
+            if p.is_file() or p.is_symlink(): found.add(relative)
+            continue
         if p.is_symlink():
             raise ValueError(f"Unexpected package symlink: {relative}")
         if not p.is_file():
@@ -85,7 +94,7 @@ def main():
                 shutil.copy2(p, bundle / name)
         shutil.copytree(app / "Contents/Resources/licenses", bundle / "licenses")
         (bundle / "README.txt").write_text(
-            "Pear (Apple Silicon, macOS 26+, Rosetta required)\n"
+            "Pear (Apple Silicon, macOS 15+, Rosetta required)\n"
             "Run ./pear-preview to prepare and open Windows Steam.\n"
             "Sign in directly in Steam and choose games from your library.\n"
             "Run ./pear-preview --help for optional commands.\n"
@@ -98,8 +107,14 @@ def main():
     for p in [app_zip, cli_zip]:
         artifacts[p.name] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "size": p.stat().st_size}
     (out / "SHA256SUMS").write_text("".join(f"{v['sha256']}  {n}\n" for n, v in artifacts.items()))
+    app_info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
     (out / "package-manifest.json").write_text(json.dumps({
         "version": VERSION,
+        "app_build": app_info.get('CFBundleVersion'),
+        "app_version": app_info.get('CFBundleShortVersionString'),
+        "update_feed": app_info.get('SUFeedURL'),
+        "update_public_key": app_info.get('SUPublicEDKey'),
+        "signed_feed_required": app_info.get('SURequireSignedFeed', False),
         "candidate": not args.release,
         "source_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
         "source_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=REPO)),
